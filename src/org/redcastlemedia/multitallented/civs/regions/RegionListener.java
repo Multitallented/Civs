@@ -15,5 +15,6 @@ public class RegionListener implements Listener {
         }
         //TODO protect if the should not be placed
 
+        regionManager.detectNewRegion(blockPlaceEvent);
     }
 }

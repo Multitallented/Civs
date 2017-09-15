@@ -13,6 +13,8 @@ public class RegionManager {
     private ArrayList<Region> regions = new ArrayList<>();
     private HashMap<String, RegionType> regionTypes = new HashMap<>();
     private static RegionManager regionManager;
+    private boolean first = false;
+    private boolean second = false;
 
     public RegionManager() {
         regionManager = this;
@@ -38,18 +40,18 @@ public class RegionManager {
         return regionTypes.get(name);
     }
 
-    public void detectNewRegion(BlockPlaceEvent event) {
-        String displayName = event.getBlockPlaced().getState().getData().toItemStack().getItemMeta().getDisplayName();
-        if (!displayName.contains("Civs ")) {
-            return;
-        }
-        displayName = displayName.replace("Civs ", "").toLowerCase();
+    void detectNewRegion(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        RegionType regionType = regionTypes.get(displayName);
-        if (regionType != null) {
-            addRegion(new Region(displayName));
+        if (!first) {
+            first = true;
+            return;
         }
+        if (!second) {
+            second = true;
+            return;
+        }
+        addRegion(new Region("cobble"));
     }
 
     public static synchronized RegionManager getInstance() {
