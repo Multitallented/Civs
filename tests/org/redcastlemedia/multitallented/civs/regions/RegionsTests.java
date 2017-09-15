@@ -25,7 +25,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class RegionsTests {
-    private Block block;
     private RegionManager regionManager;
 
     @BeforeClass
@@ -38,15 +37,11 @@ public class RegionsTests {
     @Before
     public void onBefore() {
         regionManager = new RegionManager();
-        block = mock(Block.class);
-        World world = mock(World.class);
-        when(world.getName()).thenReturn("world");
-        when(block.getLocation()).thenReturn(new Location(world, 0, 0,0));
     }
 
     @Test
     public void withNoRegionsShouldNotDetectRegion() {
-        assertNull(RegionManager.getInstance().getRegionAt(block.getLocation()));
+        assertNull(RegionManager.getInstance().getRegionAt(TestUtil.block2.getLocation()));
     }
 
     @Test
@@ -64,22 +59,17 @@ public class RegionsTests {
     @Test
     public void regionShouldNotBeCreatedWithoutAllReqs() {
         loadRegionTypeCobble();
-//        Block block = createUniqueChestCobble();
-        Block block = mock(Block.class);
-        when(block.getType()).thenReturn(Material.CHEST);
+
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
-        when(event1.getBlockPlaced()).thenReturn(block);
-        when(block.getLocation()).thenReturn(new Location(mock(World.class), 0, 0, 0));
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.block);
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
-        assertNull(regionManager.getRegionAt(block.getLocation()));
+        assertNull(regionManager.getRegionAt(TestUtil.block.getLocation()));
     }
 
     @Test
     public void regionShouldBeCreatedWithAllReqs() {
         loadRegionTypeCobble();
-//        Block block = createUniqueChestCobble();
-
 
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
@@ -93,7 +83,26 @@ public class RegionsTests {
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(block.getLocation()).getType());
+        assertEquals("cobble", regionManager.getRegionAt(TestUtil.block.getLocation()).getType());
+    }
+
+    @Test
+    public void regionShouldNotBeCreatedIfNotAllReqs() {
+        loadRegionTypeCobble();
+
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block4);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.block);
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+        assertNull(regionManager.getRegionAt(TestUtil.block.getLocation()).getType());
     }
 
     private void loadRegionTypeCobble() {

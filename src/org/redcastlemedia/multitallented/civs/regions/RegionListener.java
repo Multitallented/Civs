@@ -13,7 +13,6 @@ public class RegionListener implements Listener {
                 regionManager.getRegionAt(blockPlaceEvent.getBlockPlaced().getLocation()) != null) {
             return;
         }
-        //TODO protect if the should not be placed
 
         regionManager.detectNewRegion(blockPlaceEvent);
     }

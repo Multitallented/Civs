@@ -20,6 +20,7 @@ public class TestUtil {
     public static Block block;
     public static Block block2;
     public static Block block3;
+    public static Block block4;
     public static Player player;
 
     public static void serverSetup() {
@@ -35,19 +36,23 @@ public class TestUtil {
         when(im.getDisplayName()).thenReturn("Civs Cobble");
 
         World world = mock(World.class);
+        when(world.getName()).thenReturn("world");
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
 
         block = mock(Block.class);
         when(block.getType()).thenReturn(Material.CHEST);
+        when(block.getLocation()).thenReturn(new Location(world, 0, 0, 0));
         block2 = mock(Block.class);
         when(block2.getType()).thenReturn(Material.COBBLESTONE);
+        when(block2.getLocation()).thenReturn(new Location(world, 1, 0, 0));
         block3 = mock(Block.class);
         when(block3.getType()).thenReturn(Material.COBBLESTONE);
-        when(block.getLocation()).thenReturn(new Location(world, 0, 0, 0));
-        when(block2.getLocation()).thenReturn(new Location(world, 1, 0, 0));
         when(block3.getLocation()).thenReturn(new Location(world, 2, 0, 0));
+        block4 = mock(Block.class);
+        when(block4.getType()).thenReturn(Material.LOG);
+        when(block4.getLocation()).thenReturn(new Location(world, 2, 0, 0));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
