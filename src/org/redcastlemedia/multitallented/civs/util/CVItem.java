@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class CVItem {
     private Material mat;
-    private final int id;
     private final int damage;
     private int qty;
     private final double chance;
@@ -19,9 +18,8 @@ public class CVItem {
     private String displayName = null;
     private ArrayList<String> lore = new ArrayList<String>();
 
-    public CVItem(Material mat, int id, int qty, int damage, int chance, String displayName, ArrayList<String> lore) {
+    public CVItem(Material mat, int qty, int damage, int chance, String displayName, ArrayList<String> lore) {
         this.mat = mat;
-        this.id = id;
         this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
@@ -30,9 +28,8 @@ public class CVItem {
         this.lore = lore;
     }
 
-    public CVItem(Material mat, int id, int qty, int damage, int chance, String displayName) {
+    public CVItem(Material mat, int qty, int damage, int chance, String displayName) {
         this.mat = mat;
-        this.id = id;
         this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
@@ -40,30 +37,76 @@ public class CVItem {
         this.displayName = displayName;
     }
 
-    public CVItem(Material mat, int id, int qty, int damage, int chance) {
+    public CVItem(Material mat, int qty, int damage, int chance) {
         this.mat = mat;
-        this.id = id;
         this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
         wildDamage = damage == -1;
     }
 
-    public CVItem(Material mat, int id, int qty, int damage) {
+    public CVItem(Material mat, int qty, int damage) {
         this.mat = mat;
-        this.id = id;
         this.damage = damage;
         this.qty = qty;
         this.chance = 1;
         wildDamage = damage == -1;
     }
-    public CVItem(Material mat, int id, int qty) {
+    public CVItem(Material mat, int qty) {
         this.mat = mat;
-        this.id = id;
         this.damage = -1;
         this.qty = qty;
         this.chance = 1;
         wildDamage = true;
+    }
+
+    public static CVItem createCVItemFromString(String materialString) {
+        String quantityString = "1";
+        String chanceString = "100";
+        String damageString = "-1";
+        Material mat = null;
+
+        String[] splitString;
+
+
+        for (;;) {
+            int asteriskIndex = materialString.indexOf("*");
+            int percentIndex = materialString.indexOf("%");
+            int dotIndex = materialString.indexOf(".");
+            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > dotIndex) {
+                splitString = materialString.split("\\*");
+                quantityString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else if (dotIndex != -1 && dotIndex > percentIndex && dotIndex > asteriskIndex) {
+                splitString = materialString.split("\\.");
+                damageString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > dotIndex) {
+                splitString = materialString.split("%");
+                chanceString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else {
+                mat = getMaterialFromString(materialString);
+                break;
+            }
+        }
+
+        if (mat == null) {
+            return null;
+        }
+        int quantity = Integer.parseInt(quantityString);
+        int damage = Integer.parseInt(damageString);
+        int chance = Integer.parseInt(chanceString);
+        return new CVItem(mat, quantity, damage, chance);
+    }
+
+    private static Material getMaterialFromString(String materialString) {
+        Material mat = Material.valueOf(materialString.replaceAll(" ", "_").toUpperCase());
+        if (mat == null) {
+            int id = Integer.parseInt(materialString);
+            mat = Material.getMaterial(id);
+        }
+        return mat;
     }
 
     public boolean damageMatches(short durability) {
@@ -71,7 +114,7 @@ public class CVItem {
         if (dur == damage) {
             return true;
         }
-        if ((id == 17 || id == 162) && ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
+        if ((mat == Material.LOG || mat == Material.LOG_2) && ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
             return true;
         }
         return false;
@@ -83,7 +126,7 @@ public class CVItem {
 
     public static CVItem createFromItemStack(ItemStack is) {
         if (is.hasItemMeta() && !is.getItemMeta().getDisplayName().equals("")) {
-            return new CVItem(is.getType(),is.getTypeId(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), (ArrayList<String>) is.getItemMeta().getLore());
+            return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), (ArrayList<String>) is.getItemMeta().getLore());
         }
         if (is.getDurability() > 0) {
             return new CVItem(is.getType(),is.getTypeId(),is.getAmount(), is.getDurability());
@@ -154,9 +197,6 @@ public class CVItem {
     public Material getMat() {
         return mat;
     }
-    public int getID() {
-        return id;
-    }
     public int getDamage() {
         return damage;
     }
@@ -175,6 +215,6 @@ public class CVItem {
 
     @Override
     public CVItem clone() {
-        return new CVItem(mat, id, qty, damage, (int) chance, displayName, lore);
+        return new CVItem(mat, qty, damage, (int) chance, displayName, lore);
     }
 }

@@ -1,20 +1,23 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class RegionManager {
     private ArrayList<Region> regions = new ArrayList<>();
     private HashMap<String, RegionType> regionTypes = new HashMap<>();
     private static RegionManager regionManager;
-    private boolean first = false;
-    private boolean second = false;
+    private HashMap<Player, HashSet<Block>> cachedBlocks = new HashMap<>();
+    private HashSet<Material> blockCheck = new HashSet<>();
 
     public RegionManager() {
         regionManager = this;
@@ -34,6 +37,9 @@ public class RegionManager {
 
     public void loadRegionType(FileConfiguration config) {
         regionTypes.put(config.getString("name").toLowerCase(), new RegionType());
+        for (String req : config.getStringList("requirements")) {
+            CVItem cvItem = CVItem.createCVItemFromString(req);
+        }
     }
 
     public RegionType getRegionType(String name) {
@@ -43,15 +49,24 @@ public class RegionManager {
     void detectNewRegion(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        if (!first) {
-            first = true;
-            return;
+        HashSet<Block> blockHashSet;
+        if (cachedBlocks.containsKey(player)) {
+            blockHashSet = cachedBlocks.get(player);
+        } else {
+            blockHashSet = new HashSet<>();
         }
-        if (!second) {
-            second = true;
-            return;
+        boolean shouldScanArea = blockHashSet.isEmpty();
+        blockHashSet.add(block);
+
+        if (shouldScanArea) {
+            scanArea(blockHashSet);
         }
+
         addRegion(new Region("cobble"));
+    }
+
+    void scanArea(HashSet<Block> blockHashSet) {
+        //TODO check all region types and keep expanding until found all possible regions
     }
 
     public static synchronized RegionManager getInstance() {
