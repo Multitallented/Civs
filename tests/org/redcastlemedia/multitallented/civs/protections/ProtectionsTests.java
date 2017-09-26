@@ -7,13 +7,16 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -51,15 +54,42 @@ public class ProtectionsTests {
 
     @Test
     public void blockBreakInProtectionShouldBeCancelled() {
-        new RegionManager();
-        RegionManager.getInstance().addRegion(new Region("cobble"));
-        ProtectionHandler protectionHandler = new ProtectionHandler();
+        RegionsTests.loadRegionTypeCobble();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 2);
         when(player.getUniqueId()).thenReturn(uuid);
-        BlockBreakEvent event = new BlockBreakEvent(block, player);
+        Player player2 = mock(Player.class);
+        UUID uuid2 = new UUID(1, 3);
+        when(player2.getUniqueId()).thenReturn(uuid2);
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(uuid2);
+        HashSet<UUID> members = new HashSet<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation));
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
         assertTrue(event.isCancelled());
     }
 
+    @Test
+    public void blockPlaceShouldNotBeCancelledByOwner() {
+        RegionsTests.loadRegionTypeCobble();
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1, 2);
+        BlockPlaceEvent event = mock(BlockPlaceEvent.class);
+        when(event.getBlockPlaced()).thenReturn(block);
+        when(event.getPlayer()).thenReturn(player);
+        when(player.getUniqueId()).thenReturn(uuid);
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(uuid);
+        HashSet<UUID> members = new HashSet<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation));
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+
+        protectionHandler.onBlockPlace(event);
+        assertFalse(event.isCancelled());
+    }
 }

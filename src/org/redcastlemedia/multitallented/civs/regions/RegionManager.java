@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class RegionManager {
     private ArrayList<Region> regions = new ArrayList<>();
@@ -97,7 +97,10 @@ public class RegionManager {
         }
 
         if (hasReqs) {
-            addRegion(new Region(currentRegionType.getName()));
+            HashSet<UUID> owners = new HashSet<>();
+            owners.add(player.getUniqueId());
+            HashSet<UUID> members = new HashSet<>();
+            addRegion(new Region(currentRegionType.getName(), owners, members, block.getLocation()));
         }
     }
 

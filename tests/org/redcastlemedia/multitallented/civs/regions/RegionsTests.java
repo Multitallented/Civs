@@ -1,24 +1,20 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -48,12 +44,6 @@ public class RegionsTests {
     public void regionManagerShouldLoadRegionTypesFromConfig() {
         loadRegionTypeCobble();
         assertNotNull(regionManager.getRegionType("cobble"));
-    }
-
-    @Test
-    public void regionShouldHaveAType() {
-        Region region = new Region("cobble");
-        assertEquals("cobble", region.getType());
     }
 
     @Test
@@ -116,13 +106,13 @@ public class RegionsTests {
         assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
     }
 
-    private void loadRegionTypeCobble() {
+    public static void loadRegionTypeCobble() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("requirements", reqs);
-        regionManager.loadRegionType(config);
+        RegionManager.getInstance().loadRegionType(config);
     }
 
 }
