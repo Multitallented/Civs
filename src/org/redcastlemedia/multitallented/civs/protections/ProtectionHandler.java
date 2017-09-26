@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 public class ProtectionHandler implements Listener {
 
@@ -17,7 +18,7 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer()));
+        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
     }
 
     @EventHandler
@@ -26,14 +27,20 @@ public class ProtectionHandler implements Listener {
             return;
         }
 
-        event.setCancelled(checkLocation(event.getBlockPlaced(), event.getPlayer()));
+        event.setCancelled(checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_place"));
     }
 
-    private boolean checkLocation(Block block, Player player) {
-        Region region = RegionManager.getInstance().getRegionAt(block.getLocation());
+    private boolean checkLocation(Block block, Player player, String type) {
+        RegionManager regionManager = RegionManager.getInstance();
+        Region region = regionManager.getRegionAt(block.getLocation());
         if (region == null) {
             return false;
         }
+        RegionType regionType = regionManager.getRegionType(region.getType());
+        if (!regionType.getEffects().contains(type)) {
+            return false;
+        }
+
         if (region.getOwners().contains(player.getUniqueId())) {
             return false;
         }

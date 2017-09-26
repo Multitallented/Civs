@@ -92,4 +92,28 @@ public class ProtectionsTests {
         protectionHandler.onBlockPlace(event);
         assertFalse(event.isCancelled());
     }
+
+    @Test
+    public void blockPlaceShouldNotBeCancelledInUnprotected() {
+        RegionsTests.loadRegionTypeDirt();
+
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1, 2);
+        when(player.getUniqueId()).thenReturn(uuid);
+
+        Player player2 = mock(Player.class);
+        UUID uuid2 = new UUID(1, 3);
+        when(player2.getUniqueId()).thenReturn(uuid2);
+
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(uuid2);
+        HashSet<UUID> members = new HashSet<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
+        RegionManager.getInstance().addRegion(new Region("dirt", owners, members, regionLocation));
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
+        protectionHandler.onBlockBreak(event);
+        assertFalse(event.isCancelled());
+    }
 }

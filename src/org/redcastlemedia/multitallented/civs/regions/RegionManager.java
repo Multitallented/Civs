@@ -41,7 +41,11 @@ public class RegionManager {
         for (String req : config.getStringList("requirements")) {
             reqs.add(CVItem.createCVItemFromString(req));
         }
-        regionTypes.put(name.toLowerCase(), new RegionType(name, reqs));
+        HashSet<String> effects = new HashSet<>();
+        for (String effect : config.getStringList("effects")) {
+            effects.add(effect);
+        }
+        regionTypes.put(name.toLowerCase(), new RegionType(name, reqs, effects));
     }
 
     public RegionType getRegionType(String name) {

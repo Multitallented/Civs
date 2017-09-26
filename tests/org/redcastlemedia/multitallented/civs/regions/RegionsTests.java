@@ -112,6 +112,20 @@ public class RegionsTests {
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("requirements", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        RegionManager.getInstance().loadRegionType(config);
+    }
+    public static void loadRegionTypeDirt() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "dirt");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("dirt*1");
+        config.set("requirements", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        config.set("effects", effects);
         RegionManager.getInstance().loadRegionType(config);
     }
 
