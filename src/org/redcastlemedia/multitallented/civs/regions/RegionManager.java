@@ -8,10 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 public class RegionManager {
     private ArrayList<Region> regions = new ArrayList<>();
@@ -25,14 +22,50 @@ public class RegionManager {
 
     public void addRegion(Region region) {
         regions.add(region);
+        Collections.sort(regions,
+                new Comparator<Region>() {
+                    @Override
+                    public int compare(Region r1, Region r2) {
+                        if (r1.getLocation().getX() - r1.getXNRadius() > r2.getLocation().getX() - r2.getXNRadius()) {
+                            return 1;
+                        } else if (r1.getLocation().getX() - r1.getXNRadius() < r2.getLocation().getX() - r2.getXNRadius()) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                });
     }
 
     public Region getRegionAt(Location location) {
-        Region region = null;
-        for (Region r : regions) {
-            region = r;
+        if (regions.isEmpty()) {
+            return null;
         }
-        return region;
+        int index = (int) Math.floor((double) regions.size() / 2);
+        int fragSize = index;
+        for (int i= (int) Math.ceil(regions.size() / 4); i>-1; i--) {
+            Region r = regions.get(index);
+            if (location.getX() < r.getLocation().getX() - r.getXNRadius()) {
+                fragSize = (int) Math.floor(fragSize / 2);
+                index = (int) Math.floor(index - fragSize);
+            } else if (location.getX() > r.getLocation().getX() + r.getXNRadius()) {
+                fragSize = (int) Math.floor(fragSize / 2);
+                index = (int) Math.floor(index + fragSize);
+            } else {
+                if (withinRegion(r, location)) {
+                    return r;
+                }
+            }
+        }
+        return null;
+    }
+    private boolean withinRegion(Region region, Location location) {
+        Location rLocation = region.getLocation();
+        return rLocation.getX() - region.getXNRadius() <= location.getX() &&
+                rLocation.getX() + 5 >= location.getX() && //TODO fix radius
+                rLocation.getY() - 5 <= location.getY() &&
+                rLocation.getY() + 5 >= location.getY() &&
+                rLocation.getZ() - 5 <= location.getZ() &&
+                rLocation.getZ() + 5 >= location.getZ();
     }
 
     public void loadRegionType(FileConfiguration config) {

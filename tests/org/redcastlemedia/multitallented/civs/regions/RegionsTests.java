@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -44,6 +45,15 @@ public class RegionsTests {
     public void regionManagerShouldLoadRegionTypesFromConfig() {
         loadRegionTypeCobble();
         assertNotNull(regionManager.getRegionType("cobble"));
+    }
+
+    @Test
+    public void regionManagerShouldGetRegionBasedOnLocation() {
+        Location location = new Location(Bukkit.getWorld("world"), 100, 0, 0);
+        HashSet<UUID> owners = new HashSet<>();
+        HashSet<UUID> members = new HashSet<>();
+        regionManager.addRegion(new Region("cobble", owners, members, location));
+        assertNull(regionManager.getRegionAt(new Location(Bukkit.getWorld("world"), 0,0,0)));
     }
 
     @Test
@@ -104,6 +114,32 @@ public class RegionsTests {
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
         assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
+    }
+
+    @Test
+    public void regionManagerShouldFindSingleRegion() {
+        loadRegionTypeCobble();
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(new UUID(1, 4));
+        HashSet<UUID> members = new HashSet<>();
+        Location location1 = new Location(Bukkit.getWorld("world"), 100, 0, 0);
+        Location location2 = new Location(Bukkit.getWorld("world"), 0, 100, 0);
+        Location location3 = new Location(Bukkit.getWorld("world"), 100, 100, 50);
+        Location location4 = new Location(Bukkit.getWorld("world"), 0, 100, 50);
+        Location location5 = new Location(Bukkit.getWorld("world"), 500, 100, 50);
+        Location location6 = new Location(Bukkit.getWorld("world"), 100, 1000, 0);
+        Location location7 = new Location(Bukkit.getWorld("world"), 1000, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, members, location1));
+        regionManager.addRegion(new Region("cobble", owners, members, location2));
+        regionManager.addRegion(new Region("cobble", owners, members, location3));
+        regionManager.addRegion(new Region("cobble", owners, members, location4));
+        regionManager.addRegion(new Region("cobble", owners, members, location5));
+        regionManager.addRegion(new Region("cobble", owners, members, location6));
+        regionManager.addRegion(new Region("cobble", owners, members, location7));
+        assertSame(location5, regionManager.getRegionAt(location5).getLocation());
+        assertSame(location2, regionManager.getRegionAt(location2).getLocation());
+        assertSame(location1, regionManager.getRegionAt(location1).getLocation());
+        assertSame(location7, regionManager.getRegionAt(location7).getLocation());
     }
 
     public static void loadRegionTypeCobble() {

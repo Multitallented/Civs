@@ -30,4 +30,5 @@ public class Region {
     public Location getLocation() {
         return location;
     }
+    public int getXNRadius() { return 5; } //TODO fix this
 }
