@@ -61,29 +61,36 @@ public class RegionsTests {
         loadRegionTypeCobble();
 
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.block);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        World world = Bukkit.getWorld("world");
+        Block dirtBlock = mock(Block.class);
+        when(dirtBlock.getType()).thenReturn(Material.DIRT);
+        when(world.getBlockAt(1,0,0)).thenReturn(dirtBlock);
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
-        assertNull(regionManager.getRegionAt(TestUtil.block.getLocation()));
+        assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
     }
 
     @Test
     public void regionShouldBeCreatedWithAllReqs() {
         loadRegionTypeCobble();
 
+        World world = Bukkit.getWorld("world");
+        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.block);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(TestUtil.block.getLocation()).getType());
+        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
     }
 
     @Test
@@ -96,13 +103,17 @@ public class RegionsTests {
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.block);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        World world = Bukkit.getWorld("world");
+        Block dirtBlock = mock(Block.class);
+        when(dirtBlock.getType()).thenReturn(Material.DIRT);
+        when(world.getBlockAt(2,0,0)).thenReturn(dirtBlock);
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertNull(regionManager.getRegionAt(TestUtil.block.getLocation()).getType());
+        assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
     }
 
     private void loadRegionTypeCobble() {
@@ -114,17 +125,4 @@ public class RegionsTests {
         regionManager.loadRegionType(config);
     }
 
-//    private Block createUniqueChestCobble() {
-//        CVItem cvItem = new CVItem(Material.CHEST, 24, 1, -1, 100, "CobbleChest");
-//        Block block = mock(Block.class);
-//        when(block.getType()).thenReturn(Material.CHEST);
-//        BlockState blockState = mock(BlockState.class);
-//        MaterialData materialData = mock(MaterialData.class);
-//        when(block.getState()).thenReturn(blockState);
-//        when(blockState.getData()).thenReturn(materialData);
-//        ItemStack is = cvItem.createItemStack();
-//        when(materialData.toItemStack()).thenReturn(is);
-//        when(block.getType()).thenReturn(Material.CHEST);
-//        return block;
-//    }
 }

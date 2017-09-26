@@ -14,6 +14,12 @@ public class RegionListener implements Listener {
             return;
         }
 
-        regionManager.detectNewRegion(blockPlaceEvent);
+        if (blockPlaceEvent.getBlockPlaced().getState() == null) {
+            return;
+        }
+        String displayName = blockPlaceEvent.getBlockPlaced().getState().getData().toItemStack().getItemMeta().getDisplayName();
+        if (displayName != null && displayName.contains("Civs ")) {
+            regionManager.detectNewRegion(blockPlaceEvent);
+        }
     }
 }

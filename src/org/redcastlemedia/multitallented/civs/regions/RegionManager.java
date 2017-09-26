@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,8 +17,7 @@ public class RegionManager {
     private ArrayList<Region> regions = new ArrayList<>();
     private HashMap<String, RegionType> regionTypes = new HashMap<>();
     private static RegionManager regionManager;
-    private HashMap<Player, HashSet<Block>> cachedBlocks = new HashMap<>();
-    private HashSet<Material> blockCheck = new HashSet<>();
+    private HashMap<String, Integer> itemCheck = new HashMap<>();
 
     public RegionManager() {
         regionManager = this;
@@ -36,10 +36,12 @@ public class RegionManager {
     }
 
     public void loadRegionType(FileConfiguration config) {
-        regionTypes.put(config.getString("name").toLowerCase(), new RegionType());
+        String name = config.getString("name");
+        HashSet<CVItem> reqs = new HashSet<>();
         for (String req : config.getStringList("requirements")) {
-            CVItem cvItem = CVItem.createCVItemFromString(req);
+            reqs.add(CVItem.createCVItemFromString(req));
         }
+        regionTypes.put(name.toLowerCase(), new RegionType(name, reqs));
     }
 
     public RegionType getRegionType(String name) {
@@ -49,24 +51,63 @@ public class RegionManager {
     void detectNewRegion(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        HashSet<Block> blockHashSet;
-        if (cachedBlocks.containsKey(player)) {
-            blockHashSet = cachedBlocks.get(player);
-        } else {
-            blockHashSet = new HashSet<>();
-        }
-        boolean shouldScanArea = blockHashSet.isEmpty();
-        blockHashSet.add(block);
+        String displayName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
+        displayName = displayName.replace("Civs ", "");
 
-        if (shouldScanArea) {
-            scanArea(blockHashSet);
+        RegionType currentRegionType = getRegionType(displayName.toLowerCase());
+
+        if (currentRegionType == null) {
+            return;
         }
 
-        addRegion(new Region("cobble"));
+        itemCheck.clear();
+        for (CVItem currentItem : currentRegionType.getReqs()) {
+            itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
+        }
+        int radius = 5; //TODO fix this and make size flexible
+        World currentWorld = block.getLocation().getWorld();
+        boolean hasReqs = false;
+        outer: for (int x=0; x<radius;x++) {
+            for (int y=0; y<radius; y++) {
+                for (int z=0; z<radius; z++) {
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
+
+
+                    String wildCardString = currentBlock.getType() + ":-1";
+                    String damageString = currentBlock.getType() + ":";
+                    if (currentBlock.getState() != null) {
+                        damageString += currentBlock.getState().getData().toItemStack().getDurability();
+                    }
+
+                    if (itemCheck.containsKey(wildCardString)) {
+                        itemCheck.put(wildCardString, itemCheck.get(wildCardString) - 1);
+                        hasReqs = checkIfScanFinished();
+                    } else if (itemCheck.containsKey(damageString)) {
+                        itemCheck.put(damageString, itemCheck.get(damageString) - 1);
+                        hasReqs = checkIfScanFinished();
+                    }
+                    if (hasReqs) {
+                        break outer;
+                    }
+                }
+            }
+        }
+
+        if (hasReqs) {
+            addRegion(new Region(currentRegionType.getName()));
+        }
     }
 
-    void scanArea(HashSet<Block> blockHashSet) {
-        //TODO check all region types and keep expanding until found all possible regions
+    private boolean checkIfScanFinished() {
+        for (String key : itemCheck.keySet()) {
+            if (itemCheck.get(key) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static synchronized RegionManager getInstance() {

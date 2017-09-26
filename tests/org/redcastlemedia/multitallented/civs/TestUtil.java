@@ -2,13 +2,17 @@ package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.mockito.Matchers;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -22,6 +26,7 @@ public class TestUtil {
     public static Block block3;
     public static Block block4;
     public static Player player;
+    public static Block blockUnique;
 
     public static void serverSetup() {
         Server server = mock(Server.class);
@@ -52,14 +57,32 @@ public class TestUtil {
         when(block3.getLocation()).thenReturn(new Location(world, 2, 0, 0));
         block4 = mock(Block.class);
         when(block4.getType()).thenReturn(Material.LOG);
-        when(block4.getLocation()).thenReturn(new Location(world, 2, 0, 0));
+        when(block4.getLocation()).thenReturn(new Location(world, 3, 0, 0));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
         when(world.getBlockAt(1, 0,0)).thenReturn(block2);
         when(world.getBlockAt(2, 0,0)).thenReturn(block3);
+        when(world.getBlockAt(3, 0,0)).thenReturn(block4);
+        when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
         when(server.getWorld("world")).thenReturn(world);
 
         Bukkit.setServer(server);
+        blockUnique = createUniqueChestCobble(world);
+    }
+
+    private static Block createUniqueChestCobble(World world) {
+        CVItem cvItem = new CVItem(Material.CHEST, 1, -1, 100, "Civs Cobble");
+        Block block = mock(Block.class);
+        when(block.getType()).thenReturn(Material.CHEST);
+        BlockState blockState = mock(BlockState.class);
+        MaterialData materialData = mock(MaterialData.class);
+        when(block.getState()).thenReturn(blockState);
+        when(blockState.getData()).thenReturn(materialData);
+        ItemStack is = cvItem.createItemStack();
+        when(materialData.toItemStack()).thenReturn(is);
+        when(block.getType()).thenReturn(Material.CHEST);
+        when(block.getLocation()).thenReturn(new Location(world, 4,0,0));
+        return block;
     }
 }
