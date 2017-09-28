@@ -40,24 +40,51 @@ public class RegionManager {
         if (regions.isEmpty()) {
             return null;
         }
-        int index = (int) Math.floor((double) regions.size() / 2);
-        int fragSize = index;
-        for (int i= (int) Math.ceil(regions.size() / 4); i>-1; i--) {
+
+        int index;
+        double mindex = 0;
+        double maxdex = regions.size() -1;
+        double prevIndex = 0;
+        System.out.println("new check");
+        for (;;) {
+            index = (int) Math.round(((maxdex - mindex) / 2) + mindex);
+            System.out.println(index);
             Region r = regions.get(index);
-            if (location.getX() < r.getLocation().getX() - r.getXNRadius()) {
-                fragSize = (int) Math.floor(fragSize / 2);
-                index = (int) Math.floor(index - fragSize);
-            } else if (location.getX() > r.getLocation().getX() + r.getXNRadius()) {
-                fragSize = (int) Math.floor(fragSize / 2);
-                index = (int) Math.floor(index + fragSize);
-            } else {
+            if (prevIndex == index) {
                 if (withinRegion(r, location)) {
                     return r;
+                } else {
+                    return null;
                 }
+            }
+
+            if (withinRegion(r, location)) {
+                return r;
+            } else if (location.getX() < r.getLocation().getX() - r.getXNRadius()) {
+
+                maxdex = index;
+            } else if (location.getX() > r.getLocation().getX() + r.getXNRadius()) {
+
+                mindex = index;
+            } else {
+                return findRegion((int) mindex, (int) maxdex, location, index);
+            }
+            prevIndex = index;
+        }
+    }
+
+    private Region findRegion(int index1, int index2, Location location, int index) {
+        for (int i=index1; i<index2; i++) {
+            if (i==index) {
+                continue;
+            }
+            if (withinRegion(regions.get(i), location)) {
+                return regions.get(i);
             }
         }
         return null;
     }
+
     private boolean withinRegion(Region region, Location location) {
         Location rLocation = region.getLocation();
         return rLocation.getX() - region.getXNRadius() <= location.getX() &&

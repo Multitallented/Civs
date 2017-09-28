@@ -129,6 +129,7 @@ public class RegionsTests {
         Location location5 = new Location(Bukkit.getWorld("world"), 500, 100, 50);
         Location location6 = new Location(Bukkit.getWorld("world"), 100, 1000, 0);
         Location location7 = new Location(Bukkit.getWorld("world"), 1000, 0, 0);
+        Location location8 = new Location(Bukkit.getWorld("world"), 1050, 0, 0);
         regionManager.addRegion(new Region("cobble", owners, members, location1));
         regionManager.addRegion(new Region("cobble", owners, members, location2));
         regionManager.addRegion(new Region("cobble", owners, members, location3));
@@ -140,6 +141,8 @@ public class RegionsTests {
         assertSame(location2, regionManager.getRegionAt(location2).getLocation());
         assertSame(location1, regionManager.getRegionAt(location1).getLocation());
         assertSame(location7, regionManager.getRegionAt(location7).getLocation());
+        regionManager.addRegion(new Region("cobble", owners, members, location8));
+        assertSame(location8, regionManager.getRegionAt(location8).getLocation());
     }
 
     public static void loadRegionTypeCobble() {
