@@ -45,10 +45,8 @@ public class RegionManager {
         double mindex = 0;
         double maxdex = regions.size() -1;
         double prevIndex = 0;
-        System.out.println("new check");
         for (;;) {
             index = (int) Math.round(((maxdex - mindex) / 2) + mindex);
-            System.out.println(index);
             Region r = regions.get(index);
             if (prevIndex == index) {
                 if (withinRegion(r, location)) {
