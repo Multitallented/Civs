@@ -26,9 +26,9 @@ public class RegionManager {
                 new Comparator<Region>() {
                     @Override
                     public int compare(Region r1, Region r2) {
-                        if (r1.getLocation().getX() - r1.getXNRadius() > r2.getLocation().getX() - r2.getXNRadius()) {
+                        if (r1.getLocation().getX() - r1.getRadiusXN() > r2.getLocation().getX() - r2.getRadiusXN()) {
                             return 1;
-                        } else if (r1.getLocation().getX() - r1.getXNRadius() < r2.getLocation().getX() - r2.getXNRadius()) {
+                        } else if (r1.getLocation().getX() - r1.getRadiusXN() < r2.getLocation().getX() - r2.getRadiusXN()) {
                             return -1;
                         }
                         return 0;
@@ -58,10 +58,10 @@ public class RegionManager {
 
             if (withinRegion(r, location)) {
                 return r;
-            } else if (location.getX() < r.getLocation().getX() - r.getXNRadius()) {
+            } else if (location.getX() < r.getLocation().getX() - r.getRadiusXN()) {
 
                 maxdex = index;
-            } else if (location.getX() > r.getLocation().getX() + r.getXNRadius()) {
+            } else if (location.getX() > r.getLocation().getX() + r.getRadiusXN()) {
 
                 mindex = index;
             } else {
@@ -85,12 +85,12 @@ public class RegionManager {
 
     private boolean withinRegion(Region region, Location location) {
         Location rLocation = region.getLocation();
-        return rLocation.getX() - region.getXNRadius() <= location.getX() &&
-                rLocation.getX() + 5 >= location.getX() && //TODO fix radius
-                rLocation.getY() - 5 <= location.getY() &&
-                rLocation.getY() + 5 >= location.getY() &&
-                rLocation.getZ() - 5 <= location.getZ() &&
-                rLocation.getZ() + 5 >= location.getZ();
+        return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
+                rLocation.getX() + region.getRadiusXP() >= location.getX() &&
+                rLocation.getY() - region.getRadiusYN() <= location.getY() &&
+                rLocation.getY() + region.getRadiusYP() >= location.getY() &&
+                rLocation.getZ() - region.getRadiusZN() <= location.getZ() &&
+                rLocation.getZ() + region.getRadiusZP() >= location.getZ();
     }
 
     public void loadRegionType(FileConfiguration config) {
@@ -103,7 +103,18 @@ public class RegionManager {
         for (String effect : config.getStringList("effects")) {
             effects.add(effect);
         }
-        regionTypes.put(name.toLowerCase(), new RegionType(name, reqs, effects));
+        int buildRadius = config.getInt("build-radius", 5);
+        int buildRadiusX = config.getInt("build-radius-x", 5);
+        int buildRadiusY = config.getInt("build-radius-y", 5);
+        int buildRadiusZ = config.getInt("build-radius-z", 5);
+        regionTypes.put(name.toLowerCase(), new RegionType(
+                name,
+                reqs,
+                effects,
+                buildRadius,
+                buildRadiusX,
+                buildRadiusY,
+                buildRadiusZ));
     }
 
     public RegionType getRegionType(String name) {
@@ -126,7 +137,15 @@ public class RegionManager {
         for (CVItem currentItem : currentRegionType.getReqs()) {
             itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
         }
-        int radius = 5; //TODO fix this and make size flexible
+        int radius = currentRegionType.getBuildRadius(); //TODO fix this and make size flexible
+        int[] radiuses = new int[6];
+        radiuses[0] = radius;
+        radiuses[1] = radius;
+        radiuses[2] = radius;
+        radiuses[3] = radius;
+        radiuses[4] = radius;
+        radiuses[5] = radius;
+
         World currentWorld = block.getLocation().getWorld();
         boolean hasReqs = false;
         outer: for (int x=0; x<radius;x++) {
@@ -162,7 +181,7 @@ public class RegionManager {
             HashSet<UUID> owners = new HashSet<>();
             owners.add(player.getUniqueId());
             HashSet<UUID> members = new HashSet<>();
-            addRegion(new Region(currentRegionType.getName(), owners, members, block.getLocation()));
+            addRegion(new Region(currentRegionType.getName(), owners, members, block.getLocation(), radiuses));
         }
     }
 

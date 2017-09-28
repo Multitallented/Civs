@@ -52,7 +52,7 @@ public class RegionsTests {
         Location location = new Location(Bukkit.getWorld("world"), 100, 0, 0);
         HashSet<UUID> owners = new HashSet<>();
         HashSet<UUID> members = new HashSet<>();
-        regionManager.addRegion(new Region("cobble", owners, members, location));
+        regionManager.addRegion(new Region("cobble", owners, members, location, getRadiuses()));
         assertNull(regionManager.getRegionAt(new Location(Bukkit.getWorld("world"), 0,0,0)));
     }
 
@@ -73,6 +73,27 @@ public class RegionsTests {
 
     @Test
     public void regionShouldBeCreatedWithAllReqs() {
+        loadRegionTypeCobble();
+
+        World world = Bukkit.getWorld("world");
+        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
+    }
+    @Test
+    public void regionShouldNotBeCreatedWithAllReqsOutOfB() {
         loadRegionTypeCobble();
 
         World world = Bukkit.getWorld("world");
@@ -130,19 +151,29 @@ public class RegionsTests {
         Location location6 = new Location(Bukkit.getWorld("world"), 100, 1000, 0);
         Location location7 = new Location(Bukkit.getWorld("world"), 1000, 0, 0);
         Location location8 = new Location(Bukkit.getWorld("world"), 1050, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, members, location1));
-        regionManager.addRegion(new Region("cobble", owners, members, location2));
-        regionManager.addRegion(new Region("cobble", owners, members, location3));
-        regionManager.addRegion(new Region("cobble", owners, members, location4));
-        regionManager.addRegion(new Region("cobble", owners, members, location5));
-        regionManager.addRegion(new Region("cobble", owners, members, location6));
-        regionManager.addRegion(new Region("cobble", owners, members, location7));
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location3, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location4, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location5, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location6, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location7, getRadiuses()));
         assertSame(location5, regionManager.getRegionAt(location5).getLocation());
         assertSame(location2, regionManager.getRegionAt(location2).getLocation());
         assertSame(location1, regionManager.getRegionAt(location1).getLocation());
         assertSame(location7, regionManager.getRegionAt(location7).getLocation());
-        regionManager.addRegion(new Region("cobble", owners, members, location8));
+        regionManager.addRegion(new Region("cobble", owners, members, location8, getRadiuses()));
         assertSame(location8, regionManager.getRegionAt(location8).getLocation());
+    }
+    public static int[] getRadiuses() {
+        int[] radiuses = new int[6];
+        radiuses[0] = 5;
+        radiuses[1] = 5;
+        radiuses[2] = 5;
+        radiuses[3] = 5;
+        radiuses[4] = 5;
+        radiuses[5] = 5;
+        return radiuses;
     }
 
     public static void loadRegionTypeCobble() {

@@ -11,10 +11,36 @@ public class RegionType {
 
     private final HashSet<String> effects;
 
-    public RegionType(String name, HashSet<CVItem> reqs, HashSet<String> effects) {
+    private final int buildRadius;
+    private final int buildRadiusX;
+    private final int buildRadiusY;
+    private final int buildRadiusZ;
+
+    public RegionType(String name, HashSet<CVItem> reqs, HashSet<String> effects, int buildRadius) {
         this.name = name;
         this.reqs = reqs;
         this.effects = effects;
+        this.buildRadius = buildRadius;
+        this.buildRadiusX = buildRadius;
+        this.buildRadiusY = buildRadius;
+        this.buildRadiusZ = buildRadius;
+    }
+
+    public RegionType(String name,
+                      HashSet<CVItem> reqs,
+                      HashSet<String> effects,
+                      int buildRadius,
+                      int buildRadiusX,
+                      int buildRadiusY,
+                      int buildRadiusZ) {
+        this.name = name;
+        this.reqs = reqs;
+        this.effects = effects;
+        this.buildRadius = buildRadius;
+        this.buildRadiusX = buildRadiusX;
+        this.buildRadiusY = buildRadiusY;
+        this.buildRadiusZ = buildRadiusZ;
+
     }
     public String getName() {
         return name;
@@ -25,4 +51,17 @@ public class RegionType {
     public HashSet<String> getEffects() {
         return effects;
     }
+    public int getBuildRadius() {
+        return buildRadius;
+    }
+    public int getBuildRadiusX() {
+        return buildRadiusX;
+    }
+    public int getBuildRadiusY() {
+        return buildRadiusY;
+    }
+    public int getBuildRadiusZ() {
+        return buildRadiusZ;
+    }
+
 }
