@@ -218,6 +218,20 @@ public class RegionsTests {
     }
 
     @Test
+    public void strangeRegionShapeShouldBuildProperly() {
+        loadRegionTypeRectangle();
+
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block8);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block7);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
+        assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique4.getLocation()));
+    }
+
+    @Test
     public void playerShouldBeInMultipleEffectRadii() {
         loadRegionTypeCobble();
         HashSet<UUID> owners = new HashSet<>();
@@ -276,6 +290,18 @@ public class RegionsTests {
         config.set("requirements", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
+        RegionManager.getInstance().loadRegionType(config);
+    }
+    public static void loadRegionTypeRectangle() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "rectangle");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        config.set("requirements", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        config.set("effects", effects);
+        config.set("build-radius", 3);
+        config.set("build-radius-z", 10);
         RegionManager.getInstance().loadRegionType(config);
     }
 

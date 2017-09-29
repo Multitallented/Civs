@@ -110,10 +110,10 @@ public class RegionManager {
             effects.add(effect);
         }
         int buildRadius = config.getInt("build-radius", 5);
-        int buildRadiusX = config.getInt("build-radius-x", 5);
-        int buildRadiusY = config.getInt("build-radius-y", 5);
-        int buildRadiusZ = config.getInt("build-radius-z", 5);
-        int effectRadius = config.getInt("effect-radius", 5);
+        int buildRadiusX = config.getInt("build-radius-x", buildRadius);
+        int buildRadiusY = config.getInt("build-radius-y", buildRadius);
+        int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
+        int effectRadius = config.getInt("effect-radius", buildRadius);
         regionTypes.put(name.toLowerCase(), new RegionType(
                 name,
                 reqs,
@@ -135,17 +135,17 @@ public class RegionManager {
         String displayName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
         displayName = displayName.replace("Civs ", "");
 
-        RegionType currentRegionType = getRegionType(displayName.toLowerCase());
+        RegionType regionType = getRegionType(displayName.toLowerCase());
 
-        if (currentRegionType == null) {
+        if (regionType == null) {
             return;
         }
 
         itemCheck.clear();
-        for (CVItem currentItem : currentRegionType.getReqs()) {
+        for (CVItem currentItem : regionType.getReqs()) {
             itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
         }
-        int radius = currentRegionType.getBuildRadius(); //TODO fix this and make size flexible
+        int radius = regionType.getBuildRadius(); //TODO fix this and make size flexible
         int[] radiuses = new int[6];
         radiuses[0] = 0;
         radiuses[1] = 0;
@@ -156,12 +156,12 @@ public class RegionManager {
 
         World currentWorld = block.getLocation().getWorld();
         Location location = block.getLocation();
-        int xMax = (int) location.getX() + 1 + (int) ((double) radius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) radius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) radius * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) radius * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) radius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) radius * 1.5);
+        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX() * 1.5);
+        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX() * 1.5);
+        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
+        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
+        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusZ() * 1.5);
+        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusZ() * 1.5);
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
@@ -199,7 +199,7 @@ public class RegionManager {
             }
         }
 
-        if (!radiusCheck(radiuses, radius)) {
+        if (!radiusCheck(radiuses, regionType)) {
             //TODO send Error message
         }
 
@@ -207,7 +207,7 @@ public class RegionManager {
             HashSet<UUID> owners = new HashSet<>();
             owners.add(player.getUniqueId());
             HashSet<UUID> members = new HashSet<>();
-            addRegion(new Region(currentRegionType.getName(), owners, members, block.getLocation(), radiuses));
+            addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radiuses));
         }
     }
 
@@ -235,11 +235,14 @@ public class RegionManager {
         }
     }
 
-    private boolean radiusCheck(int[] radiuses, int radius) {
-        if (radiuses[0] + radiuses[2] > radius * 2) {
+    private boolean radiusCheck(int[] radiuses, RegionType regionType) {
+        int xRadius = regionType.getBuildRadiusX();
+        int yRadius = regionType.getBuildRadiusY();
+        int zRadius = regionType.getBuildRadiusZ();
+        if (radiuses[0] + radiuses[2] > xRadius * 2) {
             return false;
         } else {
-            while (radiuses[0] + radiuses[2] < radius * 2) {
+            while (radiuses[0] + radiuses[2] < xRadius * 2) {
                 if (radiuses[0] < radiuses[2]) {
                     radiuses[0]++;
                 } else {
@@ -247,11 +250,11 @@ public class RegionManager {
                 }
             }
         }
-        if (radiuses[1] + radiuses[3] > radius * 2) {
+        if (radiuses[1] + radiuses[3] > yRadius * 2) {
             return false;
         } else {
 
-            while (radiuses[1] + radiuses[3] < radius * 2) {
+            while (radiuses[1] + radiuses[3] < yRadius * 2) {
                 if (radiuses[1] < radiuses[3]) {
                     radiuses[1]++;
                 } else {
@@ -259,10 +262,10 @@ public class RegionManager {
                 }
             }
         }
-        if (radiuses[4] + radiuses[5] > radius * 2) {
+        if (radiuses[4] + radiuses[5] > zRadius * 2) {
             return false;
         } else {
-            while (radiuses[4] + radiuses[5] < radius * 2) {
+            while (radiuses[4] + radiuses[5] < zRadius * 2) {
                 if (radiuses[4] < radiuses[5]) {
                     radiuses[4]++;
                 } else {
