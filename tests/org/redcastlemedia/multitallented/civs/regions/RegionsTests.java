@@ -93,25 +93,47 @@ public class RegionsTests {
         assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
     }
     @Test
-    public void regionShouldNotBeCreatedWithAllReqsOutOfB() {
+    public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
 
         World world = Bukkit.getWorld("world");
-        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+        when(world.getBlockAt(1,50,0)).thenReturn(TestUtil.block2);
+        when(world.getBlockAt(11,50,0)).thenReturn(TestUtil.block3);
+        when(world.getBlockAt(2,50,0)).thenReturn(TestUtil.blockUnique2);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique2);
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
+        assertNull(regionManager.getRegionAt(TestUtil.blockUnique2.getLocation()));
+    }
+    @Test
+    public void regionShouldBeCreatedWithAllReqsFlex() {
+        loadRegionTypeCobble();
+
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block6);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block5);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique3);
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+        Region region = regionManager.getRegionAt(TestUtil.blockUnique3.getLocation());
+        assertEquals(3, region.getRadiusYN());
+        assertEquals(7, region.getRadiusYP());
+        assertEquals(5, region.getRadiusXN());
     }
 
     @Test

@@ -25,8 +25,12 @@ public class TestUtil {
     public static Block block2;
     public static Block block3;
     public static Block block4;
+    public static Block block5;
+    public static Block block6;
     public static Player player;
     public static Block blockUnique;
+    public static Block blockUnique2;
+    public static Block blockUnique3;
 
     public static void serverSetup() {
         Server server = mock(Server.class);
@@ -42,6 +46,7 @@ public class TestUtil {
 
         World world = mock(World.class);
         when(world.getName()).thenReturn("world");
+        when(world.getMaxHeight()).thenReturn(255);
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
@@ -58,20 +63,32 @@ public class TestUtil {
         block4 = mock(Block.class);
         when(block4.getType()).thenReturn(Material.LOG);
         when(block4.getLocation()).thenReturn(new Location(world, 3, 0, 0));
+        block5 = mock(Block.class);
+        when(block5.getType()).thenReturn(Material.COBBLESTONE);
+        when(block5.getLocation()).thenReturn(new Location(world, 1, 100, 0));
+        block6 = mock(Block.class);
+        when(block6.getType()).thenReturn(Material.COBBLESTONE);
+        when(block6.getLocation()).thenReturn(new Location(world, 10, 100, 0));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
         when(world.getBlockAt(1, 0,0)).thenReturn(block2);
         when(world.getBlockAt(2, 0,0)).thenReturn(block3);
         when(world.getBlockAt(3, 0,0)).thenReturn(block4);
+        when(world.getBlockAt(1, 100,0)).thenReturn(block5);
+        when(world.getBlockAt(10, 100,0)).thenReturn(block6);
         when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
+        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
+        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique3);
         when(server.getWorld("world")).thenReturn(world);
 
         Bukkit.setServer(server);
-        blockUnique = createUniqueChestCobble(world);
+        blockUnique = createUniqueChestCobble(new Location(world, 4,0,0));
+        blockUnique2 = createUniqueChestCobble(new Location(world, 2,50,0));
+        blockUnique3 = createUniqueChestCobble(new Location(world, 3,100,0));
     }
 
-    private static Block createUniqueChestCobble(World world) {
+    private static Block createUniqueChestCobble(Location location) {
         CVItem cvItem = new CVItem(Material.CHEST, 1, -1, 100, "Civs Cobble");
         Block block = mock(Block.class);
         when(block.getType()).thenReturn(Material.CHEST);
@@ -82,7 +99,7 @@ public class TestUtil {
         ItemStack is = cvItem.createItemStack();
         when(materialData.toItemStack()).thenReturn(is);
         when(block.getType()).thenReturn(Material.CHEST);
-        when(block.getLocation()).thenReturn(new Location(world, 4,0,0));
+        when(block.getLocation()).thenReturn(location);
         return block;
     }
 }
