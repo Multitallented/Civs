@@ -107,6 +107,7 @@ public class RegionManager {
         int buildRadiusX = config.getInt("build-radius-x", 5);
         int buildRadiusY = config.getInt("build-radius-y", 5);
         int buildRadiusZ = config.getInt("build-radius-z", 5);
+        int effectRadius = config.getInt("effect-radius", 5);
         regionTypes.put(name.toLowerCase(), new RegionType(
                 name,
                 reqs,
@@ -114,7 +115,8 @@ public class RegionManager {
                 buildRadius,
                 buildRadiusX,
                 buildRadiusY,
-                buildRadiusZ));
+                buildRadiusZ,
+                effectRadius));
     }
 
     public RegionType getRegionType(String name) {
@@ -272,6 +274,28 @@ public class RegionManager {
             }
         }
         return true;
+    }
+
+    public Set<Region> getRegionsAt(Location location, int modifier) {
+        HashSet<Region> effects = new HashSet<>();
+        for (int i=regions.size() - 1; i>-1; i--) {
+            Region region = regions.get(i);
+            boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier &&
+                    location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifier;
+            boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifier &&
+                    location.getY() < region.getLocation().getY() + region.getRadiusYP() + 1 + modifier;
+            boolean withinZ = location.getZ() > region.getLocation().getZ() - region.getRadiusZN() - modifier &&
+                    location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifier;
+
+            if (withinX && withinY && withinZ) {
+                effects.add(region);
+                continue;
+            }
+            if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier) {
+                break;
+            }
+        }
+        return effects;
     }
 
     public static synchronized RegionManager getInstance() {

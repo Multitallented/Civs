@@ -50,6 +50,7 @@ public class TestUtil {
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
+        when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
 
         block = mock(Block.class);
         when(block.getType()).thenReturn(Material.CHEST);

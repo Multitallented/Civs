@@ -217,6 +217,20 @@ public class RegionsTests {
         assertEquals(region, regionManager.getRegionAt(location1));
     }
 
+    @Test
+    public void playerShouldBeInMultipleEffectRadii() {
+        loadRegionTypeCobble();
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(new UUID(1, 4));
+        HashSet<UUID> members = new HashSet<>();
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        Location location2 = new Location(Bukkit.getWorld("world"), 5, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
+        RegionType regionType = regionManager.getRegionType("cobble");
+        assertEquals(2, regionManager.getRegionsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
+    }
+
     public static int[] getRadiuses() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
@@ -238,6 +252,7 @@ public class RegionsTests {
         effects.add("block_place");
         effects.add("block_break");
         config.set("effects", effects);
+        config.set("effect-radius", 7);
         RegionManager.getInstance().loadRegionType(config);
     }
     public static void loadRegionTypeDirt() {
