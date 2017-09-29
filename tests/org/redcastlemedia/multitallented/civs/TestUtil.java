@@ -95,6 +95,7 @@ public class TestUtil {
         when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
         when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
+        when(world.getBlockAt(0, 0,100)).thenReturn(blockUnique4);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
 
@@ -102,7 +103,7 @@ public class TestUtil {
         blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0));
         blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0));
         blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0));
-        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Rectangle", new Location(world, 0, 0,100));
+        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100));
     }
 
     private static Block createUniqueBlock(Material mat, String name, Location location) {

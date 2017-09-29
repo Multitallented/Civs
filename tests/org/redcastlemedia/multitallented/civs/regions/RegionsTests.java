@@ -228,6 +228,13 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
+
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+
         assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique4.getLocation()));
     }
 
@@ -294,7 +301,7 @@ public class RegionsTests {
     }
     public static void loadRegionTypeRectangle() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "rectangle");
+        config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("requirements", reqs);

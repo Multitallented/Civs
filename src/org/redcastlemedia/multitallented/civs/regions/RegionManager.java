@@ -145,23 +145,23 @@ public class RegionManager {
         for (CVItem currentItem : regionType.getReqs()) {
             itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
         }
-        int radius = regionType.getBuildRadius(); //TODO fix this and make size flexible
-        int[] radiuses = new int[6];
-        radiuses[0] = 0;
-        radiuses[1] = 0;
-        radiuses[2] = 0;
-        radiuses[3] = 0;
-        radiuses[4] = 0;
-        radiuses[5] = 0;
+        int[] radii = new int[6];
+        radii[0] = 0;
+        radii[1] = 0;
+        radii[2] = 0;
+        radii[3] = 0;
+        radii[4] = 0;
+        radii[5] = 0;
 
         World currentWorld = block.getLocation().getWorld();
         Location location = block.getLocation();
-        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX() * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX() * 1.5);
+        int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
+        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
+        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
         int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
         int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusZ() * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusZ() * 1.5);
+        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
+        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
@@ -185,12 +185,12 @@ public class RegionManager {
                     if (itemCheck.containsKey(wildCardString)) {
                         itemCheck.put(wildCardString, itemCheck.get(wildCardString) - 1);
                         hasReqs = checkIfScanFinished();
-                        adjustRadiuses(radiuses, location, x, y, z);
+                        adjustRadii(radii, location, x, y, z);
 
                     } else if (itemCheck.containsKey(damageString)) {
                         itemCheck.put(damageString, itemCheck.get(damageString) - 1);
                         hasReqs = checkIfScanFinished();
-                        adjustRadiuses(radiuses, location, x, y, z);
+                        adjustRadii(radii, location, x, y, z);
                     }
                     if (hasReqs) {
                         break outer;
@@ -199,77 +199,84 @@ public class RegionManager {
             }
         }
 
-        if (!radiusCheck(radiuses, regionType)) {
+        if (!radiusCheck(radii, regionType)) {
             //TODO send Error message
+            return;
         }
 
         if (hasReqs) {
             HashSet<UUID> owners = new HashSet<>();
             owners.add(player.getUniqueId());
             HashSet<UUID> members = new HashSet<>();
-            addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radiuses));
+            addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
         }
     }
 
-    private void adjustRadiuses(int[] radiuses, Location location, int x, int y, int z) {
+    private void adjustRadii(int[] radii, Location location, int x, int y, int z) {
         int currentRelativeX = x - (int) location.getX();
         int currentRelativeY = y - (int) location.getY();
         int currentRelativeZ = z - (int) location.getZ();
         if (currentRelativeX < 0) {
             currentRelativeX = Math.abs(currentRelativeX);
-            radiuses[2] = radiuses[2] > currentRelativeX ? radiuses[2] : currentRelativeX;
+            radii[2] = radii[2] > currentRelativeX ? radii[2] : currentRelativeX;
         } else if (currentRelativeX > 0) {
-            radiuses[0] = radiuses[0] > currentRelativeX ? radiuses[0] : currentRelativeX;
+            radii[0] = radii[0] > currentRelativeX ? radii[0] : currentRelativeX;
         }
         if (currentRelativeY < 0) {
             currentRelativeY = Math.abs(currentRelativeY);
-            radiuses[3] = radiuses[3] > currentRelativeY ? radiuses[3] : currentRelativeY;
+            radii[5] = radii[5] > currentRelativeY ? radii[5] : currentRelativeY;
         } else if (currentRelativeY > 0) {
-            radiuses[1] = radiuses[1] > currentRelativeY ? radiuses[1] : currentRelativeY;
+            radii[4] = radii[4] > currentRelativeY ? radii[4] : currentRelativeY;
         }
         if (currentRelativeZ < 0) {
             currentRelativeZ = Math.abs(currentRelativeZ);
-            radiuses[5] = radiuses[5] > currentRelativeZ ? radiuses[5] : currentRelativeZ;
+            radii[3] = radii[3] > currentRelativeZ ? radii[3] : currentRelativeZ;
         } else if (currentRelativeZ > 0) {
-            radiuses[4] = radiuses[4] > currentRelativeZ ? radiuses[4] : currentRelativeZ;
+            radii[1] = radii[1] > currentRelativeZ ? radii[1] : currentRelativeZ;
         }
     }
 
-    private boolean radiusCheck(int[] radiuses, RegionType regionType) {
+    private boolean radiusCheck(int[] radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();
         int zRadius = regionType.getBuildRadiusZ();
-        if (radiuses[0] + radiuses[2] > xRadius * 2) {
+        boolean xRadiusBigger = xRadius > zRadius;
+        boolean xRadiusActuallyBigger = radii[0] + radii[2] > radii[1] + radii[3];
+        if ((xRadiusActuallyBigger && xRadiusBigger && radii[0] + radii[2] > xRadius * 2) ||
+                xRadiusActuallyBigger && !xRadiusBigger && radii[0] + radii[2] > zRadius * 2) {
             return false;
         } else {
-            while (radiuses[0] + radiuses[2] < xRadius * 2) {
-                if (radiuses[0] < radiuses[2]) {
-                    radiuses[0]++;
+            while ((radii[0] + radii[2] < xRadius * 2 && xRadiusActuallyBigger) ||
+                    (radii[0] + radii[2] < zRadius * 2 && !xRadiusActuallyBigger)) {
+                if (radii[0] < radii[2]) {
+                    radii[0]++;
                 } else {
-                    radiuses[2]++;
+                    radii[2]++;
                 }
             }
         }
-        if (radiuses[1] + radiuses[3] > yRadius * 2) {
+        if (radii[4] + radii[5] > yRadius * 2) {
             return false;
         } else {
 
-            while (radiuses[1] + radiuses[3] < yRadius * 2) {
-                if (radiuses[1] < radiuses[3]) {
-                    radiuses[1]++;
+            while (radii[4] + radii[5] < yRadius * 2) {
+                if (radii[4] < radii[5]) {
+                    radii[4]++;
                 } else {
-                    radiuses[3]++;
+                    radii[5]++;
                 }
             }
         }
-        if (radiuses[4] + radiuses[5] > zRadius * 2) {
+        if ((!xRadiusActuallyBigger && !xRadiusBigger && radii[1] + radii[3] > zRadius * 2) ||
+                !xRadiusActuallyBigger && xRadiusBigger && radii[1] + radii[3] > xRadius * 2) {
             return false;
         } else {
-            while (radiuses[4] + radiuses[5] < zRadius * 2) {
-                if (radiuses[4] < radiuses[5]) {
-                    radiuses[4]++;
+            while ((radii[1] + radii[3] < zRadius * 2 && xRadiusActuallyBigger) ||
+                    (radii[1] + radii[3] < xRadius * 2 && !xRadiusActuallyBigger)) {
+                if (radii[1] < radii[3]) {
+                    radii[1]++;
                 } else {
-                    radiuses[5]++;
+                    radii[3]++;
                 }
             }
         }
