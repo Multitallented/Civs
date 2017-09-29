@@ -14,8 +14,13 @@ import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 
+import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class Civs extends JavaPlugin {
 
@@ -26,16 +31,24 @@ public class Civs extends JavaPlugin {
     private static Permission perm;
     private static Chat chat;
     private static Civs civs;
+    public static Logger logger;
 
     @Override
     public void onEnable() {
+        logger = getLogger();
         setupChat();
         setupEconomy();
         setupPermissions();
+
+        new ConfigManager(new File(getDataFolder(), "config.yml"));
         new RegionManager();
+
         initCommands();
         initListeners();
+
+        initScheduler();
         civs = this;
+        getLogger().info(getPrefix() + "is now enabled!");
     }
 
 
@@ -51,6 +64,20 @@ public class Civs extends JavaPlugin {
             return true;
         }
         return civCommand.runCommand(commandSender, command, message, args);
+    }
+
+    private void initScheduler() {
+        Date date = new Date();
+        date.setSeconds(0);
+        date.setMinutes(0);
+        date.setHours(0);
+        long timeUntilDay = (86400000 + date.getTime() - System.currentTimeMillis()) / 50;
+        System.out.println(getPrefix() + timeUntilDay + " ticks until 00:00");
+        DailyScheduler dailyScheduler = new DailyScheduler();
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
+
+        CommonScheduler commonScheduler = new CommonScheduler();
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
     }
 
     private void initCommands() {

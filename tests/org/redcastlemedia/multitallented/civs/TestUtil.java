@@ -11,9 +11,12 @@ import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.PluginLogger;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -36,10 +39,17 @@ public class TestUtil {
     public static Block blockUnique4;
 
     public static void serverSetup() {
+        Civs.logger = mock(PluginLogger.class);
+
         Server server = mock(Server.class);
         Inventory inventory = mock(Inventory.class);
         when(server.getLogger()).thenReturn(mock(Logger.class));
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
+
+        File mockConfigFile = mock(File.class);
+        ConfigManager configManager = new ConfigManager(mockConfigFile);
+        configManager.blackListWorlds = new ArrayList<String>();
+        configManager.blackListWorlds.add("Hub");
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(server.getItemFactory()).thenReturn(itemFactory);

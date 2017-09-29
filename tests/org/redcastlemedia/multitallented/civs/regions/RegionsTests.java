@@ -52,7 +52,7 @@ public class RegionsTests {
         Location location = new Location(Bukkit.getWorld("world"), 100, 0, 0);
         HashSet<UUID> owners = new HashSet<>();
         HashSet<UUID> members = new HashSet<>();
-        regionManager.addRegion(new Region("cobble", owners, members, location, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location, getRadii()));
         assertNull(regionManager.getRegionAt(new Location(Bukkit.getWorld("world"), 0,0,0)));
     }
 
@@ -173,18 +173,18 @@ public class RegionsTests {
         Location location6 = new Location(Bukkit.getWorld("world"), 100, 1000, 0);
         Location location7 = new Location(Bukkit.getWorld("world"), 1000, 0, 0);
         Location location8 = new Location(Bukkit.getWorld("world"), 1050, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location3, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location4, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location5, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location6, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location7, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location3, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location4, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location5, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location6, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location7, getRadii()));
         assertSame(location5, regionManager.getRegionAt(location5).getLocation());
         assertSame(location2, regionManager.getRegionAt(location2).getLocation());
         assertSame(location1, regionManager.getRegionAt(location1).getLocation());
         assertSame(location7, regionManager.getRegionAt(location7).getLocation());
-        regionManager.addRegion(new Region("cobble", owners, members, location8, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location8, getRadii()));
         assertSame(location8, regionManager.getRegionAt(location8).getLocation());
     }
 
@@ -195,7 +195,7 @@ public class RegionsTests {
         owners.add(new UUID(1, 4));
         HashSet<UUID> members = new HashSet<>();
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        Region region = new Region("cobble", owners, members, location1, getRadiuses());
+        Region region = new Region("cobble", owners, members, location1, getRadii());
         regionManager.addRegion(region);
 
 
@@ -246,8 +246,8 @@ public class RegionsTests {
         HashSet<UUID> members = new HashSet<>();
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world"), 5, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadii()));
         RegionType regionType = regionManager.getRegionType("cobble");
         assertEquals(2, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
     }
@@ -260,12 +260,12 @@ public class RegionsTests {
         HashSet<UUID> members = new HashSet<>();
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world2"), 0, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
-        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadii()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadii()));
         assertEquals(1, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), 0).size());
     }
 
-    public static int[] getRadiuses() {
+    public static int[] getRadii() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
         radiuses[1] = 5;

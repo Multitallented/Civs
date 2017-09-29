@@ -1,0 +1,31 @@
+author: Multitallented
+database: false
+author: Multitallented
+description: Allows you to create structures and towns.
+main: org.redcastlemedia.multitallented.civs.Civs
+name: Civs
+startup: postworld
+version: 0.0.1-b001
+depend: [Vault]
+commands:
+   cv:
+      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv']
+      description: Civs commands
+      usage: /<command>
+permissions:
+   civs.join:
+       description: Allows players to join towns
+       default: true
+   civs.unlock:
+       description: Allows players to unlock new regions
+       default: op
+   civs.create.all:
+      description: Allows you to create a region of any type if you have the necessary materials
+      default: op
+   civs.admin:
+      description: Lets you use admin commands and bypass protections
+      default: op
+   civs.group.default:
+      description: Gives you the default group for region limitations
+      default: true
+loadafter: [Vault]

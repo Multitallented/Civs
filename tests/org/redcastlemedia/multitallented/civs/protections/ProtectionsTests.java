@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -18,7 +17,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 import java.util.HashSet;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -65,7 +63,7 @@ public class ProtectionsTests {
         owners.add(uuid2);
         HashSet<UUID> members = new HashSet<>();
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadiuses()));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii()));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
@@ -85,7 +83,7 @@ public class ProtectionsTests {
         owners.add(uuid);
         HashSet<UUID> members = new HashSet<>();
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadiuses()));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii()));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
 
@@ -109,7 +107,7 @@ public class ProtectionsTests {
         owners.add(uuid2);
         HashSet<UUID> members = new HashSet<>();
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("dirt", owners, members, regionLocation, RegionsTests.getRadiuses()));
+        RegionManager.getInstance().addRegion(new Region("dirt", owners, members, regionLocation, RegionsTests.getRadii()));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
