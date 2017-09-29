@@ -228,7 +228,20 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
         regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
         RegionType regionType = regionManager.getRegionType("cobble");
-        assertEquals(2, regionManager.getRegionsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
+        assertEquals(2, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
+    }
+
+    @Test
+    public void regionsInDifferentWorldsShouldntCollide() {
+        loadRegionTypeCobble();
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(new UUID(1, 4));
+        HashSet<UUID> members = new HashSet<>();
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        Location location2 = new Location(Bukkit.getWorld("world2"), 0, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, members, location1, getRadiuses()));
+        regionManager.addRegion(new Region("cobble", owners, members, location2, getRadiuses()));
+        assertEquals(1, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), 0).size());
     }
 
     public static int[] getRadiuses() {

@@ -47,6 +47,9 @@ public class TestUtil {
         World world = mock(World.class);
         when(world.getName()).thenReturn("world");
         when(world.getMaxHeight()).thenReturn(255);
+        World world2 = mock(World.class);
+        when(world2.getName()).thenReturn("world2");
+        when(world2.getMaxHeight()).thenReturn(255);
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
@@ -82,6 +85,7 @@ public class TestUtil {
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
         when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
         when(server.getWorld("world")).thenReturn(world);
+        when(server.getWorld("world2")).thenReturn(world2);
 
         Bukkit.setServer(server);
         blockUnique = createUniqueChestCobble(new Location(world, 4,0,0));

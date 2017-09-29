@@ -11,7 +11,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import java.util.*;
 
 public class RegionManager {
-    private ArrayList<Region> regions = new ArrayList<>();
+    private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
     private HashMap<String, RegionType> regionTypes = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, Integer> itemCheck = new HashMap<>();
@@ -21,8 +21,12 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
-        regions.add(region);
-        Collections.sort(regions,
+        String worldName = region.getLocation().getWorld().getName();
+        if (!regions.containsKey(worldName)) {
+            regions.put(worldName, new ArrayList<Region>());
+        }
+        regions.get(worldName).add(region);
+        Collections.sort(regions.get(worldName),
                 new Comparator<Region>() {
                     @Override
                     public int compare(Region r1, Region r2) {
@@ -37,17 +41,18 @@ public class RegionManager {
     }
 
     public Region getRegionAt(Location location) {
-        if (regions.isEmpty()) {
+        String worldName = location.getWorld().getName();
+        if (regions.get(worldName) == null || regions.get(worldName).isEmpty()) {
             return null;
         }
 
         int index;
         double mindex = 0;
-        double maxdex = regions.size() -1;
+        double maxdex = regions.get(worldName).size() -1;
         double prevIndex = 0;
         for (;;) {
             index = (int) Math.round(((maxdex - mindex) / 2) + mindex);
-            Region r = regions.get(index);
+            Region r = regions.get(worldName).get(index);
             if (prevIndex == index) {
                 if (withinRegion(r, location)) {
                     return r;
@@ -72,12 +77,13 @@ public class RegionManager {
     }
 
     private Region findRegion(int index1, int index2, Location location, int index) {
+        String worldName = location.getWorld().getName();
         for (int i=index1; i<index2; i++) {
             if (i==index) {
                 continue;
             }
-            if (withinRegion(regions.get(i), location)) {
-                return regions.get(i);
+            if (withinRegion(regions.get(worldName).get(i), location)) {
+                return regions.get(worldName).get(i);
             }
         }
         return null;
@@ -276,10 +282,11 @@ public class RegionManager {
         return true;
     }
 
-    public Set<Region> getRegionsAt(Location location, int modifier) {
+    public Set<Region> getRegionEffectsAt(Location location, int modifier) {
+        String worldName = location.getWorld().getName();
         HashSet<Region> effects = new HashSet<>();
-        for (int i=regions.size() - 1; i>-1; i--) {
-            Region region = regions.get(i);
+        for (int i=regions.get(worldName).size() - 1; i>-1; i--) {
+            Region region = regions.get(worldName).get(i);
             boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier &&
                     location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifier;
             boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifier &&
