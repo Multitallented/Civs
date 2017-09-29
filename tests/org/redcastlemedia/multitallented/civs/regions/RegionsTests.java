@@ -187,6 +187,36 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, members, location8, getRadiuses()));
         assertSame(location8, regionManager.getRegionAt(location8).getLocation());
     }
+
+    @Test
+    public void shouldNotBeAbleToCreateARegionOnTopOfAnotherRegion() {
+        loadRegionTypeCobble();
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(new UUID(1, 4));
+        HashSet<UUID> members = new HashSet<>();
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        Region region = new Region("cobble", owners, members, location1, getRadiuses());
+        regionManager.addRegion(region);
+
+
+        World world = Bukkit.getWorld("world");
+        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+        assertEquals(region, regionManager.getRegionAt(location1));
+    }
+
     public static int[] getRadiuses() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
