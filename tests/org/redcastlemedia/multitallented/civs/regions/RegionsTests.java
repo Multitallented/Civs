@@ -131,9 +131,9 @@ public class RegionsTests {
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
         Region region = regionManager.getRegionAt(TestUtil.blockUnique3.getLocation());
-        assertEquals(3, region.getRadiusYN());
-        assertEquals(7, region.getRadiusYP());
-        assertEquals(5, region.getRadiusXN());
+        assertEquals(3, region.getRadiusXN());
+        assertEquals(7, region.getRadiusXP());
+        assertEquals(5, region.getRadiusYN());
     }
 
     @Test

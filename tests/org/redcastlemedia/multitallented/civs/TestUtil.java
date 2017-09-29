@@ -79,7 +79,7 @@ public class TestUtil {
         when(world.getBlockAt(10, 100,0)).thenReturn(block6);
         when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
-        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique3);
+        when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
         when(server.getWorld("world")).thenReturn(world);
 
         Bukkit.setServer(server);
