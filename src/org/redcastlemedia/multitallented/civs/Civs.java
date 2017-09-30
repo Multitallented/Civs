@@ -41,6 +41,7 @@ public class Civs extends JavaPlugin {
         setupPermissions();
 
         new ConfigManager(new File(getDataFolder(), "config.yml"));
+        new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new RegionManager();
 
         initCommands();
@@ -48,7 +49,7 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info(getPrefix() + "is now enabled!");
+        getLogger().info(getPrefix() + "v" + VERSION + " is now enabled!");
     }
 
 

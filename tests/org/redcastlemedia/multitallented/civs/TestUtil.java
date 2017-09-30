@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -48,8 +49,13 @@ public class TestUtil {
 
         File mockConfigFile = mock(File.class);
         ConfigManager configManager = new ConfigManager(mockConfigFile);
-        configManager.blackListWorlds = new ArrayList<String>();
+        configManager.blackListWorlds = new ArrayList<>();
         configManager.blackListWorlds.add("Hub");
+
+        LocaleManager localeManager = new LocaleManager(mockConfigFile);
+//        HashMap<String, String> mockLanguageMap = new HashMap<>();
+//        mockLanguageMap.put("no-region-type-found", "");
+//        localeManager.languageMap.put("en", mockLanguageMap);
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(server.getItemFactory()).thenReturn(itemFactory);

@@ -61,6 +61,7 @@ public class RegionsTests {
         loadRegionTypeCobble();
 
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         World world = Bukkit.getWorld("world");
         Block dirtBlock = mock(Block.class);

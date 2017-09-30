@@ -11,7 +11,11 @@ public class ConfigManager {
 
     public static ConfigManager configManager;
     List<String> blackListWorlds;
+    String defaultLanguage;
 
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
     public List<String> getBlackListWorlds() {
         return blackListWorlds;
     }
@@ -31,6 +35,7 @@ public class ConfigManager {
             config.load(configFile);
 
             blackListWorlds = config.getStringList("blacklist-worlds");
+            defaultLanguage = config.getString("default-language", "en");
 
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read from config.yml");

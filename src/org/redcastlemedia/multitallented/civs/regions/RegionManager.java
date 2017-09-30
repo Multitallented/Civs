@@ -6,6 +6,8 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -130,14 +132,19 @@ public class RegionManager {
     }
 
     void detectNewRegion(BlockPlaceEvent event) {
+        LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        String displayName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
-        displayName = displayName.replace("Civs ", "");
+        String regionTypeName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
+        regionTypeName = regionTypeName.replace("Civs ", "");
 
-        RegionType regionType = getRegionType(displayName.toLowerCase());
+        RegionType regionType = getRegionType(regionTypeName.toLowerCase());
 
         if (regionType == null) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation("en", "no-region-type-found")
+                            .replace("$1", regionTypeName)); //TODO get the player's language
             return;
         }
 
@@ -201,6 +208,8 @@ public class RegionManager {
 
         if (!radiusCheck(radii, regionType)) {
             //TODO send Error message
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() + "You're building is to big to be a " + regionTypeName);
             return;
         }
 
@@ -209,6 +218,9 @@ public class RegionManager {
             owners.add(player.getUniqueId());
             HashSet<UUID> members = new HashSet<>();
             addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
+        } else {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() + "You haven't placed the required blocks to make a " + regionTypeName);
         }
     }
 
