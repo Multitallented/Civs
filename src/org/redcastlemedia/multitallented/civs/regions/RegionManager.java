@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -139,11 +141,12 @@ public class RegionManager {
         regionTypeName = regionTypeName.replace("Civs ", "");
 
         RegionType regionType = getRegionType(regionTypeName.toLowerCase());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (regionType == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation("en", "no-region-type-found")
+                    localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", regionTypeName)); //TODO get the player's language
             return;
         }

@@ -31,16 +31,45 @@ public class CivilianManager {
     }
 
     public void loadCivilian(Player player) {
-        ConfigManager configManager = ConfigManager.getInstance();
-        Civilian civilian = new Civilian(player.getUniqueId(),
-                configManager.getDefaultLanguage());
+        Civilian civilian = loadFromFileCivilian(player.getUniqueId());
         onlineCivilians.put(player.getUniqueId(), civilian);
     }
     public void unloadCivilian(Player player) {
         onlineCivilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
-        return onlineCivilians.get(uuid);
+        Civilian civilian = onlineCivilians.get(uuid);
+        if (civilian == null) {
+            civilian = loadFromFileCivilian(uuid);
+        }
+        return civilian;
+    }
+    Civilian loadFromFileCivilian(UUID uuid) {
+        Civs civs = Civs.getInstance();
+        File civilianFolder = new File(civs.getDataFolder(), "players");
+        if (!civilianFolder.exists()) {
+            return createDefaultCivilian(uuid);
+        }
+        File civilianFile = new File(civilianFolder, uuid + ".yml");
+        if (!civilianFile.exists()) {
+            return createDefaultCivilian(uuid);
+        }
+        FileConfiguration civConfig = new YamlConfiguration();
+        try {
+            civConfig.load(civilianFile);
+
+            //TODO load other civilian file properties
+
+            return new Civilian(uuid, civConfig.getString("locale"));
+        } catch (Exception ex) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to read/write " + uuid + ".yml");
+            return createDefaultCivilian(uuid);
+        }
+    }
+    Civilian createDefaultCivilian(UUID uuid) {
+        ConfigManager configManager = ConfigManager.getInstance();
+        //TODO add all attributes here
+        return new Civilian(uuid, configManager.getDefaultLanguage());
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
