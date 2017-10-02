@@ -21,7 +21,6 @@ public class CivilianTests {
 
     @Test
     public void localeTestShouldReturnProperLanguageString() {
-        //TODO actually pull locale settings for this test
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(TestUtil.player, "Join Message");
 
         CivilianManager civilianManager = CivilianManager.getInstance();
@@ -29,6 +28,8 @@ public class CivilianTests {
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianJoin(playerJoinEvent);
         LocaleManager localeManager = LocaleManager.getInstance();
+        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
+        civilian.setLocale("es");
 
         assertEquals("No se encontró ningún tipo de región",
                 localeManager.getTranslation(civilianManager.getCivilian(TestUtil.player.getUniqueId()).getLocale(), "no-region-type-found"));
