@@ -42,6 +42,12 @@ public class RegionManager {
                         return 0;
                     }
                 });
+        //TODO add data file
+    }
+
+    public void removeRegion(Region region) {
+        regions.get(region.getLocation().getWorld().getName()).remove(region);
+        //TODO delete file too
     }
 
     public Region getRegionAt(Location location) {
@@ -253,6 +259,7 @@ public class RegionManager {
         if (rebuildRegion != null) {
             owners = (HashSet<UUID>) rebuildRegion.getOwners().clone();
             members = (HashSet<UUID>) rebuildRegion.getMembers().clone();
+            removeRegion(rebuildRegion);
         } else {
             owners = new HashSet<>();
             owners.add(player.getUniqueId());
