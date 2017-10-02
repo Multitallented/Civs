@@ -42,6 +42,12 @@ public class LocaleManager {
                 HashMap<String, String> currentLanguage = new HashMap<>();
                 currentLanguage.put("language-menu",
                         localeConfig.getString(langKey + ".language-menu", "Select Language"));
+                currentLanguage.put("shop",
+                        localeConfig.getString(langKey + ".shop", "Shop"));
+                currentLanguage.put("items",
+                        localeConfig.getString(langKey + ".items", "Items"));
+                currentLanguage.put("community",
+                        localeConfig.getString(langKey + ".community", "Community"));
 
                 currentLanguage.put("no-region-type-found",
                         localeConfig.getString(langKey + ".no-region-type-found", "No region type found for $1"));
@@ -64,6 +70,9 @@ public class LocaleManager {
     private void loadDefaults() {
         HashMap<String, String> englishMap = new HashMap<>();
         englishMap.put("language-menu", "Select Language");
+        englishMap.put("shop", "Shop");
+        englishMap.put("items", "Items");
+        englishMap.put("community", "Community");
         englishMap.put("no-region-type-found", "No region type found for $1");
         englishMap.put("building-too-big", "You're building is too big to be a $1");
         englishMap.put("no-required-blocks", "You haven't placed the required blocks to make a $1");

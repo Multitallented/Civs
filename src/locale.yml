@@ -4,6 +4,15 @@ en:
   #language-menu
   language-menu: Select Language
 
+  #shop
+  shop: Shop
+
+  #items
+  items: Items
+
+  #community
+  community: Community
+
   #errors
   no-region-type-found: "No region type found for $1"
   building-too-big: "You're building is too big to be a $1"

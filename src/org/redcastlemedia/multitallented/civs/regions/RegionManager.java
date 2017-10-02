@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.io.File;
 import java.util.*;
 
 public class RegionManager {
@@ -42,12 +43,25 @@ public class RegionManager {
                         return 0;
                     }
                 });
-        //TODO add data file
+        saveRegion(region);
     }
 
     public void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getName()).remove(region);
-        //TODO delete file too
+        Civs civs = Civs.getInstance();
+        File dataFolder = new File(civs.getDataFolder(), "regions");
+        if (!dataFolder.exists()) {
+            dataFolder.mkdir();
+        }
+        File regionFile = new File(dataFolder, region.getId() + ".yml");
+        if (!regionFile.exists()) {
+            return;
+        }
+        regionFile.delete();
+    }
+
+    private void saveRegion(Region region) {
+        //TODO finish saveRegion
     }
 
     public Region getRegionAt(Location location) {

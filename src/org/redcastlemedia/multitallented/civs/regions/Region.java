@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.HashSet;
@@ -59,5 +60,16 @@ public class Region {
     }
     public int getRadiusYN() {
         return radiusYN;
+    }
+
+    public String getId() {
+        return location.getWorld() + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ();
+    }
+    public static Location idToLocation(String id) {
+        String[] idSplit = id.split(":");
+        return new Location(Bukkit.getWorld(idSplit[0]),
+                Double.parseDouble(idSplit[1]),
+                Double.parseDouble(idSplit[2]),
+                Double.parseDouble(idSplit[3]));
     }
 }
