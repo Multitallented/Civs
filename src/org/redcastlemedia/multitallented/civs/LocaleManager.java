@@ -40,6 +40,10 @@ public class LocaleManager {
                 HashMap<String, String> currentLanguage = new HashMap<>();
                 currentLanguage.put("no-region-type-found",
                         localeConfig.getString(langKey + ".no-region-type-found", "No region type found for $1"));
+                currentLanguage.put("building-too-big",
+                        localeConfig.getString(langKey + ".building-too-big", "You're building is too big to be a $1"));
+                currentLanguage.put("no-required-blocks",
+                        localeConfig.getString(langKey + ".no-required-blocks", "You haven't placed the required blocks to make a $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 

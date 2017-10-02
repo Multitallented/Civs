@@ -147,7 +147,7 @@ public class RegionManager {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
-                            .replace("$1", regionTypeName)); //TODO get the player's language
+                            .replace("$1", regionTypeName));
             return;
         }
 
@@ -210,9 +210,11 @@ public class RegionManager {
         }
 
         if (!radiusCheck(radii, regionType)) {
-            //TODO send Error message
             event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() + "You're building is to big to be a " + regionTypeName);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "building-too-big")
+                            .replace("$1", regionTypeName));
+            player.sendMessage(Civs.getPrefix() + "" + regionTypeName);
             return;
         }
 
@@ -223,7 +225,9 @@ public class RegionManager {
             addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
         } else {
             event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() + "You haven't placed the required blocks to make a " + regionTypeName);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
+                            .replace("$1", regionTypeName));
         }
     }
 
