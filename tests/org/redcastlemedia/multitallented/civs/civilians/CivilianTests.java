@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.LocaleManager;

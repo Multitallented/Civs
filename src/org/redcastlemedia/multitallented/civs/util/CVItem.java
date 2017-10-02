@@ -212,6 +212,12 @@ public class CVItem {
     public void setQty(int qty) {
         this.qty = qty;
     }
+    public void setDisplayName(String name) {
+        this.displayName = name;
+    }
+    public void setLore(ArrayList<String> lore) {
+        this.lore = lore;
+    }
 
     @Override
     public CVItem clone() {

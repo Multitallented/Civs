@@ -11,9 +11,11 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-public class MainMenu extends Menu {
-    private static final String MENU_NAME = "Civs Menu";
-    public MainMenu() {
+import java.util.ArrayList;
+
+public class LanguageMenu extends Menu {
+    private static final String MENU_NAME = "Civs Lang";
+    public LanguageMenu() {
         super(MENU_NAME);
     }
 
@@ -33,24 +35,35 @@ public class MainMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
-        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
-            event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
-            return;
-        }
+//        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
+//            //TODO open language menu
+//        }
         //TODO finish this stub
     }
 
     public static Inventory createMenu(String locale) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
-        //TODO add items to the inventory
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        CVItem cvItem = new CVItem(Material.GRASS, 1, -1, 100, localeManager.getTranslation(locale, "language-menu"));
-        inventory.setItem(17, cvItem.createItemStack());
+        int i=0;
+        for (String currentLang : localeManager.getAllLanguages()) {
 
-//        inventory.setItem(0, new ItemStack(Material.MAP));
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(currentLang);
+            CVItem cvItem = CVItem.createCVItemFromString(localeManager.getTranslation(currentLang, "icon"));
+            if (cvItem == null) {
+                cvItem = new CVItem(Material.GRASS, i+1);
+            }
+            String name = localeManager.getTranslation(currentLang, "name");
+            if (name != null) {
+                cvItem.setDisplayName(name);
+            } else {
+                cvItem.setDisplayName(currentLang);
+            }
+            cvItem.setLore(lore);
+            inventory.setItem(i, cvItem.createItemStack());
+            i++;
+        }
         return inventory;
     }
-
 }

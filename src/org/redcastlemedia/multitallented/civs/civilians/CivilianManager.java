@@ -30,11 +30,11 @@ public class CivilianManager {
         }
     }
 
-    public void loadCivilian(Player player) {
+    void loadCivilian(Player player) {
         Civilian civilian = loadFromFileCivilian(player.getUniqueId());
         onlineCivilians.put(player.getUniqueId(), civilian);
     }
-    public void unloadCivilian(Player player) {
+    void unloadCivilian(Player player) {
         onlineCivilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
@@ -44,7 +44,7 @@ public class CivilianManager {
         }
         return civilian;
     }
-    Civilian loadFromFileCivilian(UUID uuid) {
+    private Civilian loadFromFileCivilian(UUID uuid) {
         Civs civs = Civs.getInstance();
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {

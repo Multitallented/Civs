@@ -1,0 +1,22 @@
+en:
+  name: English
+  icon: TNT*5
+  #language-menu
+  language-menu: Select Language
+
+  #errors
+  no-region-type-found: "No region type found for $1"
+  building-too-big: "You're building is too big to be a $1"
+  no-required-blocks: "You haven't placed the required blocks to make a $1"
+es:
+  name: Spanish
+  icon: IRON_SWORD
+  no-region-type-found: "No se encontró ningún tipo de región para $1"
+fr:
+  name: French
+  icon: IRON_BARDING
+  no-region-type-found: "Aucun type de région trouvé pour $1"
+de:
+  name: German
+  icon: BUCKET
+  no-region-type-found: "Keine Regionstyp für $1 gefunden"
