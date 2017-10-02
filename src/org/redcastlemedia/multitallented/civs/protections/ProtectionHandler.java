@@ -47,7 +47,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.FURNACE ||
                 mat == Material.BURNING_FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
-                mat == Material.ENDER_CHEST) {
+                mat == Material.ENDER_CHEST ||
+                mat == Material.BOOKSHELF) {
             event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "chest_use"));
         } else if (mat == Material.CROPS ||
                 mat == Material.CARROT ||

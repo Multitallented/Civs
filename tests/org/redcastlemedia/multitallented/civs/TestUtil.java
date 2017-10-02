@@ -53,9 +53,9 @@ public class TestUtil {
         configManager.blackListWorlds.add("Hub");
 
         LocaleManager localeManager = new LocaleManager(mockConfigFile);
-//        HashMap<String, String> mockLanguageMap = new HashMap<>();
-//        mockLanguageMap.put("no-region-type-found", "");
-//        localeManager.languageMap.put("en", mockLanguageMap);
+        HashMap<String, String> mockLanguageMap = new HashMap<>();
+        mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
+        localeManager.languageMap.put("es", mockLanguageMap);
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(server.getItemFactory()).thenReturn(itemFactory);

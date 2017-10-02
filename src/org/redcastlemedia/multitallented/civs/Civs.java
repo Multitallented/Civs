@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
 import org.redcastlemedia.multitallented.civs.menus.MainMenu;
@@ -43,6 +44,7 @@ public class Civs extends JavaPlugin {
         new ConfigManager(new File(getDataFolder(), "config.yml"));
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new RegionManager();
+        new CivilianManager();
 
         initCommands();
         initListeners();

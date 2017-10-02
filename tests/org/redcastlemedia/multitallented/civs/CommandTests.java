@@ -2,19 +2,20 @@ package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class CommandTests {
@@ -50,6 +51,4 @@ public class CommandTests {
         List<ItemStack> stacks = itemStackArgumentCaptor.getAllValues();
         assertEquals(Material.MAP, stacks.get(0).getType());
     }
-
-
 }
