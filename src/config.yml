@@ -1,4 +1,3 @@
 black-list-worlds:
 - Hub
-default-language:
-- en
+default-language: en

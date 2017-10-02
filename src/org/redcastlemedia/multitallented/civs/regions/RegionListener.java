@@ -10,8 +10,7 @@ public class RegionListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
-        if (blockPlaceEvent.isCancelled() ||
-                regionManager.getRegionAt(blockPlaceEvent.getBlockPlaced().getLocation()) != null) {
+        if (blockPlaceEvent.isCancelled()) {
             return;
         }
 

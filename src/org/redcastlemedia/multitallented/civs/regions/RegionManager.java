@@ -118,6 +118,7 @@ public class RegionManager {
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
+        String rebuild = config.getString("rebuild");
         regionTypes.put(name.toLowerCase(), new RegionType(
                 name,
                 reqs,
@@ -126,7 +127,8 @@ public class RegionManager {
                 buildRadiusX,
                 buildRadiusY,
                 buildRadiusZ,
-                effectRadius));
+                effectRadius,
+                rebuild));
     }
 
     public RegionType getRegionType(String name) {
@@ -148,6 +150,27 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", regionTypeName));
+            return;
+        }
+
+        Region rebuildRegion = getRegionAt(block.getLocation());
+        if (rebuildRegion != null && regionType.getRebuild() == null) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
+                            .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
+            return;
+        } else if (rebuildRegion != null && !regionType.getRebuild().equals(rebuildRegion.getType())) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
+                            .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
+            return;
+        } else if (rebuildRegion == null && regionType.getRebuild() != null) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
+                            .replace("$1", regionTypeName).replace("$2", regionType.getRebuild()));
             return;
         }
 
@@ -218,17 +241,24 @@ public class RegionManager {
             return;
         }
 
-        if (hasReqs) {
-            HashSet<UUID> owners = new HashSet<>();
-            owners.add(player.getUniqueId());
-            HashSet<UUID> members = new HashSet<>();
-            addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
-        } else {
+        if (!hasReqs) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));
+            return;
         }
+        HashSet<UUID> owners;
+        HashSet<UUID> members;
+        if (rebuildRegion != null) {
+            owners = (HashSet<UUID>) rebuildRegion.getOwners().clone();
+            members = (HashSet<UUID>) rebuildRegion.getMembers().clone();
+        } else {
+            owners = new HashSet<>();
+            owners.add(player.getUniqueId());
+            members = new HashSet<>();
+        }
+        addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
     }
 
     private void adjustRadii(int[] radii, Location location, int x, int y, int z) {

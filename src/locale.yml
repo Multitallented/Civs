@@ -1,6 +1,6 @@
 en:
   name: English
-  icon: TNT*5
+  icon: WOOL:14
   #language-menu
   language-menu: Select Language
 
@@ -8,15 +8,17 @@ en:
   no-region-type-found: "No region type found for $1"
   building-too-big: "You're building is too big to be a $1"
   no-required-blocks: "You haven't placed the required blocks to make a $1"
+  cant-build-on-region: "You can't build a $1 on top of a $2"
+  rebuild-required: "You need to build this $1 on top of a $2"
 es:
   name: Spanish
-  icon: IRON_SWORD
+  icon: WOOL:4
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
   name: French
-  icon: IRON_BARDING
+  icon: WOOL:11
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
   name: German
-  icon: BUCKET
+  icon: WOOL:15
   no-region-type-found: "Keine Regionstyp für $1 gefunden"

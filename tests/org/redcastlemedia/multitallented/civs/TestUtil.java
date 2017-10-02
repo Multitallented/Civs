@@ -13,7 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
 import org.mockito.Matchers;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import sun.security.krb5.Config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,6 +75,16 @@ public class TestUtil {
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
+
+        CivilianManager civilianManager = new CivilianManager();
+        civilianManager.createDefaultCivilian(player);
+        File file = mock(File.class);
+        when(file.exists()).thenReturn(false);
+        try {
+            new ConfigManager(file);
+        } catch (Exception e) {
+
+        }
 
         block = mock(Block.class);
         when(block.getType()).thenReturn(Material.CHEST);

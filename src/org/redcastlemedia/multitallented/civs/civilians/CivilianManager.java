@@ -34,6 +34,9 @@ public class CivilianManager {
         Civilian civilian = loadFromFileCivilian(player.getUniqueId());
         onlineCivilians.put(player.getUniqueId(), civilian);
     }
+    public void createDefaultCivilian(Player player) {
+        onlineCivilians.put(player.getUniqueId(), createDefaultCivilian(player.getUniqueId()));
+    }
     void unloadCivilian(Player player) {
         onlineCivilians.remove(player.getUniqueId());
     }

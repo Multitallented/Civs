@@ -16,17 +16,7 @@ public class RegionType {
     private final int buildRadiusY;
     private final int buildRadiusZ;
     private final int effectRadius;
-
-    public RegionType(String name, HashSet<CVItem> reqs, HashSet<String> effects, int buildRadius, int effectRadius) {
-        this.name = name;
-        this.reqs = reqs;
-        this.effects = effects;
-        this.buildRadius = buildRadius;
-        this.buildRadiusX = buildRadius;
-        this.buildRadiusY = buildRadius;
-        this.buildRadiusZ = buildRadius;
-        this.effectRadius = effectRadius;
-    }
+    private final String rebuild;
 
     public RegionType(String name,
                       HashSet<CVItem> reqs,
@@ -35,7 +25,8 @@ public class RegionType {
                       int buildRadiusX,
                       int buildRadiusY,
                       int buildRadiusZ,
-                      int effectRadius) {
+                      int effectRadius,
+                      String rebuild) {
         this.name = name;
         this.reqs = reqs;
         this.effects = effects;
@@ -44,6 +35,7 @@ public class RegionType {
         this.buildRadiusY = buildRadiusY;
         this.buildRadiusZ = buildRadiusZ;
         this.effectRadius = effectRadius;
+        this.rebuild = rebuild;
 
     }
     public String getName() {
@@ -70,5 +62,5 @@ public class RegionType {
     public int getEffectRadius() {
         return effectRadius;
     }
-
+    public String getRebuild() { return rebuild; }
 }

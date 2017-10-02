@@ -32,23 +32,14 @@ public class CommandTests {
 
     }
 
-    @Test(expected = SuccessException.class)
-    public void menuCommandShouldOpenMenu() {
-        Player player = mock(Player.class);
-        when(player.openInventory(Matchers.any(Inventory.class))).thenThrow(SuccessException.class);
-        MenuCommand menuCommand = new MenuCommand();
-        menuCommand.runCommand(player, mock(Command.class), "cv", new String[0]);
-    }
-
     @Test
     public void menuCommandShouldAddItemStack() {
         Inventory inventory = Bukkit.createInventory(null, 9, "something");
-        Player player = mock(Player.class);
         ArgumentCaptor<ItemStack> itemStackArgumentCaptor = ArgumentCaptor.forClass(ItemStack.class);
         MenuCommand menuCommand = new MenuCommand();
-        menuCommand.runCommand(player, mock(Command.class), "cv", new String[0]);
+        menuCommand.runCommand(TestUtil.player, mock(Command.class), "cv", new String[0]);
         verify(inventory).setItem(Matchers.anyInt(), itemStackArgumentCaptor.capture());
         List<ItemStack> stacks = itemStackArgumentCaptor.getAllValues();
-        assertEquals(Material.MAP, stacks.get(0).getType());
+        assertEquals(Material.GRASS, stacks.get(0).getType());
     }
 }

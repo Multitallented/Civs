@@ -5,6 +5,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 
 public class MenuCommand implements CivCommand {
@@ -16,7 +18,8 @@ public class MenuCommand implements CivCommand {
         }
         Player player = (Player) commandSender;
 
-        Inventory menu = MainMenu.createMenu();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Inventory menu = MainMenu.createMenu(civilian.getLocale());
         player.openInventory(menu);
         return true;
     }

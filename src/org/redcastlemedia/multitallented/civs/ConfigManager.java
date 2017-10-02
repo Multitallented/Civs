@@ -4,13 +4,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigManager {
 
 
     public static ConfigManager configManager;
-    List<String> blackListWorlds;
+    List<String> blackListWorlds = new ArrayList<String>();
     String defaultLanguage;
 
     public String getDefaultLanguage() {
@@ -30,6 +31,7 @@ public class ConfigManager {
         try {
             if (!configFile.exists()) {
                 Civs.logger.severe(Civs.getPrefix() + "No config.yml found");
+                loadDefaults();
                 return;
             }
             config.load(configFile);
@@ -40,6 +42,9 @@ public class ConfigManager {
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read from config.yml");
         }
+    }
+    private void loadDefaults() {
+        defaultLanguage = "en";
     }
 
     public static ConfigManager getInstance() {
