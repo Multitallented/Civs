@@ -211,7 +211,36 @@ public class RegionManager {
                 rLocation.getZ() + 1 + region.getRadiusZP() >= location.getZ();
     }
 
-    public void loadRegionType(FileConfiguration config) {
+    public void loadAllRegionTypes() {
+        Civs civs = Civs.getInstance();
+        File typeFolder = new File(civs.getDataFolder(), "region-types");
+        if (!typeFolder.exists()) {
+            typeFolder.mkdir();
+        }
+        loopThroughTypeFiles(typeFolder);
+    }
+    private void loopThroughTypeFiles(File file) {
+        try {
+            if (file.isDirectory()) {
+                for (File pFile : file.listFiles()) {
+                    loopThroughTypeFiles(pFile);
+                }
+            } else {
+                try {
+                    FileConfiguration typeConfig = new YamlConfiguration();
+                    typeConfig.load(file);
+                    loadRegionType(typeConfig);
+                } catch (Exception e) {
+                    Civs.logger.severe(Civs.getPrefix() + "Unable to read from " + file.getName());
+                }
+            }
+        } catch (NullPointerException npe) {
+            Civs.logger.warning(Civs.getPrefix() + "No region types found in " + file.getName());
+            return;
+        }
+    }
+
+    void loadRegionType(FileConfiguration config) {
         String name = config.getString("name");
         HashSet<CVItem> reqs = new HashSet<>();
         for (String req : config.getStringList("requirements")) {

@@ -43,7 +43,9 @@ public class Civs extends JavaPlugin {
 
         new ConfigManager(new File(getDataFolder(), "config.yml"));
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
-        new RegionManager();
+        RegionManager regionManager = new RegionManager();
+        regionManager.loadAllRegionTypes();
+        regionManager.loadAllRegions();
         new CivilianManager();
 
         initCommands();
