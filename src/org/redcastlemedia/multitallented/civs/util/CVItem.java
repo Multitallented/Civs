@@ -64,7 +64,7 @@ public class CVItem {
         String quantityString = "1";
         String chanceString = "100";
         String damageString = "-1";
-        Material mat = null;
+        Material mat;
 
         String[] splitString;
 
