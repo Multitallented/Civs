@@ -2,16 +2,15 @@ package org.redcastlemedia.multitallented.civs.items;
 
 public class CivItem {
     private final ItemType itemType;
+    private boolean isPlaceable = false;
 
     public ItemType getItemType() {
         return itemType;
     }
-
     public boolean isPlaceable() {
         return isPlaceable;
     }
 
-    private boolean isPlaceable = false;
 
     public CivItem(boolean isPlaceable, ItemType itemType) {
         this.isPlaceable = isPlaceable;

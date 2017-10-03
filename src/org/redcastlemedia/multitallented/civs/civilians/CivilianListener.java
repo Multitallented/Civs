@@ -38,9 +38,6 @@ public class CivilianListener implements Listener {
     }
     @EventHandler
     public void onCivilianDropItem(PlayerDropItemEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         Item item = event.getItemDrop();
         if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
                 item.getItemStack().getItemMeta() != null &&
@@ -51,9 +48,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         ItemStack is = event.getBlockPlaced().getState().getData().toItemStack();
         if (!CVItem.isCivsItem(is)) {
             return;
@@ -67,9 +61,6 @@ public class CivilianListener implements Listener {
     }
     @EventHandler
     public void onCivilianDispense(BlockDispenseEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         ItemStack is = event.getItem();
         if (!CVItem.isCivsItem(is)) {
             return;
@@ -84,7 +75,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled() || ConfigManager.getInstance().getAllowSharingCivsItems()) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
         ItemStack is = event.getBlock().getState().getData().toItemStack();
@@ -101,9 +92,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianClickItem(InventoryClickEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         HumanEntity humanEntity = event.getWhoClicked();
         ItemStack clickedStack = event.getCursor();
         String uuidString;

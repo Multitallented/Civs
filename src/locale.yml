@@ -21,6 +21,7 @@ en:
   cant-build-on-region: "You can't build a $1 on top of a $2"
   rebuild-required: "You need to build this $1 on top of a $2"
   prevent-civs-item-share: "You are not allowed to share Civ items"
+  region-protected: "This region is protected"
 es:
   name: Spanish
   icon: WOOL:4

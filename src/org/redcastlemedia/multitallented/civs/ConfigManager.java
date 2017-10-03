@@ -14,6 +14,7 @@ public class ConfigManager {
     List<String> blackListWorlds = new ArrayList<String>();
     String defaultLanguage;
     boolean allowCivItemDropping;
+    boolean explosionOverride;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -22,6 +23,7 @@ public class ConfigManager {
         return blackListWorlds;
     }
     public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
+    public boolean getExplosionOverride() { return explosionOverride; }
 
     public ConfigManager(File configFile) {
         configManager = this;
@@ -41,6 +43,7 @@ public class ConfigManager {
             blackListWorlds = config.getStringList("blacklist-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
+            allowCivItemDropping = config.getBoolean("explosion-override", false);
 
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read from config.yml");
@@ -49,6 +52,7 @@ public class ConfigManager {
     private void loadDefaults() {
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        explosionOverride = false;
     }
 
     public static ConfigManager getInstance() {

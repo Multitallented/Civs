@@ -18,8 +18,9 @@ public class Region {
     private final int radiusZN;
     private final int radiusYP;
     private final int radiusYN;
+    public HashSet<String> effects;
 
-    public Region(String type, HashSet<UUID> owners, HashSet<UUID> members, Location location, int[] buildRadius) {
+    public Region(String type, HashSet<UUID> owners, HashSet<UUID> members, Location location, int[] buildRadius, HashSet<String> effects) {
         this.type = type;
         this.owners = owners;
         this.members = members;
@@ -30,6 +31,7 @@ public class Region {
         radiusZN = buildRadius[3];
         radiusYP = buildRadius[4];
         radiusYN = buildRadius[5];
+        this.effects = effects;
     }
     public String getType() {
         return type;

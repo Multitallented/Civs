@@ -63,6 +63,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".rebuild-required", "You need to build this $1 on top of a $2"));
                 currentLanguage.put("prevent-civs-item-share",
                         localeConfig.getString(langKey + ".prevent-civs-item-share", "You are not allowed to share Civ items"));
+                currentLanguage.put("region-protected",
+                        localeConfig.getString(langKey + ".region-protected", "This region is protected"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -84,6 +86,7 @@ public class LocaleManager {
         englishMap.put("cant-build-on-region", "You can't build a $1 on top of a $2");
         englishMap.put("rebuild-required", "You need to build this $1 on top of a $2");
         englishMap.put("prevent-civs-item-share", "You are not allowed to share Civ items");
+        englishMap.put("region-protected", "This region is protected");
 
         languageMap.put("en", englishMap);
     }

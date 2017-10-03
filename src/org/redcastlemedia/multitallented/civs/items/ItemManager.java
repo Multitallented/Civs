@@ -31,7 +31,7 @@ public class ItemManager {
         if (civs == null) {
             return;
         }
-        File typeFolder = new File(civs.getDataFolder(), "region-types");
+        File typeFolder = new File(civs.getDataFolder(), "item-types");
         if (!typeFolder.exists()) {
             typeFolder.mkdir();
         }
@@ -67,9 +67,7 @@ public class ItemManager {
             reqs.add(CVItem.createCVItemFromString(req));
         }
         HashSet<String> effects = new HashSet<>();
-        for (String effect : config.getStringList("effects")) {
-            effects.add(effect);
-        }
+        effects.addAll(config.getStringList("effects"));
         int buildRadius = config.getInt("build-radius", 5);
         int buildRadiusX = config.getInt("build-radius-x", buildRadius);
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);

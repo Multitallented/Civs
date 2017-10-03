@@ -139,7 +139,8 @@ public class RegionManager {
                     processPersonList(regionConfig.getStringList("owners")),
                     processPersonList(regionConfig.getStringList("members")),
                     location,
-                    radii
+                    radii,
+                    (HashSet<String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
             );
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read " + regionFile.getName());
@@ -344,7 +345,7 @@ public class RegionManager {
             owners.add(player.getUniqueId());
             members = new HashSet<>();
         }
-        addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii));
+        addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
     }
 
     private void adjustRadii(int[] radii, Location location, int x, int y, int z) {

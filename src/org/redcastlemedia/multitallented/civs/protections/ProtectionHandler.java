@@ -1,14 +1,26 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -19,32 +31,144 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) {
+        event.setCancelled(checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_place"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+
+    @EventHandler
+    public void onBlockDamage(BlockDamageEvent event) {
+        if (!event.getBlock().getType().equals(Material.CAKE_BLOCK)) {
             return;
         }
+        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        if (event.getBlock().getType() == Material.AIR) {
+            return;
+        }
+        event.setCancelled(checkLocation(event.getBlock(), null, "block_liquid"));
+    }
 
-        event.setCancelled(checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_place"));
+    @EventHandler
+    public void onBlockIgnite(BlockIgniteEvent event) {
+        event.setCancelled(checkLocation(event.getIgnitingBlock(), event.getPlayer(), "block_fire"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+    @EventHandler
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        for (Block block : event.getBlocks()) {
+            boolean checkLocation = checkLocation(block, null, "block_build");
+            if (checkLocation) {
+                event.setCancelled(true);
+                break;
+            }
+        }
+    }
+    @EventHandler
+    public void onPaintingPlace(HangingPlaceEvent event) {
+        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_build"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+
+    private void onPaintingBreak(HangingBreakByEntityEvent event) {
+        Player player = null;
+        if (event.getRemover() instanceof Player) {
+            player = (Player) event.getRemover();
+        }
+        event.setCancelled(checkLocation(event.getEntity().getLocation(), player, "block_break"));
+        if (player != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+    @EventHandler
+    public void onHangingBreakEvent(HangingBreakEvent event) {
+        if (event instanceof HangingBreakByEntityEvent) {
+            onPaintingBreak((HangingBreakByEntityEvent) event);
+            return;
+        }
+        checkLocation(event.getEntity().getLocation(), null, "block_break");
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
+            return;
+        }
+        if (event.getEntity().getClass().equals(Creeper.class)) {
+            event.setCancelled(checkEffectAt(event.getLocation(), null, "block_creeper", 5));
+        } else if (event.getEntity().getClass().equals(Fireball.class)) {
+            event.setCancelled(checkEffectAt(event.getLocation(), null, "block_ghast", 5));
+        } else if (event.getEntity().getClass().equals(TNTPrimed.class)) {
+            TNTPrimed tnt = (TNTPrimed) event.getEntity();
+            Player player = null;
+            if (tnt.getSource() instanceof Player) {
+                player = (Player) tnt.getSource();
+            }
+            event.setCancelled(checkEffectAt(event.getLocation(), player, "block_tnt", 5));
+            if (player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
+        }
+        event.setCancelled(checkEffectAt(event.getLocation(), null, "block_explosion", 5));
+        //TODO destroy the region
+        //TODO stop using effect radius
+        //TODO power shield
     }
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         Material mat = event.getClickedBlock().getType();
         if (mat == Material.WOODEN_DOOR ||
                 mat == Material.TRAP_DOOR ||
                 mat == Material.IRON_DOOR_BLOCK ||
                 mat == Material.IRON_TRAPDOOR) {
             event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use"));
+            if (event.getPlayer() != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
                 mat == Material.BURNING_FURNACE ||
@@ -52,41 +176,79 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF) {
             event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "chest_use"));
+            if (event.getPlayer() != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
         } else if (mat == Material.CROPS ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
             event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break"));
+            if (event.getPlayer() != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
                 mat == Material.WOOD_BUTTON) {
             event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use"));
+            if (event.getPlayer() != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
         }
-        //TODO protect paintings
         event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use"));
+        if (event.getPlayer() != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+
+    private boolean checkEffectAt(Location location, Player player, String type, int mod) {
+        RegionManager regionManager = RegionManager.getInstance();
+        for (Region region : regionManager.getRegionEffectsAt(location, mod)) {
+            if (!region.effects.contains(type)) {
+                continue;
+            }
+            if (player == null) {
+                continue;
+            }
+            if (region.getOwners().contains(player.getUniqueId())) {
+                continue;
+            }
+            if (region.getMembers().contains(player.getUniqueId()) &&
+                    region.getLocation() != location) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 
     private boolean checkLocation(Block block, Player player, String type) {
+        return checkLocation(block.getLocation(), player, type);
+    }
+    private boolean checkLocation(Location location, Player player, String type) {
         RegionManager regionManager = RegionManager.getInstance();
-        Region region = regionManager.getRegionAt(block.getLocation());
+        Region region = regionManager.getRegionAt(location);
         if (region == null) {
             return false;
         }
-        RegionType regionType;
-        try {
-            regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to find region type " + region.getType());
+        if (!region.effects.contains(type)) {
             return false;
         }
-        if (!regionType.getEffects().contains(type)) {
+        if (player == null) {
             return false;
         }
-
         if (region.getOwners().contains(player.getUniqueId())) {
             return false;
         }
         if (region.getMembers().contains(player.getUniqueId()) &&
-                region.getLocation() != block.getLocation()) {
+                region.getLocation() != location) {
             return false;
         }
         return true;

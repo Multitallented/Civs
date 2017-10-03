@@ -2,3 +2,4 @@ black-list-worlds:
 - Hub
 default-language: en
 allow-civ-item-sharing: false
+explosion-override: false

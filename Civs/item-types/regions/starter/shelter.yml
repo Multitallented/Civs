@@ -1,0 +1,11 @@
+type: region
+name: Shelter
+build-radius: 5
+effects:
+- block_break
+- block_place
+- chest_use
+- door_use
+- block_liquid
+- block_fire
+- block_explosion
