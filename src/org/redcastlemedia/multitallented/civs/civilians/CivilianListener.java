@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class CivilianListener implements Listener {
@@ -56,6 +57,10 @@ public class CivilianListener implements Listener {
                 CVItem.isCivsItem(clickedStack) &&
                 !humanEntity.getUniqueId().toString().equals(uuidString)) {
             event.setCancelled(true);
+            Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
+            humanEntity.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+            return;
         }
     }
 }
