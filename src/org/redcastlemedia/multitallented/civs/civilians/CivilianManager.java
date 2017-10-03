@@ -86,6 +86,7 @@ public class CivilianManager {
         ConfigManager configManager = ConfigManager.getInstance();
         //TODO add all attributes here
         ArrayList<CVItem> items = new ArrayList<>();
+        //TODO add items from config
         return new Civilian(uuid, configManager.getDefaultLanguage(), items);
     }
     public void saveCivilian(Civilian civilian) {

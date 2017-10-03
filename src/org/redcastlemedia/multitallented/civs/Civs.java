@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
@@ -44,8 +45,8 @@ public class Civs extends JavaPlugin {
 
         new ConfigManager(new File(getDataFolder(), "config.yml"));
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
+        new ItemManager();
         RegionManager regionManager = new RegionManager();
-        regionManager.loadAllRegionTypes();
         regionManager.loadAllRegions();
         new CivilianManager();
 

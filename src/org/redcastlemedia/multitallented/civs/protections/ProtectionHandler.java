@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -69,7 +71,13 @@ public class ProtectionHandler implements Listener {
         if (region == null) {
             return false;
         }
-        RegionType regionType = regionManager.getRegionType(region.getType());
+        RegionType regionType;
+        try {
+            regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        } catch (Exception e) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to find region type " + region.getType());
+            return false;
+        }
         if (!regionType.getEffects().contains(type)) {
             return false;
         }

@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,7 +45,7 @@ public class RegionsTests {
     @Test
     public void regionManagerShouldLoadRegionTypesFromConfig() {
         loadRegionTypeCobble();
-        assertNotNull(regionManager.getRegionType("cobble"));
+        assertNotNull(ItemManager.getInstance().getItemType("cobble"));
     }
 
     @Test
@@ -249,7 +250,7 @@ public class RegionsTests {
         Location location2 = new Location(Bukkit.getWorld("world"), 5, 0, 0);
         regionManager.addRegion(new Region("cobble", owners, members, location1, getRadii()));
         regionManager.addRegion(new Region("cobble", owners, members, location2, getRadii()));
-        RegionType regionType = regionManager.getRegionType("cobble");
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         assertEquals(2, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
     }
 
@@ -288,7 +289,7 @@ public class RegionsTests {
         effects.add("block_break");
         config.set("effects", effects);
         config.set("effect-radius", 7);
-        RegionManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config);
     }
     public static void loadRegionTypeDirt() {
         FileConfiguration config = new YamlConfiguration();
@@ -298,7 +299,7 @@ public class RegionsTests {
         config.set("requirements", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
-        RegionManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config);
     }
     public static void loadRegionTypeRectangle() {
         FileConfiguration config = new YamlConfiguration();
@@ -310,7 +311,7 @@ public class RegionsTests {
         config.set("effects", effects);
         config.set("build-radius", 3);
         config.set("build-radius-z", 10);
-        RegionManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config);
     }
 
 }

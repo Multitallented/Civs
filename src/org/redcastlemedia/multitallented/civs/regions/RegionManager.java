@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
@@ -19,7 +20,6 @@ import java.util.*;
 
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
-    private HashMap<String, RegionType> regionTypes = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, Integer> itemCheck = new HashMap<>();
 
@@ -214,67 +214,6 @@ public class RegionManager {
                 rLocation.getZ() + 1 + region.getRadiusZP() >= location.getZ();
     }
 
-    public void loadAllRegionTypes() {
-        Civs civs = Civs.getInstance();
-        File typeFolder = new File(civs.getDataFolder(), "region-types");
-        if (!typeFolder.exists()) {
-            typeFolder.mkdir();
-        }
-        loopThroughTypeFiles(typeFolder);
-    }
-    private void loopThroughTypeFiles(File file) {
-        try {
-            if (file.isDirectory()) {
-                for (File pFile : file.listFiles()) {
-                    loopThroughTypeFiles(pFile);
-                }
-            } else {
-                try {
-                    FileConfiguration typeConfig = new YamlConfiguration();
-                    typeConfig.load(file);
-                    loadRegionType(typeConfig);
-                } catch (Exception e) {
-                    Civs.logger.severe(Civs.getPrefix() + "Unable to read from " + file.getName());
-                }
-            }
-        } catch (NullPointerException npe) {
-            Civs.logger.warning(Civs.getPrefix() + "No region types found in " + file.getName());
-            return;
-        }
-    }
-
-    void loadRegionType(FileConfiguration config) {
-        String name = config.getString("name");
-        HashSet<CVItem> reqs = new HashSet<>();
-        for (String req : config.getStringList("requirements")) {
-            reqs.add(CVItem.createCVItemFromString(req));
-        }
-        HashSet<String> effects = new HashSet<>();
-        for (String effect : config.getStringList("effects")) {
-            effects.add(effect);
-        }
-        int buildRadius = config.getInt("build-radius", 5);
-        int buildRadiusX = config.getInt("build-radius-x", buildRadius);
-        int buildRadiusY = config.getInt("build-radius-y", buildRadius);
-        int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
-        int effectRadius = config.getInt("effect-radius", buildRadius);
-        String rebuild = config.getString("rebuild");
-        regionTypes.put(name.toLowerCase(), new RegionType(
-                name,
-                reqs,
-                effects,
-                buildRadius,
-                buildRadiusX,
-                buildRadiusY,
-                buildRadiusZ,
-                effectRadius,
-                rebuild));
-    }
-
-    public RegionType getRegionType(String name) {
-        return regionTypes.get(name);
-    }
-
     void detectNewRegion(BlockPlaceEvent event) {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
@@ -282,7 +221,13 @@ public class RegionManager {
         String regionTypeName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
-        RegionType regionType = getRegionType(regionTypeName.toLowerCase());
+        RegionType regionType;
+        try {
+            regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName.toLowerCase());
+        } catch (Exception e) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to find region type " + regionTypeName.toLowerCase());
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (regionType == null) {

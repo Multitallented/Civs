@@ -1,10 +1,11 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashSet;
 
-public class RegionType {
+public class RegionType extends CivItem {
 
     private final String name;
     private final HashSet<CVItem> reqs;
@@ -27,6 +28,7 @@ public class RegionType {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild) {
+        super(true);
         this.name = name;
         this.reqs = reqs;
         this.effects = effects;
@@ -36,7 +38,6 @@ public class RegionType {
         this.buildRadiusZ = buildRadiusZ;
         this.effectRadius = effectRadius;
         this.rebuild = rebuild;
-
     }
     public String getName() {
         return name;
