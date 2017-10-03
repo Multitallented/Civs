@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,9 +18,9 @@ public class CVItem {
     private final double chance;
     private final boolean wildDamage;
     private String displayName = null;
-    private ArrayList<String> lore = new ArrayList<String>();
+    private List<String> lore = new ArrayList<String>();
 
-    public CVItem(Material mat, int qty, int damage, int chance, String displayName, ArrayList<String> lore) {
+    public CVItem(Material mat, int qty, int damage, int chance, String displayName, List<String> lore) {
         this.mat = mat;
         this.damage = damage;
         this.qty = qty;
@@ -187,7 +189,7 @@ public class CVItem {
         }
     }
 
-    public ArrayList<String> getLore() {
+    public List<String> getLore() {
         return lore;
     }
 
@@ -220,7 +222,7 @@ public class CVItem {
     public void setDisplayName(String name) {
         this.displayName = name;
     }
-    public void setLore(ArrayList<String> lore) {
+    public void setLore(List<String> lore) {
         this.lore = lore;
     }
 

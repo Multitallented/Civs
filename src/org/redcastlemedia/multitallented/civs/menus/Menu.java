@@ -21,4 +21,15 @@ public abstract class Menu implements Listener {
         }
         handleInteract(event);
     }
+    static int getInventorySize(int count) {
+        int size = 9;
+        if (count > size) {
+            size = count + 9 - (count % 9);
+            if (count % 9 == 0) {
+                size -= 9;
+            }
+        }
+        size += 9;
+        return size;
+    }
 }

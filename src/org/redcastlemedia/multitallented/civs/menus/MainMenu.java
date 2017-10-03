@@ -20,9 +20,6 @@ public class MainMenu extends Menu {
 
     @Override
     void handleInteract(InventoryClickEvent event) {
-        if (!event.getClickedInventory().getTitle().equals(MENU_NAME)) {
-            return;
-        }
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCursor();
@@ -49,7 +46,7 @@ public class MainMenu extends Menu {
         }
         if (itemName.equals(localeManager.getTranslation(locale, "items"))) {
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ItemsMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(ItemsMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "community"))) {

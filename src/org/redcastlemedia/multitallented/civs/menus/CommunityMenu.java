@@ -21,9 +21,6 @@ public class CommunityMenu extends Menu {
 
     @Override
     void handleInteract(InventoryClickEvent event) {
-        if (!event.getClickedInventory().getTitle().equals(MENU_NAME)) {
-            return;
-        }
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCursor();

@@ -3,11 +3,8 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class ItemsMenu extends Menu {
     private static final String MENU_NAME = "CivsItems";
@@ -17,34 +14,17 @@ public class ItemsMenu extends Menu {
 
     @Override
     void handleInteract(InventoryClickEvent event) {
-        if (!event.getClickedInventory().getTitle().equals(MENU_NAME)) {
-            return;
-        }
-        event.setCancelled(true);
-
-        ItemStack clickedStack = event.getCursor();
-        if (clickedStack == null) {
-            return;
-        }
-        if (clickedStack.getItemMeta() == null) {
-            return;
-        }
-        ItemMeta im = clickedStack.getItemMeta();
-        String itemName = im.getDisplayName();
-        LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
-        String locale = civilian.getLocale();
-//        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
-
-//        }
-        //TODO finish this stub
+        //Do nothing
     }
 
-    public static Inventory createMenu(String locale) {
-        Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
+    public static Inventory createMenu(Civilian civilian) {
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getItems().size()), MENU_NAME);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
-        //TODO populate items here
+        int i=0;
+        for (CVItem cvItem : civilian.getItems()) {
+            inventory.setItem(i, cvItem.createItemStack());
+            i++;
+        }
 
         return inventory;
     }

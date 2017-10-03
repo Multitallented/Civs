@@ -1,13 +1,16 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -66,7 +69,14 @@ public class CivilianManager {
 
             //TODO load other civilian file properties
 
-            return new Civilian(uuid, civConfig.getString("locale"));
+            ArrayList<CVItem> items = new ArrayList<>();
+            for (String key : civConfig.getConfigurationSection("items").getKeys(false)) {
+                CVItem cvItem = CVItem.createCVItemFromString(civConfig.getString("items." + key + ".cvitem"));
+                cvItem.setDisplayName(civConfig.getString("items." + key + ".name"));
+                cvItem.setLore(civConfig.getStringList("items." + key + ".lore"));
+                items.add(cvItem);
+            }
+            return new Civilian(uuid, civConfig.getString("locale"), items);
         } catch (Exception ex) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read/write " + uuid + ".yml");
             return createDefaultCivilian(uuid);
@@ -75,7 +85,8 @@ public class CivilianManager {
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
         //TODO add all attributes here
-        return new Civilian(uuid, configManager.getDefaultLanguage());
+        ArrayList<CVItem> items = new ArrayList<>();
+        return new Civilian(uuid, configManager.getDefaultLanguage(), items);
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
