@@ -86,6 +86,9 @@ public class RegionManager {
 
     private void saveRegion(Region region) {
         Civs civs = Civs.getInstance();
+        if (civs == null) {
+            return;
+        }
         File regionFolder = new File(civs.getDataFolder(), "regions");
         if (!regionFolder.exists()) {
             regionFolder.mkdir();
