@@ -3,6 +3,7 @@ en:
   icon: WOOL:14
   #language-menu
   language-menu: Select Language
+  location-set: "Your language has been set to $1"
 
   #shop
   shop: Shop

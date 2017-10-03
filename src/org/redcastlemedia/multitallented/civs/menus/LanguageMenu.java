@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -36,12 +37,16 @@ public class LanguageMenu extends Menu {
         ItemMeta im = clickedStack.getItemMeta();
         String itemName = im.getDisplayName();
         LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        CivilianManager civilianManager = CivilianManager.getInstance();
+        Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
-//        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
 
-//        }
-        //TODO finish this stub
+        String newLocale = im.getLore().get(0);
+        civilian.setLocale(newLocale);
+        civilianManager.saveCivilian(civilian);
+        event.getWhoClicked().closeInventory();
+        event.getWhoClicked().sendMessage(Civs.getPrefix() +
+                localeManager.getTranslation(locale, "language-set").replace("$1", itemName));
     }
 
     public static Inventory createMenu(String locale) {

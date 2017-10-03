@@ -19,7 +19,7 @@ public class Civilian {
     public String getLocale() {
         return locale;
     }
-    void setLocale(String locale) {
+    public void setLocale(String locale) {
         this.locale = locale;
     }
 }

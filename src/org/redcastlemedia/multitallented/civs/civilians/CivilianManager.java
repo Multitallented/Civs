@@ -49,6 +49,9 @@ public class CivilianManager {
     }
     private Civilian loadFromFileCivilian(UUID uuid) {
         Civs civs = Civs.getInstance();
+        if (civs == null) {
+            return createDefaultCivilian(uuid);
+        }
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {
             return createDefaultCivilian(uuid);
@@ -76,6 +79,9 @@ public class CivilianManager {
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
+        if (civs == null) {
+            return;
+        }
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {
             if (civilianFolder.mkdir()) {
