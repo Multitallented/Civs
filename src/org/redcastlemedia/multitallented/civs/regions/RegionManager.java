@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -13,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class RegionManager {
@@ -45,6 +47,28 @@ public class RegionManager {
                 });
         saveRegion(region);
     }
+    public void loadAllRegions() {
+        regions.clear();
+        Civs civs = Civs.getInstance();
+        File regionFolder = new File(civs.getDataFolder(), "regions");
+        if (!regionFolder.exists()) {
+            regionFolder.mkdir();
+        }
+        try {
+            for (File file : regionFolder.listFiles()) {
+                Region region = loadRegion(file);
+                String worldName = region.getLocation().getWorld().getName();
+                if (!regions.containsKey(worldName)) {
+                    regions.put(worldName, new ArrayList<Region>());
+                }
+                regions.get(worldName).add(region);
+            }
+        } catch (NullPointerException npe) {
+            Civs.logger.warning(Civs.getPrefix() + "No region files found to load");
+            return;
+        }
+
+    }
 
     public void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getName()).remove(region);
@@ -61,7 +85,71 @@ public class RegionManager {
     }
 
     private void saveRegion(Region region) {
-        //TODO finish saveRegion
+        Civs civs = Civs.getInstance();
+        File regionFolder = new File(civs.getDataFolder(), "regions");
+        if (!regionFolder.exists()) {
+            regionFolder.mkdir();
+        }
+        File regionFile = new File(regionFolder, region.getId() + ".yml");
+        if (!regionFile.exists()) {
+            try {
+                regionFile.createNewFile();
+            } catch (IOException ioexception) {
+                Civs.logger.severe(Civs.getPrefix() + "Unable to create " + region.getId() + ".yml");
+                return;
+            }
+        }
+        FileConfiguration regionConfig = new YamlConfiguration();
+        try {
+            regionConfig.load(regionFile);
+            regionConfig.set("location", region.getId());
+            regionConfig.set("owners",region.getOwners());
+            regionConfig.set("members", region.getMembers());
+            regionConfig.set("xn-radius", region.getRadiusXN());
+            regionConfig.set("xp-radius", region.getRadiusXP());
+            regionConfig.set("yn-radius", region.getRadiusYN());
+            regionConfig.set("yp-radius", region.getRadiusYP());
+            regionConfig.set("zn-radius", region.getRadiusZN());
+            regionConfig.set("zp-radius", region.getRadiusZP());
+            regionConfig.set("type", region.getType());
+            regionConfig.save(regionFile);
+        } catch (Exception e) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to write to " + region.getId() + ".yml");
+            return;
+        }
+    }
+    private Region loadRegion(File regionFile) {
+        FileConfiguration regionConfig = new YamlConfiguration();
+        Region region;
+        try {
+            regionConfig.load(regionFile);
+            int[] radii = new int[6];
+            radii[0] = regionConfig.getInt("xp-radius");
+            radii[1] = regionConfig.getInt("zp-radius");
+            radii[2] = regionConfig.getInt("xn-radius");
+            radii[3] = regionConfig.getInt("zn-radius");
+            radii[4] = regionConfig.getInt("yp-radius");
+            radii[5] = regionConfig.getInt("yn-radius");
+            Location location = Region.idToLocation(regionConfig.getString("location"));
+            region = new Region(
+                    regionConfig.getString("type"),
+                    processPersonList(regionConfig.getStringList("owners")),
+                    processPersonList(regionConfig.getStringList("members")),
+                    location,
+                    radii
+            );
+        } catch (Exception e) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to read " + regionFile.getName());
+            return null;
+        }
+        return region;
+    }
+    private HashSet<UUID> processPersonList(List<String> persons) {
+        HashSet<UUID> returnSet = new HashSet<>();
+        for (String s : persons) {
+            returnSet.add(UUID.fromString(s));
+        }
+        return returnSet;
     }
 
     public Region getRegionAt(Location location) {
