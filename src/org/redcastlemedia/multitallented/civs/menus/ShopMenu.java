@@ -13,9 +13,9 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 
-public class LanguageMenu extends Menu {
-    private static final String MENU_NAME = "CivsLang";
-    public LanguageMenu() {
+public class ShopMenu extends Menu {
+    private static final String MENU_NAME = "CivsShop";
+    public ShopMenu() {
         super(MENU_NAME);
     }
 
@@ -48,25 +48,8 @@ public class LanguageMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        int i=0;
-        for (String currentLang : localeManager.getAllLanguages()) {
+        //TODO populate items here
 
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(currentLang);
-            CVItem cvItem = CVItem.createCVItemFromString(localeManager.getTranslation(currentLang, "icon"));
-            if (cvItem == null) {
-                cvItem = new CVItem(Material.GRASS, i+1);
-            }
-            String name = localeManager.getTranslation(currentLang, "name");
-            if (name != null) {
-                cvItem.setDisplayName(name);
-            } else {
-                cvItem.setDisplayName(currentLang);
-            }
-            cvItem.setLore(lore);
-            inventory.setItem(i, cvItem.createItemStack());
-            i++;
-        }
         return inventory;
     }
 }

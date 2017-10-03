@@ -9,16 +9,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class MainMenu extends Menu {
-    private static final String MENU_NAME = "Civs Menu";
+    private static final String MENU_NAME = "CivsMenu";
     public MainMenu() {
         super(MENU_NAME);
     }
 
     @Override
     void handleInteract(InventoryClickEvent event) {
+        if (!event.getClickedInventory().getTitle().equals(MENU_NAME)) {
+            return;
+        }
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCursor();
@@ -38,12 +42,25 @@ public class MainMenu extends Menu {
             event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
             return;
         }
-        //TODO finish this stub
+        if (itemName.equals(localeManager.getTranslation(locale, "shop"))) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ShopMenu.createMenu(locale));
+            return;
+        }
+        if (itemName.equals(localeManager.getTranslation(locale, "items"))) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ItemsMenu.createMenu(locale));
+            return;
+        }
+        if (itemName.equals(localeManager.getTranslation(locale, "community"))) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(CommunityMenu.createMenu(locale));
+            return;
+        }
     }
 
     public static Inventory createMenu(String locale) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
-        //TODO add items to the inventory
 
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem cvItem = new CVItem(Material.GRASS, 1, -1, 100, localeManager.getTranslation(locale, "language-menu"));

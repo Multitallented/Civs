@@ -12,8 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
-import org.redcastlemedia.multitallented.civs.menus.LanguageMenu;
-import org.redcastlemedia.multitallented.civs.menus.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -94,6 +93,9 @@ public class Civs extends JavaPlugin {
     private void initListeners() {
         Bukkit.getPluginManager().registerEvents(new MainMenu(), this);
         Bukkit.getPluginManager().registerEvents(new LanguageMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemsMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new CommunityMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ShopMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);

@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -9,13 +8,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-
-public class LanguageMenu extends Menu {
-    private static final String MENU_NAME = "CivsLang";
-    public LanguageMenu() {
+public class ItemsMenu extends Menu {
+    private static final String MENU_NAME = "CivsItems";
+    public ItemsMenu() {
         super(MENU_NAME);
     }
 
@@ -48,25 +44,8 @@ public class LanguageMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        int i=0;
-        for (String currentLang : localeManager.getAllLanguages()) {
+        //TODO populate items here
 
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(currentLang);
-            CVItem cvItem = CVItem.createCVItemFromString(localeManager.getTranslation(currentLang, "icon"));
-            if (cvItem == null) {
-                cvItem = new CVItem(Material.GRASS, i+1);
-            }
-            String name = localeManager.getTranslation(currentLang, "name");
-            if (name != null) {
-                cvItem.setDisplayName(name);
-            } else {
-                cvItem.setDisplayName(currentLang);
-            }
-            cvItem.setLore(lore);
-            inventory.setItem(i, cvItem.createItemStack());
-            i++;
-        }
         return inventory;
     }
 }
