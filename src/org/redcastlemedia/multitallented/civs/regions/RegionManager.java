@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -21,7 +22,6 @@ import java.util.*;
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
     private static RegionManager regionManager;
-    private HashMap<String, Integer> itemCheck = new HashMap<>();
 
     public RegionManager() {
         regionManager = this;
@@ -68,6 +68,17 @@ public class RegionManager {
             return;
         }
 
+    }
+
+    public void removeRegion(Region region, boolean broadcast) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getLocation().distance(region.getLocation()) < 25) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-destroyed").replace("$1", region.getType()));
+            }
+        }
+        removeRegion(region);
     }
 
     public void removeRegion(Region region) {
@@ -260,74 +271,8 @@ public class RegionManager {
             return;
         }
 
-        itemCheck.clear();
-        for (CVItem currentItem : regionType.getReqs()) {
-            itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
-        }
-        int[] radii = new int[6];
-        radii[0] = 0;
-        radii[1] = 0;
-        radii[2] = 0;
-        radii[3] = 0;
-        radii[4] = 0;
-        radii[5] = 0;
-
-        World currentWorld = block.getLocation().getWorld();
-        Location location = block.getLocation();
-        int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
-        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
-
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
-
-        boolean hasReqs = false;
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null) {
-                        continue;
-                    }
-
-
-                    String wildCardString = currentBlock.getType() + ":-1";
-                    String damageString = currentBlock.getType() + ":";
-                    if (currentBlock.getState() != null) {
-                        damageString += currentBlock.getState().getData().toItemStack().getDurability();
-                    }
-
-                    if (itemCheck.containsKey(wildCardString)) {
-                        itemCheck.put(wildCardString, itemCheck.get(wildCardString) - 1);
-                        hasReqs = checkIfScanFinished();
-                        adjustRadii(radii, location, x, y, z);
-
-                    } else if (itemCheck.containsKey(damageString)) {
-                        itemCheck.put(damageString, itemCheck.get(damageString) - 1);
-                        hasReqs = checkIfScanFinished();
-                        adjustRadii(radii, location, x, y, z);
-                    }
-                    if (hasReqs) {
-                        break outer;
-                    }
-                }
-            }
-        }
-
-        if (!radiusCheck(radii, regionType)) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "building-too-big")
-                            .replace("$1", regionTypeName));
-            player.sendMessage(Civs.getPrefix() + "" + regionTypeName);
-            return;
-        }
-
-        if (!hasReqs) {
+        int[] radii = Region.hasRequiredBlocks(regionType.getName(), block.getLocation());
+        if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
@@ -348,7 +293,7 @@ public class RegionManager {
         addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
     }
 
-    private void adjustRadii(int[] radii, Location location, int x, int y, int z) {
+    void adjustRadii(int[] radii, Location location, int x, int y, int z) {
         int currentRelativeX = x - (int) location.getX();
         int currentRelativeY = y - (int) location.getY();
         int currentRelativeZ = z - (int) location.getZ();
@@ -372,80 +317,47 @@ public class RegionManager {
         }
     }
 
-    private boolean radiusCheck(int[] radii, RegionType regionType) {
-        int xRadius = regionType.getBuildRadiusX();
-        int yRadius = regionType.getBuildRadiusY();
-        int zRadius = regionType.getBuildRadiusZ();
-        boolean xRadiusBigger = xRadius > zRadius;
-        boolean xRadiusActuallyBigger = radii[0] + radii[2] > radii[1] + radii[3];
-        if ((xRadiusActuallyBigger && xRadiusBigger && radii[0] + radii[2] > xRadius * 2) ||
-                xRadiusActuallyBigger && !xRadiusBigger && radii[0] + radii[2] > zRadius * 2) {
-            return false;
-        } else {
-            while ((radii[0] + radii[2] < xRadius * 2 && xRadiusActuallyBigger) ||
-                    (radii[0] + radii[2] < zRadius * 2 && !xRadiusActuallyBigger)) {
-                if (radii[0] < radii[2]) {
-                    radii[0]++;
-                } else {
-                    radii[2]++;
-                }
-            }
-        }
-        if (radii[4] + radii[5] > yRadius * 2) {
-            return false;
-        } else {
-
-            while (radii[4] + radii[5] < yRadius * 2) {
-                if (radii[4] < radii[5]) {
-                    radii[4]++;
-                } else {
-                    radii[5]++;
-                }
-            }
-        }
-        if ((!xRadiusActuallyBigger && !xRadiusBigger && radii[1] + radii[3] > zRadius * 2) ||
-                !xRadiusActuallyBigger && xRadiusBigger && radii[1] + radii[3] > xRadius * 2) {
-            return false;
-        } else {
-            while ((radii[1] + radii[3] < zRadius * 2 && xRadiusActuallyBigger) ||
-                    (radii[1] + radii[3] < xRadius * 2 && !xRadiusActuallyBigger)) {
-                if (radii[1] < radii[3]) {
-                    radii[1]++;
-                } else {
-                    radii[3]++;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean checkIfScanFinished() {
-        for (String key : itemCheck.keySet()) {
-            if (itemCheck.get(key) > 0) {
-                return false;
-            }
-        }
-        return true;
+    public Set<Region> getContainingRegions(Location location, int modifier) {
+        return getRegions(location, modifier, false);
     }
 
     public Set<Region> getRegionEffectsAt(Location location, int modifier) {
+        return getRegions(location, modifier, true);
+    }
+
+    public Set<Region> getRegions(Location location, int modifier, boolean useEffects) {
         String worldName = location.getWorld().getName();
         HashSet<Region> effects = new HashSet<>();
         for (int i=regions.get(worldName).size() - 1; i>-1; i--) {
             Region region = regions.get(worldName).get(i);
-            boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier &&
-                    location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifier;
-            boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifier &&
-                    location.getY() < region.getLocation().getY() + region.getRadiusYP() + 1 + modifier;
-            boolean withinZ = location.getZ() > region.getLocation().getZ() - region.getRadiusZN() - modifier &&
-                    location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifier;
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (!useEffects) {
+                boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier &&
+                        location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifier;
+                boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifier &&
+                        location.getY() < region.getLocation().getY() + region.getRadiusYP() + 1 + modifier;
+                boolean withinZ = location.getZ() > region.getLocation().getZ() - region.getRadiusZN() - modifier &&
+                        location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifier;
 
-            if (withinX && withinY && withinZ) {
-                effects.add(region);
-                continue;
-            }
-            if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier) {
-                break;
+                if (withinX && withinY && withinZ) {
+                    effects.add(region);
+                    continue;
+                }
+                if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier) {
+                    break;
+                }
+            } else {
+                boolean withinX = location.getX() > region.getLocation().getX() - regionType.getEffectRadius() - modifier &&
+                        location.getX() < region.getLocation().getX() + regionType.getEffectRadius() + 1 + modifier;
+                boolean withinY = location.getY() > region.getLocation().getY() - regionType.getEffectRadius() - modifier &&
+                        location.getY() < region.getLocation().getY() + regionType.getEffectRadius() + 1 + modifier;
+                boolean withinZ = location.getZ() > region.getLocation().getZ() - regionType.getEffectRadius() - modifier &&
+                        location.getZ() < region.getLocation().getZ() + regionType.getEffectRadius() + 1 + modifier;
+
+                if (withinX && withinY && withinZ) {
+                    effects.add(region);
+                    continue;
+                }
             }
         }
         return effects;

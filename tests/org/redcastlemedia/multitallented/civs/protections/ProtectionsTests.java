@@ -63,7 +63,10 @@ public class ProtectionsTests {
         owners.add(uuid2);
         HashSet<UUID> members = new HashSet<>();
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii(), new HashSet<String>()));
+        HashSet<String> effects = new HashSet<String>();
+        effects.add("block_break");
+        effects.add("block_build");
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii(), effects));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
