@@ -1,4 +1,4 @@
 black-list-worlds:
 - Hub
 default-language: en
-allow-civ-item-dropping: false
+allow-civ-item-sharing: false

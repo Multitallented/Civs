@@ -135,14 +135,20 @@ public class TestUtil {
     }
 
     private static Block createUniqueBlock(Material mat, String name, Location location) {
-        CVItem cvItem = new CVItem(mat, 1, -1, 100, name);
         Block block = mock(Block.class);
         when(block.getType()).thenReturn(mat);
         BlockState blockState = mock(BlockState.class);
         MaterialData materialData = mock(MaterialData.class);
         when(block.getState()).thenReturn(blockState);
         when(blockState.getData()).thenReturn(materialData);
-        ItemStack is = cvItem.createItemStack();
+        ItemStack is = mock(ItemStack.class);
+        ItemMeta im = mock(ItemMeta.class);
+        when(is.getItemMeta()).thenReturn(im);
+        when(im.getDisplayName()).thenReturn(name);
+        when(is.getType()).thenReturn(mat);
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        when(im.getLore()).thenReturn(lore);
         when(materialData.toItemStack()).thenReturn(is);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);

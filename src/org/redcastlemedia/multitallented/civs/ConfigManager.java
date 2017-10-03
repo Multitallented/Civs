@@ -21,7 +21,7 @@ public class ConfigManager {
     public List<String> getBlackListWorlds() {
         return blackListWorlds;
     }
-    public boolean getAllowCivItemDropping() { return allowCivItemDropping; }
+    public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
 
     public ConfigManager(File configFile) {
         configManager = this;
@@ -40,7 +40,7 @@ public class ConfigManager {
 
             blackListWorlds = config.getStringList("blacklist-worlds");
             defaultLanguage = config.getString("default-language", "en");
-            allowCivItemDropping = config.getBoolean("allow-civ-item-dropping", false);
+            allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
 
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to read from config.yml");

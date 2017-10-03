@@ -124,6 +124,11 @@ public class CVItem {
         return equivalentItem(iss, false);
     }
 
+    public static boolean isCivsItem(ItemStack is) {
+        ItemMeta im = is.getItemMeta();
+        return im.getDisplayName().contains("Civs ");
+    }
+
     public static CVItem createFromItemStack(ItemStack is) {
         if (is.hasItemMeta() && !is.getItemMeta().getDisplayName().equals("")) {
             return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), (ArrayList<String>) is.getItemMeta().getLore());
