@@ -23,13 +23,38 @@ en:
   prevent-civs-item-share: "You are not allowed to share Civ items"
   region-protected: "This region is protected"
   region-destroyed: "Region $1 has been destroyed!"
+pt_br:
+  name: Português Brasil
+  icon: WOOL:11
+  #language-menu
+  language-menu: Selecione sua Linguagem
+  location-set: "Sua linguagem foi definida para $1"
+
+  #shop
+  shop: Loja
+
+  #items
+  items: Itens
+
+  #community
+  community: Comunidade
+
+  #errors
+  no-region-type-found: "Sem regiões encontradas para $1"
+  building-too-big: "Sua construção é muito grande para ser $1"
+  no-required-blocks: "Você não colocou todos os blocos requeridos para $1"
+  cant-build-on-region: "Você não pode construir uma $1 em cima de uma $2"
+  rebuild-required: "Você precisa construir uma $1 em cima de uma $2"
+  prevent-civs-item-share: "Você não tem permissão para compartilhar itens de Civs"
+  region-protected: "Esta região esta protegida"
+  region-destroyed: "A região $1 foi destruida!"
 es:
   name: Spanish
   icon: WOOL:4
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
   name: French
-  icon: WOOL:11
+  icon: WOOL:3
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
   name: German
