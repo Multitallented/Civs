@@ -5,11 +5,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class ShopMenu extends Menu {
         }
         if (civItem.getItemType().equals(CivItem.ItemType.REGION)) {
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, civItem));
+            event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) civItem));
             return;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.SPELL)) {
