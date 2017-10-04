@@ -13,6 +13,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 
+import java.util.ArrayList;
+
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ItemsTests {
@@ -62,6 +65,25 @@ public class ItemsTests {
         assertTrue(hasBackflip);
     }
 
+    @Test
+    public void newPlayerShouldNotReceiveACityHall() {
+        loadSpellTypeBackflip();
+        loadRegionTypeShelter();
+        loadRegionTypeCityHall();
+        CivilianManager civilianManager = new CivilianManager();
+        PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianJoin(event);
+        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
+        boolean hasCityHall = false;
+        for (CivItem civItem : civilian.getItems()) {
+            if (civItem.getDisplayName().equals("Civs CityHall")) {
+                hasCityHall = true;
+            }
+        }
+        assertFalse(hasCityHall);
+    }
+
     private void loadSpellTypeBackflip() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
@@ -77,6 +99,19 @@ public class ItemsTests {
         config.set("name", "Shelter");
         config.set("icon", "WOOD");
         config.set("build-radius", 5);
+        itemManager.loadRegionType(config);
+    }
+
+    private void loadRegionTypeCityHall() {
+        ItemManager itemManager = ItemManager.getInstance();
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "CityHall");
+        config.set("icon", "GOLD_BLOCK");
+        ArrayList<String> preReqs = new ArrayList<>();
+        preReqs.add("townhall:built=1");
+        preReqs.add("town:built=1");
+        config.set("pre-reqs", preReqs);
+        config.set("build-radius", 7);
         itemManager.loadRegionType(config);
     }
 }
