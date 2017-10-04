@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
@@ -9,9 +10,9 @@ public class Civilian {
 
     private final UUID uuid;
     private String locale;
-    private final ArrayList<CVItem> items;
+    private final ArrayList<CivItem> items;
 
-    public Civilian(UUID uuid, String locale, ArrayList<CVItem> items) {
+    public Civilian(UUID uuid, String locale, ArrayList<CivItem> items) {
         this.uuid = uuid;
         this.locale = locale;
         this.items = items;
@@ -27,7 +28,7 @@ public class Civilian {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-    public ArrayList<CVItem> getItems() {
+    public ArrayList<CivItem> getItems() {
         return items;
     }
 }

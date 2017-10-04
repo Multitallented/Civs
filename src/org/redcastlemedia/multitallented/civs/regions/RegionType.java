@@ -20,6 +20,7 @@ public class RegionType extends CivItem {
     private final String rebuild;
 
     public RegionType(String name,
+                      CVItem icon,
                       HashSet<CVItem> reqs,
                       HashSet<String> effects,
                       int buildRadius,
@@ -28,7 +29,7 @@ public class RegionType extends CivItem {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild) {
-        super(true, ItemType.REGION);
+        super(true, ItemType.REGION, name, icon.getMat(), icon.getDamage());
         this.name = name;
         this.reqs = reqs;
         this.effects = effects;

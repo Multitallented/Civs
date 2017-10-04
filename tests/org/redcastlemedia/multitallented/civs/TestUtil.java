@@ -13,6 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
 import org.mockito.Matchers;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import sun.security.krb5.Config;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +49,33 @@ public class TestUtil {
 
         Server server = mock(Server.class);
         Inventory inventory = mock(Inventory.class);
-        when(server.getLogger()).thenReturn(mock(Logger.class));
+        Logger logger = mock(Logger.class);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                System.out.println(args[0]);
+//                Object mock = invocationOnMock.getMock();
+                return args[0];
+            }
+        }).when(logger).severe(Matchers.anyString());
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                System.out.println(args[0]);
+                return args[0];
+            }
+        }).when(logger).warning(Matchers.anyString());
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                System.out.println(args[0]);
+                return args[0];
+            }
+        }).when(logger).info(Matchers.anyString());
+        when(server.getLogger()).thenReturn(logger);
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
 
         File mockConfigFile = mock(File.class);

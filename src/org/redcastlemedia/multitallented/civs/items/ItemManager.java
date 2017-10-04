@@ -7,8 +7,10 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class ItemManager {
     private static ItemManager itemManager;
@@ -51,7 +53,7 @@ public class ItemManager {
                     if (type.equals("region")) {
                         loadRegionType(typeConfig);
                     } else if (type.equals("spell")) {
-                        //TODO load spells
+                        loadSpellType(typeConfig);
                     }
                 } catch (Exception e) {
                     Civs.logger.severe("Unable to read from " + file.getName());
@@ -62,9 +64,13 @@ public class ItemManager {
             return;
         }
     }
+    public void loadSpellType(FileConfiguration config) {
+        //TODO load spells
+    }
 
     public void loadRegionType(FileConfiguration config) {
         String name = config.getString("name");
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         HashSet<CVItem> reqs = new HashSet<>();
         for (String req : config.getStringList("requirements")) {
             reqs.add(CVItem.createCVItemFromString(req));
@@ -79,6 +85,7 @@ public class ItemManager {
         String rebuild = config.getString("rebuild");
         itemTypes.put(name.toLowerCase(), new RegionType(
                 name,
+                icon,
                 reqs,
                 effects,
                 buildRadius,
@@ -89,7 +96,30 @@ public class ItemManager {
                 rebuild));
     }
 
+    public ArrayList<CivItem> loadCivItems(FileConfiguration civConfig, UUID uuid) {
+        ArrayList<CivItem> items = new ArrayList<>();
+        for (String key : civConfig.getConfigurationSection("items").getKeys(false)) {
+            CivItem currentItem = getItemType(civConfig.getString("items." + key + ".name"));
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(uuid.toString());
+            currentItem.setLore(lore);
+            items.add(currentItem);
+        }
+        return items;
+    }
+
     public CivItem getItemType(String name) {
         return itemTypes.get(name);
+    }
+
+    public ArrayList<CivItem> getNewItems() {
+        ArrayList<CivItem> newItems = new ArrayList<>();
+        CivItem civItem = getItemType("shelter");
+        if (civItem == null) {
+            Civs.logger.severe("Shelter" + " item type not found!");
+            //skip loading the item
+        }
+        newItems.add(civItem);
+        return newItems;
     }
 }
