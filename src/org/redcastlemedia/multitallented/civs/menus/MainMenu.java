@@ -41,7 +41,7 @@ public class MainMenu extends Menu {
         }
         if (itemName.equals(localeManager.getTranslation(locale, "shop"))) {
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ShopMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, null));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "items"))) {

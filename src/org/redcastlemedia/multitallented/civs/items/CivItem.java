@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.items;
 import org.bukkit.Material;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CivItem extends CVItem {
@@ -11,6 +12,8 @@ public class CivItem extends CVItem {
     private final int qty;
     private final int min;
     private final int max;
+    private final double price;
+    private final String permission;
     private boolean isPlaceable = false;
 
     public ItemType getItemType() {
@@ -25,6 +28,8 @@ public class CivItem extends CVItem {
     public int getCivQty() { return qty; }
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
+    public double getPrice() { return price; }
+    public String getPermission() { return permission; }
 
 
     public CivItem(List<String> reqs,
@@ -35,7 +40,9 @@ public class CivItem extends CVItem {
                    int damage,
                    int qty,
                    int min,
-                   int max) {
+                   int max,
+                   double price,
+                   String permission) {
         super(material, 1, damage, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
         this.itemType = itemType;
@@ -43,11 +50,29 @@ public class CivItem extends CVItem {
         this.qty = qty;
         this.min = min;
         this.max = max;
+        this.price = price;
+        this.permission = permission;
+    }
+
+    @Override
+    public CivItem clone() {
+        return new CivItem(reqs,
+                isPlaceable,
+                itemType,
+                getDisplayName().replace("Civs ",""),
+                getMat(),
+                getDamage(),
+                qty,
+                min,
+                max,
+                price,
+                permission);
     }
 
     public enum ItemType {
         REGION,
         SPELL,
-        CLASS
+        CLASS,
+        FOLDER
     }
 }
