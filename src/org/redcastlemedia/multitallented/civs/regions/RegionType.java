@@ -19,6 +19,7 @@ public class RegionType extends CivItem {
     private final int buildRadiusZ;
     private final int effectRadius;
     private final String rebuild;
+    private final String description;
 
     public RegionType(String name,
                       CVItem icon,
@@ -35,7 +36,8 @@ public class RegionType extends CivItem {
                       int buildRadiusY,
                       int buildRadiusZ,
                       int effectRadius,
-                      String rebuild) {
+                      String rebuild,
+                      String description) {
         super(civReqs, true, ItemType.REGION, name, icon.getMat(), icon.getDamage(), civQty, civMin, civMax, price, permission);
         this.name = name;
         this.reqs = reqs;
@@ -46,6 +48,7 @@ public class RegionType extends CivItem {
         this.buildRadiusZ = buildRadiusZ;
         this.effectRadius = effectRadius;
         this.rebuild = rebuild;
+        this.description = description;
     }
     public String getName() {
         return name;
@@ -72,4 +75,5 @@ public class RegionType extends CivItem {
         return effectRadius;
     }
     public String getRebuild() { return rebuild; }
+    public String getDescription() { return description; }
 }

@@ -13,6 +13,7 @@ build-reqs:
 - WOODEN_DOOR*1
 - GLASS*12,THIN_GLASS*12
 build-radius: 7
+rebuild: townhall
 effects:
 - block_break
 - block_place

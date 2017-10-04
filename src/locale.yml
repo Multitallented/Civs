@@ -14,6 +14,10 @@ en:
   #community
   community: Community
 
+  #region
+  size: Size
+  range: Range
+
   #errors
   no-region-type-found: "No region type found for $1"
   building-too-big: "You're building is too big to be a $1"

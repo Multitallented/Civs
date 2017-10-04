@@ -6,8 +6,9 @@ import java.util.List;
 
 public class FolderType extends CivItem {
     private final List<CivItem> children;
+    private final boolean visible;
 
-    public FolderType(List<String> reqs, String name, CVItem icon, double price, String permission, List<CivItem> children) {
+    public FolderType(List<String> reqs, String name, CVItem icon, double price, String permission, List<CivItem> children, boolean visible) {
         super(reqs,
                 false,
                 ItemType.FOLDER,
@@ -20,9 +21,11 @@ public class FolderType extends CivItem {
                 price,
                 permission);
         this.children = children;
+        this.visible = visible;
     }
 
     public List<CivItem> getChildren() {
         return children;
     }
+    public boolean getVisible() { return visible; }
 }

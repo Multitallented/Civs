@@ -45,11 +45,12 @@ public class ItemManager {
 
                     loopThroughTypeFiles(pFile, currParentList);
                     FolderType folderType = new FolderType(new ArrayList<String>(),
-                            pFile.getName(),
+                            pFile.getName().replace("invisible", ""),
                             CVItem.createCVItemFromString("CHEST"),
                             0,
                             null,
-                            currParentList);
+                            currParentList,
+                            pFile.getName().contains("invisible"));
                     if (parentList != null) {
                         parentList.add(folderType);
                     }
@@ -146,7 +147,8 @@ public class ItemManager {
                 buildRadiusY,
                 buildRadiusZ,
                 effectRadius,
-                rebuild);
+                rebuild,
+                config.getString("description", "Please enter a description"));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
