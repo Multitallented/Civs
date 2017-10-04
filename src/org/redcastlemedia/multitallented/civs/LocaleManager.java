@@ -33,7 +33,7 @@ public class LocaleManager {
         loadDefaults();
         try {
             if (!localeFile.exists()) {
-                Civs.logger.severe(Civs.getPrefix() + "No locale.yml found");
+                Civs.logger.severe("No locale.yml found");
                 return;
             }
             localeConfig.load(localeFile);
@@ -72,7 +72,7 @@ public class LocaleManager {
 
 
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to read from locale.yml");
+            Civs.logger.severe("Unable to read from locale.yml");
         }
     }
     private void loadDefaults() {

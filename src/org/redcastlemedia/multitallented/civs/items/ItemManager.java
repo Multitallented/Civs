@@ -54,11 +54,11 @@ public class ItemManager {
                         //TODO load spells
                     }
                 } catch (Exception e) {
-                    Civs.logger.severe(Civs.getPrefix() + "Unable to read from " + file.getName());
+                    Civs.logger.severe("Unable to read from " + file.getName());
                 }
             }
         } catch (NullPointerException npe) {
-            Civs.logger.warning(Civs.getPrefix() + "No region types found in " + file.getName());
+            Civs.logger.warning("No region types found in " + file.getName());
             return;
         }
     }

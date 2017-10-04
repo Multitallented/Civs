@@ -34,7 +34,7 @@ public class ConfigManager {
         FileConfiguration config = new YamlConfiguration();
         try {
             if (!configFile.exists()) {
-                Civs.logger.severe(Civs.getPrefix() + "No config.yml found");
+                Civs.logger.severe("No config.yml found");
                 loadDefaults();
                 return;
             }
@@ -46,7 +46,7 @@ public class ConfigManager {
             allowCivItemDropping = config.getBoolean("explosion-override", false);
 
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to read from config.yml");
+            Civs.logger.severe("Unable to read from config.yml");
         }
     }
     private void loadDefaults() {

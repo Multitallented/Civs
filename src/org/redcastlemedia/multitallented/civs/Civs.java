@@ -38,6 +38,7 @@ public class Civs extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        civs = this;
         logger = getLogger();
         setupChat();
         setupEconomy();
@@ -55,7 +56,7 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info(getPrefix() + "v" + VERSION + " is now enabled!");
+        getLogger().info("v" + VERSION + " is now enabled!");
     }
 
 
@@ -107,7 +108,7 @@ public class Civs extends JavaPlugin {
         if (rsp != null) {
             econ = rsp.getProvider();
             if (econ != null)
-                System.out.println("[Townships] Hooked into " + econ.getName());
+                System.out.println(Civs.getPrefix() + "Hooked into " + econ.getName());
         }
         return econ != null;
     }
@@ -117,7 +118,7 @@ public class Civs extends JavaPlugin {
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
             if (perm != null)
-                System.out.println("[Townships] Hooked into " + perm.getName());
+                System.out.println(Civs.getPrefix() + "Hooked into " + perm.getName());
         }
         return (perm != null);
     }
@@ -126,6 +127,8 @@ public class Civs extends JavaPlugin {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         if (chatProvider != null) {
             chat = chatProvider.getProvider();
+            if (chat != null)
+                System.out.println(Civs.getPrefix() + "Hooked into " + chat.getName());
         }
         return (chat != null);
     }

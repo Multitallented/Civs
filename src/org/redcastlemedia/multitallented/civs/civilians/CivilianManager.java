@@ -78,7 +78,7 @@ public class CivilianManager {
             }
             return new Civilian(uuid, civConfig.getString("locale"), items);
         } catch (Exception ex) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to read/write " + uuid + ".yml");
+            Civs.logger.severe("Unable to read/write " + uuid + ".yml");
             return createDefaultCivilian(uuid);
         }
     }
@@ -97,7 +97,7 @@ public class CivilianManager {
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {
             if (civilianFolder.mkdir()) {
-                Civs.logger.severe(Civs.getPrefix() + "Unable to create players folder");
+                Civs.logger.severe("Unable to create players folder");
                 return;
             }
         }
@@ -106,7 +106,7 @@ public class CivilianManager {
             try {
                 civilianFile.createNewFile();
             } catch (IOException ioexception) {
-                Civs.logger.severe(Civs.getPrefix() + "Unable to create " + civilian.getUuid() + ".yml");
+                Civs.logger.severe("Unable to create " + civilian.getUuid() + ".yml");
                 return;
             }
         }
@@ -119,7 +119,7 @@ public class CivilianManager {
 
             civConfig.save(civilianFile);
         } catch (Exception ex) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to read/write " + civilian.getUuid() + ".yml");
+            Civs.logger.severe("Unable to read/write " + civilian.getUuid() + ".yml");
             return;
         }
     }

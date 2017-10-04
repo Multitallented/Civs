@@ -64,7 +64,7 @@ public class RegionManager {
                 regions.get(worldName).add(region);
             }
         } catch (NullPointerException npe) {
-            Civs.logger.warning(Civs.getPrefix() + "No region files found to load");
+            Civs.logger.warning("No region files found to load");
             return;
         }
 
@@ -109,7 +109,7 @@ public class RegionManager {
             try {
                 regionFile.createNewFile();
             } catch (IOException ioexception) {
-                Civs.logger.severe(Civs.getPrefix() + "Unable to create " + region.getId() + ".yml");
+                Civs.logger.severe("Unable to create " + region.getId() + ".yml");
                 return;
             }
         }
@@ -128,7 +128,7 @@ public class RegionManager {
             regionConfig.set("type", region.getType());
             regionConfig.save(regionFile);
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to write to " + region.getId() + ".yml");
+            Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;
         }
     }
@@ -154,7 +154,7 @@ public class RegionManager {
                     (HashSet<String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
             );
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to read " + regionFile.getName());
+            Civs.logger.severe("Unable to read " + regionFile.getName());
             return null;
         }
         return region;
@@ -237,7 +237,7 @@ public class RegionManager {
         try {
             regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName.toLowerCase());
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to find region type " + regionTypeName.toLowerCase());
+            Civs.logger.severe("Unable to find region type " + regionTypeName.toLowerCase());
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -328,6 +328,9 @@ public class RegionManager {
     public Set<Region> getRegions(Location location, int modifier, boolean useEffects) {
         String worldName = location.getWorld().getName();
         HashSet<Region> effects = new HashSet<>();
+        if (regions.get(worldName) == null) {
+            return effects;
+        }
         for (int i=regions.get(worldName).size() - 1; i>-1; i--) {
             Region region = regions.get(worldName).get(i);
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());

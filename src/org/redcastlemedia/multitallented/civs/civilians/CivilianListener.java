@@ -98,7 +98,7 @@ public class CivilianListener implements Listener {
         try {
             uuidString = clickedStack.getItemMeta().getLore().get(0);
         } catch (Exception e) {
-            Civs.logger.warning(Civs.getPrefix() + "Unable to find Civs Item UUID");
+            Civs.logger.warning("Unable to find Civs Item UUID");
             return;
         }
         if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
