@@ -4,6 +4,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class RegionType extends CivItem {
 
@@ -21,6 +22,10 @@ public class RegionType extends CivItem {
 
     public RegionType(String name,
                       CVItem icon,
+                      List<String> civReqs,
+                      int civQty,
+                      int civMin,
+                      int civMax,
                       HashSet<CVItem> reqs,
                       HashSet<String> effects,
                       int buildRadius,
@@ -29,7 +34,7 @@ public class RegionType extends CivItem {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild) {
-        super(true, ItemType.REGION, name, icon.getMat(), icon.getDamage());
+        super(civReqs, true, ItemType.REGION, name, icon.getMat(), icon.getDamage(), civQty, civMin, civMax);
         this.name = name;
         this.reqs = reqs;
         this.effects = effects;

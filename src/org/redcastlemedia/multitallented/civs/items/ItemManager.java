@@ -66,6 +66,18 @@ public class ItemManager {
     }
     public void loadSpellType(FileConfiguration config) {
         //TODO load spells
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+        CivItem civItem = new CivItem(
+                config.getStringList("reqs"),
+                false,
+                CivItem.ItemType.SPELL,
+                config.getString("name"),
+                icon.getMat(),
+                icon.getDamage(),
+                config.getInt("qty", 1),
+                config.getInt("min", 0),
+                config.getInt("max", -1));
+        itemTypes.put(config.getString("name"), civItem);
     }
 
     public void loadRegionType(FileConfiguration config) {
@@ -86,6 +98,10 @@ public class ItemManager {
         itemTypes.put(name.toLowerCase(), new RegionType(
                 name,
                 icon,
+                config.getStringList("pre-reqs"),
+                config.getInt("qty", 1),
+                config.getInt("min", 0),
+                config.getInt("max", -1),
                 reqs,
                 effects,
                 buildRadius,
@@ -114,12 +130,11 @@ public class ItemManager {
 
     public ArrayList<CivItem> getNewItems() {
         ArrayList<CivItem> newItems = new ArrayList<>();
-        CivItem civItem = getItemType("shelter");
-        if (civItem == null) {
-            Civs.logger.severe("Shelter" + " item type not found!");
-            //skip loading the item
+        for (CivItem civItem : itemTypes.values()) {
+            if (civItem.getCivReqs().isEmpty()) {
+                newItems.add(civItem);
+            }
         }
-        newItems.add(civItem);
         return newItems;
     }
 }

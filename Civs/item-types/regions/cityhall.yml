@@ -1,0 +1,23 @@
+type: region
+icon: GOLD_BLOCK
+name: CityHall
+max: 1
+
+pre-reqs:
+- townhall:built=1
+- town:built=1
+
+#region attributes
+build-reqs:
+- CHEST*12
+- WOODEN_DOOR*1
+- GLASS*12,THIN_GLASS*12
+build-radius: 7
+effects:
+- block_break
+- block_place
+- chest_use
+- door_use
+- block_liquid
+- block_fire
+- block_explosion

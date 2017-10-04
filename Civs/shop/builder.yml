@@ -1,9 +1,0 @@
-items:
-- shack*3
-- councilroom*3
-
-shop:
-- cityhall:councilroom@1&city@1
-
-pre-reqs:
-- farmer:5|miner:5|fisherman:5
