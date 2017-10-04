@@ -23,7 +23,7 @@ public class ShopMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemStack clickedStack = event.getCursor();
+        ItemStack clickedStack = event.getCurrentItem();
         if (clickedStack == null) {
             return;
         }

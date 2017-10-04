@@ -40,6 +40,10 @@ public class LocaleManager {
 
             for (String langKey : localeConfig.getKeys(false)) {
                 HashMap<String, String> currentLanguage = new HashMap<>();
+                currentLanguage.put("name",
+                        localeConfig.getString(langKey + ".name", "Unnamed"));
+                currentLanguage.put("icon",
+                        localeConfig.getString(langKey + ".icon", "WOOL.14"));
                 currentLanguage.put("language-menu",
                         localeConfig.getString(langKey + ".language-menu", "Select Language"));
                 currentLanguage.put("language-set",
@@ -77,6 +81,8 @@ public class LocaleManager {
     }
     private void loadDefaults() {
         HashMap<String, String> englishMap = new HashMap<>();
+        englishMap.put("name", "English");
+        englishMap.put("icon", "WOOL.14");
         englishMap.put("language-menu", "Select Language");
         englishMap.put("language-set", "Your language has been set to $1");
         englishMap.put("shop", "Shop");

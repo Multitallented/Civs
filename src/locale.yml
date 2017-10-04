@@ -1,9 +1,9 @@
 en:
   name: English
-  icon: WOOL:14
+  icon: WOOL.14
   #language-menu
   language-menu: Select Language
-  location-set: "Your language has been set to $1"
+  language-set: "Your language has been set to $1"
 
   #shop
   shop: Shop
@@ -25,10 +25,10 @@ en:
   region-destroyed: "Region $1 has been destroyed!"
 pt_br:
   name: Português Brasil
-  icon: WOOL:11
+  icon: WOOL.11
   #language-menu
   language-menu: Selecione sua Linguagem
-  location-set: "Sua linguagem foi definida para $1"
+  language-set: "Sua linguagem foi definida para $1"
 
   #shop
   shop: Loja
@@ -50,13 +50,13 @@ pt_br:
   region-destroyed: "A região $1 foi destruida!"
 es:
   name: Spanish
-  icon: WOOL:4
+  icon: WOOL.4
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
   name: French
-  icon: WOOL:3
+  icon: WOOL.3
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
   name: German
-  icon: WOOL:15
+  icon: WOOL.15
   no-region-type-found: "Keine Regionstyp für $1 gefunden"

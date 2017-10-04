@@ -16,7 +16,9 @@ public abstract class Menu implements Listener {
 
     @EventHandler
     public void onMenuInteract(InventoryClickEvent event) {
-        if (event.isCancelled() || !event.getClickedInventory().getTitle().equals(MENU_NAME)) {
+        if (event.getClickedInventory() == null ||
+                event.getClickedInventory().getTitle() == null ||
+                !event.getClickedInventory().getTitle().equals(MENU_NAME)) {
             return;
         }
         handleInteract(event);

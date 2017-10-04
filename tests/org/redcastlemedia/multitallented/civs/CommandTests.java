@@ -85,7 +85,7 @@ public class CommandTests {
         when(itemMeta.getDisplayName()).thenReturn("Spanish");
         when(itemMeta.getLore()).thenReturn(lore);
         when(itemStack.getItemMeta()).thenReturn(itemMeta);
-        when(event.getCursor()).thenReturn(itemStack);
+        when(event.getCurrentItem()).thenReturn(itemStack);
         Inventory inventory = mock(Inventory.class);
         when(inventory.getTitle()).thenReturn("CivsLang");
         when(event.getClickedInventory()).thenReturn(inventory);

@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -127,18 +128,24 @@ public class CVItem {
     }
 
     public static boolean isCivsItem(ItemStack is) {
+        if (is == null) {
+            return false;
+        }
         ItemMeta im = is.getItemMeta();
+        if (im == null || im.getDisplayName() == null) {
+            return false;
+        }
         return im.getDisplayName().contains("Civs ");
     }
 
     public static CVItem createFromItemStack(ItemStack is) {
         if (is.hasItemMeta() && !is.getItemMeta().getDisplayName().equals("")) {
-            return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), (ArrayList<String>) is.getItemMeta().getLore());
+            return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
         }
         if (is.getDurability() > 0) {
-            return new CVItem(is.getType(),is.getTypeId(),is.getAmount(), is.getDurability());
+            return new CVItem(is.getType(),is.getAmount(), is.getDurability());
         }
-        return new CVItem(is.getType(),is.getTypeId(),is.getAmount());
+        return new CVItem(is.getType(),is.getAmount());
     }
     public ItemStack createItemStack() {
         ItemStack is;
@@ -146,6 +153,9 @@ public class CVItem {
             is = new ItemStack(mat, qty);
         } else {
             is = new ItemStack(mat, qty, (short) damage);
+        }
+        if (!is.hasItemMeta()) {
+            is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
         }
         ItemMeta im = is.getItemMeta();
         if (displayName != null) {
@@ -155,6 +165,7 @@ public class CVItem {
             im.setLore(lore);
         }
         im.removeItemFlags();
+        is.setItemMeta(im);
         return is;
     }
 

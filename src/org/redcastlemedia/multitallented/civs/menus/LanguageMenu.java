@@ -24,11 +24,8 @@ public class LanguageMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemStack clickedStack = event.getCursor();
-        if (clickedStack == null) {
-            return;
-        }
-        if (clickedStack.getItemMeta() == null) {
+        ItemStack clickedStack = event.getCurrentItem();
+        if (clickedStack == null || !clickedStack.hasItemMeta()) {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();
@@ -36,14 +33,13 @@ public class LanguageMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
-        String locale = civilian.getLocale();
 
         String newLocale = im.getLore().get(0);
         civilian.setLocale(newLocale);
         civilianManager.saveCivilian(civilian);
         event.getWhoClicked().closeInventory();
         event.getWhoClicked().sendMessage(Civs.getPrefix() +
-                localeManager.getTranslation(locale, "language-set").replace("$1", itemName));
+                localeManager.getTranslation(newLocale, "language-set").replace("$1", itemName));
     }
 
     public static Inventory createMenu(String locale) {
@@ -60,11 +56,10 @@ public class LanguageMenu extends Menu {
                 cvItem = new CVItem(Material.GRASS, i+1);
             }
             String name = localeManager.getTranslation(currentLang, "name");
-            if (name != null) {
-                cvItem.setDisplayName(name);
-            } else {
-                cvItem.setDisplayName(currentLang);
+            if (name == null) {
+                name = "Error";
             }
+            cvItem.setDisplayName(name);
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());
             i++;

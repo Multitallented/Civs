@@ -92,6 +92,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianClickItem(InventoryClickEvent event) {
+        if (!CVItem.isCivsItem(event.getCurrentItem())) {
+            return;
+        }
         HumanEntity humanEntity = event.getWhoClicked();
         ItemStack clickedStack = event.getCursor();
         String uuidString;

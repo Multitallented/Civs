@@ -22,11 +22,11 @@ public class MainMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemStack clickedStack = event.getCursor();
-        if (clickedStack == null) {
+        ItemStack clickedStack = event.getCurrentItem();
+        if (clickedStack.getItemMeta() == null) {
             return;
         }
-        if (clickedStack.getItemMeta() == null) {
+        if (clickedStack.getItemMeta().getDisplayName() == null) {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();

@@ -86,6 +86,9 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
+        if (event.getIgnitingBlock() == null) {
+            return;
+        }
         event.setCancelled(checkLocation(event.getIgnitingBlock(), event.getPlayer(), "block_fire"));
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
