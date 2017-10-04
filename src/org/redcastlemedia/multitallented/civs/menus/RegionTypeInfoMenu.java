@@ -45,6 +45,7 @@ public class RegionTypeInfoMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Price
+        //TODO figure out how to tell what he has bought
 
         if (regionType.getRebuild() != null) {
             CVItem rebuildItem = itemManager.getItemType(regionType.getRebuild().toLowerCase()).clone();
@@ -58,7 +59,13 @@ public class RegionTypeInfoMenu extends Menu {
         //4 biome/location reqs
         //5 town reqs
 
-        //9 build-reqs
+        CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
+        cvItem1.setDisplayName("Build Reqs");
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs"));
+        cvItem1.setLore(lore);
+        inventory.setItem(9, cvItem1.createItemStack());
+
         //10 reagents
         //11 upkeep
         //12 output
