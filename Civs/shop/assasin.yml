@@ -1,0 +1,9 @@
+items: []
+
+shop: []
+
+pre-reqs:
+  rogue:
+    level: 10
+  summoner:
+    level: 10

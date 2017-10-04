@@ -1,0 +1,12 @@
+items:
+- shelter
+
+shop:
+- archer
+- knight
+- rogue
+- summoner
+- apothecary
+- farmer
+- miner
+- fisherman

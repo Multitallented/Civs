@@ -1,5 +1,8 @@
 type: region
 name: Shelter
+min: 1
+
+#region attributes
 build-radius: 5
 effects:
 - block_break

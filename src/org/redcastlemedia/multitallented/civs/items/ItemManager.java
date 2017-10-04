@@ -47,8 +47,11 @@ public class ItemManager {
                 try {
                     FileConfiguration typeConfig = new YamlConfiguration();
                     typeConfig.load(file);
-                    if (typeConfig.getString("type","region").equals("region")) {
+                    String type = typeConfig.getString("type","region");
+                    if (type.equals("region")) {
                         loadRegionType(typeConfig);
+                    } else if (type.equals("spell")) {
+                        //TODO load spells
                     }
                 } catch (Exception e) {
                     Civs.logger.severe(Civs.getPrefix() + "Unable to read from " + file.getName());
