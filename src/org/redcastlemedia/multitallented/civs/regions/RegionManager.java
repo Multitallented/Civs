@@ -290,8 +290,8 @@ public class RegionManager {
             owners.add(player.getUniqueId());
             members = new HashSet<>();
         }
-        for (Region currentRegion : regionManager.getContainingRegions(block.getLocation(),
-                Math.max(regionType.getBuildRadiusX(), Math.max(regionType.getBuildRadiusY(), regionType.getBuildRadiusZ())))) {
+        for (Region currentRegion : regionManager.getRegionsXYZ(block.getLocation(),
+                regionType.getBuildRadiusX(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(), false)) {
             if (currentRegion == rebuildRegion) {
                 continue;
             }
@@ -301,6 +301,7 @@ public class RegionManager {
                             .replace("$1", regionTypeName));
             return;
         }
+
         //TODO remove rebuildRegion
         addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
     }
@@ -338,6 +339,9 @@ public class RegionManager {
     }
 
     public Set<Region> getRegions(Location location, int modifier, boolean useEffects) {
+        return getRegionsXYZ(location, modifier, modifier, modifier, useEffects);
+    }
+    public Set<Region> getRegionsXYZ(Location location, int modifierX, int modifierY, int modifierZ, boolean useEffects) {
         String worldName = location.getWorld().getName();
         HashSet<Region> effects = new HashSet<>();
         if (regions.get(worldName) == null) {
@@ -347,27 +351,27 @@ public class RegionManager {
             Region region = regions.get(worldName).get(i);
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (!useEffects) {
-                boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier &&
-                        location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifier;
-                boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifier &&
-                        location.getY() < region.getLocation().getY() + region.getRadiusYP() + 1 + modifier;
-                boolean withinZ = location.getZ() > region.getLocation().getZ() - region.getRadiusZN() - modifier &&
-                        location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifier;
+                boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX &&
+                        location.getX() < region.getLocation().getX() + region.getRadiusXP() + 1 + modifierX;
+                boolean withinY = location.getY() > region.getLocation().getY() - region.getRadiusYN() - modifierY &&
+                        location.getY() < region.getLocation().getY() + region.getRadiusYP() + 1 + modifierY;
+                boolean withinZ = location.getZ() > region.getLocation().getZ() - region.getRadiusZN() - modifierZ &&
+                        location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifierZ;
 
                 if (withinX && withinY && withinZ) {
                     effects.add(region);
                     continue;
                 }
-                if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifier) {
+                if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX) {
                     break;
                 }
             } else {
-                boolean withinX = location.getX() > region.getLocation().getX() - regionType.getEffectRadius() - modifier &&
-                        location.getX() < region.getLocation().getX() + regionType.getEffectRadius() + 1 + modifier;
-                boolean withinY = location.getY() > region.getLocation().getY() - regionType.getEffectRadius() - modifier &&
-                        location.getY() < region.getLocation().getY() + regionType.getEffectRadius() + 1 + modifier;
-                boolean withinZ = location.getZ() > region.getLocation().getZ() - regionType.getEffectRadius() - modifier &&
-                        location.getZ() < region.getLocation().getZ() + regionType.getEffectRadius() + 1 + modifier;
+                boolean withinX = location.getX() > region.getLocation().getX() - regionType.getEffectRadius() - modifierX &&
+                        location.getX() < region.getLocation().getX() + regionType.getEffectRadius() + 1 + modifierX;
+                boolean withinY = location.getY() > region.getLocation().getY() - regionType.getEffectRadius() - modifierY &&
+                        location.getY() < region.getLocation().getY() + regionType.getEffectRadius() + 1 + modifierY;
+                boolean withinZ = location.getZ() > region.getLocation().getZ() - regionType.getEffectRadius() - modifierZ &&
+                        location.getZ() < region.getLocation().getZ() + regionType.getEffectRadius() + 1 + modifierZ;
 
                 if (withinX && withinY && withinZ) {
                     effects.add(region);
