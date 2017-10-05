@@ -96,6 +96,10 @@ public class Region {
         radii[3] = 0;
         radii[4] = 0;
         radii[5] = 0;
+        if (itemCheck.isEmpty()) {
+            radiusCheck(radii, regionType);
+            return radii;
+        }
 
         World currentWorld = location.getWorld();
         int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
@@ -142,12 +146,13 @@ public class Region {
             }
         }
 
-        if (!radiusCheck(radii, regionType)) {
-            return new int[0];
+        radii = radiusCheck(radii, regionType);
+        if (radii.length == 0) {
+            return radii;
         }
         return hasReqs ? radii : new int[0];
     }
-    private static boolean radiusCheck(int[] radii, RegionType regionType) {
+    private static int[] radiusCheck(int[] radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();
         int zRadius = regionType.getBuildRadiusZ();
@@ -155,7 +160,7 @@ public class Region {
         boolean xRadiusActuallyBigger = radii[0] + radii[2] > radii[1] + radii[3];
         if ((xRadiusActuallyBigger && xRadiusBigger && radii[0] + radii[2] > xRadius * 2) ||
                 xRadiusActuallyBigger && !xRadiusBigger && radii[0] + radii[2] > zRadius * 2) {
-            return false;
+            return new int[0];
         } else {
             while ((radii[0] + radii[2] < xRadius * 2 && xRadiusActuallyBigger) ||
                     (radii[0] + radii[2] < zRadius * 2 && !xRadiusActuallyBigger)) {
@@ -167,7 +172,7 @@ public class Region {
             }
         }
         if (radii[4] + radii[5] > yRadius * 2) {
-            return false;
+            return new int[0];
         } else {
 
             while (radii[4] + radii[5] < yRadius * 2) {
@@ -180,7 +185,7 @@ public class Region {
         }
         if ((!xRadiusActuallyBigger && !xRadiusBigger && radii[1] + radii[3] > zRadius * 2) ||
                 !xRadiusActuallyBigger && xRadiusBigger && radii[1] + radii[3] > xRadius * 2) {
-            return false;
+            return new int[0];
         } else {
             while ((radii[1] + radii[3] < zRadius * 2 && xRadiusActuallyBigger) ||
                     (radii[1] + radii[3] < xRadius * 2 && !xRadiusActuallyBigger)) {
@@ -191,7 +196,7 @@ public class Region {
                 }
             }
         }
-        return true;
+        return radii;
     }
 
     private static boolean checkIfScanFinished(HashMap<String, Integer> itemCheck) {

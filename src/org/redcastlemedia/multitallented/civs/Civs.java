@@ -4,6 +4,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -140,7 +141,7 @@ public class Civs extends JavaPlugin {
         return perm;
     }
     public static String getPrefix() {
-        return "[" + NAME + "] ";
+        return ChatColor.GREEN + "[" + NAME + "] ";
     }
     public static synchronized Civs getInstance() {
         return civs;

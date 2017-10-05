@@ -43,6 +43,9 @@ public class TestUtil {
     public static Block blockUnique2;
     public static Block blockUnique3;
     public static Block blockUnique4;
+    public static Block blockUnique5;
+    public static Block blockUnique6;
+    public static Block blockUnique7;
 
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
@@ -153,6 +156,9 @@ public class TestUtil {
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
         when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
         when(world.getBlockAt(0, 0,100)).thenReturn(blockUnique4);
+        when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
+        when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
+        when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
 
@@ -161,6 +167,9 @@ public class TestUtil {
         blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0));
         blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0));
         blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100));
+        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 500, 0,0));
+        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0));
+        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0));
     }
 
     private static Block createUniqueBlock(Material mat, String name, Location location) {

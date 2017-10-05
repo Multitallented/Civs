@@ -290,6 +290,18 @@ public class RegionManager {
             owners.add(player.getUniqueId());
             members = new HashSet<>();
         }
+        for (Region currentRegion : regionManager.getContainingRegions(block.getLocation(),
+                Math.max(regionType.getBuildRadiusX(), Math.max(regionType.getBuildRadiusY(), regionType.getBuildRadiusZ())))) {
+            if (currentRegion == rebuildRegion) {
+                continue;
+            }
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "too-close-region")
+                            .replace("$1", regionTypeName));
+            return;
+        }
+        //TODO remove rebuildRegion
         addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
     }
 

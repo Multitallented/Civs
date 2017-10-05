@@ -267,6 +267,29 @@ public class RegionsTests {
         assertEquals(1, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), 0).size());
     }
 
+    @Test
+    public void regionShouldNotBeBuiltTooClose() {
+        loadRegionTypeShelter();
+        HashSet<UUID> owners = new HashSet<>();
+        owners.add(new UUID(1, 4));
+        HashSet<UUID> members = new HashSet<>();
+        Location location1 = new Location(Bukkit.getWorld("world"), 500, 0, 0);
+        regionManager.addRegion(new Region("shelter", owners, members, location1, getRadii(), new HashSet<String>()));
+
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique6);
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getPlayer()).thenReturn(TestUtil.player);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.blockUnique7);
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event1);
+        assertNull(regionManager.getRegionAt(TestUtil.blockUnique6.getLocation()));
+        regionListener.onBlockPlace(event2);
+        assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique7.getLocation()));
+    }
+
     public static int[] getRadii() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
@@ -311,6 +334,16 @@ public class RegionsTests {
         config.set("effects", effects);
         config.set("build-radius", 3);
         config.set("build-radius-z", 10);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+    public static void loadRegionTypeShelter() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "shelter");
+        ArrayList<String> reqs = new ArrayList<>();
+        config.set("requirements", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        config.set("effects", effects);
+        config.set("build-radius", 5);
         ItemManager.getInstance().loadRegionType(config);
     }
 
