@@ -147,6 +147,14 @@ public class CVItem {
         }
         return new CVItem(is.getType(),is.getAmount());
     }
+    public static List<CVItem> createListFromString(String input) {
+        List<CVItem> reqs = new ArrayList<>();
+        for (String req : input.split(",")) {
+            reqs.add(createCVItemFromString(req));
+        }
+        return reqs;
+    }
+
     public ItemStack createItemStack() {
         ItemStack is;
         if (isWildDamage()) {

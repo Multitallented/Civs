@@ -9,9 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 public class Region {
 
@@ -84,10 +82,14 @@ public class Region {
     public static int[] hasRequiredBlocks(String type, Location location) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        HashMap<String, Integer> itemCheck = new HashMap<>();
+        List<HashMap<String, Integer>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
-        for (CVItem currentItem : regionType.getReqs()) {
-            itemCheck.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
+        for (List<CVItem> currentList : regionType.getReqs()) {
+            HashMap<String, Integer> currentReqMap = new HashMap<>();
+            for (CVItem currentItem : currentList) {
+                currentReqMap.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
+            }
+            itemCheck.add(currentReqMap);
         }
         int[] radii = new int[6];
         radii[0] = 0;
@@ -129,18 +131,38 @@ public class Region {
                         damageString += currentBlock.getState().getData().toItemStack().getDurability();
                     }
 
-                    if (itemCheck.containsKey(wildCardString)) {
-                        itemCheck.put(wildCardString, itemCheck.get(wildCardString) - 1);
-                        hasReqs = checkIfScanFinished(itemCheck);
-                        regionManager.adjustRadii(radii, location, x, y, z);
+                    String destroyIndex = null;
+                    int i=0;
+                    outer1: for (HashMap<String, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(wildCardString)) {
+                            int currentQty = tempMap.get(wildCardString) - 1;
+                            if (currentQty < 1) {
+                                destroyIndex = wildCardString;
+                            } else {
+                                tempMap.put(wildCardString, currentQty);
+                            }
+                            regionManager.adjustRadii(radii, location, x, y, z);
+                            break outer1;
 
-                    } else if (itemCheck.containsKey(damageString)) {
-                        itemCheck.put(damageString, itemCheck.get(damageString) - 1);
-                        hasReqs = checkIfScanFinished(itemCheck);
-                        regionManager.adjustRadii(radii, location, x, y, z);
+                        } else if (tempMap.containsKey(damageString)) {
+                            int currentQty = tempMap.get(damageString) - 1;
+                            if (currentQty < 1) {
+                                destroyIndex = damageString;
+                            } else {
+                                tempMap.put(damageString, currentQty);
+                            }
+                            regionManager.adjustRadii(radii, location, x, y, z);
+                            break outer1;
+                        }
+                        i++;
                     }
-                    if (hasReqs) {
-                        break outer;
+                    if (destroyIndex != null) {
+                        if (itemCheck.size() < 2) {
+                            hasReqs = true;
+                            break outer;
+                        } else {
+                            itemCheck.remove(i);
+                        }
                     }
                 }
             }
@@ -198,13 +220,13 @@ public class Region {
         }
         return radii;
     }
-
-    private static boolean checkIfScanFinished(HashMap<String, Integer> itemCheck) {
-        for (String key : itemCheck.keySet()) {
-            if (itemCheck.get(key) > 0) {
-                return false;
-            }
-        }
-        return true;
-    }
+//
+//    private static boolean checkIfScanFinished(HashMap<String, Integer> itemCheck) {
+//        for (String key : itemCheck.keySet()) {
+//            if (itemCheck.get(key) > 0) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 }

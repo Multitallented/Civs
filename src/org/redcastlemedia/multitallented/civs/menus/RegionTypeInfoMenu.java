@@ -2,6 +2,8 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -24,6 +26,16 @@ public class RegionTypeInfoMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        ItemManager itemManager = ItemManager.getInstance();
+        String regionName = event.getInventory().getItem(0)
+                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        RegionType regionType = (RegionType) itemManager.getItemType(regionName);
+
+        if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getReqs(), event.getWhoClicked().getUniqueId()));
+            return;
+        }
 
         //TODO finish this stub
     }

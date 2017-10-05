@@ -9,7 +9,7 @@ import java.util.List;
 public class RegionType extends CivItem {
 
     private final String name;
-    private final HashSet<CVItem> reqs;
+    private final List<List<CVItem>> reqs;
 
     private final HashSet<String> effects;
 
@@ -29,7 +29,7 @@ public class RegionType extends CivItem {
                       int civMax,
                       double price,
                       String permission,
-                      HashSet<CVItem> reqs,
+                      List<List<CVItem>> reqs,
                       HashSet<String> effects,
                       int buildRadius,
                       int buildRadiusX,
@@ -53,7 +53,7 @@ public class RegionType extends CivItem {
     public String getName() {
         return name;
     }
-    public HashSet<CVItem> getReqs() {
+    public List<List<CVItem>> getReqs() {
         return reqs;
     }
     public HashSet<String> getEffects() {

@@ -306,7 +306,7 @@ public class RegionsTests {
         config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
-        config.set("requirements", reqs);
+        config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");
         effects.add("block_break");
@@ -319,7 +319,7 @@ public class RegionsTests {
         config.set("name", "dirt");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("dirt*1");
-        config.set("requirements", reqs);
+        config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
         ItemManager.getInstance().loadRegionType(config);
@@ -329,7 +329,7 @@ public class RegionsTests {
         config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
-        config.set("requirements", reqs);
+        config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
         config.set("build-radius", 3);
@@ -340,7 +340,7 @@ public class RegionsTests {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "shelter");
         ArrayList<String> reqs = new ArrayList<>();
-        config.set("requirements", reqs);
+        config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
         config.set("build-radius", 5);

@@ -119,9 +119,9 @@ public class ItemManager {
     public RegionType loadRegionType(FileConfiguration config) {
         String name = config.getString("name");
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
-        HashSet<CVItem> reqs = new HashSet<>();
-        for (String req : config.getStringList("requirements")) {
-            reqs.add(CVItem.createCVItemFromString(req));
+        List<List<CVItem>> reqs = new ArrayList<>();
+        for (String req : config.getStringList("build-reqs")) {
+            reqs.add(CVItem.createListFromString(req));
         }
         HashSet<String> effects = new HashSet<>();
         effects.addAll(config.getStringList("effects"));
