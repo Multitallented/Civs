@@ -1,9 +1,12 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -154,6 +157,15 @@ public abstract class Menu implements Listener {
         return guis;
     }
 
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        HumanEntity he = event.getPlayer();
+        if (he == null) {
+            return;
+        }
+        clearCycleItems(he.getUniqueId());
+    }
+
     public synchronized static void clearCycleItems(UUID uuid) {
         guis.remove(uuid);
     }
@@ -223,7 +235,7 @@ public abstract class Menu implements Listener {
                     is = new ItemStack(nextItem.getMat(), nextItem.getQty());
                     ItemMeta isMeta = is.getItemMeta();
                     if (isMeta != null) {
-                        ArrayList<String> lore = new ArrayList<String>();
+                        ArrayList<String> lore = new ArrayList<>();
                         lore.add("Any type acceptable");
                         isMeta.setLore(lore);
                         is.setItemMeta(isMeta);
@@ -240,7 +252,7 @@ public abstract class Menu implements Listener {
         public GUI(UUID uuid, Inventory inv) {
             this.uuid=uuid;
             this.inventory = inv;
-            this.cycleItems = new ArrayList<GUIItemSet>();
+            this.cycleItems = new ArrayList<>();
         }
 
         public void addCycleItems(int index, List<CVItem> items) {

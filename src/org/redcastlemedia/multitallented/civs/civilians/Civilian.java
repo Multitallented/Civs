@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.UUID;
