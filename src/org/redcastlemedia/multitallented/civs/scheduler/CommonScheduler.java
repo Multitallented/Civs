@@ -8,6 +8,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import java.util.*;
 
 public class CommonScheduler implements Runnable {
+    private final int MAX_TPS = 5;
     public final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
 //    public final HashMap<UUID, ArrayList<SuperRegion>> lastSRegion = new HashMap<UUID, ArrayList<SuperRegion>>();
     private int i = 0;
@@ -16,17 +17,17 @@ public class CommonScheduler implements Runnable {
     public void run() {
 
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        int chunk = players.size() / 8;
-        for (int j=chunk * i; j<(i==7 ? players.size() : chunk * (i+1)); j++) {
+        int chunk = players.size() / MAX_TPS;
+        for (int j=chunk * i; j<(i==MAX_TPS - 1 ? players.size() : chunk * (i+1)); j++) {
             try {
                 playerInRegion((Player) players.toArray()[j]);
             } catch (Exception e) {
 
             }
-            Thread.yield();
+//            Thread.yield();
         }
-        if (i == 7) {
-            i=-1;
+        if (i == MAX_TPS -1) {
+            i=0;
             //TODO run through all regions and tick
         } else {
             i++;
