@@ -91,6 +91,9 @@ public class RegionManager {
     public void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getName()).remove(region);
         Civs civs = Civs.getInstance();
+        if (civs == null) {
+            return;
+        }
         File dataFolder = new File(civs.getDataFolder(), "regions");
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
@@ -124,8 +127,8 @@ public class RegionManager {
         try {
             regionConfig.load(regionFile);
             regionConfig.set("location", region.getId());
-            regionConfig.set("owners",region.getOwners());
-            regionConfig.set("members", region.getMembers());
+            regionConfig.set("owners", encodePersonSet(region.getOwners()));
+            regionConfig.set("members", encodePersonSet(region.getMembers()));
             regionConfig.set("xn-radius", region.getRadiusXN());
             regionConfig.set("xp-radius", region.getRadiusXP());
             regionConfig.set("yn-radius", region.getRadiusYN());
@@ -165,6 +168,13 @@ public class RegionManager {
             return null;
         }
         return region;
+    }
+    private List<String> encodePersonSet(Set<UUID> persons) {
+        List<String> returnSet = new ArrayList<>();
+        for (UUID s : persons) {
+            returnSet.add(s.toString());
+        }
+        return returnSet;
     }
     private HashSet<UUID> processPersonList(List<String> persons) {
         HashSet<UUID> returnSet = new HashSet<>();
@@ -237,7 +247,7 @@ public class RegionManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        String regionTypeName = block.getState().getData().toItemStack().getItemMeta().getDisplayName();
+        String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
         RegionType regionType;
@@ -278,7 +288,7 @@ public class RegionManager {
             return;
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName(), block.getLocation());
+        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation());
         if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
@@ -305,11 +315,14 @@ public class RegionManager {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "too-close-region")
-                            .replace("$1", regionTypeName));
+                            .replace("$1", regionTypeName).replace("$2",currentRegion.getType()));
             return;
         }
 
         //TODO remove rebuildRegion
+
+        player.sendMessage(Civs.getPrefix() +
+            localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
     }
 

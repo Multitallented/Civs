@@ -8,17 +8,21 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -64,6 +68,12 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
         World world = Bukkit.getWorld("world");
         Block dirtBlock = mock(Block.class);
         when(dirtBlock.getType()).thenReturn(Material.DIRT);
@@ -82,11 +92,20 @@ public class RegionsTests {
         when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        when(event2.getItemInHand()).thenReturn(cobbleStack);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -103,12 +122,21 @@ public class RegionsTests {
         when(world.getBlockAt(11,50,0)).thenReturn(TestUtil.block3);
         when(world.getBlockAt(2,50,0)).thenReturn(TestUtil.blockUnique2);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        doReturn(cobbleStack).when(event2).getItemInHand();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique2);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -122,11 +150,20 @@ public class RegionsTests {
 
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block6);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block5);
+        doReturn(cobbleStack).when(event2).getItemInHand();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique3);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -144,11 +181,20 @@ public class RegionsTests {
 
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block4);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        doReturn(cobbleStack).when(event2).getItemInHand();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
         World world = Bukkit.getWorld("world");
         Block dirtBlock = mock(Block.class);
         when(dirtBlock.getType()).thenReturn(Material.DIRT);
@@ -206,11 +252,20 @@ public class RegionsTests {
         when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        doReturn(cobbleStack).when(event2).getItemInHand();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -225,11 +280,20 @@ public class RegionsTests {
 
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block8);
+        ItemStack cobbleStack = CVItem.createCVItemFromString("COBBLESTONE").createItemStack();
+        doReturn(cobbleStack).when(event3).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.block7);
+        doReturn(cobbleStack).when(event2).getItemInHand();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
 
 
         RegionListener regionListener = new RegionListener();
@@ -279,9 +343,11 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique6);
+        doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Shelter")).when(event1).getItemInHand();
         BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
         when(event2.getPlayer()).thenReturn(TestUtil.player);
         when(event2.getBlockPlaced()).thenReturn(TestUtil.blockUnique7);
+        doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Shelter")).when(event2).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);

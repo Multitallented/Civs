@@ -172,13 +172,7 @@ public class TestUtil {
         blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0));
     }
 
-    private static Block createUniqueBlock(Material mat, String name, Location location) {
-        Block block = mock(Block.class);
-        when(block.getType()).thenReturn(mat);
-        BlockState blockState = mock(BlockState.class);
-        MaterialData materialData = mock(MaterialData.class);
-        when(block.getState()).thenReturn(blockState);
-        when(blockState.getData()).thenReturn(materialData);
+    public static ItemStack createUniqueItemStack(Material mat, String name) {
         ItemStack is = mock(ItemStack.class);
         ItemMeta im = mock(ItemMeta.class);
         when(is.getItemMeta()).thenReturn(im);
@@ -187,7 +181,19 @@ public class TestUtil {
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
         when(im.getLore()).thenReturn(lore);
+        return is;
+    }
+
+    public static Block createUniqueBlock(Material mat, String name, Location location) {
+        Block block = mock(Block.class);
+        when(block.getType()).thenReturn(mat);
+        BlockState blockState = mock(BlockState.class);
+        MaterialData materialData = mock(MaterialData.class);
+        when(block.getState()).thenReturn(blockState);
+        when(blockState.getData()).thenReturn(materialData);
+        ItemStack is = createUniqueItemStack(mat, name);
         when(materialData.toItemStack()).thenReturn(is);
+        when(materialData.toItemStack(Matchers.anyInt())).thenReturn(is);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
         return block;

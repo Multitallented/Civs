@@ -62,6 +62,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".build-reqs", "All the blocks you need to place to build a $1"));
                 currentLanguage.put("too-close-region",
                         localeConfig.getString(langKey + ".too-close-region", "Your $1 would be too close to a $2"));
+                currentLanguage.put("region-built",
+                        localeConfig.getString(langKey + ".region-built", "You have successfully built a $1"));
 
                 currentLanguage.put("no-region-type-found",
                         localeConfig.getString(langKey + ".no-region-type-found", "No region type found for $1"));
@@ -100,6 +102,7 @@ public class LocaleManager {
         englishMap.put("range", "Range");
         englishMap.put("build-reqs", "All the blocks you need to place to build a $1");
         englishMap.put("too-close-region", "Your $1 would be too close to a $2");
+        englishMap.put("region-built", "You have successfully built a $1");
         englishMap.put("no-region-type-found", "No region type found for $1");
         englishMap.put("building-too-big", "You're building is too big to be a $1");
         englishMap.put("no-required-blocks", "You haven't placed the required blocks to make a $1");
