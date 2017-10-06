@@ -45,15 +45,19 @@ public class ShopMenu extends Menu {
         if (civItem == null) {
             return;
         }
-        String parentName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        String history = MENU_NAME;
+        if (event.getInventory().getItem(0) != null) {
+            String parentName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+            history += "," + parentName;
+        }
         if (civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
+            appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
             return;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.REGION)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
+            appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) civItem));
             return;
@@ -70,7 +74,7 @@ public class ShopMenu extends Menu {
                 }
             }
             if (hasClass) {
-                appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
+                appendHistory(civilian.getUuid(), history);
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
                 return;
@@ -85,7 +89,9 @@ public class ShopMenu extends Menu {
         List<CivItem> shopItems = itemManager.getShopItems(civilian, parent);
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(shopItems.size()) + 9, MENU_NAME);
 
-        inventory.setItem(0, parent.createItemStack());
+        if (parent != null) {
+            inventory.setItem(0, parent.createItemStack());
+        }
         inventory.setItem(8, getBackButton(civilian));
 
         int i=9;
