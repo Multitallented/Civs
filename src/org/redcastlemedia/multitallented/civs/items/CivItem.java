@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Material;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class CivItem extends CVItem {
     public int getCivQty() { return qty; }
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
-    public double getPrice() { return price; }
+    public double getPrice() { return price * ConfigManager.getInstance().getPriceMultiplier(); }
     public String getPermission() { return permission; }
     public String getProcessedName() {
         return getDisplayName().replace("Civs ", "").toLowerCase();

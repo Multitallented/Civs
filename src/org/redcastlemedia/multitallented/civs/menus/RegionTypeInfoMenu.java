@@ -73,7 +73,7 @@ public class RegionTypeInfoMenu extends Menu {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + "0"); //TODO get prices somehow
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
             priceItem.setLore(lore);
         }
 

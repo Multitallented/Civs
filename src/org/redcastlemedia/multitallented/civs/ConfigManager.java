@@ -15,6 +15,7 @@ public class ConfigManager {
     String defaultLanguage;
     boolean allowCivItemDropping;
     boolean explosionOverride;
+    double priceMultiplier;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -24,6 +25,7 @@ public class ConfigManager {
     }
     public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
     public boolean getExplosionOverride() { return explosionOverride; }
+    public double getPriceMultiplier() { return priceMultiplier; }
 
     public ConfigManager(File configFile) {
         configManager = this;
@@ -44,6 +46,7 @@ public class ConfigManager {
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             allowCivItemDropping = config.getBoolean("explosion-override", false);
+            priceMultiplier = config.getDouble("price-multiplier", 1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -53,6 +56,7 @@ public class ConfigManager {
         defaultLanguage = "en";
         allowCivItemDropping = false;
         explosionOverride = false;
+        priceMultiplier = 1;
     }
 
     public static ConfigManager getInstance() {
