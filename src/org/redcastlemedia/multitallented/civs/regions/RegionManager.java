@@ -69,6 +69,13 @@ public class RegionManager {
         }
 
     }
+    public Set<Region> getAllRegions() {
+        Set<Region> returnSet = new HashSet<>();
+        for (String worldName : regions.keySet()) {
+            returnSet.addAll(regions.get(worldName));
+        }
+        return returnSet;
+    }
 
     public void removeRegion(Region region, boolean broadcast) {
         for (Player player : Bukkit.getOnlinePlayers()) {

@@ -18,10 +18,10 @@ public class ItemsMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian) {
-        Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getItems().size()), MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getStashItems().size()), MENU_NAME);
 
         int i=0;
-        for (CVItem cvItem : civilian.getItems()) {
+        for (CVItem cvItem : civilian.getStashItems()) {
             inventory.setItem(i, cvItem.createItemStack());
             i++;
         }

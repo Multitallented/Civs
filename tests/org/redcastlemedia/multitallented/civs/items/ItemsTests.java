@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.items;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,7 +39,7 @@ public class ItemsTests {
         civilianListener.onCivilianJoin(event);
         Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
         boolean hasShelter = false;
-        for (CivItem civItem : civilian.getItems()) {
+        for (CivItem civItem : civilian.getStashItems()) {
             if (civItem.getDisplayName().equals("Civs Shelter")) {
                 hasShelter = true;
             }
@@ -57,7 +56,7 @@ public class ItemsTests {
         civilianListener.onCivilianJoin(event);
         Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
         boolean hasBackflip = false;
-        for (CivItem civItem : civilian.getItems()) {
+        for (CivItem civItem : civilian.getStashItems()) {
             if (civItem.getDisplayName().equals("Civs Backflip")) {
                 hasBackflip = true;
             }
@@ -76,7 +75,7 @@ public class ItemsTests {
         civilianListener.onCivilianJoin(event);
         Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
         boolean hasCityHall = false;
-        for (CivItem civItem : civilian.getItems()) {
+        for (CivItem civItem : civilian.getStashItems()) {
             if (civItem.getDisplayName().equals("Civs CityHall")) {
                 hasCityHall = true;
             }

@@ -51,7 +51,7 @@ public class ShopMenu extends Menu {
         }
         if (civItem.getItemType().equals(CivItem.ItemType.CLASS)) {
             boolean hasClass = false;
-            for (CivItem civItem1 : civilian.getItems()) {
+            for (CivItem civItem1 : civilian.getStashItems()) {
                 if (civItem1.getDisplayName().equals(civItem.getDisplayName())) {
                     hasClass = true;
                     break;
