@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.mockito.cglib.core.Local;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -12,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.List;
 
@@ -86,6 +88,7 @@ public class ShopMenu extends Menu {
 
     public static Inventory createMenu(Civilian civilian, CivItem parent) {
         ItemManager itemManager = ItemManager.getInstance();
+        LocaleManager localeManager = LocaleManager.getInstance();
         List<CivItem> shopItems = itemManager.getShopItems(civilian, parent);
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(shopItems.size()) + 9, MENU_NAME);
 
@@ -98,7 +101,10 @@ public class ShopMenu extends Menu {
         for (CivItem civItem : shopItems) {
             CivItem civItem1 = civItem.clone();
             civItem1.getLore().add(civilian.getUuid().toString());
+            civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
+                    ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
             inventory.setItem(i, civItem1.createItemStack());
+            civItem1.getLore().addAll(civItem1.getDescription());
             i++;
         }
 

@@ -6,6 +6,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class Util {
@@ -29,6 +30,12 @@ public class Util {
         }
         lore.add(outString);
         return lore;
+    }
+    public static List<String> parseColors(List<String> inputString) {
+        for (int i=0; i<inputString.size(); i++) {
+            inputString.set(i, parseColors(inputString.get(i)));
+        }
+        return inputString;
     }
     public static String parseColors(String input) {
         input = input.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");

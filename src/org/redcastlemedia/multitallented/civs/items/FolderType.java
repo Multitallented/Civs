@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FolderType extends CivItem {
@@ -19,7 +20,8 @@ public class FolderType extends CivItem {
                 0,
                 1,
                 price,
-                permission);
+                permission,
+                new ArrayList<String>());
         this.children = children;
         this.visible = visible;
     }

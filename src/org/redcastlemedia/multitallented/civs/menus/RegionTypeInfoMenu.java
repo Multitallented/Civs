@@ -62,7 +62,7 @@ public class RegionTypeInfoMenu extends Menu {
                 ": " + regionType.getBuildRadiusX() + "x" + regionType.getBuildRadiusZ() + "x" + regionType.getBuildRadiusY());
         lore.add(localeManager.getTranslation(civilian.getLocale(), "range") +
                 ": " + regionType.getEffectRadius());
-        lore.addAll(Util.textWrap(ChatColor.RESET + "" + ChatColor.GOLD, regionType.getDescription()));
+        lore.addAll(Util.parseColors(regionType.getDescription()));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

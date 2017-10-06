@@ -94,7 +94,8 @@ public class ItemManager {
                 icon.getDamage(),
                 1,0, -1,
                 configuration.getDouble("price", 0),
-                configuration.getString("permission"));
+                configuration.getString("permission"),
+                configuration.getStringList("description"));
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -112,7 +113,8 @@ public class ItemManager {
                 icon.getDamage(),
                 1, 0, -1,
                 config.getDouble("price", 0),
-                config.getString("permission"));
+                config.getString("permission"),
+                config.getStringList("description"));
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -149,7 +151,7 @@ public class ItemManager {
                 buildRadiusZ,
                 effectRadius,
                 rebuild,
-                config.getString("description", "Please enter a description"));
+                config.getStringList("description"));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
