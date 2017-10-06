@@ -33,7 +33,7 @@ public class RecipeMenu extends Menu {
     }
 
 
-    public static Inventory createMenu(List<List<CVItem>> items, UUID uuid) {
+    public static Inventory createMenu(List<List<CVItem>> items, UUID uuid, ItemStack icon) {
         int index = 0;
         HashMap<Integer, CVItem> proxyInv = new HashMap<>();
         HashMap<Integer, List<CVItem>> cycleItems = new HashMap<>();
@@ -151,13 +151,11 @@ public class RecipeMenu extends Menu {
 
         Inventory inv = Bukkit.createInventory(null, getInventorySize(index) + 9, MENU_NAME);
 
+        inv.setItem(0, icon);
         inv.setItem(8, getBackButton(CivilianManager.getInstance().getCivilian(uuid)));
 
         Menu.sanitizeGUIItems(proxyInv);
         Menu.sanitizeCycleItems(cycleItems);
-
-        //TODO add icon here?
-        //TODO add back icon?
 
         ArrayList<String> lore;
         for (Integer pIndex : proxyInv.keySet()) {
