@@ -60,22 +60,21 @@ public class MainMenu extends Menu {
     }
 
     public static Inventory createMenu(String locale) {
-        Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, 8, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem cvItem = new CVItem(Material.GRASS, 1, -1, 100, localeManager.getTranslation(locale, "language-menu"));
-        inventory.setItem(17, cvItem.createItemStack());
+        inventory.setItem(8, cvItem.createItemStack());
 
         CVItem cvItem1 = new CVItem(Material.EMERALD, 1, -1, 100, localeManager.getTranslation(locale, "shop"));
-        inventory.setItem(0, cvItem1.createItemStack());
+        inventory.setItem(2, cvItem1.createItemStack());
 
         CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
-        inventory.setItem(1, cvItem2.createItemStack());
+        inventory.setItem(3, cvItem2.createItemStack());
 
         CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, -1, 100, localeManager.getTranslation(locale, "community"));
-        inventory.setItem(2, cvItem3.createItemStack());
+        inventory.setItem(4, cvItem3.createItemStack());
 
-//        inventory.setItem(0, new ItemStack(Material.MAP));
         return inventory;
     }
 
