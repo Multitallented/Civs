@@ -44,12 +44,18 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".name", "Unnamed"));
                 currentLanguage.put("icon",
                         localeConfig.getString(langKey + ".icon", "WOOL.14"));
+                currentLanguage.put("back-button",
+                        localeConfig.getString(langKey + ".back-button", "Back"));
                 currentLanguage.put("language-menu",
                         localeConfig.getString(langKey + ".language-menu", "Select Language"));
                 currentLanguage.put("language-set",
                         localeConfig.getString(langKey + ".language-set", "Your language has been set to $1"));
                 currentLanguage.put("shop",
                         localeConfig.getString(langKey + ".shop", "Shop"));
+                currentLanguage.put("price",
+                        localeConfig.getString(langKey + ".price", "Price"));
+                currentLanguage.put("buy-item",
+                        localeConfig.getString(langKey + ".buy-item", "For Sale"));
                 currentLanguage.put("items",
                         localeConfig.getString(langKey + ".items", "Items"));
                 currentLanguage.put("community",
@@ -93,9 +99,12 @@ public class LocaleManager {
         HashMap<String, String> englishMap = new HashMap<>();
         englishMap.put("name", "English");
         englishMap.put("icon", "WOOL.14");
+        englishMap.put("back-button", "Back");
         englishMap.put("language-menu", "Select Language");
         englishMap.put("language-set", "Your language has been set to $1");
         englishMap.put("shop", "Shop");
+        englishMap.put("price", "Price");
+        englishMap.put("buy-item", "For Sale");
         englishMap.put("items", "Items");
         englishMap.put("community", "Community");
         englishMap.put("size", "Size");

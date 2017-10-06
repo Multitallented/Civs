@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -15,7 +16,8 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import java.util.List;
 
 public class ShopMenu extends Menu {
-    private static final String MENU_NAME = "CivsShop";
+    static final String MENU_NAME = "CivShop";
+    private CivItem parent = null;
     public ShopMenu() {
         super(MENU_NAME);
     }
@@ -25,23 +27,33 @@ public class ShopMenu extends Menu {
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack == null || !clickedStack.hasItemMeta() || !CVItem.isCivsItem(clickedStack)) {
+        if (clickedStack == null || !clickedStack.hasItemMeta()) {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();
         String itemName = im.getDisplayName();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        if (itemName.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "back-button"))) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
         ItemManager itemManager = ItemManager.getInstance();
+        if (!CVItem.isCivsItem(clickedStack)) {
+            return;
+        }
         CivItem civItem = itemManager.getItemType(itemName);
         if (civItem == null) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        String parentName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
         if (civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
             return;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.REGION)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) civItem));
             return;
@@ -58,6 +70,7 @@ public class ShopMenu extends Menu {
                 }
             }
             if (hasClass) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + parentName);
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
                 return;
@@ -70,9 +83,12 @@ public class ShopMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, CivItem parent) {
         ItemManager itemManager = ItemManager.getInstance();
         List<CivItem> shopItems = itemManager.getShopItems(civilian, parent);
-        Inventory inventory = Bukkit.createInventory(null, getInventorySize(shopItems.size()), MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(shopItems.size()) + 9, MENU_NAME);
 
-        int i=0;
+        inventory.setItem(0, parent.createItemStack());
+        inventory.setItem(8, getBackButton(civilian));
+
+        int i=9;
         for (CivItem civItem : shopItems) {
             CivItem civItem1 = civItem.clone();
             civItem1.getLore().add(civilian.getUuid().toString());

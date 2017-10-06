@@ -35,6 +35,15 @@ public class Civilian {
         return stashItems;
     }
 
+    public int getCountStashItems(String name) {
+        for (CivItem civItem : stashItems) {
+            if (civItem.getProcessedName().equals(name)) {
+                return civItem.getCivQty();
+            }
+        }
+        return 0;
+    }
+
     public int getCountNonStashItems(String name) {
         int count = 0;
         String itemName = "Civs " + name;

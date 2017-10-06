@@ -10,6 +10,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.mockito.cglib.core.Local;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -18,6 +24,7 @@ public abstract class Menu implements Listener {
     private final String MENU_NAME;
     private volatile static HashMap<UUID, GUI> guis = new HashMap<>();
     private volatile static boolean running = false;
+    private static Map<UUID, List<String>> history = new HashMap<>();
 
     public Menu(String menuName) {
         this.MENU_NAME = menuName;
@@ -44,6 +51,65 @@ public abstract class Menu implements Listener {
         }
         size += 9;
         return size;
+    }
+
+    static ItemStack getBackButton(Civilian civilian) {
+        CVItem backButton = CVItem.createCVItemFromString("REDSTONE_BLOCK");
+        backButton.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "back-button"));
+        backButton.setLore(history.get(civilian.getUuid()));
+        return backButton.createItemStack();
+    }
+    static void clickBackButton(HumanEntity humanEntity) {
+        if (history.get(humanEntity.getUniqueId()).isEmpty()) {
+            return;
+        }
+        ItemManager itemManager = ItemManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
+        String[] lastHistory = history.get(civilian.getUuid()).get(history.get(civilian.getUuid()).size() - 1).split(",");
+        history.get(civilian.getUuid()).remove(history.get(civilian.getUuid()).size() - 1);
+        if (lastHistory[0].equals(ConfirmationMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(ConfirmationMenu.createMenu(civilian, itemManager.getItemType(lastHistory[1])));
+            return;
+        }
+        if (lastHistory[0].equals(MainMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(MainMenu.createMenu(civilian.getLocale()));
+            return;
+        }
+        if (lastHistory[0].equals(ShopMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(ShopMenu.createMenu(civilian, itemManager.getItemType(lastHistory[1])));
+            return;
+        }
+        if (lastHistory[0].equals(RegionTypeInfoMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) itemManager.getItemType(lastHistory[1])));
+            return;
+        }
+    }
+    static boolean isBackButton(ItemStack is, String locale) {
+        return is != null &&
+                is.getType() == Material.REDSTONE_BLOCK &&
+                is.hasItemMeta() &&
+                is.getItemMeta().getDisplayName() != null &&
+                is.getItemMeta().getDisplayName().equals(LocaleManager.getInstance().getTranslation(locale, "back-button"));
+    }
+    static void appendHistory(UUID uuid, String params) {
+        if (history.get(uuid) == null) {
+            history.put(uuid, new ArrayList<String>());
+        }
+        history.get(uuid).add(params);
+    }
+    static void setHistory(UUID uuid, List<String> newHistory) {
+        history.put(uuid, newHistory);
+    }
+    static void clearHistory(UUID uuid) {
+        history.remove(uuid);
+    }
+    static List<String> getHistory(UUID uuid) {
+        List<String> returnHistory = history.get(uuid);
+        return returnHistory == null ? new ArrayList<String>() : returnHistory;
     }
 
     public static void sanitizeCycleItems(HashMap<Integer, List<CVItem>> items) {
@@ -164,6 +230,7 @@ public abstract class Menu implements Listener {
             return;
         }
         clearCycleItems(he.getUniqueId());
+        history.remove(he.getUniqueId());
     }
 
     public synchronized static void clearCycleItems(UUID uuid) {

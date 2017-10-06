@@ -4,9 +4,12 @@ en:
   #language-menu
   language-menu: Select Language
   language-set: "Your language has been set to $1"
+  back-button: Back
 
   #shop
   shop: Shop
+  buy-item: For Sale
+  price: Price
 
   #items
   items: Items

@@ -30,6 +30,9 @@ public class CivItem extends CVItem {
     public int getCivMax() { return max; }
     public double getPrice() { return price; }
     public String getPermission() { return permission; }
+    public String getProcessedName() {
+        return getDisplayName().replace("Civs ", "").toLowerCase();
+    }
 
 
     public CivItem(List<String> reqs,

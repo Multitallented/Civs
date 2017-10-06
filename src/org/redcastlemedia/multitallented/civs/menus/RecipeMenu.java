@@ -1,15 +1,12 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
@@ -28,6 +25,11 @@ public class RecipeMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (Menu.isBackButton(event.getCurrentItem(),
+                CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId()).getLocale())) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
     }
 
 
@@ -147,8 +149,9 @@ public class RecipeMenu extends Menu {
         }
 
 
-        Inventory inv = Bukkit.createInventory(null, getInventorySize(index), MENU_NAME);
-        //Inventory inv = Bukkit.createInventory(null, size, ChatColor.RED + title);
+        Inventory inv = Bukkit.createInventory(null, getInventorySize(index) + 9, MENU_NAME);
+
+        inv.setItem(8, getBackButton(CivilianManager.getInstance().getCivilian(uuid)));
 
         Menu.sanitizeGUIItems(proxyInv);
         Menu.sanitizeCycleItems(cycleItems);

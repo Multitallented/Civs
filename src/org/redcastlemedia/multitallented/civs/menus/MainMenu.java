@@ -9,11 +9,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class MainMenu extends Menu {
-    private static final String MENU_NAME = "CivsMenu";
+    static final String MENU_NAME = "CivsMain";
     public MainMenu() {
         super(MENU_NAME);
     }
@@ -35,21 +34,25 @@ public class MainMenu extends Menu {
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
         if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "shop"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, null));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "items"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ItemsMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "community"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(CommunityMenu.createMenu(locale));
             return;

@@ -38,6 +38,7 @@ public class LanguageMenu extends Menu {
         civilian.setLocale(newLocale);
         civilianManager.saveCivilian(civilian);
         event.getWhoClicked().closeInventory();
+        clearHistory(civilian.getUuid());
         event.getWhoClicked().sendMessage(Civs.getPrefix() +
                 localeManager.getTranslation(newLocale, "language-set").replace("$1", itemName));
     }
