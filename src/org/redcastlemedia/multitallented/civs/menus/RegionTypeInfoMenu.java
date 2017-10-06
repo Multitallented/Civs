@@ -33,6 +33,11 @@ public class RegionTypeInfoMenu extends Menu {
         RegionType regionType = (RegionType) itemManager.getItemType(regionName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
+        if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
+
         if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
