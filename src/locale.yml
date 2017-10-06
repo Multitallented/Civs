@@ -10,6 +10,9 @@ en:
   shop: Shop
   buy-item: For Sale
   price: Price
+  buy: "Buy $1"
+  cancel: Cancel
+  item-bought: "Congrats! You just bought $1 for $2"
 
   #items
   items: Items

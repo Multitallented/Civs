@@ -56,6 +56,12 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".price", "Price"));
                 currentLanguage.put("buy-item",
                         localeConfig.getString(langKey + ".buy-item", "For Sale"));
+                currentLanguage.put("buy",
+                        localeConfig.getString(langKey + ".buy", "Buy $1"));
+                currentLanguage.put("cancel",
+                        localeConfig.getString(langKey + ".cancel", "Cancel"));
+                currentLanguage.put("item-bought",
+                        localeConfig.getString(langKey + ".item-bought", "Congrats! You just bought $1 for $2"));
                 currentLanguage.put("items",
                         localeConfig.getString(langKey + ".items", "Items"));
                 currentLanguage.put("community",
@@ -105,6 +111,9 @@ public class LocaleManager {
         englishMap.put("shop", "Shop");
         englishMap.put("price", "Price");
         englishMap.put("buy-item", "For Sale");
+        englishMap.put("buy", "Buy $1");
+        englishMap.put("cancel", "Cancel");
+        englishMap.put("item-bought", "Congrats! You just bought $1 for $2");
         englishMap.put("items", "Items");
         englishMap.put("community", "Community");
         englishMap.put("size", "Size");

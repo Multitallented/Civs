@@ -2,8 +2,11 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.redcastlemedia.multitallented.civs.Civs;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Util {
 
@@ -70,5 +73,16 @@ public class Util {
             throw new IllegalStateException(
                     "File Name " + fileName + " results in a empty fileName!");
         return newFileName;
+    }
+    public static Locale getNumberFormatLocale(String locale) {
+        Locale localeEnum = Locale.forLanguageTag(locale);
+        if (localeEnum == null) {
+            Civs.logger.severe("Unable to find locale " + locale);
+            return Locale.getDefault();
+        }
+        return localeEnum;
+    }
+    public static String getNumberFormat(double number, String locale) {
+        return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
     }
 }
