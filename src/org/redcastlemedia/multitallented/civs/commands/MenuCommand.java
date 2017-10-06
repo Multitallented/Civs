@@ -19,7 +19,7 @@ public class MenuCommand implements CivCommand {
         Player player = (Player) commandSender;
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        Inventory menu = MainMenu.createMenu(civilian.getLocale());
+        Inventory menu = MainMenu.createMenu(civilian);
         player.openInventory(menu);
         return true;
     }

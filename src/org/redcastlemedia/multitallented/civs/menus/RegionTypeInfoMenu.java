@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -67,9 +68,9 @@ public class RegionTypeInfoMenu extends Menu {
 
         //1 Price
         String itemName = regionType.getProcessedName();
-        if (regionType.getCivMax() == -1 ||
-                (civilian.getCountNonStashItems(itemName) + civilian.getCountStashItems(itemName) < regionType.getCivMax())) {
-
+        boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
+        boolean isNotOverMax = civilian.getCountNonStashItems(itemName) + civilian.getCountStashItems(itemName) < regionType.getCivMax();
+        if (hasShopPerms && (regionType.getCivMax() == -1 || isNotOverMax)) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore = new ArrayList<>();

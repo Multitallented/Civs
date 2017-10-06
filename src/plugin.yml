@@ -9,23 +9,17 @@ version: 0.0.1-b001
 depend: [Vault]
 commands:
    cv:
-      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv']
+      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv', 'towny', 'fa', 'f', 'faction']
       description: Civs commands
       usage: /<command>
 permissions:
    civs.join:
        description: Allows players to join towns
        default: true
-   civs.unlock:
-       description: Allows players to unlock new regions
-       default: op
-   civs.create.all:
-      description: Allows you to create a region of any type if you have the necessary materials
-      default: op
+   civs.shop:
+       description: Allows players to use the shop
+       default: true
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-   civs.group.default:
-      description: Gives you the default group for region limitations
-      default: true
 loadafter: [Vault]

@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -59,15 +60,18 @@ public class MainMenu extends Menu {
         }
     }
 
-    public static Inventory createMenu(String locale) {
+    public static Inventory createMenu(Civilian civilian) {
         Inventory inventory = Bukkit.createInventory(null, 8, MENU_NAME);
+        String locale = civilian.getLocale();
 
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem cvItem = new CVItem(Material.GRASS, 1, -1, 100, localeManager.getTranslation(locale, "language-menu"));
         inventory.setItem(8, cvItem.createItemStack());
 
-        CVItem cvItem1 = new CVItem(Material.EMERALD, 1, -1, 100, localeManager.getTranslation(locale, "shop"));
-        inventory.setItem(2, cvItem1.createItemStack());
+        if (Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop")) {
+            CVItem cvItem1 = new CVItem(Material.EMERALD, 1, -1, 100, localeManager.getTranslation(locale, "shop"));
+            inventory.setItem(2, cvItem1.createItemStack());
+        }
 
         CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
         inventory.setItem(3, cvItem2.createItemStack());

@@ -74,7 +74,7 @@ public abstract class Menu implements Listener {
         }
         if (lastHistory[0].equals(MainMenu.MENU_NAME)) {
             humanEntity.closeInventory();
-            humanEntity.openInventory(MainMenu.createMenu(civilian.getLocale()));
+            humanEntity.openInventory(MainMenu.createMenu(civilian));
             return;
         }
         if (lastHistory[0].equals(ShopMenu.MENU_NAME)) {

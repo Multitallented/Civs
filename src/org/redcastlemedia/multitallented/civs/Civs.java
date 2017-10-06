@@ -31,9 +31,9 @@ public class Civs extends JavaPlugin {
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static String NAME = "Civs";
     public static String VERSION = "0.0.1";
-    private static Economy econ;
-    private static Permission perm;
-    private static Chat chat;
+    public static Economy econ;
+    public static Permission perm;
+    public static Chat chat;
     private static Civs civs;
     public static Logger logger;
 
