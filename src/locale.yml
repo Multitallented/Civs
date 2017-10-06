@@ -19,6 +19,7 @@ en:
   range: Range
   build-reqs: "All the blocks you need to place to build a $1"
   too-close-region: "Your $1 would be too close to a $2"
+  region-built: "You have successfully built a $1"
 
   #errors
   no-region-type-found: "No region type found for $1"

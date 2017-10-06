@@ -42,12 +42,12 @@ public class ProtectionHandler implements Listener {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
-        if (event.isCancelled()) {
+        if (!event.isCancelled()) {
             Region region = regionManager.getRegionAt(event.getBlock().getLocation());
             if (region == null) {
                 return;
             }
-            int[] radii = Region.hasRequiredBlocks(region.getType(), region.getLocation());
+            int[] radii = Region.hasRequiredBlocks(region.getType().toLowerCase(), region.getLocation());
             if (radii.length == 0) {
                 regionManager.removeRegion(region, true);
             }

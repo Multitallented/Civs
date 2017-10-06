@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -155,8 +156,13 @@ public class ItemManager {
 
     public ArrayList<CivItem> loadCivItems(FileConfiguration civConfig, UUID uuid) {
         ArrayList<CivItem> items = new ArrayList<>();
-        for (String key : civConfig.getConfigurationSection("items").getKeys(false)) {
-            CivItem currentItem = getItemType(civConfig.getString("items." + key + ".name"));
+        ConfigurationSection configurationSection = civConfig.getConfigurationSection("items");
+        if (configurationSection == null) {
+            return items;
+        }
+        for (String key : configurationSection.getKeys(false)) {
+            CivItem currentItem = getItemType(key);
+            currentItem.setQty(civConfig.getInt("items." + key));
             ArrayList<String> lore = new ArrayList<>();
             lore.add(uuid.toString());
             currentItem.setLore(lore);

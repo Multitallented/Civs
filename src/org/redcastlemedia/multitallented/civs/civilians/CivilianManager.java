@@ -53,15 +53,21 @@ public class CivilianManager {
     private Civilian loadFromFileCivilian(UUID uuid) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
-            return createDefaultCivilian(uuid);
+            Civilian civilian = createDefaultCivilian(uuid);
+            saveCivilian(civilian);
+            return civilian;
         }
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {
-            return createDefaultCivilian(uuid);
+            Civilian civilian = createDefaultCivilian(uuid);
+            saveCivilian(civilian);
+            return civilian;
         }
         File civilianFile = new File(civilianFolder, uuid + ".yml");
         if (!civilianFile.exists()) {
-            return createDefaultCivilian(uuid);
+            Civilian civilian = createDefaultCivilian(uuid);
+            saveCivilian(civilian);
+            return civilian;
         }
         FileConfiguration civConfig = new YamlConfiguration();
         try {
@@ -74,6 +80,7 @@ public class CivilianManager {
             return new Civilian(uuid, civConfig.getString("locale"), items);
         } catch (Exception ex) {
             Civs.logger.severe("Unable to read/write " + uuid + ".yml");
+            ex.printStackTrace();
             return createDefaultCivilian(uuid);
         }
     }
@@ -109,6 +116,9 @@ public class CivilianManager {
 
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
+            for (CivItem civItem : civilian.getStashItems()) {
+                civConfig.set("items." + civItem.getDisplayName().replace("Civs ", "").toLowerCase(), civItem.getQty());
+            }
 
             civConfig.save(civilianFile);
         } catch (Exception ex) {

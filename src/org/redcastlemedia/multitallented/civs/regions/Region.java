@@ -70,10 +70,10 @@ public class Region {
     }
 
     public String getId() {
-        return location.getWorld() + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ();
+        return location.getWorld().getName() + "-" + (int) location.getX() + "-" + (int) location.getY() + "-" + (int) location.getZ();
     }
     public static Location idToLocation(String id) {
-        String[] idSplit = id.split(":");
+        String[] idSplit = id.split("-");
         return new Location(Bukkit.getWorld(idSplit[0]),
                 Double.parseDouble(idSplit[1]),
                 Double.parseDouble(idSplit[2]),
