@@ -28,7 +28,8 @@ public class CommonScheduler implements Runnable {
         }
         if (i == MAX_TPS -1) {
             i=0;
-            //TODO run through all regions and tick
+            RegionTickThread regionTickThread = new RegionTickThread();
+            regionTickThread.run();
         } else {
             i++;
         }
@@ -45,7 +46,7 @@ public class CommonScheduler implements Runnable {
 
         ArrayList<Region> previousRegions = lastRegion.get(player.getUniqueId());
         if (previousRegions == null) {
-            previousRegions = new ArrayList<Region>();
+            previousRegions = new ArrayList<>();
         }
 
         for (Region r : containedRegions) {

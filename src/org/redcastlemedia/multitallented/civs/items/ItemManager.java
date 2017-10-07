@@ -3,10 +3,13 @@ package org.redcastlemedia.multitallented.civs.items;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.mockito.internal.matchers.Null;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.*;
@@ -68,6 +71,8 @@ public class ItemManager {
                         civItem = loadSpellType(typeConfig);
                     } else if (type.equals("class")) {
                         civItem = loadClassType(typeConfig);
+                    } else if (type.equals("town")) {
+                        civItem = loadTownType(typeConfig, file.getName().replace(".yml", ""));
                     }
                     if (civItem != null && parentList != null) {
                         parentList.add(civItem);
@@ -81,7 +86,7 @@ public class ItemManager {
             return;
         }
     }
-    public CivItem loadClassType(FileConfiguration configuration) {
+    public CivItem loadClassType(FileConfiguration configuration) throws NullPointerException {
         //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(configuration.getString("icon", "CHEST"));
         String name = configuration.getString("name");
@@ -100,7 +105,7 @@ public class ItemManager {
         return civItem;
     }
 
-    public CivItem loadSpellType(FileConfiguration config) {
+    public CivItem loadSpellType(FileConfiguration config) throws NullPointerException {
         //TODO load spelltype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
@@ -119,7 +124,33 @@ public class ItemManager {
         return civItem;
     }
 
-    public RegionType loadRegionType(FileConfiguration config) {
+    public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
+        HashSet<String> effects = new HashSet<>();
+        effects.addAll(config.getStringList("effects"));
+        int buildRadius = config.getInt("build-radius", 20);
+        TownType townType = new TownType(
+                name,
+                icon,
+                config.getStringList("pre-reqs"),
+                config.getInt("qty", 1),
+                config.getInt("min",0),
+                config.getInt("max", -1),
+                config.getDouble("price", 0),
+                config.getString("permission"),
+                config.getStringList("build-reqs"),
+                effects,
+                buildRadius,
+                config.getInt("build-radius-y", buildRadius),
+                config.getStringList("critical-build-reqs"),
+                config.getStringList("description"),
+                config.getInt("power", 200),
+                config.getInt("max-power", 1000));
+        itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
+        return townType;
+    }
+
+    public RegionType loadRegionType(FileConfiguration config) throws NullPointerException {
         String name = config.getString("name");
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         List<List<CVItem>> reqs = new ArrayList<>();

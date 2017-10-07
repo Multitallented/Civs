@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.io.File;
 import java.util.Date;
@@ -50,6 +51,8 @@ public class Civs extends JavaPlugin {
         new ItemManager();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();
+        TownManager townManager = new TownManager();
+        townManager.loadAllTowns();
         new CivilianManager();
 
         initCommands();

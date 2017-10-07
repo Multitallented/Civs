@@ -82,6 +82,7 @@ public class CivItem extends CVItem {
         REGION,
         SPELL,
         CLASS,
-        FOLDER
+        FOLDER,
+        TOWN
     }
 }
