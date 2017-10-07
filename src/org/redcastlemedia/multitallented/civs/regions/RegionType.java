@@ -19,6 +19,11 @@ public class RegionType extends CivItem {
     private final int buildRadiusZ;
     private final int effectRadius;
     private final String rebuild;
+    private final List<List<CVItem>> reagents;
+    private final List<List<CVItem>> input;
+    private final double payout;
+
+    private final List<List<CVItem>> output;
 
     public RegionType(String name,
                       CVItem icon,
@@ -29,6 +34,10 @@ public class RegionType extends CivItem {
                       double price,
                       String permission,
                       List<List<CVItem>> reqs,
+                      List<List<CVItem>> reagents,
+                      List<List<CVItem>> input,
+                      List<List<CVItem>> output,
+                      double payout,
                       HashSet<String> effects,
                       int buildRadius,
                       int buildRadiusX,
@@ -40,6 +49,10 @@ public class RegionType extends CivItem {
         super(civReqs, true, ItemType.REGION, name, icon.getMat(), icon.getDamage(), civQty, civMin, civMax, price, permission, description);
         this.name = name;
         this.reqs = reqs;
+        this.reagents = reagents;
+        this.input = input;
+        this.output = output;
+        this.payout = payout;
         this.effects = effects;
         this.buildRadius = buildRadius;
         this.buildRadiusX = buildRadiusX;
@@ -53,6 +66,9 @@ public class RegionType extends CivItem {
     }
     public List<List<CVItem>> getReqs() {
         return reqs;
+    }
+    public List<List<CVItem>> getReagents() {
+        return reagents;
     }
     public HashSet<String> getEffects() {
         return effects;
@@ -73,4 +89,13 @@ public class RegionType extends CivItem {
         return effectRadius;
     }
     public String getRebuild() { return rebuild; }
+    public double getPayout() {
+        return payout;
+    }
+    public List<List<CVItem>> getInput() {
+        return input;
+    }
+    public List<List<CVItem>> getOutput() {
+        return output;
+    }
 }

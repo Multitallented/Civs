@@ -157,6 +157,18 @@ public class ItemManager {
         for (String req : config.getStringList("build-reqs")) {
             reqs.add(CVItem.createListFromString(req));
         }
+        List<List<CVItem>> reagents = new ArrayList<>();
+        for (String reagent : config.getStringList("reagents")) {
+            reagents.add(CVItem.createListFromString(reagent));
+        }
+        List<List<CVItem>> inputs = new ArrayList<>();
+        for (String input : config.getStringList("input")) {
+            inputs.add(CVItem.createListFromString(input));
+        }
+        List<List<CVItem>> outputs = new ArrayList<>();
+        for (String output : config.getStringList("output")) {
+            outputs.add(CVItem.createListFromString(output));
+        }
         HashSet<String> effects = new HashSet<>();
         effects.addAll(config.getStringList("effects"));
         int buildRadius = config.getInt("build-radius", 5);
@@ -175,6 +187,10 @@ public class ItemManager {
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 reqs,
+                reagents,
+                inputs,
+                outputs,
+                config.getDouble("payout", 0),
                 effects,
                 buildRadius,
                 buildRadiusX,

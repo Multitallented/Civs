@@ -11,6 +11,7 @@ public class RegionTickThread implements Runnable {
         for (Region region : regionManager.getAllRegions()) {
 
             //TODO items
+            boolean hasReagents = region.hasReagents();
 
         }
     }

@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -220,13 +222,41 @@ public class Region {
         }
         return radii;
     }
-//
-//    private static boolean checkIfScanFinished(HashMap<String, Integer> itemCheck) {
-//        for (String key : itemCheck.keySet()) {
-//            if (itemCheck.get(key) > 0) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+    public boolean hasReagents() {
+        Block block = location.getBlock();
+        if (!(block.getState() instanceof Chest)) {
+            return false;
+        }
+        Chest chest = (Chest) block.getState();
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionType regionType = (RegionType) itemManager.getItemType(type);
+        outer: for (List<CVItem> currentList : regionType.getReagents()) {
+            boolean hasItem = false;
+            for (CVItem item : currentList) {
+                if (item.isWildDamage() && item.getDisplayName() == null &&
+                        chest.getInventory().contains(item.getMat())) {
+                    hasItem = true;
+                    break;
+                } else if (item.isWildDamage() && item.getDisplayName() != null) {
+                    for (ItemStack is : chest.getInventory()) {
+                        if (is != null &&
+                                is.hasItemMeta() &&
+                                is.getItemMeta().getDisplayName().equals(item.getDisplayName()) &&
+                                is.getType() == item.getMat()) {
+                            hasItem = true;
+                            break;
+                        }
+                    }
+                } else if (!item.isWildDamage() &&
+                        chest.getInventory().contains(item.createItemStack())) {
+                    hasItem = true;
+                    break;
+                }
+            }
+            if (!hasItem) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
