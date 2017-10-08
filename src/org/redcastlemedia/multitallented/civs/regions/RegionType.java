@@ -22,6 +22,7 @@ public class RegionType extends CivItem {
     private final List<List<CVItem>> reagents;
     private final List<List<CVItem>> input;
     private final double payout;
+    private final long period;
 
     private final List<List<CVItem>> output;
 
@@ -45,7 +46,8 @@ public class RegionType extends CivItem {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild,
-                      List<String> description) {
+                      List<String> description,
+                      long period) {
         super(civReqs, true, ItemType.REGION, name, icon.getMat(), icon.getDamage(), civQty, civMin, civMax, price, permission, description);
         this.name = name;
         this.reqs = reqs;
@@ -60,6 +62,7 @@ public class RegionType extends CivItem {
         this.buildRadiusZ = buildRadiusZ;
         this.effectRadius = effectRadius;
         this.rebuild = rebuild;
+        this.period = period;
     }
     public String getName() {
         return name;
@@ -98,4 +101,5 @@ public class RegionType extends CivItem {
     public List<List<CVItem>> getOutput() {
         return output;
     }
+    public long getPeriod() { return period; }
 }

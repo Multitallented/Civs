@@ -2,10 +2,14 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,5 +95,184 @@ public class Util {
     }
     public static String getNumberFormat(double number, String locale) {
         return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+    }
+    public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
+        if (inv == null) {
+            return false;
+        }
+
+        outer: for (List<CVItem> orReqs : req) {
+            for (CVItem orReq : orReqs) {
+
+                int amount = 0;
+                for (ItemStack iss : inv.getContents()) {
+                    if (iss == null) {
+                        continue;
+                    }
+
+                    if (orReq.equivalentItem(iss, true)) {
+                        if ((iss.getAmount() + amount) >= orReq.getQty()) {
+                            continue outer;
+                        } else {
+                            amount += iss.getAmount();
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean removeItems(List<List<CVItem>> req, Inventory inv) {
+        if (inv == null) {
+            return false;
+        }
+
+        //clone the list
+        ArrayList<ArrayList<CVItem>> hsItemsList = new ArrayList<>();
+        for (List<CVItem> hsItems : req) {
+            ArrayList<CVItem> tempList = new ArrayList<>();
+            for (CVItem hsItem : hsItems) {
+                tempList.add(hsItem.clone());
+            }
+            hsItemsList.add(tempList);
+        }
+
+
+        ArrayList<Integer> removeItems = new ArrayList<>();
+        HashMap<Integer, Integer> reduceItems = new HashMap<>();
+
+        for (int i =0; i< inv.getSize(); i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) {
+                continue;
+            }
+
+            int j=0;
+            boolean removeIndex = false;
+            outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
+                for (CVItem hsItem : hsItems) {
+                    if (hsItem.equivalentItem(item, true)) {
+
+                        if (item.getAmount() > hsItem.getQty()) {
+                            reduceItems.put(i, hsItem.getQty());
+                            removeIndex = true;
+                        } else if (item.getAmount() == hsItem.getQty()) {
+                            removeItems.add(i);
+                            removeIndex = true;
+                        } else {
+                            removeItems.add(i);
+                            hsItem.setQty(hsItem.getQty() - item.getAmount());
+                        }
+                        break outer1;
+
+                    }
+                }
+                j++;
+            }
+            if (removeIndex) {
+                hsItemsList.remove(j);
+            }
+        }
+
+        if (!hsItemsList.isEmpty()) {
+            return false;
+        }
+
+        for (Integer i : reduceItems.keySet()) {
+            inv.getItem(i).setAmount(inv.getItem(i).getAmount() - reduceItems.get(i));
+        }
+
+        for (Integer i : removeItems) {
+            inv.setItem(i, null);
+        }
+
+        return true;
+    }
+
+    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, Inventory inv) {
+        ArrayList<ItemStack> remainingItems = new ArrayList<>();
+
+        outer: for (List<CVItem> tempItems : addItems) {
+            double rand = Math.random();
+            double prevChance = 0;
+            for (CVItem item : tempItems) {
+                if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
+                    ItemStack is = null;
+                    if (!item.isWildDamage()) {
+                        is = new ItemStack(item.getMat(), 1, (short) item.getDamage());
+                    } else {
+                        is = new ItemStack(item.getMat(), 1);
+                    }
+                    if (item.getDisplayName() != null) {
+                        ItemMeta im = is.getItemMeta();
+                        im.setDisplayName(item.getDisplayName());
+                        if (item.getLore() != null) {
+                            im.setLore(item.getLore());
+                        }
+                        is.setItemMeta(im);
+                    }
+                    if (inv == null) {
+                        remainingItems.add(is);
+                        continue;
+                    }
+                    int amount = item.getQty();
+                    int max = is.getMaxStackSize();
+                    int damageValue = item.isWildDamage() ? 0 : item.getDamage();
+                    String displayName = is.hasItemMeta() ? is.getItemMeta().getDisplayName() : null;
+                    List<String> lore = is.hasItemMeta() ? is.getItemMeta().getLore() : null;
+                    for (ItemStack iss : inv) {
+                        if (iss == null) {
+                            ItemStack isa;
+                            if (amount > max) {
+                                isa = new ItemStack(is.getType(), max, (short) damageValue);
+                            } else {
+                                isa = new ItemStack(is.getType(), amount, (short) damageValue);
+                            }
+                            if (displayName != null) {
+                                ItemMeta ima = isa.getItemMeta();
+                                ima.setDisplayName(displayName);
+                                if (lore != null) {
+                                    ima.setLore(lore);
+                                }
+                                isa.setItemMeta(ima);
+                            }
+                            inv.addItem(isa);
+                            if (amount > max) {
+                                amount -= max;
+                                continue;
+                            } else {
+                                continue outer;
+                            }
+                        }
+                        if (iss.getType() == is.getType() &&
+                                iss.getDurability() == is.getDurability() &&
+                                iss.getAmount() < iss.getMaxStackSize() &&
+                                ((!iss.hasItemMeta() && !is.hasItemMeta()) ||
+                                        (iss.hasItemMeta() && is.hasItemMeta() &&
+                                                iss.getItemMeta().getDisplayName().equals(is.getItemMeta().getDisplayName())))) {
+                            if (amount + iss.getAmount() > iss.getMaxStackSize()) {
+                                amount = amount - (iss.getMaxStackSize() - iss.getAmount());
+                                iss.setAmount(iss.getMaxStackSize());
+                            } else {
+                                iss.setAmount(amount + iss.getAmount());
+                                continue outer;
+                            }
+                        }
+                    }
+
+                    if (amount > 0) {
+                        is.setAmount(amount);
+                        remainingItems.add(is);
+                    }
+                    continue outer;
+
+                }
+                prevChance += item.getChance();
+            }
+        }
+
+        return remainingItems;
     }
 }

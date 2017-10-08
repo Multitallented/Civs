@@ -198,7 +198,8 @@ public class ItemManager {
                 buildRadiusZ,
                 effectRadius,
                 rebuild,
-                config.getStringList("description"));
+                config.getStringList("description"),
+                config.getLong("period", 0));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

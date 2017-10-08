@@ -1,0 +1,14 @@
+type: region
+icon: COBBLESTONE
+name: Cobblequarry
+
+#region attributes
+build-radius: 2
+effects:
+- block_break
+- block_place
+period: 10
+reagents:
+- IRON_PICK
+output:
+- COBBLESTONE

@@ -26,6 +26,7 @@ public class Region {
     private final int radiusYP;
     private final int radiusYN;
     public HashSet<String> effects;
+    private long lastTick = 0;
 
     public Region(String type, HashSet<UUID> owners, HashSet<UUID> members, Location location, int[] buildRadius, HashSet<String> effects) {
         this.type = type;
@@ -222,41 +223,55 @@ public class Region {
         }
         return radii;
     }
-    public boolean hasReagents() {
-        Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
-            return false;
-        }
-        Chest chest = (Chest) block.getState();
+//    public boolean hasReagents() {
+//        Block block = location.getBlock();
+//        if (!(block.getState() instanceof Chest)) {
+//            return false;
+//        }
+//        Chest chest = (Chest) block.getState();
+//
+//        if (chest.getInventory().firstEmpty() == -1) {
+//            return false;
+//        }
+//        ItemManager itemManager = ItemManager.getInstance();
+//        RegionType regionType = (RegionType) itemManager.getItemType(type);
+//        outer: for (List<CVItem> currentList : regionType.getReagents()) {
+//            boolean hasItem = false;
+//            for (CVItem item : currentList) {
+//                if (item.isWildDamage() && item.getDisplayName() == null &&
+//                        chest.getInventory().contains(item.getMat())) {
+//                    hasItem = true;
+//                    break;
+//                } else if (item.isWildDamage() && item.getDisplayName() != null) {
+//                    for (ItemStack is : chest.getInventory()) {
+//                        if (is != null &&
+//                                is.hasItemMeta() &&
+//                                is.getItemMeta().getDisplayName().equals(item.getDisplayName()) &&
+//                                is.getType() == item.getMat()) {
+//                            hasItem = true;
+//                            break;
+//                        }
+//                    }
+//                } else if (!item.isWildDamage() &&
+//                        chest.getInventory().contains(item.createItemStack())) {
+//                    hasItem = true;
+//                    break;
+//                }
+//            }
+//            if (!hasItem) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+    public boolean shouldTick() {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
-        outer: for (List<CVItem> currentList : regionType.getReagents()) {
-            boolean hasItem = false;
-            for (CVItem item : currentList) {
-                if (item.isWildDamage() && item.getDisplayName() == null &&
-                        chest.getInventory().contains(item.getMat())) {
-                    hasItem = true;
-                    break;
-                } else if (item.isWildDamage() && item.getDisplayName() != null) {
-                    for (ItemStack is : chest.getInventory()) {
-                        if (is != null &&
-                                is.hasItemMeta() &&
-                                is.getItemMeta().getDisplayName().equals(item.getDisplayName()) &&
-                                is.getType() == item.getMat()) {
-                            hasItem = true;
-                            break;
-                        }
-                    }
-                } else if (!item.isWildDamage() &&
-                        chest.getInventory().contains(item.createItemStack())) {
-                    hasItem = true;
-                    break;
-                }
-            }
-            if (!hasItem) {
-                return false;
-            }
-        }
-        return true;
+
+        long period = regionType.getPeriod();
+        return lastTick + period < System.currentTimeMillis();
+    }
+    public void tick() {
+        this.lastTick = System.currentTimeMillis();
     }
 }
