@@ -81,12 +81,15 @@ public class TestUtil {
         when(server.getLogger()).thenReturn(logger);
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
 
-        File mockConfigFile = mock(File.class);
-        ConfigManager configManager = new ConfigManager(mockConfigFile);
+        File file = mock(File.class);
+        when(file.exists()).thenReturn(false);
+        ConfigManager configManager = new ConfigManager(file);
         configManager.blackListWorlds = new ArrayList<>();
         configManager.blackListWorlds.add("Hub");
+        configManager.itemGroups = new HashMap<>();
+        configManager.itemGroups.put("glass", "THIN_GLASS,GLASS");
 
-        LocaleManager localeManager = new LocaleManager(mockConfigFile);
+        LocaleManager localeManager = new LocaleManager(file);
         HashMap<String, String> mockLanguageMap = new HashMap<>();
         mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
         localeManager.languageMap.put("es", mockLanguageMap);
@@ -110,13 +113,6 @@ public class TestUtil {
 
         CivilianManager civilianManager = new CivilianManager();
         civilianManager.createDefaultCivilian(player);
-        File file = mock(File.class);
-        when(file.exists()).thenReturn(false);
-        try {
-            new ConfigManager(file);
-        } catch (Exception e) {
-
-        }
 
         block = mock(Block.class);
         when(block.getType()).thenReturn(Material.CHEST);

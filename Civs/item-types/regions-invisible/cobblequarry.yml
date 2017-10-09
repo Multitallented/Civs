@@ -1,6 +1,8 @@
 type: region
-icon: COBBLESTONE
+icon: CHEST
 name: Cobblequarry
+max: 1
+price: 10
 
 #region attributes
 build-radius: 2

@@ -5,7 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -34,5 +37,10 @@ public class UtilTests {
     public void cvItemFromStringShouldSetValuesProperly2() {
         CVItem cvItem = CVItem.createCVItemFromString("log 2.1*64");
         assertTrue(cvItem.getDamage() == 1 && cvItem.getMat() == Material.LOG_2 && cvItem.getQty() == 64);
+    }
+    @Test
+    public void itemGroupShouldReturnProperCVItems() {
+        List<CVItem> cvItems = CVItem.createListFromString("g:glass*12");
+        assertEquals(12, cvItems.get(0).getQty());
     }
 }

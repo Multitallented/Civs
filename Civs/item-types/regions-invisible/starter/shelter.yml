@@ -2,6 +2,7 @@ type: region
 icon: WOOD
 name: Shelter
 min: 1
+max: 2
 
 #region attributes
 build-radius: 5

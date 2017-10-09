@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import sun.security.krb5.Config;
 
 /**
  *
@@ -63,7 +65,7 @@ public class CVItem {
         wildDamage = true;
     }
 
-    public static CVItem createCVItemFromString(String materialString) {
+    public static CVItem createCVItemFromString(String materialString)  {
         String quantityString = "1";
         String chanceString = "100";
         String damageString = "-1";
@@ -148,6 +150,30 @@ public class CVItem {
         return new CVItem(is.getType(),is.getAmount());
     }
     public static List<CVItem> createListFromString(String input) {
+        group: if (input.contains("g:")) {
+            String key = null;
+            String itemGroup = null;
+            String params = null;
+            System.out.println(ConfigManager.getInstance().getItemGroups().size());
+            for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
+                if (input.startsWith("g:" + currKey)) {
+                    key = currKey;
+                    itemGroup = ConfigManager.getInstance().getItemGroups().get(key);
+                    params = input.replace("g:" + currKey, "");
+                }
+            }
+            if (key == null || itemGroup == null || params == null) {
+                break group;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String chunk : itemGroup.split(",")) {
+                stringBuilder.append(chunk);
+                stringBuilder.append(params);
+                stringBuilder.append(",");
+            }
+            stringBuilder.substring(stringBuilder.length() - 1);
+            input = stringBuilder.toString();
+        }
         List<CVItem> reqs = new ArrayList<>();
         for (String req : input.split(",")) {
             reqs.add(createCVItemFromString(req));
