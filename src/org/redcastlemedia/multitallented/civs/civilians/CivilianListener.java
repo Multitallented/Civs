@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.UUID;
@@ -35,6 +36,8 @@ public class CivilianListener implements Listener {
     public void onCivilianQuit(PlayerQuitEvent event) {
         CivilianManager civilianManager = CivilianManager.getInstance();
         civilianManager.unloadCivilian(event.getPlayer());
+        CommonScheduler.lastRegion.remove(event.getPlayer().getUniqueId());
+        CommonScheduler.lastTown.remove(event.getPlayer().getUniqueId());
     }
     @EventHandler
     public void onCivilianDropItem(PlayerDropItemEvent event) {

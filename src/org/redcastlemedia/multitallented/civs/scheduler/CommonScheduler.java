@@ -4,13 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.util.*;
 
 public class CommonScheduler implements Runnable {
     private final int MAX_TPS = 5;
-    public final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
-//    public final HashMap<UUID, ArrayList<SuperRegion>> lastSRegion = new HashMap<UUID, ArrayList<SuperRegion>>();
+    public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
+    public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private int i = 0;
 
     @Override
@@ -20,7 +22,9 @@ public class CommonScheduler implements Runnable {
         int chunk = players.size() / MAX_TPS;
         for (int j=chunk * i; j<(i==MAX_TPS - 1 ? players.size() : chunk * (i+1)); j++) {
             try {
-                playerInRegion((Player) players.toArray()[j]);
+                Player player = (Player) players.toArray()[j];
+                playerInRegion(player);
+                playerInTown(player);
             } catch (Exception e) {
 
             }
@@ -32,6 +36,30 @@ public class CommonScheduler implements Runnable {
             regionTickThread.run();
         } else {
             i++;
+        }
+    }
+    private void playerInTown(Player player) {
+        TownManager townManager = TownManager.getInstance();
+        Town town = townManager.getTownAt(player.getLocation());
+        Town prevTown = lastTown.get(player.getUniqueId());
+        if (town != null) {
+            //TODO when player in town
+        }
+
+        if (prevTown == null && town != null) {
+            //TODO when player enters town
+        } else if (prevTown != null && town != null &&
+                prevTown.equals(town)) {
+            //TODO exit last town
+            //TODO enter new town
+        } else if (town == null && prevTown != null) {
+            //TODO exit last town
+        }
+
+        if (town == null && prevTown != null) {
+            lastTown.remove(player.getUniqueId());
+        } else if (town != null) {
+            lastTown.put(player.getUniqueId(), town);
         }
     }
 
