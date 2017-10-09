@@ -250,11 +250,8 @@ public class ProtectionHandler implements Listener {
             if (player == null) {
                 continue;
             }
-            if (region.getOwners().contains(player.getUniqueId())) {
-                continue;
-            }
-            if (region.getMembers().contains(player.getUniqueId()) &&
-                    region.getLocation() != location) {
+            String role = region.getPeople().get(player.getUniqueId());
+            if (role == null || (role.contains("member") && location != region.getLocation())) {
                 continue;
             }
             return true;
@@ -277,11 +274,8 @@ public class ProtectionHandler implements Listener {
         if (player == null) {
             return false;
         }
-        if (region.getOwners().contains(player.getUniqueId())) {
-            return false;
-        }
-        if (region.getMembers().contains(player.getUniqueId()) &&
-                region.getLocation() != location) {
+        String role = region.getPeople().get(player.getUniqueId());
+        if (role == null || (role.contains("member") && location != region.getLocation())) {
             return false;
         }
         return true;

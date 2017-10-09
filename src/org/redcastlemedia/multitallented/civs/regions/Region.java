@@ -16,8 +16,7 @@ import java.util.*;
 public class Region {
 
     private final String type;
-    private final HashSet<UUID> members;
-    private final HashSet<UUID> owners;
+    private final HashMap<UUID, String> people;
     private final Location location;
     private final int radiusXP;
     private final int radiusZP;
@@ -28,10 +27,9 @@ public class Region {
     public HashSet<String> effects;
     private long lastTick = 0;
 
-    public Region(String type, HashSet<UUID> owners, HashSet<UUID> members, Location location, int[] buildRadius, HashSet<String> effects) {
+    public Region(String type, HashMap<UUID, String> people, Location location, int[] buildRadius, HashSet<String> effects) {
         this.type = type;
-        this.owners = owners;
-        this.members = members;
+        this.people = people;
         this.location = location;
         radiusXP = buildRadius[0];
         radiusZP = buildRadius[1];
@@ -44,11 +42,17 @@ public class Region {
     public String getType() {
         return type;
     }
-    public HashSet<UUID> getOwners() {
-        return owners;
+    public HashMap<UUID, String> getPeople() {
+        return people;
     }
-    public HashSet<UUID> getMembers() {
-        return members;
+    public Set<UUID> getOwners() {
+        Set<UUID> owners = new HashSet<>();
+        for (UUID uuid : people.keySet()) {
+            if (people.get(uuid).contains("owner")) {
+                owners.add(uuid);
+            }
+        }
+        return owners;
     }
     public Location getLocation() {
         return location;

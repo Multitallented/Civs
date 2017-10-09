@@ -127,14 +127,15 @@ public class RegionManager {
         try {
             regionConfig.load(regionFile);
             regionConfig.set("location", region.getId());
-            regionConfig.set("owners", encodePersonSet(region.getOwners()));
-            regionConfig.set("members", encodePersonSet(region.getMembers()));
             regionConfig.set("xn-radius", region.getRadiusXN());
             regionConfig.set("xp-radius", region.getRadiusXP());
             regionConfig.set("yn-radius", region.getRadiusYN());
             regionConfig.set("yp-radius", region.getRadiusYP());
             regionConfig.set("zn-radius", region.getRadiusZN());
             regionConfig.set("zp-radius", region.getRadiusZP());
+            for (UUID uuid : region.getPeople().keySet()) {
+                regionConfig.set("people." + uuid, region.getPeople().get(uuid));
+            }
             regionConfig.set("type", region.getType());
             regionConfig.save(regionFile);
         } catch (Exception e) {
@@ -155,10 +156,14 @@ public class RegionManager {
             radii[4] = regionConfig.getInt("yp-radius");
             radii[5] = regionConfig.getInt("yn-radius");
             Location location = Region.idToLocation(regionConfig.getString("location"));
+
+            HashMap<UUID, String> people = new HashMap<>();
+            for (String s : regionConfig.getConfigurationSection("people").getKeys(false)) {
+                people.put(UUID.fromString(s), regionConfig.getString("people." + s));
+            }
             region = new Region(
                     regionConfig.getString("type"),
-                    processPersonList(regionConfig.getStringList("owners")),
-                    processPersonList(regionConfig.getStringList("members")),
+                    people,
                     location,
                     radii,
                     (HashSet<String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
@@ -168,20 +173,6 @@ public class RegionManager {
             return null;
         }
         return region;
-    }
-    private List<String> encodePersonSet(Set<UUID> persons) {
-        List<String> returnSet = new ArrayList<>();
-        for (UUID s : persons) {
-            returnSet.add(s.toString());
-        }
-        return returnSet;
-    }
-    private HashSet<UUID> processPersonList(List<String> persons) {
-        HashSet<UUID> returnSet = new HashSet<>();
-        for (String s : persons) {
-            returnSet.add(UUID.fromString(s));
-        }
-        return returnSet;
     }
 
     public Region getRegionAt(Location location) {
@@ -296,16 +287,14 @@ public class RegionManager {
                             .replace("$1", regionTypeName));
             return;
         }
-        HashSet<UUID> owners;
-        HashSet<UUID> members;
+        HashMap<UUID, String> people;
         if (rebuildRegion != null) {
-            owners = (HashSet<UUID>) rebuildRegion.getOwners().clone();
-            members = (HashSet<UUID>) rebuildRegion.getMembers().clone();
+            people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            //TODO copy over other stuff too
             removeRegion(rebuildRegion);
         } else {
-            owners = new HashSet<>();
-            owners.add(player.getUniqueId());
-            members = new HashSet<>();
+            people = new HashMap<>();
+            people.put(player.getUniqueId(), "owner");
         }
         for (Region currentRegion : regionManager.getRegionsXYZ(block.getLocation(),
                 regionType.getBuildRadiusX(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(), false)) {
@@ -323,7 +312,7 @@ public class RegionManager {
 
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
-        addRegion(new Region(regionType.getName(), owners, members, block.getLocation(), radii, regionType.getEffects()));
+        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects()));
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {

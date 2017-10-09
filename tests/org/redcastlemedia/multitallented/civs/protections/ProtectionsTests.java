@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -59,14 +60,14 @@ public class ProtectionsTests {
         Player player2 = mock(Player.class);
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
-        HashSet<UUID> owners = new HashSet<>();
-        owners.add(uuid2);
-        HashSet<UUID> members = new HashSet<>();
+
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(uuid2, "owner");
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashSet<String> effects = new HashSet<String>();
         effects.add("block_break");
         effects.add("block_build");
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii(), effects));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
@@ -82,11 +83,11 @@ public class ProtectionsTests {
         when(event.getBlockPlaced()).thenReturn(block);
         when(event.getPlayer()).thenReturn(player);
         when(player.getUniqueId()).thenReturn(uuid);
-        HashSet<UUID> owners = new HashSet<>();
-        owners.add(uuid);
-        HashSet<UUID> members = new HashSet<>();
+
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(uuid, "owner");
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, members, regionLocation, RegionsTests.getRadii(), new HashSet<String>()));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashSet<String>()));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
 
@@ -106,11 +107,10 @@ public class ProtectionsTests {
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 
-        HashSet<UUID> owners = new HashSet<>();
-        owners.add(uuid2);
-        HashSet<UUID> members = new HashSet<>();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(uuid2, "owner");
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("dirt", owners, members, regionLocation, RegionsTests.getRadii(), new HashSet<String>()));
+        RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashSet<String>()));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
