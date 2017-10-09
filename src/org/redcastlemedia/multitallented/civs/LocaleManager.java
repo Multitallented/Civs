@@ -103,6 +103,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".player-not-online", "$1 is not online"));
                 currentLanguage.put("invite-player",
                         localeConfig.getString(langKey + ".invite-player", "$1 would like to invite you to join $2 $3"));
+                currentLanguage.put("already-member",
+                        localeConfig.getString(langKey + ".already-member", "$1 is already a member of $2"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -144,6 +146,7 @@ public class LocaleManager {
         englishMap.put("no-permission-invite", "You don't have permission to invite people to $1");
         englishMap.put("player-not-online", "$1 is not online");
         englishMap.put("invite-player", "$1 would like to invite you to join $2 $3");
+        englishMap.put("already-member", "$1 is already a member of $2");
 
         languageMap.put("en", englishMap);
     }

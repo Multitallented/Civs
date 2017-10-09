@@ -41,6 +41,7 @@ en:
   no-permission-invite: "You don't have permission to invite people to $1"
   player-not-online: "$1 is not online"
   invite-player: "$1 would like to invite you to join $2 $3"
+  already-member: "$1 is already a member of $2"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

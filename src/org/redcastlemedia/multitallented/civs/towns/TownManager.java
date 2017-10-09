@@ -72,14 +72,14 @@ public class TownManager {
 
     private void loadTown(FileConfiguration config, String name) {
 
-        Set<UUID> owners = new HashSet<>();
-        for (String s : config.getStringList("owners")) {
-            owners.add(UUID.fromString(s));
+        HashMap<UUID, String> people = new HashMap<>();
+        for (String key : config.getConfigurationSection("people").getKeys(false)) {
+            people.put(UUID.fromString(key), config.getString("people." + key));
         }
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
-                owners);
+                people);
         addTown(town);
     }
     void addTown(Town town) {
@@ -109,6 +109,16 @@ public class TownManager {
     public void clearInvite(UUID uuid) {
         invites.remove(uuid);
     }
+    public boolean acceptInvite(UUID uuid) {
+        if (!invites.containsKey(uuid)) {
+            return false;
+        }
+        Town town = invites.get(uuid);
+        town.getPeople().put(uuid, "member");
+        saveTown(town);
+        invites.remove(uuid);
+        return true;
+    }
 
     public void saveTown(Town town) {
         if (Civs.getInstance() == null) {
@@ -126,15 +136,13 @@ public class TownManager {
             FileConfiguration config = new YamlConfiguration();
             config.load(townFile);
 
-            List<String> tempOwners = new ArrayList<>();
-            for (UUID uuid : town.getOwners()) {
-                tempOwners.add(uuid.toString());
-            }
 
             config.set("name", town.getName());
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
-            config.set("owners", tempOwners);
+            for (UUID key : town.getPeople().keySet()) {
+                config.set("people." + key, town.getPeople().get(key));
+            }
 
             //TODO save all town properties
             config.save(townFile);
