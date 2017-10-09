@@ -98,7 +98,7 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -275,7 +275,7 @@ public class ProtectionHandler implements Listener {
             return false;
         }
         String role = region.getPeople().get(player.getUniqueId());
-        if (role == null || (role.contains("member") && location != region.getLocation())) {
+        if (role != null && (role.contains("owner") || location != region.getLocation())) {
             return false;
         }
         return true;
