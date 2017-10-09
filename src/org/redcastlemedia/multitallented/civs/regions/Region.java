@@ -73,6 +73,9 @@ public class Region {
     }
 
     public String getId() {
+        return locationToString(location);
+    }
+    public static String locationToString(Location location) {
         return location.getWorld().getName() + "-" + (int) location.getX() + "-" + (int) location.getY() + "-" + (int) location.getZ();
     }
     public static Location idToLocation(String id) {

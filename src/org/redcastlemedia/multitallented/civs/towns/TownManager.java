@@ -6,8 +6,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.*;
@@ -16,7 +14,7 @@ public class TownManager {
 
     private static TownManager townManager = null;
     private HashMap<String, Town> towns = new HashMap<>();
-    private List<Town> sortedTowns = new ArrayList<Town>();
+    private List<Town> sortedTowns = new ArrayList<>();
 
     public TownManager() {
         townManager = this;
@@ -98,6 +96,32 @@ public class TownManager {
                 return 0;
             }
         });
+    }
+
+    public void saveTown(Town town) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
+        File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
+        if (!townFolder.exists()) {
+            townFolder.mkdir();
+        }
+        File townFile = new File(townFolder, town.getName().toLowerCase() + ".yml");
+        try {
+            if (!townFile.exists()) {
+                townFile.createNewFile();
+            }
+            FileConfiguration config = new YamlConfiguration();
+            config.load(townFile);
+            config.set("name", town.getName());
+            config.set("type", town.getType());
+            config.set("location", Region.locationToString(town.getLocation()));
+
+            //TODO save all town properties
+            config.save(townFile);
+        } catch (Exception e) {
+            Civs.logger.severe("Unable to save town " + town.getName().toLowerCase() + ".yml");
+        }
     }
 
     public static TownManager getInstance() {
