@@ -34,30 +34,39 @@ public class TownTests {
 
     @Test
     public void findTownAtShouldReturnTown() {
-        HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+
         loadTownTypeHamlet();
-        Town town = new Town("BizRep", "hamlet",
-                new Location(Bukkit.getWorld("world"), 0, 0, 20),
-                owners);
-        townManager.addTown(town);
-        townManager.addTown(new Town("Silverstone", "hamlet",
-                new Location(Bukkit.getWorld("world"), 100, 0, 0), owners));
-        townManager.addTown(new Town("Cupcake", "hamlet",
-                new Location(Bukkit.getWorld("world"), -100, 0, 0), owners));
+        Town town = loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTown("Silverstone", new Location(Bukkit.getWorld("world"), 100, 0, 0));
+        loadTown("Cupcake", new Location(Bukkit.getWorld("world"), -100, 0, 0));
 
         assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void shouldNotFindTown() {
+        loadTownTypeHamlet();
+        loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
+    }
+    @Test
+    public void memberShouldBeAdded() {
+        loadTownTypeHamlet();
+        Town town = loadTown("Aeria", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        UUID uuid = new UUID(1,5);
+        townManager.addInvite(uuid, town);
+        townManager.acceptInvite(uuid);
+        assertEquals("member", town.getPeople().get(uuid));
+    }
+
+    private Town loadTown(String name, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
-        loadTownTypeHamlet();
-        Town town = new Town("BizRep", "hamlet",
-                new Location(Bukkit.getWorld("world"), 0, 0, 20), owners);
+        Town town = new Town(name, "hamlet",
+                location,
+                owners);
         townManager.addTown(town);
-        assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
+        return town;
     }
 
     private void loadTownTypeHamlet() {
