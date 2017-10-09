@@ -10,6 +10,10 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class TownTests {
@@ -29,24 +33,28 @@ public class TownTests {
 
     @Test
     public void findTownAtShouldReturnTown() {
+        Set<UUID> owners = new HashSet<>();
+        owners.add(TestUtil.player.getUniqueId());
         loadTownTypeHamlet();
         Town town = new Town("BizRep", "hamlet",
-                new Location(Bukkit.getWorld("world"), 0, 0, 20));
+                new Location(Bukkit.getWorld("world"), 0, 0, 20),
+                owners);
         townManager.addTown(town);
         townManager.addTown(new Town("Silverstone", "hamlet",
-                new Location(Bukkit.getWorld("world"), 100, 0, 0)));
+                new Location(Bukkit.getWorld("world"), 100, 0, 0), owners));
         townManager.addTown(new Town("Cupcake", "hamlet",
-                new Location(Bukkit.getWorld("world"), -100, 0, 0)));
+                new Location(Bukkit.getWorld("world"), -100, 0, 0), owners));
 
         assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void shouldNotFindTown() {
-
+        Set<UUID> owners = new HashSet<>();
+        owners.add(TestUtil.player.getUniqueId());
         loadTownTypeHamlet();
         Town town = new Town("BizRep", "hamlet",
-                new Location(Bukkit.getWorld("world"), 0, 0, 20));
+                new Location(Bukkit.getWorld("world"), 0, 0, 20), owners);
         townManager.addTown(town);
         assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
     }

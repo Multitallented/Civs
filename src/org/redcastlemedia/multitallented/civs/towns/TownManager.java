@@ -15,6 +15,7 @@ public class TownManager {
     private static TownManager townManager = null;
     private HashMap<String, Town> towns = new HashMap<>();
     private List<Town> sortedTowns = new ArrayList<>();
+    private HashMap<UUID, Town> invites = new HashMap<>();
 
     public TownManager() {
         townManager = this;
@@ -71,9 +72,14 @@ public class TownManager {
 
     private void loadTown(FileConfiguration config, String name) {
 
+        Set<UUID> owners = new HashSet<>();
+        for (String s : config.getStringList("owners")) {
+            owners.add(UUID.fromString(s));
+        }
         Town town = new Town(name,
                 config.getString("type"),
-                Region.idToLocation(config.getString("location")));
+                Region.idToLocation(config.getString("location")),
+                owners);
         addTown(town);
     }
     void addTown(Town town) {
@@ -97,6 +103,12 @@ public class TownManager {
             }
         });
     }
+    public void addInvite(UUID uuid, Town town) {
+        invites.put(uuid, town);
+    }
+    public void clearInvite(UUID uuid) {
+        invites.remove(uuid);
+    }
 
     public void saveTown(Town town) {
         if (Civs.getInstance() == null) {
@@ -113,9 +125,16 @@ public class TownManager {
             }
             FileConfiguration config = new YamlConfiguration();
             config.load(townFile);
+
+            List<String> tempOwners = new ArrayList<>();
+            for (UUID uuid : town.getOwners()) {
+                tempOwners.add(uuid.toString());
+            }
+
             config.set("name", town.getName());
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
+            config.set("owners", tempOwners);
 
             //TODO save all town properties
             config.save(townFile);

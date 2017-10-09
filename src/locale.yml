@@ -36,6 +36,11 @@ en:
   prevent-civs-item-share: "You are not allowed to share Civ items"
   region-protected: "This region is protected"
   region-destroyed: "Region $1 has been destroyed!"
+  specify-player-town: "Please specify a player and town"
+  town-not-exist: "$1 is not a town"
+  no-permission-invite: "You don't have permission to invite people to $1"
+  player-not-online: "$1 is not online"
+  invite-player: "$1 would like to invite you to join $2 $3"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

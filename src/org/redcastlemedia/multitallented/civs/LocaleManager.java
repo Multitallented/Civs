@@ -93,6 +93,16 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".region-protected", "This region is protected"));
                 currentLanguage.put("region-destroyed",
                         localeConfig.getString(langKey + ".region-destroyed", "Region $1 has been destroyed!"));
+                currentLanguage.put("specify-player-town",
+                        localeConfig.getString(langKey + ".specify-player-town", "Please specify a player and town"));
+                currentLanguage.put("town-not-exist",
+                        localeConfig.getString(langKey + ".town-not-exist", "$1 is not a town"));
+                currentLanguage.put("no-permission-invite",
+                        localeConfig.getString(langKey + ".no-permission-invite", "You don't have permission to invite people to $1"));
+                currentLanguage.put("player-not-online",
+                        localeConfig.getString(langKey + ".player-not-online", "$1 is not online"));
+                currentLanguage.put("invite-player",
+                        localeConfig.getString(langKey + ".invite-player", "$1 would like to invite you to join $2 $3"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -129,6 +139,11 @@ public class LocaleManager {
         englishMap.put("prevent-civs-item-share", "You are not allowed to share Civ items");
         englishMap.put("region-protected", "This region is protected");
         englishMap.put("region-destroyed", "Region $1 has been destroyed!");
+        englishMap.put("specify-player-town", "Please specify a player and town");
+        englishMap.put("town-not-exist", "$1 is not a town");
+        englishMap.put("no-permission-invite", "You don't have permission to invite people to $1");
+        englishMap.put("player-not-online", "$1 is not online");
+        englishMap.put("invite-player", "$1 would like to invite you to join $2 $3");
 
         languageMap.put("en", englishMap);
     }
