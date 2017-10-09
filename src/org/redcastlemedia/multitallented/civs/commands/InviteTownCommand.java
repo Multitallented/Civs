@@ -43,9 +43,9 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
-        if (!town.getOwners().contains(player.getUniqueId()) ||
-                (!town.getMembers().contains(player.getUniqueId()) &&
-                        false)) { //TODO add permission for members to invite
+        if (!town.getPeople().keySet().contains(player.getUniqueId()) &&
+                (town.getPeople().get(player.getUniqueId()).contains("owner") ||
+                        town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission-invite").replace("$1", townName));
             return true;
@@ -56,8 +56,7 @@ public class InviteTownCommand implements CivCommand {
                     "player-not-online").replace("$1", playerName));
             return true;
         }
-        if (town.getOwners().contains(invitee.getUniqueId()) ||
-                town.getMembers().contains(invitee.getUniqueId())) {
+        if (town.getPeople().keySet().contains(invitee.getUniqueId())) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "already-member").replace("$1", player.getDisplayName())
                     .replace("$2", townName));
@@ -70,7 +69,6 @@ public class InviteTownCommand implements CivCommand {
                 .replace("$2", town.getType())
                 .replace("$3", townName));
         townManager.addInvite(invitee.getUniqueId(), town);
-        //TODO add accept command
         return true;
     }
 }

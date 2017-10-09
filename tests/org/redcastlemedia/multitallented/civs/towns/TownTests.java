@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -33,8 +34,8 @@ public class TownTests {
 
     @Test
     public void findTownAtShouldReturnTown() {
-        Set<UUID> owners = new HashSet<>();
-        owners.add(TestUtil.player.getUniqueId());
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
         loadTownTypeHamlet();
         Town town = new Town("BizRep", "hamlet",
                 new Location(Bukkit.getWorld("world"), 0, 0, 20),
@@ -50,8 +51,8 @@ public class TownTests {
 
     @Test
     public void shouldNotFindTown() {
-        Set<UUID> owners = new HashSet<>();
-        owners.add(TestUtil.player.getUniqueId());
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
         loadTownTypeHamlet();
         Town town = new Town("BizRep", "hamlet",
                 new Location(Bukkit.getWorld("world"), 0, 0, 20), owners);
