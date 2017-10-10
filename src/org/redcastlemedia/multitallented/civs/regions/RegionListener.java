@@ -36,8 +36,9 @@ public class RegionListener implements Listener {
         if (region == null) { //TODO check for towns
             return;
         }
-        if (!region.getPeople().containsKey(blockBreakEvent.getPlayer().getUniqueId()) &&
-                Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+        if ((!region.getPeople().containsKey(blockBreakEvent.getPlayer().getUniqueId()) &&
+                Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) ||
+                region.getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
             regionManager.removeRegion(region, true);
         }
     }
