@@ -42,6 +42,7 @@ en:
   player-not-online: "$1 is not online"
   invite-player: "$1 would like to invite you to join $2 $3"
   already-member: "$1 is already a member of $2"
+  broke-own-region: "Your $1 is missing blocks"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

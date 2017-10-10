@@ -1,10 +1,20 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class RegionListener implements Listener {
 
@@ -36,10 +46,40 @@ public class RegionListener implements Listener {
         if (region == null) { //TODO check for towns
             return;
         }
-        if ((!region.getPeople().containsKey(blockBreakEvent.getPlayer().getUniqueId()) &&
+        Player player = blockBreakEvent.getPlayer();
+        LocaleManager localeManager = LocaleManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if ((!region.getPeople().containsKey(player.getUniqueId()) &&
                 Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) ||
                 region.getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
             regionManager.removeRegion(region, true);
+            return;
+        }
+        List<HashMap<String, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+                region.getLocation(),
+                blockBreakEvent.getBlock().getState().getData().toItemStack());
+        if (region.getPeople().containsKey(player.getUniqueId()) &&
+                 missingBlocks != null) {
+            blockBreakEvent.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "break-own-region").replace("$1", region.getType()));
+            StringBuilder missingReqs = new StringBuilder();
+            for (HashMap<String, Integer> map : missingBlocks) {
+                for (String key : map.keySet()) {
+                    missingReqs.append(key);
+                    missingReqs.append("*");
+                    missingReqs.append(map.get(key));
+                    missingReqs.append(" or ");
+                }
+                missingReqs.substring(missingReqs.length() - 4);
+                missingReqs.append("and ");
+            }
+            missingReqs.substring(missingReqs.length() - 6);
+            List<String> missingList = Util.textWrap(ChatColor.RED + "", missingReqs.toString());
+            for (String s : missingList) {
+                player.sendMessage(s);
+            }
+            return;
         }
     }
 }

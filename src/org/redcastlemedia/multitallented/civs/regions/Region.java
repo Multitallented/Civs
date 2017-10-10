@@ -230,6 +230,105 @@ public class Region {
         }
         return radii;
     }
+    public static List<HashMap<String, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
+        RegionManager regionManager = RegionManager.getInstance();
+        ItemManager itemManager = ItemManager.getInstance();
+        List<HashMap<String, Integer>> itemCheck = new ArrayList<>();
+        RegionType regionType = (RegionType) itemManager.getItemType(type);
+        for (List<CVItem> currentList : regionType.getReqs()) {
+            HashMap<String, Integer> currentReqMap = new HashMap<>();
+            for (CVItem currentItem : currentList) {
+                int qty = currentItem.getQty();
+                if (currentItem.equivalentItem(missingStack)) {
+                    qty++;
+                }
+                currentReqMap.put(currentItem.getMat() + ":" + currentItem.getDamage(), qty);
+            }
+            itemCheck.add(currentReqMap);
+        }
+        int[] radii = new int[6];
+        radii[0] = 0;
+        radii[1] = 0;
+        radii[2] = 0;
+        radii[3] = 0;
+        radii[4] = 0;
+        radii[5] = 0;
+        if (itemCheck.isEmpty()) {
+            radiusCheck(radii, regionType);
+            return itemCheck;
+        }
+
+        World currentWorld = location.getWorld();
+        int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
+        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
+        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
+        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
+        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
+        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
+        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
+
+        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
+        yMin = yMin < 0 ? 0 : yMin;
+
+        boolean hasReqs = false;
+        outer: for (int x=xMin; x<xMax;x++) {
+            for (int y=yMin; y<yMax; y++) {
+                for (int z=zMin; z<zMax; z++) {
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
+
+
+                    String wildCardString = currentBlock.getType() + ":-1";
+                    String damageString = currentBlock.getType() + ":";
+                    if (currentBlock.getState() != null) {
+                        damageString += currentBlock.getState().getData().toItemStack().getDurability();
+                    }
+
+                    String destroyIndex = null;
+                    int i=0;
+                    outer1: for (HashMap<String, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(wildCardString)) {
+                            int currentQty = tempMap.get(wildCardString) - 1;
+                            if (currentQty < 1) {
+                                destroyIndex = wildCardString;
+                            } else {
+                                tempMap.put(wildCardString, currentQty);
+                            }
+                            regionManager.adjustRadii(radii, location, x, y, z);
+                            break outer1;
+
+                        } else if (tempMap.containsKey(damageString)) {
+                            int currentQty = tempMap.get(damageString) - 1;
+                            if (currentQty < 1) {
+                                destroyIndex = damageString;
+                            } else {
+                                tempMap.put(damageString, currentQty);
+                            }
+                            regionManager.adjustRadii(radii, location, x, y, z);
+                            break outer1;
+                        }
+                        i++;
+                    }
+                    if (destroyIndex != null) {
+                        if (itemCheck.size() < 2) {
+                            hasReqs = true;
+                            break outer;
+                        } else {
+                            itemCheck.remove(i);
+                        }
+                    }
+                }
+            }
+        }
+
+        radii = radiusCheck(radii, regionType);
+        if (radii.length == 0) {
+            return itemCheck;
+        }
+        return hasReqs ? null : itemCheck;
+    }
 //    public boolean hasReagents() {
 //        Block block = location.getBlock();
 //        if (!(block.getState() instanceof Chest)) {
