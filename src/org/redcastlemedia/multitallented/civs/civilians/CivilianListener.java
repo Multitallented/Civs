@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -80,19 +82,30 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
-            return;
-        }
         ItemStack is = event.getBlock().getState().getData().toItemStack();
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        CVItem cvItem = CVItem.createFromItemStack(is);
-        if (false) { //TODO get block history from storage
+        BlockLogger blockLogger = BlockLogger.getInstance();
+        blockLogger.removeBlock(event.getBlock().getLocation());
+        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
+            return;
+        }
+        UUID uuid = blockLogger.getBlock(event.getBlock().getLocation());
+        if (uuid != null && uuid != event.getPlayer().getUniqueId()) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
         }
+    }
+
+    @EventHandler(priority=EventPriority.HIGHEST)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        ItemStack is = event.getBlock().getState().getData().toItemStack();
+        if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
+            return;
+        }
+        BlockLogger blockLogger = BlockLogger.getInstance();
+        blockLogger.putBlock(event.getBlock().getLocation(), event.getPlayer().getUniqueId());
     }
 
     @EventHandler

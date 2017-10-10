@@ -49,6 +49,7 @@ public class Civs extends JavaPlugin {
         new ConfigManager(new File(getDataFolder(), "config.yml"));
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new ItemManager();
+        new BlockLogger();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();
         TownManager townManager = new TownManager();
@@ -60,7 +61,13 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info("v" + VERSION + " is now enabled!");
+        getLogger().info("v" + VERSION + " is now enabled");
+    }
+
+    @Override
+    public void onDisable() {
+//        BlockLogger.getInstance().saveBlocks();
+        getLogger().info("v" + VERSION + " is now disabled");
     }
 
 
