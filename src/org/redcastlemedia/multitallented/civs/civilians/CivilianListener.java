@@ -89,7 +89,7 @@ public class CivilianListener implements Listener {
         }
         String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
         CVItem cvItem = CVItem.createFromItemStack(is);
-        if (event.getPlayer().getUniqueId() != UUID.fromString(cvItem.getLore().get(0))) {
+        if (false) { //TODO get block history from storage
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
         }

@@ -7,12 +7,14 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -345,6 +347,21 @@ public class RegionsTests {
         assertNull(regionManager.getRegionAt(TestUtil.blockUnique6.getLocation()));
         regionListener.onBlockPlace(event2);
         assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique7.getLocation()));
+    }
+
+    @Test
+    public void regionShouldBeDestroyed() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashSet<String>()));
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianBlockBreak(event);
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockBreak(event);
+        assertNull(regionManager.getRegionAt(location1));
     }
 
     public static int[] getRadii() {
