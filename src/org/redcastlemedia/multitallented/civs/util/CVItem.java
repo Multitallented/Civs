@@ -211,26 +211,26 @@ public class CVItem {
             boolean equivalentNames = (nullComparison && nullName) || ((!nullComparison && !nullName) && iss.getItemMeta().getDisplayName().equals(getDisplayName()));
 
             return iss.getType() == getMat() &&
-                    (isWildDamage() || getDamage() == (int) (iss.getDurability())) &&
+                    (isWildDamage() || damageMatches(iss.getDurability())) &&
                     equivalentNames;
         } else {
             return iss.getType() == getMat() &&
-                    (isWildDamage() || getDamage() == (int) (iss.getDurability()));
+                    (isWildDamage() || damageMatches(iss.getDurability()));
         }
     }
 
-    public boolean equivalentTOItem(CVItem iss) {
-        return equivalentTOItem(iss, false);
+    public boolean equivalentCVItem(CVItem iss) {
+        return equivalentCVItem(iss, false);
     }
 
-    public boolean equivalentTOItem(CVItem iss, boolean useDisplayName) {
+    public boolean equivalentCVItem(CVItem iss, boolean useDisplayName) {
         if (useDisplayName) {
             return iss.getMat() == getMat() &&
-                    (isWildDamage() || iss.isWildDamage() || getDamage() == iss.getDamage()) &&
+                    (isWildDamage() || iss.isWildDamage() || damageMatches((short) iss.getDamage())) &&
                     ((getDisplayName() == null && iss.getDisplayName() == null) || getDisplayName().equals(iss.getDisplayName()));
         } else {
             return iss.getMat() == getMat() &&
-                    (isWildDamage() || iss.isWildDamage() || getDamage() == iss.getDamage());
+                    (isWildDamage() || iss.isWildDamage() || damageMatches((short) iss.getDamage()));
         }
     }
 

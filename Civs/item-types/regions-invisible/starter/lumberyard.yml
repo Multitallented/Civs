@@ -1,0 +1,25 @@
+type: region
+icon: CHEST
+name: Lumberyard
+max: 3
+
+#region attributes
+build-radius: 4
+build-reqs:
+- LOG*16,LOG_2*16
+- RAILS*10
+- g:fence*31
+- g:fence_gate*1
+effects:
+- block_break
+- block_place
+- chest_use
+- door_use
+- block_liquid
+period: 30
+reagents:
+- LOG*4,LOG_2*4
+inputs:
+- LOG*4,LOG_2*4
+payout: 4
+description: Sells 4 logs for $4

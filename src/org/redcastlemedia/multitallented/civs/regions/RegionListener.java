@@ -11,9 +11,11 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class RegionListener implements Listener {
@@ -29,6 +31,9 @@ public class RegionListener implements Listener {
             return;
         }
 
+        if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
+            return;
+        }
         String displayName = blockPlaceEvent.getItemInHand().getItemMeta().getDisplayName();
 
         if (displayName != null && displayName.contains("Civs ")) {
@@ -55,7 +60,7 @@ public class RegionListener implements Listener {
             regionManager.removeRegion(region, true);
             return;
         }
-        List<HashMap<String, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+        List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
                 blockBreakEvent.getBlock().getState().getData().toItemStack());
         if (region.getPeople().containsKey(player.getUniqueId()) &&
@@ -64,11 +69,11 @@ public class RegionListener implements Listener {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "break-own-region").replace("$1", region.getType()));
             StringBuilder missingReqs = new StringBuilder();
-            for (HashMap<String, Integer> map : missingBlocks) {
-                for (String key : map.keySet()) {
-                    missingReqs.append(key);
+            for (HashSet<CVItem> map : missingBlocks) {
+                for (CVItem key : map) {
+                    missingReqs.append(key.getMat().toString());
                     missingReqs.append("*");
-                    missingReqs.append(map.get(key));
+                    missingReqs.append(key.getQty());
                     missingReqs.append(" or ");
                 }
                 missingReqs.substring(missingReqs.length() - 4);

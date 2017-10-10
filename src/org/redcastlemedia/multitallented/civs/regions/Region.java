@@ -92,12 +92,12 @@ public class Region {
     public static int[] hasRequiredBlocks(String type, Location location) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashMap<String, Integer>> itemCheck = new ArrayList<>();
+        List<HashSet<CVItem>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
-            HashMap<String, Integer> currentReqMap = new HashMap<>();
+            HashSet<CVItem> currentReqMap = new HashSet<>();
             for (CVItem currentItem : currentList) {
-                currentReqMap.put(currentItem.getMat() + ":" + currentItem.getDamage(), currentItem.getQty());
+                currentReqMap.add(currentItem.clone());
             }
             itemCheck.add(currentReqMap);
         }
@@ -134,35 +134,19 @@ public class Region {
                         continue;
                     }
 
-
-                    String wildCardString = currentBlock.getType() + ":-1";
-                    String damageString = currentBlock.getType() + ":";
-                    if (currentBlock.getState() != null) {
-                        damageString += currentBlock.getState().getData().toItemStack().getDurability();
-                    }
-
-                    String destroyIndex = null;
+                    CVItem destroyIndex = null;
                     int i=0;
-                    outer1: for (HashMap<String, Integer> tempMap : itemCheck) {
-                        if (tempMap.containsKey(wildCardString)) {
-                            int currentQty = tempMap.get(wildCardString) - 1;
-                            if (currentQty < 1) {
-                                destroyIndex = wildCardString;
-                            } else {
-                                tempMap.put(wildCardString, currentQty);
+                    outer1: for (HashSet<CVItem> tempMap : itemCheck) {
+                        for (CVItem item : tempMap) {
+                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), true)) {
+                                if (item.getQty() < 2) {
+                                    destroyIndex = item;
+                                } else {
+                                    item.setQty(item.getQty() - 1);
+                                }
+                                regionManager.adjustRadii(radii, location, x,y,z);
+                                break outer1;
                             }
-                            regionManager.adjustRadii(radii, location, x, y, z);
-                            break outer1;
-
-                        } else if (tempMap.containsKey(damageString)) {
-                            int currentQty = tempMap.get(damageString) - 1;
-                            if (currentQty < 1) {
-                                destroyIndex = damageString;
-                            } else {
-                                tempMap.put(damageString, currentQty);
-                            }
-                            regionManager.adjustRadii(radii, location, x, y, z);
-                            break outer1;
                         }
                         i++;
                     }
@@ -230,19 +214,15 @@ public class Region {
         }
         return radii;
     }
-    public static List<HashMap<String, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
+    public static List<HashSet<CVItem>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashMap<String, Integer>> itemCheck = new ArrayList<>();
+        List<HashSet<CVItem>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
-            HashMap<String, Integer> currentReqMap = new HashMap<>();
+            HashSet<CVItem> currentReqMap = new HashSet<>();
             for (CVItem currentItem : currentList) {
-                int qty = currentItem.getQty();
-                if (currentItem.equivalentItem(missingStack)) {
-                    qty++;
-                }
-                currentReqMap.put(currentItem.getMat() + ":" + currentItem.getDamage(), qty);
+                currentReqMap.add(currentItem.clone());
             }
             itemCheck.add(currentReqMap);
         }
@@ -279,35 +259,19 @@ public class Region {
                         continue;
                     }
 
-
-                    String wildCardString = currentBlock.getType() + ":-1";
-                    String damageString = currentBlock.getType() + ":";
-                    if (currentBlock.getState() != null) {
-                        damageString += currentBlock.getState().getData().toItemStack().getDurability();
-                    }
-
-                    String destroyIndex = null;
+                    CVItem destroyIndex = null;
                     int i=0;
-                    outer1: for (HashMap<String, Integer> tempMap : itemCheck) {
-                        if (tempMap.containsKey(wildCardString)) {
-                            int currentQty = tempMap.get(wildCardString) - 1;
-                            if (currentQty < 1) {
-                                destroyIndex = wildCardString;
-                            } else {
-                                tempMap.put(wildCardString, currentQty);
+                    outer1: for (HashSet<CVItem> tempMap : itemCheck) {
+                        for (CVItem item : tempMap) {
+                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), true)) {
+                                if (item.getQty() < 2) {
+                                    destroyIndex = item;
+                                } else {
+                                    item.setQty(item.getQty() - 1);
+                                }
+                                regionManager.adjustRadii(radii, location, x,y,z);
+                                break outer1;
                             }
-                            regionManager.adjustRadii(radii, location, x, y, z);
-                            break outer1;
-
-                        } else if (tempMap.containsKey(damageString)) {
-                            int currentQty = tempMap.get(damageString) - 1;
-                            if (currentQty < 1) {
-                                destroyIndex = damageString;
-                            } else {
-                                tempMap.put(damageString, currentQty);
-                            }
-                            regionManager.adjustRadii(radii, location, x, y, z);
-                            break outer1;
                         }
                         i++;
                     }

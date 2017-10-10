@@ -114,30 +114,14 @@ public class TestUtil {
         CivilianManager civilianManager = new CivilianManager();
         civilianManager.createDefaultCivilian(player);
 
-        block = mock(Block.class);
-        when(block.getType()).thenReturn(Material.CHEST);
-        when(block.getLocation()).thenReturn(new Location(world, 0, 0, 0));
-        block2 = mock(Block.class);
-        when(block2.getType()).thenReturn(Material.COBBLESTONE);
-        when(block2.getLocation()).thenReturn(new Location(world, 1, 0, 0));
-        block3 = mock(Block.class);
-        when(block3.getType()).thenReturn(Material.COBBLESTONE);
-        when(block3.getLocation()).thenReturn(new Location(world, 2, 0, 0));
-        block4 = mock(Block.class);
-        when(block4.getType()).thenReturn(Material.LOG);
-        when(block4.getLocation()).thenReturn(new Location(world, 3, 0, 0));
-        block5 = mock(Block.class);
-        when(block5.getType()).thenReturn(Material.COBBLESTONE);
-        when(block5.getLocation()).thenReturn(new Location(world, 1, 100, 0));
-        block6 = mock(Block.class);
-        when(block6.getType()).thenReturn(Material.COBBLESTONE);
-        when(block6.getLocation()).thenReturn(new Location(world, 10, 100, 0));
-        block7 = mock(Block.class);
-        when(block7.getType()).thenReturn(Material.COBBLESTONE);
-        when(block7.getLocation()).thenReturn(new Location(world, 1, 0,93));
-        block8 = mock(Block.class);
-        when(block8.getType()).thenReturn(Material.COBBLESTONE);
-        when(block8.getLocation()).thenReturn(new Location(world, -1, 0,106));
+        block = createBlock(Material.CHEST, new Location(world, 0, 0, 0));
+        block2 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0, 0));
+        block3 = createBlock(Material.COBBLESTONE, new Location(world, 2, 0, 0));
+        block4 = createBlock(Material.LOG, new Location(world, 3, 0, 0));
+        block5 = createBlock(Material.COBBLESTONE, new Location(world, 1, 100, 0));
+        block6 = createBlock(Material.COBBLESTONE, new Location(world, 10, 100, 0));
+        block7 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0,93));
+        block8 = createBlock(Material.COBBLESTONE, new Location(world, -1, 0,106));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
@@ -168,9 +152,18 @@ public class TestUtil {
         blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0));
     }
 
+    public static ItemStack createItemStack(Material mat) {
+        ItemStack is = mock(ItemStack.class);
+        when(is.hasItemMeta()).thenReturn(false);
+        when(is.getType()).thenReturn(mat);
+        when(is.getDurability()).thenReturn((short) 0);
+        return is;
+    }
+
     public static ItemStack createUniqueItemStack(Material mat, String name) {
         ItemStack is = mock(ItemStack.class);
         ItemMeta im = mock(ItemMeta.class);
+        when(is.hasItemMeta()).thenReturn(true);
         when(is.getItemMeta()).thenReturn(im);
         when(im.getDisplayName()).thenReturn(name);
         when(is.getType()).thenReturn(mat);
@@ -178,6 +171,19 @@ public class TestUtil {
         lore.add(TestUtil.player.getUniqueId().toString());
         when(im.getLore()).thenReturn(lore);
         return is;
+    }
+
+    public static Block createBlock(Material mat, Location location) {
+        Block block = mock(Block.class);
+        BlockState state = mock(BlockState.class);
+        MaterialData data = mock(MaterialData.class);
+        ItemStack itemStack = createItemStack(mat);
+        when(data.toItemStack(1)).thenReturn(itemStack);
+        when(state.getData()).thenReturn(data);
+        when(block.getState()).thenReturn(state);
+        when(block.getType()).thenReturn(mat);
+        when(block.getLocation()).thenReturn(location);
+        return block;
     }
 
     public static Block createUniqueBlock(Material mat, String name, Location location) {
@@ -188,7 +194,7 @@ public class TestUtil {
         when(block.getState()).thenReturn(blockState);
         when(blockState.getData()).thenReturn(materialData);
         ItemStack is = createUniqueItemStack(mat, name);
-        when(materialData.toItemStack()).thenReturn(is);
+        when(materialData.toItemStack(1)).thenReturn(is);
         when(materialData.toItemStack(Matchers.anyInt())).thenReturn(is);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
