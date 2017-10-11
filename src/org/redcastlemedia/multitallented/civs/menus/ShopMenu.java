@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -81,7 +82,10 @@ public class ShopMenu extends Menu {
                 event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
                 return;
             } else {
-                //TODO open class info menu
+                appendHistory(civilian.getUuid(), history);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(ClassTypeInfoMenu.createMenu(civilian, (ClassType) civItem));
+                return;
             }
         }
     }

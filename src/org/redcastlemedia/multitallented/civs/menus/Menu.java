@@ -14,6 +14,7 @@ import org.mockito.cglib.core.Local;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -85,6 +86,11 @@ public abstract class Menu implements Listener {
         if (lastHistory[0].equals(RegionTypeInfoMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             humanEntity.openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) itemManager.getItemType(lastHistory[1])));
+            return;
+        }
+        if (lastHistory[0].equals(ClassTypeInfoMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(ClassTypeInfoMenu.createMenu(civilian, (ClassType) itemManager.getItemType(lastHistory[1])));
             return;
         }
     }
