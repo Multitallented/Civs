@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -12,19 +13,24 @@ import java.util.UUID;
 public class Civilian {
 
     private final UUID uuid;
+    private CivClass civClass;
     private String locale;
     private final ArrayList<CivItem> stashItems;
 
-    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems) {
+    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, CivClass civClass) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
+        this.civClass = civClass;
     }
 
     public UUID getUuid() {
         return uuid;
     }
-
+    public CivClass getCurrentClass() { return civClass; }
+    public void setCurrentClass(CivClass civClass) {
+        this.civClass = civClass;
+    }
     public String getLocale() {
         return locale;
     }

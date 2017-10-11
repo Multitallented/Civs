@@ -1,17 +1,17 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.ClassType;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -31,7 +31,7 @@ public class ClassTypeInfoMenu extends Menu {
         ItemManager itemManager = ItemManager.getInstance();
         String className = event.getInventory().getItem(0)
                 .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        ClassType regionType = (ClassType) itemManager.getItemType(className);
+        ClassType classType = (ClassType) itemManager.getItemType(className);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -46,14 +46,29 @@ public class ClassTypeInfoMenu extends Menu {
 //            return;
 //        }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
-            if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose")) {
+            if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose") &&
+                    Civs.perm.has(event.getWhoClicked(), "civs.shop")) {
                 event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "no-permission"));
                 return;
             }
             appendHistory(civilian.getUuid(), MENU_NAME + "," + className);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ConfirmationMenu.createMenu(civilian, regionType));
+            event.getWhoClicked().openInventory(ConfirmationMenu.createMenu(civilian, classType));
+            return;
+        }
+
+        if (event.getCurrentItem().getType().equals(Material.ENDER_CHEST)) {
+            if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose") &&
+                    civilian.getStashItems().contains(classType)) {
+                clearHistory(civilian.getUuid());
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "class-changed").replace("$1", civilian.getCurrentClass().getType())
+                        .replace("$2", classType.getProcessedName()));
+                civilian.setCurrentClass(ClassManager.getInstance().getCivClass(civilian.getUuid(), classType.getProcessedName()));
+                CivilianManager.getInstance().saveCivilian(civilian);
+            }
             return;
         }
 
@@ -78,14 +93,22 @@ public class ClassTypeInfoMenu extends Menu {
 
         //1 Price
         String itemName = classType.getProcessedName();
-        boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
         boolean isNotOverMax = civilian.getCountNonStashItems(itemName) + civilian.getCountStashItems(itemName) < classType.getCivMax();
+        boolean hasChoosePerms = Civs.perm != null && Civs.perm.has(player, "civs.choose");
         if (hasShopPerms && (classType.getCivMax() == -1 || isNotOverMax)) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + classType.getPrice());
             priceItem.setLore(lore);
+            inventory.setItem(1, priceItem.createItemStack());
+        } else if (hasChoosePerms && !civilian.getCurrentClass().getType().equals(classType.getProcessedName()) &&
+                civilian.getStashItems().contains(classType)) {
+            CVItem switchItem = CVItem.createCVItemFromString("ENDER_CHEST");
+            switchItem.setDisplayName("Switch to class");
+            inventory.setItem(1, switchItem.createItemStack());
         }
 
 

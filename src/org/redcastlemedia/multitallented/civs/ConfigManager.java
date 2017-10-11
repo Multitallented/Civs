@@ -18,6 +18,7 @@ public class ConfigManager {
     boolean explosionOverride;
     double priceMultiplier;
     HashMap<String, String> itemGroups;
+    String defaultClass;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -28,6 +29,7 @@ public class ConfigManager {
     public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
     public boolean getExplosionOverride() { return explosionOverride; }
     public double getPriceMultiplier() { return priceMultiplier; }
+    public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
 
     public ConfigManager(File configFile) {
@@ -50,6 +52,7 @@ public class ConfigManager {
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             allowCivItemDropping = config.getBoolean("explosion-override", false);
             priceMultiplier = config.getDouble("price-multiplier", 1);
+            defaultClass = config.getString("default-class", "default");
             itemGroups = new HashMap<>();
             for (String key : config.getConfigurationSection("item-groups").getKeys(false)) {
                 itemGroups.put(key, config.getString("item-groups." + key));
@@ -65,6 +68,7 @@ public class ConfigManager {
         explosionOverride = false;
         priceMultiplier = 1;
         itemGroups = new HashMap<>();
+        defaultClass = "default";
     }
 
     public static ConfigManager getInstance() {
