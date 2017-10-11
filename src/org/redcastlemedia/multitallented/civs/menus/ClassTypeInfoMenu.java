@@ -87,6 +87,10 @@ public class ClassTypeInfoMenu extends Menu {
         //8 back button
         inventory.setItem(8, getBackButton(civilian));
 
+        //9 Items
+        //10 Spells
+        //11 Regions
+
         //TODO finish this stub
 
         return inventory;

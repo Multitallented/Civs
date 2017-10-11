@@ -107,6 +107,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".already-member", "$1 is already a member of $2"));
                 currentLanguage.put("broke-own-region",
                         localeConfig.getString(langKey + ".broke-own-region", "Your $1 is missing blocks"));
+                currentLanguage.put("no-permission",
+                        localeConfig.getString(langKey + ".no-permission", "Permission denied"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -150,6 +152,7 @@ public class LocaleManager {
         englishMap.put("invite-player", "$1 would like to invite you to join $2 $3");
         englishMap.put("already-member", "$1 is already a member of $2");
         englishMap.put("broke-own-region", "Your $1 is missing blocks");
+        englishMap.put("no-permission", "Permission denied");
 
         languageMap.put("en", englishMap);
     }
