@@ -46,6 +46,11 @@ public class ClassTypeInfoMenu extends Menu {
 //            return;
 //        }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
+            if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose")) {
+                event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "no-permission"));
+                return;
+            }
             appendHistory(civilian.getUuid(), MENU_NAME + "," + className);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ConfirmationMenu.createMenu(civilian, regionType));

@@ -22,7 +22,7 @@ public class AcceptInviteCommand implements CivCommand {
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (!Civs.perm.has(player, "civs.join")) {
+        if (Civs.perm != null && !Civs.perm.has(player, "civs.join")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;

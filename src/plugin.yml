@@ -16,6 +16,9 @@ permissions:
    civs.join:
        description: Allows players to join towns
        default: true
+   civs.choose:
+       description: Allows a player to choose classes
+       default: true
    civs.shop:
        description: Allows players to use the shop
        default: true
