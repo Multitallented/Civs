@@ -47,8 +47,20 @@ public class RegionType extends CivItem {
                       int effectRadius,
                       String rebuild,
                       List<String> description,
-                      long period) {
-        super(civReqs, true, ItemType.REGION, name, icon.getMat(), icon.getDamage(), civQty, civMin, civMax, price, permission, description);
+                      long period,
+                      List<String> groups) {
+        super(civReqs,
+                true,
+                ItemType.REGION,
+                name, icon.getMat(),
+                icon.getDamage(),
+                civQty,
+                civMin,
+                civMax,
+                price,
+                permission,
+                description,
+                groups);
         this.name = name;
         this.reqs = reqs;
         this.reagents = reagents;

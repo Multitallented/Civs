@@ -2,6 +2,7 @@ type: region
 icon: CHEST
 name: Lumberyard
 max: 3
+group: shop
 
 #region attributes
 build-radius: 4
@@ -9,6 +10,8 @@ build-reqs:
 - LOG*16,LOG_2*16
 - RAILS*10
 - g:fence*31
+- g:furnace*4
+- COAL_BLOCK*1
 - g:fence_gate*1
 effects:
 - block_break
@@ -18,8 +21,8 @@ effects:
 - block_liquid
 period: 30
 reagents:
-- LOG*4,LOG_2*4
+- LOG*4,LOG_2*4,COAL.0*1,COAL.1*2
 inputs:
-- LOG*4,LOG_2*4
+- LOG*4,LOG_2*4,COAL.0*1,COAL.1*2
 payout: 4
-description: Sells 4 logs for $4
+description: Sells 4 logs or 1 coal or 2 charcoal for $4

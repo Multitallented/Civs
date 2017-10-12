@@ -9,7 +9,14 @@ import java.util.List;
 public class ClassType extends CivItem {
     private final List<CivItem> children;
 
-    public ClassType(List<String> reqs, String name, CVItem icon, double price, String permission, List<CivItem> children) {
+    public ClassType(List<String> reqs,
+                     String name,
+                     CVItem icon,
+                     double price,
+                     String permission,
+                     List<CivItem> children,
+                     List<String> description,
+                     List<String> groups) {
         super(reqs,
                 false,
                 ItemType.CLASS,
@@ -21,7 +28,8 @@ public class ClassType extends CivItem {
                 1,
                 price,
                 permission,
-                new ArrayList<String>());
+                description,
+                groups);
         this.children = children;
     }
 

@@ -9,7 +9,13 @@ public class FolderType extends CivItem {
     private final List<CivItem> children;
     private final boolean visible;
 
-    public FolderType(List<String> reqs, String name, CVItem icon, double price, String permission, List<CivItem> children, boolean visible) {
+    public FolderType(List<String> reqs,
+                      String name,
+                      CVItem icon,
+                      double price,
+                      String permission,
+                      List<CivItem> children,
+                      boolean visible) {
         super(reqs,
                 false,
                 ItemType.FOLDER,
@@ -21,6 +27,7 @@ public class FolderType extends CivItem {
                 1,
                 price,
                 permission,
+                new ArrayList<String>(),
                 new ArrayList<String>());
         this.children = children;
         this.visible = visible;

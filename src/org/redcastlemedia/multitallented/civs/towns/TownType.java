@@ -53,7 +53,8 @@ public class TownType extends CivItem {
                     List<String> criticalReqs,
                     List<String> description,
                     int power,
-                    int maxPower) {
+                    int maxPower,
+                    List<String> groups) {
         super(civReqs,
                 true,
                 ItemType.TOWN,
@@ -65,7 +66,8 @@ public class TownType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description);
+                description,
+                groups);
         this.reqs = reqs;
         this.effects = effects;
         this.buildRadius = buildRadius;

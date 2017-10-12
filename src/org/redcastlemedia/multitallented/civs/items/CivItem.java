@@ -17,6 +17,7 @@ public class CivItem extends CVItem {
     private final String permission;
     private boolean isPlaceable = false;
     private final List<String> description;
+    private final List<String> groups;
 
     public ItemType getItemType() {
         return itemType;
@@ -36,6 +37,7 @@ public class CivItem extends CVItem {
         return getDisplayName().replace("Civs ", "").toLowerCase();
     }
     public List<String> getDescription() { return description; }
+    public List<String> getGroups() { return groups; }
 
 
     public CivItem(List<String> reqs,
@@ -49,7 +51,8 @@ public class CivItem extends CVItem {
                    int max,
                    double price,
                    String permission,
-                   List<String> description) {
+                   List<String> description,
+                   List<String> groups) {
         super(material, 1, damage, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
         this.itemType = itemType;
@@ -60,6 +63,7 @@ public class CivItem extends CVItem {
         this.price = price;
         this.permission = permission;
         this.description = description;
+        this.groups = groups;
     }
 
     @Override
@@ -75,7 +79,8 @@ public class CivItem extends CVItem {
                 max,
                 price,
                 permission,
-                description);
+                new ArrayList<>(description),
+                new ArrayList<>(groups));
     }
 
     public enum ItemType {

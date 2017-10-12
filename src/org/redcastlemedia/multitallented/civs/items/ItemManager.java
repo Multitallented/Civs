@@ -100,7 +100,8 @@ public class ItemManager {
                 1,0, -1,
                 configuration.getDouble("price", 0),
                 configuration.getString("permission"),
-                configuration.getStringList("description"));
+                configuration.getStringList("description"),
+                configuration.getStringList("groups"));
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -119,7 +120,8 @@ public class ItemManager {
                 1, 0, -1,
                 config.getDouble("price", 0),
                 config.getString("permission"),
-                config.getStringList("description"));
+                config.getStringList("description"),
+                config.getStringList("groups"));
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -145,7 +147,8 @@ public class ItemManager {
                 config.getStringList("critical-build-reqs"),
                 config.getStringList("description"),
                 config.getInt("power", 200),
-                config.getInt("max-power", 1000));
+                config.getInt("max-power", 1000),
+                config.getStringList("groups"));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -199,7 +202,8 @@ public class ItemManager {
                 effectRadius,
                 rebuild,
                 config.getStringList("description"),
-                config.getLong("period", 0));
+                config.getLong("period", 0),
+                config.getStringList("groups"));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
