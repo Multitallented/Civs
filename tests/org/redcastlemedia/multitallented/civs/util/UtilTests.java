@@ -2,15 +2,24 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.hamcrest.internal.ArrayIterator;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UtilTests {
 
@@ -42,5 +51,31 @@ public class UtilTests {
     public void itemGroupShouldReturnProperCVItems() {
         List<CVItem> cvItems = CVItem.createListFromString("g:glass*12");
         assertEquals(12, cvItems.get(0).getQty());
+    }
+
+    @Test
+    public void addItemsShouldAddProperItems() {
+        Inventory inventory = mock(Inventory.class);
+        List<ItemStack> inventoryContents = new ArrayList<>();
+        inventoryContents.add(new ItemStack(Material.COBBLESTONE, 6));
+        inventoryContents.add(new ItemStack(Material.WOOD_AXE));
+        inventoryContents.add(new ItemStack(Material.STONE_SWORD));
+        inventoryContents.add(null);
+        inventoryContents.add(null);
+        inventoryContents.add(null);
+        inventoryContents.add(null);
+        inventoryContents.add(null);
+        inventoryContents.add(null);
+        ListIterator<ItemStack> itemStacks = inventoryContents.listIterator();
+        when(inventory.iterator()).thenReturn(itemStacks);
+        ArgumentCaptor<ItemStack> itemStackArgumentCaptor = ArgumentCaptor.forClass(ItemStack.class);
+        List<CVItem> tempList = new ArrayList<>();
+        tempList.add(CVItem.createCVItemFromString("GRASS"));
+        List<List<CVItem>> returnList = new ArrayList<>();
+        returnList.add(tempList);
+        Util.addItems(returnList, inventory);
+        verify(inventory).addItem(itemStackArgumentCaptor.capture());
+        List<ItemStack> stacks = itemStackArgumentCaptor.getAllValues();
+        assertEquals(Material.GRASS, stacks.get(0).getType());
     }
 }

@@ -100,6 +100,7 @@ public class ShopMenu extends Menu {
         }
         inventory.setItem(8, getBackButton(civilian));
 
+        //TODO check if the user is at max
         int i=9;
         for (CivItem civItem : shopItems) {
             CivItem civItem1 = civItem.clone();
