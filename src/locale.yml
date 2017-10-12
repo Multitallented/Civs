@@ -13,6 +13,7 @@ en:
   buy: "Buy $1"
   cancel: Cancel
   item-bought: "Congrats! You just bought $1 for $2"
+  max-item: "You cant buy more than $2 $1"
 
   #items
   items: Items

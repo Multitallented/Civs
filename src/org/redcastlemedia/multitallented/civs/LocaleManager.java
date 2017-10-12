@@ -109,6 +109,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".broke-own-region", "Your $1 is missing blocks"));
                 currentLanguage.put("no-permission",
                         localeConfig.getString(langKey + ".no-permission", "Permission denied"));
+                currentLanguage.put("max-item",
+                        localeConfig.getString(langKey + ".max-item", "You cant buy more than $2 $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -153,6 +155,7 @@ public class LocaleManager {
         englishMap.put("already-member", "$1 is already a member of $2");
         englishMap.put("broke-own-region", "Your $1 is missing blocks");
         englishMap.put("no-permission", "Permission denied");
+        englishMap.put("max-item", "You cant buy more than $2 $1");
 
         languageMap.put("en", englishMap);
     }

@@ -100,15 +100,25 @@ public class ShopMenu extends Menu {
         }
         inventory.setItem(8, getBackButton(civilian));
 
-        //TODO check if the user is at max
         int i=9;
         for (CivItem civItem : shopItems) {
+            if (civilian.isAtMax(civItem)) {
+                CVItem item = CVItem.createCVItemFromString("OBSIDIAN");
+                item.setDisplayName(civItem.getDisplayName());
+                item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
+                        "max-item").replace("$1", civItem.getProcessedName())
+                            .replace("$2", civItem.getCivMax() + ""));
+                item.getLore().addAll(civItem.getDescription());
+                inventory.setItem(i, item.createItemStack());
+                i++;
+                continue;
+            }
             CivItem civItem1 = civItem.clone();
             civItem1.getLore().add(civilian.getUuid().toString());
             civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
                     ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
-            inventory.setItem(i, civItem1.createItemStack());
             civItem1.getLore().addAll(civItem1.getDescription());
+            inventory.setItem(i, civItem1.createItemStack());
             i++;
         }
 

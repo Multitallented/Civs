@@ -1,9 +1,12 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
@@ -41,6 +44,21 @@ public class Civilian {
         return stashItems;
     }
 
+    public boolean isAtMax(CivItem civItem) {
+        String processedName = civItem.getProcessedName();
+        boolean atMax = civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+        if (atMax) {
+            return true;
+        }
+        ConfigManager configManager = ConfigManager.getInstance();
+        for (String group : civItem.getGroups()) {
+            if (configManager.getGroups().get(group) <= getCountGroup(group)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getCountStashItems(String name) {
         for (CivItem civItem : stashItems) {
             if (civItem.getProcessedName().equals(name)) {
@@ -48,6 +66,46 @@ public class Civilian {
             }
         }
         return 0;
+    }
+
+    public int getCountGroup(String group) {
+        int count = 0;
+        ItemManager itemManager = ItemManager.getInstance();
+        for (CivItem item : stashItems) {
+            if (item.getGroups().contains(group)) {
+                count += item.getQty();
+            }
+        }
+        for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
+            if (is == null || !is.hasItemMeta()) {
+                continue;
+            }
+            String displayName = is.getItemMeta().getDisplayName();
+            if (displayName == null) {
+                continue;
+            }
+            displayName = displayName.replace("Civs ", "").toLowerCase();
+            CivItem item = itemManager.getItemType(displayName);
+            if (item == null) {
+                continue;
+            }
+            if (!item.getGroups().contains(group)) {
+                continue;
+            }
+            count += is.getAmount();
+        }
+
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            CivItem item = itemManager.getItemType(region.getType());
+            if (!item.getGroups().contains(group)) {
+
+            }
+            if (!region.getOwners().contains(uuid)) {
+                continue;
+            }
+            count++;
+        }
+        return count;
     }
 
     public int getCountNonStashItems(String name) {
