@@ -19,6 +19,7 @@ public class ConfigManager {
     double priceMultiplier;
     HashMap<String, String> itemGroups;
     String defaultClass;
+    HashMap<String, Integer> groups;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -31,6 +32,7 @@ public class ConfigManager {
     public double getPriceMultiplier() { return priceMultiplier; }
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
+    public HashMap<String, Integer> getGroups() { return groups; }
 
     public ConfigManager(File configFile) {
         configManager = this;
@@ -57,6 +59,10 @@ public class ConfigManager {
             for (String key : config.getConfigurationSection("item-groups").getKeys(false)) {
                 itemGroups.put(key, config.getString("item-groups." + key));
             }
+            groups = new HashMap<>();
+            for (String key : config.getConfigurationSection("groups").getKeys(false)) {
+                groups.put(key, config.getInt("groups." + key, -1));
+            }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -69,6 +75,7 @@ public class ConfigManager {
         priceMultiplier = 1;
         itemGroups = new HashMap<>();
         defaultClass = "default";
+        groups = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {
