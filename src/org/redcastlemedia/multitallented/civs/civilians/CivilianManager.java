@@ -98,7 +98,6 @@ public class CivilianManager {
     }
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
-        //TODO add all attributes here
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
         return new Civilian(uuid,
                 configManager.getDefaultLanguage(),

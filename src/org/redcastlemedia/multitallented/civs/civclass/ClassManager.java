@@ -1,9 +1,12 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class ClassManager {
@@ -16,7 +19,36 @@ public class ClassManager {
     }
 
     void loadClasses() {
-        //TODO load civ classes from storage
+        if (Civs.getInstance() == null) {
+            return;
+        }
+        File classFolder = new File(Civs.getInstance().getDataFolder(), "class-data");
+        if (!classFolder.exists()) {
+            classFolder.mkdir();
+        }
+        try {
+            for (File file : classFolder.listFiles()) {
+                try {
+                    FileConfiguration classConfig = new YamlConfiguration();
+                    classConfig.load(file);
+                    int id = classConfig.getInt("id");
+                    UUID uuid = UUID.fromString(classConfig.getString("uuid"));
+                    String className = classConfig.getString("type");
+                    if (!civClasses.containsKey(uuid)) {
+                        civClasses.put(uuid, new HashSet<CivClass>());
+                    }
+
+                    civClasses.get(uuid).add(new CivClass(id, uuid, className));
+                } catch (Exception ex) {
+                    Civs.logger.severe("Unable to load " + file.getName());
+                    ex.printStackTrace();
+                    continue;
+                }
+            }
+        } catch (Exception e) {
+            Civs.logger.severe("Unable to load class files");
+            return;
+        }
     }
     public void addClass(CivClass civClass) {
         if (civClasses.get(civClass.getUuid()) == null) {
@@ -26,7 +58,34 @@ public class ClassManager {
         saveClass(civClass);
     }
     public void saveClass(CivClass civClass) {
-        //TODO finish this stub
+        if (Civs.getInstance() == null) {
+            return;
+        }
+        File classFolder = new File(Civs.getInstance().getDataFolder(), "class-data");
+        if (!classFolder.exists()) {
+            classFolder.mkdir();
+        }
+        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        if (!classFile.exists()) {
+            try {
+                classFile.createNewFile();
+            } catch (IOException io) {
+                Civs.logger.severe("Unable to create class file " + civClass.getId() + ".yml");
+                return;
+            }
+        }
+        FileConfiguration config = new YamlConfiguration();
+        try {
+            config.set("id", civClass.getId());
+            config.set("type", civClass.getType());
+            config.set("uuid", civClass.getUuid());
+            //TODO save attributes here as needed
+
+            config.save(classFile);
+        } catch (Exception e) {
+            Civs.logger.severe("Unable to save class file " + civClass.getId() + ".yml");
+            return;
+        }
     }
     public int getNextId() {
         int i=0;
