@@ -19,7 +19,7 @@ public class ClassManager {
     }
     public void addClass(CivClass civClass) {
         if (civClasses.get(civClass.getUuid()) == null) {
-            civClasses.put(civClass.getUuid(), new HashSet<>());
+            civClasses.put(civClass.getUuid(), new HashSet<CivClass>());
         }
         civClasses.get(civClass.getUuid()).add(civClass);
         saveClass(civClass);

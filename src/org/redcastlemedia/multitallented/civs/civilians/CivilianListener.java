@@ -114,10 +114,10 @@ public class CivilianListener implements Listener {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();
-        ItemStack clickedStack = event.getCursor();
+        ItemStack clickedStack = event.getCurrentItem();
         String uuidString;
         try {
-            uuidString = clickedStack.getItemMeta().getLore().get(0); //TODO figure out why this is an error
+            uuidString = clickedStack.getItemMeta().getLore().get(0);
         } catch (Exception e) {
             Civs.logger.warning("Unable to find Civs Item UUID");
             return;

@@ -55,7 +55,11 @@ public abstract class Menu implements Listener {
     static ItemStack getBackButton(Civilian civilian) {
         CVItem backButton = CVItem.createCVItemFromString("REDSTONE_BLOCK");
         backButton.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "back-button"));
-        backButton.setLore(history.get(civilian.getUuid()));
+        if (history.get(civilian.getUuid()) == null) {
+            history.put(civilian.getUuid(), new ArrayList<String>());
+        } else {
+            backButton.setLore(history.get(civilian.getUuid()));
+        }
         return backButton.createItemStack();
     }
     static void clickBackButton(HumanEntity humanEntity) {
