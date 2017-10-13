@@ -19,7 +19,7 @@ public class ClassManager {
     }
     public void addClass(CivClass civClass) {
         if (civClasses.get(civClass.getUuid()) == null) {
-            civClasses.put(civClass.getUuid(), new HashSet<CivClass>());
+            civClasses.put(civClass.getUuid(), new HashSet<>());
         }
         civClasses.get(civClass.getUuid()).add(civClass);
         saveClass(civClass);
@@ -45,6 +45,9 @@ public class ClassManager {
     }
 
     public CivClass getCivClass(UUID uuid, String type) {
+        if (civClasses.get(uuid) == null) {
+            return null; //TODO perhaps fix this to be a default class?
+        }
         for (CivClass civClass : civClasses.get(uuid)) {
             if (civClass.getType().equals(type)) {
                 return civClass;
@@ -53,6 +56,9 @@ public class ClassManager {
         return null;
     }
     public CivClass getCivClass(UUID uuid, int id) {
+        if (civClasses.get(uuid) == null) {
+            return null;
+        }
         for (CivClass civClass : civClasses.get(uuid)) {
             if (civClass.getId() == id) {
                 return civClass;

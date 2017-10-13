@@ -195,6 +195,9 @@ public class CVItem {
         if (displayName != null) {
             im.setDisplayName(displayName);
         }
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
         if (!lore.isEmpty()) {
             im.setLore(lore);
         }

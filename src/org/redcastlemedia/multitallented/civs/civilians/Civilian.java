@@ -46,13 +46,15 @@ public class Civilian {
 
     public boolean isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
-        boolean atMax = civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+        boolean atMax = civItem.getCivMax() != -1 &&
+                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return true;
         }
         ConfigManager configManager = ConfigManager.getInstance();
         for (String group : civItem.getGroups()) {
-            if (configManager.getGroups().get(group) <= getCountGroup(group)) {
+            if (configManager.getGroups().get(group) != -1 &&
+                    configManager.getGroups().get(group) <= getCountGroup(group)) {
                 return true;
             }
         }

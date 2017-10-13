@@ -59,7 +59,8 @@ public abstract class Menu implements Listener {
         return backButton.createItemStack();
     }
     static void clickBackButton(HumanEntity humanEntity) {
-        if (history.get(humanEntity.getUniqueId()).isEmpty()) {
+        if (history.get(humanEntity.getUniqueId()) == null ||
+                history.get(humanEntity.getUniqueId()).isEmpty()) {
             return;
         }
         ItemManager itemManager = ItemManager.getInstance();

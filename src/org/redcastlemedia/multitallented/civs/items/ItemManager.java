@@ -79,6 +79,7 @@ public class ItemManager {
                     }
                 } catch (Exception e) {
                     Civs.logger.severe("Unable to read from " + file.getName());
+                    e.printStackTrace();
                 }
             }
         } catch (NullPointerException npe) {
@@ -226,7 +227,7 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(name);
+        return itemTypes.get(name.toLowerCase());
     }
 
     public ArrayList<CivItem> getNewItems() {
