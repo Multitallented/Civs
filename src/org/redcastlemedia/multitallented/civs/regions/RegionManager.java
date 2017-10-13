@@ -166,7 +166,7 @@ public class RegionManager {
                     people,
                     location,
                     radii,
-                    (HashSet<String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
+                    (HashMap<String, String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
             );
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());

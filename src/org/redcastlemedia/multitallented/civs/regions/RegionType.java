@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class RegionType extends CivItem {
     private final String name;
     private final List<List<CVItem>> reqs;
 
-    private final HashSet<String> effects;
+    private final HashMap<String, String> effects;
 
     private final int buildRadius;
     private final int buildRadiusX;
@@ -39,7 +40,7 @@ public class RegionType extends CivItem {
                       List<List<CVItem>> input,
                       List<List<CVItem>> output,
                       double payout,
-                      HashSet<String> effects,
+                      HashMap<String, String> effects,
                       int buildRadius,
                       int buildRadiusX,
                       int buildRadiusY,
@@ -85,7 +86,7 @@ public class RegionType extends CivItem {
     public List<List<CVItem>> getReagents() {
         return reagents;
     }
-    public HashSet<String> getEffects() {
+    public HashMap<String, String> getEffects() {
         return effects;
     }
     public int getBuildRadius() {

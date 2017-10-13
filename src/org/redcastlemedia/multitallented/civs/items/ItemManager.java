@@ -173,8 +173,15 @@ public class ItemManager {
         for (String output : config.getStringList("output")) {
             outputs.add(CVItem.createListFromString(output));
         }
-        HashSet<String> effects = new HashSet<>();
-        effects.addAll(config.getStringList("effects"));
+        HashMap<String, String> effects = new HashMap<>();
+        for (String s : config.getStringList("effects")) {
+            String[] effectSplit = s.split(":");
+            if (effectSplit.length > 1) {
+                effects.put(effectSplit[0], effectSplit[1]);
+            } else {
+                effects.put(s, null);
+            }
+        }
         int buildRadius = config.getInt("build-radius", 5);
         int buildRadiusX = config.getInt("build-radius-x", buildRadius);
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);

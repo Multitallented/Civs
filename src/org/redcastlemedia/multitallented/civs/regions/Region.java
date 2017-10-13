@@ -24,10 +24,10 @@ public class Region {
     private final int radiusZN;
     private final int radiusYP;
     private final int radiusYN;
-    public HashSet<String> effects;
+    public HashMap<String, String> effects;
     private long lastTick = 0;
 
-    public Region(String type, HashMap<UUID, String> people, Location location, int[] buildRadius, HashSet<String> effects) {
+    public Region(String type, HashMap<UUID, String> people, Location location, int[] buildRadius, HashMap<String, String> effects) {
         this.type = type;
         this.people = people;
         this.location = location;
@@ -45,6 +45,7 @@ public class Region {
     public HashMap<UUID, String> getPeople() {
         return people;
     }
+    public HashMap<String, String> getEffects() { return effects; }
     public Set<UUID> getOwners() {
         Set<UUID> owners = new HashSet<>();
         for (UUID uuid : people.keySet()) {

@@ -244,7 +244,7 @@ public class ProtectionHandler implements Listener {
     private boolean checkEffectAt(Location location, Player player, String type, int mod) {
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
-            if (!region.effects.contains(type)) {
+            if (!region.effects.keySet().contains(type)) {
                 continue;
             }
             if (player == null) {
@@ -268,7 +268,7 @@ public class ProtectionHandler implements Listener {
         if (region == null) {
             return false;
         }
-        if (!region.effects.contains(type)) {
+        if (!region.effects.keySet().contains(type)) {
             return false;
         }
         if (player == null) {
