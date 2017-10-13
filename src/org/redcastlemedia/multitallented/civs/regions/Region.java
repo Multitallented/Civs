@@ -339,7 +339,7 @@ public class Region {
         RegionType regionType = (RegionType) itemManager.getItemType(type);
 
         long period = regionType.getPeriod();
-        return lastTick + period < System.currentTimeMillis();
+        return lastTick + period * 1000 < System.currentTimeMillis();
     }
     public void tick() {
         this.lastTick = System.currentTimeMillis();
