@@ -12,9 +12,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class CivilianManager {
 
@@ -79,7 +77,11 @@ public class CivilianManager {
 
             ItemManager itemManager = ItemManager.getInstance();
             ArrayList<CivItem> items = itemManager.loadCivItems(civConfig, uuid);
-            int id = civConfig.getInt("class-id");
+            Set<CivClass> classes = new HashSet<>();
+            ClassManager classManager = ClassManager.getInstance();
+            for (int id : civConfig.getIntegerList("classes")) {
+                classes.add(classManager.getCivClass(uuid, id));
+            }
             HashMap<CivItem, Integer> exp = new HashMap<>();
             for (String key : civConfig.getConfigurationSection("exp").getKeys(false)) {
                 CivItem item = itemManager.getItemType(key);
@@ -89,7 +91,7 @@ public class CivilianManager {
                 exp.put(item, civConfig.getInt("exp." + key, 0));
             }
 
-            return new Civilian(uuid, civConfig.getString("locale"), items, ClassManager.getInstance().getCivClass(uuid, id), exp);
+            return new Civilian(uuid, civConfig.getString("locale"), items, classes, exp);
         } catch (Exception ex) {
             Civs.logger.severe("Unable to read/write " + uuid + ".yml");
             ex.printStackTrace();
@@ -99,10 +101,12 @@ public class CivilianManager {
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
+        Set<CivClass> classes = new HashSet<CivClass>();
+        classes.add(defaultClass);
         return new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),
-                defaultClass,
+                classes,
                 new HashMap<CivItem, Integer>());
     }
     public void saveCivilian(Civilian civilian) {
@@ -135,7 +139,11 @@ public class CivilianManager {
             for (CivItem civItem : civilian.getStashItems()) {
                 civConfig.set("items." + civItem.getDisplayName().replace("Civs ", "").toLowerCase(), civItem.getQty());
             }
-            civConfig.set("class-id", civilian.getCurrentClass().getId());
+            List<Integer> classes = new ArrayList<>();
+            for (CivClass civClass : civilian.getCivClasses()) {
+                classes.add(civClass.getId());
+            }
+            civConfig.set("classes", classes);
             for (CivItem item : civilian.getExp().keySet()) {
                 int exp = civilian.getExp().get(item);
                 if (exp < 1) {

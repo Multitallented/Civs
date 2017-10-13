@@ -126,6 +126,9 @@ public class ClassManager {
         }
         return null;
     }
+    public CivClass createClass(UUID uuid, String type) {
+        return new CivClass(getNextId(), uuid, type);
+    }
     public CivClass createDefaultClass(UUID uuid) {
         return new CivClass(getNextId(), uuid, ConfigManager.getInstance().getDefaultClass());
     }

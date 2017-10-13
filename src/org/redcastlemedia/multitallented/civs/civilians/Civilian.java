@@ -10,34 +10,29 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class Civilian {
 
     private final UUID uuid;
     private final HashMap<CivItem, Integer> exp;
-    private CivClass civClass;
+    private Set<CivClass> civClasses;
     private String locale;
     private final ArrayList<CivItem> stashItems;
 
-    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, CivClass civClass,
+    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
-        this.civClass = civClass;
+        this.civClasses = civClasses;
         this.exp = exp;
     }
 
     public UUID getUuid() {
         return uuid;
     }
-    public CivClass getCurrentClass() { return civClass; }
-    public void setCurrentClass(CivClass civClass) {
-        this.civClass = civClass;
-    }
+    public Set<CivClass> getCivClasses() { return civClasses; }
     public String getLocale() {
         return locale;
     }

@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -64,9 +65,16 @@ public class ClassTypeInfoMenu extends Menu {
                 clearHistory(civilian.getUuid());
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "class-changed").replace("$1", civilian.getCurrentClass().getType())
-                        .replace("$2", classType.getProcessedName()));
-                civilian.setCurrentClass(ClassManager.getInstance().getCivClass(civilian.getUuid(), classType.getProcessedName()));
+                        "class-changed").replace("$1", classType.getProcessedName()));
+
+                //TODO forward to confirmation menu first
+
+                //TODO remove any class of same type from civilian but not from classManager
+
+                ClassManager classManager = ClassManager.getInstance();
+                CivClass civClass = classManager.createClass(civilian.getUuid(), className);
+                classManager.addClass(civClass);
+                classManager.saveClass(civClass);
                 CivilianManager.getInstance().saveCivilian(civilian);
             }
             return;
@@ -97,6 +105,12 @@ public class ClassTypeInfoMenu extends Menu {
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
         boolean isNotOverMax = civilian.getCountNonStashItems(itemName) + civilian.getCountStashItems(itemName) < classType.getCivMax();
         boolean hasChoosePerms = Civs.perm != null && Civs.perm.has(player, "civs.choose");
+        boolean alreadyIsClass = false;
+        for (CivClass civClass : civilian.getCivClasses()) {
+            if (civClass.getType().equals(classType.getProcessedName())) {
+                alreadyIsClass = true;
+            }
+        }
         if (hasShopPerms && (classType.getCivMax() == -1 || isNotOverMax)) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
@@ -104,7 +118,7 @@ public class ClassTypeInfoMenu extends Menu {
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + classType.getPrice());
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());
-        } else if (hasChoosePerms && !civilian.getCurrentClass().getType().equals(classType.getProcessedName()) &&
+        } else if (hasChoosePerms && !alreadyIsClass &&
                 civilian.getStashItems().contains(classType)) {
             CVItem switchItem = CVItem.createCVItemFromString("ENDER_CHEST");
             switchItem.setDisplayName("Switch to class");

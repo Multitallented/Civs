@@ -45,6 +45,7 @@ en:
   already-member: "$1 is already a member of $2"
   broke-own-region: "Your $1 is missing blocks"
   no-permission: "Permission denied"
+  class-changed: "Your class has changed to $1"
 pt_br:
   name: Português Brasil
   icon: WOOL.11
