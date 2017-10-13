@@ -1,2 +1,9 @@
 type: spell
+icon: SLIME_BLOCK
 name: Backflip
+max: 1
+group: mobility,utility,escape
+pre-reqs:
+- archer:level=4
+
+#spell attributes

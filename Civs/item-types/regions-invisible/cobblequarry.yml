@@ -3,6 +3,7 @@ icon: CHEST
 name: Cobblequarry
 max: 1
 price: 10
+group: quarry
 
 #region attributes
 build-radius: 2
@@ -11,6 +12,6 @@ effects:
 - block_place
 period: 10
 reagents:
-- IRON_PICK
+- IRON_PICKAXE
 output:
 - COBBLESTONE

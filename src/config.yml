@@ -12,3 +12,4 @@ item-groups:
   secondary: LOG,LOG_2,SANDSTONE,BRICK,SNOW_BLOCK,SMOOTH_BRICK,COBBLESTONE
 groups:
   shop: 3
+  quarry: 12
