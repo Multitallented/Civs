@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -37,7 +38,7 @@ public class CivilianTests {
     @Test
     public void localeTestShouldReturnProperLanguageString() {
         LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new ArrayList<CivItem>(), null);
+        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new ArrayList<CivItem>(), null, new HashMap<CivItem, Integer>());
 
         assertEquals("No se encontró ningún tipo de región",
                 localeManager.getTranslation(civilian.getLocale(), "no-region-type-found"));

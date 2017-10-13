@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import java.io.File;
 import java.util.*;
@@ -65,6 +66,9 @@ public class ClassManager {
             }
         }
         return null;
+    }
+    public CivClass createDefaultClass(UUID uuid) {
+        return new CivClass(getNextId(), uuid, ConfigManager.getInstance().getDefaultClass());
     }
 
     public static ClassManager getInstance() {

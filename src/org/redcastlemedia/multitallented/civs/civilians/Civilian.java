@@ -11,20 +11,24 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Civilian {
 
     private final UUID uuid;
+    private final HashMap<CivItem, Integer> exp;
     private CivClass civClass;
     private String locale;
     private final ArrayList<CivItem> stashItems;
 
-    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, CivClass civClass) {
+    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, CivClass civClass,
+            HashMap<CivItem, Integer> exp) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
         this.civClass = civClass;
+        this.exp = exp;
     }
 
     public UUID getUuid() {
@@ -43,6 +47,7 @@ public class Civilian {
     public ArrayList<CivItem> getStashItems() {
         return stashItems;
     }
+    public HashMap<CivItem, Integer> getExp() { return exp; }
 
     public boolean isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();

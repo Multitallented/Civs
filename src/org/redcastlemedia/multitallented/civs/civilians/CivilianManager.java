@@ -77,10 +77,19 @@ public class CivilianManager {
 
             //TODO load other civilian file properties
 
-            ArrayList<CivItem> items = ItemManager.getInstance().loadCivItems(civConfig, uuid);
+            ItemManager itemManager = ItemManager.getInstance();
+            ArrayList<CivItem> items = itemManager.loadCivItems(civConfig, uuid);
             int id = civConfig.getInt("class-id");
+            HashMap<CivItem, Integer> exp = new HashMap<>();
+            for (String key : civConfig.getConfigurationSection("exp").getKeys(false)) {
+                CivItem item = itemManager.getItemType(key);
+                if (item == null) {
+                    continue;
+                }
+                exp.put(item, civConfig.getInt("exp." + key, 0));
+            }
 
-            return new Civilian(uuid, civConfig.getString("locale"), items, ClassManager.getInstance().getCivClass(uuid, id));
+            return new Civilian(uuid, civConfig.getString("locale"), items, ClassManager.getInstance().getCivClass(uuid, id), exp);
         } catch (Exception ex) {
             Civs.logger.severe("Unable to read/write " + uuid + ".yml");
             ex.printStackTrace();
@@ -90,9 +99,12 @@ public class CivilianManager {
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
         //TODO add all attributes here
-        String defaultClass = configManager.getDefaultClass();
-        int id = ClassManager.getInstance().getNextId();
-        return new Civilian(uuid, configManager.getDefaultLanguage(), ItemManager.getInstance().getNewItems(), new CivClass(id, uuid, defaultClass));
+        CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
+        return new Civilian(uuid,
+                configManager.getDefaultLanguage(),
+                ItemManager.getInstance().getNewItems(),
+                defaultClass,
+                new HashMap<CivItem, Integer>());
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
@@ -123,6 +135,14 @@ public class CivilianManager {
             //TODO save other civilian file properties
             for (CivItem civItem : civilian.getStashItems()) {
                 civConfig.set("items." + civItem.getDisplayName().replace("Civs ", "").toLowerCase(), civItem.getQty());
+            }
+            civConfig.set("class-id", civilian.getCurrentClass().getId());
+            for (CivItem item : civilian.getExp().keySet()) {
+                int exp = civilian.getExp().get(item);
+                if (exp < 1) {
+                    continue;
+                }
+                civConfig.set("exp." + item.getProcessedName(), exp);
             }
 
             civConfig.save(civilianFile);
