@@ -5,10 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemFactory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
@@ -20,9 +17,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import sun.security.krb5.Config;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.doAnswer;
@@ -51,7 +46,7 @@ public class TestUtil {
         Civs.logger = mock(PluginLogger.class);
 
         Server server = mock(Server.class);
-        Inventory inventory = mock(Inventory.class);
+        PlayerInventory inventory = mock(PlayerInventory.class);
         Logger logger = mock(Logger.class);
         doAnswer(new Answer() {
             @Override
@@ -110,6 +105,11 @@ public class TestUtil {
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
+        List<ItemStack> items = new ArrayList<>();
+        ListIterator<ItemStack> listIterator = items.listIterator();
+        when(inventory.iterator()).thenReturn(listIterator);
+        when(player.getInventory()).thenReturn(inventory);
+        when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
 
         CivilianManager civilianManager = new CivilianManager();
         civilianManager.createDefaultCivilian(player);

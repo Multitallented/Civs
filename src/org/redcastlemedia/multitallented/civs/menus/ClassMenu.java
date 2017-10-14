@@ -17,9 +17,9 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsMenu extends Menu {
-    private static final String MENU_NAME = "CivsItems";
-    public ItemsMenu() {
+public class ClassMenu extends Menu {
+    private static final String MENU_NAME = "CivsClassStash";
+    public ClassMenu() {
         super(MENU_NAME);
     }
 
@@ -53,6 +53,9 @@ public class ItemsMenu extends Menu {
 
         int i=0;
         for (CivItem cvItem : civilian.getStashItems()) {
+            if (!cvItem.getItemType().equals(CivItem.ItemType.CLASS)) {
+                continue;
+            }
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             lore.addAll(Util.parseColors(cvItem.getDescription()));

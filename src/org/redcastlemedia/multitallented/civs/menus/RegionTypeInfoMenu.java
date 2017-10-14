@@ -74,8 +74,8 @@ public class RegionTypeInfoMenu extends Menu {
         //1 Price
         String itemName = regionType.getProcessedName();
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
-        boolean isNotOverMax = civilian.getCountNonStashItems(itemName) + civilian.getCountStashItems(itemName) < regionType.getCivMax();
-        if (hasShopPerms && (regionType.getCivMax() == -1 || isNotOverMax)) {
+        boolean isAtMax = civilian.isAtMax(regionType);
+        if (hasShopPerms && !isAtMax) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore = new ArrayList<>();
@@ -103,7 +103,8 @@ public class RegionTypeInfoMenu extends Menu {
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
         cvItem1.setDisplayName("Build Reqs");
         lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs"));
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
+                .replace("$1", regionType.getName()));
         cvItem1.setLore(lore);
         inventory.setItem(9, cvItem1.createItemStack());
 

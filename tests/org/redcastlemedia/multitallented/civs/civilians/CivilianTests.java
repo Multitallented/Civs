@@ -12,15 +12,15 @@ import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,5 +58,15 @@ public class CivilianTests {
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianClickItem(event);
         fail("set cancelled not called");
+    }
+
+    @Test
+    public void civilianShouldNotBeOverMaxItems() {
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionsTests.loadRegionTypeCobble();
+        CivilianManager civilianManager = CivilianManager.getInstance();
+        civilianManager.loadCivilian(TestUtil.player);
+        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
+        assertFalse(civilian.isAtMax(itemManager.getItemType("cobble")));
     }
 }

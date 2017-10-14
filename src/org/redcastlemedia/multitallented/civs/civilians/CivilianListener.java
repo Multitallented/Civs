@@ -58,6 +58,7 @@ public class CivilianListener implements Listener {
         Item item = event.getItemDrop();
         if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
                 item.getItemStack().getItemMeta() != null &&
+                item.getItemStack().getItemMeta().getDisplayName() != null &&
                 item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
             item.remove();
         }

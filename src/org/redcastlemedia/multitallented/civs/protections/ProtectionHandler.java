@@ -191,6 +191,9 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null) {
+            return;
+        }
         Material mat = event.getClickedBlock().getType();
         if (mat == Material.WOODEN_DOOR ||
                 mat == Material.TRAP_DOOR ||

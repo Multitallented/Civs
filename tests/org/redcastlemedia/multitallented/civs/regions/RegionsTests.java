@@ -382,6 +382,7 @@ public class RegionsTests {
     public static void loadRegionTypeCobble() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");
+        config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("build-reqs", reqs);

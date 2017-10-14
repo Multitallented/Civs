@@ -98,7 +98,7 @@ public class ItemManager {
                 name,
                 icon.getMat(),
                 icon.getDamage(),
-                1,0, -1,
+                0,0, -1,
                 configuration.getDouble("price", 0),
                 configuration.getString("permission"),
                 configuration.getStringList("description"),
@@ -118,7 +118,7 @@ public class ItemManager {
                 name,
                 icon.getMat(),
                 icon.getDamage(),
-                1, 0, -1,
+                0, 0, -1,
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 config.getStringList("description"),
@@ -136,7 +136,7 @@ public class ItemManager {
                 name,
                 icon,
                 config.getStringList("pre-reqs"),
-                config.getInt("qty", 1),
+                config.getInt("qty", 0),
                 config.getInt("min",0),
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
@@ -192,7 +192,7 @@ public class ItemManager {
                 name,
                 icon,
                 config.getStringList("pre-reqs"),
-                config.getInt("qty", 1),
+                config.getInt("qty", 0),
                 config.getInt("min", 0),
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
@@ -240,8 +240,10 @@ public class ItemManager {
     public ArrayList<CivItem> getNewItems() {
         ArrayList<CivItem> newItems = new ArrayList<>();
         for (CivItem civItem : itemTypes.values()) {
-            if (civItem.getCivReqs().isEmpty()) {
-                newItems.add(civItem);
+            if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
+                CivItem newItem = civItem.clone();
+                newItem.setQty(newItem.getCivQty());
+                newItems.add(newItem);
             }
         }
         return newItems;

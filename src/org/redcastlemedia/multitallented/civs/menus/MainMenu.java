@@ -49,25 +49,25 @@ public class MainMenu extends Menu {
         if (itemName.equals(localeManager.getTranslation(locale, "classes"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, null));
+            event.getWhoClicked().openInventory(ClassMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "spells"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, null));
+            event.getWhoClicked().openInventory(SpellMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "blueprints"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ItemsMenu.createMenu(civilian));
+            event.getWhoClicked().openInventory(RegionsMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "regions"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ItemsMenu.createMenu(civilian));
+            event.getWhoClicked().openInventory(BuiltRegionMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "community"))) {

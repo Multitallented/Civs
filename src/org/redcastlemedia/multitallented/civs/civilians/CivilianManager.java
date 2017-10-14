@@ -97,7 +97,7 @@ public class CivilianManager {
 
             return new Civilian(uuid, civConfig.getString("locale"), items, classes, exp);
         } catch (Exception ex) {
-            Civs.logger.severe("Unable to read/write " + uuid + ".yml");
+            Civs.logger.severe("Unable to read " + uuid + ".yml");
             ex.printStackTrace();
             return createDefaultCivilian(uuid);
         }
@@ -144,8 +144,13 @@ public class CivilianManager {
                 civConfig.set("items." + civItem.getDisplayName().replace("Civs ", "").toLowerCase(), civItem.getQty());
             }
             List<Integer> classes = new ArrayList<>();
-            for (CivClass civClass : civilian.getCivClasses()) {
-                classes.add(civClass.getId());
+            if (civilian.getCivClasses() != null) {
+                for (CivClass civClass : civilian.getCivClasses()) {
+                    if (civClass == null) {
+                        continue;
+                    }
+                    classes.add(civClass.getId());
+                }
             }
             civConfig.set("classes", classes);
             for (CivItem item : civilian.getExp().keySet()) {
@@ -158,7 +163,8 @@ public class CivilianManager {
 
             civConfig.save(civilianFile);
         } catch (Exception ex) {
-            Civs.logger.severe("Unable to read/write " + civilian.getUuid() + ".yml");
+            Civs.logger.severe("Unable to write " + civilian.getUuid() + ".yml");
+            ex.printStackTrace();
             return;
         }
     }
