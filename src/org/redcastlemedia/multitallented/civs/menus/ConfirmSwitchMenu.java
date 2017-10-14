@@ -6,6 +6,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -15,13 +18,11 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-public class ConfirmationMenu extends Menu {
-    static String MENU_NAME = "CivConfirm";
-    public ConfirmationMenu() {
+public class ConfirmSwitchMenu extends Menu {
+    static String MENU_NAME = "CivSwitch";
+    public ConfirmSwitchMenu() {
         super(MENU_NAME);
     }
 
@@ -32,9 +33,9 @@ public class ConfirmationMenu extends Menu {
         ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String regionName = event.getInventory().getItem(0)
+        String className = event.getInventory().getItem(0)
                 .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        CivItem civItem = itemManager.getItemType(regionName);
+        ClassType classType = (ClassType) itemManager.getItemType(className);
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -43,14 +44,30 @@ public class ConfirmationMenu extends Menu {
         }
 
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
+
             clearHistory(civilian.getUuid());
-            event.getWhoClicked().sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "item-bought")
-                            .replace("$1", civItem.getDisplayName())
-                            .replace("$2", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             event.getWhoClicked().closeInventory();
-            civilian.getStashItems().add(civItem);
-            civilianManager.saveCivilian(civilian);
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "class-changed").replace("$1", classType.getProcessedName()));
+
+            Set<CivClass> removeThese = new HashSet<>();
+            for (CivClass civClass : civilian.getCivClasses()) {
+                if (civClass.getType().equals(className)) {
+                    removeThese.add(civClass);
+                }
+            }
+            for (CivClass civClass : removeThese) {
+                civilian.getCivClasses().remove(civClass);
+                if (!civilian.getStashItems().contains(classType)) {
+                    civilian.getStashItems().add(classType);
+                }
+            }
+
+            ClassManager classManager = ClassManager.getInstance();
+            CivClass civClass = classManager.createClass(civilian.getUuid(), className);
+            classManager.addClass(civClass);
+            classManager.saveClass(civClass);
+            CivilianManager.getInstance().saveCivilian(civilian);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
@@ -66,7 +83,7 @@ public class ConfirmationMenu extends Menu {
 
         inventory.setItem(0, civItem.clone().createItemStack());
 
-        CVItem cvItem = CVItem.createCVItemFromString("EMERALD");
+        CVItem cvItem = CVItem.createCVItemFromString("EMERALD_BLOCK");
         cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy").replace("$1", civItem.getDisplayName()));
         List<String> lore = new ArrayList<>();
         if (civItem.getPrice() > 0) {
@@ -75,7 +92,7 @@ public class ConfirmationMenu extends Menu {
         cvItem.setLore(lore);
         inventory.setItem(3, cvItem.createItemStack());
 
-        CVItem cvItem1 = CVItem.createCVItemFromString("BARRIER");
+        CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
         cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "cancel"));
         inventory.setItem(4, cvItem1.createItemStack());
 

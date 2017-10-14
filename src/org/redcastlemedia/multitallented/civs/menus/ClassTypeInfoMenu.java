@@ -62,20 +62,11 @@ public class ClassTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.ENDER_CHEST)) {
             if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose") &&
                     civilian.getStashItems().contains(classType)) {
-                clearHistory(civilian.getUuid());
+
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + className);
                 event.getWhoClicked().closeInventory();
-                event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "class-changed").replace("$1", classType.getProcessedName()));
-
-                //TODO forward to confirmation menu first
-
-                //TODO remove any class of same type from civilian but not from classManager
-
-                ClassManager classManager = ClassManager.getInstance();
-                CivClass civClass = classManager.createClass(civilian.getUuid(), className);
-                classManager.addClass(civClass);
-                classManager.saveClass(civClass);
-                CivilianManager.getInstance().saveCivilian(civilian);
+                event.getWhoClicked().openInventory(ConfirmSwitchMenu.createMenu(civilian, classType));
+                return;
             }
             return;
         }
