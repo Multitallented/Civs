@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -41,7 +42,7 @@ public class RegionListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent blockBreakEvent) {
         RegionManager regionManager = RegionManager.getInstance();
         if (ConfigManager.getInstance().getBlackListWorlds().contains(blockBreakEvent.getBlock().getLocation().getWorld().getName())) {
@@ -62,12 +63,12 @@ public class RegionListener implements Listener {
         }
         List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
-                blockBreakEvent.getBlock().getState().getData().toItemStack());
+                blockBreakEvent.getBlock().getState().getData().toItemStack(1));
         if (region.getPeople().containsKey(player.getUniqueId()) &&
-                 missingBlocks != null) {
+                 missingBlocks != null && !missingBlocks.isEmpty()) {
             blockBreakEvent.setCancelled(true);
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "break-own-region").replace("$1", region.getType()));
+                    "broke-own-region").replace("$1", region.getType()));
             StringBuilder missingReqs = new StringBuilder();
             for (HashSet<CVItem> map : missingBlocks) {
                 for (CVItem key : map) {
