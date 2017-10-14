@@ -113,6 +113,14 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".max-item", "You cant buy more than $2 $1"));
                 currentLanguage.put("class-changed",
                         localeConfig.getString(langKey + ".class-changed", "Your class has changed to $1"));
+                currentLanguage.put("classes",
+                        localeConfig.getString(langKey + ".classes", "Classes"));
+                currentLanguage.put("regions",
+                        localeConfig.getString(langKey + ".regions", "Regions"));
+                currentLanguage.put("blueprints",
+                        localeConfig.getString(langKey + ".blueprints", "Blueprints"));
+                currentLanguage.put("spells",
+                        localeConfig.getString(langKey + ".spells", "Spells"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -159,6 +167,10 @@ public class LocaleManager {
         englishMap.put("no-permission", "Permission denied");
         englishMap.put("max-item", "You cant buy more than $2 $1");
         englishMap.put("class-changed", "Your class has changed to $1");
+        englishMap.put("classes", "Classes");
+        englishMap.put("blueprints", "Blueprints");
+        englishMap.put("regions", "Regions");
+        englishMap.put("spells", "Spells");
 
         languageMap.put("en", englishMap);
     }

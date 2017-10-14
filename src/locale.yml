@@ -18,6 +18,18 @@ en:
   #items
   items: Items
 
+  #classes
+  classes: Classes
+
+  #spells
+  spells: Spells
+
+  #blueprints
+  blueprints: Blueprints
+
+  #regions
+  regions: Regions
+
   #community
   community: Community
 

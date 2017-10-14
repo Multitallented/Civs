@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -42,11 +44,14 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        civilianManager.unloadCivilian(event.getPlayer());
-        CommonScheduler.lastRegion.remove(event.getPlayer().getUniqueId());
-        CommonScheduler.lastTown.remove(event.getPlayer().getUniqueId());
-        TownManager.getInstance().clearInvite(event.getPlayer().getUniqueId());
+        civilianManager.unloadCivilian(player);
+        CommonScheduler.lastRegion.remove(uuid);
+        CommonScheduler.lastTown.remove(uuid);
+        Menu.clearHistory(uuid);
+        TownManager.getInstance().clearInvite(uuid);
     }
     @EventHandler
     public void onCivilianDropItem(PlayerDropItemEvent event) {
@@ -90,6 +95,9 @@ public class CivilianListener implements Listener {
         Location location = event.getBlock().getLocation();
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(event.getBlock().getLocation());
+        if (cvItem == null || cvItem.getLore() == null || cvItem.getLore().get(0) == null) {
+            return;
+        }
         UUID uuid = UUID.fromString(cvItem.getLore().get(0));
         if (blockLogger.getBlock(location) == null) {
             return;
@@ -101,6 +109,7 @@ public class CivilianListener implements Listener {
         ArrayList<String> lore = new ArrayList<>();
         lore.add(uuid.toString());
         cvItem.setLore(lore);
+        cvItem.setQty(1);
         if (!uuid.toString().equals(event.getPlayer().getUniqueId().toString())) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);

@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -83,12 +84,15 @@ public class CivilianManager {
                 classes.add(classManager.getCivClass(uuid, id));
             }
             HashMap<CivItem, Integer> exp = new HashMap<>();
-            for (String key : civConfig.getConfigurationSection("exp").getKeys(false)) {
-                CivItem item = itemManager.getItemType(key);
-                if (item == null) {
-                    continue;
+            ConfigurationSection section = civConfig.getConfigurationSection("exp");
+            if (section != null) {
+                for (String key : section.getKeys(false)) {
+                    CivItem item = itemManager.getItemType(key);
+                    if (item == null) {
+                        continue;
+                    }
+                    exp.put(item, civConfig.getInt("exp." + key, 0));
                 }
-                exp.put(item, civConfig.getInt("exp." + key, 0));
             }
 
             return new Civilian(uuid, civConfig.getString("locale"), items, classes, exp);

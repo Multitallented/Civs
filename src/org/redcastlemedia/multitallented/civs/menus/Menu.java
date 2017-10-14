@@ -83,7 +83,11 @@ public abstract class Menu implements Listener {
         }
         if (lastHistory[0].equals(ShopMenu.MENU_NAME)) {
             humanEntity.closeInventory();
-            humanEntity.openInventory(ShopMenu.createMenu(civilian, itemManager.getItemType(lastHistory[1])));
+            if (lastHistory.length > 1) {
+                humanEntity.openInventory(ShopMenu.createMenu(civilian, itemManager.getItemType(lastHistory[1])));
+            } else {
+                humanEntity.openInventory(ShopMenu.createMenu(civilian, null));
+            }
             return;
         }
         if (lastHistory[0].equals(RegionTypeInfoMenu.MENU_NAME)) {
@@ -113,7 +117,7 @@ public abstract class Menu implements Listener {
     static void setHistory(UUID uuid, List<String> newHistory) {
         history.put(uuid, newHistory);
     }
-    static void clearHistory(UUID uuid) {
+    public static void clearHistory(UUID uuid) {
         history.remove(uuid);
     }
     static List<String> getHistory(UUID uuid) {
@@ -239,7 +243,7 @@ public abstract class Menu implements Listener {
             return;
         }
         clearCycleItems(he.getUniqueId());
-        history.remove(he.getUniqueId());
+//        history.remove(he.getUniqueId());
     }
 
     public synchronized static void clearCycleItems(UUID uuid) {

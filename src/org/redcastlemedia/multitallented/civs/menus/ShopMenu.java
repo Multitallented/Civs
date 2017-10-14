@@ -39,6 +39,7 @@ public class ShopMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
+        itemName = itemName.replace("Civs ", "").toLowerCase();
         ItemManager itemManager = ItemManager.getInstance();
         if (!CVItem.isCivsItem(clickedStack)) {
             return;
