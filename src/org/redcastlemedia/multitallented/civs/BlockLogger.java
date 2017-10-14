@@ -2,10 +2,12 @@ package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.util.UUID;
 
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
-    private HashMap<Location, UUID> blocks = new HashMap<>();
+    private HashMap<Location, CVItem> blocks = new HashMap<>();
 //    private long lastSave = 0;
 //    private int intervalId = -1;
 
@@ -23,11 +25,11 @@ public class BlockLogger {
         loadBlocks();
     }
 
-    public UUID getBlock(Location location) {
+    public CVItem getBlock(Location location) {
         return blocks.get(location);
     }
-    public void putBlock(Location location, UUID uuid) {
-        blocks.put(location, uuid);
+    public void putBlock(Location location, CVItem cvItem) {
+        blocks.put(location, cvItem);
         saveBlocks();
     }
     public void removeBlock(Location location) {
@@ -56,7 +58,7 @@ public class BlockLogger {
         }
 //        intervalId = -1;
         final File blockData = new File(civs.getDataFolder(), "block-data.yml");
-        final HashMap<Location, UUID> finalBlocks = blocks;
+        final HashMap<Location, CVItem> finalBlocks = blocks;
         Runnable runMe = new Runnable() {
             @Override
             public void run() {
@@ -64,7 +66,12 @@ public class BlockLogger {
                 try {
                     //Don't load the file. Overwrite it
                     for (Location location : finalBlocks.keySet()) {
-                        config.set(Region.locationToString(location), finalBlocks.get(location));
+                        CVItem cvItem = finalBlocks.get(location);
+                        String locationString = Region.locationToString(location);
+                        config.set(locationString + ".mat", cvItem.getMat().toString());
+                        config.set(locationString + ".damage", cvItem.getDamage());
+                        config.set(locationString + ".name", cvItem.getDisplayName());
+                        config.set(locationString + ".lore", cvItem.getLore());
                     }
                     config.save(blockData);
                 } catch (Exception e) {
@@ -94,7 +101,21 @@ public class BlockLogger {
         try {
             config.load(blockData);
             for (String s : config.getKeys(false)) {
-                blocks.put(Region.idToLocation(s), UUID.fromString(config.getString(s)));
+                try {
+                    CVItem cvItem = new CVItem(
+                            Material.valueOf(config.getString(s + ".mat")),
+                            1,
+                            config.getInt(s + ".damage"),
+                            100,
+                            config.getString(s + ".name"),
+                            config.getStringList(s + ".lore")
+                    );
+                    blocks.put(Region.idToLocation(s), cvItem);
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to read line from block-data.yml");
+                    e.printStackTrace();
+                    continue;
+                }
             }
 
         } catch (Exception e) {

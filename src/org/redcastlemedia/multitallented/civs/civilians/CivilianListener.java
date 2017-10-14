@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
@@ -21,10 +23,13 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class CivilianListener implements Listener {
@@ -82,30 +87,39 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        ItemStack is = event.getBlock().getState().getData().toItemStack();
-        if (!CVItem.isCivsItem(is)) {
+        Location location = event.getBlock().getLocation();
+        BlockLogger blockLogger = BlockLogger.getInstance();
+        CVItem cvItem = blockLogger.getBlock(event.getBlock().getLocation());
+        UUID uuid = UUID.fromString(cvItem.getLore().get(0));
+        if (blockLogger.getBlock(location) == null) {
             return;
         }
-        BlockLogger blockLogger = BlockLogger.getInstance();
         blockLogger.removeBlock(event.getBlock().getLocation());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
-        UUID uuid = blockLogger.getBlock(event.getBlock().getLocation());
-        if (uuid != null && uuid != event.getPlayer().getUniqueId()) {
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(uuid.toString());
+        cvItem.setLore(lore);
+        if (!uuid.toString().equals(event.getPlayer().getUniqueId().toString())) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
+        } else {
+            event.setCancelled(true);
+            event.getBlock().setType(Material.AIR);
+            location.getWorld().dropItemNaturally(location, cvItem.createItemStack());
         }
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
-        ItemStack is = event.getBlock().getState().getData().toItemStack();
+//        ItemStack is = event.getBlock().getState().getData().toItemStack(1);
+        ItemStack is = event.getItemInHand();
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
         BlockLogger blockLogger = BlockLogger.getInstance();
-        blockLogger.putBlock(event.getBlock().getLocation(), event.getPlayer().getUniqueId());
+        blockLogger.putBlock(event.getBlock().getLocation(), CVItem.createFromItemStack(is));
     }
 
     @EventHandler

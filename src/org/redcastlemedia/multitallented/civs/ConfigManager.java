@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -56,16 +57,23 @@ public class ConfigManager {
             priceMultiplier = config.getDouble("price-multiplier", 1);
             defaultClass = config.getString("default-class", "default");
             itemGroups = new HashMap<>();
-            for (String key : config.getConfigurationSection("item-groups").getKeys(false)) {
-                itemGroups.put(key, config.getString("item-groups." + key));
+            ConfigurationSection section1 = config.getConfigurationSection("item-groups");
+            if (section1 != null) {
+                for (String key : section1.getKeys(false)) {
+                    itemGroups.put(key, config.getString("item-groups." + key));
+                }
             }
             groups = new HashMap<>();
-            for (String key : config.getConfigurationSection("groups").getKeys(false)) {
-                groups.put(key, config.getInt("groups." + key, -1));
+            ConfigurationSection section = config.getConfigurationSection("groups");
+            if (section != null) {
+                for (String key : section.getKeys(false)) {
+                    groups.put(key, config.getInt("groups." + key, -1));
+                }
             }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
+            e.printStackTrace();
         }
     }
     private void loadDefaults() {

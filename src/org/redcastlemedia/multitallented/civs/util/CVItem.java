@@ -130,7 +130,7 @@ public class CVItem {
     }
 
     public static boolean isCivsItem(ItemStack is) {
-        if (is == null) {
+        if (is == null || !is.hasItemMeta()) {
             return false;
         }
         ItemMeta im = is.getItemMeta();
@@ -141,8 +141,12 @@ public class CVItem {
     }
 
     public static CVItem createFromItemStack(ItemStack is) {
-        if (is.hasItemMeta() && !is.getItemMeta().getDisplayName().equals("")) {
-            return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
+        if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null) {
+            if (is.getItemMeta().getLore() != null) {
+                return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
+            } else {
+                return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName());
+            }
         }
         if (is.getDurability() > 0) {
             return new CVItem(is.getType(),is.getAmount(), is.getDurability());
