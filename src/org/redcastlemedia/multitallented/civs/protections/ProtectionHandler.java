@@ -235,12 +235,13 @@ public class ProtectionHandler implements Listener {
                 event.getPlayer().sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
-        }
-        event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use"));
-        if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-            event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        } else {
+            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use"));
+            if (event.isCancelled() && event.getPlayer() != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
         }
     }
 

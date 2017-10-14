@@ -4,9 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -116,5 +119,31 @@ public class ProtectionsTests {
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
         assertFalse(event.isCancelled());
+    }
+
+    @Test
+    public void chestUseShouldNotBeCancelled() {
+        RegionsTests.loadRegionTypeCobble();
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1, 2);
+        when(player.getUniqueId()).thenReturn(uuid);
+        Player player2 = mock(Player.class);
+        UUID uuid2 = new UUID(1, 3);
+        when(player2.getUniqueId()).thenReturn(uuid2);
+
+        HashMap<UUID, String> owners = new HashMap<>();
+
+        owners.put(uuid2, "owner");
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
+        HashMap<String, String> effects = new HashMap<>();
+        effects.put("block_break", null);
+        effects.put("block_build", null);
+        effects.put("chest_use", null);
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects));
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,null,Bukkit.getWorld("world").getBlockAt(0,0,0), BlockFace.NORTH);
+//        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
+        protectionHandler.onBlockInteract(event);
+        assertTrue(event.isCancelled());
     }
 }

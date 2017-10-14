@@ -81,6 +81,7 @@ public class RegionTypeInfoMenu extends Menu {
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
             priceItem.setLore(lore);
+            inventory.setItem(1, priceItem.createItemStack());
         }
 
         //2 Rebuild
