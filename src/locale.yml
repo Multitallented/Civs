@@ -52,18 +52,32 @@ pt_br:
   #language-menu
   language-menu: Selecione sua Linguagem
   language-set: "Sua linguagem foi definida para $1"
+  back-button: Voltar
 
   #shop
   shop: Loja
+  buy-item: A venda
+  price: Preço
+  buy: "Comprar $1"
+  cancel: Cancelar
+  item-bought: "Parabéns! Você comprou $1 por $2"
+  max-item: "Você não pode comprar mais de $2 $1"
 
   #items
   items: Itens
 
   #community
   community: Comunidade
-
+  
+  #region
+  size: Tamanho
+  range: Alcance
+  build-reqs: "Todos os blocos que você precisa colocar para construir $1"
+  too-close-region: "Sua $1 ficaria muito próxima a $2"
+  region-built: "Você construiu com sucesso uma $1"
+  
   #errors
-  no-region-type-found: "Sem regiões encontradas para $1"
+  no-region-type-found: "Nenhuma região encontrada para $1"
   building-too-big: "Sua construção é muito grande para ser $1"
   no-required-blocks: "Você não colocou todos os blocos requeridos para $1"
   cant-build-on-region: "Você não pode construir uma $1 em cima de uma $2"
@@ -71,6 +85,15 @@ pt_br:
   prevent-civs-item-share: "Você não tem permissão para compartilhar itens de Civs"
   region-protected: "Esta região esta protegida"
   region-destroyed: "A região $1 foi destruida!"
+  specify-player-town: "Por favor, especifique um jogador de uma vila"
+  town-not-exist: "$1 não é uma vila"
+  no-permission-invite: "Você não tem permissão para convidar pessoas para $1"
+  player-not-online: "$1 não esta Online"
+  invite-player: "$1 gostaria de te convidar para juntar-se a $2 $3"
+  already-member: "$1 já é um membro de $2"
+  broke-own-region: "Sua $1 esta com falta de blocos"
+  no-permission: "Permissão Negada"
+  class-changed: "Sua classe mudou para $1"
 es:
   name: Spanish
   icon: WOOL.4
