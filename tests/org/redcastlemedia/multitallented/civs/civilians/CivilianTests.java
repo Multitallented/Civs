@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,6 +50,9 @@ public class CivilianTests {
         InventoryClickEvent event = mock(InventoryClickEvent.class);
         ItemStack is = TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble");
         when(event.getCurrentItem()).thenReturn(is);
+        Inventory inventory = mock(Inventory.class);
+        when(inventory.getTitle()).thenReturn("");
+        when(event.getClickedInventory()).thenReturn(inventory);
         Player player = mock(Player.class);
         UUID uuid = new UUID(1,8);
         when(player.getUniqueId()).thenReturn(uuid);

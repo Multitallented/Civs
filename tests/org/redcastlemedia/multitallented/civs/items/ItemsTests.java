@@ -89,6 +89,7 @@ public class ItemsTests {
         config.set("name", "Backflip");
         config.set("icon", "SLIME_BLOCK");
         config.set("velocity", 2);
+        config.set("qty", 1);
         itemManager.loadRegionType(config);
     }
 
@@ -98,6 +99,7 @@ public class ItemsTests {
         config.set("name", "Shelter");
         config.set("icon", "WOOD");
         config.set("build-radius", 5);
+        config.set("qty", 1);
         itemManager.loadRegionType(config);
     }
 

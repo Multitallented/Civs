@@ -199,7 +199,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAP_DOOR ||
                 mat == Material.IRON_DOOR_BLOCK ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use"));
+            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -220,7 +220,7 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.CROPS ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break"));
+            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -229,14 +229,14 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
                 mat == Material.WOOD_BUTTON) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use"));
+            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use"));
+            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -266,20 +266,32 @@ public class ProtectionHandler implements Listener {
     private boolean checkLocation(Block block, Player player, String type) {
         return checkLocation(block.getLocation(), player, type);
     }
+    private boolean checkLocation(Block block, Player player, String type, String pRole) {
+        return checkLocation(block.getLocation(), player, type, pRole);
+    }
     private boolean checkLocation(Location location, Player player, String type) {
+        return checkLocation(location, player, type, "member");
+    }
+
+    private boolean checkLocation(Location location, Player player, String type, String pRole) {
         RegionManager regionManager = RegionManager.getInstance();
         Region region = regionManager.getRegionAt(location);
-        if (region == null) {
-            return false;
-        }
-        if (!region.effects.keySet().contains(type)) {
-            return false;
-        }
-        if (player == null) {
+        if (region == null ||
+                !region.effects.keySet().contains(type) ||
+                player == null) {
             return false;
         }
         String role = region.getPeople().get(player.getUniqueId());
-        if (role != null && (role.contains("owner") || location != region.getLocation())) {
+        if (role == null) {
+            return true;
+        }
+        if (role.contains("owner")) {
+            return false;
+        }
+        if (location == region.getLocation()) {
+            return true;
+        }
+        if (pRole == null || role.contains(pRole)) {
             return false;
         }
         return true;
