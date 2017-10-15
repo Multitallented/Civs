@@ -134,7 +134,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianClickItem(InventoryClickEvent event) {
-        if (!CVItem.isCivsItem(event.getCurrentItem())) {
+        if (!CVItem.isCivsItem(event.getCurrentItem()) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();

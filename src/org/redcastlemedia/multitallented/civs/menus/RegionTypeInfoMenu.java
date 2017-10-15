@@ -64,9 +64,11 @@ public class RegionTypeInfoMenu extends Menu {
         CVItem cvItem = regionType.clone();
         List<String> lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
-                ": " + regionType.getBuildRadiusX() + "x" + regionType.getBuildRadiusZ() + "x" + regionType.getBuildRadiusY());
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "range") +
-                ": " + regionType.getEffectRadius());
+                ": " + (regionType.getBuildRadiusX() * 2 + 1) + "x" + (regionType.getBuildRadiusZ() * 2 + 1) + "x" + (regionType.getBuildRadiusY() * 2 + 1));
+        if (regionType.getEffectRadius() != regionType.getBuildRadius()) {
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "range") +
+                    ": " + regionType.getEffectRadius());
+        }
         lore.addAll(Util.parseColors(regionType.getDescription()));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());

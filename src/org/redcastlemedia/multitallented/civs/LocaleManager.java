@@ -121,6 +121,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".blueprints", "Blueprints"));
                 currentLanguage.put("spells",
                         localeConfig.getString(langKey + ".spells", "Spells"));
+                currentLanguage.put("not-enough-money",
+                        localeConfig.getString(langKey + ".not-enough-money", "You dont have $$1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -171,6 +173,7 @@ public class LocaleManager {
         englishMap.put("blueprints", "Blueprints");
         englishMap.put("regions", "Regions");
         englishMap.put("spells", "Spells");
+        englishMap.put("not-enough-money", "You dont have $$1");
 
         languageMap.put("en", englishMap);
     }

@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -41,9 +42,21 @@ public class ConfirmationMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
 
+        Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
+            if (civItem.getPrice() > 0 && (Civs.econ == null ||
+                    !Civs.econ.has(player, civItem.getPrice()))) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "not-enough-money").replace("$1", civItem.getPrice() + ""));
+                return;
+            }
+
             clearHistory(civilian.getUuid());
+            Civs.econ.withdrawPlayer(player, civItem.getPrice());
             event.getWhoClicked().sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "item-bought")
                             .replace("$1", civItem.getDisplayName())

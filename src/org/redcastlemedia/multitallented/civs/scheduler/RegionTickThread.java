@@ -36,12 +36,8 @@ public class RegionTickThread implements Runnable {
             if (!hasReagents || (chest != null && chest.getInventory().firstEmpty() == -1)) {
                 continue;
             }
-            if (chest != null) {
-                Util.removeItems(regionType.getInput(), chest.getInventory());
-            }
-            if (chest != null) {
-                Util.addItems(regionType.getOutput(), chest.getInventory());
-            }
+
+            boolean hasMoney = false;
             if (Civs.econ != null) {
                 double payout = regionType.getPayout();
                 payout = payout / region.getOwners().size();
@@ -52,10 +48,23 @@ public class RegionTickThread implements Runnable {
                     }
                     if (payout > 0) {
                         Civs.econ.depositPlayer(player, payout);
+                        hasMoney = true;
                     } else if (Civs.econ.has(player, payout)) {
-                        Civs.econ.withdrawPlayer(player, payout);
+                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                        hasMoney = true;
                     }
                 }
+            } else {
+                hasMoney = true;
+            }
+            if (!hasMoney) {
+                continue;
+            }
+            if (chest != null) {
+                Util.removeItems(regionType.getInput(), chest.getInventory());
+            }
+            if (chest != null) {
+                Util.addItems(regionType.getOutput(), chest.getInventory());
             }
             //TODO more effects
 
