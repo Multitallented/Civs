@@ -79,6 +79,18 @@ pt_br:
   #items
   items: Itens
 
+  #classes
+  classes: Classes
+  
+  #spells
+  spells: Magias
+
+  #blueprints
+  blueprints: Projetos
+  
+  #regions
+  regions: Regiões
+  
   #community
   community: Comunidade
   
@@ -107,6 +119,7 @@ pt_br:
   broke-own-region: "Sua $1 esta com falta de blocos"
   no-permission: "Permissão Negada"
   class-changed: "Sua classe mudou para $1"
+  not-enough-money: "Você não tem $$1"
 es:
   name: Spanish
   icon: WOOL.4
