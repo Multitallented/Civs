@@ -44,7 +44,9 @@ public class SpellMenu extends Menu {
             if (is == null || !CVItem.isCivsItem(is)) {
                 continue;
             }
-            stashItems.add(itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase()));
+            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+            civItem.setQty(is.getAmount());
+            stashItems.add(civItem);
         }
     }
 
