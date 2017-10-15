@@ -4,6 +4,8 @@ default-language: en
 allow-civ-item-sharing: false
 explosion-override: false
 price-multiplier: 1
+folders:
+  farms: STONE_HOE
 item-groups:
   door: WOODEN_DOOR,ACACIA_DOOR,DARK_OAK_DOOR,SPRUCE_DOOR,BIRCH_DOOR,JUNGLE_DOOR
   glass: GLASS,THIN_GLASS,IRON_FENCE,STAINED_GLASS,STAINED_GLASS_PANE

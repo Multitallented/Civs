@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ConfigManager {
     HashMap<String, String> itemGroups;
     String defaultClass;
     HashMap<String, Integer> groups;
+    HashMap<String, CVItem> folderIcons;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -34,6 +36,13 @@ public class ConfigManager {
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
+    public CVItem getFolderIcon(String folderName) {
+        CVItem cvItem = folderIcons.get(folderName);
+        if (cvItem == null) {
+            cvItem = CVItem.createCVItemFromString("CHEST");
+        }
+        return cvItem;
+    }
 
     public ConfigManager(File configFile) {
         configManager = this;
@@ -56,6 +65,13 @@ public class ConfigManager {
             allowCivItemDropping = config.getBoolean("explosion-override", false);
             priceMultiplier = config.getDouble("price-multiplier", 1);
             defaultClass = config.getString("default-class", "default");
+            folderIcons = new HashMap<>();
+            ConfigurationSection section2 = config.getConfigurationSection("folders");
+            if (section2 != null) {
+                for (String key : section2.getKeys(false)) {
+                    folderIcons.put(key, CVItem.createCVItemFromString(config.getString("folders." + key, "CHEST")));
+                }
+            }
             itemGroups = new HashMap<>();
             ConfigurationSection section1 = config.getConfigurationSection("item-groups");
             if (section1 != null) {
@@ -84,6 +100,7 @@ public class ConfigManager {
         itemGroups = new HashMap<>();
         defaultClass = "default";
         groups = new HashMap<>();
+        folderIcons = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {

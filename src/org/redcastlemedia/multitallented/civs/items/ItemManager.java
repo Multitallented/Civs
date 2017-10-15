@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.mockito.internal.matchers.Null;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -50,7 +51,7 @@ public class ItemManager {
                     loopThroughTypeFiles(pFile, currParentList);
                     FolderType folderType = new FolderType(new ArrayList<String>(),
                             pFile.getName().replace("invisible", ""),
-                            CVItem.createCVItemFromString("CHEST"),
+                            ConfigManager.getInstance().getFolderIcon(pFile.getName().toLowerCase()),
                             0,
                             null,
                             currParentList,
