@@ -158,7 +158,6 @@ public class CVItem {
             String key = null;
             String itemGroup = null;
             String params = null;
-            System.out.println(ConfigManager.getInstance().getItemGroups().size());
             for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
                 if (input.startsWith("g:" + currKey)) {
                     key = currKey;
