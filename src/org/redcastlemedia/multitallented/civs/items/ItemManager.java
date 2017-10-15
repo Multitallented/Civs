@@ -49,13 +49,15 @@ public class ItemManager {
                     List<CivItem> currParentList = new ArrayList<>();
 
                     loopThroughTypeFiles(pFile, currParentList);
+                    String folderName = pFile.getName().replace("invisible", "");
                     FolderType folderType = new FolderType(new ArrayList<String>(),
-                            pFile.getName().replace("invisible", ""),
+                            folderName,
                             ConfigManager.getInstance().getFolderIcon(pFile.getName().toLowerCase()),
                             0,
                             null,
                             currParentList,
                             pFile.getName().contains("invisible"));
+                    itemTypes.put(folderName, folderType);
                     if (parentList != null) {
                         parentList.add(folderType);
                     }
