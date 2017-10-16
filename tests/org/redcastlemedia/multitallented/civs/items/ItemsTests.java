@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.items;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,23 +49,6 @@ public class ItemsTests {
     }
 
     @Test
-    public void newPlayerShouldReceiveABackflip() {
-        loadSpellTypeBackflip();
-        CivilianManager civilianManager = new CivilianManager();
-        PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
-        CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianJoin(event);
-        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
-        boolean hasBackflip = false;
-        for (CivItem civItem : civilian.getStashItems()) {
-            if (civItem.getDisplayName().equals("Civs Backflip")) {
-                hasBackflip = true;
-            }
-        }
-        assertTrue(hasBackflip);
-    }
-
-    @Test
     public void newPlayerShouldNotReceiveACityHall() {
         loadSpellTypeBackflip();
         loadRegionTypeShelter();
@@ -83,6 +67,34 @@ public class ItemsTests {
         assertFalse(hasCityHall);
     }
 
+    @Test
+    public void playerShouldNotHavePreReqsForUnlockItem() {
+        loadRegionTypeCityHall();
+        ItemManager itemManager = ItemManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertFalse(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("cityhall")));
+    }
+
+    @Test
+    public void playerShouldHaveEmptyPreReqsForUnlockItem() {
+        loadRegionTypeShelter();
+        ItemManager itemManager = ItemManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertTrue(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("shelter")));
+    }
+
+    @Test
+    public void playerShouldHavePreReqsToUnlockItem() {
+        loadRegionTypeShelter();
+        loadSpellTypeBackflip();
+        PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianJoin(event);
+        ItemManager itemManager = ItemManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertTrue(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("backflip")));
+    }
+
     private void loadSpellTypeBackflip() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
@@ -90,6 +102,9 @@ public class ItemsTests {
         config.set("icon", "SLIME_BLOCK");
         config.set("velocity", 2);
         config.set("qty", 1);
+        ArrayList<String> preReqs = new ArrayList<>();
+        preReqs.add("shelter");
+        config.set("pre-reqs", preReqs);
         itemManager.loadRegionType(config);
     }
 

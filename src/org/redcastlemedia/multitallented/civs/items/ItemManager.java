@@ -7,6 +7,7 @@ import org.mockito.internal.matchers.Null;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -253,11 +254,11 @@ public class ItemManager {
     }
 
     public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
-        List<CivItem> shopItems = getAllItemsWithParent(parent);
+        List<CivItem> shopItems = getAllItemsWithParent(civilian, parent);
 
         return shopItems;
     }
-    private List<CivItem> getAllItemsWithParent(CivItem parent) {
+    private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent) {
         List<CivItem> returnList = new ArrayList<>();
         HashSet<CivItem> checkList = new HashSet<>();
         if (parent == null) {
@@ -274,16 +275,64 @@ public class ItemManager {
                 }
                 returnList.add(civItem);
             }
-            return returnList;
         } else {
             if (parent.getItemType().equals(CivItem.ItemType.FOLDER)) {
-                return ((FolderType) parent).getChildren();
+                returnList.addAll(((FolderType) parent).getChildren());
             } else if (parent.getItemType().equals(CivItem.ItemType.CLASS)) {
                 //TODO implement class parents
-                return returnList;
-            } else {
-                return returnList;
             }
         }
+        checkList.clear();
+        for (CivItem item : returnList) {
+            //TODO check requirements
+
+            if (!hasItemUnlocked(civilian, item)) {
+                checkList.add(item);
+            }
+        }
+        returnList.removeAll(checkList);
+        return returnList;
+    }
+
+    boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
+        if (civItem.getCivReqs().isEmpty()) {
+            return true;
+        }
+        outer: for (String reqString : civItem.getCivReqs()) {
+            for (String req : reqString.split("\\|")) {
+                String[] splitReq = req.split(":");
+                CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                if (reqItem == null) {
+                    continue;
+                }
+                if (splitReq.length < 2) {
+                    if (civilian.getCountStashItems(splitReq[0]) > 0 ||
+                            civilian.getCountNonStashItems(splitReq[0]) > 0) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
+                }
+                String[] reqParams = splitReq[1].split("=");
+                if (reqParams[0].equals("built") && reqItem.getItemType().equals(CivItem.ItemType.REGION)) {
+                    if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
+                } else if (reqParams[0].equals("level")) {
+                    //TODO check level
+                } else if (reqParams[0].equals("has")) {
+                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
+                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }
