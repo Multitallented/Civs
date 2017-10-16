@@ -115,10 +115,12 @@ public class ShopMenu extends Menu {
                 continue;
             }
             CivItem civItem1 = civItem.clone();
-            civItem1.getLore().add(civilian.getUuid().toString());
-            civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
-                    ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
-            civItem1.getLore().addAll(civItem1.getDescription());
+            if (!civItem1.getItemType().equals(CivItem.ItemType.FOLDER)) {
+                civItem1.getLore().add(civilian.getUuid().toString());
+                civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
+                        ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
+                civItem1.getLore().addAll(civItem1.getDescription());
+            }
             inventory.setItem(i, civItem1.createItemStack());
             i++;
         }
