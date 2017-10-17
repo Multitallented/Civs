@@ -41,27 +41,34 @@ public class ItemManager {
         if (!typeFolder.exists()) {
             typeFolder.mkdir();
         }
-        loopThroughTypeFiles(typeFolder, null);
-    }
-    private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
         try {
-            if (file.isDirectory()) {
+            for (File file : typeFolder.listFiles()) {
+                loopThroughTypeFiles(file, null);
+            }
+        } catch (NullPointerException e) {
+            Civs.logger.severe("Unable to read from item-types folder");
+            e.printStackTrace();
+        }
+    }
+    private void loopThroughTypeFiles(File file, List<CivItem> parentList) throws NullPointerException {
+        try {
+            if (file.isDirectory() && !file.getName().contains(".yml")) {
+                List<CivItem> currParentList = new ArrayList<>();
                 for (File pFile : file.listFiles()) {
-                    List<CivItem> currParentList = new ArrayList<>();
 
                     loopThroughTypeFiles(pFile, currParentList);
-                    String folderName = pFile.getName().replace("invisible", "");
-                    FolderType folderType = new FolderType(new ArrayList<String>(),
-                            folderName,
-                            ConfigManager.getInstance().getFolderIcon(pFile.getName().toLowerCase()),
-                            0,
-                            null,
-                            currParentList,
-                            pFile.getName().contains("invisible"));
-                    itemTypes.put(folderName, folderType);
-                    if (parentList != null) {
-                        parentList.add(folderType);
-                    }
+                }
+                String folderName = file.getName().replace("-invisible", "");
+                FolderType folderType = new FolderType(new ArrayList<String>(),
+                        folderName,
+                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                        0,
+                        null,
+                        currParentList,
+                        file.getName().contains("invisible"));
+                itemTypes.put(folderName.toLowerCase(), folderType);
+                if (parentList != null) {
+                    parentList.add(folderType);
                 }
             } else {
                 try {
