@@ -44,6 +44,25 @@ public class Civilian {
     }
     public HashMap<CivItem, Integer> getExp() { return exp; }
 
+    public int getLevel(CivItem civItem) {
+        double experience = exp.get(civItem);
+        if (experience == 0) {
+            return 0;
+        }
+        ConfigManager configManager = ConfigManager.getInstance();
+        double modifier = configManager.getExpModifier();
+        double base = configManager.getExpBase();
+        int level = 1;
+        for (;;) {
+            experience -= base + (level - 1) * modifier * base;
+            if (experience < 0) {
+                break;
+            }
+            level++;
+        }
+        return level;
+    }
+
     public boolean isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
         boolean atMax = civItem.getCivMax() != -1 &&

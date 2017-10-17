@@ -254,9 +254,7 @@ public class ItemManager {
     }
 
     public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
-        List<CivItem> shopItems = getAllItemsWithParent(civilian, parent);
-
-        return shopItems;
+        return getAllItemsWithParent(civilian, parent);
     }
     private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent) {
         List<CivItem> returnList = new ArrayList<>();
@@ -284,8 +282,6 @@ public class ItemManager {
         }
         checkList.clear();
         for (CivItem item : returnList) {
-            //TODO check requirements
-
             if (!hasItemUnlocked(civilian, item)) {
                 checkList.add(item);
             }
@@ -321,7 +317,15 @@ public class ItemManager {
                         break;
                     }
                 } else if (reqParams[0].equals("level")) {
-                    //TODO check level
+                    if (civilian.getExp().get(reqItem) == null) {
+                        continue;
+                    }
+                    int level = civilian.getLevel(reqItem);
+                    if (level >= Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
                 } else if (reqParams[0].equals("has")) {
                     if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
