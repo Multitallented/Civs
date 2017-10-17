@@ -123,6 +123,12 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".spells", "Spells"));
                 currentLanguage.put("not-enough-money",
                         localeConfig.getString(langKey + ".not-enough-money", "You dont have $$1"));
+                currentLanguage.put("reagents",
+                        localeConfig.getString(langKey + ".reagents", "All the items you need in the $1 chest"));
+                currentLanguage.put("upkeep",
+                        localeConfig.getString(langKey + ".upkeep", "All the items consumed by the $1"));
+                currentLanguage.put("output",
+                        localeConfig.getString(langKey + ".output", "All the items created by the $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -174,6 +180,9 @@ public class LocaleManager {
         englishMap.put("regions", "Regions");
         englishMap.put("spells", "Spells");
         englishMap.put("not-enough-money", "You dont have $$1");
+        englishMap.put("reagents", "All the items you need in the $1 chest");
+        englishMap.put("upkeep", "All the items consumed by the $1");
+        englishMap.put("output", "All the items created by the $1");
 
         languageMap.put("en", englishMap);
     }

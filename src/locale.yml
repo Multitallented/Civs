@@ -37,6 +37,9 @@ en:
   size: Size
   range: Range
   build-reqs: "All the blocks you need to place to build a $1"
+  reagents: "All the items you need in the $1 chest"
+  upkeep: "All the items consumed by the $1"
+  output: "All the items created by the $1"
   too-close-region: "Your $1 would be too close to a $2"
   region-built: "You have successfully built a $1"
 
