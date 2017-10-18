@@ -1,15 +1,20 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,6 +112,18 @@ public class CivilianManager {
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
         Set<CivClass> classes = new HashSet<CivClass>();
         classes.add(defaultClass);
+        if (configManager.getUseStarterBook()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(configManager.getDefaultLanguage(), "starter-book"));
+
+                ItemStack stack = cvItem.createItemStack();
+                if (!player.getInventory().contains(stack)) {
+                    player.getInventory().addItem(stack);
+                }
+            }
+        }
         return new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),

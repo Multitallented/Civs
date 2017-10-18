@@ -10,11 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -89,6 +91,24 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             return;
         }
+    }
+
+    @EventHandler
+    public void onStarterBookClick(PlayerInteractEvent event) {
+        if (event.getItem() == null ||
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+                event.getItem().getType() != Material.WRITTEN_BOOK ||
+                !event.getItem().hasItemMeta()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        LocaleManager localeManager = LocaleManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book").equals(event.getItem().getItemMeta().getDisplayName())) {
+            return;
+        }
+        event.setCancelled(true);
+        player.performCommand("cv");
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
