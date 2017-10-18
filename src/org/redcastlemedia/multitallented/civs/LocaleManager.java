@@ -129,6 +129,18 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".upkeep", "All the items consumed by the $1"));
                 currentLanguage.put("output",
                         localeConfig.getString(langKey + ".output", "All the items created by the $1"));
+                currentLanguage.put("region-in-town",
+                        localeConfig.getString(langKey + ".region-in-town", "Your region is in $1"));
+                currentLanguage.put("view-members",
+                        localeConfig.getString(langKey + ".view-members", "View members"));
+                currentLanguage.put("add-member",
+                        localeConfig.getString(langKey + ".add-member", "Add member"));
+                currentLanguage.put("operation",
+                        localeConfig.getString(langKey + ".operation", "Operation"));
+                currentLanguage.put("region-working",
+                        localeConfig.getString(langKey + ".region-working", "Your region is running smoothly"));
+                currentLanguage.put("region-not-working",
+                        localeConfig.getString(langKey + ".region-not-working", "Your region is missing something"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -183,6 +195,12 @@ public class LocaleManager {
         englishMap.put("reagents", "All the items you need in the $1 chest");
         englishMap.put("upkeep", "All the items consumed by the $1");
         englishMap.put("output", "All the items created by the $1");
+        englishMap.put("region-in-town", "Your region is in $1");
+        englishMap.put("view-members", "Your region is in $1");
+        englishMap.put("add-member", "Add member");
+        englishMap.put("operation", "Operation");
+        englishMap.put("region-working", "Your region is running smoothly");
+        englishMap.put("region-not-working", "Your region is missing something");
 
         languageMap.put("en", englishMap);
     }

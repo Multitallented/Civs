@@ -42,6 +42,12 @@ en:
   output: "All the items created by the $1"
   too-close-region: "Your $1 would be too close to a $2"
   region-built: "You have successfully built a $1"
+  region-in-town: "Your region is in $1"
+  view-members: "View members"
+  add-member: "Add member"
+  operation: "Operation"
+  region-working: "Your region is running smoothly"
+  region-not-working: "Your region is missing something"
 
   #errors
   no-region-type-found: "No region type found for $1"
