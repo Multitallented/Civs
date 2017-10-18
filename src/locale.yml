@@ -48,6 +48,10 @@ en:
   operation: "Operation"
   region-working: "Your region is running smoothly"
   region-not-working: "Your region is missing something"
+  owner: Owner
+  member: Member
+  guest: Guest
+  recruiter: Recruiter
 
   #errors
   no-region-type-found: "No region type found for $1"

@@ -35,14 +35,34 @@ public class RegionActionMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
+        if (event.getCurrentItem() == null) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+
+        LocaleManager localeManager = LocaleManager.getInstance();
+        RegionManager regionManager = RegionManager.getInstance();
+        String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
+        Region region = regionManager.getRegionAt(Region.idToLocation(locationString));
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
-
         //TODO add functionality for clicking some other action items
+
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, region));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
+            //TODO open add members menu
+            return;
+        }
 
     }
 

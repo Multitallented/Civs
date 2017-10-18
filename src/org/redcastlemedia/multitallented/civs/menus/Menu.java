@@ -121,6 +121,19 @@ public abstract class Menu implements Listener {
             }
             return;
         }
+        if (lastHistory[0].equals(ViewMembersMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            if (lastHistory.length > 1) {
+                Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(lastHistory[1]));
+                humanEntity.openInventory(ViewMembersMenu.createMenu(civilian, region));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
+            return;
+        }
     }
     static boolean isBackButton(ItemStack is, String locale) {
         return is != null &&

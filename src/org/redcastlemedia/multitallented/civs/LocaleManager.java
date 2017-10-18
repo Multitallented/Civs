@@ -141,6 +141,14 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".region-working", "Your region is running smoothly"));
                 currentLanguage.put("region-not-working",
                         localeConfig.getString(langKey + ".region-not-working", "Your region is missing something"));
+                currentLanguage.put("owner",
+                        localeConfig.getString(langKey + ".owner", "Owner"));
+                currentLanguage.put("member",
+                        localeConfig.getString(langKey + ".member", "Member"));
+                currentLanguage.put("guest",
+                        localeConfig.getString(langKey + ".guest", "Guest"));
+                currentLanguage.put("recruiter",
+                        localeConfig.getString(langKey + ".recruiter", "Recruiter"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -201,6 +209,10 @@ public class LocaleManager {
         englishMap.put("operation", "Operation");
         englishMap.put("region-working", "Your region is running smoothly");
         englishMap.put("region-not-working", "Your region is missing something");
+        englishMap.put("owner", "Owner");
+        englishMap.put("member", "Member");
+        englishMap.put("recruiter", "Recruiter");
+        englishMap.put("guest", "Guest");
 
         languageMap.put("en", englishMap);
     }
