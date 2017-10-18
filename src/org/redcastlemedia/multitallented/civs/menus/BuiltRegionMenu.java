@@ -30,6 +30,9 @@ public class BuiltRegionMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
+        if (event.getCurrentItem() == null) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -37,6 +40,16 @@ public class BuiltRegionMenu extends Menu {
             return;
         }
 
+        if (!event.getCurrentItem().hasItemMeta() ||
+                event.getCurrentItem().getItemMeta().getDisplayName() == null) {
+            return;
+        }
+        String name = event.getCurrentItem().getItemMeta().getDisplayName();
+        String id = name.split("@")[1];
+        Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(id));
+        appendHistory(civilian.getUuid(), MENU_NAME);
+        event.getWhoClicked().closeInventory();
+        event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
     public static Inventory createMenu(Civilian civilian) {
