@@ -95,6 +95,21 @@ public class ItemsTests {
         assertTrue(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("backflip")));
     }
 
+    @Test
+    public void playerShouldHaveExpToUnlockItem() {
+        loadRegionTypeShelter();
+        loadSpellTypeBackflip();
+        loadSpellTypeRage();
+        ItemManager itemManager = ItemManager.getInstance();
+        PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianJoin(event);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        CivItem shelter = itemManager.getItemType("shelter");
+        civilian.getExp().put(shelter, 520);
+        assertTrue(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("rage")));
+    }
+
     private void loadSpellTypeBackflip() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
@@ -104,6 +119,17 @@ public class ItemsTests {
         config.set("qty", 1);
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("shelter");
+        config.set("pre-reqs", preReqs);
+        itemManager.loadRegionType(config);
+    }
+    private void loadSpellTypeRage() {
+        ItemManager itemManager = ItemManager.getInstance();
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "Rage");
+        config.set("icon", "NETHERRACK");
+        config.set("qty", 1);
+        ArrayList<String> preReqs = new ArrayList<>();
+        preReqs.add("backflip:level=5|shelter:level=5");
         config.set("pre-reqs", preReqs);
         itemManager.loadRegionType(config);
     }

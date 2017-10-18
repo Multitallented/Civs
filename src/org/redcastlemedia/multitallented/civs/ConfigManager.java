@@ -19,6 +19,8 @@ public class ConfigManager {
     boolean allowCivItemDropping;
     boolean explosionOverride;
     double priceMultiplier;
+    double expModifier;
+    int expBase;
     HashMap<String, String> itemGroups;
     String defaultClass;
     HashMap<String, Integer> groups;
@@ -33,6 +35,8 @@ public class ConfigManager {
     public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
     public boolean getExplosionOverride() { return explosionOverride; }
     public double getPriceMultiplier() { return priceMultiplier; }
+    public double getExpModifier() { return expModifier; }
+    public int getExpBase() { return expBase; }
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
@@ -64,6 +68,8 @@ public class ConfigManager {
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             allowCivItemDropping = config.getBoolean("explosion-override", false);
             priceMultiplier = config.getDouble("price-multiplier", 1);
+            expModifier = config.getDouble("exp-modifier", 0.2);
+            expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
@@ -97,6 +103,8 @@ public class ConfigManager {
         allowCivItemDropping = false;
         explosionOverride = false;
         priceMultiplier = 1;
+        expModifier = 0.2;
+        expBase = 100;
         itemGroups = new HashMap<>();
         defaultClass = "default";
         groups = new HashMap<>();

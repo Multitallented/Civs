@@ -44,6 +44,24 @@ public class RegionTypeInfoMenu extends Menu {
             event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getReqs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
+        if (event.getCurrentItem().getType().equals(Material.CHEST)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            return;
+        }
+        if (event.getCurrentItem().getType().equals(Material.HOPPER)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getInput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            return;
+        }
+        if (event.getCurrentItem().getType().equals(Material.DISPENSER)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getOutput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            return;
+        }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
@@ -112,8 +130,30 @@ public class RegionTypeInfoMenu extends Menu {
         inventory.setItem(9, cvItem1.createItemStack());
 
         //10 reagents
+        CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
+        cvItem2.setDisplayName("Reagents");
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
+                .replace("$1", regionType.getName()));
+        cvItem2.setLore(lore);
+        inventory.setItem(10, cvItem2.createItemStack());
+
         //11 upkeep
+        CVItem cvItem3 = CVItem.createCVItemFromString("HOPPER");
+        cvItem3.setDisplayName("Upkeep");
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
+                .replace("$1", regionType.getName()));
+        cvItem3.setLore(lore);
+        inventory.setItem(11, cvItem3.createItemStack());
         //12 output
+        CVItem cvItem4 = CVItem.createCVItemFromString("DISPENSER");
+        cvItem4.setDisplayName("Output");
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
+                .replace("$1", regionType.getName()));
+        cvItem4.setLore(lore);
+        inventory.setItem(12, cvItem4.createItemStack());
 
         //TODO finish this stub
 

@@ -4,6 +4,7 @@ default-language: en
 allow-civ-item-sharing: false
 explosion-override: false
 price-multiplier: 1
+exp-modifier: 0.2
 folders:
   farms: STONE_HOE
 item-groups:

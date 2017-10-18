@@ -48,6 +48,7 @@ public class ClassMenu extends Menu {
             civItem.setQty(is.getAmount());
             stashItems.add(civItem);
         }
+        CivilianManager.getInstance().saveCivilian(civilian);
     }
 
     public static Inventory createMenu(Civilian civilian) {

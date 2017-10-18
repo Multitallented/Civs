@@ -41,27 +41,34 @@ public class ItemManager {
         if (!typeFolder.exists()) {
             typeFolder.mkdir();
         }
-        loopThroughTypeFiles(typeFolder, null);
-    }
-    private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
         try {
-            if (file.isDirectory()) {
+            for (File file : typeFolder.listFiles()) {
+                loopThroughTypeFiles(file, null);
+            }
+        } catch (NullPointerException e) {
+            Civs.logger.severe("Unable to read from item-types folder");
+            e.printStackTrace();
+        }
+    }
+    private void loopThroughTypeFiles(File file, List<CivItem> parentList) throws NullPointerException {
+        try {
+            if (file.isDirectory() && !file.getName().contains(".yml")) {
+                List<CivItem> currParentList = new ArrayList<>();
                 for (File pFile : file.listFiles()) {
-                    List<CivItem> currParentList = new ArrayList<>();
 
                     loopThroughTypeFiles(pFile, currParentList);
-                    String folderName = pFile.getName().replace("invisible", "");
-                    FolderType folderType = new FolderType(new ArrayList<String>(),
-                            folderName,
-                            ConfigManager.getInstance().getFolderIcon(pFile.getName().toLowerCase()),
-                            0,
-                            null,
-                            currParentList,
-                            pFile.getName().contains("invisible"));
-                    itemTypes.put(folderName, folderType);
-                    if (parentList != null) {
-                        parentList.add(folderType);
-                    }
+                }
+                String folderName = file.getName().replace("-invisible", "");
+                FolderType folderType = new FolderType(new ArrayList<String>(),
+                        folderName,
+                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                        0,
+                        null,
+                        currParentList,
+                        file.getName().contains("invisible"));
+                itemTypes.put(folderName.toLowerCase(), folderType);
+                if (parentList != null) {
+                    parentList.add(folderType);
                 }
             } else {
                 try {
@@ -254,9 +261,7 @@ public class ItemManager {
     }
 
     public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
-        List<CivItem> shopItems = getAllItemsWithParent(civilian, parent);
-
-        return shopItems;
+        return getAllItemsWithParent(civilian, parent);
     }
     private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent) {
         List<CivItem> returnList = new ArrayList<>();
@@ -284,8 +289,6 @@ public class ItemManager {
         }
         checkList.clear();
         for (CivItem item : returnList) {
-            //TODO check requirements
-
             if (!hasItemUnlocked(civilian, item)) {
                 checkList.add(item);
             }
@@ -321,7 +324,15 @@ public class ItemManager {
                         break;
                     }
                 } else if (reqParams[0].equals("level")) {
-                    //TODO check level
+                    if (civilian.getExp().get(reqItem) == null) {
+                        continue;
+                    }
+                    int level = civilian.getLevel(reqItem);
+                    if (level >= Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
                 } else if (reqParams[0].equals("has")) {
                     if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
