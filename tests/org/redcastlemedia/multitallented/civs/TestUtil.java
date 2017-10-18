@@ -83,6 +83,7 @@ public class TestUtil {
         configManager.blackListWorlds.add("Hub");
         configManager.itemGroups = new HashMap<>();
         configManager.itemGroups.put("glass", "THIN_GLASS,GLASS");
+        configManager.useStarterBook = false;
 
         LocaleManager localeManager = new LocaleManager(file);
         HashMap<String, String> mockLanguageMap = new HashMap<>();

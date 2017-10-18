@@ -42,6 +42,18 @@ public class CivilianListener implements Listener {
     public void onCivilianJoin(PlayerJoinEvent event) {
         CivilianManager civilianManager = CivilianManager.getInstance();
         civilianManager.loadCivilian(event.getPlayer());
+        ConfigManager configManager = ConfigManager.getInstance();
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (configManager.getUseStarterBook()) {
+            CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
+
+            ItemStack stack = cvItem.createItemStack();
+            if (!player.getInventory().contains(stack)) {
+                player.getInventory().addItem(stack);
+            }
+        }
     }
 
     @EventHandler

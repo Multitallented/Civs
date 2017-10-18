@@ -112,18 +112,6 @@ public class CivilianManager {
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
         Set<CivClass> classes = new HashSet<CivClass>();
         classes.add(defaultClass);
-        if (configManager.getUseStarterBook()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(configManager.getDefaultLanguage(), "starter-book"));
-
-                ItemStack stack = cvItem.createItemStack();
-                if (!player.getInventory().contains(stack)) {
-                    player.getInventory().addItem(stack);
-                }
-            }
-        }
         return new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),
