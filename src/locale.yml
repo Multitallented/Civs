@@ -72,6 +72,7 @@ en:
   no-permission: "Permission denied"
   class-changed: "Your class has changed to $1"
   not-enough-money: "You dont have $$1"
+  not-allowed-place: "You aren't allowed to place $1"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

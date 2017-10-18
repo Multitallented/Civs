@@ -128,6 +128,14 @@ public class CivilianListener implements Listener {
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
+        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (!civItem.isPlaceable()) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "not-allowed-place").replace("$1", civItem.getDisplayName()));
+            return;
+        }
         BlockLogger blockLogger = BlockLogger.getInstance();
         blockLogger.putBlock(event.getBlock().getLocation(), CVItem.createFromItemStack(is));
     }

@@ -149,6 +149,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".guest", "Guest"));
                 currentLanguage.put("recruiter",
                         localeConfig.getString(langKey + ".recruiter", "Recruiter"));
+                currentLanguage.put("not-allowed-place",
+                        localeConfig.getString(langKey + ".not-allowed-place", "You aren't allowed to place $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -213,6 +215,7 @@ public class LocaleManager {
         englishMap.put("member", "Member");
         englishMap.put("recruiter", "Recruiter");
         englishMap.put("guest", "Guest");
+        englishMap.put("not-allowed-place", "You aren't allowed to place $1");
 
         languageMap.put("en", englishMap);
     }
