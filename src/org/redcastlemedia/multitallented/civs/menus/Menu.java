@@ -100,6 +100,11 @@ public abstract class Menu implements Listener {
             humanEntity.openInventory(ClassTypeInfoMenu.createMenu(civilian, (ClassType) itemManager.getItemType(lastHistory[1])));
             return;
         }
+        if (lastHistory[0].equals(BuiltRegionMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(BuiltRegionMenu.createMenu(civilian));
+            return;
+        }
     }
     static boolean isBackButton(ItemStack is, String locale) {
         return is != null &&

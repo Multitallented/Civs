@@ -11,6 +11,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -18,33 +21,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuiltRegionMenu extends Menu {
-    private static final String MENU_NAME = "CivsRegionStash";
+    public static final String MENU_NAME = "CivsBuilt";
     public BuiltRegionMenu() {
         super(MENU_NAME);
     }
 
     @Override
     void handleInteract(InventoryClickEvent event) {
-        //Do nothing
+        event.setCancelled(true);
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+
+        if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
+
     }
 
     public static Inventory createMenu(Civilian civilian) {
-        Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getStashItems().size()), MENU_NAME);
+        List<Region> regions = new ArrayList<>();
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getPeople().containsKey(civilian.getUuid())) {
+                regions.add(region);
+            }
+        }
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(regions.size()) + 9, MENU_NAME);
         //TODO finish this stub
-        //
-//        int i=0;
-//        for (CivItem cvItem : civilian.getStashItems()) {
-//            if (!cvItem.getItemType().equals(CivItem.ItemType.REGION)) {
-//                continue;
-//            }
-//            List<String> lore = new ArrayList<>();
-//            lore.add(civilian.getUuid().toString());
-//            lore.addAll(Util.parseColors(cvItem.getDescription()));
-////            lore.addAll(cvItem.getLore());
-//            cvItem.setLore(lore);
-//            inventory.setItem(i, cvItem.createItemStack());
-//            i++;
-//        }
+
+        int i=9;
+        for (Region region : regions) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
+            cvItem.setDisplayName(region.getType() + "@" + region.getId());
+            List<String> lore = new ArrayList<>();
+
+            //TODO set lore
+            cvItem.setLore(lore);
+            inventory.setItem(i, cvItem.createItemStack());
+            i++;
+        }
+
+        //8 Back Button
+        inventory.setItem(8, getBackButton(civilian));
 
         return inventory;
     }
