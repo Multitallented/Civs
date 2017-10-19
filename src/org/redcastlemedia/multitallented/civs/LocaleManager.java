@@ -185,6 +185,10 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".add-guest-region", "You have been made a guest of $1"));
                 currentLanguage.put("guest-added-region",
                         localeConfig.getString(langKey + ".guest-added-region", "$1 is now a guest of your $2"));
+                currentLanguage.put("invite-member-region",
+                        localeConfig.getString(langKey + ".invite-member-region", "You have been become a member of $1"));
+                currentLanguage.put("member-invited-region",
+                        localeConfig.getString(langKey + ".member-invited-region", "$1 has been added to your $2"));
                 currentLanguage.put("stand-in-region",
                         localeConfig.getString(langKey + ".stand-in-region", "Please have $1 stand in the region"));
                 currentLanguage.put("prev-button",
@@ -273,6 +277,8 @@ public class LocaleManager {
         englishMap.put("owner-added-region", "$1 is now an owner of your $2");
         englishMap.put("add-guest-region", "You have been made a guest of $1");
         englishMap.put("guest-added-region", "$1 is now a guest of your $2");
+        englishMap.put("invite-member-region", "You have been become a member of $1");
+        englishMap.put("member-invited-region", "$1 has been added to your $2");
         englishMap.put("stand-in-region", "Please have $1 stand in the region");
         englishMap.put("prev-button", "Previous");
         englishMap.put("next-button", "Next");

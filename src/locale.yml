@@ -70,6 +70,8 @@ en:
   owner-added-region: "$1 is now an owner of your $2"
   add-owner-region: "You have been made a guest of $1"
   owner-added-region: "$1 is now a guest of your $2"
+  invite-owner-region: "You have been become a member of $1"
+  owner-invited-region: "$1 has been added to your $2"
   stand-in-region: "Please have $1 stand in the region"
 
   #errors
