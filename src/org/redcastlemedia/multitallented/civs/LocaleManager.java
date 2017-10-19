@@ -167,6 +167,12 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".member-added-region", "$1 is now a member of your $2"));
                 currentLanguage.put("add-member-region",
                         localeConfig.getString(langKey + ".add-member-region", "You have been made a member of $1"));
+                currentLanguage.put("member-description",
+                        localeConfig.getString(langKey + ".member-description", "Members can build and use the region"));
+                currentLanguage.put("guest-description",
+                        localeConfig.getString(langKey + ".guest-description", "Guests can use doors and buttons in the region"));
+                currentLanguage.put("owner-description",
+                        localeConfig.getString(langKey + ".owner-description", "Owners can do anything in the region"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -240,6 +246,9 @@ public class LocaleManager {
         englishMap.put("remove-member", "Remove Member");
         englishMap.put("member-added-region", "$1 is now a member of your $2");
         englishMap.put("add-member-region", "You have been made a member of $1");
+        englishMap.put("member-description", "Members can build and use the region");
+        englishMap.put("guest-description", "Guests can use doors and buttons in the region");
+        englishMap.put("owner-description", "Owners can do anything in the region");
 
         languageMap.put("en", englishMap);
     }

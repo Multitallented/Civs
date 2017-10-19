@@ -59,6 +59,9 @@ en:
   remove-member: Remove Member
   add-member-region: "You have been made a member of $1"
   member-added-region: "$1 is now a member of your $2"
+  owner-description: "Owners can do anything in the region"
+  guest-description: "Guests can use doors and buttons in the region"
+  member-description: "Members can build and use the region"
 
   #errors
   no-region-type-found: "No region type found for $1"

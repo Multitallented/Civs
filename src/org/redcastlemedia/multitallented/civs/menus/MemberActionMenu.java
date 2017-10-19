@@ -110,6 +110,9 @@ public class MemberActionMenu extends Menu {
         if (!role.equals("owner")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "owner-description"));
+            cvItem1.setLore(lore);
             inventory.setItem(9, cvItem1.createItemStack());
         }
 
@@ -117,6 +120,9 @@ public class MemberActionMenu extends Menu {
         if (!role.equals("member")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "member-description"));
+            cvItem1.setLore(lore);
             inventory.setItem(10, cvItem1.createItemStack());
         }
 
@@ -124,6 +130,9 @@ public class MemberActionMenu extends Menu {
         if (!role.equals("guest")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("STONE.2");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "guest-description"));
+            cvItem1.setLore(lore);
             inventory.setItem(11, cvItem1.createItemStack());
         }
 
