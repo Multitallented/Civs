@@ -69,6 +69,15 @@ public class SetOwnerCommand implements CivCommand {
             }
             return true;
         }
+        if (region != RegionManager.getInstance().getRegionAt(invitee.getLocation())) {
+            if (player != null) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "stand-in-region").replace("$1", playerName));
+            } else {
+                commandSender.sendMessage(Civs.getPrefix() + "Please have " + playerName + " stand in the region");
+            }
+            return true;
+        }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
         if (invitee.isOnline()) {

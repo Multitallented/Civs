@@ -185,6 +185,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".add-guest-region", "You have been made a guest of $1"));
                 currentLanguage.put("guest-added-region",
                         localeConfig.getString(langKey + ".guest-added-region", "$1 is now a guest of your $2"));
+                currentLanguage.put("stand-in-region",
+                        localeConfig.getString(langKey + ".stand-in-region", "Please have $1 stand in the region"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -267,6 +269,7 @@ public class LocaleManager {
         englishMap.put("owner-added-region", "$1 is now an owner of your $2");
         englishMap.put("add-guest-region", "You have been made a guest of $1");
         englishMap.put("guest-added-region", "$1 is now a guest of your $2");
+        englishMap.put("stand-in-region", "Please have $1 stand in the region");
 
         languageMap.put("en", englishMap);
     }
