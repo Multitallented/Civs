@@ -119,6 +119,12 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecipeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ConfirmationMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionTypeInfoMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new BuiltRegionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ClassTypeInfoMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new MemberActionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new SpellMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
