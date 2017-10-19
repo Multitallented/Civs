@@ -95,6 +95,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".region-destroyed", "Region $1 has been destroyed!"));
                 currentLanguage.put("specify-player-town",
                         localeConfig.getString(langKey + ".specify-player-town", "Please specify a player and town"));
+                currentLanguage.put("specify-player-region",
+                        localeConfig.getString(langKey + ".specify-player-region", "Please specify a player and region"));
                 currentLanguage.put("town-not-exist",
                         localeConfig.getString(langKey + ".town-not-exist", "$1 is not a town"));
                 currentLanguage.put("no-permission-invite",
@@ -153,6 +155,18 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".not-allowed-place", "You aren't allowed to place $1"));
                 currentLanguage.put("starter-book",
                         localeConfig.getString(langKey + ".starter-book", "Civs Menu"));
+                currentLanguage.put("set-owner",
+                        localeConfig.getString(langKey + ".set-owner", "Set Owner"));
+                currentLanguage.put("set-member",
+                        localeConfig.getString(langKey + ".set-member", "Set Member"));
+                currentLanguage.put("set-guest",
+                        localeConfig.getString(langKey + ".set-guest", "Set Guest"));
+                currentLanguage.put("remove-member",
+                        localeConfig.getString(langKey + ".remove-member", "Remove Member"));
+                currentLanguage.put("member-added-region",
+                        localeConfig.getString(langKey + ".member-added-region", "$1 is now a member of your $2"));
+                currentLanguage.put("add-member-region",
+                        localeConfig.getString(langKey + ".add-member-region", "You have been made a member of $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -190,6 +204,7 @@ public class LocaleManager {
         englishMap.put("region-protected", "This region is protected");
         englishMap.put("region-destroyed", "Region $1 has been destroyed!");
         englishMap.put("specify-player-town", "Please specify a player and town");
+        englishMap.put("specify-player-region", "Please specify a player and region");
         englishMap.put("town-not-exist", "$1 is not a town");
         englishMap.put("no-permission-invite", "You don't have permission to invite people to $1");
         englishMap.put("player-not-online", "$1 is not online");
@@ -219,6 +234,12 @@ public class LocaleManager {
         englishMap.put("guest", "Guest");
         englishMap.put("not-allowed-place", "You aren't allowed to place $1");
         englishMap.put("starter-book", "Civs Menu");
+        englishMap.put("set-member", "Set Member");
+        englishMap.put("set-owner", "Set Owner");
+        englishMap.put("set-guest", "Set Guest");
+        englishMap.put("remove-member", "Remove Member");
+        englishMap.put("member-added-region", "$1 is now a member of your $2");
+        englishMap.put("add-member-region", "You have been made a member of $1");
 
         languageMap.put("en", englishMap);
     }

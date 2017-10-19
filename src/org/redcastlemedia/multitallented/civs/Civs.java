@@ -11,8 +11,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.commands.CivCommand;
-import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
+import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
@@ -103,6 +102,9 @@ public class Civs extends JavaPlugin {
 
     private void initCommands() {
         commandList.put("menu", new MenuCommand());
+        commandList.put("invite", new InviteTownCommand());
+        commandList.put("accept", new AcceptInviteCommand());
+        commandList.put("setmember", new SetMemberCommand());
     }
 
     private void initListeners() {

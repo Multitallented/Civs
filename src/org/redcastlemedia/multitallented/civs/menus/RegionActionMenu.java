@@ -118,14 +118,16 @@ public class RegionActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
-        CVItem skull = CVItem.createCVItemFromString("SKULL_ITEM.3");
-        skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
-        inventory.setItem(9, skull.createItemStack());
+        if (region.getPeople().get(civilian.getUuid()).equals("owner")) {
+            CVItem skull = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
+            inventory.setItem(9, skull.createItemStack());
 
-        //10 Add person - works for people in region only
-        CVItem skull2 = CVItem.createCVItemFromString("SKULL_ITEM.3");
-        skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
-        inventory.setItem(10, skull2.createItemStack());
+            //10 Add person - works for people in region only
+            CVItem skull2 = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
+            inventory.setItem(10, skull2.createItemStack());
+        }
 
 
         return inventory;

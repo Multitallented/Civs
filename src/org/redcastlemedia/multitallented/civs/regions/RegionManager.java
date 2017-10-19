@@ -103,7 +103,7 @@ public class RegionManager {
         regionFile.delete();
     }
 
-    private void saveRegion(Region region) {
+    public void saveRegion(Region region) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
@@ -123,7 +123,7 @@ public class RegionManager {
         }
         FileConfiguration regionConfig = new YamlConfiguration();
         try {
-            regionConfig.load(regionFile);
+//            regionConfig.load(regionFile);
             regionConfig.set("location", region.getId());
             regionConfig.set("xn-radius", region.getRadiusXN());
             regionConfig.set("xp-radius", region.getRadiusXP());

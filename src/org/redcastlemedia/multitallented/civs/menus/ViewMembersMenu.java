@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.HumanEntity;
@@ -39,7 +40,7 @@ public class ViewMembersMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null) {
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta()) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
@@ -54,12 +55,17 @@ public class ViewMembersMenu extends Menu {
             return;
         }
 
-        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
-        //TODO add functionality for clicking some other action items
-
         if (event.getCurrentItem().getType() == Material.SKULL_ITEM &&
                 event.getCurrentItem().getDurability() == (short) 3) {
-            //TODO open member action menu
+
+            Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
+            if (player.getUniqueId().equals(civilian.getUuid())) {
+                return;
+            }
+
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, region, player.getUniqueId()));
             return;
         }
 
@@ -88,7 +94,7 @@ public class ViewMembersMenu extends Menu {
             }
             ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
             SkullMeta im = (SkullMeta) playerItem.getItemMeta();
-            im.setDisplayName(player.getDisplayName());
+            im.setDisplayName(player.getName());
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), region.getPeople().get(uuid)));
             im.setLore(lore);
