@@ -108,6 +108,7 @@ public class Civs extends JavaPlugin {
         commandList.put("setowner", new SetOwnerCommand());
         commandList.put("setguest", new SetGuestCommand());
         commandList.put("removemember", new RemoveMemberCommand());
+        commandList.put("add", new AddMemberCommand());
     }
 
     private void initListeners() {
@@ -125,6 +126,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
         Bukkit.getPluginManager().registerEvents(new SpellMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ListAllPlayersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
