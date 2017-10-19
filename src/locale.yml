@@ -2,6 +2,8 @@ en:
   name: English
   icon: WOOL.14
   starter-book: Civs Menu
+  next-button: Next
+  prev-button: Previous
   #language-menu
   language-menu: Select Language
   language-set: "Your language has been set to $1"
