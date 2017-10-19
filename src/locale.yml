@@ -62,6 +62,12 @@ en:
   owner-description: "Owners can do anything in the region"
   guest-description: "Guests can use doors and buttons in the region"
   member-description: "Members can build and use the region"
+  remove-member-region: "You are no longer a member of $1"
+  member-removed-region: "$1 is no longer a member of $2"
+  add-owner-region: "You have been made an owner of $1"
+  owner-added-region: "$1 is now an owner of your $2"
+  add-owner-region: "You have been made a guest of $1"
+  owner-added-region: "$1 is now a guest of your $2"
 
   #errors
   no-region-type-found: "No region type found for $1"

@@ -173,6 +173,18 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".guest-description", "Guests can use doors and buttons in the region"));
                 currentLanguage.put("owner-description",
                         localeConfig.getString(langKey + ".owner-description", "Owners can do anything in the region"));
+                currentLanguage.put("remove-member-region",
+                        localeConfig.getString(langKey + ".remove-member-region", "You are no longer a member of $1"));
+                currentLanguage.put("member-removed-region",
+                        localeConfig.getString(langKey + ".member-removed-region", "$1 is no longer a member of $2"));
+                currentLanguage.put("add-owner-region",
+                        localeConfig.getString(langKey + ".add-owner-region", "You have been made an owner of $1"));
+                currentLanguage.put("owner-added-region",
+                        localeConfig.getString(langKey + ".owner-added-region", "$1 is now an owner of your $2"));
+                currentLanguage.put("add-guest-region",
+                        localeConfig.getString(langKey + ".add-guest-region", "You have been made a guest of $1"));
+                currentLanguage.put("guest-added-region",
+                        localeConfig.getString(langKey + ".guest-added-region", "$1 is now a guest of your $2"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -249,6 +261,12 @@ public class LocaleManager {
         englishMap.put("member-description", "Members can build and use the region");
         englishMap.put("guest-description", "Guests can use doors and buttons in the region");
         englishMap.put("owner-description", "Owners can do anything in the region");
+        englishMap.put("remove-member-region", "You are no longer a member of $1");
+        englishMap.put("member-removed-region", "$1 is no longer a member of $2");
+        englishMap.put("add-owner-region", "You have been made an owner of $1");
+        englishMap.put("owner-added-region", "$1 is now an owner of your $2");
+        englishMap.put("add-guest-region", "You have been made a guest of $1");
+        englishMap.put("guest-added-region", "$1 is now a guest of your $2");
 
         languageMap.put("en", englishMap);
     }
