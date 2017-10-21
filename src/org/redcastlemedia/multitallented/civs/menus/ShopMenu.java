@@ -103,7 +103,7 @@ public class ShopMenu extends Menu {
 
         int i=9;
         for (CivItem civItem : shopItems) {
-            if (civilian.isAtMax(civItem)) {
+            if (civItem.getItemType() != CivItem.ItemType.FOLDER && civilian.isAtMax(civItem)) {
                 CVItem item = CVItem.createCVItemFromString("OBSIDIAN");
                 item.setDisplayName(civItem.getDisplayName());
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),

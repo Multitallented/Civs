@@ -105,7 +105,7 @@ public class ItemManager {
         CivItem civItem = new CivItem(
                 configuration.getStringList("reqs"),
                 false,
-                CivItem.ItemType.SPELL,
+                CivItem.ItemType.CLASS,
                 name,
                 icon.getMat(),
                 icon.getDamage(),
