@@ -11,8 +11,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.commands.CivCommand;
-import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
+import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
@@ -103,6 +102,13 @@ public class Civs extends JavaPlugin {
 
     private void initCommands() {
         commandList.put("menu", new MenuCommand());
+        commandList.put("invite", new InviteTownCommand());
+        commandList.put("accept", new AcceptInviteCommand());
+        commandList.put("setmember", new SetMemberCommand());
+        commandList.put("setowner", new SetOwnerCommand());
+        commandList.put("setguest", new SetGuestCommand());
+        commandList.put("removemember", new RemoveMemberCommand());
+        commandList.put("add", new AddMemberCommand());
     }
 
     private void initListeners() {
@@ -114,6 +120,13 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecipeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ConfirmationMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionTypeInfoMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new BuiltRegionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ClassTypeInfoMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new MemberActionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new SpellMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ListAllPlayersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);

@@ -1,20 +1,20 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,8 +25,6 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -40,6 +38,18 @@ public class CivilianListener implements Listener {
     public void onCivilianJoin(PlayerJoinEvent event) {
         CivilianManager civilianManager = CivilianManager.getInstance();
         civilianManager.loadCivilian(event.getPlayer());
+        ConfigManager configManager = ConfigManager.getInstance();
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (configManager.getUseStarterBook()) {
+            CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
+
+            ItemStack stack = cvItem.createItemStack();
+            if (!player.getInventory().contains(stack)) {
+                player.getInventory().addItem(stack);
+            }
+        }
     }
 
     @EventHandler
@@ -91,6 +101,24 @@ public class CivilianListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onStarterBookClick(PlayerInteractEvent event) {
+        if (event.getItem() == null ||
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+                event.getItem().getType() != Material.WRITTEN_BOOK ||
+                !event.getItem().hasItemMeta()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        LocaleManager localeManager = LocaleManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book").equals(event.getItem().getItemMeta().getDisplayName())) {
+            return;
+        }
+        event.setCancelled(true);
+        player.performCommand("cv");
+    }
+
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
         Location location = event.getBlock().getLocation();
@@ -126,6 +154,14 @@ public class CivilianListener implements Listener {
 //        ItemStack is = event.getBlock().getState().getData().toItemStack(1);
         ItemStack is = event.getItemInHand();
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
+            return;
+        }
+        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (!civItem.isPlaceable()) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
         BlockLogger blockLogger = BlockLogger.getInstance();

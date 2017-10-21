@@ -129,6 +129,17 @@ public class Civilian {
         return count;
     }
 
+    public int getCountRegions(String name) {
+        int count = 0;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getOwners().contains(uuid) && (name == null ||
+                    region.getType().equalsIgnoreCase(name))) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public int getCountNonStashItems(String name) {
         int count = 0;
         String itemName = "Civs " + name;

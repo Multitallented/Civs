@@ -9,11 +9,14 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -98,6 +101,37 @@ public abstract class Menu implements Listener {
         if (lastHistory[0].equals(ClassTypeInfoMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             humanEntity.openInventory(ClassTypeInfoMenu.createMenu(civilian, (ClassType) itemManager.getItemType(lastHistory[1])));
+            return;
+        }
+        if (lastHistory[0].equals(BuiltRegionMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(BuiltRegionMenu.createMenu(civilian));
+            return;
+        }
+        if (lastHistory[0].equals(RegionActionMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            if (lastHistory.length > 1) {
+                Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(lastHistory[1]));
+                humanEntity.openInventory(RegionActionMenu.createMenu(civilian, region));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
+            return;
+        }
+        if (lastHistory[0].equals(ViewMembersMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            if (lastHistory.length > 1) {
+                Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(lastHistory[1]));
+                humanEntity.openInventory(ViewMembersMenu.createMenu(civilian, region));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
             return;
         }
     }

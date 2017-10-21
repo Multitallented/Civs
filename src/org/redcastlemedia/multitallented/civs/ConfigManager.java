@@ -25,6 +25,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
+    boolean useStarterBook;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -34,6 +35,7 @@ public class ConfigManager {
     }
     public boolean getAllowSharingCivsItems() { return allowCivItemDropping; }
     public boolean getExplosionOverride() { return explosionOverride; }
+    public boolean getUseStarterBook() { return useStarterBook; }
     public double getPriceMultiplier() { return priceMultiplier; }
     public double getExpModifier() { return expModifier; }
     public int getExpBase() { return expBase; }
@@ -67,6 +69,7 @@ public class ConfigManager {
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             allowCivItemDropping = config.getBoolean("explosion-override", false);
+            useStarterBook = config.getBoolean("use-starter-book", true);
             priceMultiplier = config.getDouble("price-multiplier", 1);
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
@@ -102,6 +105,7 @@ public class ConfigManager {
         defaultLanguage = "en";
         allowCivItemDropping = false;
         explosionOverride = false;
+        useStarterBook = true;
         priceMultiplier = 1;
         expModifier = 0.2;
         expBase = 100;

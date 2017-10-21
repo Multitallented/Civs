@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,7 +12,6 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,7 +103,7 @@ public class RegionManager {
         regionFile.delete();
     }
 
-    private void saveRegion(Region region) {
+    public void saveRegion(Region region) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
@@ -125,7 +123,7 @@ public class RegionManager {
         }
         FileConfiguration regionConfig = new YamlConfiguration();
         try {
-            regionConfig.load(regionFile);
+//            regionConfig.load(regionFile);
             regionConfig.set("location", region.getId());
             regionConfig.set("xn-radius", region.getRadiusXN());
             regionConfig.set("xp-radius", region.getRadiusXP());

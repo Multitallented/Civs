@@ -1,6 +1,9 @@
 en:
   name: English
   icon: WOOL.14
+  starter-book: Civs Menu
+  next-button: Next
+  prev-button: Previous
   #language-menu
   language-menu: Select Language
   language-set: "Your language has been set to $1"
@@ -42,6 +45,34 @@ en:
   output: "All the items created by the $1"
   too-close-region: "Your $1 would be too close to a $2"
   region-built: "You have successfully built a $1"
+  region-in-town: "Your region is in $1"
+  view-members: "View members"
+  add-member: "Add member"
+  operation: "Operation"
+  region-working: "Your region is running smoothly"
+  region-not-working: "Your region is missing something"
+  owner: Owner
+  member: Member
+  guest: Guest
+  recruiter: Recruiter
+  set-owner: Set Owner
+  set-member: Set Member
+  set-guest: Set Guest
+  remove-member: Remove Member
+  add-member-region: "You have been made a member of $1"
+  member-added-region: "$1 is now a member of your $2"
+  owner-description: "Owners can do anything in the region"
+  guest-description: "Guests can use doors and buttons in the region"
+  member-description: "Members can build and use the region"
+  remove-member-region: "You are no longer a member of $1"
+  member-removed-region: "$1 is no longer a member of $2"
+  add-owner-region: "You have been made an owner of $1"
+  owner-added-region: "$1 is now an owner of your $2"
+  add-owner-region: "You have been made a guest of $1"
+  owner-added-region: "$1 is now a guest of your $2"
+  invite-owner-region: "You have been become a member of $1"
+  owner-invited-region: "$1 has been added to your $2"
+  stand-in-region: "Please have $1 stand in the region"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -53,6 +84,7 @@ en:
   region-protected: "This region is protected"
   region-destroyed: "Region $1 has been destroyed!"
   specify-player-town: "Please specify a player and town"
+  specify-player-region: "Please specify a player and region"
   town-not-exist: "$1 is not a town"
   no-permission-invite: "You don't have permission to invite people to $1"
   player-not-online: "$1 is not online"
@@ -62,6 +94,7 @@ en:
   no-permission: "Permission denied"
   class-changed: "Your class has changed to $1"
   not-enough-money: "You dont have $$1"
+  not-allowed-place: "You aren't allowed to place $1"
 pt_br:
   name: Português Brasil
   icon: WOOL.11
