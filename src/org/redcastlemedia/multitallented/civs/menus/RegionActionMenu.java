@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -24,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RegionActionMenu extends Menu {
     public static final String MENU_NAME = "CivsRegion";
@@ -60,7 +62,15 @@ public class RegionActionMenu extends Menu {
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
-            //TODO open add members menu
+            event.getWhoClicked().closeInventory();
+            List<Player> people = new ArrayList<>();
+            for (UUID uuid : region.getPeople().keySet()) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    people.add(player);
+                }
+            }
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, "add", people, 0, region.getId()));
             return;
         }
 

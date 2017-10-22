@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -36,8 +37,9 @@ public class ListAllPlayersMenu extends Menu {
         }
 
         int page = Integer.parseInt(itemStack.getItemMeta().getLore().get(1));
+        String id = itemStack.getItemMeta().getLore().get(2);
         List<Player> blackList = new ArrayList<>();
-        for (String s : itemStack.getItemMeta().getLore().get(2).split(",")) {
+        for (String s : itemStack.getItemMeta().getLore().get(3).split(",")) {
             Player player = Bukkit.getPlayer(s);
             if (player != null) {
                 blackList.add(player);
@@ -47,12 +49,12 @@ public class ListAllPlayersMenu extends Menu {
 
         if (event.getCurrentItem().getType() == Material.EMERALD) {
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, name, blackList, page + 1));
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, name, blackList, page + 1, id));
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE) {
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, name, blackList, page - 1));
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, name, blackList, page - 1, id));
             return;
         }
 
@@ -61,11 +63,12 @@ public class ListAllPlayersMenu extends Menu {
 
         String playerName = event.getCurrentItem().getItemMeta().getDisplayName();
         if (event.getWhoClicked() instanceof Player) {
-            ((Player) event.getWhoClicked()).performCommand("cv add " + playerName + name);
+            System.out.println("cv add " + playerName + " " + name);
+            ((Player) event.getWhoClicked()).performCommand("cv " + name + " " + playerName + " " + id);
         }
     }
 
-    public static Inventory createMenu(Civilian civilian, String name, List<Player> blackList, int page) {
+    public static Inventory createMenu(Civilian civilian, String name, List<Player> blackList, int page, String id) {
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -84,6 +87,7 @@ public class ListAllPlayersMenu extends Menu {
         List<String> lore = new ArrayList<>();
         lore.add(civilian.getUuid().toString());
         lore.add(page + "");
+        lore.add(id);
         StringBuilder blackListString = new StringBuilder();
         for (Player b : blackList) {
             blackListString.append(b.getName());
@@ -91,6 +95,7 @@ public class ListAllPlayersMenu extends Menu {
         }
         blackListString.substring(blackListString.length() - 1);
         lore.add(blackListString.toString());
+        cvItem.setLore(lore);
         inventory.setItem(2, cvItem.createItemStack());
 
         //6 Back button
