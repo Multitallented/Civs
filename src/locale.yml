@@ -124,6 +124,34 @@ pt_br:
   build-reqs: "Todos os blocos que você precisa colocar para construir $1"
   too-close-region: "Sua $1 ficaria muito próxima a $2"
   region-built: "Você construiu com sucesso uma $1"
+  region-in-town: "Sua região esta em $1"
+  view-members: "Ver membros"
+  add-member: "Adicionar membro"
+  operation: "Operação"
+  region-working: "Sua região esta funcionando"
+  region-not-working: "Sua região esta precisando de algo"
+  owner: Dono
+  member: Membro
+  guest: Convidado
+  recruiter: Recrutador
+  set-owner: Definir Dono
+  set-member: Definir Membro
+  set-guest: Definir Convidado
+  remove-member: Remover Membro
+  add-member-region: "Você é agora um membro de $1"
+  member-added-region: "$1 agora é um membro de sua $2"
+  owner-description: "Donos podem fazer tudo na região"
+  guest-description: "Convidados podem usar portas e botões na região"
+  member-description: "Membros podem construir e usar a região"
+  remove-member-region: "Você não é mais um membro de $1"
+  member-removed-region: "$1 não é mais um membro de $2"
+  add-owner-region: "Você é agora um dono de $1"
+  owner-added-region: "$1 é agora um dono de sua $2"
+  add-owner-region: "Você é agora um convidado de $1"
+  owner-added-region: "$1 é agora um convidado de sua $2"
+  invite-owner-region: "Você se tornou um membro de $1"
+  owner-invited-region: "$1 foi adicionado a sua $2"
+  stand-in-region: "Por favor $1 esteja em uma região"
   
   #errors
   no-region-type-found: "Nenhuma região encontrada para $1"
@@ -143,6 +171,8 @@ pt_br:
   broke-own-region: "Sua $1 esta com falta de blocos"
   no-permission: "Permissão Negada"
   class-changed: "Sua classe mudou para $1"
+  not-enough-money: "Você não tem $$1"
+  not-allowed-place: "Você não tem permissão para colocar $1"
 es:
   name: Spanish
   icon: WOOL.4
