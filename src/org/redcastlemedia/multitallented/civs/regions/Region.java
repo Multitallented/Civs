@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -341,6 +342,16 @@ public class Region {
 
         long period = regionType.getPeriod();
         return lastTick + period * 1000 < System.currentTimeMillis();
+    }
+    public boolean hasReagents() {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        Block block = location.getBlock();
+        if (!(block instanceof Chest)) {
+            return true;
+        }
+        Chest chest = (Chest) block;
+        return regionType.getReagents().isEmpty() ||
+                Util.containsItems(regionType.getReagents(), chest.getInventory());
     }
     public void tick() {
         this.lastTick = System.currentTimeMillis();

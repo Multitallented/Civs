@@ -60,7 +60,6 @@ public class BuiltRegionMenu extends Menu {
             }
         }
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(regions.size()) + 9, MENU_NAME);
-        //TODO finish this stub
 
         int i=9;
         for (Region region : regions) {

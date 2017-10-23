@@ -30,8 +30,7 @@ public class RegionTickThread implements Runnable {
             if (block.getState() instanceof Chest) {
                 chest = (Chest) block.getState();
             }
-            boolean hasReagents = regionType.getReagents().isEmpty() ||
-                    (chest != null && Util.containsItems(regionType.getReagents(), chest.getInventory()));
+            boolean hasReagents = region.hasReagents();
 
             if (!hasReagents || (chest != null && chest.getInventory().firstEmpty() == -1)) {
                 continue;
