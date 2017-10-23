@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
@@ -9,14 +10,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Spell {
+    private final Player caster;
     public boolean preCast = true;
     private String type;
     public final HashMap<Integer, Integer> pendingConditionsSize = new HashMap<>();
     public final HashMap<Integer, HashSet<SpellResult>> pendingConditions = new HashMap<>();
     private HashMap<String, HashSet<Object>> targetMap;
 
-    public Spell(String type) {
+    public Spell(String type, Player caster) {
         this.type = type;
+        this.caster = caster;
     }
 
     public void checkConditions() {
@@ -72,7 +75,11 @@ public class Spell {
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
         ArrayList<HashMap<Effect, String>> effects = preCast ? spellType.getPreCastEffects() : spellType.getPostCastEffects();
         for (Effect effect : effects.get(index).keySet()) {
-            effect.execute(targetMap.get(effects.get(index).get(effect)));
+            effect.execute(this, targetMap.get(effects.get(index).get(effect)));
         }
+    }
+
+    public Player getCaster() {
+        return caster;
     }
 }

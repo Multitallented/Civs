@@ -13,8 +13,8 @@ public class SpellManager {
         return spellManager;
     }
 
-    public void createSpell(String name, HashMap<String, HashSet<Object>> targetMap) {
-        Spell spell = new Spell(name);
-        spell.checkConditions();
-    }
+//    public void createSpell(String name, HashMap<String, HashSet<Object>> targetMap) {
+//        Spell spell = new Spell(name);
+//        spell.checkConditions();
+//    }
 }
