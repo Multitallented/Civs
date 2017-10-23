@@ -7,3 +7,10 @@ pre-reqs:
 - archer:level=4
 
 #spell attributes
+targets:
+  target1:
+    type: vector
+    params:
+      range: 15
+      through-walls: true
+      max-targets: 1

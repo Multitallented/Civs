@@ -9,6 +9,10 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
+import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
+import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -122,20 +126,43 @@ public class ItemManager {
         //TODO load spelltype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
-        CivItem civItem = new CivItem(
+        CivItem civItem = new SpellType(
                 config.getStringList("reqs"),
-                false,
-                CivItem.ItemType.SPELL,
                 name,
                 icon.getMat(),
                 icon.getDamage(),
-                0, 0, -1,
+                config.getInt("qty", 0),
+                config.getInt("min", 0),
+                config.getInt("max", -1),
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 config.getStringList("description"),
-                config.getStringList("groups"));
+                config.getStringList("groups"),
+                getTargets(config.getConfigurationSection("targets")),
+                getConditions(),
+                getEffects(),
+                getConditions(),
+                getEffects());
         itemTypes.put(name, civItem);
         return civItem;
+    }
+    private HashSet<Target> getTargets(ConfigurationSection section) {
+        HashSet<Target> targets = new HashSet<>();
+        for (String key : section.getKeys(false)) {
+            Target target = SpellType.getTarget(section.getString(key + ".type"), section.getConfigurationSection(key + ".params"));
+            targets.add(target);
+        }
+        return targets;
+    }
+    private ArrayList<HashMap<Condition, String>> getConditions() {
+        ArrayList<HashMap<Condition, String>> conditions = new ArrayList<>();
+        //TODO get conditions from config
+        return conditions;
+    }
+    private ArrayList<HashMap<Effect, String>> getEffects() {
+        ArrayList<HashMap<Effect, String>> effects = new ArrayList<>();
+        //TODO get effects from config
+        return effects;
     }
 
     public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
