@@ -33,7 +33,6 @@ public class Spell {
         }
     }
 
-
     public void checkInCondition(int index, SpellResult result) {
         if (result != SpellResult.FAILED) {
             if (pendingConditionsSize.get(index) <= pendingConditions.get(index).size()) {
@@ -48,11 +47,19 @@ public class Spell {
             for (int i=0; i<difference ; i++) {
                 pendingConditions.get(index).add(SpellResult.FAILED);
             }
+            return;
         }
+        boolean success = false;
         for (int i : pendingConditions.keySet()) {
             if (pendingConditionsSize.get(i) > pendingConditions.get(i).size()) {
                 return;
             }
+            if (!pendingConditions.get(i).contains(SpellResult.FAILED)) {
+                success = true;
+            }
+        }
+        if (!success) {
+            return;
         }
         pendingConditions.clear();
         pendingConditionsSize.clear();

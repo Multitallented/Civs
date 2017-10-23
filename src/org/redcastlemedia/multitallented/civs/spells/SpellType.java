@@ -10,7 +10,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
+import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
+import org.redcastlemedia.multitallented.civs.spells.targets.TargetScheme;
+import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +79,11 @@ public class SpellType extends CivItem {
     }
 
     public static Target getTarget(String type, ConfigurationSection section) {
-        //TODO list all targets here
+        if (type.equals("vector")) {
+            return new VectorTarget(section);
+        } else if (type.equals("area")) {
+            return new AreaTarget(section);
+        }
         return null;
     }
     public static Condition getCondition(String type, ConfigurationSection section) {
@@ -99,15 +106,15 @@ public class SpellType extends CivItem {
         HashMap<String, HashSet<Object>> targetMap = new HashMap<>();
         HashSet<Target> targetsClone = (HashSet<Target>) targets.clone();
         HashMap<Target, Location> processedTargets = new HashMap<>();
-        /*do {
+        do {
             HashSet<Target> removeLater = new HashSet<>();
             for (Target tar : targetsClone) {
-                if (!tar.getNode().containsKey("origin")) {
-                    removeLater.add(tar);
-                }
+//                if (!tar.getNode().containsKey("origin")) {
+//                    removeLater.add(tar);
+//                }
                 String originName = "self";
                 try {
-                    originName = (String) tar.getNode().get("origin");
+//                    originName = (String) tar.getNode().get("origin");
                 } catch (Exception e) {
                     removeLater.add(tar);
                 }
@@ -116,17 +123,17 @@ public class SpellType extends CivItem {
                         if (!targ.NAME.equals(originName)) {
                             continue;
                         }
-                        TargetScheme ts = tar.getTargets(plugin, user, processedTargets.get(targ));
+                        TargetScheme ts = tar.getTargets(civilian);
                         targetMap.put(originName, ts.targets);
                         removeLater.add(tar);
-                        processedTargets.put(tar, ts.originPoint);
+                        processedTargets.put(tar, ts.origin);
                         break;
                     }
                 } else {
-                    TargetScheme ts = tar.getTargets(plugin, user, caster.getLocation());
+                    TargetScheme ts = tar.getTargets(civilian);
                     targetMap.put(originName, ts.targets);
                     removeLater.add(tar);
-                    processedTargets.put(tar, ts.originPoint);
+                    processedTargets.put(tar, ts.origin);
                 }
             }
             for (Target tar : removeLater) {
@@ -137,7 +144,7 @@ public class SpellType extends CivItem {
                 Civs.logger.severe("Improper target origin configuration.");
                 return;
             }
-        } while (!targetsClone.isEmpty());*/
+        } while (!targetsClone.isEmpty());
         HashSet<Object> tempSet = new HashSet<>();
         tempSet.add(civilian);
         targetMap.put("self", tempSet);

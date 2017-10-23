@@ -1,7 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells.targets;
 
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 
 import java.util.HashSet;
 
@@ -10,17 +11,19 @@ import java.util.HashSet;
  * @author Multitallented
  */
 public abstract class Target {
-    private final FileConfiguration config;
+    final ConfigurationSection config;
     private final HashSet<String> targetTypes = new HashSet<>();
     public final String NAME;
 
-    public Target(FileConfiguration config) {
+    public Target(ConfigurationSection config) {
         this.config = config;
-        for (String s : config.getConfigurationSection("pattern").getKeys(false)) {
-            targetTypes.add(config.getString("pattern." + s));
+        NAME = config.getString("name", "unnamed");
+        try {
+            targetTypes.addAll(config.getStringList("target-types"));
+        } catch (Exception e) {
+
         }
-        NAME = config.getString("name");
     }
 
-    public abstract HashSet<Object> getTargets();
+    public abstract TargetScheme getTargets(Civilian civilian);
 }
