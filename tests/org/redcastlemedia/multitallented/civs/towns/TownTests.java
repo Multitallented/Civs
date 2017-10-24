@@ -50,6 +50,13 @@ public class TownTests {
         assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
     }
     @Test
+    public void shouldFindTown() {
+        loadTownTypeHamlet();
+        Town town = loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
+    }
+
+    @Test
     public void memberShouldBeAdded() {
         loadTownTypeHamlet();
         Town town = loadTown("Aeria", new Location(Bukkit.getWorld("world"), 0, 0, 20));
@@ -57,6 +64,21 @@ public class TownTests {
         townManager.addInvite(uuid, town);
         townManager.acceptInvite(uuid);
         assertEquals("member", town.getPeople().get(uuid));
+    }
+
+    @Test
+    public void townsShouldIntersect() {
+        loadTownTypeHamlet();
+        loadTown("Summertown", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        assertTrue(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType));
+    }
+    @Test
+    public void townShouldNotIntersect() {
+        loadTownTypeHamlet();
+        loadTown("Summertown", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        assertFalse(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType));
     }
 
     private Town loadTown(String name, Location location) {

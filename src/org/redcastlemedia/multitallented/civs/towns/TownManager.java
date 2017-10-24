@@ -54,15 +54,15 @@ public class TownManager {
             int radiusY = townType.getBuildRadiusY();
             Location townLocation = town.getLocation();
 
-            if (townLocation.getX() - radius > location.getX()) {
+            if (townLocation.getX() - radius >= location.getX()) {
                 break;
             }
 
-            if (townLocation.getX() + radius > location.getX() &&
-                    townLocation.getZ() + radius > location.getZ() &&
-                    townLocation.getZ() - radius < location.getZ() &&
-                    townLocation.getY() - radiusY < location.getY() &&
-                    townLocation.getY() + radiusY > location.getY()) {
+            if (townLocation.getX() + radius >= location.getX() &&
+                    townLocation.getZ() + radius >= location.getZ() &&
+                    townLocation.getZ() - radius <= location.getZ() &&
+                    townLocation.getY() - radiusY <= location.getY() &&
+                    townLocation.getY() + radiusY >= location.getY()) {
                 return town;
             }
 
@@ -70,8 +70,45 @@ public class TownManager {
         return null;
     }
     public boolean checkIntersect(Location location, TownType townType) {
-
-        //TODO finish this stub
+        Location[] locationCheck = new Location[9];
+        locationCheck[0] = location;
+        locationCheck[1] = new Location(location.getWorld(),
+                location.getX() + townType.getBuildRadius(),
+                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
+                location.getZ() + townType.getBuildRadius());
+        locationCheck[2] = new Location(location.getWorld(),
+                location.getX() - townType.getBuildRadius(),
+                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
+                location.getZ() + townType.getBuildRadius());
+        locationCheck[3] = new Location(location.getWorld(),
+                location.getX() + townType.getBuildRadius(),
+                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
+                location.getZ() - townType.getBuildRadius());
+        locationCheck[4] = new Location(location.getWorld(),
+                location.getX() - townType.getBuildRadius(),
+                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
+                location.getZ() - townType.getBuildRadius());
+        locationCheck[5] = new Location(location.getWorld(),
+                location.getX() + townType.getBuildRadius(),
+                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
+                location.getZ() + townType.getBuildRadius());
+        locationCheck[6] = new Location(location.getWorld(),
+                location.getX() - townType.getBuildRadius(),
+                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
+                location.getZ() + townType.getBuildRadius());
+        locationCheck[7] = new Location(location.getWorld(),
+                location.getX() + townType.getBuildRadius(),
+                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
+                location.getZ() - townType.getBuildRadius());
+        locationCheck[8] = new Location(location.getWorld(),
+                location.getX() - townType.getBuildRadius(),
+                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
+                location.getZ() - townType.getBuildRadius());
+        for (Location currentLocation : locationCheck) {
+            if (getTownAt(currentLocation) != null) {
+                return true;
+            }
+        }
         return false;
     }
 

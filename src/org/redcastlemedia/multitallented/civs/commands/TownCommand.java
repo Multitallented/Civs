@@ -57,6 +57,8 @@ public class TownCommand implements CivCommand {
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return true;
         }
+
+
         //TODO finish creation
 
         return true;
