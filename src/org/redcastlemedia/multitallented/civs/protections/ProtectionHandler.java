@@ -26,6 +26,9 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -275,6 +278,18 @@ public class ProtectionHandler implements Listener {
 
     private boolean checkLocation(Location location, Player player, String type, String pRole) {
         RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        Town town = townManager.getTownAt(location);
+        outer: if (town != null) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (player == null || !townType.getEffects().contains(type)) {
+                break outer;
+            }
+            String role = town.getPeople().get(player.getUniqueId());
+            if (role == null || (!role.contains("owner") && pRole != null && !role.contains(pRole))) {
+                return true;
+            }
+        }
         Region region = regionManager.getRegionAt(location);
         if (region == null ||
                 !region.effects.keySet().contains(type) ||
