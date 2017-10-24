@@ -139,9 +139,9 @@ public class ItemManager {
                 config.getStringList("description"),
                 config.getStringList("groups"),
                 getTargets(config.getConfigurationSection("targets")),
-                getConditions(),
+                getConditions(config.getConfigurationSection("conditions")), //TODO correct this
                 getEffects(),
-                getConditions(),
+                getConditions(config.getConfigurationSection("conditions")), //TODO correct this
                 getEffects());
         itemTypes.put(name, civItem);
         return civItem;
@@ -149,14 +149,19 @@ public class ItemManager {
     private HashSet<Target> getTargets(ConfigurationSection section) {
         HashSet<Target> targets = new HashSet<>();
         for (String key : section.getKeys(false)) {
-            Target target = SpellType.getTarget(section.getString(key + ".type"), section.getConfigurationSection(key + ".params"));
+            Target target = SpellType.getTarget(section.getString(key + ".type"),
+                    section.getConfigurationSection(key + ".params"));
             targets.add(target);
         }
         return targets;
     }
-    private ArrayList<HashMap<Condition, String>> getConditions() {
+    private ArrayList<HashMap<Condition, String>> getConditions(ConfigurationSection section) {
         ArrayList<HashMap<Condition, String>> conditions = new ArrayList<>();
-        //TODO get conditions from config
+        for (String key : section.getKeys(false)) {
+            Condition condition = SpellType.getCondition(section.getString(key + ".type"),
+                    section.getConfigurationSection(key + ".params"));
+            //TODO add them to the array list somehow
+        }
         return conditions;
     }
     private ArrayList<HashMap<Effect, String>> getEffects() {
