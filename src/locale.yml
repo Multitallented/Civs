@@ -35,6 +35,11 @@ en:
 
   #community
   community: Community
+  players: Players
+  towns: Towns
+  your-towns: Your towns
+  wars: Wars
+  leaderboard: Leaderboard
 
   #region
   size: Size

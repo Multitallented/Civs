@@ -201,6 +201,16 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".specify-town-name", "Please specify a town name"));
                 currentLanguage.put("hold-town",
                         localeConfig.getString(langKey + ".hold-town", "Please hold a town item"));
+                currentLanguage.put("players",
+                        localeConfig.getString(langKey + ".players", "Players"));
+                currentLanguage.put("towns",
+                        localeConfig.getString(langKey + ".towns", "Towns"));
+                currentLanguage.put("your-towns",
+                        localeConfig.getString(langKey + ".your-towns", "Your towns"));
+                currentLanguage.put("wars",
+                        localeConfig.getString(langKey + ".wars", "Wars"));
+                currentLanguage.put("leaderboard",
+                        localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -291,6 +301,11 @@ public class LocaleManager {
         englishMap.put("town-instructions", "To create a $1, use /cv town MyTownName");
         englishMap.put("specify-town-name", "Please specify a town name");
         englishMap.put("hold-town", "Please hold a town item");
+        englishMap.put("players", "Players");
+        englishMap.put("towns", "Towns");
+        englishMap.put("your-towns", "Your towns");
+        englishMap.put("wars", "Wars");
+        englishMap.put("leaderboard", "Leaderboard");
 
         languageMap.put("en", englishMap);
     }

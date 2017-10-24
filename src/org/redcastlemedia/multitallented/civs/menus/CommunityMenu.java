@@ -49,27 +49,27 @@ public class CommunityMenu extends Menu {
 
         //0 Players
         CVItem cvItem = CVItem.createCVItemFromString("SKULL.3");
-        cvItem.setDisplayName("Players"); //TODO localize
+        cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Towns
         CVItem cvItem3 = CVItem.createCVItemFromString("BED");
-        cvItem3.setDisplayName("Towns"); //TODO localize
+        cvItem3.setDisplayName(localeManager.getTranslation(locale, "towns"));
         inventory.setItem(1, cvItem3.createItemStack());
 
         //2 Your towns
         CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
-        cvItem2.setDisplayName("Your towns"); //TODO localize
+        cvItem2.setDisplayName(localeManager.getTranslation(locale, "your-towns"));
         inventory.setItem(2, cvItem2.createItemStack());
 
         //3 Wars
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
-        cvItem1.setDisplayName("Wars"); //TODO localize
+        cvItem1.setDisplayName(localeManager.getTranslation(locale, "wars"));
         inventory.setItem(3, cvItem1.createItemStack());
 
         //4 PvP leaderboard
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
-        cvItem4.setDisplayName("Leaderboard"); //TODO localize
+        cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
         inventory.setItem(4, cvItem4.createItemStack());
 
         return inventory;
