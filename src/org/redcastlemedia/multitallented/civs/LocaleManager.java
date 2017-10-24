@@ -195,6 +195,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".prev-button", "Previous"));
                 currentLanguage.put("next-button",
                         localeConfig.getString(langKey + ".next-button", "Next"));
+                currentLanguage.put("town-instructions",
+                        localeConfig.getString(langKey + ".town-instructions", "To create a $1, use /cv town MyTownName"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -282,6 +284,7 @@ public class LocaleManager {
         englishMap.put("stand-in-region", "Please have $1 stand in the region");
         englishMap.put("prev-button", "Previous");
         englishMap.put("next-button", "Next");
+        englishMap.put("town-instructions", "To create a $1, use /cv town MyTownName");
 
         languageMap.put("en", englishMap);
     }

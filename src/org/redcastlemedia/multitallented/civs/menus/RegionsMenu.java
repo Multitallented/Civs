@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -54,15 +55,21 @@ public class RegionsMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getStashItems().size()), MENU_NAME);
 
+        LocaleManager localeManager = LocaleManager.getInstance();
         int i=0;
         for (CivItem cvItem : civilian.getStashItems()) {
-            if (!cvItem.getItemType().equals(CivItem.ItemType.REGION)) {
+            boolean isTown = cvItem.getItemType().equals(CivItem.ItemType.TOWN);
+            if (!cvItem.getItemType().equals(CivItem.ItemType.REGION) && !isTown) {
                 continue;
             }
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.parseColors(cvItem.getDescription()));
-//            lore.addAll(cvItem.getLore());
+            if (isTown) {
+                lore.add(Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
+                        .replace("$1", cvItem.getProcessedName())));
+            } else {
+                lore.addAll(Util.parseColors(cvItem.getDescription()));
+            }
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());
             i++;

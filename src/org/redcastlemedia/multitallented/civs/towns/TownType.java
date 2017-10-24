@@ -56,7 +56,7 @@ public class TownType extends CivItem {
                     int maxPower,
                     List<String> groups) {
         super(civReqs,
-                true,
+                false,
                 ItemType.TOWN,
                 name,
                 icon.getMat(),

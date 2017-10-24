@@ -73,6 +73,7 @@ en:
   invite-owner-region: "You have been become a member of $1"
   owner-invited-region: "$1 has been added to your $2"
   stand-in-region: "Please have $1 stand in the region"
+  town-instructions: "To create a $1, use /cv town MyTownName"
 
   #errors
   no-region-type-found: "No region type found for $1"
