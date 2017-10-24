@@ -85,6 +85,7 @@ en:
   region-protected: "This region is protected"
   region-destroyed: "Region $1 has been destroyed!"
   specify-player-town: "Please specify a player and town"
+  specify-town-name: "Please specify a town name"
   specify-player-region: "Please specify a player and region"
   town-not-exist: "$1 is not a town"
   no-permission-invite: "You don't have permission to invite people to $1"
@@ -96,6 +97,7 @@ en:
   class-changed: "Your class has changed to $1"
   not-enough-money: "You dont have $$1"
   not-allowed-place: "You aren't allowed to place $1"
+  hold-town: "Please hold a town item"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

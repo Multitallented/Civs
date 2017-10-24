@@ -69,6 +69,11 @@ public class TownManager {
         }
         return null;
     }
+    public boolean checkIntersect(Location location, TownType townType) {
+
+        //TODO finish this stub
+        return false;
+    }
 
     private void loadTown(FileConfiguration config, String name) {
 
