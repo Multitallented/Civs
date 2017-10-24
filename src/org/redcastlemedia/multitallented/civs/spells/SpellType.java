@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
+import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
@@ -90,6 +91,9 @@ public class SpellType extends CivItem {
         return null;
     }
     public static Effect getEffect(String type, ConfigurationSection section) {
+        if (type.equals("damage")) {
+            return new DamageEffect(section);
+        }
         return null;
     }
 

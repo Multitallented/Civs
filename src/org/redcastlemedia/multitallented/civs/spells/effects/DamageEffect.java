@@ -34,12 +34,18 @@ public class DamageEffect extends Effect {
         if (!chunk.isLoaded()) {
             return;
         }
+        int maxEntities = node.getInt("max-targets", 9999);
+        int i=0;
         for (Entity e : chunk.getEntities()) {
             if (target.getLocation().distance(e.getLocation()) > radius) {
                 continue;
             }
             if (e instanceof LivingEntity && damageCheck(spell.getCaster(), e)) {
                 damageEntity(e, spell.getCaster());
+                break;
+            }
+            i++;
+            if (maxEntities < i) {
                 break;
             }
         }

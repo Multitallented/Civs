@@ -4,8 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.spells.Spell;
 
 import java.util.HashSet;
 
@@ -19,19 +18,19 @@ public abstract class Condition {
         this.node = config;
     }
 
-    public void testCondition(HashSet<Object> targets) {
+    public void testCondition(Spell spell, HashSet<Object> targets) {
         for (Object obj : targets) {
             if (obj.getClass().equals(Player.class)) {
-                testCondition(CivilianManager.getInstance().getCivilian(((Player) obj).getUniqueId()));
+                testCondition(spell, (Player) obj);
             } else if (obj.getClass().equals(Block.class)) {
-                testCondition((Block) obj);
+                testCondition(spell, (Block) obj);
             } else if (obj instanceof Entity) {
-                testCondition((Entity) obj);
+                testCondition(spell, (Entity) obj);
             }
         }
     }
 
-    abstract void testCondition(Civilian civilian);
-    abstract void testCondition(Block block);
-    abstract void testCondition(Entity entity);
+    abstract void testCondition(Spell spell, Player player);
+    abstract void testCondition(Spell spell, Block block);
+    abstract void testCondition(Spell spell, Entity entity);
 }

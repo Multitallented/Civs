@@ -25,13 +25,14 @@ public class Spell {
     public void checkConditions() {
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
 
-        ArrayList<HashMap<Condition, String>> conditions = preCast ? spellType.getPreCastConditions() : spellType.getPostCastConditions();
+        ArrayList<HashMap<Condition, String>> conditions = preCast ?
+                spellType.getPreCastConditions() : spellType.getPostCastConditions();
 
         for (int i=0; i<conditions.size(); i++) {
             HashMap<Condition, String> currConditions = conditions.get(i);
             pendingConditionsSize.put(i, currConditions.size());
             for (Condition con : currConditions.keySet()) {
-                con.testCondition(targetMap.get(currConditions.get(con)));
+                con.testCondition(this, targetMap.get(currConditions.get(con)));
             }
         }
     }
@@ -73,7 +74,9 @@ public class Spell {
 
     private void executeEffects(int index) {
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
-        ArrayList<HashMap<Effect, String>> effects = preCast ? spellType.getPreCastEffects() : spellType.getPostCastEffects();
+        ArrayList<HashMap<Effect, String>> effects = preCast ?
+                spellType.getPreCastEffects() : spellType.getPostCastEffects();
+
         for (Effect effect : effects.get(index).keySet()) {
             effect.execute(this, targetMap.get(effects.get(index).get(effect)));
         }
