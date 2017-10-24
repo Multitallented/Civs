@@ -124,7 +124,7 @@ public class TownManager {
                 people);
         addTown(town);
     }
-    void addTown(Town town) {
+    public void addTown(Town town) {
         towns.put(town.getName().toLowerCase(), town);
         sortedTowns.add(town);
         Collections.sort(sortedTowns, new Comparator<Town>() {

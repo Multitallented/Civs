@@ -11,8 +11,13 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class TownCommand implements CivCommand {
     @Override
@@ -29,7 +34,7 @@ public class TownCommand implements CivCommand {
 
         //0 town
         //1 townName
-        if (args.length < 2) {
+        if (args.length < 2 || !Util.validateFileName(args[1])) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "specify-town-name"));
             return true;
@@ -58,8 +63,11 @@ public class TownCommand implements CivCommand {
             return true;
         }
 
-
-        //TODO finish creation
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(player.getUniqueId(), "owner");
+        Town town = new Town(args[1], townType.getProcessedName(), player.getLocation(), people);
+        townManager.addTown(town);
+        townManager.saveTown(town);
 
         return true;
     }
