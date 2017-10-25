@@ -35,9 +35,18 @@ public class CommunityMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
-//        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
-
-//        }
+        if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, null));
+            return;
+        }
+        if (itemName.equals(localeManager.getTranslation(locale, "your-towns"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, civilian.getUuid()));
+            return;
+        }
         //TODO finish this stub
     }
 
