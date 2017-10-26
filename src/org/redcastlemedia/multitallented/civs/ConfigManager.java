@@ -25,6 +25,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
+    HashMap<String, Integer> creatureHealth;
     boolean useStarterBook;
 
     public String getDefaultLanguage() {
@@ -42,6 +43,7 @@ public class ConfigManager {
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
+    public int getCreatureHealth(String type) { return creatureHealth.get(type); }
     public CVItem getFolderIcon(String folderName) {
         CVItem cvItem = folderIcons.get(folderName);
         if (cvItem == null) {
@@ -93,6 +95,13 @@ public class ConfigManager {
             if (section != null) {
                 for (String key : section.getKeys(false)) {
                     groups.put(key, config.getInt("groups." + key, -1));
+                }
+            }
+            creatureHealth = new HashMap<>();
+            ConfigurationSection section3 = config.getConfigurationSection("creature-health");
+            if (section != null) {
+                for (String key : section3.getKeys(false)) {
+                    creatureHealth.put(key, config.getInt("creature-health." + key, -1));
                 }
             }
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
@@ -159,7 +160,7 @@ public abstract class CivState extends SpellComponent {
 //        apply(target);
 //    }
 
-    public abstract void sendCancelledMessage(String username, CancelledMessageTypes type);
+    public abstract void sendCancelledMessage(Player player, CancelledMessageTypes type);
 
     public enum CancelledMessageTypes {
         CHAT,

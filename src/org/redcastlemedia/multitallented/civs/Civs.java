@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
+import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.io.File;
@@ -132,6 +133,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
         Bukkit.getPluginManager().registerEvents(new TownListMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
     }
 
     public boolean setupEconomy() {

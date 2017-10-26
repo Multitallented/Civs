@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 import java.util.*;
 
@@ -19,6 +20,7 @@ public class Civilian {
     private Set<CivClass> civClasses;
     private String locale;
     private final ArrayList<CivItem> stashItems;
+    private final HashMap<String, CivState> states;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp) {
@@ -27,6 +29,7 @@ public class Civilian {
         this.stashItems = stashItems;
         this.civClasses = civClasses;
         this.exp = exp;
+        this.states = new HashMap<>();
     }
 
     public UUID getUuid() {
@@ -43,6 +46,7 @@ public class Civilian {
         return stashItems;
     }
     public HashMap<CivItem, Integer> getExp() { return exp; }
+    public HashMap<String, CivState> getStates() { return states; }
 
     public int getLevel(CivItem civItem) {
         double experience = exp.get(civItem);
