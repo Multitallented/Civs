@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -190,6 +191,12 @@ public class CivilianListener implements Listener {
             humanEntity.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
             return;
+        }
+        CivItem civItem = ItemManager.getInstance().getItemType(clickedStack.getItemMeta().getDisplayName()
+                .replace("Civs ", "").toLowerCase());
+        if (civItem instanceof SpellType) {
+            SpellType spellType = (SpellType) civItem;
+            spellType.useSkill(CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId()));
         }
     }
 }

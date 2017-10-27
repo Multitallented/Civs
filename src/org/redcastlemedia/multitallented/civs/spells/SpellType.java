@@ -153,7 +153,7 @@ public class SpellType extends CivItem {
         tempSet.add(civilian);
         targetMap.put("self", tempSet);
 
-//        Spell cs = new Spell(caster, this, targetMap, types);
-//        cs.checkConditions();
+        Spell cs = new Spell(getProcessedName(), caster);
+        cs.checkConditions();
     }
 }

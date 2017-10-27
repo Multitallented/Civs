@@ -154,7 +154,7 @@ public class LocaleManager {
                 currentLanguage.put("not-allowed-place",
                         localeConfig.getString(langKey + ".not-allowed-place", "You aren't allowed to place $1"));
                 currentLanguage.put("starter-book",
-                        localeConfig.getString(langKey + ".starter-book", "Civs Menu"));
+                        localeConfig.getString(langKey + ".starter-book", "Menu for Civs"));
                 currentLanguage.put("set-owner",
                         localeConfig.getString(langKey + ".set-owner", "Set Owner"));
                 currentLanguage.put("set-member",
@@ -277,7 +277,7 @@ public class LocaleManager {
         englishMap.put("recruiter", "Recruiter");
         englishMap.put("guest", "Guest");
         englishMap.put("not-allowed-place", "You aren't allowed to place $1");
-        englishMap.put("starter-book", "Civs Menu");
+        englishMap.put("starter-book", "Menu for Civs");
         englishMap.put("set-member", "Set Member");
         englishMap.put("set-owner", "Set Owner");
         englishMap.put("set-guest", "Set Guest");
