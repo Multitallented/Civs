@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,6 +16,10 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.ConditionEvent;
+import org.redcastlemedia.multitallented.civs.events.GainExpEvent;
+import org.redcastlemedia.multitallented.civs.events.ManaChangeEvent;
+import org.redcastlemedia.multitallented.civs.events.SpellPreCastEvent;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivStates;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
@@ -132,12 +138,11 @@ public class SpellListener implements Listener {
         }
     }
 
-    //TODO implement these
     ////////////PROXIS EVENTS/////////////////
-    /*@EventHandler
-    public void onUserManaChangeEvent(UserManaChangeEvent event) {
-        Civilian user = proxis.getUserManager().getUser(event.getUsername());
-        boolean natural = event.getReason() == ManaChangeReason.NATURAL_REGEN;
+    @EventHandler
+    public void onUserManaChangeEvent(ManaChangeEvent event) {
+        Civilian user = CivilianManager.getInstance().getCivilian(event.getUUID());
+        boolean natural = event.getReason() == ManaChangeEvent.ManaChangeReason.NATURAL_REGEN;
         boolean increase = event.getManaChange() > 0;
         boolean decrease = !increase;
         for (CivState us : user.getStates().values()) {
@@ -145,31 +150,27 @@ public class SpellListener implements Listener {
                     (natural && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE_NATURAL)) ||
                     (increase && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE_GAIN)) ||
                     (decrease && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE))) {
-                us.sendCancelledMessage(user.NAME, CivState.CancelledMessageTypes.MANA);
+                us.sendCancelledMessage(Bukkit.getPlayer(event.getUUID()), CivState.CancelledMessageTypes.MANA);
                 event.setCancelled(true);
                 return;
             }
         }
     }
     @EventHandler
-    public void onSkillPreCastEvent(SkillPreCastEvent event) {
-        Civilian user = proxis.getUserManager().getUser(event.getUsername());
-        for (CivState us : user.getStates().values()) {
+    public void onSkillPreCastEvent(SpellPreCastEvent event) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getUuid());
+        for (CivState us : civilian.getStates().values()) {
             if (us.getDefaultStates().contains(BuiltInCivStates.NO_SKILLS) ||
                     us.getDefaultStates().contains(BuiltInCivStates.NO_OUTGOING_SKILLS)) {
-                us.sendCancelledMessage(user.NAME, CivState.CancelledMessageTypes.SKILL);
+                us.sendCancelledMessage(Bukkit.getPlayer(event.getUuid()), CivState.CancelledMessageTypes.SKILL);
                 event.setCancelled(true);
                 return;
             }
         }
     }
     @EventHandler
-    public void onSkillCondition(SkillConditionEvent event) {
-        event.CAST_SKILL.checkInCondition(event.INDEX, event.getResult());
+    public void onSkillCondition(ConditionEvent event) {
+        event.SPELL.checkInCondition(event.INDEX, event.getResult());
     }
-    @EventHandler(order = Order.LATEST)
-    public void onUserGainExp(UserGainExpEvent event) {
-        proxis.getTypeManager().gainExp(event.getUsername(), event.getType(), event.getExp());
-    }*/
     //TODO addFavoriteSkill from listener
 }
