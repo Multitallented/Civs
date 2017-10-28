@@ -44,7 +44,7 @@ public class ConfigManager {
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
     public int getCreatureHealth(String type) {
-        if (type == null) {
+        if (type == null || creatureHealth == null) {
             return -1;
         }
         return creatureHealth.get(type);
