@@ -1,8 +1,10 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.mockito.internal.matchers.Null;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -333,6 +335,7 @@ public class ItemManager {
         if (civItem.getCivReqs().isEmpty()) {
             return true;
         }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
                 String[] splitReq = req.split(":");
@@ -368,6 +371,14 @@ public class ItemManager {
                 } else if (reqParams[0].equals("has")) {
                     if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
+                } else if (reqParams[0].equals("perm")) {
+
+                    if (Civs.perm != null &&
+                            Civs.perm.has(player, reqParams[1])) {
                         continue outer;
                     } else {
                         break;
