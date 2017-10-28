@@ -338,6 +338,15 @@ public class ItemManager {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
+                if (req.startsWith("perm")) {
+                    String permission = req.replace("perm=", "");
+                    if (Civs.perm != null &&
+                            Civs.perm.has(player, permission)) {
+                        continue outer;
+                    } else {
+                        break;
+                    }
+                }
                 String[] splitReq = req.split(":");
                 CivItem reqItem = itemManager.getItemType(splitReq[0]);
                 if (reqItem == null) {
@@ -371,14 +380,6 @@ public class ItemManager {
                 } else if (reqParams[0].equals("has")) {
                     if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        break;
-                    }
-                } else if (reqParams[0].equals("perm")) {
-
-                    if (Civs.perm != null &&
-                            Civs.perm.has(player, reqParams[1])) {
                         continue outer;
                     } else {
                         break;
