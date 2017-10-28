@@ -122,6 +122,7 @@ public class ConfigManager {
         defaultClass = "default";
         groups = new HashMap<>();
         folderIcons = new HashMap<>();
+        creatureHealth = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {
