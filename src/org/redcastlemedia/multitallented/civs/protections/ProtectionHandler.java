@@ -4,14 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -246,6 +244,17 @@ public class ProtectionHandler implements Listener {
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         }
+    }
+
+    @EventHandler
+    public void onMobSpawn(CreatureSpawnEvent event) {
+        if (!(event.getEntity() instanceof Monster) ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.REINFORCEMENTS ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
+            return;
+        }
+        event.setCancelled(checkLocation(event.getLocation(), null, "deny_mob_spawn"));
     }
 
     private boolean checkEffectAt(Location location, Player player, String type, int mod) {

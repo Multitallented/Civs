@@ -43,7 +43,12 @@ public class ConfigManager {
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
-    public int getCreatureHealth(String type) { return creatureHealth.get(type); }
+    public int getCreatureHealth(String type) {
+        if (type == null) {
+            return -1;
+        }
+        return creatureHealth.get(type);
+    }
     public CVItem getFolderIcon(String folderName) {
         CVItem cvItem = folderIcons.get(folderName);
         if (cvItem == null) {
