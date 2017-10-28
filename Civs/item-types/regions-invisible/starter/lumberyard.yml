@@ -14,7 +14,7 @@ build-reqs:
 - g:fence_gate*1
 effects:
 - block_break
-- block_place
+- block_build
 - chest_use
 - door_use
 - block_liquid

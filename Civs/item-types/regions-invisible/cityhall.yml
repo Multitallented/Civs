@@ -19,7 +19,7 @@ build-radius: 7
 rebuild: townhall
 effects:
 - block_break
-- block_place
+- block_build
 - chest_use
 - door_use
 - block_liquid

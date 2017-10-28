@@ -9,7 +9,7 @@ group: quarry
 build-radius: 2
 effects:
 - block_break
-- block_place
+- block_build
 period: 10
 reagents:
 - IRON_PICKAXE

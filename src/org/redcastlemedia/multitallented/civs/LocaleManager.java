@@ -211,6 +211,10 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".wars", "Wars"));
                 currentLanguage.put("leaderboard",
                         localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
+                currentLanguage.put("enter-town",
+                        localeConfig.getString(langKey + ".enter-town", "You have entered $1"));
+                currentLanguage.put("exit-town",
+                        localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -306,6 +310,8 @@ public class LocaleManager {
         englishMap.put("your-towns", "Your towns");
         englishMap.put("wars", "Wars");
         englishMap.put("leaderboard", "Leaderboard");
+        englishMap.put("enter-town", "You have entered $1");
+        englishMap.put("exit-town", "You have exited $1");
 
         languageMap.put("en", englishMap);
     }

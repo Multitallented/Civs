@@ -17,7 +17,7 @@ build-radius: 25
 build-radius-y: 500
 effects:
 - block_break
-- block_place
+- block_build
 - door_use
 - block_liquid
 - block_explosion

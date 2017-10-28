@@ -2,6 +2,10 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -42,18 +46,28 @@ public class CommonScheduler implements Runnable {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(player.getLocation());
         Town prevTown = lastTown.get(player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        LocaleManager localeManager = LocaleManager.getInstance();
         if (town != null) {
             //TODO when player in town
         }
 
         if (prevTown == null && town != null) {
             //TODO when player enters town
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-enter").replace("$1", town.getName()));
         } else if (prevTown != null && town != null &&
                 prevTown.equals(town)) {
             //TODO exit last town
             //TODO enter new town
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-exit").replace("$1", prevTown.getName()));
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-enter").replace("$1", town.getName()));
         } else if (town == null && prevTown != null) {
             //TODO exit last town
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-exit").replace("$1", prevTown.getName()));
         }
 
         if (town == null && prevTown != null) {
