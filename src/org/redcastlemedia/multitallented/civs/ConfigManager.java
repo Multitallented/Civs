@@ -25,7 +25,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
-    HashMap<String, Integer> creatureHealth;
+    HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
 
     public String getDefaultLanguage() {
@@ -122,7 +122,6 @@ public class ConfigManager {
         defaultClass = "default";
         groups = new HashMap<>();
         folderIcons = new HashMap<>();
-        creatureHealth = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {
