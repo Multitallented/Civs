@@ -47,7 +47,8 @@ public class ConfigManager {
         if (type == null || creatureHealth == null) {
             return -1;
         }
-        return creatureHealth.get(type);
+        Integer integer = creatureHealth.get(type);
+        return integer == null ? -1 : integer;
     }
     public CVItem getFolderIcon(String folderName) {
         CVItem cvItem = folderIcons.get(folderName);

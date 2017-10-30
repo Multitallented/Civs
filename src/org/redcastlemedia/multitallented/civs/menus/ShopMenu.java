@@ -59,6 +59,12 @@ public class ShopMenu extends Menu {
             event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem));
             return;
         }
+        if (civItem.getItemType().equals(CivItem.ItemType.TOWN)) {
+            appendHistory(civilian.getUuid(), history);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem)); //TODO fix this
+            return;
+        }
         if (civItem.getItemType().equals(CivItem.ItemType.REGION)) {
             appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().closeInventory();
