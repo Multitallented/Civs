@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.*;
@@ -20,9 +21,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TestUtil {
     public static Block block;
@@ -144,13 +143,16 @@ public class TestUtil {
         when(server.getWorld("world2")).thenReturn(world2);
 
         Bukkit.setServer(server);
-        blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0));
-        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0));
-        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0));
-        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100));
-        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 500, 0,0));
-        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0));
-        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0));
+        blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0), true);
+        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0), false);
+        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0), true);
+        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100), false);
+        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 500, 0,0), true);
+        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0), false);
+        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0), true);
+
+//        when(world.getBlockAt(new Location(world, 4,0,0))).thenReturn(blockUnique);
+        when(world.getBlockAt(new Location(world, 2,50,0))).thenReturn(blockUnique2);
     }
 
     public static ItemStack createItemStack(Material mat) {
@@ -187,13 +189,35 @@ public class TestUtil {
         return block;
     }
 
-    public static Block createUniqueBlock(Material mat, String name, Location location) {
+    public static Block createUniqueBlock(Material mat, String name, Location location, boolean containsPickaxe) {
         Block block = mock(Block.class);
         when(block.getType()).thenReturn(mat);
-        BlockState blockState = mock(BlockState.class);
+        Chest chest = mock(Chest.class);
+        Inventory inventory = mock(Inventory.class);
+        when(inventory.firstEmpty()).thenReturn(1);
+        ArrayList<ItemStack> arrayIS = new ArrayList<>();
+        if (containsPickaxe) {
+            arrayIS.add(new ItemStack(Material.IRON_PICKAXE, 1));
+        }
+        arrayIS.add(null);
+        arrayIS.add(null);
+        arrayIS.add(null);
+        ListIterator<ItemStack> invIterator = arrayIS.listIterator();
+        when(inventory.iterator()).thenReturn(invIterator);
+        ItemStack[] itemStacks = new ItemStack[3];
+        if (containsPickaxe) {
+            itemStacks[0] = new ItemStack(Material.IRON_PICKAXE, 1);
+        } else {
+            itemStacks[0] = null;
+        }
+        itemStacks[1] = null;
+        itemStacks[2] = null;
+        when(inventory.getContents()).thenReturn(itemStacks);
+        when(inventory.addItem(Matchers.any(ItemStack.class))).thenThrow(new SuccessException());
+        when(chest.getInventory()).thenReturn(inventory);
         MaterialData materialData = mock(MaterialData.class);
-        when(block.getState()).thenReturn(blockState);
-        when(blockState.getData()).thenReturn(materialData);
+        when(block.getState()).thenReturn(chest);
+        when(chest.getData()).thenReturn(materialData);
         ItemStack is = createUniqueItemStack(mat, name);
         when(materialData.toItemStack(1)).thenReturn(is);
         when(materialData.toItemStack(Matchers.anyInt())).thenReturn(is);

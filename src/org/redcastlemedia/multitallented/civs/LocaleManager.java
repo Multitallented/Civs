@@ -74,6 +74,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".build-reqs", "All the blocks you need to place to build a $1"));
                 currentLanguage.put("too-close-region",
                         localeConfig.getString(langKey + ".too-close-region", "Your $1 would be too close to a $2"));
+                currentLanguage.put("too-close-town",
+                        localeConfig.getString(langKey + ".too-close-town", "Your $1 would be too close to another town"));
                 currentLanguage.put("region-built",
                         localeConfig.getString(langKey + ".region-built", "You have successfully built a $1"));
 
@@ -215,6 +217,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".enter-town", "You have entered $1"));
                 currentLanguage.put("exit-town",
                         localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
+                currentLanguage.put("town-created",
+                        localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -242,6 +246,8 @@ public class LocaleManager {
         englishMap.put("range", "Range");
         englishMap.put("build-reqs", "All the blocks you need to place to build a $1");
         englishMap.put("too-close-region", "Your $1 would be too close to a $2");
+        englishMap.put("too-close-town", "Your $1 would be too close to another town");
+        englishMap.put("town-created", "$1 has been created!");
         englishMap.put("region-built", "You have successfully built a $1");
         englishMap.put("no-region-type-found", "No region type found for $1");
         englishMap.put("building-too-big", "You're building is too big to be a $1");

@@ -346,10 +346,10 @@ public class Region {
     public boolean hasReagents() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Block block = location.getBlock();
-        if (!(block instanceof Chest)) {
+        if (!(block.getState() instanceof Chest)) {
             return true;
         }
-        Chest chest = (Chest) block;
+        Chest chest = (Chest) block.getState();
         return regionType.getReagents().isEmpty() ||
                 Util.containsItems(regionType.getReagents(), chest.getInventory());
     }

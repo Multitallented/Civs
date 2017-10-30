@@ -391,6 +391,13 @@ public class RegionsTests {
         effects.add("block_break");
         config.set("effects", effects);
         config.set("effect-radius", 7);
+        config.set("period", 100);
+        ArrayList<String> reagents = new ArrayList<>();
+        reagents.add("IRON_PICKAXE");
+        config.set("reagents", reagents);
+        ArrayList<String> outputs = new ArrayList<>();
+        outputs.add("COBBLESTONE");
+        config.set("output", outputs);
         ItemManager.getInstance().loadRegionType(config);
     }
     public static void loadRegionTypeDirt() {

@@ -134,6 +134,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
         Bukkit.getPluginManager().registerEvents(new TownListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TownTypeInfoMenu(), this);
     }
 
     public boolean setupEconomy() {

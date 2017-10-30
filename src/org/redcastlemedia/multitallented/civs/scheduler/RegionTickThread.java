@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
