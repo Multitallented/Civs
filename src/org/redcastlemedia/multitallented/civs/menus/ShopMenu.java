@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -62,7 +63,7 @@ public class ShopMenu extends Menu {
         if (civItem.getItemType().equals(CivItem.ItemType.TOWN)) {
             appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, civItem)); //TODO fix this
+            event.getWhoClicked().openInventory(TownTypeInfoMenu.createMenu(civilian, (TownType) civItem));
             return;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.REGION)) {
