@@ -68,6 +68,7 @@ public class TownCommand implements CivCommand {
         Town town = new Town(args[1], townType.getProcessedName(), player.getLocation(), people);
         townManager.addTown(town);
         townManager.saveTown(town);
+        player.getInventory().remove(itemStack);
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                 "town-created").replace("$1", town.getName()));
 
