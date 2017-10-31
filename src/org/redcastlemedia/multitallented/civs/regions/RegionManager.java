@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,13 +77,16 @@ public class RegionManager {
     }
 
     public void removeRegion(Region region, boolean broadcast) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getLocation().distance(region.getLocation()) < 25) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-destroyed").replace("$1", region.getType()));
+        if (broadcast) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getLocation().distance(region.getLocation()) < 25) {
+                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                    player.sendMessage(Civs.getPrefix() +
+                            LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-destroyed").replace("$1", region.getType()));
+                }
             }
         }
+        TownManager.getInstance().checkCriticalRequirements(region);
         removeRegion(region);
     }
 

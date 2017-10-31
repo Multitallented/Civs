@@ -6,8 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
 import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.*;
 
 public class TownManager {
@@ -70,6 +73,28 @@ public class TownManager {
         }
         return null;
     }
+
+    public void checkCriticalRequirements(Region region) {
+        Town town = getTownAt(region.getLocation());
+        RegionManager regionManager = RegionManager.getInstance();
+        if (town == null) {
+            return;
+        }
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        if (!townType.getCriticalReqs().contains(region.getType())) {
+            return;
+        }
+        boolean hasReq = false;
+        for (Region containedRegion : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
+            if (containedRegion.getType().equals(region.getType()) && region != containedRegion) {
+                hasReq = true;
+            }
+        }
+        if (!hasReq) {
+            removeTown(town, true);
+        }
+    }
+
     public boolean checkIntersect(Location location, TownType townType) {
         Location[] locationCheck = new Location[9];
         locationCheck[0] = location;
@@ -145,6 +170,22 @@ public class TownManager {
                 return 0;
             }
         });
+    }
+    public void removeTown(Town town, boolean broadcast) {
+        if (broadcast) {
+            //TODO broadcast
+        }
+        towns.remove(town.getName().toLowerCase());
+        sortedTowns.remove(town);
+        if (Civs.getInstance() == null) {
+            return;
+        }
+        File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
+        if (!townFolder.exists()) {
+            townFolder.mkdir();
+        }
+        File townFile = new File(townFolder, town.getName().toLowerCase() + ".yml");
+        townFile.delete();
     }
     public void addInvite(UUID uuid, Town town) {
         invites.put(uuid, town);
