@@ -82,4 +82,23 @@ public class SchedulerTests {
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
         commonScheduler.playerInTown(player);
     }
+
+    @Test
+    public void messageShouldNotBeRepeatedlySent() {
+        TownTests.loadTownTypeHamlet();
+        World world = mock(World.class);
+        Town town = TownTests.loadTown("hamlet", new Location(world, 0, 0, 0));
+        CommonScheduler commonScheduler = new CommonScheduler();
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1, 8);
+        when(player.getUniqueId()).thenReturn(uuid);
+        when(player.getLocation()).thenReturn(new Location(world, 1000,0,0));
+        commonScheduler.playerInTown(player);
+
+        when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
+        commonScheduler.playerInTown(player);
+
+        doThrow(new SuccessException()).when(player).sendMessage(Matchers.anyString());
+        commonScheduler.playerInTown(player);
+    }
 }

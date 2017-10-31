@@ -55,7 +55,7 @@ public class CommonScheduler implements Runnable {
         if (prevTown == null && town != null) {
             enterTown(player, civilian, town);
         } else if (prevTown != null && town != null &&
-                prevTown.equals(town)) {
+                !prevTown.equals(town)) {
             exitTown(player, civilian, prevTown);
             enterTown(player, civilian, town);
         } else if (town == null && prevTown != null) {
