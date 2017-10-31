@@ -129,12 +129,22 @@ pt_br:
 
   #community
   community: Comunidade
+  players: Jogadores
+  towns: Cidades
+  your-towns: Suas Cidades
+  wars: Guerras
+  leaderboard: Placar
   
   #region
   size: Tamanho
   range: Alcance
   build-reqs: "Todos os blocos que você precisa colocar para construir $1"
+  reagents: "Todos os itens que você precisa no baú $1"
+  upkeep: "Todos os itens consumidos por $1"
+  output: "Todos os itens criados por $1"
   too-close-region: "Sua $1 ficaria muito próxima a $2"
+  too-close-town: "Sua $1 ficaria muito próxima a uma cidade"
+  town-created: "$1 foi criada!"
   region-built: "Você construiu com sucesso uma $1"
   region-in-town: "Sua região esta em $1"
   view-members: "Ver membros"
@@ -164,6 +174,9 @@ pt_br:
   invite-owner-region: "Você se tornou um membro de $1"
   owner-invited-region: "$1 foi adicionado a sua $2"
   stand-in-region: "Por favor $1 esteja em uma região"
+  town-instructions: "Para criar uma $1, use /cv town NomeDaCidade"
+  town-enter: "Você entrou em $1"
+  town-exit: "Você saiu de $1"
   
   #errors
   no-region-type-found: "Nenhuma região encontrada para $1"
@@ -174,8 +187,10 @@ pt_br:
   prevent-civs-item-share: "Você não tem permissão para compartilhar itens de Civs"
   region-protected: "Esta região esta protegida"
   region-destroyed: "A região $1 foi destruida!"
-  specify-player-town: "Por favor, especifique um jogador de uma vila"
-  town-not-exist: "$1 não é uma vila"
+  specify-player-town: "Por favor, especifique um jogador de uma cidade"
+  specify-town-name: "Por favor, especifique um nome de cidade"
+  specify-player-region: "Por favor, especifique um jogador e uma região"
+  town-not-exist: "$1 não é uma cidade"
   no-permission-invite: "Você não tem permissão para convidar pessoas para $1"
   player-not-online: "$1 não esta Online"
   invite-player: "$1 gostaria de te convidar para juntar-se a $2 $3"
@@ -185,6 +200,7 @@ pt_br:
   class-changed: "Sua classe mudou para $1"
   not-enough-money: "Você não tem $$1"
   not-allowed-place: "Você não tem permissão para colocar $1"
+  hold-town: "Por favor, segure um Item de Cidade"
 es:
   name: Spanish
   icon: WOOL.4
