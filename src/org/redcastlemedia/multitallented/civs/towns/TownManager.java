@@ -1,9 +1,14 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -57,6 +62,10 @@ public class TownManager {
             int radius = townType.getBuildRadius();
             int radiusY = townType.getBuildRadiusY();
             Location townLocation = town.getLocation();
+
+            if (!townLocation.getWorld().equals(location.getWorld())) {
+                continue;
+            }
 
             if (townLocation.getX() - radius >= location.getX()) {
                 break;
@@ -173,7 +182,11 @@ public class TownManager {
     }
     public void removeTown(Town town, boolean broadcast) {
         if (broadcast) {
-            //TODO broadcast
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Civilian civ = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civ.getLocale(),
+                        "town-destroyed").replace("$1", town.getName()));
+            }
         }
         towns.remove(town.getName().toLowerCase());
         sortedTowns.remove(town);

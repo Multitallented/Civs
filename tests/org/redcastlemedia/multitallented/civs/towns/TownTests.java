@@ -81,17 +81,17 @@ public class TownTests {
         assertFalse(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType));
     }
 
-    private Town loadTown(String name, Location location) {
+    public static Town loadTown(String name, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town(name, "hamlet",
                 location,
                 owners);
-        townManager.addTown(town);
+        TownManager.getInstance().addTown(town);
         return town;
     }
 
-    private void loadTownTypeHamlet() {
+    public static void loadTownTypeHamlet() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "Hamlet");
         config.set("type", "town");

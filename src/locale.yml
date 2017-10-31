@@ -51,6 +51,7 @@ en:
   too-close-region: "Your $1 would be too close to a $2"
   too-close-town: "Your $1 would be too close to another town"
   town-created: "$1 has been created!"
+  town-destroyed: "$1 has been destroyed!"
   region-built: "You have successfully built a $1"
   region-in-town: "Your region is in $1"
   view-members: "View members"

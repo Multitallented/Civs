@@ -42,7 +42,7 @@ public class CommonScheduler implements Runnable {
             i++;
         }
     }
-    private void playerInTown(Player player) {
+    void playerInTown(Player player) {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(player.getLocation());
         Town prevTown = lastTown.get(player.getUniqueId());
@@ -53,21 +53,13 @@ public class CommonScheduler implements Runnable {
         }
 
         if (prevTown == null && town != null) {
-            //TODO when player enters town
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-enter").replace("$1", town.getName()));
+            enterTown(player, civilian, town);
         } else if (prevTown != null && town != null &&
                 prevTown.equals(town)) {
-            //TODO exit last town
-            //TODO enter new town
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-exit").replace("$1", prevTown.getName()));
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-enter").replace("$1", town.getName()));
+            exitTown(player, civilian, prevTown);
+            enterTown(player, civilian, town);
         } else if (town == null && prevTown != null) {
-            //TODO exit last town
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-exit").replace("$1", prevTown.getName()));
+            exitTown(player, civilian, prevTown);
         }
 
         if (town == null && prevTown != null) {
@@ -75,6 +67,15 @@ public class CommonScheduler implements Runnable {
         } else if (town != null) {
             lastTown.put(player.getUniqueId(), town);
         }
+    }
+
+    private void enterTown(Player player, Civilian civilian, Town town) {
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                "enter-town").replace("$1", town.getName()));
+    }
+    private void exitTown(Player player, Civilian civilian, Town town) {
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                "exit-town").replace("$1", town.getName()));
     }
 
     private void playerInRegion(Player player) {

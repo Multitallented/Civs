@@ -23,9 +23,18 @@ public class LocaleManager {
         return languageMap.keySet();
     }
 
+    public LocaleManager() {
+        if (Civs.getInstance() == null) {
+            loadDefaults();
+            localeManager = this;
+        } else {
+            localeManager = new LocaleManager(new File(Civs.getInstance().getDataFolder(), "locale.yml"));
+        }
+    }
+
     public LocaleManager(File localeFile) {
-        localeManager = this;
         loadFile(localeFile);
+        localeManager = this;
     }
 
     private void loadFile(File localeFile) {
@@ -219,6 +228,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
                 currentLanguage.put("town-created",
                         localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
+                currentLanguage.put("town-destroyed",
+                        localeConfig.getString(langKey + ".town-destroyed", "$1 has been destroyed!"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -248,6 +259,7 @@ public class LocaleManager {
         englishMap.put("too-close-region", "Your $1 would be too close to a $2");
         englishMap.put("too-close-town", "Your $1 would be too close to another town");
         englishMap.put("town-created", "$1 has been created!");
+        englishMap.put("town-destroyed", "$1 has been destroyed!");
         englishMap.put("region-built", "You have successfully built a $1");
         englishMap.put("no-region-type-found", "No region type found for $1");
         englishMap.put("building-too-big", "You're building is too big to be a $1");
@@ -323,6 +335,9 @@ public class LocaleManager {
     }
 
     public static LocaleManager getInstance() {
+        if (localeManager == null) {
+            localeManager = new LocaleManager();
+        }
         return localeManager;
     }
 }
