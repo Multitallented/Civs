@@ -84,6 +84,7 @@ en:
   town-instructions: "To create a $1, use /cv town MyTownName"
   town-enter: "You have entered $1"
   town-exit: "You have exited $1"
+  new-town-member: "$1 has joined $2"
 
   #errors
   no-region-type-found: "No region type found for $1"

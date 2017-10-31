@@ -230,6 +230,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
                 currentLanguage.put("town-destroyed",
                         localeConfig.getString(langKey + ".town-destroyed", "$1 has been destroyed!"));
+                currentLanguage.put("new-town-member",
+                        localeConfig.getString(langKey + ".new-town-member", "$1 has joined $2"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -330,6 +332,7 @@ public class LocaleManager {
         englishMap.put("leaderboard", "Leaderboard");
         englishMap.put("enter-town", "You have entered $1");
         englishMap.put("exit-town", "You have exited $1");
+        englishMap.put("new-town-member", "$1 has joined $2");
 
         languageMap.put("en", englishMap);
     }

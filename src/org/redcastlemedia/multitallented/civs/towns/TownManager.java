@@ -206,6 +206,9 @@ public class TownManager {
     public void clearInvite(UUID uuid) {
         invites.remove(uuid);
     }
+    public Town getInviteTown(UUID uuid) {
+        return invites.get(uuid);
+    }
     public boolean acceptInvite(UUID uuid) {
         if (!invites.containsKey(uuid)) {
             return false;
