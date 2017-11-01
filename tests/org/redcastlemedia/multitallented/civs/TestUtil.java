@@ -132,17 +132,8 @@ public class TestUtil {
         when(world.getBlockAt(10, 100,0)).thenReturn(block6);
         when(world.getBlockAt(1, 0,93)).thenReturn(block7);
         when(world.getBlockAt(-1, 0,106)).thenReturn(block8);
-        when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
-        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
-        when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
-        when(world.getBlockAt(0, 0,100)).thenReturn(blockUnique4);
-        when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
-        when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
-        when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
-
-        Bukkit.setServer(server);
         blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0), true);
         blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0), false);
         blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0), true);
@@ -151,8 +142,16 @@ public class TestUtil {
         blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0), false);
         blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0), true);
 
-//        when(world.getBlockAt(new Location(world, 4,0,0))).thenReturn(blockUnique);
-        when(world.getBlockAt(new Location(world, 2,50,0))).thenReturn(blockUnique2);
+        when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
+        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
+        when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
+        when(world.getBlockAt(0, 0,100)).thenReturn(blockUnique4);
+        when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
+        when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
+        when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
+//        when(world.getBlockAt(blockUnique.getLocation())).thenReturn(blockUnique);
+        when(world.getBlockAt(Matchers.any(Location.class))).thenReturn(blockUnique2);
+        Bukkit.setServer(server);
     }
 
     public static ItemStack createItemStack(Material mat) {

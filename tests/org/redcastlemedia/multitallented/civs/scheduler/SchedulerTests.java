@@ -2,11 +2,8 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -19,7 +16,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -70,7 +66,7 @@ public class SchedulerTests {
     public void messageShouldBeSentWhenEnterTown() {
         TownTests.loadTownTypeHamlet();
         World world = mock(World.class);
-        Town town = TownTests.loadTown("hamlet", new Location(world, 0, 0, 0));
+        TownTests.loadTown("Moenia", "hamlet", new Location(world, 0, 0, 0));
         CommonScheduler commonScheduler = new CommonScheduler();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 8);
@@ -87,7 +83,7 @@ public class SchedulerTests {
     public void messageShouldNotBeRepeatedlySent() {
         TownTests.loadTownTypeHamlet();
         World world = mock(World.class);
-        Town town = TownTests.loadTown("hamlet", new Location(world, 0, 0, 0));
+        TownTests.loadTown("Arcadia", "hamlet", new Location(world, 0, 0, 0));
         CommonScheduler commonScheduler = new CommonScheduler();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 8);

@@ -9,10 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -36,9 +38,9 @@ public class TownTests {
     public void findTownAtShouldReturnTown() {
 
         loadTownTypeHamlet();
-        Town town = loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
-        loadTown("Silverstone", new Location(Bukkit.getWorld("world"), 100, 0, 0));
-        loadTown("Cupcake", new Location(Bukkit.getWorld("world"), -100, 0, 0));
+        Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTown("Silverstone", "hamlet", new Location(Bukkit.getWorld("world"), 100, 0, 0));
+        loadTown("Cupcake", "hamlet", new Location(Bukkit.getWorld("world"), -100, 0, 0));
 
         assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
@@ -46,20 +48,20 @@ public class TownTests {
     @Test
     public void shouldNotFindTown() {
         loadTownTypeHamlet();
-        loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
     }
     @Test
     public void shouldFindTown() {
         loadTownTypeHamlet();
-        Town town = loadTown("BizRep", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void memberShouldBeAdded() {
         loadTownTypeHamlet();
-        Town town = loadTown("Aeria", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        Town town = loadTown("Aeria", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         UUID uuid = new UUID(1,5);
         townManager.addInvite(uuid, town);
         townManager.acceptInvite(uuid);
@@ -69,22 +71,64 @@ public class TownTests {
     @Test
     public void townsShouldIntersect() {
         loadTownTypeHamlet();
-        loadTown("Summertown", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
         assertTrue(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType));
     }
     @Test
     public void townShouldNotIntersect() {
         loadTownTypeHamlet();
-        loadTown("Summertown", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
         assertFalse(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType));
     }
 
-    public static Town loadTown(String name, Location location) {
+    @Test
+    public void townShouldDestroyWhenCriticalRegionDestroyed() {
+        RegionsTests.loadRegionTypeCobble();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Region region = new Region("cobble", people,
+                new Location(Bukkit.getWorld("world2"), 0,0,0),
+                RegionsTests.getRadii(),
+                effects);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
+
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        loadTown("Sanmak-kol", "tribe", townLocation);
+        regionManager.removeRegion(region, false);
+        assertNull(townManager.getTownAt(townLocation));
+    }
+
+    @Test
+    public void townShouldNotBeDestroyedWhenNormalRegionDestroyed() {
+        RegionsTests.loadRegionTypeCobble2();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Region region = new Region("cobble2", people,
+                new Location(Bukkit.getWorld("world"), 0,0,0),
+                RegionsTests.getRadii(),
+                effects);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world"), 1,0,0);
+
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        Town town = loadTown("Sanmak-kol", "tribe", townLocation);
+        regionManager.removeRegion(region, false);
+        assertEquals(town, townManager.getTownAt(townLocation));
+    }
+
+    public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
-        Town town = new Town(name, "hamlet",
+        Town town = new Town(name, type,
                 location,
                 owners);
         TownManager.getInstance().addTown(town);
@@ -97,5 +141,16 @@ public class TownTests {
         config.set("type", "town");
         config.set("build-radius", 25);
         ItemManager.getInstance().loadTownType(config, "hamlet");
+    }
+
+    public static void loadTownTypeTribe() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "Tribe");
+        config.set("type", "town");
+        ArrayList<String> critReqs = new ArrayList<>();
+        critReqs.add("cobble");
+        config.set("critical-build-reqs", critReqs);
+        config.set("build-radius", 25);
+        ItemManager.getInstance().loadTownType(config, "tribe");
     }
 }

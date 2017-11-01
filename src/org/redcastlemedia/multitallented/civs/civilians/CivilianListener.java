@@ -192,11 +192,5 @@ public class CivilianListener implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(clickedStack.getItemMeta().getDisplayName()
-                .replace("Civs ", "").toLowerCase());
-        if (civItem instanceof SpellType) {
-            SpellType spellType = (SpellType) civItem;
-            spellType.useSkill(CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId()));
-        }
     }
 }
