@@ -49,17 +49,38 @@ public class TownListMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         if (event.getCurrentItem().getType() == Material.EMERALD &&
                 itemName.equals(localeManager.getTranslation(civilian.getLocale(), "next-button"))) {
+            if (uuid == null) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
+            } else {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
+            }
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page + 1, uuid));
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE &&
                 itemName.equals(localeManager.getTranslation(civilian.getLocale(), "prev-button"))) {
+            if (uuid == null) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
+            } else {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
+            }
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page - 1, uuid));
             return;
         }
-        //TODO open menu for specific town
+        String townName = event.getCurrentItem().getItemMeta().getDisplayName();
+        Town town = TownManager.getInstance().getTown(townName);
+        if (town != null) {
+            if (uuid == null) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
+            } else {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
+            }
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
+            return;
+        }
     }
 
     public static Inventory createMenu(Civilian civilian, int page, UUID uuid) {

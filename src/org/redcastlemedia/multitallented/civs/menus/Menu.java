@@ -18,6 +18,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -126,6 +128,33 @@ public abstract class Menu implements Listener {
             if (lastHistory.length > 1) {
                 Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(lastHistory[1]));
                 humanEntity.openInventory(ViewMembersMenu.createMenu(civilian, region));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
+            return;
+        }
+        if (lastHistory[0].equals(TownListMenu.MENU_NAME)) {
+            if (lastHistory.length > 2) {
+                UUID uuid = UUID.fromString(lastHistory[2]);
+                humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), uuid));
+            } else if (lastHistory.length > 1) {
+                humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), null));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
+            return;
+        }
+        if (lastHistory[0].equals(TownActionMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            if (lastHistory.length > 1) {
+                Town town = TownManager.getInstance().getTown(lastHistory[1]);
+                humanEntity.openInventory(TownActionMenu.createMenu(civilian, town));
             } else {
                 clearHistory(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
