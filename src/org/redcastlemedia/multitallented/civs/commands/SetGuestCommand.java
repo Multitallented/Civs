@@ -44,8 +44,12 @@ public class SetGuestCommand implements CivCommand {
         String playerName = strings[1];
         String locationString = strings[2];
 
-        Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
-        if (region == null) {
+        Town town = TownManager.getInstance().getTown(locationString);
+        Region region = null;
+        if (town == null) {
+            region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
+        }
+        if (region == null && town == null) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "no-permission"));
@@ -71,21 +75,26 @@ public class SetGuestCommand implements CivCommand {
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
+        String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
-                    "add-guest-region").replace("$1", region.getType()));
+                    "add-guest-region").replace("$1", name));
         }
         if (player != null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "guest-added-region").replace("$1", playerName)
-                    .replace("$2", region.getType()));
+                    .replace("$2", name));
         } else {
-            commandSender.sendMessage(Civs.getPrefix() + playerName + " is now a guest of your " + region.getType());
+            commandSender.sendMessage(Civs.getPrefix() + playerName + " is now a guest of your " + name);
         }
-        if (region.getPeople().get(invitee.getUniqueId()) != null &&
+        if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("guest")) {
             region.getPeople().put(invitee.getUniqueId(), "guest");
             RegionManager.getInstance().saveRegion(region);
+        } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
+                !town.getPeople().get(invitee.getUniqueId()).contains("guest")) {
+            town.getPeople().put(invitee.getUniqueId(), "guest");
+            TownManager.getInstance().saveTown(town);
         }
         return true;
     }

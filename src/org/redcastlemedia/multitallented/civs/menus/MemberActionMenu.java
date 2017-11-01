@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.mockito.cglib.core.Local;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -22,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -44,10 +46,7 @@ public class MemberActionMenu extends Menu {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
-        LocaleManager localeManager = LocaleManager.getInstance();
-        RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Region region = regionManager.getRegionAt(Region.idToLocation(locationString));
 
         Player player = Bukkit.getPlayer(event.getInventory().getItem(1).getItemMeta().getDisplayName());
         Player cPlayer = Bukkit.getPlayer(civilian.getUuid());
@@ -78,33 +77,10 @@ public class MemberActionMenu extends Menu {
         }
     }
 
-    public static Inventory createMenu(Civilian civilian, Region region, UUID uuid) {
-        Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
-
-        LocaleManager localeManager = LocaleManager.getInstance();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
-        cvItem.setDisplayName(region.getType() + "@" + region.getId());
-        ArrayList<String> lore;
-        //TODO set lore
-        inventory.setItem(0, cvItem.createItemStack());
-
-        //1 Player
-        Player player = Bukkit.getPlayer(uuid);
-        String role = region.getPeople().get(uuid);
-        ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta im = (SkullMeta) playerItem.getItemMeta();
-        im.setDisplayName(player.getName());
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), region.getPeople().get(uuid)));
-        im.setLore(lore);
-        im.setOwner(player.getName());
-        playerItem.setItemMeta(im);
-        inventory.setItem(1, playerItem);
-
+    private static void addItems(Inventory inventory, Civilian civilian, String role, ArrayList<String> lore) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
+        LocaleManager localeManager = LocaleManager.getInstance();
 
         //9 set owner
         if (!role.equals("owner")) {
@@ -140,6 +116,64 @@ public class MemberActionMenu extends Menu {
         CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
         cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "remove-member"));
         inventory.setItem(12, cvItem1.createItemStack());
+    }
+
+    public static Inventory createMenu(Civilian civilian, Town town, UUID uuid) {
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
+
+        LocaleManager localeManager = LocaleManager.getInstance();
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        //0 Icon
+        CVItem cvItem = new CVItem(townType.getMat(), 1, townType.getDamage());
+        cvItem.setDisplayName(town.getType() + "@" + town.getName());
+        ArrayList<String> lore;
+        //TODO set lore
+        inventory.setItem(0, cvItem.createItemStack());
+
+        //1 Player
+        Player player = Bukkit.getPlayer(uuid);
+        String role = town.getPeople().get(uuid);
+        ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta im = (SkullMeta) playerItem.getItemMeta();
+        im.setDisplayName(player.getName());
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), town.getPeople().get(uuid)));
+        im.setLore(lore);
+        im.setOwner(player.getName());
+        playerItem.setItemMeta(im);
+        inventory.setItem(1, playerItem);
+
+        addItems(inventory, civilian, role, lore);
+
+        return inventory;
+    }
+
+    public static Inventory createMenu(Civilian civilian, Region region, UUID uuid) {
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
+
+        LocaleManager localeManager = LocaleManager.getInstance();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        //0 Icon
+        CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
+        cvItem.setDisplayName(region.getType() + "@" + region.getId());
+        ArrayList<String> lore;
+        //TODO set lore
+        inventory.setItem(0, cvItem.createItemStack());
+
+        //1 Player
+        Player player = Bukkit.getPlayer(uuid);
+        String role = region.getPeople().get(uuid);
+        ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta im = (SkullMeta) playerItem.getItemMeta();
+        im.setDisplayName(player.getName());
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), region.getPeople().get(uuid)));
+        im.setLore(lore);
+        im.setOwner(player.getName());
+        playerItem.setItemMeta(im);
+        inventory.setItem(1, playerItem);
+
+        addItems(inventory, civilian, role, lore);
 
         return inventory;
     }

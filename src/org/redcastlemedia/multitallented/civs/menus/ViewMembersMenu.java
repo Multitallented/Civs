@@ -48,7 +48,11 @@ public class ViewMembersMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Region region = regionManager.getRegionAt(Region.idToLocation(locationString));
+        Town town = TownManager.getInstance().getTown(locationString);
+        Region region = null;
+        if (town == null) {
+            region = regionManager.getRegionAt(Region.idToLocation(locationString));
+        }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -65,10 +69,50 @@ public class ViewMembersMenu extends Menu {
 
             appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, region, player.getUniqueId()));
+            if (town != null) {
+                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town, player.getUniqueId()));
+            } else {
+                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, region, player.getUniqueId()));
+            }
             return;
         }
 
+    }
+
+    public static Inventory createMenu(Civilian civilian, Town town) {
+        Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
+
+        LocaleManager localeManager = LocaleManager.getInstance();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(town.getType());
+        //0 Icon
+        CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
+        cvItem.setDisplayName(town.getType() + "@" + town.getName());
+        ArrayList<String> lore;
+        //TODO set lore
+        inventory.setItem(0, cvItem.createItemStack());
+
+        //8 Back Button
+        inventory.setItem(8, getBackButton(civilian));
+
+        int i=9;
+        for (UUID uuid : town.getPeople().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                continue;
+            }
+            ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            SkullMeta im = (SkullMeta) playerItem.getItemMeta();
+            im.setDisplayName(player.getName());
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), town.getPeople().get(uuid)));
+            im.setLore(lore);
+            im.setOwner(player.getName());
+            playerItem.setItemMeta(im);
+            inventory.setItem(i, playerItem);
+            i++;
+        }
+
+        return inventory;
     }
 
     public static Inventory createMenu(Civilian civilian, Region region) {
