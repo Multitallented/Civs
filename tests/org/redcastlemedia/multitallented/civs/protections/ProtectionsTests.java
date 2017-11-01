@@ -6,18 +6,22 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -145,5 +149,29 @@ public class ProtectionsTests {
 //        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockInteract(event);
         assertTrue(event.isCancelled());
+    }
+
+    @Test(expected = SuccessException.class)
+    public void explosionShouldDestroyRegion() {
+        RegionsTests.loadRegionTypeCobble();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        Region region = new Region("cobble", people,
+                regionLocation,
+                RegionsTests.getRadii(),
+                effects);
+        RegionManager.getInstance().addRegion(region);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        TNTPrimed tntPrimed = mock(TNTPrimed.class);
+        ArrayList<Block> blockList = new ArrayList<>();
+        when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        EntityExplodeEvent event = new EntityExplodeEvent(tntPrimed,
+                new Location(Bukkit.getWorld("world"), 0, 1, 0),
+                blockList,
+                (float) 2);
+        protectionHandler.onEntityExplode(event);
+//        assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 }

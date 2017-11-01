@@ -10,6 +10,7 @@ import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -113,6 +114,7 @@ public class TestUtil {
 
         CivilianManager civilianManager = new CivilianManager();
         civilianManager.createDefaultCivilian(player);
+        when(server.getScheduler()).thenReturn(mock(BukkitScheduler.class));
 
         block = createBlock(Material.CHEST, new Location(world, 0, 0, 0));
         block2 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0, 0));
