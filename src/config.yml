@@ -6,6 +6,7 @@ explosion-override: false
 use-starter-book: true
 price-multiplier: 1
 exp-modifier: 0.2
+jail-time-seconds: 300
 folders:
   farms: STONE_HOE
 item-groups:

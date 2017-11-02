@@ -109,6 +109,7 @@ en:
   not-enough-money: "You dont have $$1"
   not-allowed-place: "You aren't allowed to place $1"
   hold-town: "Please hold a town item"
+  no-commands-in-jail: "You cant use commands in jail for another $1"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

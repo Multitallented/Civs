@@ -232,6 +232,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".town-destroyed", "$1 has been destroyed!"));
                 currentLanguage.put("new-town-member",
                         localeConfig.getString(langKey + ".new-town-member", "$1 has joined $2"));
+                currentLanguage.put("no-commands-in-jail",
+                        localeConfig.getString(langKey + ".no-commands-in-jail", "You cant use commands in jail for another $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -333,6 +335,7 @@ public class LocaleManager {
         englishMap.put("enter-town", "You have entered $1");
         englishMap.put("exit-town", "You have exited $1");
         englishMap.put("new-town-member", "$1 has joined $2");
+        englishMap.put("no-commands-in-jail", "You cant use commands in jail for another $1");
 
         languageMap.put("en", englishMap);
     }

@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
@@ -100,7 +101,13 @@ public class CivilianManager {
                 }
             }
 
-            return new Civilian(uuid, civConfig.getString("locale"), items, classes, exp);
+            Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp);
+            String stringRespawn = civConfig.getString("respawn");
+            if (stringRespawn != null) {
+                civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
+            }
+
+            return civilian;
         } catch (Exception ex) {
             Civs.logger.severe("Unable to read " + uuid + ".yml");
             ex.printStackTrace();
@@ -164,6 +171,9 @@ public class CivilianManager {
                     continue;
                 }
                 civConfig.set("exp." + item.getProcessedName(), exp);
+            }
+            if (civilian.getRespawnPoint() != null) {
+                civConfig.set("respawn", Region.locationToString(civilian.getRespawnPoint()));
             }
 
             civConfig.save(civilianFile);

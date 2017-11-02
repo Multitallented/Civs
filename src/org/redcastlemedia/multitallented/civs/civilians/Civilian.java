@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -21,6 +22,8 @@ public class Civilian {
     private String locale;
     private final ArrayList<CivItem> stashItems;
     private final HashMap<String, CivState> states;
+    private Location respawnPoint = null;
+    private long lastJail = 0;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp) {
@@ -47,6 +50,10 @@ public class Civilian {
     }
     public HashMap<CivItem, Integer> getExp() { return exp; }
     public HashMap<String, CivState> getStates() { return states; }
+    public Location getRespawnPoint() { return respawnPoint; }
+    public void setRespawnPoint(Location location) { this.respawnPoint = location; }
+    public long getLastJail() { return lastJail; }
+    public void refreshJail() { lastJail = System.currentTimeMillis(); }
 
     public int getLevel(CivItem civItem) {
         double experience = exp.get(civItem);

@@ -27,6 +27,7 @@ public class ConfigManager {
     HashMap<String, CVItem> folderIcons;
     HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
+    long jailTime;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -40,6 +41,7 @@ public class ConfigManager {
     public double getPriceMultiplier() { return priceMultiplier; }
     public double getExpModifier() { return expModifier; }
     public int getExpBase() { return expBase; }
+    public long getJailTime() { return jailTime; }
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
@@ -110,6 +112,7 @@ public class ConfigManager {
                     creatureHealth.put(key, config.getInt("creature-health." + key, -1));
                 }
             }
+            jailTime = config.getLong("jail-time-seconds", 300) * 1000;
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -128,6 +131,7 @@ public class ConfigManager {
         defaultClass = "default";
         groups = new HashMap<>();
         folderIcons = new HashMap<>();
+        jailTime = 300000;
     }
 
     public static ConfigManager getInstance() {
