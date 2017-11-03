@@ -39,7 +39,8 @@ public class CivilianTests {
     @Test
     public void localeTestShouldReturnProperLanguageString() {
         LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new ArrayList<CivItem>(), null, new HashMap<CivItem, Integer>());
+        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new ArrayList<CivItem>(), null, new HashMap<CivItem, Integer>(),
+                0, 0,0,0,0);
 
         assertEquals("No se encontró ningún tipo de región",
                 localeManager.getTranslation(civilian.getLocale(), "no-region-type-found"));
