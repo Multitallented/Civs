@@ -29,13 +29,14 @@ public class TownListMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.STONE) {
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() || (event.getCurrentItem().getType() == Material.STONE &&
+                event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
         ItemStack itemStack = event.getInventory().getItem(2);
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
         Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
-        int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName());
+        int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName().replace("Icon", ""));
         UUID uuid = null;
         if (itemStack.getItemMeta().getLore().size() > 1) {
             uuid = UUID.fromString(itemStack.getItemMeta().getLore().get(1));
@@ -108,7 +109,7 @@ public class TownListMenu extends Menu {
 
         //2 Icon
         CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName(page + "");
+        cvItem.setDisplayName("Icon" + page);
         List<String> lore = new ArrayList<>();
         lore.add(civilian.getUuid().toString());
         if (uuid != null) {
