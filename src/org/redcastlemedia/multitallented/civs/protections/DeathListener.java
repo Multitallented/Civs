@@ -91,6 +91,9 @@ public class DeathListener implements Listener {
         //If you didn't die in a jail, check if you died in a town with a jail
         outer: if (jail == null) {
             Town town = TownManager.getInstance().getTownAt(deathLocation);
+            if (town == null) {
+                break outer;
+            }
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
             if (town.getPeople().containsKey(player.getUniqueId())) {
