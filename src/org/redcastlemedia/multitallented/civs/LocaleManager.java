@@ -234,6 +234,24 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".new-town-member", "$1 has joined $2"));
                 currentLanguage.put("no-commands-in-jail",
                         localeConfig.getString(langKey + ".no-commands-in-jail", "You cant use commands in jail for another $1"));
+                currentLanguage.put("repeat-kill",
+                        localeConfig.getString(langKey + ".repeat-kill", "$1 was killed too recently. No points awarded."));
+                currentLanguage.put("kill-streak",
+                        localeConfig.getString(langKey + ".kill-streak", "$1 is on a killstreak of $2"));
+                currentLanguage.put("kill-joy",
+                        localeConfig.getString(langKey + ".kill-joy", "$1 ended $2's killstreak of $3"));
+                currentLanguage.put("death",
+                        localeConfig.getString(langKey + ".death", "You lost $1 points for dying"));
+                currentLanguage.put("kill",
+                        localeConfig.getString(langKey + ".kill", "Kill: $1"));
+                currentLanguage.put("low-health",
+                        localeConfig.getString(langKey + ".low-health", "Low health bonus: $1"));
+                currentLanguage.put("killstreak-points",
+                        localeConfig.getString(langKey + ".killstreak-points", "Killstreak bonus: $1"));
+                currentLanguage.put("killjoy-points",
+                        localeConfig.getString(langKey + ".killjoy-points", "Killjoy bonus: $1"));
+                currentLanguage.put("total-points",
+                        localeConfig.getString(langKey + ".total-points", "Total points: $1"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -336,6 +354,15 @@ public class LocaleManager {
         englishMap.put("exit-town", "You have exited $1");
         englishMap.put("new-town-member", "$1 has joined $2");
         englishMap.put("no-commands-in-jail", "You cant use commands in jail for another $1");
+        englishMap.put("repeat-kill", "$1 was killed too recently. No points awarded.");
+        englishMap.put("kill-streak", "$1 is on a killstreak of $2");
+        englishMap.put("kill-joy", "$1 ended $2's killstreak of $3");
+        englishMap.put("death", "You lost $1 points for dying");
+        englishMap.put("kill", "Kill: $1");
+        englishMap.put("low-health", "Low health bonus: $1");
+        englishMap.put("killstreak-points", "Killstreak bonus: $1");
+        englishMap.put("killjoy-points", "Killjoy bonus: $1");
+        englishMap.put("total-points", "Total points: $1");
 
         languageMap.put("en", englishMap);
     }

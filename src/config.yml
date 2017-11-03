@@ -7,6 +7,19 @@ use-starter-book: true
 price-multiplier: 1
 exp-modifier: 0.2
 jail-time-seconds: 300
+death-grace-period-seconds: 60
+points:
+  killstreak: 0.1
+  killjoy: 0.2
+  kill: 1
+  death: -1
+  half-health: 0.5
+  quarter-health: 1
+money:
+  killstreak: 1
+  killjoy: 1
+  kill: 1
+  death: -1
 folders:
   farms: STONE_HOE
 item-groups:

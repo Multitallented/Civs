@@ -28,6 +28,17 @@ public class ConfigManager {
     HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
     long jailTime;
+    long deathGracePeriod;
+    double pointsPerKillStreak;
+    double moneyPerKillStreak;
+    double pointsPerKillJoy;
+    double moneyPerKillJoy;
+    double pointsPerKill;
+    double moneyPerKill;
+    double pointsPerDeath;
+    double moneyPerDeath;
+    double pointsPerHalfHealth;
+    double pointsPerQuarterHealth;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -45,6 +56,17 @@ public class ConfigManager {
     public String getDefaultClass() { return defaultClass; }
     public HashMap<String, String> getItemGroups() { return itemGroups; }
     public HashMap<String, Integer> getGroups() { return groups; }
+    public long getDeathGracePeriod() { return deathGracePeriod; }
+    public double getPointsPerKillStreak() { return pointsPerKillStreak; }
+    public double getMoneyPerKillStreak() { return moneyPerKillStreak; }
+    public double getPointsPerKillJoy() { return pointsPerKillJoy; }
+    public double getMoneyPerKillJoy() { return moneyPerKillJoy; }
+    public double getPointsPerKill() { return pointsPerKill; }
+    public double getMoneyPerKill() { return moneyPerKill; }
+    public double getPointsPerDeath() { return pointsPerDeath; }
+    public double getMoneyPerDeath() { return moneyPerDeath; }
+    public double getPointsPerHalfHealth() { return pointsPerHalfHealth; }
+    public double getPointsPerQuarterHealth() { return pointsPerQuarterHealth; }
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -113,6 +135,17 @@ public class ConfigManager {
                 }
             }
             jailTime = config.getLong("jail-time-seconds", 300) * 1000;
+            deathGracePeriod = config.getLong("death-grace-period-seconds", 60) * 1000;
+            pointsPerKillStreak = config.getDouble("points.killstreak", 0.1);
+            moneyPerKillStreak = config.getDouble("money.killstreak", 1);
+            pointsPerKillJoy = config.getDouble("points.killjoy", 0.2);
+            moneyPerKillJoy = config.getDouble("money.killjoy", 1);
+            pointsPerKill = config.getDouble("points.kill", 1);
+            moneyPerKill = config.getDouble("money.kill", 1);
+            pointsPerDeath = config.getDouble("points.death", -1);
+            moneyPerDeath = config.getDouble("money.death", -1);
+            pointsPerHalfHealth = config.getDouble("points.half-health", 0.5);
+            pointsPerQuarterHealth = config.getDouble("points.quarter-health", 1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -132,6 +165,17 @@ public class ConfigManager {
         groups = new HashMap<>();
         folderIcons = new HashMap<>();
         jailTime = 300000;
+        deathGracePeriod = 60000;
+        pointsPerKillStreak = 0.1;
+        moneyPerKillStreak = 1;
+        pointsPerKillJoy = 0.2;
+        moneyPerKillJoy = 1;
+        pointsPerKill = 1;
+        moneyPerKill = 1;
+        pointsPerDeath = -1;
+        moneyPerDeath = -1;
+        pointsPerHalfHealth = 0.5;
+        pointsPerQuarterHealth = 1;
     }
 
     public static ConfigManager getInstance() {

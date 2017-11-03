@@ -110,6 +110,17 @@ en:
   not-allowed-place: "You aren't allowed to place $1"
   hold-town: "Please hold a town item"
   no-commands-in-jail: "You cant use commands in jail for another $1"
+
+  #death
+  repeat-kill: "$1 was killed too recently. No points awarded."
+  kill-streak: "$1 is on a killstreak of $2"
+  kill-joy: "$1 ended $2's killstreak of $3"
+  death: "You lost $1 points for dying"
+  kill: "Kill: $1"
+  low-health: "Low health bonus: $1"
+  killstreak-points: "Killstreak bonus: $1"
+  killjoy-points: "Killjoy bonus: $1"
+  total-points: "Total points: $1"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

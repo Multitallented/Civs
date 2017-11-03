@@ -24,15 +24,27 @@ public class Civilian {
     private final HashMap<String, CivState> states;
     private Location respawnPoint = null;
     private long lastJail = 0;
+    private int kills;
+    private int killStreak;
+    private int deaths;
+    private long lastDeath = 0;
+    private int highestKillStreak;
+    private double points;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
-            HashMap<CivItem, Integer> exp) {
+            HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
+            double points) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
         this.civClasses = civClasses;
         this.exp = exp;
         this.states = new HashMap<>();
+        this.kills = kills;
+        this.killStreak = killStreak;
+        this.deaths = deaths;
+        this.highestKillStreak = highestKillStreak;
+        this.points = points;
     }
 
     public UUID getUuid() {
@@ -54,6 +66,18 @@ public class Civilian {
     public void setRespawnPoint(Location location) { this.respawnPoint = location; }
     public long getLastJail() { return lastJail; }
     public void refreshJail() { lastJail = System.currentTimeMillis(); }
+    public int getKills() { return kills; }
+    public void setKills(int kills) { this.kills = kills; }
+    public int getKillStreak() { return killStreak; }
+    public void setKillStreak(int killStreak) { this.killStreak = killStreak; }
+    public int getDeaths() { return deaths; }
+    public void setDeaths(int deaths) { this.deaths = deaths; }
+    public void refreshDeath() { this.lastDeath = System.currentTimeMillis(); }
+    public long getLastDeath() { return lastDeath; }
+    public int getHighestKillStreak() { return highestKillStreak; }
+    public void setHighestKillStreak(int highestKillStreak) { this.highestKillStreak = highestKillStreak; }
+    public double getPoints() { return points; }
+    public void setPoints(double points) { this.points = points; }
 
     public int getLevel(CivItem civItem) {
         double experience = exp.get(civItem);

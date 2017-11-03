@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,7 +65,7 @@ public class DeathListener implements Listener {
         if (event.getEntity() == null) {
             return;
         }
-        Player player = event.getEntity();
+        final Player player = event.getEntity();
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         Location deathLocation = player.getLocation();
@@ -121,6 +123,7 @@ public class DeathListener implements Listener {
         if (!bypassJail && jail != null) {
             //If you died in a town with a jail, then put their respawn point in the jail
             dyingCiv.setRespawnPoint(jail.getLocation().add(0,1,0));
+            dyingCiv.refreshJail();
             CivilianManager.getInstance().saveCivilian(dyingCiv);
             return;
         }
@@ -172,5 +175,174 @@ public class DeathListener implements Listener {
             dyingCiv.setRespawnPoint(jail.getLocation().add(0,1,0));
             CivilianManager.getInstance().saveCivilian(dyingCiv);
         }
+
+        if (damager == null) {
+            return;
+        }
+
+        final Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
+        final LocaleManager localeManager = LocaleManager.getInstance();
+        if (dyingCiv.getLastDeath() + ConfigManager.getInstance().getDeathGracePeriod() > System.currentTimeMillis()) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                    "repeat-kill").replace("$1", player.getDisplayName()));
+            return;
+        }
+
+        dyingCiv.setDeaths(dyingCiv.getDeaths() + 1);
+        damagerCiv.setKills(damagerCiv.getKills() + 1);
+        damagerCiv.setKillStreak(damagerCiv.getKillStreak() + 1);
+
+        double econBonus = 0.0;
+        //TODO award money?
+        /*
+        if (econ != null) {
+            double balance = econ.bankBalance(player.getName()).balance;
+            if (balance < psm.getEconBaseStolen()) {
+                if (balance > 0) {
+                    econBonus += balance;
+                    econPay = econBonus;
+                }
+                if (balance - econPay > 0) {
+                    econBonus += (balance - econPay) * psm.getEconPercentStolen();
+                    econPay = econBonus;
+                }
+                if (balance - econPay - psm.getEconBaseDrop() >0) {
+                    econPay += psm.getEconBaseDrop();
+                } else if (balance > 0) {
+                    econPay = balance;
+                }
+                balance = econ.bankWithdraw(player.getName(), econPay).balance;
+                if (balance >0) {
+                    econPay = balance * psm.getEconPercentDrop();
+                    econ.bankWithdraw(player.getName(), econPay);
+                }
+            }
+            econBonus += psm.getEconBase();
+        }
+         */
+//        damagerCiv.addFavoriteWeapon(player.get(PlayerInventory.class).getQuickbar().getCurrentItem().getMaterial().getDisplayName());
+//        dUser.addFavoriteVictim(user.NAME);
+//        user.addFavoriteKiller(dUser.NAME);
+
+        double killStreakBonus = ConfigManager.getInstance().getPointsPerKillStreak() * damagerCiv.getKillStreak();
+
+        econBonus += damagerCiv.getKillStreak() * ConfigManager.getInstance().getMoneyPerKillStreak();
+        if (damagerCiv.getKillStreak() >= 3) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+                p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civ.getLocale(), "kill-streak")
+                        .replace("$1", player.getDisplayName())
+                        .replace("$2", damagerCiv.getKillStreak() + ""));
+            }
+        }
+
+
+        double killJoyBonus = ConfigManager.getInstance().getPointsPerKillJoy() * dyingCiv.getKillStreak();
+        econBonus += ConfigManager.getInstance().getMoneyPerKillJoy() * dyingCiv.getKillStreak();
+        if (dyingCiv.getKillStreak() > 2) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+                p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civ.getLocale(), "kill-joy")
+                        .replace("$1", player.getDisplayName())
+                        .replace("$2", damager.getDisplayName())
+                        .replace("$3", dyingCiv.getKillStreak() + ""));
+            }
+        }
+
+        if (damagerCiv.getHighestKillStreak() < damagerCiv.getKillStreak()) {
+            damagerCiv.setHighestKillStreak(damagerCiv.getKillStreak());
+        }
+        dyingCiv.setKillStreak(0);
+
+
+        double points = ConfigManager.getInstance().getPointsPerKill();
+        points += killStreakBonus + killJoyBonus;
+        econBonus += ConfigManager.getInstance().getMoneyPerKill();
+
+        double healthBonus = 0;
+
+        double maxHealth = damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        if (damager.getHealth() / maxHealth < 0.25) {
+            healthBonus = ConfigManager.getInstance().getPointsPerHalfHealth();
+        } else if (damager.getHealth() / maxHealth < 0.5) {
+            healthBonus = ConfigManager.getInstance().getPointsPerQuarterHealth();
+        }
+
+        points += healthBonus;
+        dyingCiv.setPoints(dyingCiv.getPoints() + ConfigManager.getInstance().getPointsPerDeath());
+        damagerCiv.setPoints(damagerCiv.getPoints() + points);
+
+        //pay econ bonus
+        if (Civs.econ != null) {
+            Civs.econ.depositPlayer(damager, Math.max(econBonus,0));
+            Civs.econ.withdrawPlayer(player, Math.abs(ConfigManager.getInstance().getMoneyPerDeath()));
+        }
+
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(), "death"
+                .replace("$1", ConfigManager.getInstance().getPointsPerDeath() + "")));
+
+        //save
+        CivilianManager.getInstance().saveCivilian(dyingCiv);
+        CivilianManager.getInstance().saveCivilian(damagerCiv);
+
+        //display points
+        long interval = 10L;
+        final Player dPlayer = damager;
+        if (points > 0) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    dPlayer.sendMessage(Civs.getPrefix() +
+                            localeManager.getTranslation(damagerCiv.getLocale(), "kill")
+                                    .replace("$1", "" + ConfigManager.getInstance().getPointsPerKill()));
+                }
+            }, interval);
+            interval += 10L;
+        }
+        if (healthBonus > 0) {
+            final double ptsHealth = healthBonus;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    dPlayer.sendMessage(Civs.getPrefix() +
+                            localeManager.getTranslation(damagerCiv.getLocale(), "low-health")
+                                    .replace("$1", "" + ptsHealth));
+                }
+            }, interval);
+            interval += 10L;
+        }
+        if (killStreakBonus > 0) {
+            final double killStreakPts = killStreakBonus;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.sendMessage(Civs.getPrefix() +
+                            localeManager.getTranslation(damagerCiv.getLocale(), "killstreak-points")
+                                    .replace("$1", "" + killStreakPts));
+                }
+            }, interval);
+            interval += 10L;
+        }
+        if (killJoyBonus > 0) {
+            final double killJoyPts = killJoyBonus;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.sendMessage(Civs.getPrefix() +
+                            localeManager.getTranslation(damagerCiv.getLocale(), "killjoy-points")
+                                    .replace("%amount", "" + killJoyPts));
+                }
+            }, interval);
+            interval += 10L;
+        }
+        final double pts = points;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(damagerCiv.getLocale(), "total-points")
+                                .replace("%amount", "" + pts));
+            }
+        }, interval);
     }
 }
