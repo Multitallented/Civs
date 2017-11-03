@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class TownActionMenu extends Menu {
-    public static final String MENU_NAME = "CivsRegion";
+    public static final String MENU_NAME = "CivsTown";
     public TownActionMenu() {
         super(MENU_NAME);
     }
