@@ -252,6 +252,12 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".killjoy-points", "Killjoy bonus: $1"));
                 currentLanguage.put("total-points",
                         localeConfig.getString(langKey + ".total-points", "Total points: $1"));
+                currentLanguage.put("karma",
+                        localeConfig.getString(langKey + ".karma", "Karma: $1"));
+                currentLanguage.put("karma-gained",
+                        localeConfig.getString(langKey + ".karma-gained", "Karma: +$1, $2 money gained"));
+                currentLanguage.put("karma-lost",
+                        localeConfig.getString(langKey + ".karma-lost", "Karma: -$1, $2 money lost"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -363,6 +369,9 @@ public class LocaleManager {
         englishMap.put("killstreak-points", "Killstreak bonus: $1");
         englishMap.put("killjoy-points", "Killjoy bonus: $1");
         englishMap.put("total-points", "Total points: $1");
+        englishMap.put("karma", "Karma: $1");
+        englishMap.put("karma-gained", "Karma: +$1, $2 money gained");
+        englishMap.put("karma-lost", "Karma: -$1, $2 money lost");
 
         languageMap.put("en", englishMap);
     }

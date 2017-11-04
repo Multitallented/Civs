@@ -197,33 +197,7 @@ public class DeathListener implements Listener {
         damagerCiv.setKillStreak(damagerCiv.getKillStreak() + 1);
 
         double econBonus = 0.0;
-        //TODO award money?
-        /*
-        if (econ != null) {
-            double balance = econ.bankBalance(player.getName()).balance;
-            if (balance < psm.getEconBaseStolen()) {
-                if (balance > 0) {
-                    econBonus += balance;
-                    econPay = econBonus;
-                }
-                if (balance - econPay > 0) {
-                    econBonus += (balance - econPay) * psm.getEconPercentStolen();
-                    econPay = econBonus;
-                }
-                if (balance - econPay - psm.getEconBaseDrop() >0) {
-                    econPay += psm.getEconBaseDrop();
-                } else if (balance > 0) {
-                    econPay = balance;
-                }
-                balance = econ.bankWithdraw(player.getName(), econPay).balance;
-                if (balance >0) {
-                    econPay = balance * psm.getEconPercentDrop();
-                    econ.bankWithdraw(player.getName(), econPay);
-                }
-            }
-            econBonus += psm.getEconBase();
-        }
-         */
+
 //        damagerCiv.addFavoriteWeapon(player.get(PlayerInventory.class).getQuickbar().getCurrentItem().getMaterial().getDisplayName());
 //        dUser.addFavoriteVictim(user.NAME);
 //        user.addFavoriteKiller(dUser.NAME);
