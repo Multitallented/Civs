@@ -30,10 +30,11 @@ public class Civilian {
     private long lastDeath = 0;
     private int highestKillStreak;
     private double points;
+    private int karma;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-            double points) {
+            double points, int karma) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -45,6 +46,7 @@ public class Civilian {
         this.deaths = deaths;
         this.highestKillStreak = highestKillStreak;
         this.points = points;
+        this.karma = karma;
     }
 
     public UUID getUuid() {
@@ -78,6 +80,8 @@ public class Civilian {
     public void setHighestKillStreak(int highestKillStreak) { this.highestKillStreak = highestKillStreak; }
     public double getPoints() { return points; }
     public void setPoints(double points) { this.points = points; }
+    public int getKarma() { return karma; }
+    public void setKarma(int karma) { this.karma = karma; }
 
     public int getLevel(CivItem civItem) {
         double experience = exp.get(civItem);

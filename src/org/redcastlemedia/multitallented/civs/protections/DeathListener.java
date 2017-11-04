@@ -275,6 +275,20 @@ public class DeathListener implements Listener {
         dyingCiv.setPoints(dyingCiv.getPoints() + ConfigManager.getInstance().getPointsPerDeath());
         damagerCiv.setPoints(damagerCiv.getPoints() + points);
 
+        //Karma
+        double karmaEcon = Math.max(0, -ConfigManager.getInstance().getMoneyPerKarma() * ((double) (dyingCiv.getKarma() - damagerCiv.getKarma())));
+        if (dyingCiv.getKarma() > 1) {
+            karmaEcon = 0;
+        }
+        int karma = ConfigManager.getInstance().getKarmaPerKill() + ConfigManager.getInstance().getKarmaPerKillStreak() * (damagerCiv.getKillStreak() - dyingCiv.getKillStreak());
+        damagerCiv.setKarma(damagerCiv.getKarma() - karma);
+//        psv.setKarma(psv.getKarma() + karma);
+
+        if (Civs.econ != null && karmaEcon != 0) {
+            Civs.econ.withdrawPlayer(player, karmaEcon);
+            Civs.econ.depositPlayer(damager, karmaEcon);
+        }
+
         //pay econ bonus
         if (Civs.econ != null) {
             Civs.econ.depositPlayer(damager, Math.max(econBonus,0));

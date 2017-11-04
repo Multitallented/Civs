@@ -20,6 +20,9 @@ money:
   killjoy: 1
   kill: 1
   death: -1
+  karma: 0.1
+karma-per-kill: 1
+karma-per-kill-streak: 1
 folders:
   farms: STONE_HOE
 item-groups:

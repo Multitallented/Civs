@@ -39,6 +39,9 @@ public class ConfigManager {
     double moneyPerDeath;
     double pointsPerHalfHealth;
     double pointsPerQuarterHealth;
+    double moneyPerKarma;
+    int karmaPerKill;
+    int karmaPerKillStreak;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -67,6 +70,9 @@ public class ConfigManager {
     public double getMoneyPerDeath() { return moneyPerDeath; }
     public double getPointsPerHalfHealth() { return pointsPerHalfHealth; }
     public double getPointsPerQuarterHealth() { return pointsPerQuarterHealth; }
+    public double getMoneyPerKarma() { return moneyPerKarma; }
+    public int getKarmaPerKill() { return karmaPerKill; }
+    public int getKarmaPerKillStreak() { return karmaPerKillStreak; }
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -146,6 +152,9 @@ public class ConfigManager {
             moneyPerDeath = config.getDouble("money.death", -1);
             pointsPerHalfHealth = config.getDouble("points.half-health", 0.5);
             pointsPerQuarterHealth = config.getDouble("points.quarter-health", 1);
+            moneyPerKarma = config.getDouble("money.karma", 0.1);
+            karmaPerKill = config.getInt("karma-per-kill", 1);
+            karmaPerKillStreak = config.getInt("karma-per-kill-streak", 1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -176,6 +185,9 @@ public class ConfigManager {
         moneyPerDeath = -1;
         pointsPerHalfHealth = 0.5;
         pointsPerQuarterHealth = 1;
+        moneyPerKarma = 0.1;
+        karmaPerKillStreak = 1;
+        karmaPerKill = 1;
     }
 
     public static ConfigManager getInstance() {
