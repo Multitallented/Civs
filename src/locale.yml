@@ -121,6 +121,9 @@ en:
   killstreak-points: "Killstreak bonus: $1"
   killjoy-points: "Killjoy bonus: $1"
   total-points: "Total points: $1"
+  karma: "Karma: $1"
+  karma-gained: "Karma: +$1, $2 money gained"
+  karma-lost: "Karma: -$1, $2 money lost"
 pt_br:
   name: Português Brasil
   icon: WOOL.11

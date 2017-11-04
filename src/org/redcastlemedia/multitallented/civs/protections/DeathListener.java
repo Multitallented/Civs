@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -303,6 +304,19 @@ public class DeathListener implements Listener {
         CivilianManager.getInstance().saveCivilian(damagerCiv);
 
         //display points
+        if (karma != 0) {
+            if (karmaEcon == 0) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(),
+                        "karma").replace("$1", karma + ""));
+                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                        "karma").replace("$1", (karma * -1) + ""));
+            } else {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(),
+                        "karma-lost").replace("$1", karma + "").replace("$2", karmaEcon + ""));
+                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                        "karma-gained").replace("$1", karma + "").replace("$2", karmaEcon + ""));
+            }
+        }
         long interval = 10L;
         final Player dPlayer = damager;
         if (points > 0) {
