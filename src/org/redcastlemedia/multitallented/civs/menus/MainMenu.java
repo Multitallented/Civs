@@ -73,7 +73,7 @@ public class MainMenu extends Menu {
         if (itemName.equals(localeManager.getTranslation(locale, "community"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(CommunityMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(CommunityMenu.createMenu(civilian));
             return;
         }
     }
@@ -81,6 +81,7 @@ public class MainMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         String locale = civilian.getLocale();
+        clearHistory(civilian.getUuid());
 
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();

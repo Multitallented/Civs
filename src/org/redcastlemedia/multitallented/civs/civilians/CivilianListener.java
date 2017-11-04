@@ -42,14 +42,20 @@ public class CivilianListener implements Listener {
         ConfigManager configManager = ConfigManager.getInstance();
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (configManager.getUseStarterBook()) {
+        outer: if (configManager.getUseStarterBook()) {
             CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
 
             ItemStack stack = cvItem.createItemStack();
-            if (!player.getInventory().contains(stack)) {
-                player.getInventory().addItem(stack);
+            for (ItemStack is : player.getInventory()) {
+                if (is == null || is.getType() != Material.WRITTEN_BOOK || !is.hasItemMeta()
+                        || !is.getItemMeta().getDisplayName().equals(
+                                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"))) {
+                    continue;
+                }
+                break outer;
             }
+            player.getInventory().addItem(stack);
         }
     }
 

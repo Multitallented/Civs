@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -83,9 +84,9 @@ public class ViewMembersMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(town.getType());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
+        CVItem cvItem = new CVItem(townType.getMat(), 1, townType.getDamage());
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
         ArrayList<String> lore;
         //TODO set lore

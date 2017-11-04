@@ -25,13 +25,14 @@ public class ListAllPlayersMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.STONE) {
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.STONE
+                || event.getCurrentItem().getType() == Material.AIR || !event.getCurrentItem().hasItemMeta()) {
             return;
         }
         ItemStack itemStack = event.getInventory().getItem(2);
         Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
 
-        if (isBackButton(itemStack, civilian.getLocale())) {
+        if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }

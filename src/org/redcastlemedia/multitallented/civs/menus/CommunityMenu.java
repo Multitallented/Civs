@@ -14,7 +14,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import java.util.ArrayList;
 
 public class CommunityMenu extends Menu {
-    private static final String MENU_NAME = "CivsCommunity";
+    public static final String MENU_NAME = "CivsCommunity";
     public CommunityMenu() {
         super(MENU_NAME);
     }
@@ -30,11 +30,17 @@ public class CommunityMenu extends Menu {
         if (clickedStack.getItemMeta() == null) {
             return;
         }
+
         ItemMeta im = clickedStack.getItemMeta();
         String itemName = im.getDisplayName();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
+
+        if (isBackButton(clickedStack, locale)) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -50,7 +56,8 @@ public class CommunityMenu extends Menu {
         //TODO finish this stub
     }
 
-    public static Inventory createMenu(String locale) {
+    public static Inventory createMenu(Civilian civilian) {
+        String locale = civilian.getLocale();
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -80,6 +87,9 @@ public class CommunityMenu extends Menu {
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
         cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
         inventory.setItem(4, cvItem4.createItemStack());
+
+        //8 Back Button
+        inventory.setItem(8, getBackButton(civilian));
 
         return inventory;
     }

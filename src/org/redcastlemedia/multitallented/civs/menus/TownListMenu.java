@@ -42,7 +42,7 @@ public class TownListMenu extends Menu {
             uuid = UUID.fromString(itemStack.getItemMeta().getLore().get(1));
         }
 
-        if (isBackButton(itemStack, civilian.getLocale())) {
+        if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
@@ -71,7 +71,7 @@ public class TownListMenu extends Menu {
             return;
         }
         String townName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Town town = TownManager.getInstance().getTown(townName);
+        Town town = TownManager.getInstance().getTown(townName.toLowerCase());
         if (town != null) {
             if (uuid == null) {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page);

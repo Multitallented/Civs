@@ -163,6 +163,11 @@ public abstract class Menu implements Listener {
             }
             return;
         }
+        if (lastHistory[0].equals(CommunityMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(CommunityMenu.createMenu(civilian));
+            return;
+        }
     }
     static boolean isBackButton(ItemStack is, String locale) {
         return is != null &&
