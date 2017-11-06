@@ -353,6 +353,16 @@ public class Region {
         return regionType.getReagents().isEmpty() ||
                 Util.containsItems(regionType.getReagents(), chest.getInventory());
     }
+    public boolean hasInput() {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        Block block = location.getBlock();
+        if (!(block.getState() instanceof Chest)) {
+            return true;
+        }
+        Chest chest = (Chest) block.getState();
+        return regionType.getInput().isEmpty() ||
+                Util.containsItems(regionType.getInput(), chest.getInventory());
+    }
     public void tick() {
         this.lastTick = System.currentTimeMillis();
     }

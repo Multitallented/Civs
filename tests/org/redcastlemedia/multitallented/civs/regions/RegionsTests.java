@@ -394,7 +394,7 @@ public class RegionsTests {
         config.set("period", 100);
         ArrayList<String> reagents = new ArrayList<>();
         reagents.add("IRON_PICKAXE");
-        config.set("reagents", reagents);
+        config.set("input", reagents);
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
         config.set("output", outputs);
