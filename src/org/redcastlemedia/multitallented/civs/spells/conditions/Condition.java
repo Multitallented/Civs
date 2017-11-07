@@ -18,19 +18,19 @@ public abstract class Condition {
         this.node = config;
     }
 
-    public void testCondition(Spell spell, HashSet<Object> targets) {
+    public void meetsRequirement(Spell spell, HashSet<Object> targets, int level) {
         for (Object obj : targets) {
             if (obj.getClass().equals(Player.class)) {
-                testCondition(spell, (Player) obj);
+                meetsRequirement(spell, (Player) obj, level);
             } else if (obj.getClass().equals(Block.class)) {
-                testCondition(spell, (Block) obj);
+                meetsRequirement(spell, (Block) obj, level);
             } else if (obj instanceof Entity) {
-                testCondition(spell, (Entity) obj);
+                meetsRequirement(spell, (Entity) obj, level);
             }
         }
     }
 
-    abstract void testCondition(Spell spell, Player player);
-    abstract void testCondition(Spell spell, Block block);
-    abstract void testCondition(Spell spell, Entity entity);
+    abstract void meetsRequirement(Spell spell, Player player, int level);
+    abstract void meetsRequirement(Spell spell, Block block, int level);
+    abstract void meetsRequirement(Spell spell, Entity entity, int level);
 }

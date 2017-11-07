@@ -1,0 +1,171 @@
+item: WOOL:14.2 #35:14.1 is default
+description: 'Description goes here'
+
+conditions: #can only use target: self because they check before getting targets
+  cooldown: 10000
+  stamina^1: 10 #only works if 10 or more stamina
+  stamina^2^not: 10 #only works if less than 10 stamina
+
+targets:
+  nearby1:
+    type: nearby
+    range: 5+($rand$*5)
+    radius: 4+($rand$*$level$)
+  block1:
+    type: block
+    range: 4+($level$>4?$rand$*2:0)
+    offset-y: -3+$level$
+    cancel-if-empty: true #default false
+  vector1:
+    type: vector
+    range: 6
+    penetration: true #default false
+    allow-multiple: true #default false
+    cancel-if-empty: true #default false
+
+components:
+  1: #section 1
+    variables: #provides variables to use
+      cooldown^1:
+        ability: bolt #saves bolt's cooldown as variable $cooldown^1#cooldown$
+      fall^2: 0
+        # $fall^2#fallDistance$
+      heal^2:
+        # $heal^2#health$
+        # $heal^2#maxHealth$
+      ignite^2:
+        # $ignite^2#fireTicks$
+      potion^2:
+        # $potion^2#ticks$
+        # $potion^2#level$
+      stamina^5:
+        # $stamina^5#stamina$
+      teleport^1:
+        target: block1
+        # $teleport^1#x$
+        # $teleport^1#y$
+        # $teleport^1#z$
+        # $teleport^1#pitch$
+        # $teleport^1#yaw$
+        # $teleport^1#distance$
+
+    filters: #section only works on targets that pass these requirements
+      cancel:
+        blacklist: #only select targets with a state that isn't cooldown
+        - cooldown
+
+    costs: #section only works if all targets pass these requirements
+      cancel^1:
+        ability: bolt #defaults to self/"all" can be used as well
+        whitelist: #only select targets with potion state
+        - potion
+        blacklist: #only select targets with a state that isn't cooldown
+        - cooldown
+        target: vector1 #only works on players
+      cooldown^2:
+        cooldown: '1000+$cooldown^1#cooldown$' #1 second + whatever your cooldown for bolt is
+        ability: searing #defaults to self
+        target: vector1
+        silent: true #defaults to false
+      damage:
+        target: nearby1
+        ignore-armor: true #default false
+        silent: false #default true
+        damage: 2+$rand$
+      fall:
+        distance: -10+$rand$*-3 #defaults to 0
+        target: vector1 #only targets living things
+        set: true #default false, should it set or just add
+        silent: true #default false
+      heal:
+        heal: 2+$level$ #default 0
+        target: nearby1 #only targets living things
+        silent: true #default false
+      ignite:
+        ticks: 40+$rand$*40 #defaults to 60
+        target: vector1 #only targets living things
+      nocheat:
+        exemption: MOVING_SURVIVALFLY #default to FIGHT
+        target: vector1 #must be a player
+      potion:
+        type: WEAKNESS #default to POISON
+        ticks: 60+$level$ #default to 40
+        level: '$level$>5?2:1' #default to 1, returns 2 if the player is over level 5
+      stamina^3:
+        stamina: $level$-5 #default to 0
+        target: nearby1
+        silent: true #default to false
+      velocity: #check if the target is moving towards you
+        multiplier: $level$+1 #default to 1
+        x: 1 #default 0
+        y: 2 #default 1
+        z: 1 #default 0
+        pull: true #default false
+        target: vector1
+
+    yield:
+      cancel^2: bolt
+      cooldown^3: 75000
+      damage^1: 10
+      effect:
+        effect: LIGHTNING
+        target: block1
+        data: 2 #defaults to 1 I have no idea what this is
+        radius: 3 #defaults to 1 I have no idea what this is
+      explosion:
+        target: block1
+        yield: 1+$rand$*2 #defaults to 0
+      fall^1: -10+$rand$*-3
+      heal^1: 5
+      ignite^1: 100
+      lightning:
+        target: vector1
+      lightning^1: vector1
+      potion^1:
+        type: SLOW
+        ticks: 120
+        level: 200
+      sound:
+        sound: CAT_PURREOW #default to EXPLODE
+        volume: 1.5 #default to 1
+        pitch: 0.8 #default to 1
+        target: block1
+      sound^1: CAT_PURREOW
+      stamina^4: 2+$rand$*4
+      teleport:
+        target: block1 #please use only single targets
+      velocity^1: 2 #multiplier
+      duration:
+        delay: 20-$level$ #default 0
+        duration: 160+$level$*20 #default 0
+        period: 80+$rand$*10 #default 0
+        targets:
+          vector2:
+            type: vector
+            range: 6
+        section:
+          2:
+            nocheat: MOVING_SURVIVALFLY
+      damage-listener: #this doesn't work yet
+        delay: 20-$level$ #delay not working yet
+        duration: 80+$rand$*20
+      damage-listener^1:
+        duration: 160
+
+  test: #section test
+    costs:
+      inherit: 1 #checks if section 1 passed all requirements
+
+listeners: #this doesn't work yet
+  damage-listener:
+    3:
+      yield:
+        cancel:
+          blacklist:
+          - cooldown
+  damage-listener^1:
+    4:
+      yield:
+        stamina:
+          stamina: -3
+          target: damage-listener^1

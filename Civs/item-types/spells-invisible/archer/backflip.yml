@@ -6,11 +6,12 @@ group: mobility,utility,escape
 pre-reqs:
 - archer:level=4
 
-#spell attributes
-targets:
-  target1:
-    type: vector
-    params:
-      range: 15
-      through-walls: true
-      max-targets: 1
+conditions:
+  cooldown: 10000
+
+yield:
+  0:
+    cooldown^1: 10000
+    velocity: 1
+    fall: -5
+    sound: MAGMACUBE_JUMP

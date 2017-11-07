@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -16,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.TargetScheme;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +41,8 @@ public class SpellType extends CivItem {
                      ArrayList<HashMap<Condition, String>> preCastConditions,
                      ArrayList<HashMap<Effect, String>> preCastEffects,
                      ArrayList<HashMap<Condition, String>> postCastConditions,
-                     ArrayList<HashMap<Effect, String>> postCastEffects) {
+                     ArrayList<HashMap<Effect, String>> postCastEffects,
+                     FileConfiguration config) {
         super(reqs,
                 false,
                 ItemType.SPELL,
@@ -53,6 +56,7 @@ public class SpellType extends CivItem {
                 permission,
                 description,
                 groups);
+        this.config = config;
         this.targets = targets;
         this.preCastConditions = preCastConditions;
         this.preCastEffects = preCastEffects;
@@ -60,6 +64,7 @@ public class SpellType extends CivItem {
         this.postCastEffects = postCastEffects;
     }
 
+    private final FileConfiguration config;
     private final HashSet<Target> targets;
     private final ArrayList<HashMap<Condition, String>> preCastConditions;
     private final ArrayList<HashMap<Effect, String>> preCastEffects;
@@ -77,6 +82,10 @@ public class SpellType extends CivItem {
     }
     public ArrayList<HashMap<Effect, String>> getPostCastEffects() {
         return postCastEffects;
+    }
+
+    public FileConfiguration getConfig() {
+        return config;
     }
 
     public static Target getTarget(String type, ConfigurationSection section) {
