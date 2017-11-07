@@ -108,6 +108,13 @@ public class ItemManager {
         //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(configuration.getString("icon", "CHEST"));
         String name = configuration.getString("name");
+        ConfigurationSection configurationSection = configuration.getConfigurationSection("description");
+        HashMap<String, String> description = new HashMap<>();
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                description.put(key, configurationSection.getString(key));
+            }
+        }
         CivItem civItem = new CivItem(
                 configuration.getStringList("reqs"),
                 false,
@@ -118,7 +125,7 @@ public class ItemManager {
                 0,0, -1,
                 configuration.getDouble("price", 0),
                 configuration.getString("permission"),
-                configuration.getStringList("description"),
+                description,
                 configuration.getStringList("groups"));
         itemTypes.put(name, civItem);
         return civItem;
@@ -128,6 +135,13 @@ public class ItemManager {
         //TODO load spelltype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
+        ConfigurationSection configurationSection = config.getConfigurationSection("description");
+        HashMap<String, String> description = new HashMap<>();
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                description.put(key, configurationSection.getString(key));
+            }
+        }
         CivItem civItem = new SpellType(
                 config.getStringList("reqs"),
                 name,
@@ -138,7 +152,7 @@ public class ItemManager {
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
                 config.getString("permission"),
-                config.getStringList("description"),
+                description,
                 config.getStringList("groups"),
                 getTargets(config.getConfigurationSection("targets")),
                 getConditions(config.getConfigurationSection("conditions")), //TODO correct this
@@ -177,6 +191,13 @@ public class ItemManager {
         HashSet<String> effects = new HashSet<>();
         effects.addAll(config.getStringList("effects"));
         int buildRadius = config.getInt("build-radius", 20);
+        ConfigurationSection configurationSection = config.getConfigurationSection("description");
+        HashMap<String, String> description = new HashMap<>();
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                description.put(key, configurationSection.getString(key));
+            }
+        }
         TownType townType = new TownType(
                 name,
                 icon,
@@ -191,7 +212,7 @@ public class ItemManager {
                 buildRadius,
                 config.getInt("build-radius-y", buildRadius),
                 config.getStringList("critical-build-reqs"),
-                config.getStringList("description"),
+                description,
                 config.getInt("power", 200),
                 config.getInt("max-power", 1000),
                 config.getStringList("groups"));
@@ -233,6 +254,13 @@ public class ItemManager {
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
         String rebuild = config.getString("rebuild");
+        ConfigurationSection configurationSection = config.getConfigurationSection("description");
+        HashMap<String, String> description = new HashMap<>();
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                description.put(key, configurationSection.getString(key));
+            }
+        }
         RegionType regionType = new RegionType(
                 name,
                 icon,
@@ -254,7 +282,7 @@ public class ItemManager {
                 buildRadiusZ,
                 effectRadius,
                 rebuild,
-                config.getStringList("description"),
+                description,
                 config.getLong("period", 0),
                 config.getStringList("groups"));
         itemTypes.put(name.toLowerCase(), regionType);

@@ -116,7 +116,7 @@ public class ShopMenu extends Menu {
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
                         "max-item").replace("$1", civItem.getProcessedName())
                             .replace("$2", civItem.getCivMax() + ""));
-                item.getLore().addAll(civItem.getDescription());
+                item.getLore().addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
                 inventory.setItem(i, item.createItemStack());
                 i++;
                 continue;
@@ -126,7 +126,7 @@ public class ShopMenu extends Menu {
                 civItem1.getLore().add(civilian.getUuid().toString());
                 civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
                         ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
-                civItem1.getLore().addAll(civItem1.getDescription());
+                civItem1.getLore().addAll(Util.textWrap("", Util.parseColors(civItem1.getDescription(civilian.getLocale()))));
             }
             inventory.setItem(i, civItem1.createItemStack());
             i++;

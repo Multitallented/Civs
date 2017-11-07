@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.towns;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class TownType extends CivItem {
                     int buildRadius,
                     int buildRadiusY,
                     List<String> criticalReqs,
-                    List<String> description,
+                    HashMap<String, String> description,
                     int power,
                     int maxPower,
                     List<String> groups) {

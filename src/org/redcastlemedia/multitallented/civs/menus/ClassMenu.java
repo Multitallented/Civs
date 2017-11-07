@@ -61,7 +61,7 @@ public class ClassMenu extends Menu {
             }
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.parseColors(cvItem.getDescription()));
+            lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());

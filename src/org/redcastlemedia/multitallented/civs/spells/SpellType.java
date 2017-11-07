@@ -33,7 +33,7 @@ public class SpellType extends CivItem {
                      int max,
                      double price,
                      String permission,
-                     List<String> description,
+                     HashMap<String, String> description,
                      List<String> groups,
                      HashSet<Target> targets,
                      ArrayList<HashMap<Condition, String>> preCastConditions,

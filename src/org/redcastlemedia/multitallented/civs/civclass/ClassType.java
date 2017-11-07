@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.civclass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ClassType extends CivItem {
@@ -14,7 +15,7 @@ public class ClassType extends CivItem {
                      double price,
                      String permission,
                      List<CivItem> children,
-                     List<String> description,
+                     HashMap<String, String> description,
                      List<String> groups) {
         super(reqs,
                 false,

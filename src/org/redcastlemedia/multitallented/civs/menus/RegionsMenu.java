@@ -68,7 +68,7 @@ public class RegionsMenu extends Menu {
                 lore.add(Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", cvItem.getProcessedName())));
             } else {
-                lore.addAll(Util.parseColors(cvItem.getDescription()));
+                lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());

@@ -5,6 +5,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CivItem extends CVItem {
@@ -16,7 +17,7 @@ public class CivItem extends CVItem {
     private final double price;
     private final String permission;
     private boolean isPlaceable = false;
-    private final List<String> description;
+    private final HashMap<String, String> description;
     private final List<String> groups;
 
     public ItemType getItemType() {
@@ -36,7 +37,13 @@ public class CivItem extends CVItem {
     public String getProcessedName() {
         return getDisplayName().replace("Civs ", "").toLowerCase();
     }
-    public List<String> getDescription() { return description; }
+    public String getDescription(String locale) {
+        String localizedDescription = description.get(locale);
+        if (localizedDescription == null) {
+            return description.get(ConfigManager.getInstance().getDefaultLanguage());
+        }
+        return localizedDescription;
+    }
     public List<String> getGroups() { return groups; }
 
 
@@ -51,7 +58,7 @@ public class CivItem extends CVItem {
                    int max,
                    double price,
                    String permission,
-                   List<String> description,
+                   HashMap<String, String> description,
                    List<String> groups) {
         super(material, 1, damage, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
@@ -79,7 +86,7 @@ public class CivItem extends CVItem {
                 max,
                 price,
                 permission,
-                new ArrayList<>(description),
+                new HashMap<>(description),
                 new ArrayList<>(groups));
     }
 

@@ -47,7 +47,7 @@ public class RegionType extends CivItem {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild,
-                      List<String> description,
+                      HashMap<String, String> description,
                       long period,
                       List<String> groups) {
         super(civReqs,

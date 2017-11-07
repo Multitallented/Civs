@@ -14,3 +14,6 @@ effects:
 - block_liquid
 - block_fire
 - block_explosion
+description:
+  en: "A place to safely store your items"
+  pt_br: "Um lugar para armazenar com segurança seus itens"
