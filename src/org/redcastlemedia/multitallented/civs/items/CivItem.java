@@ -40,7 +40,10 @@ public class CivItem extends CVItem {
     public String getDescription(String locale) {
         String localizedDescription = description.get(locale);
         if (localizedDescription == null) {
-            return description.get(ConfigManager.getInstance().getDefaultLanguage());
+            localizedDescription = description.get(ConfigManager.getInstance().getDefaultLanguage());
+            if (localizedDescription == null) {
+                return "";
+            }
         }
         return localizedDescription;
     }
