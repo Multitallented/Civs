@@ -8,7 +8,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 
@@ -20,11 +23,13 @@ public class Spell {
     private final Player caster;
     private String type;
     private int level;
+    private HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables;
 
     public Spell(String type, Player caster, int level) {
         this.type = type;
         this.caster = caster;
         this.level = level;
+        this.abilityVariables = new HashMap<>();
     }
 
     public String getType() {
@@ -38,7 +43,7 @@ public class Spell {
         HashSet<LivingEntity> tempSet = new HashSet<>();
         tempSet.add(caster);
         mappedTargets.put("self", tempSet);
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = new HashMap<String, HashMap<Object, HashMap<String, Double>>>();
+//        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = new HashMap<String, HashMap<Object, HashMap<String, Double>>>();
 
 
         ConfigurationSection conditionsConfig = config.getConfigurationSection("conditions");
@@ -121,7 +126,7 @@ public class Spell {
             }
         }*/
 
-        return useAbility(caster, level, mappedTargets, false, components, new HashMap<String, ConfigurationSection>());
+        return useAbility(mappedTargets, false, new HashMap<String, ConfigurationSection>());
     }
 
     public static boolean useAbility(Player caster, int level, ConfigurationSection useSection, Object newTarget) {
@@ -151,41 +156,30 @@ public class Spell {
         return useSection.getBoolean("cancel", false);
     }
 
-    public boolean useAbility(Player caster, int level,
-                              HashMap<String, Set<?>> incomingTargets,
+    public boolean useAbility(HashMap<String, Set<?>> incomingTargets,
                               boolean delayed,
-                              Map<String, ConfigurationSection> abilitySections,
                               Map<String, ConfigurationSection> durationTargets) {
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = new HashMap<>();
-        return useAbility(caster, level, incomingTargets, delayed, abilitySections, durationTargets, abilityVariables);
-    }
-
-    public boolean useAbility(Player caster, int level,
-                              HashMap<String, Set<?>> incomingTargets,
-                              boolean delayed,
-                              Map<String, ConfigurationSection> abilitySections,
-                              Map<String, ConfigurationSection> durationTargets,
-                              HashMap<String, HashMap<Object, HashMap<String, Double>>> tempAbilityVariables) {
-        HashMap<String, Set<?>> mappedTargets = new HashMap<String, Set<?>>(incomingTargets);
-        final HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = tempAbilityVariables;
+        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
+        HashMap<String, Set<?>> mappedTargets = new HashMap<>(incomingTargets);
         if (durationTargets != null) {
             for (String key : durationTargets.keySet()) {
                 String targetName = durationTargets.get(key).getString("type", "nearby");
-                AbilityTarget abilityTarget = rpgen.getAbilityManager().getAbilityTarget(targetName);
-                if (abilityTarget == null) {
+                Target target = SpellType.getTarget(targetName, key, durationTargets.get(key), level, caster, this, abilityVariables);
+//                Target abilityTarget = rpgen.getAbilityManager().getAbilityTarget(targetName);
+                if (target == null) {
                     continue;
                 }
-                mappedTargets.put(key, abilityTarget.getTargets(caster, durationTargets.get(key), level, abilityVariables));
+                mappedTargets.put(key, target.getTargets());
                 if (durationTargets.get(key).getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
                     return false;
                 }
             }
         }
 
-
-        HashSet<String> fullfilledRequirements = new HashSet<String>();
-        Collection<String> abilityKeys = abilitySections.keySet();
-        List<String> sorted = new ArrayList<String>();
+        HashMap<String, ConfigurationSection> components = spellType.getComponents();
+        HashSet<String> fulfilledRequirements = new HashSet<>();
+        Collection<String> abilityKeys = components.keySet();
+        List<String> sorted = new ArrayList<>();
         sorted.addAll(abilityKeys);
         Collections.sort(sorted);
         for (String componentName : sorted) {
@@ -195,16 +189,16 @@ public class Spell {
             } else {
                 compName = componentName.split("\\.")[0];
             }
-            ConfigurationSection currentComponent = abilitySections.get(compName);
+            ConfigurationSection currentComponent = components.get(compName);
             if (currentComponent == null) {
-                RPGen.LOGGER.severe(RPGen.getPrefix() + " unable to find componentSection " + compName + " for " + name);
+                Civs.logger.severe("Unable to find componentSection " + compName + " for spell " + type);
                 continue;
             }
 
             //filter targets
             ConfigurationSection filterSection = currentComponent.getConfigurationSection("filters");
             if (filterSection != null) {
-                filterLoop: for (String key : filterSection.getKeys(false)) {
+                for (String key : filterSection.getKeys(false)) {
                     String filterName = "";
                     if (!key.contains("^")) {
                         filterName += key;
@@ -212,24 +206,30 @@ public class Spell {
                         filterName = key.split("\\^")[0];
                     }
                     String filterValueString = filterSection.getString(filterName, "not-a-string");
-                    AbilityComponent component;
+                    Effect component;
                     boolean invert = key.endsWith("^not");
 
-                    component = rpgen.getAbilityManager().getAbilityComponent(filterName, key);
-                    if (!filterValueString.equals("not-a-string") && !filterValueString.contains("MemorySection")) {
-                        component.setData(filterValueString, level, abilityVariables);
-                    } else {
-                        ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
-                        component.setData(currentConfigSection, level, abilityVariables);
+                    boolean isSection = filterValueString.equals("not-a-string") || filterValueString.contains("MemorySection");
+                    String targetKey = "self";
+                    if (isSection) {
+                        String tempTarget = filterSection.getConfigurationSection(key).getString("target", "not-a-string");
+                        if (!tempTarget.equals("not-a-string")) {
+                            targetKey = tempTarget;
+                        }
                     }
-                    String targetKey = component.getTargetName();
                     Set<?> targetSet = mappedTargets.get(targetKey);
                     if (targetSet == null || targetSet.isEmpty()) {
                         continue;
                     }
                     HashSet<Object> removeMe = new HashSet<>();
                     for (Object target : targetSet) {
-                        boolean meetsRequirement = component.meetsRequirement(target, caster, level, this);
+                        if (!filterValueString.equals("not-a-string") && !filterValueString.contains("MemorySection")) {
+                            component = SpellType.getEffect(filterName, key, filterValueString, level, target, caster, this, abilityVariables);
+                        } else {
+                            ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
+                            component = SpellType.getEffect(filterName, key, currentConfigSection, level, target, caster, this, abilityVariables);
+                        }
+                        boolean meetsRequirement = component.meetsRequirement();
                         if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
                             removeMe.add(target);
                         }
@@ -251,18 +251,15 @@ public class Spell {
                         varName = key.split("\\^")[0];
                     }
                     String varValueString = varSection.getString(key, "not-a-string");
-                    AbilityComponent component = rpgen.getAbilityManager().getAbilityComponent(varName, key);
-                    if (component == null) {
-                        rpgen.getLogger().severe("Null component " + varName);
-                        continue;
+                    Effect component;
+                    boolean isSection = varValueString.equals("not-a-string") || varValueString.contains("MemorySection");
+                    String targetKey = "self";
+                    if (isSection) {
+                        String tempTarget = varSection.getConfigurationSection(key).getString("target", "not-a-string");
+                        if (!tempTarget.equals("not-a-string")) {
+                            targetKey = tempTarget;
+                        }
                     }
-                    if (!varValueString.equals("not-a-string") && !varValueString.contains("MemorySection")) {
-                        component.setData(varValueString, level, abilityVariables);
-                    } else {
-                        ConfigurationSection currentConfigSection = varSection.getConfigurationSection(key);
-                        component.setData(currentConfigSection, level, abilityVariables);
-                    }
-                    String targetKey = component.getTargetName();
                     Set<?> targetSet = mappedTargets.get(targetKey);
                     if (targetSet == null || targetSet.isEmpty()) {
                         continue;
@@ -270,6 +267,12 @@ public class Spell {
 
                     HashMap<Object, HashMap<String, Double>> currentComponentVars = new HashMap<Object, HashMap<String, Double>>();
                     for (Object target : targetSet) {
+                        if (!varValueString.equals("not-a-string") && !varValueString.contains("MemorySection")) {
+                            component = SpellType.getEffect(varName, key, varValueString, level, target, caster, this, abilityVariables);
+                        } else {
+                            ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
+                            component = SpellType.getEffect(varName, key, currentConfigSection, level, target, caster, this, abilityVariables);
+                        }
                         HashMap<String, Double> currentVars = component.getVariables(target, caster, level, this);
                         currentComponentVars.put(target, currentVars);
                     }
@@ -291,20 +294,15 @@ public class Spell {
 //					System.out.println("Keys: " + key + ":" + costName);
                     boolean invert = key.endsWith("^not");
                     String costValueString = costSection.getString(key, "not-a-string");
-                    AbilityComponent component;
+                    Effect component;
 
                     if (costName.equals("inherit")) {
-                        boolean inheritFullfilled = fullfilledRequirements.contains(costValueString);
+                        boolean inheritFullfilled = fulfilledRequirements.contains(costValueString);
                         if ((!invert && !inheritFullfilled) || (invert && inheritFullfilled)) {
-                            rpgen.getLogger().info(key + " cost not met");
+                            Civs.logger.info(key + " cost not met");
                             costsMet = false;
                             break;
                         }
-                        continue;
-                    }
-                    component = rpgen.getAbilityManager().getAbilityComponent(costName, key);
-                    if (component == null) {
-                        rpgen.getLogger().severe("Null component " + costName);
                         continue;
                     }
                     //component = getAbilityComponent(costName, level);
@@ -319,13 +317,13 @@ public class Spell {
                     }
                     for (Object target : targetSet) {
                         if (isString) {
-                            component.setData(costValueString, level, target, this, abilityVariables);
+                            component = SpellType.getEffect(costName, key, costValueString, level, target, caster, this, abilityVariables);
                         } else {
                             ConfigurationSection currentConfigSection = costSection.getConfigurationSection(key);
-                            component.setData(currentConfigSection, level, target, this, abilityVariables);
+                            component = SpellType.getEffect(costName, key, currentConfigSection, level, target,  caster,this, abilityVariables);
                         }
 
-                        boolean meetsRequirement = component.meetsRequirement(target, caster, level, this);
+                        boolean meetsRequirement = component.meetsRequirement();
 //						System.out.println(key + ": " + meetsRequirement);
                         if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
                             costsMet = false;
@@ -335,10 +333,10 @@ public class Spell {
                 }
 
                 if (costsMet) {
-                    fullfilledRequirements.add(componentName);
+                    fulfilledRequirements.add(componentName);
                 }
             } else {
-                fullfilledRequirements.add(componentName);
+                fulfilledRequirements.add(componentName);
             }
 
             //yield
@@ -357,23 +355,23 @@ public class Spell {
 
                 if (yieldName.equals("damage-listener")) {
                     final ConfigurationSection damageListenerSection = yieldSection.getConfigurationSection(key);
-                    final ConfigurationSection damageListenerConfig = config.getConfigurationSection("listeners." + key);
+                    final ConfigurationSection damageListenerConfig = spellType.getConfig().getConfigurationSection("listeners." + key);
                     if (damageListenerConfig == null) {
                         continue;
                     }
 
-                    long delay = (long) Math.round(Ability.getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("delay", 0), level, null, this));
-                    long duration = (long) Math.round(Ability.getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("duration", 0), level, null, this));
+                    long delay = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("delay", 0), level, null, this));
+                    long duration = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("duration", 0), level, null, this));
                     final Player finalCaster = caster;
                     final int finalLevel = level;
                     int delayId = -1;
                     int durationId = -1;
-                    final Champion finalChampion = rpgen.getChampionManager().getChampion(finalCaster.getName());
-                    final String finalName = this.name;
+                    final Civilian finalChampion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
+                    final String finalName = type;
                     final String finalKey = key;
                     final String finalYieldName = yieldName;
                     if (duration > 0) {
-                        durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(rpgen, new Runnable() {
+                        durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
                                 rpgen.getAbilityListener().removeDamageListener(finalCaster);
@@ -382,7 +380,7 @@ public class Spell {
                         }, delay + duration);
                     }
                     if (delayId < -1) {
-                        delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(rpgen, new Runnable() {
+                        delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
                                 rpgen.getAbilityListener().addDamageListener(finalCaster, finalLevel, damageListenerConfig);
@@ -393,7 +391,7 @@ public class Spell {
                         rpgen.getAbilityListener().addDamageListener(caster, level, damageListenerConfig);
                         HashMap<String, Object> listenerVars = new HashMap<String, Object>();
 
-                        AbilityState state = new AbilityState(finalName, finalYieldName, durationId, -1, listenerVars, damageListenerConfig, null, abilityVariables);
+                        CivState state = new CivState(finalName, finalYieldName, durationId, -1, listenerVars, damageListenerConfig, null, abilityVariables);
                         finalChampion.getStates().put(finalName + "." + finalKey, state);
                     }
                     continue;
@@ -401,15 +399,15 @@ public class Spell {
 
                 if (yieldName.equals("duration") && !delayed) {
                     final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
-                    long delay = (long) Math.round(Ability.getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("delay", 0), level, null, this));
-                    long duration = (long) Math.round(Ability.getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("duration", 0), level, null, this));
-                    long period = (long) Math.round(Ability.getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("period", 0), level, null, this));
+                    long delay = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("delay", 0), level, null, this));
+                    long duration = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("duration", 0), level, null, this));
+                    long period = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("period", 0), level, null, this));
                     int durationId = -1;
                     int periodId = -1;
                     final Player finalCaster = caster;
                     final int finalLevel = level;
                     final HashMap<String, Set<?>> finalMappedTargets = mappedTargets;
-                    final String finalName = this.name;
+                    final String finalName = type;
                     final String finalKey = key;
                     final HashMap<String, ConfigurationSection> durationAbilities = new HashMap<String, ConfigurationSection>();
                     for (String durationKey : durationSection.getConfigurationSection("section").getKeys(false)) {
@@ -423,7 +421,7 @@ public class Spell {
                         }
                     }
                     if (period > 0) {
-                        periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(rpgen, new Runnable() {
+                        periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
                                 useAbility(finalCaster, finalLevel, finalMappedTargets, true, durationAbilities, mappedDurationTargets, abilityVariables);
@@ -431,7 +429,7 @@ public class Spell {
                         }, delay, period);
                     }
                     if (delay > 0 && period < 1) {
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(rpgen, new Runnable() {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
                                 useAbility(finalCaster, finalLevel, finalMappedTargets, true, durationAbilities, mappedDurationTargets, abilityVariables);
@@ -443,35 +441,29 @@ public class Spell {
 
                     final int finalPeriodId = periodId;
                     if (duration > 0) {
-                        durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(rpgen, new Runnable() {
+                        durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
                                 removeAbility(finalCaster, finalLevel, finalMappedTargets, durationAbilities, mappedDurationTargets);
                                 Bukkit.getScheduler().cancelTask(finalPeriodId);
-                                Champion champion = rpgen.getChampionManager().getChampion(finalCaster.getName());
-                                AbilityState state = champion.getStates().get(finalName + "." + finalKey);
+                                Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
+                                CivState state = champion.getStates().get(finalName + "." + finalKey);
                                 if (state != null) {
-                                    state.remove(rpgen, finalCaster);
+                                    state.remove(Civs.getInstance(), finalCaster);
                                     champion.getStates().remove(finalName + "." + finalKey);
                                 }
                             }
                         }, delay + duration);
                     }
 
-                    Champion champion = rpgen.getChampionManager().getChampion(caster.getName());
-                    champion.getStates().put(this.name + "." + key, new AbilityState(this.name, key, durationId, periodId, null, null, null, abilityVariables));
+                    Civilian champion = CivilianManager.getInstance().getCivilian(caster.getUniqueId());
+                    champion.getStates().put(type + "." + key, new CivState(type, key, durationId, periodId, null, null, null, abilityVariables));
 
                     continue;
                 }
 
                 String yieldValueString = yieldSection.getString(key, "not-a-string");
-                AbilityComponent component;
-                component = rpgen.getAbilityManager().getAbilityComponent(yieldName, key);
-//				component = getAbilityComponent(yieldName, level);
-                if (component == null) {
-                    rpgen.getLogger().severe("Null component " + yieldName);
-                    continue;
-                }
+                Effect component;
                 boolean isString = !yieldValueString.equals("not-a-string") && !yieldValueString.contains("MemorySection");
 
 
@@ -484,21 +476,22 @@ public class Spell {
                 }
                 for (Object target : targetSet) {
                     if (isString) {
-                        component.setData(yieldValueString, level, target, this, abilityVariables);
+                        component = SpellType.getEffect(yieldName, key, yieldValueString, level, target, caster, this, abilityVariables);
                     } else {
-                        component.setData(yieldSection.getConfigurationSection(key), level, target, this, abilityVariables);
+                        component = SpellType.getEffect(yieldName, key, yieldSection.getConfigurationSection(key), level, target, caster, this, abilityVariables);
                     }
-                    component.apply(target, caster, level, this, abilityVariables);
+                    component.apply();
                 }
             }
         }
 
-        if (fullfilledRequirements.isEmpty()) {
+        if (fulfilledRequirements.isEmpty()) {
             return false;
         }
 
         if (!delayed) {
-            String message = ChatColor.BLUE + RPGen.getPrefix() + " " + caster.getDisplayName() + ChatColor.WHITE + " used " + ChatColor.RED + name;
+            //TODO localize this
+            String message = ChatColor.BLUE + Civs.getPrefix() + " " + caster.getDisplayName() + ChatColor.WHITE + " used " + ChatColor.RED + type;
             caster.sendMessage(message);
             for (String key : mappedTargets.keySet()) {
                 if (key.equals("self")) {
@@ -519,31 +512,25 @@ public class Spell {
         if (configString.equals("0")) {
             return 0;
         }
-        //System.out.println(configString);
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         try {
             Object engineEval = engine.eval(replaceAllVariables(abilityVariables, configString, level, target, spell));
             if (engineEval instanceof Integer) {
-                //System.out.println("type Integer: " + (Integer) engineEval);
                 return (Integer) engineEval;
             } else if (engineEval instanceof Double) {
-                //System.out.println("type Double: " + (Double) engineEval);
                 return (Double) engineEval;
             } else {
-                //System.out.println("weird type 0");
                 return 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            //System.out.println("failed Eval Double: " + Double.parseDouble(configString));
             return Double.parseDouble(configString);
         } catch (Exception e) {
 
         }
-        //System.out.println("failed Eval and parse: 0");
         return 0;
     }
     private static String replaceAllVariables(HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables, String input, int level, Object target, Spell spell) {
@@ -554,7 +541,7 @@ public class Spell {
             input = "";
             for (int i = 0; i < inputParts.length; i++) {
                 if (inputParts[i].contains("#")) {
-                    HashMap<String, HashMap<Object, HashMap<String, Double>>> variables = new HashMap<String, HashMap<Object, HashMap<String, Double>>>(abilityVariables);
+                    HashMap<String, HashMap<Object, HashMap<String, Double>>> variables = new HashMap<>(abilityVariables);
                     HashMap<Object, HashMap<String, Double>> targetVars = variables.get(inputParts[i].split("#")[0]);
                     if (targetVars == null) {
                         continue;
@@ -575,7 +562,6 @@ public class Spell {
                 input += inputParts[i];
             }
         }
-        //System.out.println(input);
         return input;
     }
 }

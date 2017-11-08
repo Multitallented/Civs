@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
@@ -43,12 +45,28 @@ public class SpellType extends CivItem {
                 description,
                 groups);
         this.config = config;
+        this.components = new HashMap<>();
+        ConfigurationSection componentSection = config.getConfigurationSection("components");
+        if (componentSection == null) {
+            Civs.logger.severe("Failed to load spell type " + name + " no components");
+            return;
+        }
+        for (String key : componentSection.getKeys(false)) {
+            ConfigurationSection currentSection = componentSection.getConfigurationSection(key);
+            if (currentSection != null) {
+                components.put(key, currentSection);
+            }
+        }
     }
 
     private final FileConfiguration config;
+    private final HashMap<String, ConfigurationSection> components;
 
     public FileConfiguration getConfig() {
         return config;
+    }
+    public HashMap<String, ConfigurationSection> getComponents() {
+        return components;
     }
 
     /*public static Target getTarget(String type,
