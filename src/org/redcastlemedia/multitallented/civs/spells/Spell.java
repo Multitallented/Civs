@@ -2,10 +2,12 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
@@ -30,7 +32,8 @@ public class Spell {
     }
 
     public boolean useAbility() {
-        FileConfiguration config = ((SpellType) ItemManager.getInstance().getItemType(type)).getConfig();
+        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
+        FileConfiguration config = spellType.getConfig();
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
         HashSet<LivingEntity> tempSet = new HashSet<>();
         tempSet.add(caster);
@@ -77,6 +80,7 @@ public class Spell {
                     try {
                         meetsRequirement = component.meetsRequirement();
                     } catch (NullPointerException npe) {
+                        Civs.logger.severe("Failed to find component " + conditionName + " in spell " + type);
                         meetsRequirement = false;
                     }
                     if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
@@ -88,7 +92,24 @@ public class Spell {
             }
         }
 
-        for (String key : this.targetSchema.keySet()) {
+        ConfigurationSection targetSections = config.getConfigurationSection("targets");
+        if (targetSections != null) {
+            for (String key : targetSections.getKeys(false)) {
+                ConfigurationSection targetSection = targetSections.getConfigurationSection("targets." + key);
+                String targetName = targetSection.getString("type", "nearby");
+                Target target = SpellType.getTarget(targetName, key, targetSection, level, caster, this, abilityVariables);
+                try {
+                    mappedTargets.put(key, target.getTargets());
+                } catch (NullPointerException npe) {
+                    Civs.logger.severe("Failed to find target " + targetName + " in spell " + type);
+                    return false;
+                }
+                if (targetSection.getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        /*for (String key : this.targetSchema.keySet()) {
             String targetName = this.targetSchema.get(key).getString("type", "nearby");
             Target abilityTarget = SpellType.getTarget(targetName, key);
             if (abilityTarget == null) {
@@ -98,7 +119,7 @@ public class Spell {
             if (this.targetSchema.get(key).getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
                 return false;
             }
-        }
+        }*/
 
         return useAbility(caster, level, mappedTargets, false, components, new HashMap<String, ConfigurationSection>());
     }

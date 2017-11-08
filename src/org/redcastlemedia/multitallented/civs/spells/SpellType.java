@@ -51,14 +51,31 @@ public class SpellType extends CivItem {
         return config;
     }
 
-    public static Target getTarget(String type, ConfigurationSection section) {
+    /*public static Target getTarget(String type,
+                                   String key,
+                                   String config,
+                                   int level,
+                                   Player caster,
+                                   Spell spell,
+                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
         if (type.equals("vector")) {
-            return new VectorTarget(section);
-        } else if (type.equals("area")) {
-            return new AreaTarget(section);
+            return new VectorTarget(spell, key, caster, level, abilityVariables, config);
+        }
+        return null;
+    }*/
+    public static Target getTarget(String type,
+                                   String key,
+                                   ConfigurationSection config,
+                                   int level,
+                                   Player caster,
+                                   Spell spell,
+                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+        if (type.equals("vector")) {
+            return new VectorTarget(spell, key, caster, level, abilityVariables, config);
         }
         return null;
     }
+
     public static Effect getEffect(String type,
                                    String key,
                                    String config,

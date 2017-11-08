@@ -3,6 +3,8 @@ package org.redcastlemedia.multitallented.civs.spells.targets;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
@@ -17,14 +19,25 @@ import java.util.Set;
  * @author Multitallented
  */
 public abstract class Target extends SpellComponent {
-    private final HashSet<String> targetTypes = new HashSet<>();
+    private final ConfigurationSection config;
 
-    public Target(String abilityName, String key) {
-        super(abilityName, key);
+    public Target(Spell spell,
+                  String key,
+                  Entity origin,
+                  int level,
+                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
+                  ConfigurationSection config) {
+        super(spell, key, null, origin, level, vars);
+        this.config=config;
+    }
+    public ConfigurationSection getConfig() {
+        return config;
     }
 
-    public Location applyTargetSettings(Location currentLocation, ConfigurationSection config, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+    public Location applyTargetSettings(Location currentLocation) {
         //jitter
+        int level = getLevel();
+        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getVars();
         String jitter = config.getString("jitter");
         if (jitter != null) {
             String jX = jitter.split(";")[0];
@@ -56,5 +69,5 @@ public abstract class Target extends SpellComponent {
         return currentLocation;
     }
 
-    public abstract Set<?> getTargets(Player player, ConfigurationSection config, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables);
+    public abstract Set<?> getTargets();
 }
