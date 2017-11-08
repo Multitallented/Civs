@@ -27,22 +27,10 @@ public class DamageEffect extends Effect {
     private boolean silent = true;
 
 
-    public DamageEffect(String abilityName, String key, ConfigurationSection config) {
-        super(abilityName, key);
-    }
-
-    @Override
-    public void setData(String value, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(abilityVariables, value, level, target, spell));
-        this.target = "self";
-        this.ignoreArmor = false;
-        this.silent = true;
-    }
-
-    @Override
-    public void setData(ConfigurationSection section, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars, ConfigurationSection section) {
+        super(spell, key, target, origin, level, vars, section);
         String configDamage = section.getString("damage", "0");
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(abilityVariables, configDamage, level, target, spell));
+        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, configDamage, level, target, spell));
         String tempTarget = section.getString("target", "not-a-string");
         this.silent = section.getBoolean("silent", true);
         if (!tempTarget.equals("not-a-string")) {
@@ -50,9 +38,18 @@ public class DamageEffect extends Effect {
         }
         this.ignoreArmor = section.getBoolean("ignore-armor", false);
     }
+    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars, String value) {
+        super(spell, key, target, origin, level, vars, value);
+        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, value, level, target, spell));
+        this.target = "self";
+        this.ignoreArmor = false;
+        this.silent = true;
+    }
 
     @Override
-    public boolean meetsRequirement(Object target, Entity origin, int level, Spell ability) {
+    public boolean meetsRequirement() {
+        Object target = getTarget();
+        Entity origin = getOrigin();
         if (!(target instanceof LivingEntity)) {
             if (!this.silent && origin instanceof Player) {
                 ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take damage.");
@@ -95,7 +92,9 @@ public class DamageEffect extends Effect {
     }
 
     @Override
-    public void apply(Object target, Entity origin, int level, Spell spell) {
+    public void apply() {
+        Object target = getTarget();
+        Entity origin = getOrigin();
         if (!(target instanceof LivingEntity)) {
             return;
         }

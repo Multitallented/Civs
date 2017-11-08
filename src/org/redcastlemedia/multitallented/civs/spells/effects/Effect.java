@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -15,13 +16,28 @@ import java.util.HashSet;
  */
 public abstract class Effect extends SpellComponent {
 
-    public Effect(String abilityName, String key) {
-        super(abilityName, key);
+    public Effect(Spell spell,
+                  String key,
+                  Object target,
+                  Entity origin,
+                  int level,
+                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
+                  ConfigurationSection section) {
+        super(spell, key, target, origin, level, vars);
+    }
+    public Effect(Spell spell,
+                  String key,
+                  Object target,
+                  Entity origin,
+                  int level,
+                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
+                  String configString) {
+        super(spell, key, target, origin, level, vars);
     }
 
-    public abstract void apply(Object target, Entity origin, int level, Spell spell);
+    public abstract void apply();
 
-    public abstract boolean meetsRequirement(Object target, Entity origin, int level, Spell ability);
+    public abstract boolean meetsRequirement();
 
     /*public void apply(Spell spell, HashSet<Object> targetSet) {
         for (Object obj : targetSet) {

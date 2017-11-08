@@ -25,6 +25,10 @@ public class Spell {
         this.caster = caster;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public boolean useAbility(Player caster, int level) {
         FileConfiguration config = ((SpellType) ItemManager.getInstance().getItemType(type)).getConfig();
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
@@ -45,15 +49,15 @@ public class Spell {
                 }
 //				System.out.println("Condition: " + key + "/" + conditionName);
                 String costValueString = conditionsConfig.getString(key, "not-a-string");
-                Condition component = SpellType.getCondition(conditionName, key);
+                Effect component; //TODO create this
 //                AbilityComponent component = rpgen.getAbilityManager().getAbilityComponent(conditionName, key);
                 boolean invert = key.endsWith("^not");
 
                 if (!costValueString.equals("not-a-string") && !costValueString.contains("MemorySection")) {
-                    component.setData(costValueString, level, abilityVariables);
+                    component = new SpellComponent(costValueString, level, caster, this, abilityVariables);
                 } else {
                     ConfigurationSection currentConfigSection = conditionsConfig.getConfigurationSection(key);
-                    component.setData(currentConfigSection, level, abilityVariables);
+                    component.setData(currentConfigSection, level, caster, this, abilityVariables);
                 }
                 String targetKey = component.getTargetName();
                 Set<?> targetSet = mappedTargets.get(targetKey);
