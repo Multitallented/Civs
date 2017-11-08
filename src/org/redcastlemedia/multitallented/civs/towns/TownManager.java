@@ -104,9 +104,10 @@ public class TownManager {
         }
     }
 
-    public boolean checkIntersect(Location location, TownType townType) {
+    public List<Town> checkIntersect(Location location, TownType townType) {
         Location[] locationCheck = new Location[9];
         locationCheck[0] = location;
+        List<Town> towns = new ArrayList<>();
         locationCheck[1] = new Location(location.getWorld(),
                 location.getX() + townType.getBuildRadius(),
                 Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
@@ -140,11 +141,12 @@ public class TownManager {
                 Math.max(location.getY() - townType.getBuildRadiusY(), 0),
                 location.getZ() - townType.getBuildRadius());
         for (Location currentLocation : locationCheck) {
-            if (getTownAt(currentLocation) != null) {
-                return true;
+            Town town = getTownAt(currentLocation);
+            if (town != null) {
+                towns.add(town);
             }
         }
-        return false;
+        return towns;
     }
 
     private void loadTown(FileConfiguration config, String name) {

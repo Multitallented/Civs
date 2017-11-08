@@ -26,4 +26,17 @@ public class Town {
     }
     public String getName() { return name; }
     public HashMap<UUID, String> getPeople() { return people; }
+
+    public int countPeople(String role) {
+        if (role == null) {
+            return people.size();
+        }
+        int count = 0;
+        for (String currentRole : people.values()) {
+            if (currentRole.contains(role) || currentRole.contains("owner")) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

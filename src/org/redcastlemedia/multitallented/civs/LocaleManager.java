@@ -258,6 +258,8 @@ public class LocaleManager {
                         localeConfig.getString(langKey + ".karma-gained", "Karma: +$1, $2 money gained"));
                 currentLanguage.put("karma-lost",
                         localeConfig.getString(langKey + ".karma-lost", "Karma: -$1, $2 money lost"));
+                currentLanguage.put("must-be-built-on-top",
+                        localeConfig.getString(langKey + ".must-be-built-on-top", "A $1 must be built on top of a $2"));
                 languageMap.put(langKey, currentLanguage);
             }
 
@@ -372,6 +374,7 @@ public class LocaleManager {
         englishMap.put("karma", "Karma: $1");
         englishMap.put("karma-gained", "Karma: +$1, $2 money gained");
         englishMap.put("karma-lost", "Karma: -$1, $2 money lost");
+        englishMap.put("must-be-built-on-top", "A $1 must be built on top of a $2");
 
         languageMap.put("en", englishMap);
     }

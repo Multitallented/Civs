@@ -15,6 +15,8 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -158,7 +160,8 @@ public class ItemManager {
                 getConditions(config.getConfigurationSection("conditions")), //TODO correct this
                 getEffects(),
                 getConditions(config.getConfigurationSection("conditions")), //TODO correct this
-                getEffects());
+                getEffects(),
+                config);
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -215,7 +218,8 @@ public class ItemManager {
                 description,
                 config.getInt("power", 200),
                 config.getInt("max-power", 1000),
-                config.getStringList("groups"));
+                config.getStringList("groups"),
+                config.getString("child"));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -412,6 +416,19 @@ public class ItemManager {
                     } else {
                         break;
                     }
+                } else if (reqParams[0].equals("population")) {
+                    int requirement = Integer.parseInt(reqParams[1]);
+                    for (Town town : TownManager.getInstance().getTowns()) {
+                        if (!town.getType().equalsIgnoreCase(splitReq[0]) ||
+                                !town.getPeople().containsKey(civilian.getUuid()) ||
+                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                            continue;
+                        }
+                        if (requirement <= town.countPeople("member")) {
+                            continue outer;
+                        }
+                    }
+                    break;
                 }
             }
             return false;

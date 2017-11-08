@@ -6,6 +6,7 @@ price: 2000
 
 pre-reqs:
 - shelter:built=1
+- site:population=5
 
 build-reqs:
 - shelter

@@ -16,6 +16,7 @@ public class TownType extends CivItem {
     private final List<String> criticalReqs;
     private final int power;
     private final int maxPower;
+    private final String child;
 
     public List<String> getReqs() {
         return reqs;
@@ -38,6 +39,7 @@ public class TownType extends CivItem {
     public int getMaxPower() {
         return maxPower;
     }
+    public String getChild() { return child; }
 
     public TownType(String name,
                     CVItem icon,
@@ -55,7 +57,8 @@ public class TownType extends CivItem {
                     HashMap<String, String> description,
                     int power,
                     int maxPower,
-                    List<String> groups) {
+                    List<String> groups,
+                    String child) {
         super(civReqs,
                 false,
                 ItemType.TOWN,
@@ -76,5 +79,6 @@ public class TownType extends CivItem {
         this.criticalReqs = criticalReqs;
         this.power = power;
         this.maxPower = maxPower;
+        this.child = child;
     }
 }

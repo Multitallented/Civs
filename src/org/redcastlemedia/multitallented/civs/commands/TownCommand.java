@@ -17,6 +17,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class TownCommand implements CivCommand {
@@ -57,15 +59,36 @@ public class TownCommand implements CivCommand {
         TownType townType = (TownType) civItem;
 
         TownManager townManager = TownManager.getInstance();
-        if (townManager.checkIntersect(player.getLocation(), townType)) {
+        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType);
+        if (intersectTowns.size() > 1 ||
+                (townType.getChild() != null &&
+                        !intersectTowns.isEmpty() &&
+                        !townType.getChild().equals(intersectTowns.get(0).getType()))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return true;
         }
+        if (intersectTowns.isEmpty() && townType.getChild() != null) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "must-be-built-on-top").replace("$1", townType.getProcessedName())
+                    .replace("$2", townType.getChild()));
+            return true;
+        }
+
+
 
         HashMap<UUID, String> people = new HashMap<>();
         people.put(player.getUniqueId(), "owner");
-        Town town = new Town(args[1], townType.getProcessedName(), player.getLocation(), people);
+        Location newTownLocation = player.getLocation();
+        String name = Util.getValidFileName(args[1]);
+        if (townType.getChild() != null) {
+            Town intersectTown = intersectTowns.get(0);
+            people = intersectTown.getPeople();
+            newTownLocation = intersectTown.getLocation();
+            name = intersectTown.getName();
+            TownManager.getInstance().removeTown(intersectTown, false);
+        }
+        Town town = new Town(name, townType.getProcessedName(), newTownLocation, people);
         townManager.addTown(town);
         townManager.saveTown(town);
         player.getInventory().remove(itemStack);
