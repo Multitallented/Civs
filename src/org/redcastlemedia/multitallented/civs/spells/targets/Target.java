@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,19 +16,11 @@ import java.util.Set;
  *
  * @author Multitallented
  */
-public abstract class Target {
-    final ConfigurationSection config;
+public abstract class Target extends SpellComponent {
     private final HashSet<String> targetTypes = new HashSet<>();
-    public final String NAME;
 
-    public Target(ConfigurationSection config) {
-        this.config = config;
-        NAME = config.getString("name", "unnamed");
-        try {
-            targetTypes.addAll(config.getStringList("target-types"));
-        } catch (Exception e) {
-
-        }
+    public Target(String abilityName, String key) {
+        super(abilityName, key);
     }
 
     public Location applyTargetSettings(Location currentLocation, ConfigurationSection config, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {

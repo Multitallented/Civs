@@ -14,27 +14,44 @@ import java.util.HashSet;
  * @author Multitallented
  */
 public abstract class Effect extends SpellComponent {
-    protected final ConfigurationSection node;
-    public final String NAME;
 
-    public Effect(ConfigurationSection config) {
-        this.node = config;
-        NAME = config.getString("name", "unnamed");
+    public Effect(String abilityName, String key) {
+        super(abilityName, key);
     }
 
-    public void execute(Spell spell, HashSet<Object> targetSet) {
+    public abstract void apply(Object target, Entity origin, int level, Spell spell);
+
+    public abstract boolean meetsRequirement(Object target, Entity origin, int level, Spell ability);
+
+    /*public void apply(Spell spell, HashSet<Object> targetSet) {
         for (Object obj : targetSet) {
             if (obj instanceof Player) {
-                execute(spell, (Player) obj);
+                apply(spell, (Player) obj);
             } else if (obj instanceof Block) {
-                execute(spell, (Block) obj);
+                apply(spell, (Block) obj);
             } else if (obj instanceof Entity) {
-                execute(spell, (Entity) obj);
+                apply(spell, (Entity) obj);
             }
         }
     }
 
-    public abstract void execute(Spell spell, Player player);
-    public abstract void execute(Spell spell, Block block);
-    public abstract void execute(Spell spell, Entity entity);
+    public abstract void apply(Spell spell, Player player);
+    public abstract void apply(Spell spell, Block block);
+    public abstract void apply(Spell spell, Entity entity);
+
+    public void meetsRequirement(Spell spell, HashSet<Object> targets, int level) {
+        for (Object obj : targets) {
+            if (obj.getClass().equals(Player.class)) {
+                meetsRequirement(spell, (Player) obj, level);
+            } else if (obj.getClass().equals(Block.class)) {
+                meetsRequirement(spell, (Block) obj, level);
+            } else if (obj instanceof Entity) {
+                meetsRequirement(spell, (Entity) obj, level);
+            }
+        }
+    }
+
+    abstract void meetsRequirement(Spell spell, Player player, int level);
+    abstract void meetsRequirement(Spell spell, Block block, int level);
+    abstract void meetsRequirement(Spell spell, Entity entity, int level);*/
 }
