@@ -86,10 +86,9 @@ public class SpellType extends CivItem {
                                    ConfigurationSection config,
                                    int level,
                                    Player caster,
-                                   Spell spell,
-                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+                                   Spell spell) {
         if (type.equals("vector")) {
-            return new VectorTarget(spell, key, caster, level, abilityVariables, config);
+            return new VectorTarget(spell, key, caster, level, config);
         }
         return null;
     }
@@ -100,10 +99,9 @@ public class SpellType extends CivItem {
                                    int level,
                                    Object target,
                                    Player caster,
-                                   Spell spell,
-                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+                                   Spell spell) {
         if (type.equals("damage")) {
-            return new DamageEffect(spell, key, target, caster, level, abilityVariables, config);
+            return new DamageEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -113,10 +111,9 @@ public class SpellType extends CivItem {
                                    int level,
                                    Object target,
                                    Player caster,
-                                   Spell spell,
-                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+                                   Spell spell) {
         if (type.equals("damage")) {
-            return new DamageEffect(spell, key, target, caster, level, abilityVariables, config);
+            return new DamageEffect(spell, key, target, caster, level, config);
         }
         return null;
     }

@@ -26,16 +26,16 @@ public class DamageEffect extends Effect {
     private boolean silent = true;
 
 
-    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars, ConfigurationSection section) {
-        super(spell, key, target, origin, level, vars, section);
+    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
+        super(spell, key, target, origin, level, section);
         String configDamage = section.getString("damage", "0");
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, configDamage, level, target, spell));
+        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(spell.getAbilityVariables(), configDamage, level, target, spell));
         this.silent = section.getBoolean("silent", true);
         this.ignoreArmor = section.getBoolean("ignore-armor", false);
     }
-    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars, String value) {
-        super(spell, key, target, origin, level, vars, value);
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, value, level, target, spell));
+    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
+        super(spell, key, target, origin, level, value);
+        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(spell.getAbilityVariables(), value, level, target, spell));
         this.ignoreArmor = false;
         this.silent = true;
     }

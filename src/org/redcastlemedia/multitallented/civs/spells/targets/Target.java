@@ -25,9 +25,8 @@ public abstract class Target extends SpellComponent {
                   String key,
                   Entity origin,
                   int level,
-                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
                   ConfigurationSection config) {
-        super(spell, key, null, origin, level, vars);
+        super(spell, key, null, origin, level);
         this.config=config;
     }
     public ConfigurationSection getConfig() {
@@ -37,7 +36,7 @@ public abstract class Target extends SpellComponent {
     public Location applyTargetSettings(Location currentLocation) {
         //jitter
         int level = getLevel();
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getVars();
+        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getSpell().getAbilityVariables();
         String jitter = config.getString("jitter");
         if (jitter != null) {
             String jX = jitter.split(";")[0];

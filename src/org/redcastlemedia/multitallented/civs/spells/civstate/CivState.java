@@ -5,176 +5,106 @@ import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 
 /**
  *
  * @author Multitallented
  */
-public abstract class CivState extends SpellComponent {
-    private final long period;
-    private final long duration;
-    private final HashSet<Integer> currentTasks = new HashSet<>();
-    public CivState(String name, long duration, long period) {
-        this.duration = duration;
-        this.period = period;
+public class CivState {
+    private int durationId;
+    private int periodId;
+    private final String COMPONENT_NAME;
+    private final ConfigurationSection CONFIG;
+    private final String CONFIG_STRING;
+    private final Spell SPELL;
+
+    public CivState(Spell spell, String componentName, int durationId, int periodId, String configString) {
+        this.durationId = durationId;
+        this.periodId = periodId;
+        this.COMPONENT_NAME = componentName;
+        this.CONFIG = null;
+        this.CONFIG_STRING = configString;
+        this.SPELL = spell;
+    }
+    public CivState(Spell spell, String componentName, int durationId, int periodId, ConfigurationSection config) {
+        this.durationId = durationId;
+        this.periodId = periodId;
+        this.COMPONENT_NAME = componentName;
+        this.CONFIG = config;
+        this.CONFIG_STRING = null;
+        this.SPELL = spell;
+    }
+    public CivState(Spell spell, String componentName, int durationId, int periodId) {
+        this.durationId = durationId;
+        this.periodId = periodId;
+        this.COMPONENT_NAME = componentName;
+        this.CONFIG = null;
+        this.CONFIG_STRING = null;
+        this.SPELL = spell;
     }
 
-    public HashSet<Integer> getCurrentTasks() {
-        return currentTasks;
-    }
 
-    public abstract HashSet<BuiltInCivStates> getDefaultStates();
-
-    public abstract HashSet<CivState> getInternalStates();
-
-    public void apply(final Civilian civilian) {
-        for (final CivState u : getInternalStates()) {
-            u.apply(civilian);
-        }
-        if (duration > 0) {
-            int idDuration = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    remove(civilian);
-                    for (int i : getCurrentTasks()) {
-                        Bukkit.getScheduler().cancelTask(i);
-                    }
-                }
-            }, getDuration());
-            getCurrentTasks().add(idDuration);
-        }
-        if (period > 0) {
-            int idPeriod = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    tick(civilian);
-                }
-            }, period, period);
-            getCurrentTasks().add(idPeriod);
-        }
+    public Spell getSpell() {
+        return SPELL;
     }
-    public void apply(final Block block) {
-        for (final CivState u : getInternalStates()) {
-            u.apply(block);
-        }
-        if (duration > 0) {
-            int idDuration = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    remove(block);
-                    for (int i : getCurrentTasks()) {
-                        Bukkit.getScheduler().cancelTask(i);
-                    }
-                }
-            }, getDuration());
-            getCurrentTasks().add(idDuration);
-        }
-        if (period > 0) {
-            int idPeriod = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    tick(block);
-                }
-            }, period, period);
-            getCurrentTasks().add(idPeriod);
-        }
+    public String getComponentName() {
+        return COMPONENT_NAME;
     }
-    public void apply(final Entity e) {
-        for (final CivState u : getInternalStates()) {
-            u.apply(e);
-        }
-        if (duration > 0) {
-            int idDuration = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    remove(e);
-                    for (int i : getCurrentTasks()) {
-                        Bukkit.getScheduler().cancelTask(i);
-                    }
-                }
-            }, getDuration());
-            getCurrentTasks().add(idDuration);
-        }
-        if (period > 0) {
-            int idPeriod = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    tick(e);
-                }
-            }, period, period);
-            getCurrentTasks().add(idPeriod);
-        }
+    public int getDurationId() {
+        return durationId;
     }
+    public void setDurationId(int newDurationId) {
+        this.durationId = newDurationId;
+    }
+    public int getPeriodId() {
+        return periodId;
+    }
+    public void setPeriodId(int newPeriodId) {
+        this.periodId = newPeriodId;
+    }
+    public ConfigurationSection getConfig() { return this.CONFIG; }
+    public String getConfigString() { return this.CONFIG_STRING; }
 
-    public void tick(Civilian civilian) {
-
-    }
-    public void tick(Block block) {
-
-    }
-    public void tick(Entity e) {
-
-    }
-
-    public void remove(Civilian user) {
-        for (int i : getCurrentTasks()) {
-            Bukkit.getScheduler().cancelTask(i);
+    public void remove(Object origin) {
+        //TODO make this work for mobs too
+        if (!(origin instanceof Player)) {
+            return;
         }
-        for (CivState us : getInternalStates()) {
-            us.remove(user);
+        Player player = (Player) origin;
+        Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!champion.getStates().containsKey(SPELL.getType() + "." + COMPONENT_NAME)) {
+            return;
         }
-    }
-    public void remove(Block block) {
-        for (int i : getCurrentTasks()) {
-            Bukkit.getScheduler().cancelTask(i);
-        }
-        for (CivState us : getInternalStates()) {
-            us.remove(block);
-        }
-    }
-    public void remove(Entity e) {
-        for (int i : getCurrentTasks()) {
-            Bukkit.getScheduler().cancelTask(i);
-        }
-        for (CivState us : getInternalStates()) {
-            us.remove(e);
-        }
-    }
+        Effect component;
 
-//    @Override
-//    public void execute(Spell cs, Civilian target, HashMap<String, Object> node) {
-//        apply(target);
-//    }
-//    @Override
-//    public void execute(Spell cs, Entity target, HashMap<String, Object> node) {
-//        apply(target);
-//    }
-//    @Override
-//    public void execute(Spell cs, Block target, HashMap<String, Object> node) {
-//        apply(target);
-//    }
-
-    public abstract void sendCancelledMessage(Player player, CancelledMessageTypes type);
-
-    public enum CancelledMessageTypes {
-        CHAT,
-        COMMAND,
-        HEAL,
-        DAMAGE,
-        SKILL,
-        MANA
-    }
-
-    public long getPeriod() {
-        return period;
-    }
-    public long getDuration() {
-        return duration;
+        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(SPELL.getType());
+        int level = champion.getLevel(spellType);
+        if (CONFIG != null) {
+            component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG, level, null, player, SPELL);
+        } else {
+            component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG_STRING, level, null, player, SPELL);
+        }
+        if (component != null && (CONFIG != null || CONFIG_STRING != null)) {
+            component.remove(player, level, SPELL);
+        }
+        if (durationId > -1) {
+            Bukkit.getScheduler().cancelTask(durationId);
+        }
+        if (periodId > -1) {
+            Bukkit.getScheduler().cancelTask(periodId);
+        }
     }
 }

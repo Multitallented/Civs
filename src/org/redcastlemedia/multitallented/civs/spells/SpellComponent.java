@@ -11,18 +11,15 @@ public abstract class SpellComponent {
     private final String key;
     private final Object target;
     private final Entity origin;
-    private final HashMap<String, HashMap<Object, HashMap<String, Double>>> vars;
     private final int level;
 
     public SpellComponent(Spell spell,
                           String key,
                           Object target,
                           Entity origin,
-                          int level,
-                          HashMap<String, HashMap<Object, HashMap<String, Double>>> vars) {
+                          int level) {
         this.spell = spell;
         this.key = key;
-        this.vars = vars;
         this.target = target;
         this.origin = origin;
         this.level = level;
@@ -55,7 +52,6 @@ public abstract class SpellComponent {
     public int getLevel() { return level; }
     public Object getTarget() { return target; }
     public Entity getOrigin() { return origin; }
-    public HashMap<String, HashMap<Object, HashMap<String, Double>>> getVars() { return vars; }
 //    public abstract void setData(ConfigurationSection section, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars);
 //    public abstract void setData(String data, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars);
 

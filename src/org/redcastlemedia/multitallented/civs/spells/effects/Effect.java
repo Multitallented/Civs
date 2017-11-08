@@ -21,18 +21,16 @@ public abstract class Effect extends SpellComponent {
                   Object target,
                   Entity origin,
                   int level,
-                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
                   ConfigurationSection section) {
-        super(spell, key, target, origin, level, vars);
+        super(spell, key, target, origin, level);
     }
     public Effect(Spell spell,
                   String key,
                   Object target,
                   Entity origin,
                   int level,
-                  HashMap<String, HashMap<Object, HashMap<String, Double>>> vars,
                   String configString) {
-        super(spell, key, target, origin, level, vars);
+        super(spell, key, target, origin, level);
     }
 
     public abstract void apply();
