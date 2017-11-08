@@ -58,7 +58,6 @@ public abstract class SpellComponent {
     public HashMap<String, HashMap<Object, HashMap<String, Double>>> getVars() { return vars; }
 //    public abstract void setData(ConfigurationSection section, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars);
 //    public abstract void setData(String data, int level, Object target, Spell spell, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars);
-    public abstract String getTargetName();
 
     public void remove(Entity origin, int level, Spell spell) {
         //Optional override

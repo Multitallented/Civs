@@ -6,9 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 
@@ -19,17 +17,19 @@ import java.util.*;
 public class Spell {
     private final Player caster;
     private String type;
+    private int level;
 
-    public Spell(String type, Player caster) {
+    public Spell(String type, Player caster, int level) {
         this.type = type;
         this.caster = caster;
+        this.level = level;
     }
 
     public String getType() {
         return type;
     }
 
-    public boolean useAbility(Player caster, int level) {
+    public boolean useAbility() {
         FileConfiguration config = ((SpellType) ItemManager.getInstance().getItemType(type)).getConfig();
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
         HashSet<LivingEntity> tempSet = new HashSet<>();
@@ -49,23 +49,36 @@ public class Spell {
                 }
 //				System.out.println("Condition: " + key + "/" + conditionName);
                 String costValueString = conditionsConfig.getString(key, "not-a-string");
-                Effect component; //TODO create this
 //                AbilityComponent component = rpgen.getAbilityManager().getAbilityComponent(conditionName, key);
                 boolean invert = key.endsWith("^not");
 
-                if (!costValueString.equals("not-a-string") && !costValueString.contains("MemorySection")) {
-                    component = new SpellComponent(costValueString, level, caster, this, abilityVariables);
-                } else {
-                    ConfigurationSection currentConfigSection = conditionsConfig.getConfigurationSection(key);
-                    component.setData(currentConfigSection, level, caster, this, abilityVariables);
+
+                boolean isSection = costValueString.equals("not-a-string") || costValueString.contains("MemorySection");
+                String targetKey = "self";
+                if (isSection) {
+                    String tempTarget = conditionsConfig.getConfigurationSection(key).getString("target", "not-a-string");
+                    if (!tempTarget.equals("not-a-string")) {
+                        targetKey = tempTarget;
+                    }
                 }
-                String targetKey = component.getTargetName();
                 Set<?> targetSet = mappedTargets.get(targetKey);
                 if (targetSet == null || targetSet.isEmpty()) {
                     continue;
                 }
                 for (Object target : targetSet) {
-                    boolean meetsRequirement = component.meetsRequirement(target, caster, level, this);
+                    Effect component;
+                    if (!costValueString.equals("not-a-string") && !costValueString.contains("MemorySection")) {
+                        component = SpellType.getEffect(conditionName, key, costValueString, level, target, caster, this, abilityVariables);
+                    } else {
+                        ConfigurationSection currentConfigSection = conditionsConfig.getConfigurationSection(key);
+                        component = SpellType.getEffect(conditionName, key, currentConfigSection, level, target, caster, this, abilityVariables);
+                    }
+                    boolean meetsRequirement;
+                    try {
+                        meetsRequirement = component.meetsRequirement();
+                    } catch (NullPointerException npe) {
+                        meetsRequirement = false;
+                    }
                     if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
                         System.out.println(conditionName + " failed requirement");
                         return false;

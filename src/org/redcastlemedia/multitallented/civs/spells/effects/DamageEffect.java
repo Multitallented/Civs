@@ -22,7 +22,6 @@ import java.util.HashMap;
  */
 public class DamageEffect extends Effect {
     private int damage = 0;
-    private String target = "self";
     private boolean ignoreArmor = false;
     private boolean silent = true;
 
@@ -31,17 +30,12 @@ public class DamageEffect extends Effect {
         super(spell, key, target, origin, level, vars, section);
         String configDamage = section.getString("damage", "0");
         this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, configDamage, level, target, spell));
-        String tempTarget = section.getString("target", "not-a-string");
         this.silent = section.getBoolean("silent", true);
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        }
         this.ignoreArmor = section.getBoolean("ignore-armor", false);
     }
     public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, HashMap<String, HashMap<Object, HashMap<String, Double>>> vars, String value) {
         super(spell, key, target, origin, level, vars, value);
         this.damage = (int) Math.round(Spell.getLevelAdjustedValue(vars, value, level, target, spell));
-        this.target = "self";
         this.ignoreArmor = false;
         this.silent = true;
     }
@@ -60,14 +54,14 @@ public class DamageEffect extends Effect {
         Player player = null;
         if (livingEntity instanceof Player) {
             player = (Player) livingEntity;
-            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
+//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
         }
         if (livingEntity.getHealth() < damage) {
             if (!this.silent && origin instanceof Player) {
                 ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take " + damage + " damage.");
             }
             if (player != null) {
-                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
             }
             return false;
         }
@@ -78,17 +72,14 @@ public class DamageEffect extends Effect {
                 ((Player) origin).sendMessage(Civs.getPrefix() + " target can't be damaged.");
             }
             if (player != null) {
-                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
             }
             return false;
         }
         if (player != null) {
-            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
         }
         return true;
-    }
-    public String getTargetName() {
-        return this.target;
     }
 
     @Override
@@ -99,11 +90,10 @@ public class DamageEffect extends Effect {
             return;
         }
         final LivingEntity livingEntity = (LivingEntity) target;
-        final Entity finalOrigin = origin;
         Player player = null;
         if (origin instanceof Player) {
             player = (Player) origin;
-            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
+//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
         }
         int damage = this.damage;
         if (this.ignoreArmor && livingEntity instanceof Player) {
@@ -112,7 +102,7 @@ public class DamageEffect extends Effect {
         livingEntity.damage(damage, origin);
 
         if (player != null) {
-            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
         }
     }
 

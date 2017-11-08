@@ -1,26 +1,17 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
-import org.redcastlemedia.multitallented.civs.spells.targets.TargetScheme;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class SpellType extends CivItem {
@@ -37,11 +28,6 @@ public class SpellType extends CivItem {
                      String permission,
                      HashMap<String, String> description,
                      List<String> groups,
-                     HashSet<Target> targets,
-                     ArrayList<HashMap<Condition, String>> preCastConditions,
-                     ArrayList<HashMap<Effect, String>> preCastEffects,
-                     ArrayList<HashMap<Condition, String>> postCastConditions,
-                     ArrayList<HashMap<Effect, String>> postCastEffects,
                      FileConfiguration config) {
         super(reqs,
                 false,
@@ -57,32 +43,9 @@ public class SpellType extends CivItem {
                 description,
                 groups);
         this.config = config;
-        this.targets = targets;
-        this.preCastConditions = preCastConditions;
-        this.preCastEffects = preCastEffects;
-        this.postCastConditions = postCastConditions;
-        this.postCastEffects = postCastEffects;
     }
 
     private final FileConfiguration config;
-    private final HashSet<Target> targets;
-    private final ArrayList<HashMap<Condition, String>> preCastConditions;
-    private final ArrayList<HashMap<Effect, String>> preCastEffects;
-    private final ArrayList<HashMap<Condition, String>> postCastConditions;
-    private final ArrayList<HashMap<Effect, String>> postCastEffects;
-
-    public ArrayList<HashMap<Condition, String>> getPreCastConditions() {
-        return preCastConditions;
-    }
-    public ArrayList<HashMap<Condition, String>> getPostCastConditions() {
-        return postCastConditions;
-    }
-    public ArrayList<HashMap<Effect, String>> getPreCastEffects() {
-        return preCastEffects;
-    }
-    public ArrayList<HashMap<Effect, String>> getPostCastEffects() {
-        return postCastEffects;
-    }
 
     public FileConfiguration getConfig() {
         return config;
@@ -96,17 +59,34 @@ public class SpellType extends CivItem {
         }
         return null;
     }
-    public static Condition getCondition(String type, ConfigurationSection section) {
+    public static Effect getEffect(String type,
+                                   String key,
+                                   String config,
+                                   int level,
+                                   Object target,
+                                   Player caster,
+                                   Spell spell,
+                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
+        if (type.equals("damage")) {
+            return new DamageEffect(spell, key, target, caster, level, abilityVariables, config);
+        }
         return null;
     }
-    public static Effect getEffect(String type, ConfigurationSection section) {
+    public static Effect getEffect(String type,
+                                   String key,
+                                   ConfigurationSection config,
+                                   int level,
+                                   Object target,
+                                   Player caster,
+                                   Spell spell,
+                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
         if (type.equals("damage")) {
-            return new DamageEffect(section);
+            return new DamageEffect(spell, key, target, caster, level, abilityVariables, config);
         }
         return null;
     }
 
-    public void useSkill(Civilian civilian) {
+    /*public void useSkill(Civilian civilian) {
         Player caster = Bukkit.getPlayer(civilian.getUuid());
         if (caster == null) {
             return;
@@ -164,5 +144,5 @@ public class SpellType extends CivItem {
 
         Spell cs = new Spell(getProcessedName(), caster);
         cs.checkConditions();
-    }
+    }*/
 }
