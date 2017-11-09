@@ -7,10 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
+import org.redcastlemedia.multitallented.civs.spells.effects.*;
 import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
@@ -72,18 +69,6 @@ public class SpellType extends CivItem {
         return components;
     }
 
-    /*public static Target getTarget(String type,
-                                   String key,
-                                   String config,
-                                   int level,
-                                   Player caster,
-                                   Spell spell,
-                                   HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables) {
-        if (type.equals("vector")) {
-            return new VectorTarget(spell, key, caster, level, abilityVariables, config);
-        }
-        return null;
-    }*/
     public static Target getTarget(String type,
                                    String key,
                                    ConfigurationSection config,
@@ -113,6 +98,8 @@ public class SpellType extends CivItem {
             return new CooldownEffect(spell, key, target, caster, level, config);
         } else if (type.equals("potion")) {
             return new CivPotionEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("stamina")) {
+            return new StaminaEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -129,67 +116,9 @@ public class SpellType extends CivItem {
             return new CooldownEffect(spell, key, target, caster, level, config);
         } else if (type.equals("potion")) {
             return new CivPotionEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("stamina")) {
+            return new StaminaEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
-
-    /*public void useSkill(Civilian civilian) {
-        Player caster = Bukkit.getPlayer(civilian.getUuid());
-        if (caster == null) {
-            return;
-        }
-
-        //This will populate the target map by recursively
-        //acquiring targets and end-points beginning with origin
-        //self. If there is an origin that does not match the
-        //name of a target scheme, then the skill will fail
-        HashMap<String, HashSet<Object>> targetMap = new HashMap<>();
-        HashSet<Target> targetsClone = (HashSet<Target>) targets.clone();
-        HashMap<Target, Location> processedTargets = new HashMap<>();
-        do {
-            HashSet<Target> removeLater = new HashSet<>();
-            for (Target tar : targetsClone) {
-//                if (!tar.getNode().containsKey("origin")) {
-//                    removeLater.add(tar);
-//                }
-                String originName = "self";
-                try {
-//                    originName = (String) tar.getNode().get("origin");
-                } catch (Exception e) {
-                    removeLater.add(tar);
-                }
-                if (!originName.equals("self")) {
-                    for (Target targ : processedTargets.keySet()) {
-                        if (!targ.NAME.equals(originName)) {
-                            continue;
-                        }
-                        TargetScheme ts = tar.getTargets(civilian);
-                        targetMap.put(originName, ts.targets);
-                        removeLater.add(tar);
-                        processedTargets.put(tar, ts.origin);
-                        break;
-                    }
-                } else {
-                    TargetScheme ts = tar.getTargets(civilian);
-                    targetMap.put(originName, ts.targets);
-                    removeLater.add(tar);
-                    processedTargets.put(tar, ts.origin);
-                }
-            }
-            for (Target tar : removeLater) {
-                targetsClone.remove(tar);
-            }
-            if (removeLater.isEmpty() && !targetsClone.isEmpty()) {
-                Civs.logger.severe("Failed to cast " + getProcessedName() + " for " + caster.getName());
-                Civs.logger.severe("Improper target origin configuration.");
-                return;
-            }
-        } while (!targetsClone.isEmpty());
-        HashSet<Object> tempSet = new HashSet<>();
-        tempSet.add(civilian);
-        targetMap.put("self", tempSet);
-
-        Spell cs = new Spell(getProcessedName(), caster);
-        cs.checkConditions();
-    }*/
 }
