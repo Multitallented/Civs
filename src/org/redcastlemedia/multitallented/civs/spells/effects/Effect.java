@@ -1,14 +1,11 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  *

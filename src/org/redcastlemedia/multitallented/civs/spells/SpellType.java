@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
@@ -107,6 +109,10 @@ public class SpellType extends CivItem {
                                    Spell spell) {
         if (type.equals("damage")) {
             return new DamageEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("cooldown")) {
+            return new CooldownEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("potion")) {
+            return new CivPotionEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -119,6 +125,10 @@ public class SpellType extends CivItem {
                                    Spell spell) {
         if (type.equals("damage")) {
             return new DamageEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("cooldown")) {
+            return new CooldownEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("potion")) {
+            return new CivPotionEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
