@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,154 +25,94 @@ import org.redcastlemedia.multitallented.civs.events.SpellPreCastEvent;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivStates;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Multitallented
  */
 public class SpellListener implements Listener {
 
+    private final HashMap<LivingEntity, AbilityListen> damageListeners = new HashMap<LivingEntity, AbilityListen>();
+    private final HashMap<Projectile, AbilityListen> projectileListeners = new HashMap<Projectile, AbilityListen>();
+    public static SpellListener spellListener = null;
+
+    public SpellListener() {
+        spellListener = this;
+    }
+
+    public static SpellListener getInstance() {
+        return spellListener;
+    }
+
     @EventHandler
-    public void onEntitySpawn(EntitySpawnEvent event) {
-        Entity e = event.getEntity();
-        if (!(e instanceof LivingEntity)) {
+    public void onListenerDamage(EntityDamageEvent event) {
+        if (event.isCancelled() || event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
             return;
         }
-        LivingEntity liv = (LivingEntity) e;
-        String creatureTypeName = liv.getType().toString();
-        int health = ConfigManager.getInstance().getCreatureHealth(creatureTypeName);
-        if (health > 0) {
-            liv.setHealth(health);
-//            liv.setMaxHealth(health);
-        }
-        //TODO damage? probably going to have to check the damage events instead
-    }
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        for (CivState us : civilian.getStates().values()) {
-            if (us.getDefaultStates().contains(BuiltInCivStates.NO_COMMANDS)) {
-                us.sendCancelledMessage(event.getPlayer().getPlayer(), CivState.CancelledMessageTypes.COMMAND);
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Civilian user = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        for (CivState us : user.getStates().values()) {
-            if (us.getDefaultStates().contains(BuiltInCivStates.MUTE)) {
-                us.sendCancelledMessage(event.getPlayer(), CivState.CancelledMessageTypes.CHAT);
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    ////////////VANILLA EVENTS////////////////
-
-    @EventHandler(ignoreCancelled = true)
-    public void onDamage(EntityDamageEvent event) {
-        if (event.getDamage() < 1) {
+        LivingEntity livingEntity = (LivingEntity) event.getEntity();
+        if (!damageListeners.containsKey(livingEntity)) {
             return;
         }
-        Civilian user = null;
-        Civilian dUser = null;
-        Player damagee = null;
-        Player damager = null;
-        CivilianManager civilianManager = CivilianManager.getInstance();
-        boolean byEntity = event instanceof EntityDamageByEntityEvent;
-        if (byEntity && ((EntityDamageByEntityEvent) event).getDamager() instanceof Player) {
-            damager = (Player) ((EntityDamageByEntityEvent) event).getDamager();
-            dUser = civilianManager.getCivilian(damager.getUniqueId());
-        }
-        if (event.getEntity() instanceof Player) {
-            damagee = (Player) event.getEntity();
-            user = civilianManager.getCivilian(damagee.getUniqueId());
-        }
-        if (user != null) {
-            for (CivState us : user.getStates().values()) {
-                if (us.getDefaultStates().contains(BuiltInCivStates.NO_DAMAGE) ||
-                        us.getDefaultStates().contains(BuiltInCivStates.NO_INCOMING_DAMAGE) ||
-                        (dUser != null && (us.getDefaultStates().contains(BuiltInCivStates.NO_PVP) ||
-                                us.getDefaultStates().contains(BuiltInCivStates.NO_INCOMING_PVP))) ||
-                        (dUser == null && (us.getDefaultStates().contains(BuiltInCivStates.NO_INCOMING_PVE) ||
-                                us.getDefaultStates().contains(BuiltInCivStates.NO_PVE)))) {
-                    if (dUser != null) {
-                        us.sendCancelledMessage(damager, CivState.CancelledMessageTypes.DAMAGE);
-                    }
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-        if (dUser != null) {
-            for (CivState us : dUser.getStates().values()) {
-                if (us.getDefaultStates().contains(BuiltInCivStates.NO_OUTGOING_DAMAGE) ||
-                        us.getDefaultStates().contains(BuiltInCivStates.NO_DAMAGE) ||
-                        (user != null && (us.getDefaultStates().contains(BuiltInCivStates.NO_OUTGOING_PVP) ||
-                                us.getDefaultStates().contains(BuiltInCivStates.NO_PVP))) ||
-                        (user == null && (us.getDefaultStates().contains(BuiltInCivStates.NO_PVE) ||
-                                us.getDefaultStates().contains(BuiltInCivStates.NO_OUTGOING_PVE)))) {
-                    us.sendCancelledMessage(damager, CivState.CancelledMessageTypes.DAMAGE);
-                    event.setCancelled(true);
-                    return;
-                }
-            }
+        AbilityListen abilityListener = damageListeners.get(livingEntity);
+        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getLevel(), abilityListener.getConfig(), event.getEntity())) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onHealthChange(EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+    public void onListenerProjectile(EntityDamageByEntityEvent event) {
+        AbilityListen abilityListener;
+        if (projectileListeners.containsKey(event.getDamager())) {
+            abilityListener = projectileListeners.get(event.getDamager());
+        } else {
             return;
         }
-
-        Player player = (Player) event.getEntity();
-        Civilian user = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (CivState us : user.getStates().values()) {
-            if (us.getDefaultStates().contains(BuiltInCivStates.NO_HEAL)) {
-                us.sendCancelledMessage(player, CivState.CancelledMessageTypes.HEAL);
-                event.setCancelled(true);
-                return;
-            }
+        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getLevel(), abilityListener.getConfig(), event.getEntity())) {
+            event.setCancelled(true);
         }
     }
 
-    ////////////PROXIS EVENTS/////////////////
-    @EventHandler
-    public void onUserManaChangeEvent(ManaChangeEvent event) {
-        Civilian user = CivilianManager.getInstance().getCivilian(event.getUUID());
-        boolean natural = event.getReason() == ManaChangeEvent.ManaChangeReason.NATURAL_REGEN;
-        boolean increase = event.getManaChange() > 0;
-        boolean decrease = !increase;
-        for (CivState us : user.getStates().values()) {
-            if (us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE) ||
-                    (natural && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE_NATURAL)) ||
-                    (increase && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE_GAIN)) ||
-                    (decrease && us.getDefaultStates().contains(BuiltInCivStates.MANA_FREEZE))) {
-                us.sendCancelledMessage(Bukkit.getPlayer(event.getUUID()), CivState.CancelledMessageTypes.MANA);
-                event.setCancelled(true);
-                return;
-            }
+    public void addDamageListener(LivingEntity livingEntity, int level, ConfigurationSection section, Spell spell) {
+        damageListeners.put(livingEntity, new AbilityListen(spell,null, livingEntity, level, section));
+    }
+    public boolean removeDamageListener(LivingEntity livingEntity) {
+        return damageListeners.remove(livingEntity) != null;
+    }
+    public void addProjectileListener(Projectile livingEntity, int level, ConfigurationSection section, Spell spell) {
+        projectileListeners.put(livingEntity, new AbilityListen(spell,null, livingEntity, level, section));
+    }
+    public boolean removeProjectileListener(Projectile livingEntity) {
+        return projectileListeners.remove(livingEntity) != null;
+    }
+
+    private class AbilityListen {
+        private final Object target;
+        private final int level;
+        private final ConfigurationSection config;
+        private final Player caster;
+        private final Spell spell;
+
+        public AbilityListen(Spell spell, Player caster, Object target, int level, ConfigurationSection config) {
+            this.caster = caster;
+            this.target = target;
+            this.level = level;
+            this.config = config;
+            this.spell = spell;
         }
-    }
-    @EventHandler
-    public void onSkillPreCastEvent(SpellPreCastEvent event) {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getUuid());
-        for (CivState us : civilian.getStates().values()) {
-            if (us.getDefaultStates().contains(BuiltInCivStates.NO_SKILLS) ||
-                    us.getDefaultStates().contains(BuiltInCivStates.NO_OUTGOING_SKILLS)) {
-                us.sendCancelledMessage(Bukkit.getPlayer(event.getUuid()), CivState.CancelledMessageTypes.SKILL);
-                event.setCancelled(true);
-                return;
-            }
+
+        public Player getCaster() {
+            return caster;
         }
+        public Object getTarget() {
+            return target;
+        }
+        public int getLevel() {
+            return level;
+        }
+        public ConfigurationSection getConfig() {
+            return config;
+        }
+        public Spell getSpell() { return spell; }
     }
-    @EventHandler
-    public void onSkillCondition(ConditionEvent event) {
-        event.SPELL.checkInCondition(event.INDEX, event.getResult());
-    }
-    //TODO addFavoriteSkill from listener
 }

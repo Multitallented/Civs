@@ -5,14 +5,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.mockito.internal.matchers.Null;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
-import org.redcastlemedia.multitallented.civs.spells.conditions.Condition;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -144,7 +141,7 @@ public class ItemManager {
                 description.put(key, configurationSection.getString(key));
             }
         }
-        CivItem civItem = new SpellType(
+        SpellType spellType = new SpellType(
                 config.getStringList("reqs"),
                 name,
                 icon.getMat(),
@@ -156,37 +153,9 @@ public class ItemManager {
                 config.getString("permission"),
                 description,
                 config.getStringList("groups"),
-                getTargets(config.getConfigurationSection("targets")),
-                getConditions(config.getConfigurationSection("conditions")), //TODO correct this
-                getEffects(),
-                getConditions(config.getConfigurationSection("conditions")), //TODO correct this
-                getEffects(),
                 config);
-        itemTypes.put(name, civItem);
-        return civItem;
-    }
-    private HashSet<Target> getTargets(ConfigurationSection section) {
-        HashSet<Target> targets = new HashSet<>();
-        for (String key : section.getKeys(false)) {
-            Target target = SpellType.getTarget(section.getString(key + ".type"),
-                    section.getConfigurationSection(key + ".params"));
-            targets.add(target);
-        }
-        return targets;
-    }
-    private ArrayList<HashMap<Condition, String>> getConditions(ConfigurationSection section) {
-        ArrayList<HashMap<Condition, String>> conditions = new ArrayList<>();
-        for (String key : section.getKeys(false)) {
-            Condition condition = SpellType.getCondition(section.getString(key + ".type"),
-                    section.getConfigurationSection(key + ".params"));
-            //TODO add them to the array list somehow
-        }
-        return conditions;
-    }
-    private ArrayList<HashMap<Effect, String>> getEffects() {
-        ArrayList<HashMap<Effect, String>> effects = new ArrayList<>();
-        //TODO get effects from config
-        return effects;
+        itemTypes.put(name, spellType);
+        return spellType;
     }
 
     public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {

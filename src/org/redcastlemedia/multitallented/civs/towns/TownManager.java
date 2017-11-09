@@ -142,7 +142,7 @@ public class TownManager {
                 location.getZ() - townType.getBuildRadius());
         for (Location currentLocation : locationCheck) {
             Town town = getTownAt(currentLocation);
-            if (town != null) {
+            if (town != null && !towns.contains(town)) {
                 towns.add(town);
             }
         }

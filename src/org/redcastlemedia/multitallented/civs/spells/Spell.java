@@ -132,29 +132,31 @@ public class Spell {
         return useAbility(mappedTargets, false, new HashMap<String, ConfigurationSection>());
     }
 
-    public static boolean useAbility(Player caster, int level, ConfigurationSection useSection, Object newTarget) {
-        //TODO finish this stub of ability listener
-		/*HashMap<String, Set<?>> mappedTargets = new HashMap<>();
-		HashSet<LivingEntity> tempSet = new HashSet<>();
-		tempSet.add(caster);
-		mappedTargets.put("self", tempSet);
-		HashSet<Object> tempTarget = new HashSet<Object>();
-		tempTarget.add(newTarget);
-		mappedTargets.put("target", tempTarget);
+    public boolean useAbilityFromListener(Player caster, int level, ConfigurationSection useSection, Object newTarget) {
+        HashMap<String, Set<?>> mappedTargets = new HashMap<>();
+        HashSet<LivingEntity> tempSet = new HashSet<>();
+        tempSet.add(caster);
+        mappedTargets.put("self", tempSet);
+        HashSet<Object> tempTarget = new HashSet<>();
+        tempTarget.add(newTarget);
+        mappedTargets.put("target", tempTarget);
+        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
 
-		for (String key : this.targetSchema.keySet()) {
-			String targetName = this.targetSchema.get(key).getString("type", "nearby");
-			AbilityTarget abilityTarget = rpgen.getAbilityManager().getAbilityTarget(targetName);
-			if (abilityTarget == null) {
-				continue;
-			}
-			mappedTargets.put(key, abilityTarget.getTargets(caster, this.targetSchema.get(key), level));
-			if (this.targetSchema.get(key).getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
-				return false;
-			}
-		}
+        ConfigurationSection targetSections = spellType.getConfig().getConfigurationSection("targets");
+        for (String key : targetSections.getKeys(false)) {
+            ConfigurationSection targetSection = targetSections.getConfigurationSection(key);
+            String targetName = targetSection.getString("type", "nearby");
+            Target abilityTarget = SpellType.getTarget(targetName, key, targetSection, level, caster, this);
+            if (abilityTarget == null) {
+                continue;
+            }
+            mappedTargets.put(key, abilityTarget.getTargets());
+            if (targetSection.getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
+                return false;
+            }
+        }
 
-		useAbility(caster, level, mappedTargets, true, components, new HashMap<String, ConfigurationSection>());*/
+        useAbility(mappedTargets, true, new HashMap<String, ConfigurationSection>());
 
         return useSection.getBoolean("cancel", false);
     }
@@ -372,12 +374,13 @@ public class Spell {
                     final Civilian finalChampion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
                     final String finalName = type;
                     final String finalKey = key;
+                    final Spell spell = this;
                     final String finalYieldName = yieldName;
                     if (duration > 0) {
                         durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
-                                rpgen.getAbilityListener().removeDamageListener(finalCaster);
+                                SpellListener.getInstance().removeDamageListener(finalCaster);
                                 finalChampion.getStates().remove(finalName + "." + finalKey);
                             }
                         }, delay + duration);
@@ -386,15 +389,15 @@ public class Spell {
                         delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
-                                rpgen.getAbilityListener().addDamageListener(finalCaster, finalLevel, damageListenerConfig);
+                                SpellListener.getInstance().addDamageListener(finalCaster, finalLevel, damageListenerConfig, spell);
 
                             }
                         }, delay);
                     } else {
-                        rpgen.getAbilityListener().addDamageListener(caster, level, damageListenerConfig);
+                        SpellListener.getInstance().addDamageListener(caster, level, damageListenerConfig, spell);
                         HashMap<String, Object> listenerVars = new HashMap<String, Object>();
 
-                        CivState state = new CivState(finalName, finalYieldName, durationId, -1, listenerVars, damageListenerConfig, null);
+                        CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig);
                         finalChampion.getStates().put(finalName + "." + finalKey, state);
                     }
                     continue;
@@ -408,8 +411,6 @@ public class Spell {
                     int durationId = -1;
                     int periodId = -1;
                     final Player finalCaster = caster;
-                    final int finalLevel = level;
-                    final Spell spell = this;
                     final HashMap<String, Set<?>> finalMappedTargets = mappedTargets;
                     final String finalName = type;
                     final String finalKey = key;
@@ -428,7 +429,7 @@ public class Spell {
                         periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
-                                useAbility(finalCaster, finalLevel, finalMappedTargets, true, durationAbilities, mappedDurationTargets);
+                                useAbility(finalMappedTargets, true, durationAbilities);
                             }
                         }, delay, period);
                     }
@@ -436,11 +437,11 @@ public class Spell {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
-                                useAbility(finalCaster, finalLevel, finalMappedTargets, true, durationAbilities, mappedDurationTargets);
+                                useAbility(finalMappedTargets, true, durationAbilities);
                             }
                         }, delay + duration);
                     } else {
-                        useAbility(caster, level, mappedTargets, true, durationAbilities, mappedDurationTargets);
+                        useAbility(mappedTargets, true, durationAbilities);
                     }
 
                     final int finalPeriodId = periodId;
@@ -448,7 +449,7 @@ public class Spell {
                         durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                             @Override
                             public void run() {
-                                removeAbility(finalCaster, finalLevel, finalMappedTargets, durationAbilities, mappedDurationTargets);
+                                removeAbility(finalMappedTargets, durationAbilities);
                                 Bukkit.getScheduler().cancelTask(finalPeriodId);
                                 Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
                                 CivState state = champion.getStates().get(finalName + "." + finalKey);
@@ -509,6 +510,12 @@ public class Spell {
                 }
             }
         }
+        return true;
+    }
+
+    public boolean removeAbility(HashMap<String, Set<?>> mappedTargets,
+                                 Map<String, ConfigurationSection> componentMap) {
+        //TODO do I really need this?
         return true;
     }
 

@@ -73,14 +73,14 @@ public class TownTests {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertTrue(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType));
+        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType).size());
     }
     @Test
     public void townShouldNotIntersect() {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertFalse(townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType));
+        assertEquals(0, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType).size());
     }
 
     @Test
