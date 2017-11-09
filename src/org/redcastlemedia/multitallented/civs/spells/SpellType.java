@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
+import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
 
@@ -89,6 +90,10 @@ public class SpellType extends CivItem {
                                    Spell spell) {
         if (type.equals("vector")) {
             return new VectorTarget(spell, key, caster, level, config);
+        } else if (type.equals("area")) {
+            return new AreaTarget(spell, key, caster, level, config);
+        } else if (type.equals("block")) {
+            return new BlockTarget(spell, key, caster, level, config);
         }
         return null;
     }
