@@ -365,8 +365,8 @@ public class Spell {
                         continue;
                     }
 
-                    long delay = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("delay", 0), level, null, this));
-                    long duration = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + damageListenerSection.getLong("duration", 0), level, null, this));
+                    long delay = (long) Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, null, this));
+                    long duration = (long) Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("duration", 0), level, null, this));
                     final Player finalCaster = caster;
                     final int finalLevel = level;
                     int delayId = -1;
@@ -405,9 +405,9 @@ public class Spell {
 
                 if (yieldName.equals("duration") && !delayed) {
                     final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
-                    long delay = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("delay", 0), level, null, this));
-                    long duration = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("duration", 0), level, null, this));
-                    long period = (long) Math.round(getLevelAdjustedValue(abilityVariables, "" + durationSection.getLong("period", 0), level, null, this));
+                    long delay = (long) Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, null, this));
+                    long duration = (long) Math.round(getLevelAdjustedValue("" + durationSection.getLong("duration", 0), level, null, this));
+                    long period = (long) Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, null, this));
                     int durationId = -1;
                     int periodId = -1;
                     final Player finalCaster = caster;
@@ -519,14 +519,14 @@ public class Spell {
         return true;
     }
 
-    public static double getLevelAdjustedValue(HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables, String configString, int level, Object target, Spell spell) {
+    public static double getLevelAdjustedValue(String configString, int level, Object target, Spell spell) {
         if (configString.equals("0")) {
             return 0;
         }
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         try {
-            Object engineEval = engine.eval(replaceAllVariables(abilityVariables, configString, level, target, spell));
+            Object engineEval = engine.eval(replaceAllVariables(configString, level, target, spell));
             if (engineEval instanceof Integer) {
                 return (Integer) engineEval;
             } else if (engineEval instanceof Double) {
@@ -544,7 +544,8 @@ public class Spell {
         }
         return 0;
     }
-    private static String replaceAllVariables(HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables, String input, int level, Object target, Spell spell) {
+    private static String replaceAllVariables(String input, int level, Object target, Spell spell) {
+        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = spell.getAbilityVariables();
         input = input.replace("$level$", "" + level);
         input = input.replace("$rand$", "" + Math.random());
         String[] inputParts = input.split("\\$");

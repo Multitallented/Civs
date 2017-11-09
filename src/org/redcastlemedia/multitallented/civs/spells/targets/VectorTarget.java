@@ -34,8 +34,7 @@ public class VectorTarget extends Target {
             return returnSet;
         }
         LivingEntity player = (LivingEntity) origin;
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getSpell().getAbilityVariables();
-        int range = (int) Math.round(Spell.getLevelAdjustedValue(abilityVariables, config.getString("range","15"), level, null, null));
+        int range = (int) Math.round(Spell.getLevelAdjustedValue(config.getString("range","15"), level, null, null));
         boolean pen = config.getBoolean("penetration", true);
         boolean allowMultiple = config.getBoolean("allow-multiple", false);
 

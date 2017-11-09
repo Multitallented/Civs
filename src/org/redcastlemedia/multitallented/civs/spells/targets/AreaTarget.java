@@ -31,9 +31,9 @@ public class AreaTarget extends Target {
         }
         LivingEntity player = (LivingEntity) getOrigin();
         ConfigurationSection config = getConfig();
-        int range = (int) Math.round(Spell.getLevelAdjustedValue(spell.getAbilityVariables(), getConfig().getString("range","15"), level, null, spell));
-        int radius = (int) Math.round(Spell.getLevelAdjustedValue(spell.getAbilityVariables(), getConfig().getString("radius", "5"), level, null, spell));
-        int maxTargets = (int) Math.round(Spell.getLevelAdjustedValue(spell.getAbilityVariables(), getConfig().getString("max-targets", "-1"), level, null, spell));
+        int range = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("range","15"), level, null, spell));
+        int radius = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("radius", "5"), level, null, spell));
+        int maxTargets = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("max-targets", "-1"), level, null, spell));
         Collection<Entity> nearbyEntities;
         if (range < 1) {
             nearbyEntities = player.getNearbyEntities(radius, radius, radius);
