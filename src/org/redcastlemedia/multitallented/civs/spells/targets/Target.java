@@ -42,9 +42,9 @@ public abstract class Target extends SpellComponent {
             String jX = jitter.split(";")[0];
             String jY = jitter.split(";")[1];
             String jZ = jitter.split(";")[2];
-            double jitterX = Spell.getLevelAdjustedValue(abilityVariables, jX, level, null, null);
-            double jitterY = Spell.getLevelAdjustedValue(abilityVariables, jY, level, null, null);
-            double jitterZ = Spell.getLevelAdjustedValue(abilityVariables, jZ, level, null, null);
+            double jitterX = Spell.getLevelAdjustedValue(jX, level, null, null);
+            double jitterY = Spell.getLevelAdjustedValue(jY, level, null, null);
+            double jitterZ = Spell.getLevelAdjustedValue(jZ, level, null, null);
 
             if (jitterX != 0) {
                 jitterX = Math.random() * jitterX * 2 - jitterX;
@@ -60,9 +60,9 @@ public abstract class Target extends SpellComponent {
         //offset
         String offset = config.getString("offset");
         if (offset != null) {
-            double offsetX = Spell.getLevelAdjustedValue(abilityVariables, offset.split(";")[0], level, null, null);
-            double offsetY = Spell.getLevelAdjustedValue(abilityVariables, offset.split(";")[1], level, null, null);
-            double offsetZ = Spell.getLevelAdjustedValue(abilityVariables, offset.split(";")[2], level, null, null);
+            double offsetX = Spell.getLevelAdjustedValue(offset.split(";")[0], level, null, null);
+            double offsetY = Spell.getLevelAdjustedValue(offset.split(";")[1], level, null, null);
+            double offsetZ = Spell.getLevelAdjustedValue(offset.split(";")[2], level, null, null);
             currentLocation = currentLocation.add(offsetX, offsetY, offsetZ);
         }
         return currentLocation;

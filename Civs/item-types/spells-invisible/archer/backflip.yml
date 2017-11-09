@@ -9,7 +9,7 @@ pre-reqs:
 conditions:
   cooldown: 10000
 
-yield:
+components:
   0:
     cooldown^1: 10000
     velocity: 1

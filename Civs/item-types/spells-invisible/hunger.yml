@@ -1,0 +1,23 @@
+item: WOOL.14
+description:
+  en: "Takes 2 stamina away"
+  pt_br: "Demora 2 estímulos"
+
+conditions:
+  cooldown^0: 8000
+  stamina^1: 10
+
+targets:
+  vector:
+    type: vector
+    range: 30
+    penetration: true
+
+components:
+  1:
+    yield:
+      cooldown^1: 8000
+      stamina^2: -2
+      stamina^3:
+        stamina: -2
+        target: vector

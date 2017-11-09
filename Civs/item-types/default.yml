@@ -1,8 +1,5 @@
 items:
-- shelter
-- lumberyard
-- grocer
--
+- hunger
 
 shop:
 - archer
