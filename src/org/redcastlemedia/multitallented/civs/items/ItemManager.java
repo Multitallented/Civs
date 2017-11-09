@@ -131,7 +131,6 @@ public class ItemManager {
     }
 
     public CivItem loadSpellType(FileConfiguration config) throws NullPointerException {
-        //TODO load spelltype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
         ConfigurationSection configurationSection = config.getConfigurationSection("description");

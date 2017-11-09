@@ -1,4 +1,6 @@
 item: WOOL.14
+type: spell
+name: Hunger
 description:
   en: "Takes 2 stamina away"
   pt_br: "Demora 2 estímulos"

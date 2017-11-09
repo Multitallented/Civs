@@ -17,9 +17,9 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpellMenu extends Menu {
+public class SpellsMenu extends Menu {
     private static final String MENU_NAME = "CivsSpellStash";
-    public SpellMenu() {
+    public SpellsMenu() {
         super(MENU_NAME);
     }
 

@@ -127,7 +127,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ClassTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new MemberActionMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new SpellMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new SpellsMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ListAllPlayersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
@@ -138,6 +138,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
         Bukkit.getPluginManager().registerEvents(new TownTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
     }
 
     public boolean setupEconomy() {
