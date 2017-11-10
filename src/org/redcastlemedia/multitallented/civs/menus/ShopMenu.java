@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -37,22 +38,23 @@ public class ShopMenu extends Menu {
         ItemMeta im = clickedStack.getItemMeta();
         String itemName = im.getDisplayName();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
-        if (itemName.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "back-button"))) {
+        if (isBackButton(clickedStack, civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        itemName = itemName.replace("Civs ", "").toLowerCase();
         ItemManager itemManager = ItemManager.getInstance();
         if (!CVItem.isCivsItem(clickedStack)) {
             return;
         }
+        itemName = CivItem.processItemName(itemName);
         CivItem civItem = itemManager.getItemType(itemName);
         if (civItem == null) {
+            Civs.logger.severe("Error! Unable to find item " + itemName);
             return;
         }
         String history = MENU_NAME;
         if (event.getInventory().getItem(0) != null) {
-            String parentName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+            String parentName = CivItem.processItemName(event.getInventory().getItem(0).getItemMeta().getDisplayName());
             history += "," + parentName;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {

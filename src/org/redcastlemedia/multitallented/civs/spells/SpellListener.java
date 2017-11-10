@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import com.avaje.ebean.annotation.EnumValue;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -15,6 +16,8 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -22,6 +25,8 @@ import org.redcastlemedia.multitallented.civs.events.ConditionEvent;
 import org.redcastlemedia.multitallented.civs.events.GainExpEvent;
 import org.redcastlemedia.multitallented.civs.events.ManaChangeEvent;
 import org.redcastlemedia.multitallented.civs.events.SpellPreCastEvent;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivStates;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
@@ -43,6 +48,25 @@ public class SpellListener implements Listener {
 
     public static SpellListener getInstance() {
         return spellListener;
+    }
+
+    @EventHandler
+    public void onSpellUse(PlayerInteractEvent event) {
+        ItemStack itemStack = event.getItem();
+        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+            return;
+        }
+        String itemName = CivItem.processItemName(itemStack.getItemMeta().getDisplayName());
+        CivItem civItem = ItemManager.getInstance().getItemType(itemName);
+
+        if (!(civItem instanceof SpellType)) {
+            return;
+        }
+        SpellType spellType = (SpellType) civItem;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        Spell spell = new Spell(itemName, event.getPlayer(), civilian.getLevel(spellType));
+        //TODO should I add this to a spell manager? Spells dont persist
+        spell.useAbility();
     }
 
     @EventHandler

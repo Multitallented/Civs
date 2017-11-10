@@ -153,7 +153,7 @@ public class ItemManager {
                 description,
                 config.getStringList("groups"),
                 config);
-        itemTypes.put(name, spellType);
+        itemTypes.put(name.toLowerCase(), spellType);
         return spellType;
     }
 

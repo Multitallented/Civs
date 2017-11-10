@@ -1,7 +1,9 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class SpellManager {
     private static SpellManager spellManager = null;
@@ -13,8 +15,12 @@ public class SpellManager {
         return spellManager;
     }
 
-//    public void createSpell(String name, HashMap<String, HashSet<Object>> targetMap) {
-//        Spell spell = new Spell(name);
-//        spell.checkConditions();
+//    private HashMap<UUID, ArrayList<Spell>> spells = new HashMap<>();
+//
+//    public void putSpell(UUID uuid, Spell spell) {
+//        if (!spells.containsKey(uuid)) {
+//            spells.put(uuid, new ArrayList<Spell>());
+//        }
+//        spells.get(uuid).add(spell);
 //    }
 }

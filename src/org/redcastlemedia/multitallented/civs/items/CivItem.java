@@ -35,7 +35,10 @@ public class CivItem extends CVItem {
     public double getPrice() { return price * ConfigManager.getInstance().getPriceMultiplier(); }
     public String getPermission() { return permission; }
     public String getProcessedName() {
-        return getDisplayName().replace("Civs ", "").toLowerCase();
+        return processItemName(getDisplayName());
+    }
+    public static String processItemName(String input) {
+        return input.replace("Civs ", "").toLowerCase();
     }
     public String getDescription(String locale) {
         String localizedDescription = description.get(locale);
