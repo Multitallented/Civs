@@ -1,0 +1,27 @@
+icon: WOOL.13
+type: spell
+name: Inspire
+description:
+  en: "Grants nearby players a damage boost"
+  pt_br: "Concede aos jogadores nas proximidades um aumento de dano"
+
+conditions:
+  cooldown^0: 45000
+  stamina^1: 10
+
+targets:
+  area1:
+    type: area
+    radius: 8
+
+components:
+  1:
+    yield:
+      cooldown^1: 45000
+      potion^1:
+        type: INCREASE_DAMAGE
+        ticks: 140
+        target: area1
+      potion^2:
+        type: INCREASE_DAMAGE
+        ticks: 140

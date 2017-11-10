@@ -100,6 +100,8 @@ public class SpellType extends CivItem {
             return new CivPotionEffect(spell, key, target, caster, level, config);
         } else if (type.equals("stamina")) {
             return new StaminaEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("velocity")) {
+            return new VelocityEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -118,6 +120,8 @@ public class SpellType extends CivItem {
             return new CivPotionEffect(spell, key, target, caster, level, config);
         } else if (type.equals("stamina")) {
             return new StaminaEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("velocity")) {
+            return new VelocityEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
