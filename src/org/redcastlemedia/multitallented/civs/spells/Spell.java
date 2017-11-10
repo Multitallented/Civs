@@ -92,7 +92,7 @@ public class Spell {
                         meetsRequirement = false;
                     }
                     if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
-                        System.out.println(conditionName + " failed requirement");
+//                        System.out.println(conditionName + " failed requirement");
                         return false;
                     }
                 }
@@ -103,7 +103,7 @@ public class Spell {
         ConfigurationSection targetSections = config.getConfigurationSection("targets");
         if (targetSections != null) {
             for (String key : targetSections.getKeys(false)) {
-                ConfigurationSection targetSection = targetSections.getConfigurationSection("targets." + key);
+                ConfigurationSection targetSection = targetSections.getConfigurationSection(key);
                 String targetName = targetSection.getString("type", "nearby");
                 Target target = SpellType.getTarget(targetName, key, targetSection, level, caster, this);
                 try {
@@ -545,12 +545,12 @@ public class Spell {
         return 0;
     }
     private static String replaceAllVariables(String input, int level, Object target, Spell spell) {
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = spell.getAbilityVariables();
         input = input.replace("$level$", "" + level);
         input = input.replace("$rand$", "" + Math.random());
         String[] inputParts = input.split("\\$");
         if (spell != null && target != null) {
             input = "";
+            HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = spell.getAbilityVariables();
             for (int i = 0; i < inputParts.length; i++) {
                 if (inputParts[i].contains("#")) {
                     HashMap<String, HashMap<Object, HashMap<String, Double>>> variables = new HashMap<>(abilityVariables);

@@ -84,9 +84,12 @@ public class Civilian {
     public void setKarma(int karma) { this.karma = karma; }
 
     public int getLevel(CivItem civItem) {
+        if (civItem == null || exp == null || exp.get(civItem) == null) {
+            return 1;
+        }
         double experience = exp.get(civItem);
         if (experience == 0) {
-            return 0;
+            return 1;
         }
         ConfigManager configManager = ConfigManager.getInstance();
         double modifier = configManager.getExpModifier();
