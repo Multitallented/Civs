@@ -192,7 +192,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null) {
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.WORKBENCH) {
             return;
         }
         Material mat = event.getClickedBlock().getType();
