@@ -103,9 +103,9 @@ public class CooldownEffect extends Effect {
         variables.put("cooldown", System.currentTimeMillis() + this.cooldown);
 
         if (config != null) {
-            state = new CivState(spell, super.getKey(), -1, -1, config);
+            state = new CivState(spell, super.getKey(), -1, -1, config, variables);
         } else {
-            state = new CivState(spell, super.getKey(), -1, -1, "" + this.cooldown);
+            state = new CivState(spell, super.getKey(), -1, -1, "" + this.cooldown, variables);
         }
 
         civilian.getStates().put(newAbilityName + "." + super.getKey(), state);

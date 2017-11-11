@@ -395,9 +395,9 @@ public class Spell {
                         }, delay);
                     } else {
                         SpellListener.getInstance().addDamageListener(caster, level, damageListenerConfig, spell);
-                        HashMap<String, Object> listenerVars = new HashMap<String, Object>();
+                        HashMap<String, Object> listenerVars = new HashMap<>();
 
-                        CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig);
+                        CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig, listenerVars);
                         finalChampion.getStates().put(finalName + "." + finalKey, state);
                     }
                     continue;
@@ -462,7 +462,7 @@ public class Spell {
                     }
 
                     Civilian civilian = CivilianManager.getInstance().getCivilian(caster.getUniqueId());
-                    civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId));
+                    civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId, new HashMap<String, Object>()));
 
                     continue;
                 }

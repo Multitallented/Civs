@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,13 +9,19 @@ import org.bukkit.entity.Player;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SpellsTests {
     @BeforeClass
@@ -36,11 +43,32 @@ public class SpellsTests {
         assertEquals(18, (int) staminaCapture.getValue());
     }
 
+    @Test
+    public void hungerSpellShouldBeOnCooldown() {
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1,8);
+        when(player.getUniqueId()).thenReturn(uuid);
+        CivilianManager.getInstance().createDefaultCivilian(player);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        Spell spell2 = new Spell("hunger", player, 1);
+        HashMap<String, Object> vars = new HashMap<>();
+        vars.put("cooldown", System.currentTimeMillis() + 40000);
+        civilian.getStates().put("hunger.cooldown", new CivState(spell2, "cooldown", -1, -1, vars));
+        when(player.getFoodLevel()).thenReturn(20);
+        doThrow(new SuccessException()).when(player).setFoodLevel(Matchers.anyInt());
+        loadSpellTypeHunger();
+        Spell spell = new Spell("hunger", player, 1);
+        spell.useAbility();
+    }
+
     public static void loadSpellTypeHunger() {
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "WOOL.14");
         config.set("type", "spell");
         config.set("name", "Hunger");
+        ConfigurationSection conditions = new YamlConfiguration();
+        conditions.set("cooldown", 10000);
+        config.set("conditions", conditions);
         ConfigurationSection components = new YamlConfiguration();
         ConfigurationSection component1 = new YamlConfiguration();
         ConfigurationSection yieldSection = new YamlConfiguration();

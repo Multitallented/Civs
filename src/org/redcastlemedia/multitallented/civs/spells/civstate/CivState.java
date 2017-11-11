@@ -30,30 +30,34 @@ public class CivState {
     private final ConfigurationSection CONFIG;
     private final String CONFIG_STRING;
     private final Spell SPELL;
+    private final HashMap<String, Object> VARS;
 
-    public CivState(Spell spell, String componentName, int durationId, int periodId, String configString) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, String configString, HashMap<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
         this.CONFIG = null;
         this.CONFIG_STRING = configString;
         this.SPELL = spell;
+        this.VARS = vars;
     }
-    public CivState(Spell spell, String componentName, int durationId, int periodId, ConfigurationSection config) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, ConfigurationSection config, HashMap<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
         this.CONFIG = config;
         this.CONFIG_STRING = null;
         this.SPELL = spell;
+        this.VARS = vars;
     }
-    public CivState(Spell spell, String componentName, int durationId, int periodId) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, HashMap<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
         this.CONFIG = null;
         this.CONFIG_STRING = null;
         this.SPELL = spell;
+        this.VARS = vars;
     }
 
 
@@ -77,6 +81,10 @@ public class CivState {
     }
     public ConfigurationSection getConfig() { return this.CONFIG; }
     public String getConfigString() { return this.CONFIG_STRING; }
+    public HashMap<String, Object> getVars() {
+        return this.VARS;
+    }
+
 
     public void remove(Object origin) {
         //TODO make this work for mobs too

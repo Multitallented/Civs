@@ -85,7 +85,7 @@ public class CivPotionEffect extends Effect {
             state.remove(champion1);
             champion1.getStates().remove(getSpell().getType() + "." + super.getKey());
         }
-        HashMap<String, Object> variables = new HashMap<String, Object>();
+        HashMap<String, Object> variables = new HashMap<>();
         variables.put("ticks", this.ticks);
         variables.put("level", this.level);
 
@@ -99,9 +99,9 @@ public class CivPotionEffect extends Effect {
         }, this.ticks);
 
         if (config != null) {
-            state = new CivState(getSpell(), super.getKey(), durationId, -1, config);
+            state = new CivState(getSpell(), super.getKey(), durationId, -1, config, variables);
         } else {
-            state = new CivState(getSpell(), super.getKey(), durationId, -1, "" + this.ticks);
+            state = new CivState(getSpell(), super.getKey(), durationId, -1, "" + this.ticks, variables);
         }
 
         champion.getStates().put(getSpell().getType() + "." + super.getKey(), state);
