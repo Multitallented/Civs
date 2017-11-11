@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -41,6 +42,10 @@ public class BuiltRegionMenu extends Menu {
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         String id = name.split("@")[1];
         Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(id));
+        if (region == null) {
+            Civs.logger.severe("Unable to find region at " + id);
+            return;
+        }
         appendHistory(civilian.getUuid(), MENU_NAME);
         event.getWhoClicked().closeInventory();
         event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));

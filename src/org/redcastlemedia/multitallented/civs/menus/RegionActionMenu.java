@@ -4,12 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -81,7 +83,19 @@ public class RegionActionMenu extends Menu {
         //TODO finish this stub
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        RegionType regionType;
+        try {
+            regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        } catch (NullPointerException npe) {
+            if (region == null) {
+                Civs.logger.severe("Unable load null region");
+                System.out.println("Unable load null region");
+            } else {
+                Civs.logger.severe("Unable to load region type " + region.getType());
+                System.out.println("Unable to load region type " + region.getType());
+            }
+            return inventory;
+        }
         //0 Icon
         CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
