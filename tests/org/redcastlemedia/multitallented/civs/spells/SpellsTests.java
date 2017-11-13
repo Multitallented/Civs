@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class SpellsTests {
@@ -61,6 +61,21 @@ public class SpellsTests {
         spell.useAbility();
     }
 
+    @Test
+    public void hungerSpellShouldSetCooldown() {
+        long currentTime = System.currentTimeMillis();
+        Player player = mock(Player.class);
+        UUID uuid = new UUID(1,6);
+        when(player.getUniqueId()).thenReturn(uuid);
+        CivilianManager.getInstance().createDefaultCivilian(player);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        when(player.getFoodLevel()).thenReturn(20);
+        loadSpellTypeHunger();
+        Spell spell = new Spell("hunger", player, 1);
+        spell.useAbility();
+        assertTrue((long) civilian.getStates().get("hunger.cooldown").getVars().get("cooldown") >= currentTime + 10000);
+    }
+
     public static void loadSpellTypeHunger() {
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "WOOL.14");
@@ -73,6 +88,7 @@ public class SpellsTests {
         ConfigurationSection component1 = new YamlConfiguration();
         ConfigurationSection yieldSection = new YamlConfiguration();
         yieldSection.set("stamina", -2);
+        yieldSection.set("cooldown", 10000);
         component1.set("yield", yieldSection);
         components.set("1", component1);
         config.set("components", components);
