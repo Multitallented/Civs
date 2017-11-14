@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -108,6 +107,8 @@ public class SpellType extends CivItem {
             return new SoundEffect(spell, key, target, caster, level, config);
         } else if (type.equals("particle")) {
             return new ParticleEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("fall")) {
+            return new FallEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -134,6 +135,8 @@ public class SpellType extends CivItem {
             return new SoundEffect(spell, key, target, caster, level, config);
         } else if (type.equals("particle")) {
             return new ParticleEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("fall")) {
+            return new FallEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
