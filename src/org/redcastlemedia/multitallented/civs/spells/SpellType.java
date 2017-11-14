@@ -104,6 +104,8 @@ public class SpellType extends CivItem {
             return new VelocityEffect(spell, key, target, caster, level, config);
         } else if (type.equals("cancel")) {
             return new CancelEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("sound")) {
+            return new SoundEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -126,6 +128,8 @@ public class SpellType extends CivItem {
             return new VelocityEffect(spell, key, target, caster, level, config);
         } else if (type.equals("cancel")) {
             return new CancelEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("sound")) {
+            return new SoundEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
