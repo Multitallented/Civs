@@ -109,6 +109,8 @@ public class SpellType extends CivItem {
             return new ParticleEffect(spell, key, target, caster, level, config);
         } else if (type.equals("fall")) {
             return new FallEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("heal")) {
+            return new HealEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -137,6 +139,8 @@ public class SpellType extends CivItem {
             return new ParticleEffect(spell, key, target, caster, level, config);
         } else if (type.equals("fall")) {
             return new FallEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("heal")) {
+            return new HealEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
