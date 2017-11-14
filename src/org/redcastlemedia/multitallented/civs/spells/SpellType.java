@@ -106,6 +106,8 @@ public class SpellType extends CivItem {
             return new CancelEffect(spell, key, target, caster, level, config);
         } else if (type.equals("sound")) {
             return new SoundEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("particle")) {
+            return new ParticleEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -130,6 +132,8 @@ public class SpellType extends CivItem {
             return new CancelEffect(spell, key, target, caster, level, config);
         } else if (type.equals("sound")) {
             return new SoundEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("particle")) {
+            return new ParticleEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
