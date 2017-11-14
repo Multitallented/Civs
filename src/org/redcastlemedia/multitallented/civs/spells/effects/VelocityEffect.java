@@ -72,10 +72,10 @@ public class VelocityEffect extends Effect {
         }
         LivingEntity livingEntity = (LivingEntity) target;
 
-        Player player = null;
+        /*Player player = null;
         if (livingEntity instanceof Player) {
             player = (Player) livingEntity;
-        }
+        }*/
 
         //Vector vector = livingEntity.getEyeLocation().getDirection().multiply(1.53d);
         //vector = vector.multiply(new Vector(x, y, z)).multiply(multiplier);
