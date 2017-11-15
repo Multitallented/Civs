@@ -28,6 +28,7 @@ public class LocaleManager {
 
     public LocaleManager() {
         if (Civs.getInstance() == null) {
+            loadConfig(new YamlConfiguration());
             localeManager = this;
         } else {
             localeManager = new LocaleManager(new File(Civs.getInstance().getDataFolder(), "locale.yml"));

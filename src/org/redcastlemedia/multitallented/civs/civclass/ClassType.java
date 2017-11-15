@@ -7,16 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ClassType extends CivItem {
-    private final List<CivItem> children;
+    private final List<String> children;
+    private final int manaPerSecond;
+    private final int maxMana;
 
     public ClassType(List<String> reqs,
                      String name,
                      CVItem icon,
                      double price,
                      String permission,
-                     List<CivItem> children,
+                     List<String> children,
                      HashMap<String, String> description,
-                     List<String> groups) {
+                     List<String> groups,
+                     int manaPerSecond,
+                     int maxMana) {
         super(reqs,
                 false,
                 ItemType.CLASS,
@@ -31,9 +35,17 @@ public class ClassType extends CivItem {
                 description,
                 groups);
         this.children = children;
+        this.manaPerSecond = manaPerSecond;
+        this.maxMana = maxMana;
     }
 
-    public List<CivItem> getChildren() {
+    public List<String> getChildren() {
         return children;
+    }
+    public int getManaPerSecond() {
+        return manaPerSecond;
+    }
+    public int getMaxMana() {
+        return maxMana;
     }
 }

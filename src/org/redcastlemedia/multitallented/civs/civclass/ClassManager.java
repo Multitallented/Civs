@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +38,10 @@ public class ClassManager {
                     if (!civClasses.containsKey(uuid)) {
                         civClasses.put(uuid, new HashSet<CivClass>());
                     }
+                    int manaPerSecond = classConfig.getInt("mana-per-second", 1);
+                    int maxMana = classConfig.getInt("max-mana", 100);
 
-                    civClasses.get(uuid).add(new CivClass(id, uuid, className));
+                    civClasses.get(uuid).add(new CivClass(id, uuid, className, manaPerSecond, maxMana));
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
                     ex.printStackTrace();
@@ -126,11 +129,13 @@ public class ClassManager {
         }
         return null;
     }
-    public CivClass createClass(UUID uuid, String type) {
-        return new CivClass(getNextId(), uuid, type);
+    public CivClass createClass(UUID uuid, String type, int manaPerSecond, int maxMana) {
+        return new CivClass(getNextId(), uuid, type, manaPerSecond, maxMana);
     }
     public CivClass createDefaultClass(UUID uuid) {
-        return new CivClass(getNextId(), uuid, ConfigManager.getInstance().getDefaultClass());
+        String className = ConfigManager.getInstance().getDefaultClass();
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
+        return new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
     }
 
     public static ClassManager getInstance() {

@@ -4,6 +4,8 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.*;
@@ -14,7 +16,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import sun.security.krb5.Config;
 
@@ -76,6 +80,7 @@ public class TestUtil {
         when(server.getLogger()).thenReturn(logger);
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
 
+        createDefaultClass();
         File file = mock(File.class);
         when(file.exists()).thenReturn(false);
         ConfigManager configManager = new ConfigManager(file);
@@ -85,7 +90,7 @@ public class TestUtil {
         configManager.itemGroups.put("glass", "THIN_GLASS,GLASS");
         configManager.useStarterBook = false;
 
-        LocaleManager localeManager = new LocaleManager(file);
+        LocaleManager localeManager = new LocaleManager();
         HashMap<String, String> mockLanguageMap = new HashMap<>();
         mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
         localeManager.languageMap.put("es", mockLanguageMap);
@@ -136,6 +141,7 @@ public class TestUtil {
         when(world.getBlockAt(-1, 0,106)).thenReturn(block8);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
+        when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
         blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0), true);
         blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0), false);
         blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0), true);
@@ -175,6 +181,12 @@ public class TestUtil {
         lore.add(TestUtil.player.getUniqueId().toString());
         when(im.getLore()).thenReturn(lore);
         return is;
+    }
+
+    public static void createDefaultClass() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "default");
+        ItemManager.getInstance().loadClassType(config);
     }
 
     public static Block createBlock(Material mat, Location location) {

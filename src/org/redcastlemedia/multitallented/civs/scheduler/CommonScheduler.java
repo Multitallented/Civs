@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -29,6 +30,7 @@ public class CommonScheduler implements Runnable {
                 Player player = (Player) players.toArray()[j];
                 playerInRegion(player);
                 playerInTown(player);
+                incrementMana(player);
             } catch (Exception e) {
 
             }
@@ -40,6 +42,23 @@ public class CommonScheduler implements Runnable {
             regionTickThread.run();
         } else {
             i++;
+        }
+    }
+    void incrementMana(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        double maxMana = 0;
+        double maxManaPerSecond = 0;
+        for (CivClass civClass : civilian.getCivClasses()) {
+            maxMana = Math.max(maxMana, civClass.getMaxMana());
+            maxManaPerSecond = Math.max(maxManaPerSecond, civClass.getManaPerSecond());
+        }
+        setConvertedMana(civilian, maxMana, maxManaPerSecond);
+    }
+    void setConvertedMana(Civilian civilian, double maxMana, double manaPerSecond) {
+        if (civilian.getMana() < 100 && manaPerSecond > 0) {
+            double currentConvertedMana = (double) civilian.getMana() / 100 * maxMana;
+            int newMana = (int) ((currentConvertedMana + manaPerSecond) / maxMana * 100);
+            civilian.setMana(newMana);
         }
     }
     void playerInTown(Player player) {

@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
@@ -114,18 +115,18 @@ public class ItemManager {
                 description.put(key, configurationSection.getString(key));
             }
         }
-        CivItem civItem = new CivItem(
+        ClassType civItem = new ClassType(
                 configuration.getStringList("reqs"),
-                false,
-                CivItem.ItemType.CLASS,
                 name,
-                icon.getMat(),
-                icon.getDamage(),
-                0,0, -1,
+                icon,
                 configuration.getDouble("price", 0),
                 configuration.getString("permission"),
+                configuration.getStringList("children"),
                 description,
-                configuration.getStringList("groups"));
+                configuration.getStringList("groups"),
+                configuration.getInt("mana-per-second", 1),
+                configuration.getInt("max-mana", 100));
+
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -305,7 +306,11 @@ public class ItemManager {
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     checkList.addAll(((FolderType) civItem).getChildren());
                 } else if (civItem.getItemType() == CivItem.ItemType.CLASS) {
-                    //TODO implement class parents
+                    for (String key : ((ClassType) civItem).getChildren()) {
+                        if (getItemType(key) != null) {
+                            checkList.add(getItemType(key));
+                        }
+                    }
                 }
             }
             for (CivItem civItem : itemTypes.values()) {
@@ -318,7 +323,11 @@ public class ItemManager {
             if (parent.getItemType().equals(CivItem.ItemType.FOLDER)) {
                 returnList.addAll(((FolderType) parent).getChildren());
             } else if (parent.getItemType().equals(CivItem.ItemType.CLASS)) {
-                //TODO implement class parents
+                for (String key : ((ClassType) parent).getChildren()) {
+                    if (getItemType(key) != null) {
+                        checkList.add(getItemType(key));
+                    }
+                }
             }
         }
         checkList.clear();

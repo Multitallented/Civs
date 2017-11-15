@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -96,5 +98,13 @@ public class SchedulerTests {
 
         doThrow(new SuccessException()).when(player).sendMessage(Matchers.anyString());
         commonScheduler.playerInTown(player);
+    }
+    @Test
+    public void convertedManaShouldBeSetFractionally() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.setMana(0);
+        CommonScheduler commonScheduler = new CommonScheduler();
+        commonScheduler.setConvertedMana(civilian, 120, 60);
+        assertEquals(50, civilian.getMana());
     }
 }

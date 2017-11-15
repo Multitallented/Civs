@@ -64,7 +64,8 @@ public class ConfirmSwitchMenu extends Menu {
             }
 
             ClassManager classManager = ClassManager.getInstance();
-            CivClass civClass = classManager.createClass(civilian.getUuid(), className);
+            CivClass civClass = classManager.createClass(civilian.getUuid(), className,
+                    classType.getManaPerSecond(), classType.getMaxMana());
             classManager.addClass(civClass);
             classManager.saveClass(civClass);
             CivilianManager.getInstance().saveCivilian(civilian);

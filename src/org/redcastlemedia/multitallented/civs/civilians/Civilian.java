@@ -51,10 +51,15 @@ public class Civilian {
         this.points = points;
         this.karma = karma;
         this.mana = 0;
-        Player player = Bukkit.getPlayer(uuid);
-        if (player != null) {
-            expOrbs = player.getExp();
-        }
+//        Player player;
+//        try {
+//            player = Bukkit.getPlayer(uuid);
+//            if (player != null) {
+//                expOrbs = player.getExp();
+//            }
+//        } catch (NullPointerException npe) {
+//
+//        }
     }
 
     public UUID getUuid() {
