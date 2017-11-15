@@ -5,11 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.UUID;
@@ -20,7 +23,28 @@ public class RegionTickThread implements Runnable {
     public void run() {
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getAllRegions()) {
-            region.runUpkeep();
+            boolean hasUpkeep = region.runUpkeep();
+
+            if (hasUpkeep && region.getEffects().containsKey("arrow_turret")) {
+                shootArrow(region);
+            }
+        }
+    }
+
+    //Shoot arrows at mobs
+    private void shootArrow(Region region) {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        Location location = region.getLocation();
+        for (Entity e : location.getChunk().getEntities()) {
+            if (!(e instanceof Monster)) {
+                continue;
+            }
+            Monster monster = (Monster) e;
+            if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
+                continue;
+            }
+            ArrowTurret.shootArrow(region, monster, region.getEffects().get("arrow_turret"), false);
+            break;
         }
     }
 }

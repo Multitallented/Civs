@@ -106,7 +106,7 @@ public class CommonScheduler implements Runnable {
         for (Region region : containedRegions) {
             //TODO do things when a player is in a region
             if (region.getEffects().containsKey("arrow_turret")) {
-                ArrowTurret.shootArrow(region, player, region.getEffects().get("arrow_turret"));
+                ArrowTurret.shootArrow(region, player, region.getEffects().get("arrow_turret"), true);
             }
         }
 

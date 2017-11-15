@@ -5,8 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,10 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -27,9 +26,8 @@ import java.util.HashSet;
 public class ArrowTurret implements Listener {
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
 
-    public static void shootArrow(Region r, Player player, String vars) {
+    public static void shootArrow(Region r, LivingEntity livingEntity, String vars, boolean runUpkeep) {
         Location l = r.getLocation();
-        RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
         //Check if the region has the shoot arrow effect and return arrow velocity
         int damage = 1;
         double speed = 0.5;
@@ -75,8 +73,11 @@ public class ArrowTurret implements Listener {
 
 
         //Check if the player is invincible
-        if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) {
-            return;
+        if (livingEntity instanceof Player) {
+            Player player = (Player) livingEntity;
+            if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) {
+                return;
+            }
         }
 
 //            EntityDamageEvent damageEvent = new EntityDamageEvent(null, DamageCause.CUSTOM, 0);
@@ -87,13 +88,19 @@ public class ArrowTurret implements Listener {
 //            }
 
         //Check if the player owns or is a member of the region
-        if (r.getPeople().containsKey(player.getUniqueId())) {
+        if (r.getPeople().containsKey(livingEntity.getUniqueId())) {
             return;
         }
 
         //Check to see if the Townships has enough reagents
-        if (!r.runUpkeep()) {
+        if (runUpkeep && !r.runUpkeep()) {
             return;
+        }
+
+        Block block = l.getBlock();
+        if (block instanceof Chest) {
+            Chest chest = (Chest) block;
+            chest.getBlockInventory().removeItem(new ItemStack(Material.ARROW, 1));
         }
 
         //Damage check before firing
@@ -117,7 +124,7 @@ public class ArrowTurret implements Listener {
 
         //Calculate trajectory of the arrow
         Location loc = l.getBlock().getRelative(BlockFace.UP, 2).getLocation();
-        Location playerLoc = player.getEyeLocation();
+        Location playerLoc = livingEntity.getEyeLocation();
 
         Vector vel = new Vector(playerLoc.getX() - loc.getX(), playerLoc.getY() - loc.getY(), playerLoc.getZ() - loc.getZ());
 
