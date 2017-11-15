@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -365,5 +366,60 @@ public class Region {
     }
     public void tick() {
         this.lastTick = System.currentTimeMillis();
+    }
+
+    public boolean runUpkeep() {
+        if (!shouldTick()) {
+            return false;
+        }
+
+        Block block = getLocation().getBlock();
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionType regionType = (RegionType) itemManager.getItemType(getType());
+        Chest chest = null;
+        if (block.getState() instanceof Chest) {
+            chest = (Chest) block.getState();
+        }
+        boolean hasReagents = hasReagents();
+        boolean hasInput = hasInput();
+        boolean emptyOutput = regionType.getOutput().isEmpty();
+
+        if (!hasReagents || !hasInput ||
+                (chest != null && !emptyOutput && chest.getInventory().firstEmpty() == -1)) {
+            return false;
+        }
+
+        boolean hasMoney = false;
+        if (Civs.econ != null) {
+            double payout = regionType.getPayout();
+            payout = payout / getOwners().size();
+            for (UUID uuid : getOwners()) {
+                OfflinePlayer player = Bukkit.getPlayer(uuid);
+                if (player == null) {
+                    continue;
+                }
+                if (payout > 0) {
+                    Civs.econ.depositPlayer(player, payout);
+                    hasMoney = true;
+                } else if (Civs.econ.has(player, payout)) {
+                    Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                    hasMoney = true;
+                }
+            }
+        } else {
+            hasMoney = true;
+        }
+        if (!hasMoney) {
+            return false;
+        }
+        if (chest != null) {
+            Util.removeItems(regionType.getInput(), chest.getInventory());
+        }
+        if (chest != null) {
+            Util.addItems(regionType.getOutput(), chest.getInventory());
+        }
+
+        tick();
+        return true;
     }
 }

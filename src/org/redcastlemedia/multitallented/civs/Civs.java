@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
@@ -139,6 +140,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TownTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
     }
 
     public boolean setupEconomy() {

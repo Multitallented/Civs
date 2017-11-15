@@ -163,12 +163,13 @@ public class RegionManager {
             for (String s : regionConfig.getConfigurationSection("people").getKeys(false)) {
                 people.put(UUID.fromString(s), regionConfig.getString("people." + s));
             }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"));
             region = new Region(
                     regionConfig.getString("type"),
                     people,
                     location,
                     radii,
-                    (HashMap<String, String>) ((RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"))).getEffects().clone()
+                    (HashMap<String, String>) regionType.getEffects().clone()
             );
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
