@@ -53,7 +53,7 @@ public class SpellsTests {
         Spell spell2 = new Spell("hunger", player, 1);
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("cooldown", System.currentTimeMillis() + 40000);
-        civilian.getStates().put("hunger.cooldown", new CivState(spell2, "cooldown", -1, -1, vars));
+        civilian.getStates().put("hunger.cooldown^1", new CivState(spell2, "cooldown^1", -1, -1, vars));
         when(player.getFoodLevel()).thenReturn(20);
         doThrow(new SuccessException()).when(player).setFoodLevel(Matchers.anyInt());
         loadSpellTypeHunger();
@@ -73,7 +73,7 @@ public class SpellsTests {
         loadSpellTypeHunger();
         Spell spell = new Spell("hunger", player, 1);
         spell.useAbility();
-        assertTrue((long) civilian.getStates().get("hunger.cooldown").getVars().get("cooldown") >= currentTime + 10000);
+        assertTrue((long) civilian.getStates().get("hunger.cooldown^1").getVars().get("cooldown") >= currentTime + 10000);
     }
 
     public static void loadSpellTypeHunger() {
@@ -82,13 +82,13 @@ public class SpellsTests {
         config.set("type", "spell");
         config.set("name", "Hunger");
         ConfigurationSection conditions = new YamlConfiguration();
-        conditions.set("cooldown", 10000);
+        conditions.set("cooldown^1", 10000);
         config.set("conditions", conditions);
         ConfigurationSection components = new YamlConfiguration();
         ConfigurationSection component1 = new YamlConfiguration();
         ConfigurationSection yieldSection = new YamlConfiguration();
         yieldSection.set("stamina", -2);
-        yieldSection.set("cooldown", 10000);
+        yieldSection.set("cooldown^1", 10000);
         component1.set("yield", yieldSection);
         components.set("1", component1);
         config.set("components", components);

@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -59,12 +60,12 @@ public class CooldownEffect extends Effect {
         Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String newAbilityName = abilityName.equals("self") ? spell.getType() : abilityName;
 
-        CivState state = champion.getStates().get(newAbilityName + "." + super.getKey());
+        CivState state = champion.getStates().get(newAbilityName + "." + getKey());
 
         if (state == null) {
             return true;
         }
-        Object rawDuration = state.getSpell().getAbilityVariables().get("cooldown");
+        Object rawDuration = state.getVars().get("cooldown");
         if (rawDuration == null || !(rawDuration instanceof Long)) {
             if (!this.silent) {
                 player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + spell.getType() +
@@ -94,21 +95,23 @@ public class CooldownEffect extends Effect {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String newAbilityName = abilityName.equals("self") ? spell.getType() : abilityName;
 
-        CivState state = civilian.getStates().get(newAbilityName + "." + super.getKey());
+        CivState state = civilian.getStates().get(newAbilityName + "." + getKey());
         if (state != null) {
             state.remove(civilian);
-            civilian.getStates().remove(newAbilityName + "." + super.getKey());
+            civilian.getStates().remove(newAbilityName + "." + getKey());
         }
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("cooldown", System.currentTimeMillis() + this.cooldown);
 
         if (config != null) {
-            state = new CivState(spell, super.getKey(), -1, -1, config, variables);
+            state = new CivState(spell, getKey(), -1, -1, config, variables);
         } else {
-            state = new CivState(spell, super.getKey(), -1, -1, "" + this.cooldown, variables);
+            state = new CivState(spell, getKey(), -1, -1, "" + this.cooldown, variables);
         }
 
-        civilian.getStates().put(newAbilityName + "." + super.getKey(), state);
+        Bukkit.getPlayer(civilian.getUuid()).sendMessage(Civs.getPrefix() +
+                newAbilityName + "." + getKey());
+        civilian.getStates().put(newAbilityName + "." + getKey(), state);
     }
     @Override
     public void remove() {
@@ -119,7 +122,7 @@ public class CooldownEffect extends Effect {
         String newAbilityName = abilityName.equals("self") ? getSpell().getType() : abilityName;
         Player player = (Player) origin;
         Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        champion.getStates().remove(newAbilityName + "." + super.getKey());
+        champion.getStates().remove(newAbilityName + "." + getKey());
     }
 
     @Override
@@ -134,7 +137,7 @@ public class CooldownEffect extends Effect {
         Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String newAbilityName = abilityName.equals("self") ? getSpell().getType() : abilityName;
 
-        CivState state = champion.getStates().get(newAbilityName + "." + super.getKey());
+        CivState state = champion.getStates().get(newAbilityName + "." + getKey());
 
         if (state == null) {
             return returnMap;
