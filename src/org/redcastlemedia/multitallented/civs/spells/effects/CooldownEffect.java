@@ -65,7 +65,7 @@ public class CooldownEffect extends Effect {
         if (state == null) {
             return true;
         }
-        Object rawDuration = state.getSpell().getAbilityVariables().get("cooldown");
+        Object rawDuration = state.getVars().get("cooldown");
         if (rawDuration == null || !(rawDuration instanceof Long)) {
             if (!this.silent) {
                 player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + spell.getType() +
