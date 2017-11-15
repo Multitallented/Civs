@@ -13,10 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -70,6 +67,31 @@ public class CivilianListener implements Listener {
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
     }
+
+    @EventHandler
+    public void onCivilianGainExp(PlayerExpChangeEvent event) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        civilian.setExpOrbs(event.getAmount());
+    }
+
+    @EventHandler
+    public void onCivilianUseExp(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.getMana() < 1 || civilian.getMana() > 99) {
+            return;
+        }
+        Material mat = event.getClickedBlock().getType();
+        if (mat == Material.ANVIL ||
+                mat == Material.ENCHANTMENT_TABLE) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "mana-use-exp"));
+        }
+    }
+
     @EventHandler
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();

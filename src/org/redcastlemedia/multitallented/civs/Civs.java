@@ -42,7 +42,7 @@ public class Civs extends JavaPlugin {
     @Override
     public void onEnable() {
         civs = this;
-        logger = getLogger();
+        logger = Logger.getLogger("Minecraft");
         setupChat();
         setupEconomy();
         setupPermissions();

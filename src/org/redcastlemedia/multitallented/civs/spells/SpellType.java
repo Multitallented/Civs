@@ -115,6 +115,8 @@ public class SpellType extends CivItem {
             return new IgniteEffect(spell, key, target, caster, level, config);
         } else if (type.equals("teleport")) {
             return new TeleportEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("mana")) {
+            return new ManaEffect(spell, key, target, caster, level, config);
         }
         return null;
     }
@@ -149,6 +151,8 @@ public class SpellType extends CivItem {
             return new IgniteEffect(spell, key, target, caster, level, config);
         } else if (type.equals("teleport")) {
             return new TeleportEffect(spell, key, target, caster, level, config);
+        } else if (type.equals("mana")) {
+            return new ManaEffect(spell, key, target, caster, level, config);
         }
         return null;
     }

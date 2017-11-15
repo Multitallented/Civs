@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.civilians;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
@@ -31,6 +32,8 @@ public class Civilian {
     private int highestKillStreak;
     private double points;
     private int karma;
+    private int mana;
+    private float expOrbs;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -47,6 +50,11 @@ public class Civilian {
         this.highestKillStreak = highestKillStreak;
         this.points = points;
         this.karma = karma;
+        this.mana = 0;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            expOrbs = player.getExp();
+        }
     }
 
     public UUID getUuid() {
@@ -82,6 +90,21 @@ public class Civilian {
     public void setPoints(double points) { this.points = points; }
     public int getKarma() { return karma; }
     public void setKarma(int karma) { this.karma = karma; }
+    public int getMana() { return mana; }
+    public void setExpOrbs(float expOrbs) { this.expOrbs = expOrbs; }
+    public void setMana(int mana) {
+        this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
+        updateExpBar();
+    }
+
+    private void updateExpBar() {
+        Player player = Bukkit.getPlayer(uuid);
+        if (mana > 99 || mana < 1) {
+            player.setExp(expOrbs);
+            return;
+        }
+        player.setExp(mana + 1288 + (mana > 33 ? 1 : 0) + (mana > 66 ? 1 : 0));
+    }
 
     public int getLevel(CivItem civItem) {
         if (civItem == null || exp == null || exp.get(civItem) == null) {

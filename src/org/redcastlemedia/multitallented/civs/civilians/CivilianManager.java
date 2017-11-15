@@ -48,6 +48,8 @@ public class CivilianManager {
         onlineCivilians.put(player.getUniqueId(), createDefaultCivilian(player.getUniqueId()));
     }
     void unloadCivilian(Player player) {
+        Civilian civilian = getCivilian(player.getUniqueId());
+        civilian.setMana(100);
         onlineCivilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {

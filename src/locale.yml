@@ -111,6 +111,7 @@ en:
   not-allowed-place: "You aren't allowed to place $1"
   hold-town: "Please hold a town item"
   no-commands-in-jail: "You cant use commands in jail for another $1"
+  mana-use-exp: "You cant use this unless you have full mana"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
