@@ -102,11 +102,18 @@ public class CivilianManager {
                     exp.put(item, civConfig.getInt("exp." + key, 0));
                 }
             }
+            int expOrbs = -1;
+            if (Civs.getInstance() != null) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    expOrbs = player.getTotalExperience();
+                }
+            }
 
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -124,11 +131,18 @@ public class CivilianManager {
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
         Set<CivClass> classes = new HashSet<CivClass>();
         classes.add(defaultClass);
+        int expOrbs = -1;
+        if (Civs.getInstance() != null) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                expOrbs = player.getTotalExperience();
+            }
+        }
         return new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),
                 classes,
-                new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0);
+                new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs);
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();

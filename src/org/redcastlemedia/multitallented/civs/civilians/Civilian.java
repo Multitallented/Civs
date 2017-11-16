@@ -33,11 +33,11 @@ public class Civilian {
     private double points;
     private int karma;
     private int mana;
-    private float expOrbs;
+    private int expOrbs;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-            double points, int karma) {
+            double points, int karma, int expOrbs) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -51,6 +51,7 @@ public class Civilian {
         this.points = points;
         this.karma = karma;
         this.mana = 0;
+        this.expOrbs = expOrbs;
 //        Player player;
 //        try {
 //            player = Bukkit.getPlayer(uuid);
@@ -96,7 +97,7 @@ public class Civilian {
     public int getKarma() { return karma; }
     public void setKarma(int karma) { this.karma = karma; }
     public int getMana() { return mana; }
-    public void setExpOrbs(float expOrbs) { this.expOrbs = expOrbs; }
+    public void setExpOrbs(int expOrbs) { this.expOrbs = expOrbs; }
     public void setMana(int mana) {
         this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
         updateExpBar();
@@ -105,10 +106,10 @@ public class Civilian {
     private void updateExpBar() {
         Player player = Bukkit.getPlayer(uuid);
         if (mana > 99 || mana < 1) {
-            player.setExp(expOrbs);
+            player.setTotalExperience(expOrbs);
             return;
         }
-        player.setExp(mana + 1288 + (mana > 33 ? 1 : 0) + (mana > 66 ? 1 : 0));
+        player.setTotalExperience(mana + 1288 + (mana > 33 ? 1 : 0) + (mana > 66 ? 1 : 0));
     }
 
     public int getLevel(CivItem civItem) {
