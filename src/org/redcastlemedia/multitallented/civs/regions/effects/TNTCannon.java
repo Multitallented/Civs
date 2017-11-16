@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -147,8 +144,7 @@ public class TNTCannon implements Listener {
             if (currPlayer.getLocation().distanceSquared(fireLocation) > 2500) {
                 continue;
             }
-//                currPlayer.playSound(fireLocation, Sound.EXPLODE, 2, 1);
-            //TODO fix this sound
+            currPlayer.playSound(fireLocation, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             try {
                 currPlayer.playSound(fireLocation, "EXPLODE", 2, 1);
             } catch (Exception e) {
