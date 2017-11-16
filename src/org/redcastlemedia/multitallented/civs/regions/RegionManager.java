@@ -2,11 +2,15 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -241,6 +245,7 @@ public class RegionManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
+        Location location = block.getLocation();
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
@@ -309,6 +314,15 @@ public class RegionManager {
                     localeManager.getTranslation(civilian.getLocale(), "too-close-region")
                             .replace("$1", regionTypeName).replace("$2",currentRegion.getType()));
             return;
+        }
+
+        if (regionType.getEffects().containsKey("tnt_cannon")) {
+            ItemStack controllerWand = new ItemStack(Material.STICK, 1);
+            ItemMeta im = controllerWand.getItemMeta();
+            im.setDisplayName("Cannon Controller " + Region.locationToString(location));
+            controllerWand.setItemMeta(im);
+
+            location.getWorld().dropItemNaturally(block.getRelative(BlockFace.UP, 2).getLocation(), controllerWand);
         }
 
         //TODO remove rebuildRegion
