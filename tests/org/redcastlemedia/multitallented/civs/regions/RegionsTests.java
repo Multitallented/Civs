@@ -106,6 +106,38 @@ public class RegionsTests {
         regionListener.onBlockPlace(event1);
         assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
     }
+
+    @Test
+    public void regionShouldBeCreatedWithAllGroupReqs() {
+        loadRegionTypeCobble3();
+
+        World world = Bukkit.getWorld("world");
+        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+        when(world.getBlockAt(1,1,1)).thenReturn(TestUtil.block9);
+        BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
+        when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
+        ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
+        doReturn(cobbleStack).when(event3).getItemInHand();
+        BlockPlaceEvent event2 = mock(BlockPlaceEvent.class);
+        when(event2.getBlockPlaced()).thenReturn(TestUtil.block2);
+        when(event2.getItemInHand()).thenReturn(cobbleStack);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        CVItem item = CVItem.createCVItemFromString("CHEST");
+        item.setDisplayName("Civs Cobble");
+        List<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        item.setLore(lore);
+        doReturn(item.createItemStack()).when(event1).getItemInHand();
+
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event2);
+        regionListener.onBlockPlace(event3);
+        regionListener.onBlockPlace(event1);
+        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
+    }
     @Test
     public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
@@ -363,6 +395,29 @@ public class RegionsTests {
         radiuses[4] = 5;
         radiuses[5] = 5;
         return radiuses;
+    }
+
+    public static void loadRegionTypeCobble3() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "cobble");
+        config.set("max", 1);
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        reqs.add("g:glass*1");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        config.set("effect-radius", 7);
+        config.set("period", 100);
+        ArrayList<String> reagents = new ArrayList<>();
+        reagents.add("IRON_PICKAXE");
+        config.set("input", reagents);
+        ArrayList<String> outputs = new ArrayList<>();
+        outputs.add("COBBLESTONE");
+        config.set("output", outputs);
+        ItemManager.getInstance().loadRegionType(config);
     }
 
     public static void loadRegionTypeCobble2() {

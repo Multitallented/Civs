@@ -37,6 +37,7 @@ public class TestUtil {
     public static Block block6;
     public static Block block7;
     public static Block block8;
+    public static Block block9;
     public static Player player;
     public static Block blockUnique;
     public static Block blockUnique2;
@@ -129,6 +130,7 @@ public class TestUtil {
         block6 = createBlock(Material.COBBLESTONE, new Location(world, 10, 100, 0));
         block7 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0,93));
         block8 = createBlock(Material.COBBLESTONE, new Location(world, -1, 0,106));
+        block9 = createBlock(Material.THIN_GLASS, new Location(world, 1, 1,1));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
@@ -139,6 +141,7 @@ public class TestUtil {
         when(world.getBlockAt(10, 100,0)).thenReturn(block6);
         when(world.getBlockAt(1, 0,93)).thenReturn(block7);
         when(world.getBlockAt(-1, 0,106)).thenReturn(block8);
+        when(world.getBlockAt(1, 1,1)).thenReturn(block9);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
