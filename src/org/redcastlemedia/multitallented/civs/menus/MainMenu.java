@@ -61,7 +61,7 @@ public class MainMenu extends Menu {
         if (itemName.equals(localeManager.getTranslation(locale, "blueprints"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionsMenu.createMenu(civilian));
+            event.getWhoClicked().openInventory(BlueprintsMenu.createMenu(civilian));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "regions"))) {

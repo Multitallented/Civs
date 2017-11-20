@@ -39,7 +39,13 @@ public class ClassMenu extends Menu {
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         ArrayList<CivItem> stashItems = civilian.getStashItems();
-        stashItems.clear();
+        ArrayList<CivItem> removeItems = new ArrayList<>();
+        for (CivItem item : stashItems) {
+            if (item.getItemType().equals(CivItem.ItemType.CLASS)) {
+                removeItems.add(item);
+            }
+        }
+        stashItems.removeAll(removeItems);
         for (ItemStack is : event.getInventory()) {
             if (is == null || !CVItem.isCivsItem(is)) {
                 continue;

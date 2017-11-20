@@ -18,9 +18,9 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionsMenu extends Menu {
+public class BlueprintsMenu extends Menu {
     private static final String MENU_NAME = "CivsRegionStash";
-    public RegionsMenu() {
+    public BlueprintsMenu() {
         super(MENU_NAME);
     }
 
@@ -40,7 +40,14 @@ public class RegionsMenu extends Menu {
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         ArrayList<CivItem> stashItems = civilian.getStashItems();
-        stashItems.clear();
+        ArrayList<CivItem> removeItems = new ArrayList<>();
+        for (CivItem item : stashItems) {
+            if (item.getItemType().equals(CivItem.ItemType.REGION) ||
+                    item.getItemType().equals(CivItem.ItemType.TOWN)) {
+                removeItems.add(item);
+            }
+        }
+        stashItems.removeAll(removeItems);
         for (ItemStack is : event.getInventory()) {
             if (is == null || !CVItem.isCivsItem(is)) {
                 continue;

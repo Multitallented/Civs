@@ -119,7 +119,7 @@ public class Civs extends JavaPlugin {
     private void initListeners() {
         Bukkit.getPluginManager().registerEvents(new MainMenu(), this);
         Bukkit.getPluginManager().registerEvents(new LanguageMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionsMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new BlueprintsMenu(), this);
         Bukkit.getPluginManager().registerEvents(new CommunityMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ShopMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RecipeMenu(), this);
