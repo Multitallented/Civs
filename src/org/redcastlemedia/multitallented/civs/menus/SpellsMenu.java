@@ -32,7 +32,7 @@ public class SpellsMenu extends Menu {
         if (clickedStack == null) {
             return;
         }
-        ItemStack iconStack = event.getInventory().getItem(0);
+        ItemStack iconStack = event.getInventory().getItem(2);
         if (iconStack == null || !iconStack.hasItemMeta()) {
             return;
         }

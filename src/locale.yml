@@ -53,6 +53,8 @@ en:
   town-created: "$1 has been created!"
   town-destroyed: "$1 has been destroyed!"
   region-built: "You have successfully built a $1"
+  region-type: "Region Type"
+  destroy: "Destroy"
   region-in-town: "Your region is in $1"
   view-members: "View members"
   add-member: "Add member"

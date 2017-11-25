@@ -62,6 +62,23 @@ public class RegionActionMenu extends Menu {
             event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, region));
             return;
         }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "region-type"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "destroy"))) {
+            event.getWhoClicked().closeInventory();
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, region));
+            return;
+        }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             event.getWhoClicked().closeInventory();
@@ -103,6 +120,14 @@ public class RegionActionMenu extends Menu {
         //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
+        //1 Region Type button
+        if (region.getOwners().contains(civilian.getUuid())) {
+            CVItem cvItemType = regionType.clone();
+            cvItemType.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "region-type"));
+            inventory.setItem(1, cvItemType.createItemStack());
+        }
+
 
         Block block = region.getLocation().getBlock();
         Chest chest = null;
@@ -111,7 +136,7 @@ public class RegionActionMenu extends Menu {
         }
         boolean hasReagents = regionType.getReagents().isEmpty() ||
                 (chest != null && Util.containsItems(regionType.getReagents(), chest.getInventory()));
-        //1 Is Working
+        //2 Is Working
         CVItem cvItem1;
         if (hasReagents) {
             cvItem1 = CVItem.createCVItemFromString("WOOL.5");
@@ -126,9 +151,9 @@ public class RegionActionMenu extends Menu {
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-not-working"));
             cvItem1.setLore(lore);
         }
-        inventory.setItem(1, cvItem1.createItemStack());
+        inventory.setItem(2, cvItem1.createItemStack());
 
-        //2 Location/Town
+        //3 Location/Town
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town != null) {
             CVItem cvItem2 = CVItem.createCVItemFromString("WOOD_DOOR");
@@ -136,8 +161,13 @@ public class RegionActionMenu extends Menu {
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-in-town").replace("$1", town.getName()));
             cvItem2.setLore(lore);
-            inventory.setItem(2, cvItem2.createItemStack());
+            inventory.setItem(3, cvItem2.createItemStack());
         }
+
+        //6 Destroy
+        CVItem destroy = CVItem.createCVItemFromString("BARRIER");
+        destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
+        inventory.setItem(6, destroy.createItemStack());
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

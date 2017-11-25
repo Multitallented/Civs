@@ -73,6 +73,9 @@ public class RegionTypeInfoMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, RegionType regionType) {
+        return createMenu(civilian, regionType, true);
+    }
+    public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         ItemManager itemManager = ItemManager.getInstance();
@@ -95,7 +98,7 @@ public class RegionTypeInfoMenu extends Menu {
         String itemName = regionType.getProcessedName();
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
         boolean isAtMax = civilian.isAtMax(regionType);
-        if (hasShopPerms && !isAtMax) {
+        if (showPrice && hasShopPerms && !isAtMax) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore = new ArrayList<>();

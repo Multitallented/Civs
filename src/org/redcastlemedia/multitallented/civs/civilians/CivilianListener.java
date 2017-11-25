@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -22,6 +23,10 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
+import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -145,7 +150,17 @@ public class CivilianListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        player.performCommand("cv");
+        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+            player.performCommand("cv");
+            return;
+        }
+        Block block = event.getClickedBlock();
+        Region region = RegionManager.getInstance().getRegionAt(block.getLocation());
+        if (region == null) {
+            player.performCommand("cv");
+            return;
+        }
+        player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)

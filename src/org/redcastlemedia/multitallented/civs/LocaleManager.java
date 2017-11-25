@@ -271,6 +271,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".must-be-built-on-top", "A $1 must be built on top of a $2"));
             currentLanguage.put("mana-use-exp",
                     localeConfig.getString(langKey + ".mana-use-exp", "You cant use this unless you have full mana"));
+            currentLanguage.put("region-type",
+                    localeConfig.getString(langKey + ".region-type", "Region Type"));
+            currentLanguage.put("destroy",
+                    localeConfig.getString(langKey + ".destroy", "Destroy"));
             languageMap.put(langKey, currentLanguage);
         }
     }
