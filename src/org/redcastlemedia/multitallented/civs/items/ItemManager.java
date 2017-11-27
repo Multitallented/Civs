@@ -270,6 +270,9 @@ public class ItemManager {
         }
         for (String key : configurationSection.getKeys(false)) {
             CivItem currentItem = getItemType(key);
+            if (currentItem == null) {
+                continue;
+            }
             currentItem.setQty(civConfig.getInt("items." + key));
             ArrayList<String> lore = new ArrayList<>();
             lore.add(uuid.toString());

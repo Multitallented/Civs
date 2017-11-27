@@ -29,7 +29,7 @@ public class SpellsMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack == null) {
+        if (clickedStack == null || !clickedStack.hasItemMeta()) {
             return;
         }
         ItemStack iconStack = event.getInventory().getItem(2);
