@@ -90,12 +90,12 @@ public class TownManager {
             return;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        if (!townType.getCriticalReqs().contains(region.getType())) {
+        if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             return;
         }
         boolean hasReq = false;
         for (Region containedRegion : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
-            if (containedRegion.getType().equals(region.getType()) && region != containedRegion) {
+            if (containedRegion.getType().equalsIgnoreCase(region.getType()) && region != containedRegion) {
                 hasReq = true;
             }
         }

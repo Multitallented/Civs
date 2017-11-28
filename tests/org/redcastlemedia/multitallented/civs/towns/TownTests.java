@@ -107,7 +107,7 @@ public class TownTests {
         TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         loadTown("Sanmak-kol", "tribe", townLocation);
-        if (townManager.getTownAt(townLocation) == null) {
+        if (townManager.getTowns().isEmpty()) {
             fail("No town found");
         }
         ProtectionHandler protectionHandler = new ProtectionHandler();
@@ -120,7 +120,7 @@ public class TownTests {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
 //        regionManager.removeRegion(region, false);
-        assertNull(townManager.getTownAt(townLocation));
+        assertTrue(townManager.getTowns().isEmpty());
     }
 
     @Test
