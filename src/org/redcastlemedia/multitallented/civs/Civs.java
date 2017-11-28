@@ -143,6 +143,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
+        Bukkit.getPluginManager().registerEvents(new DestroyConfirmationMenu(), this);
     }
 
     public boolean setupEconomy() {

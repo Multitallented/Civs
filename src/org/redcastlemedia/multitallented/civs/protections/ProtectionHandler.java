@@ -48,6 +48,10 @@ public class ProtectionHandler implements Listener {
             if (region == null) {
                 return;
             }
+            if (region.getLocation().equals(event.getBlock().getLocation())) {
+                regionManager.removeRegion(region, true);
+                return;
+            }
             int[] radii = Region.hasRequiredBlocks(region.getType().toLowerCase(), region.getLocation());
             if (radii.length == 0) {
                 regionManager.removeRegion(region, true);

@@ -2,13 +2,17 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -18,6 +22,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TownTests {
     private TownManager townManager;
@@ -89,8 +95,9 @@ public class TownTests {
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
         Region region = new Region("cobble", people,
-                new Location(Bukkit.getWorld("world2"), 0,0,0),
+                regionLocation,
                 RegionsTests.getRadii(),
                 effects);
         loadTownTypeTribe();
@@ -100,7 +107,19 @@ public class TownTests {
         TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         loadTown("Sanmak-kol", "tribe", townLocation);
-        regionManager.removeRegion(region, false);
+        if (townManager.getTownAt(townLocation) == null) {
+            fail("No town found");
+        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Block block = mock(Block.class);
+        when(block.getLocation()).thenReturn(regionLocation);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        if (blockBreakEvent.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(blockBreakEvent);
+        }
+//        regionManager.removeRegion(region, false);
         assertNull(townManager.getTownAt(townLocation));
     }
 
