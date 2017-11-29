@@ -52,7 +52,7 @@ public class TownManager {
 
     public List<Town> getTowns() { return sortedTowns; }
     public Town getTown(String name) {
-        return towns.get(name);
+        return towns.get(name.toLowerCase());
     }
 
     public Town getTownAt(Location location) {
