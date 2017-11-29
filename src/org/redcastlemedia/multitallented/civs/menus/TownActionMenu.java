@@ -46,7 +46,7 @@ public class TownActionMenu extends Menu {
         }
         TownManager townManager = TownManager.getInstance();
         String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Town town = townManager.getTown(townName);
+        Town town = townManager.getTown(townName.toLowerCase());
         //TODO add functionality for clicking some other action items
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(

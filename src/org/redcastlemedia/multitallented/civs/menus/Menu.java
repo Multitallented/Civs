@@ -159,7 +159,7 @@ public abstract class Menu implements Listener {
         if (lastHistory[0].equals(TownActionMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             if (lastHistory.length > 1) {
-                Town town = TownManager.getInstance().getTown(lastHistory[1]);
+                Town town = TownManager.getInstance().getTown(lastHistory[1].toLowerCase());
                 humanEntity.openInventory(TownActionMenu.createMenu(civilian, town));
             } else {
                 clearHistory(humanEntity.getUniqueId());
