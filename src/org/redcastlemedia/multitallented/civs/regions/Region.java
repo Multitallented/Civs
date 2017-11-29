@@ -221,11 +221,19 @@ public class Region {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashSet<CVItem>> itemCheck = new ArrayList<>();
+        CVItem missingItem = null;
+        if (missingStack != null) {
+            missingItem = CVItem.createFromItemStack(missingStack);
+        }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
             HashSet<CVItem> currentReqMap = new HashSet<>();
             for (CVItem currentItem : currentList) {
-                currentReqMap.add(currentItem.clone());
+                CVItem currentClone = currentItem.clone();
+                if (missingItem != null && missingItem.equivalentCVItem(currentClone)) {
+                    currentClone.setQty(currentClone.getQty() + 1);
+                }
+                currentReqMap.add(currentClone);
             }
             itemCheck.add(currentReqMap);
         }
