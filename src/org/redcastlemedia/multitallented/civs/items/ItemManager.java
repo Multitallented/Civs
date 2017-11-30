@@ -283,7 +283,7 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(name.toLowerCase());
+        return itemTypes.get(name.replace("Civs ", "").toLowerCase());
     }
 
     public ArrayList<CivItem> getNewItems() {

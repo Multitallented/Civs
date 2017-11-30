@@ -5,13 +5,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -35,11 +41,27 @@ public class RegionListener implements Listener {
         if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
             return;
         }
-        String displayName = blockPlaceEvent.getItemInHand().getItemMeta().getDisplayName();
+        ItemStack heldItem = blockPlaceEvent.getItemInHand();
 
-        if (displayName != null && displayName.contains("Civs ")) {
+        if (CVItem.isCivsItem(heldItem)) {
             regionManager.detectNewRegion(blockPlaceEvent);
         }
+    }
+
+    @EventHandler
+    public void onRegionInfo(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        if (event.getAction() != Action.RIGHT_CLICK_AIR || !CVItem.isCivsItem(heldItem)) {
+            return;
+        }
+        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        if (civItem.getItemType() != CivItem.ItemType.REGION) {
+            return;
+        }
+        RegionType regionType = (RegionType) civItem;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
