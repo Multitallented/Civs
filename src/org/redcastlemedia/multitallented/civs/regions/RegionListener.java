@@ -27,6 +27,10 @@ import java.util.List;
 
 public class RegionListener implements Listener {
 
+    /**
+     * If placing a region block, try to create a region
+     * @param blockPlaceEvent
+     */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
@@ -48,6 +52,10 @@ public class RegionListener implements Listener {
         }
     }
 
+    /**
+     * Open region info menu if right clicking air with region
+     * @param event
+     */
     @EventHandler
     public void onRegionInfo(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -64,6 +72,12 @@ public class RegionListener implements Listener {
         player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
     }
 
+    /**
+     * If breaking a block inside a region
+     * Check to see if the region is destroyed
+     * Prevent non-owners from destroying regions
+     * @param blockBreakEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent blockBreakEvent) {
         RegionManager regionManager = RegionManager.getInstance();
