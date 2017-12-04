@@ -155,10 +155,13 @@ public class TownManager {
         for (String key : config.getConfigurationSection("people").getKeys(false)) {
             people.put(UUID.fromString(key), config.getString("people." + key));
         }
+        int maxPower = config.getInt("max-power", 500);
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
-                people);
+                people,
+                maxPower,
+                maxPower);
         addTown(town);
     }
     public void addTown(Town town) {

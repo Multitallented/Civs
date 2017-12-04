@@ -149,7 +149,7 @@ public class TownTests {
         owners.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town(name, type,
                 location,
-                owners);
+                owners, 500, 500);
         TownManager.getInstance().addTown(town);
         return town;
     }
