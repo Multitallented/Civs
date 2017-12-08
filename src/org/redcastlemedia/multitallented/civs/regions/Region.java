@@ -359,8 +359,10 @@ public class Region {
             return true;
         }
         Chest chest = (Chest) block.getState();
-        return regionType.getReagents().isEmpty() ||
-                Util.containsItems(regionType.getReagents(), chest.getInventory());
+        return (regionType.getReagents().isEmpty() ||
+                Util.containsItems(regionType.getReagents(), chest.getInventory()))
+                && (regionType.getInput().isEmpty() ||
+                Util.containsItems(regionType.getInput(), chest.getInventory()));
     }
     public boolean hasInput() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);

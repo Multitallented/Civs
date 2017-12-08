@@ -386,6 +386,28 @@ public class RegionsTests {
         assertNull(regionManager.getRegionAt(location1));
     }
 
+    @Test
+    public void regionShouldNotHaveReagents() {
+        loadRegionTypeCobble3();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        regionManager.addRegion(region);
+        assertFalse(region.hasReagents());
+    }
+    //TODO figure out why inventory has no items
+    /*@Test
+    public void regionShouldHaveReagents() {
+        loadRegionTypeCobble4();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        regionManager.addRegion(region);
+        assertTrue(region.hasReagents());
+    }*/
+
     public static int[] getRadii() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
@@ -396,7 +418,6 @@ public class RegionsTests {
         radiuses[5] = 5;
         return radiuses;
     }
-
     public static void loadRegionTypeCobble3() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");
@@ -413,6 +434,8 @@ public class RegionsTests {
         config.set("period", 100);
         ArrayList<String> reagents = new ArrayList<>();
         reagents.add("IRON_PICKAXE");
+        reagents.add("GOLD_BLOCK");
+        reagents.add("IRON_BLOCK");
         config.set("input", reagents);
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
@@ -426,6 +449,9 @@ public class RegionsTests {
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*3");
         config.set("build-reqs", reqs);
+        ArrayList<String> reagents = new ArrayList<>();
+        reagents.add("IRON_PICKAXE");
+        config.set("reagents", reagents);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");
         effects.add("block_break");
@@ -440,6 +466,7 @@ public class RegionsTests {
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
+        reqs.add("gold_block*1");
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");

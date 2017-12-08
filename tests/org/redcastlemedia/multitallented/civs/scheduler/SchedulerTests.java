@@ -50,7 +50,7 @@ public class SchedulerTests {
 
     @Test
     public void checkReagentsBeforeProvidingUpkeep() {
-        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.loadRegionTypeCobble3();
         RegionManager regionManager = RegionManager.getInstance();
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
