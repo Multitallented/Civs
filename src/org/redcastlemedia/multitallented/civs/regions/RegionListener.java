@@ -85,7 +85,7 @@ public class RegionListener implements Listener {
             return;
         }
         Region region = regionManager.getRegionAt(blockBreakEvent.getBlock().getLocation());
-        if (region == null) { //TODO check for towns
+        if (region == null) {
             return;
         }
         Player player = blockBreakEvent.getPlayer();
