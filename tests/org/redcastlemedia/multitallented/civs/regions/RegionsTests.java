@@ -387,6 +387,31 @@ public class RegionsTests {
     }
 
     @Test
+    public void regionShouldBeDestroyedAndRebuilt() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        UUID uuid = new UUID(1, 4);
+        owners.put(uuid, "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianBlockBreak(event);
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockBreak(event);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        Block block2 = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", location1, false);
+        when(event1.getBlockPlaced()).thenReturn(block2);
+        CVItem cvItem = CVItem.createCVItemFromString("CHEST");
+        cvItem.setDisplayName("Civs cobble");
+        ItemStack itemStack = cvItem.createItemStack();
+        when(event1.getItemInHand()).thenReturn(itemStack);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        regionListener.onBlockPlace(event1);
+        assertNotNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
     public void regionShouldNotHaveReagents() {
         loadRegionTypeCobble3();
         HashMap<UUID, String> owners = new HashMap<>();

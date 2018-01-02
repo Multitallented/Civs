@@ -21,7 +21,6 @@ import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
