@@ -180,27 +180,32 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
         }
-        boolean setCancelled = false;
+        boolean setCancelled = !event.isCancelled() &&
+                checkEffectAt(event.getLocation(), null, "block_explosion", 5);
+        if (setCancelled) {
+            event.setCancelled(true);
+            return;
+        }
         if (event.getEntity().getClass().equals(Creeper.class)) {
-            setCancelled = event.isCancelled() || checkEffectAt(event.getLocation(), null, "block_creeper", 5);
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_creeper", 5);
         } else if (event.getEntity().getClass().equals(Fireball.class)) {
-            setCancelled = event.isCancelled() || checkEffectAt(event.getLocation(), null, "block_ghast", 5);
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_ghast", 5);
         } else if (event.getEntity().getClass().equals(TNTPrimed.class)) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
             Player player = null;
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            setCancelled = event.isCancelled() || checkEffectAt(event.getLocation(), player, "block_tnt", 5);
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), player, "block_tnt", 5);
             if (setCancelled && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         }
-        setCancelled = event.isCancelled() || checkEffectAt(event.getLocation(), null, "block_explosion", 5);
         if (setCancelled) {
             event.setCancelled(true);
+            return;
         }
         //TODO power shield for super regions
 
