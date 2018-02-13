@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
+import org.redcastlemedia.multitallented.civs.items.FolderType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
@@ -127,12 +128,12 @@ public class ShopMenu extends Menu {
                 i++;
                 continue;
             }
-            CivItem civItem1 = civItem.clone();
-            if (!civItem1.getItemType().equals(CivItem.ItemType.FOLDER)) {
+            CVItem civItem1 = civItem.clone();
+            if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
                 civItem1.getLore().add(civilian.getUuid().toString());
                 civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
-                        ": " + Util.getNumberFormat(civItem1.getPrice(), civilian.getLocale()));
-                civItem1.getLore().addAll(Util.textWrap("", Util.parseColors(civItem1.getDescription(civilian.getLocale()))));
+                        ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));
+                civItem1.getLore().addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             inventory.setItem(i, civItem1.createItemStack());
             i++;

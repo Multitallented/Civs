@@ -8,8 +8,8 @@ public class CivClass {
     private final String type;
     private final UUID uuid;
     private final int id;
-    private final int manaPerSecond;
-    private final int maxMana;
+    private int manaPerSecond;
+    private int maxMana;
 
     public CivClass(int id, UUID uuid, String type, int manaPerSecond, int maxMana) {
         this.id = id;
@@ -32,5 +32,11 @@ public class CivClass {
     }
     public int getMaxMana() {
         return maxMana;
+    }
+    public void setManaPerSecond(int manaPerSecond) {
+        this.manaPerSecond = manaPerSecond;
+    }
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
     }
 }

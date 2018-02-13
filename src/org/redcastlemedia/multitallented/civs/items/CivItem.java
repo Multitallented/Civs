@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CivItem extends CVItem {
+public abstract class CivItem extends CVItem {
     private final ItemType itemType;
     private final List<String> reqs;
     private final int qty;
@@ -77,23 +77,6 @@ public class CivItem extends CVItem {
         this.permission = permission;
         this.description = description;
         this.groups = groups;
-    }
-
-    @Override
-    public CivItem clone() {
-        return new CivItem(reqs,
-                isPlaceable,
-                itemType,
-                getDisplayName().replace("Civs ",""),
-                getMat(),
-                getDamage(),
-                qty,
-                min,
-                max,
-                price,
-                permission,
-                new HashMap<>(description),
-                new ArrayList<>(groups));
     }
 
     public enum ItemType {
