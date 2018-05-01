@@ -151,7 +151,7 @@ public class Civs extends JavaPlugin {
         if (rsp != null) {
             econ = rsp.getProvider();
             if (econ != null)
-                System.out.println(Civs.getPrefix() + "Hooked into " + econ.getName());
+                System.out.println(Civs.getPrefix() + "Hooked into econ plugin " + econ.getName());
         }
         return econ != null;
     }
@@ -161,7 +161,7 @@ public class Civs extends JavaPlugin {
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
             if (perm != null)
-                System.out.println(Civs.getPrefix() + "Hooked into " + perm.getName());
+                System.out.println(Civs.getPrefix() + "Hooked into perm plugin " + perm.getName());
         }
         return (perm != null);
     }
@@ -171,7 +171,7 @@ public class Civs extends JavaPlugin {
         if (chatProvider != null) {
             chat = chatProvider.getProvider();
             if (chat != null)
-                System.out.println(Civs.getPrefix() + "Hooked into " + chat.getName());
+                System.out.println(Civs.getPrefix() + "Hooked into chat plugin " + chat.getName());
         }
         return (chat != null);
     }
