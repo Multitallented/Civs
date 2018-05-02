@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -111,7 +112,7 @@ public class RegionsTests {
 
     @Test
     public void regionShouldBeCreatedWithAllGroupReqs() {
-        loadRegionTypeCobble();
+        loadRegionTypeCobble3();
 
         World world = Bukkit.getWorld("world");
         when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
@@ -140,6 +141,20 @@ public class RegionsTests {
         regionListener.onBlockPlace(event1);
         assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
     }
+
+    @Test
+    public void regionShouldReportCorrectMissingGroupReqs() {
+        loadRegionTypeCobble4();
+
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        List<HashSet<CVItem>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
+        List<String> missingMessage = regionManager.generateMissingReqsMessage(missingItems);
+//        for (String s : missingMessage) {
+//            System.out.println(s);
+//        }
+        assertTrue(missingMessage.get(0).startsWith("§cGRAVEL"));
+    }
+
     @Test
     public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
@@ -445,6 +460,23 @@ public class RegionsTests {
         radiuses[5] = 5;
         return radiuses;
     }
+    public static void loadRegionTypeCobble4() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "cobble");
+        config.set("max", 1);
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        reqs.add("g:glass*1");
+        reqs.add("g:door*1");
+        reqs.add("GRAVEL*3");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
     public static void loadRegionTypeCobble3() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");

@@ -298,24 +298,7 @@ public class RegionManager {
                             .replace("$1", regionTypeName));
             List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
             if (missingBlocks != null) {
-                StringBuilder missingMessage = new StringBuilder();
-                for (HashSet<CVItem> itemSet : missingBlocks) {
-                    for (CVItem item : itemSet) {
-                        missingMessage.append(item.getMat().name());
-                        if (!item.isWildDamage()) {
-                            missingMessage.append(".");
-                            missingMessage.append(item.getDamage());
-                        }
-                        missingMessage.append("*");
-                        missingMessage.append(item.getQty());
-                        missingMessage.append(" or ");
-                    }
-                    missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
-                    missingMessage.append(", ");
-                }
-                missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
-                List<String> finalMessage = Util.textWrap(ChatColor.RED + "", missingMessage.toString());
-                for (String message : finalMessage) {
+                for (String message : generateMissingReqsMessage(missingBlocks)) {
                     player.sendMessage(message);
                 }
             }
@@ -356,6 +339,26 @@ public class RegionManager {
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects()));
+    }
+
+    public List<String> generateMissingReqsMessage(List<HashSet<CVItem>> missingBlocks) {
+        StringBuilder missingMessage = new StringBuilder();
+        for (HashSet<CVItem> itemSet : missingBlocks) {
+            for (CVItem item : itemSet) {
+                missingMessage.append(item.getMat().name());
+                if (!item.isWildDamage()) {
+                    missingMessage.append(".");
+                    missingMessage.append(item.getDamage());
+                }
+                missingMessage.append("*");
+                missingMessage.append(item.getQty());
+                missingMessage.append(" or ");
+            }
+            missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
+            missingMessage.append(", ");
+        }
+        missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
+        return Util.textWrap(ChatColor.RED + "", missingMessage.toString());
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {
