@@ -11,14 +11,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import sun.security.krb5.Config;
 
@@ -53,6 +56,8 @@ public class TestUtil {
         Civs.logger = mock(PluginLogger.class);
 
         Server server = mock(Server.class);
+//        BukkitScheduler bukkitScheduler = mock(BukkitScheduler.class);
+//        when(server.getScheduler()).thenReturn(bukkitScheduler);
         PlayerInventory inventory = mock(PlayerInventory.class);
         Logger logger = mock(Logger.class);
         doAnswer(new Answer() {

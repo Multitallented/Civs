@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -151,27 +152,55 @@ public class ProtectionsTests {
         assertTrue(event.isCancelled());
     }
 
-    @Test(expected = SuccessException.class)
-    public void explosionShouldDestroyRegion() {
+    private void explodeInRegion(boolean throwException, Location regionLocation) throws SuccessException {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         HashMap<String, String> effects = new HashMap<>();
-        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
         Region region = new Region("cobble", people,
                 regionLocation,
                 RegionsTests.getRadii(),
                 effects);
         RegionManager.getInstance().addRegion(region);
-        ProtectionHandler protectionHandler = new ProtectionHandler();
         TNTPrimed tntPrimed = mock(TNTPrimed.class);
         ArrayList<Block> blockList = new ArrayList<>();
-        when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        if (throwException) {
+            when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        }
         EntityExplodeEvent event = new EntityExplodeEvent(tntPrimed,
-                new Location(Bukkit.getWorld("world"), 0, 1, 0),
+                regionLocation.add(0, 1,0),
                 blockList,
                 (float) 2);
-        protectionHandler.onEntityExplode(event);
-//        assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
+        if (throwException) {
+            ProtectionHandler protectionHandler = new ProtectionHandler();
+            protectionHandler.onEntityExplode(event);
+        }
+    }
+
+    @Test(expected = SuccessException.class)
+    public void explosionShouldDestroyRegion() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        explodeInRegion(true, regionLocation);
+    }
+
+    @Test
+    public void explosionCheckShouldRemoveRegionIfBlocksDestroyed() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, -7);
+        explodeInRegion(false, regionLocation);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
+        checkRegionBlocks.run();
+        assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    @Test
+    public void explosionCheckShouldRemoveRegionIfCenterDestroyed() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        //TODO remove custom chest from region
+        explodeInRegion(false, regionLocation);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
+        checkRegionBlocks.run();
+        assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 }

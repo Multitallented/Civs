@@ -186,11 +186,11 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (event.getEntity().getClass().equals(Creeper.class)) {
+        if (event.getEntity() instanceof Creeper) {
             setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_creeper", 5);
-        } else if (event.getEntity().getClass().equals(Fireball.class)) {
+        } else if (event.getEntity() instanceof Fireball) {
             setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_ghast", 5);
-        } else if (event.getEntity().getClass().equals(TNTPrimed.class)) {
+        } else if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
             Player player = null;
             if (tnt.getSource() instanceof Player) {
@@ -210,21 +210,28 @@ public class ProtectionHandler implements Listener {
         //TODO power shield for super regions
 
         final Location location = event.getLocation();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                RegionManager regionManager = RegionManager.getInstance();
-                Set<Region> tempArray = new HashSet<>();
-                for (Region region : regionManager.getContainingRegions(location, 5)) {
-                    if (Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-                        tempArray.add(region);
-                    }
-                }
-                for (Region region : tempArray) {
-                    regionManager.removeRegion(region, true);
+        CheckRegionBlocks checkRegionBlocks = new CheckRegionBlocks(location);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), checkRegionBlocks, 1L);
+    }
+
+    class CheckRegionBlocks implements Runnable {
+        private final Location location;
+        CheckRegionBlocks(Location location) {
+            this.location = location;
+        }
+        @Override
+        public void run() {
+            RegionManager regionManager = RegionManager.getInstance();
+            Set<Region> tempArray = new HashSet<>();
+            for (Region region : regionManager.getContainingRegions(location, 5)) {
+                if (Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+                    tempArray.add(region);
                 }
             }
-        }, 1L);
+            for (Region region : tempArray) {
+                regionManager.removeRegion(region, true);
+            }
+        }
     }
 
     @EventHandler
