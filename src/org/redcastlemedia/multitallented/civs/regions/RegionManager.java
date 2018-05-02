@@ -290,7 +290,7 @@ public class RegionManager {
             return;
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation());
+        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), false);
         if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +

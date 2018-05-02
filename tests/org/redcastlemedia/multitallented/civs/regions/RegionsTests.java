@@ -92,7 +92,9 @@ public class RegionsTests {
         when(event2.getItemInHand()).thenReturn(cobbleStack);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
+        Block chestBlock = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", regionLocation, false);
+        when(event1.getBlockPlaced()).thenReturn(chestBlock);
         CVItem item = CVItem.createCVItemFromString("CHEST");
         item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
@@ -104,7 +106,7 @@ public class RegionsTests {
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
+        assertEquals("cobble", regionManager.getRegionAt(regionLocation).getType());
     }
 
     @Test

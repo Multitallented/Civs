@@ -93,6 +93,9 @@ public class Region {
                 Double.parseDouble(idSplit[3]));
     }
     public static int[] hasRequiredBlocks(String type, Location location) {
+        return hasRequiredBlocks(type, location, true);
+    }
+    public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashSet<CVItem>> itemCheck = new ArrayList<>();
@@ -104,9 +107,11 @@ public class Region {
             }
             itemCheck.add(currentReqMap);
         }
-        HashSet<CVItem> centerItem = new HashSet<>();
-        centerItem.add(regionType);
-        itemCheck.add(centerItem);
+        if (useCivItem) {
+            HashSet<CVItem> centerItem = new HashSet<>();
+            centerItem.add(regionType);
+            itemCheck.add(centerItem);
+        }
         int[] radii = new int[6];
         radii[0] = 0;
         radii[1] = 0;
