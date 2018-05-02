@@ -104,6 +104,9 @@ public class Region {
             }
             itemCheck.add(currentReqMap);
         }
+        HashSet<CVItem> centerItem = new HashSet<>();
+        centerItem.add(regionType);
+        itemCheck.add(centerItem);
         int[] radii = new int[6];
         radii[0] = 0;
         radii[1] = 0;

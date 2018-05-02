@@ -156,13 +156,13 @@ public class TestUtil {
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
-        blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0), true);
-        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0), false);
-        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0), true);
-        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100), false);
-        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 500, 0,0), true);
-        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0), false);
-        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0), true);
+        blockUnique = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 4,0,0), true);
+        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 2,50,0), false);
+        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 3,100,0), true);
+        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 0, 0,100), false);
+        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 500, 0,0), true);
+        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 509, 0,0), false);
+        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 511, 0,0), true);
 
         when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);

@@ -195,8 +195,7 @@ public class ProtectionsTests {
 
     @Test
     public void explosionCheckShouldRemoveRegionIfCenterDestroyed() {
-        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
-        //TODO remove custom chest from region
+        Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
         explodeInRegion(false, regionLocation);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);

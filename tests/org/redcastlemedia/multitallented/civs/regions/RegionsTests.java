@@ -109,7 +109,7 @@ public class RegionsTests {
 
     @Test
     public void regionShouldBeCreatedWithAllGroupReqs() {
-        loadRegionTypeCobble3();
+        loadRegionTypeCobble();
 
         World world = Bukkit.getWorld("world");
         when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
