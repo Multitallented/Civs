@@ -57,8 +57,6 @@ public class TestUtil {
         Civs.logger = mock(PluginLogger.class);
 
         Server server = mock(Server.class);
-//        BukkitScheduler bukkitScheduler = mock(BukkitScheduler.class);
-//        when(server.getScheduler()).thenReturn(bukkitScheduler);
         PlayerInventory inventory = mock(PlayerInventory.class);
         Logger logger = mock(Logger.class);
         doAnswer(new Answer() {
@@ -66,7 +64,6 @@ public class TestUtil {
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
                 System.out.println(args[0]);
-//                Object mock = invocationOnMock.getMock();
                 return args[0];
             }
         }).when(logger).severe(Matchers.anyString());
@@ -175,7 +172,6 @@ public class TestUtil {
         when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
         when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
         when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
-//        when(world.getBlockAt(blockUnique.getLocation())).thenReturn(blockUnique);
         when(world.getBlockAt(Matchers.any(Location.class))).thenReturn(blockUnique2);
         Bukkit.setServer(server);
     }

@@ -68,10 +68,6 @@ public class RegionsTests {
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble")).when(event1).getItemInHand();
-//        World world = Bukkit.getWorld("world");
-//        Block dirtBlock = mock(Block.class);
-//        when(dirtBlock.getType()).thenReturn(Material.DIRT);
-//        when(world.getBlockAt(1,0,0)).thenReturn(dirtBlock);
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
         assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
@@ -232,10 +228,6 @@ public class RegionsTests {
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble")).when(event1).getItemInHand();
-//        World world = Bukkit.getWorld("world");
-//        Block dirtBlock = mock(Block.class);
-//        when(dirtBlock.getType()).thenReturn(Material.DIRT);
-//        when(world.getBlockAt(2,0,0)).thenReturn(dirtBlock);
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -401,6 +393,21 @@ public class RegionsTests {
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockBreak(event);
         assertNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldNotBeDestroyed() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianBlockBreak(event);
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockBreak(event);
+        assertNotNull(regionManager.getRegionAt(location1));
     }
 
     @Test
