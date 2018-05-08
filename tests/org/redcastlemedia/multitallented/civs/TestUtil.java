@@ -142,7 +142,7 @@ public class TestUtil {
         block9 = createBlock(Material.THIN_GLASS, new Location(world, 1, 1,1));
         block10 = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
-        block11 = createBlock(Material.WOODEN_DOOR, new Location(world, 2, 0,1));
+        block12 = createBlock(Material.WOODEN_DOOR, new Location(world, 2, 0,1));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
@@ -156,7 +156,7 @@ public class TestUtil {
         when(world.getBlockAt(1, 1,1)).thenReturn(block9);
         when(world.getBlockAt(0, 1,1)).thenReturn(block10);
         when(world.getBlockAt(4, 101,1)).thenReturn(block11);
-        when(world.getBlockAt(2, 0,1)).thenReturn(block11);
+        when(world.getBlockAt(2, 0,1)).thenReturn(block12);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
