@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,6 +18,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -287,12 +290,18 @@ public class RegionManager {
             return;
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation());
+        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), false);
         if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));
+            List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
+            if (missingBlocks != null) {
+                for (String message : generateMissingReqsMessage(missingBlocks)) {
+                    player.sendMessage(message);
+                }
+            }
             return;
         }
         HashMap<UUID, String> people;
@@ -330,6 +339,26 @@ public class RegionManager {
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects()));
+    }
+
+    public List<String> generateMissingReqsMessage(List<HashSet<CVItem>> missingBlocks) {
+        StringBuilder missingMessage = new StringBuilder();
+        for (HashSet<CVItem> itemSet : missingBlocks) {
+            for (CVItem item : itemSet) {
+                missingMessage.append(item.getMat().name());
+                if (!item.isWildDamage()) {
+                    missingMessage.append(".");
+                    missingMessage.append(item.getDamage());
+                }
+                missingMessage.append("*");
+                missingMessage.append(item.getQty());
+                missingMessage.append(" or ");
+            }
+            missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
+            missingMessage.append(", ");
+        }
+        missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
+        return Util.textWrap(ChatColor.RED + "", missingMessage.toString());
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {

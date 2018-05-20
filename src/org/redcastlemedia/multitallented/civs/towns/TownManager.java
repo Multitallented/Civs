@@ -52,7 +52,7 @@ public class TownManager {
 
     public List<Town> getTowns() { return sortedTowns; }
     public Town getTown(String name) {
-        return towns.get(name);
+        return towns.get(name.toLowerCase());
     }
 
     public Town getTownAt(Location location) {
@@ -90,12 +90,12 @@ public class TownManager {
             return;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        if (!townType.getCriticalReqs().contains(region.getType())) {
+        if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             return;
         }
         boolean hasReq = false;
         for (Region containedRegion : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
-            if (containedRegion.getType().equals(region.getType()) && region != containedRegion) {
+            if (containedRegion.getType().equalsIgnoreCase(region.getType()) && region != containedRegion) {
                 hasReq = true;
             }
         }
@@ -155,10 +155,13 @@ public class TownManager {
         for (String key : config.getConfigurationSection("people").getKeys(false)) {
             people.put(UUID.fromString(key), config.getString("people." + key));
         }
+        int maxPower = config.getInt("max-power", 500);
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
-                people);
+                people,
+                maxPower,
+                maxPower);
         addTown(town);
     }
     public void addTown(Town town) {

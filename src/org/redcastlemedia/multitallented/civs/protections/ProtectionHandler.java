@@ -37,7 +37,10 @@ public class ProtectionHandler implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         RegionManager regionManager = RegionManager.getInstance();
-        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -46,6 +49,10 @@ public class ProtectionHandler implements Listener {
         if (!event.isCancelled()) {
             Region region = regionManager.getRegionAt(event.getBlock().getLocation());
             if (region == null) {
+                return;
+            }
+            if (region.getLocation().equals(event.getBlock().getLocation())) {
+                regionManager.removeRegion(region, true);
                 return;
             }
             int[] radii = Region.hasRequiredBlocks(region.getType().toLowerCase(), region.getLocation());
@@ -57,7 +64,10 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_build"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_build");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -70,7 +80,10 @@ public class ProtectionHandler implements Listener {
         if (!event.getBlock().getType().equals(Material.CAKE_BLOCK)) {
             return;
         }
-        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -82,7 +95,10 @@ public class ProtectionHandler implements Listener {
         if (event.getBlock().getType() == Material.AIR) {
             return;
         }
-        event.setCancelled(checkLocation(event.getBlock(), null, "block_liquid"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), null, "block_liquid");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -90,7 +106,10 @@ public class ProtectionHandler implements Listener {
         if (event.getIgnitingBlock() == null) {
             return;
         }
-        event.setCancelled(checkLocation(event.getIgnitingBlock(), event.getPlayer(), "block_fire"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getIgnitingBlock(), event.getPlayer(), "block_fire");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -99,7 +118,10 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_break"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -118,7 +140,10 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler
     public void onPaintingPlace(HangingPlaceEvent event) {
-        event.setCancelled(checkLocation(event.getBlock(), event.getPlayer(), "block_build"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_build");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && event.getPlayer() != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -131,7 +156,10 @@ public class ProtectionHandler implements Listener {
         if (event.getRemover() instanceof Player) {
             player = (Player) event.getRemover();
         }
-        event.setCancelled(checkLocation(event.getEntity().getLocation(), player, "block_break"));
+        boolean setCancelled = event.isCancelled() || checkLocation(event.getEntity().getLocation(), player, "block_break");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
         if (event.isCancelled() && player != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
@@ -152,42 +180,58 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
         }
-        if (event.getEntity().getClass().equals(Creeper.class)) {
-            event.setCancelled(checkEffectAt(event.getLocation(), null, "block_creeper", 5));
-        } else if (event.getEntity().getClass().equals(Fireball.class)) {
-            event.setCancelled(checkEffectAt(event.getLocation(), null, "block_ghast", 5));
-        } else if (event.getEntity().getClass().equals(TNTPrimed.class)) {
+        boolean setCancelled = !event.isCancelled() &&
+                checkEffectAt(event.getLocation(), null, "block_explosion", 5);
+        if (setCancelled) {
+            event.setCancelled(true);
+            return;
+        }
+        if (event.getEntity() instanceof Creeper) {
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_creeper", 5);
+        } else if (event.getEntity() instanceof Fireball) {
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_ghast", 5);
+        } else if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
             Player player = null;
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            event.setCancelled(checkEffectAt(event.getLocation(), player, "block_tnt", 5));
-            if (event.isCancelled() && player != null) {
+            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), player, "block_tnt", 5);
+            if (setCancelled && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         }
-        event.setCancelled(checkEffectAt(event.getLocation(), null, "block_explosion", 5));
+        if (setCancelled) {
+            event.setCancelled(true);
+            return;
+        }
         //TODO power shield for super regions
 
         final Location location = event.getLocation();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                RegionManager regionManager = RegionManager.getInstance();
-                Set<Region> tempArray = new HashSet<>();
-                for (Region region : regionManager.getContainingRegions(location, 5)) {
-                    if (Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-                        tempArray.add(region);
-                    }
-                }
-                for (Region region : tempArray) {
-                    regionManager.removeRegion(region, true);
+        CheckRegionBlocks checkRegionBlocks = new CheckRegionBlocks(location);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), checkRegionBlocks, 1L);
+    }
+
+    class CheckRegionBlocks implements Runnable {
+        private final Location location;
+        CheckRegionBlocks(Location location) {
+            this.location = location;
+        }
+        @Override
+        public void run() {
+            RegionManager regionManager = RegionManager.getInstance();
+            Set<Region> tempArray = new HashSet<>();
+            for (Region region : regionManager.getContainingRegions(location, 5)) {
+                if (Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+                    tempArray.add(region);
                 }
             }
-        }, 1L);
+            for (Region region : tempArray) {
+                regionManager.removeRegion(region, true);
+            }
+        }
     }
 
     @EventHandler
@@ -200,7 +244,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAP_DOOR ||
                 mat == Material.IRON_DOOR_BLOCK ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use", null));
+            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -212,7 +256,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "chest_use"));
+            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "chest_use"));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -221,7 +265,7 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.CROPS ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break", null));
+            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -230,14 +274,14 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
                 mat == Material.WOOD_BUTTON) {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use", null));
+            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else {
-            event.setCancelled(checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use", null));
+            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -254,7 +298,7 @@ public class ProtectionHandler implements Listener {
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
             return;
         }
-        event.setCancelled(checkLocation(event.getLocation(), null, "deny_mob_spawn"));
+        event.setCancelled(event.isCancelled() || checkLocation(event.getLocation(), null, "deny_mob_spawn"));
     }
 
     private boolean checkEffectAt(Location location, Player player, String type, int mod) {

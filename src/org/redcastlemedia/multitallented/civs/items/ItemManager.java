@@ -270,6 +270,9 @@ public class ItemManager {
         }
         for (String key : configurationSection.getKeys(false)) {
             CivItem currentItem = getItemType(key);
+            if (currentItem == null) {
+                continue;
+            }
             currentItem.setQty(civConfig.getInt("items." + key));
             ArrayList<String> lore = new ArrayList<>();
             lore.add(uuid.toString());
@@ -280,16 +283,16 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(name.toLowerCase());
+        return itemTypes.get(name.replace("Civs ", "").toLowerCase());
     }
 
     public ArrayList<CivItem> getNewItems() {
         ArrayList<CivItem> newItems = new ArrayList<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
-                CivItem newItem = civItem.clone();
-                newItem.setQty(newItem.getCivQty());
-                newItems.add(newItem);
+                CVItem newItem = civItem.clone();
+                newItem.setQty(civItem.getCivQty());
+                newItems.add(civItem);
             }
         }
         return newItems;

@@ -11,14 +11,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import sun.security.krb5.Config;
 
@@ -38,6 +41,9 @@ public class TestUtil {
     public static Block block7;
     public static Block block8;
     public static Block block9;
+    public static Block block10;
+    public static Block block11;
+    public static Block block12;
     public static Player player;
     public static Block blockUnique;
     public static Block blockUnique2;
@@ -58,7 +64,6 @@ public class TestUtil {
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
                 System.out.println(args[0]);
-//                Object mock = invocationOnMock.getMock();
                 return args[0];
             }
         }).when(logger).severe(Matchers.anyString());
@@ -89,6 +94,7 @@ public class TestUtil {
         configManager.blackListWorlds.add("Hub");
         configManager.itemGroups = new HashMap<>();
         configManager.itemGroups.put("glass", "THIN_GLASS,GLASS");
+        configManager.itemGroups.put("door", "WOODEN_DOOR,ACACIA_DOOR");
         configManager.useStarterBook = false;
 
         LocaleManager localeManager = new LocaleManager();
@@ -131,6 +137,9 @@ public class TestUtil {
         block7 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0,93));
         block8 = createBlock(Material.COBBLESTONE, new Location(world, -1, 0,106));
         block9 = createBlock(Material.THIN_GLASS, new Location(world, 1, 1,1));
+        block10 = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
+        block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
+        block12 = createBlock(Material.WOODEN_DOOR, new Location(world, 2, 0,1));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);
@@ -142,16 +151,19 @@ public class TestUtil {
         when(world.getBlockAt(1, 0,93)).thenReturn(block7);
         when(world.getBlockAt(-1, 0,106)).thenReturn(block8);
         when(world.getBlockAt(1, 1,1)).thenReturn(block9);
+        when(world.getBlockAt(0, 1,1)).thenReturn(block10);
+        when(world.getBlockAt(4, 101,1)).thenReturn(block11);
+        when(world.getBlockAt(2, 0,1)).thenReturn(block12);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
-        blockUnique = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 4,0,0), true);
-        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 2,50,0), false);
-        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 3,100,0), true);
-        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs Cobble", new Location(world, 0, 0,100), false);
-        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 500, 0,0), true);
-        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 509, 0,0), false);
-        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs Shelter", new Location(world, 511, 0,0), true);
+        blockUnique = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 4,0,0), true);
+        blockUnique2 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 2,50,0), false);
+        blockUnique3 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 3,100,0), true);
+        blockUnique4 = createUniqueBlock(Material.CHEST, "Civs cobble", new Location(world, 0, 0,100), false);
+        blockUnique5 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 500, 0,0), true);
+        blockUnique6 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 509, 0,0), false);
+        blockUnique7 = createUniqueBlock(Material.CHEST, "Civs shelter", new Location(world, 511, 0,0), true);
 
         when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
         when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
@@ -160,7 +172,6 @@ public class TestUtil {
         when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
         when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
         when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
-//        when(world.getBlockAt(blockUnique.getLocation())).thenReturn(blockUnique);
         when(world.getBlockAt(Matchers.any(Location.class))).thenReturn(blockUnique2);
         Bukkit.setServer(server);
     }

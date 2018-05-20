@@ -172,7 +172,10 @@ public class CivilianManager {
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
             for (CivItem civItem : civilian.getStashItems()) {
-                civConfig.set("items." + civItem.getDisplayName().replace("Civs ", "").toLowerCase(), civItem.getQty());
+                if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
+                    continue;
+                }
+                civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
             List<Integer> classes = new ArrayList<>();
             if (civilian.getCivClasses() != null) {

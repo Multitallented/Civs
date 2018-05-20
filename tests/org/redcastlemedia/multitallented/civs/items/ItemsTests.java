@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.items;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;

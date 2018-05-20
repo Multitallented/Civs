@@ -137,14 +137,14 @@ public class ClassManager {
         String className = ConfigManager.getInstance().getDefaultClass();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
         if (classType == null) {
-            classType = new ClassType(new ArrayList<>(),
+            classType = new ClassType(new ArrayList<String>(),
                     "default",
                     CVItem.createCVItemFromString("STONE"),
                     0,
                     "",
-                    new ArrayList<>(),
-                    new HashMap<>(),
-                    new ArrayList<>(),
+                    new ArrayList<String>(),
+                    new HashMap<String, String>(),
+                    new ArrayList<String>(),
                     5, 100);
         }
         return new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());

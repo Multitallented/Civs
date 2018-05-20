@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -67,10 +68,6 @@ public class RegionsTests {
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble")).when(event1).getItemInHand();
-//        World world = Bukkit.getWorld("world");
-//        Block dirtBlock = mock(Block.class);
-//        when(dirtBlock.getType()).thenReturn(Material.DIRT);
-//        when(world.getBlockAt(1,0,0)).thenReturn(dirtBlock);
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
         assertNull(regionManager.getRegionAt(TestUtil.blockUnique.getLocation()));
@@ -92,7 +89,9 @@ public class RegionsTests {
         when(event2.getItemInHand()).thenReturn(cobbleStack);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
+        Block chestBlock = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", regionLocation, false);
+        when(event1.getBlockPlaced()).thenReturn(chestBlock);
         CVItem item = CVItem.createCVItemFromString("CHEST");
         item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
@@ -104,7 +103,7 @@ public class RegionsTests {
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
+        assertEquals("cobble", regionManager.getRegionAt(regionLocation).getType());
     }
 
     @Test
@@ -138,6 +137,20 @@ public class RegionsTests {
         regionListener.onBlockPlace(event1);
         assertEquals("cobble", regionManager.getRegionAt(TestUtil.blockUnique.getLocation()).getType());
     }
+
+    @Test
+    public void regionShouldReportCorrectMissingGroupReqs() {
+        loadRegionTypeCobble4();
+
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        List<HashSet<CVItem>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
+        List<String> missingMessage = regionManager.generateMissingReqsMessage(missingItems);
+//        for (String s : missingMessage) {
+//            System.out.println(s);
+//        }
+        assertTrue(missingMessage.get(0).startsWith("§cGRAVEL"));
+    }
+
     @Test
     public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
@@ -215,10 +228,6 @@ public class RegionsTests {
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble")).when(event1).getItemInHand();
-//        World world = Bukkit.getWorld("world");
-//        Block dirtBlock = mock(Block.class);
-//        when(dirtBlock.getType()).thenReturn(Material.DIRT);
-//        when(world.getBlockAt(2,0,0)).thenReturn(dirtBlock);
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -386,6 +395,68 @@ public class RegionsTests {
         assertNull(regionManager.getRegionAt(location1));
     }
 
+    @Test
+    public void regionShouldNotBeDestroyed() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianBlockBreak(event);
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockBreak(event);
+        assertNotNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldBeDestroyedAndRebuilt() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        UUID uuid = new UUID(1, 4);
+        owners.put(uuid, "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        civilianListener.onCivilianBlockBreak(event);
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockBreak(event);
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        Block block2 = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", location1, false);
+        when(event1.getBlockPlaced()).thenReturn(block2);
+        CVItem cvItem = CVItem.createCVItemFromString("CHEST");
+        cvItem.setDisplayName("Civs cobble");
+        ItemStack itemStack = cvItem.createItemStack();
+        when(event1.getItemInHand()).thenReturn(itemStack);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        regionListener.onBlockPlace(event1);
+        assertNotNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldNotHaveReagents() {
+        loadRegionTypeCobble3();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        regionManager.addRegion(region);
+        assertFalse(region.hasReagents());
+    }
+    //TODO figure out why inventory has no items
+    /*@Test
+    public void regionShouldHaveReagents() {
+        loadRegionTypeCobble4();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        regionManager.addRegion(region);
+        assertTrue(region.hasReagents());
+    }*/
+
     public static int[] getRadii() {
         int[] radiuses = new int[6];
         radiuses[0] = 5;
@@ -395,6 +466,22 @@ public class RegionsTests {
         radiuses[4] = 5;
         radiuses[5] = 5;
         return radiuses;
+    }
+    public static void loadRegionTypeCobble4() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "cobble");
+        config.set("max", 1);
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        reqs.add("g:glass*1");
+        reqs.add("g:door*1");
+        reqs.add("GRAVEL*3");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        ItemManager.getInstance().loadRegionType(config);
     }
 
     public static void loadRegionTypeCobble3() {
@@ -413,6 +500,8 @@ public class RegionsTests {
         config.set("period", 100);
         ArrayList<String> reagents = new ArrayList<>();
         reagents.add("IRON_PICKAXE");
+        reagents.add("GOLD_BLOCK");
+        reagents.add("IRON_BLOCK");
         config.set("input", reagents);
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
@@ -426,6 +515,9 @@ public class RegionsTests {
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*3");
         config.set("build-reqs", reqs);
+        ArrayList<String> reagents = new ArrayList<>();
+        reagents.add("IRON_PICKAXE");
+        config.set("reagents", reagents);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");
         effects.add("block_break");
@@ -440,6 +532,7 @@ public class RegionsTests {
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
+        reqs.add("gold_block*1");
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");

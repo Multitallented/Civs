@@ -5,22 +5,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class RegionListener implements Listener {
 
+    /**
+     * If placing a region block, try to create a region
+     * @param blockPlaceEvent
+     */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
@@ -35,13 +44,39 @@ public class RegionListener implements Listener {
         if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
             return;
         }
-        String displayName = blockPlaceEvent.getItemInHand().getItemMeta().getDisplayName();
+        ItemStack heldItem = blockPlaceEvent.getItemInHand();
 
-        if (displayName != null && displayName.contains("Civs ")) {
+        if (CVItem.isCivsItem(heldItem)) {
             regionManager.detectNewRegion(blockPlaceEvent);
         }
     }
 
+    /**
+     * Open region info menu if right clicking air with region
+     * @param event
+     */
+    @EventHandler
+    public void onRegionInfo(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        if (event.getAction() != Action.RIGHT_CLICK_AIR || !CVItem.isCivsItem(heldItem)) {
+            return;
+        }
+        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        if (civItem.getItemType() != CivItem.ItemType.REGION) {
+            return;
+        }
+        RegionType regionType = (RegionType) civItem;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
+    }
+
+    /**
+     * If breaking a block inside a region
+     * Check to see if the region is destroyed
+     * Prevent non-owners from destroying regions
+     * @param blockBreakEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent blockBreakEvent) {
         RegionManager regionManager = RegionManager.getInstance();
@@ -49,7 +84,7 @@ public class RegionListener implements Listener {
             return;
         }
         Region region = regionManager.getRegionAt(blockBreakEvent.getBlock().getLocation());
-        if (region == null) { //TODO check for towns
+        if (region == null) {
             return;
         }
         Player player = blockBreakEvent.getPlayer();

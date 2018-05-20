@@ -86,25 +86,33 @@ public class TownActionMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
 
-        /*boolean hasReagents = townType.getReagents().isEmpty() ||
-                (chest != null && Util.containsItems(townType.getReagents(), chest.getInventory()));
-
-        //1 Is Working
+        //1 Power
         CVItem cvItem1;
-        if (hasReagents) {
+        //1 Is Working
+        if (town.getPower() > 0) {
             cvItem1 = CVItem.createCVItemFromString("WOOL.5");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
-            cvItem1.setLore(lore);
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-power").replace("$1", "" + town.getPower())
+                    .replace("$2", "" + town.getMaxPower()));
         } else {
             cvItem1 = CVItem.createCVItemFromString("WOOL.14");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-not-working"));
-            cvItem1.setLore(lore);
+            //TODO show grace period
         }
-        inventory.setItem(1, cvItem1.createItemStack());*/
+        inventory.setItem(1, cvItem1.createItemStack());
+//        if (hasReagents) {
+//            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
+//            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
+//            lore = new ArrayList<>();
+//            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
+//            cvItem1.setLore(lore);
+//        } else {
+//            cvItem1 = CVItem.createCVItemFromString("WOOL.14");
+//            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
+//            lore = new ArrayList<>();
+//            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-not-working"));
+//            cvItem1.setLore(lore);
+//        }
+//        inventory.setItem(1, cvItem1.createItemStack());
 
         //2 Location/Nation?
 //        CVItem cvItem2 = CVItem.createCVItemFromString("WOOD_DOOR");

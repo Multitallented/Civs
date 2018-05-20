@@ -93,6 +93,9 @@ public class Region {
                 Double.parseDouble(idSplit[3]));
     }
     public static int[] hasRequiredBlocks(String type, Location location) {
+        return hasRequiredBlocks(type, location, true);
+    }
+    public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashSet<CVItem>> itemCheck = new ArrayList<>();
@@ -103,6 +106,11 @@ public class Region {
                 currentReqMap.add(currentItem.clone());
             }
             itemCheck.add(currentReqMap);
+        }
+        if (useCivItem) {
+            HashSet<CVItem> centerItem = new HashSet<>();
+            centerItem.add(regionType);
+            itemCheck.add(centerItem);
         }
         int[] radii = new int[6];
         radii[0] = 0;
@@ -221,11 +229,19 @@ public class Region {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashSet<CVItem>> itemCheck = new ArrayList<>();
+        CVItem missingItem = null;
+        if (missingStack != null) {
+            missingItem = CVItem.createFromItemStack(missingStack);
+        }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
             HashSet<CVItem> currentReqMap = new HashSet<>();
             for (CVItem currentItem : currentList) {
-                currentReqMap.add(currentItem.clone());
+                CVItem currentClone = currentItem.clone();
+                if (missingItem != null && missingItem.equivalentCVItem(currentClone)) {
+                    currentClone.setQty(currentClone.getQty() + 1);
+                }
+                currentReqMap.add(currentClone);
             }
             itemCheck.add(currentReqMap);
         }
@@ -351,8 +367,10 @@ public class Region {
             return true;
         }
         Chest chest = (Chest) block.getState();
-        return regionType.getReagents().isEmpty() ||
-                Util.containsItems(regionType.getReagents(), chest.getInventory());
+        return (regionType.getReagents().isEmpty() ||
+                Util.containsItems(regionType.getReagents(), chest.getInventory()))
+                && (regionType.getInput().isEmpty() ||
+                Util.containsItems(regionType.getInput(), chest.getInventory()));
     }
     public boolean hasInput() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);

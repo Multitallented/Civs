@@ -275,6 +275,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".region-type", "Region Type"));
             currentLanguage.put("destroy",
                     localeConfig.getString(langKey + ".destroy", "Destroy"));
+            currentLanguage.put("town-power",
+                    localeConfig.getString(langKey + ".town-power", "Power: $1/$2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

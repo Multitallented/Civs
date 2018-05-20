@@ -163,7 +163,7 @@ public class CivilianListener implements Listener {
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
         Location location = event.getBlock().getLocation();
         BlockLogger blockLogger = BlockLogger.getInstance();
