@@ -18,10 +18,13 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class ArrowTurret implements Listener {
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
@@ -100,7 +103,12 @@ public class ArrowTurret implements Listener {
         Block block = l.getBlock();
         if (block instanceof Chest) {
             Chest chest = (Chest) block;
-            chest.getBlockInventory().removeItem(new ItemStack(Material.ARROW, 1));
+            List<List<CVItem>> itemsToRemove = new ArrayList<>();
+            List<CVItem> arrowList = new ArrayList<>();
+            arrowList.add(CVItem.createCVItemFromString("ARROW"));
+            itemsToRemove.add(arrowList);
+            Util.removeItems(itemsToRemove, chest.getBlockInventory());
+//            chest.getBlockInventory().removeItem(new ItemStack(Material.ARROW, 1));
         }
 
         //Damage check before firing

@@ -1,13 +1,11 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.mockito.cglib.core.Local;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -29,7 +27,7 @@ public class SpellsMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack == null) {
+        if (clickedStack == null || !clickedStack.hasItemMeta()) {
             return;
         }
         ItemStack iconStack = event.getInventory().getItem(2);

@@ -1,12 +1,12 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ClassMenu extends Menu {
     private static final String MENU_NAME = "CivsClassStash";
@@ -25,7 +26,29 @@ public class ClassMenu extends Menu {
 
     @Override
     void handleInteract(InventoryClickEvent event) {
-        //Do nothing
+        ItemStack clickedStack = event.getCurrentItem();
+        if (clickedStack == null || !clickedStack.hasItemMeta()) {
+            return;
+        }
+        ItemStack iconStack = event.getInventory().getItem(2);
+        if (iconStack == null || !iconStack.hasItemMeta()) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance()
+                .getCivilian(UUID.fromString(iconStack.getItemMeta().getLore().get(0)));
+
+
+        if (clickedStack.getItemMeta().getDisplayName().equals(
+                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "spells"))) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
+            event.setCancelled(true);
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
     }
 
     //TODO make this more secure?

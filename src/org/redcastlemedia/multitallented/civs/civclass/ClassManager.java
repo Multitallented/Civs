@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,6 +136,17 @@ public class ClassManager {
     public CivClass createDefaultClass(UUID uuid) {
         String className = ConfigManager.getInstance().getDefaultClass();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
+        if (classType == null) {
+            classType = new ClassType(new ArrayList<>(),
+                    "default",
+                    CVItem.createCVItemFromString("STONE"),
+                    0,
+                    "",
+                    new ArrayList<>(),
+                    new HashMap<>(),
+                    new ArrayList<>(),
+                    5, 100);
+        }
         return new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
     }
 

@@ -1,3 +1,7 @@
+type: class
+icon: STONE
+name: Default
+
 items:
 - hunger
 
