@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -107,11 +108,6 @@ public class Region {
             }
             itemCheck.add(currentReqMap);
         }
-        if (useCivItem) {
-            HashSet<CVItem> centerItem = new HashSet<>();
-            centerItem.add(regionType);
-            itemCheck.add(centerItem);
-        }
         int[] radii = new int[6];
         radii[0] = 0;
         radii[1] = 0;
@@ -149,7 +145,7 @@ public class Region {
                     int i=0;
                     outer1: for (HashSet<CVItem> tempMap : itemCheck) {
                         for (CVItem item : tempMap) {
-                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), true)) {
+                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), false)) {
                                 if (item.getQty() < 2) {
                                     destroyIndex = item;
                                 } else {
@@ -170,6 +166,14 @@ public class Region {
                         }
                     }
                 }
+            }
+        }
+        if (hasReqs && useCivItem) {
+            Block centerBlock = location.getBlock();
+            if (centerBlock == null) {
+                hasReqs = false;
+            } else if (!regionType.equivalentItem(centerBlock.getState().getData().toItemStack(1), false)) {
+                hasReqs = false;
             }
         }
 
@@ -282,7 +286,7 @@ public class Region {
                     int i=0;
                     outer1: for (HashSet<CVItem> tempMap : itemCheck) {
                         for (CVItem item : tempMap) {
-                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), true)) {
+                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), false)) {
                                 if (item.getQty() < 2) {
                                     destroyIndex = item;
                                 } else {
