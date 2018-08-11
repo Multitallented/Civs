@@ -123,7 +123,7 @@ public class ListAllPlayersMenu extends Menu {
         });
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
             Player player = players.get(k);
-            ItemStack is = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             isMeta.setOwner(player.getName());

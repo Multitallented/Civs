@@ -1,14 +1,13 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import sun.security.krb5.Config;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -107,10 +106,10 @@ public class CVItem {
 
     private static Material getMaterialFromString(String materialString) {
         Material mat = Material.valueOf(materialString.replaceAll(" ", "_").toUpperCase());
-        if (mat == null) {
-            int id = Integer.parseInt(materialString);
-            mat = Material.getMaterial(id);
-        }
+//        if (mat == null) {
+//            int id = Integer.parseInt(materialString);
+//            mat = Material.getMaterial(id);
+//        }
         return mat;
     }
 
@@ -119,7 +118,9 @@ public class CVItem {
         if (dur == damage) {
             return true;
         }
-        if ((mat == Material.LOG || mat == Material.LOG_2) && ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
+        if ((mat == Material.OAK_LOG || mat == Material.BIRCH_LOG || mat == Material.SPRUCE_LOG
+                || mat == Material.JUNGLE_LOG || mat == Material.DARK_OAK_LOG || mat == Material.ACACIA_LOG) &&
+                ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
             return true;
         }
         return false;

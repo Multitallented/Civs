@@ -90,7 +90,7 @@ public class CivilianListener implements Listener {
         }
         Material mat = event.getClickedBlock().getType();
         if (mat == Material.ANVIL ||
-                mat == Material.ENCHANTMENT_TABLE) {
+                mat == Material.ENCHANTING_TABLE) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     civilian.getLocale(), "mana-use-exp"));

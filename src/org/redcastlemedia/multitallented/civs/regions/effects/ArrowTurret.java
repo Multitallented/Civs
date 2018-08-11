@@ -18,6 +18,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -188,53 +189,9 @@ public class ArrowTurret implements Listener {
         //damagee.damage(damage);
         //}
 //            event.setCancelled(true);
-        damage = adjustForArmor(damage, damagee);
+        damage = DamageEffect.adjustForArmor(damage, damagee);
         event.setDamage(damage);
 
-    }
-    private int adjustForArmor(int damage, Player player) {
-        org.bukkit.inventory.PlayerInventory inv = player.getInventory();
-        ItemStack boots = inv.getBoots();
-        ItemStack helmet = inv.getHelmet();
-        ItemStack chest = inv.getChestplate();
-        ItemStack pants = inv.getLeggings();
-        double red = 0.0;
-        if (helmet != null) {
-            if (helmet.getType() == Material.LEATHER_HELMET) red = red + 0.04;
-            else if (helmet.getType() == Material.GOLD_HELMET) red = red + 0.08;
-            else if (helmet.getType() == Material.CHAINMAIL_HELMET) red = red + 0.08;
-            else if (helmet.getType() == Material.IRON_HELMET) red = red + 0.08;
-            else if (helmet.getType() == Material.DIAMOND_HELMET) red = red + 0.12;
-        }
-
-        if (boots != null) {
-            if (boots.getType() == Material.LEATHER_BOOTS) red = red + 0.04;
-            else if (boots.getType() == Material.GOLD_BOOTS) red = red + 0.04;
-            else if (boots.getType() == Material.CHAINMAIL_BOOTS) red = red + 0.04;
-            else if (boots.getType() == Material.IRON_BOOTS) red = red + 0.08;
-            else if (boots.getType() == Material.DIAMOND_BOOTS) red = red + 0.12;
-        }
-
-        if (pants != null) {
-            if (pants.getType() == Material.LEATHER_LEGGINGS) red = red + 0.08;
-            else if (pants.getType() == Material.GOLD_LEGGINGS) red = red + 0.12;
-            else if (pants.getType() == Material.CHAINMAIL_LEGGINGS) red = red + 0.16;
-            else if (pants.getType() == Material.IRON_LEGGINGS) red = red + 0.20;
-            else if (pants.getType() == Material.DIAMOND_LEGGINGS) red = red + 0.24;
-        }
-
-        if (chest != null) {
-            if (chest.getType() == Material.LEATHER_CHESTPLATE) red = red + 0.12;
-            else if (chest.getType() == Material.GOLD_CHESTPLATE) red = red + 0.20;
-            else if (chest.getType() == Material.CHAINMAIL_CHESTPLATE) red = red + 0.20;
-            else if (chest.getType() == Material.IRON_CHESTPLATE) red = red + 0.24;
-            else if (chest.getType() == Material.DIAMOND_CHESTPLATE) red = red + 0.32;
-        }
-        if (red == 0) {
-            return damage;
-        } else {
-            return (int) Math.round(damage / (1 - red));
-        }
     }
 
     private boolean hasCleanShot(Location shootHere, Location targetHere) {

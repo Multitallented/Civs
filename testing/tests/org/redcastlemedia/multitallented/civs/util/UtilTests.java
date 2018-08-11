@@ -4,22 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.hamcrest.internal.ArrayIterator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class UtilTests {
 
@@ -44,8 +40,8 @@ public class UtilTests {
     }
     @Test
     public void cvItemFromStringShouldSetValuesProperly2() {
-        CVItem cvItem = CVItem.createCVItemFromString("log 2.1*64");
-        assertTrue(cvItem.getDamage() == 1 && cvItem.getMat() == Material.LOG_2 && cvItem.getQty() == 64);
+        CVItem cvItem = CVItem.createCVItemFromString("dark oak log.1*64");
+        assertTrue(cvItem.getDamage() == 1 && cvItem.getMat() == Material.DARK_OAK_LOG && cvItem.getQty() == 64);
     }
     @Test
     public void itemGroupShouldReturnProperCVItems() {
@@ -58,7 +54,7 @@ public class UtilTests {
         Inventory inventory = mock(Inventory.class);
         List<ItemStack> inventoryContents = new ArrayList<>();
         inventoryContents.add(new ItemStack(Material.COBBLESTONE, 6));
-        inventoryContents.add(new ItemStack(Material.WOOD_AXE));
+        inventoryContents.add(new ItemStack(Material.WOODEN_AXE));
         inventoryContents.add(new ItemStack(Material.STONE_SWORD));
         inventoryContents.add(null);
         inventoryContents.add(null);
