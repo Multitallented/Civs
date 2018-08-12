@@ -5,12 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -235,11 +237,15 @@ public class ProtectionHandler implements Listener {
     }
 
     @EventHandler
-    public void onBlockInteract(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.CRAFTING_TABLE) {
+    public void onEntityInteract(EntityInteractEvent event) {
+        handleInteract(event.getBlock(), null, event);
+    }
+
+    private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
+        if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
             return;
         }
-        Material mat = event.getClickedBlock().getType();
+        Material mat = clickedBlock.getType();
         if (mat == Material.OAK_DOOR ||
                 mat == Material.BIRCH_DOOR ||
                 mat == Material.SPRUCE_DOOR ||
@@ -254,10 +260,10 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use", null));
-            if (event.isCancelled() && event.getPlayer() != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
+            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "door_use", null));
+            if (event.isCancelled() && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else if (mat == Material.CHEST ||
@@ -265,19 +271,19 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF) {
-            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "chest_use"));
-            if (event.isCancelled() && event.getPlayer() != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
+            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "chest_use"));
+            if (event.isCancelled() && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break", null));
-            if (event.isCancelled() && event.getPlayer() != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
+            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "block_break", null));
+            if (event.isCancelled() && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else if (mat == Material.LEVER ||
@@ -288,20 +294,25 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
                 mat == Material.OAK_BUTTON) {
-            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use", null));
-            if (event.isCancelled() && event.getPlayer() != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
+            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "button_use", null));
+            if (event.isCancelled() && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else {
-            event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "block_use", null));
-            if (event.isCancelled() && event.getPlayer() != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
+            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "block_use", null));
+            if (event.isCancelled() && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         }
+    }
+
+    @EventHandler
+    public void onBlockInteract(PlayerInteractEvent event) {
+        handleInteract(event.getClickedBlock(), event.getPlayer(), event);
     }
 
     @EventHandler
