@@ -131,15 +131,15 @@ public class TestUtil {
         block = createBlock(Material.CHEST, new Location(world, 0, 0, 0));
         block2 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0, 0));
         block3 = createBlock(Material.COBBLESTONE, new Location(world, 2, 0, 0));
-        block4 = createBlock(Material.LOG, new Location(world, 3, 0, 0));
+        block4 = createBlock(Material.OAK_LOG, new Location(world, 3, 0, 0));
         block5 = createBlock(Material.COBBLESTONE, new Location(world, 1, 100, 0));
         block6 = createBlock(Material.COBBLESTONE, new Location(world, 10, 100, 0));
         block7 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0,93));
         block8 = createBlock(Material.COBBLESTONE, new Location(world, -1, 0,106));
-        block9 = createBlock(Material.THIN_GLASS, new Location(world, 1, 1,1));
+        block9 = createBlock(Material.GLASS_PANE, new Location(world, 1, 1,1));
         block10 = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
-        block12 = createBlock(Material.WOODEN_DOOR, new Location(world, 2, 0,1));
+        block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
 
 
         when(world.getBlockAt(0, 0,0)).thenReturn(block);

@@ -60,7 +60,7 @@ public class ViewMembersMenu extends Menu {
             return;
         }
 
-        if (event.getCurrentItem().getType() == Material.SKULL_ITEM &&
+        if (event.getCurrentItem().getType() == Material.PLAYER_HEAD &&
                 event.getCurrentItem().getDurability() == (short) 3) {
 
             Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
@@ -101,7 +101,7 @@ public class ViewMembersMenu extends Menu {
             if (player == null) {
                 continue;
             }
-            ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
             SkullMeta im = (SkullMeta) playerItem.getItemMeta();
             im.setDisplayName(player.getName());
             lore = new ArrayList<>();
@@ -137,7 +137,7 @@ public class ViewMembersMenu extends Menu {
             if (player == null) {
                 continue;
             }
-            ItemStack playerItem = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
             SkullMeta im = (SkullMeta) playerItem.getItemMeta();
             im.setDisplayName(player.getName());
             lore = new ArrayList<>();

@@ -1,8 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -14,15 +12,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
 import org.redcastlemedia.multitallented.civs.menus.LanguageMenu;
-import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.UUID;

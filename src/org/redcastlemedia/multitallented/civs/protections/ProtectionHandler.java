@@ -77,7 +77,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockDamage(BlockDamageEvent event) {
-        if (!event.getBlock().getType().equals(Material.CAKE_BLOCK)) {
+        if (!event.getBlock().getType().equals(Material.CAKE)) {
             return;
         }
         boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
@@ -236,13 +236,23 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.WORKBENCH) {
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.CRAFTING_TABLE) {
             return;
         }
         Material mat = event.getClickedBlock().getType();
-        if (mat == Material.WOODEN_DOOR ||
-                mat == Material.TRAP_DOOR ||
-                mat == Material.IRON_DOOR_BLOCK ||
+        if (mat == Material.OAK_DOOR ||
+                mat == Material.BIRCH_DOOR ||
+                mat == Material.SPRUCE_DOOR ||
+                mat == Material.JUNGLE_DOOR ||
+                mat == Material.DARK_OAK_DOOR ||
+                mat == Material.ACACIA_DOOR ||
+                mat == Material.OAK_TRAPDOOR ||
+                mat == Material.BIRCH_TRAPDOOR ||
+                mat == Material.SPRUCE_TRAPDOOR ||
+                mat == Material.JUNGLE_TRAPDOOR ||
+                mat == Material.DARK_OAK_TRAPDOOR ||
+                mat == Material.ACACIA_TRAPDOOR ||
+                mat == Material.IRON_DOOR ||
                 mat == Material.IRON_TRAPDOOR) {
             event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "door_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
@@ -252,7 +262,6 @@ public class ProtectionHandler implements Listener {
             }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
-                mat == Material.BURNING_FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF) {
@@ -262,7 +271,7 @@ public class ProtectionHandler implements Listener {
                 event.getPlayer().sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
-        } else if (mat == Material.CROPS ||
+        } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
             event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "block_break", null));
@@ -273,7 +282,12 @@ public class ProtectionHandler implements Listener {
             }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
-                mat == Material.WOOD_BUTTON) {
+                mat == Material.BIRCH_BUTTON ||
+                mat == Material.SPRUCE_BUTTON ||
+                mat == Material.JUNGLE_BUTTON ||
+                mat == Material.DARK_OAK_BUTTON ||
+                mat == Material.ACACIA_BUTTON ||
+                mat == Material.OAK_BUTTON) {
             event.setCancelled(event.isCancelled() || checkLocation(event.getClickedBlock(), event.getPlayer(), "button_use", null));
             if (event.isCancelled() && event.getPlayer() != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());

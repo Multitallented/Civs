@@ -210,82 +210,31 @@ public abstract class Menu implements Listener {
     public static void sanitizeGUIItems(Collection<CVItem> items) {
         for (CVItem item : items) {
             Material mat = item.getMat();
-            if (mat == Material.BED_BLOCK) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setQty(Math.round(item.getQty() / 2));
-                item.setMat(Material.BED);
-            } else if (mat == Material.WOODEN_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.WOOD_DOOR);
+            if (mat == Material.RED_BED || mat == Material.BLACK_BED || mat == Material.BLUE_BED
+                    || mat == Material.BROWN_BED || mat == Material.CYAN_BED || mat == Material.GRAY_BED
+                    || mat == Material.GRAY_BED || mat == Material.GREEN_BED || mat == Material.LIGHT_BLUE_BED
+                    || mat == Material.LIGHT_GRAY_BED || mat == Material.LIME_BED || mat == Material.MAGENTA_BED
+                    || mat == Material.ORANGE_BED || mat == Material.PINK_BED || mat == Material.PURPLE_BED
+                    || mat == Material.WHITE_BED || mat == Material.YELLOW_BED) {
+                divideByTwo(item);
+            } else if (mat == Material.OAK_DOOR || mat == Material.IRON_DOOR || mat == Material.DARK_OAK_DOOR
+                    || mat == Material.BIRCH_DOOR || mat == Material.ACACIA_DOOR || mat == Material.SPRUCE_DOOR
+                    || mat == Material.JUNGLE_DOOR) {
+                divideByTwo(item);
             } else if (mat == Material.REDSTONE_WIRE) {
                 item.setMat(Material.REDSTONE);
-            } else if (mat == Material.IRON_DOOR_BLOCK) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.IRON_DOOR);
-            } else if (mat == Material.DARK_OAK_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.DARK_OAK_DOOR_ITEM);
-            } else if (mat == Material.ACACIA_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.ACACIA_DOOR_ITEM);
-            } else if (mat == Material.SPRUCE_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.SPRUCE_DOOR_ITEM);
-            } else if (mat == Material.BIRCH_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.BIRCH_DOOR_ITEM);
-            } else if (mat == Material.JUNGLE_DOOR) {
-                if (item.getQty() > 1) {
-                    item.setQty(Math.round(item.getQty() / 2));
-                }
-                item.setMat(Material.JUNGLE_DOOR_ITEM);
             } else if (mat == Material.WALL_SIGN) {
                 item.setMat(Material.SIGN);
-            } else if (mat == Material.CROPS) {
-                item.setMat(Material.WHEAT);
-            } else if (mat == Material.CARROT) {
-                item.setMat(Material.CARROT_ITEM);
-            } else if (mat == Material.POTATO) {
-                item.setMat(Material.POTATO_ITEM);
-            } else if (mat == Material.SUGAR_CANE_BLOCK) {
-                item.setMat(Material.SUGAR_CANE);
-            } else if (mat == Material.FLOWER_POT) {
-                item.setMat(Material.FLOWER_POT_ITEM);
-            } else if (mat == Material.BURNING_FURNACE) {
-                item.setMat(Material.FURNACE);
-            } else if (mat == Material.REDSTONE_LAMP_ON) {
-                item.setMat(Material.REDSTONE_LAMP_OFF);
-            } else if (mat == Material.REDSTONE_TORCH_OFF) {
-                item.setMat(Material.REDSTONE_TORCH_ON);
-            } else if (mat == Material.STATIONARY_WATER) {
+            } else if (mat == Material.WATER) {
                 item.setMat(Material.WATER_BUCKET);
-            } else if (mat == Material.STATIONARY_LAVA) {
+            } else if (mat == Material.LAVA) {
                 item.setMat(Material.LAVA_BUCKET);
-            } else if (mat == Material.CAULDRON) {
-                item.setMat(Material.CAULDRON_ITEM);
-            } else if (mat == Material.NETHER_WARTS) {
-                item.setMat(Material.NETHER_STALK);
-            } else if (mat == Material.REDSTONE_COMPARATOR_OFF ||
-                    mat == Material.REDSTONE_COMPARATOR_ON) {
-                item.setMat(Material.REDSTONE_COMPARATOR);
-            } else if (mat == Material.DIODE_BLOCK_OFF ||
-                    mat == Material.DIODE_BLOCK_ON) {
-                item.setMat(Material.DIODE);
             }
+        }
+    }
+    private static void divideByTwo(CVItem item) {
+        if (item.getQty() > 1) {
+            item.setQty(Math.round(item.getQty() / 2));
         }
     }
 
