@@ -93,8 +93,8 @@ public class TestUtil {
         configManager.blackListWorlds = new ArrayList<>();
         configManager.blackListWorlds.add("Hub");
         configManager.itemGroups = new HashMap<>();
-        configManager.itemGroups.put("glass", "THIN_GLASS,GLASS");
-        configManager.itemGroups.put("door", "WOODEN_DOOR,ACACIA_DOOR");
+        configManager.itemGroups.put("glass", "GLASS_PANE,GLASS");
+        configManager.itemGroups.put("door", "OAK_DOOR,ACACIA_DOOR");
         configManager.useStarterBook = false;
 
         LocaleManager localeManager = new LocaleManager();
@@ -172,12 +172,12 @@ public class TestUtil {
         when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
         when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
         when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
-        Location locationBlock2 = new Location(world, 0, 0, 0);
-        when(world.getBlockAt(locationBlock2)).thenReturn(blockUnique2);
-        Location locationBlock4 = new Location(world, 4, 0, 0);
-        when(world.getBlockAt(locationBlock4)).thenReturn(blockUnique2);
-        Location locationBlock2Unique = new Location(world, 2,50,0);
-        when(world.getBlockAt(locationBlock2Unique)).thenReturn(blockUnique2);
+        when(world.getBlockAt(any())).thenAnswer(new Answer() {
+            public Block answer(InvocationOnMock invocation) {
+                Location location = (Location) invocation.getArguments()[0];
+                return location.getWorld().getBlockAt((int) location.getX(), (int) location.getY(), (int) location.getZ());
+            }
+        });
         Bukkit.setServer(server);
     }
 
@@ -257,4 +257,15 @@ public class TestUtil {
         when(block.getLocation()).thenReturn(location);
         return block;
     }
+
+//    private static Location getMockLocation(Location location) {
+//        Location mockLocation = mock(Location.class);
+//        when(mockLocation.getX()).thenReturn(location.getX());
+//        when(mockLocation.getY()).thenReturn(location.getY());
+//        when(mockLocation.getZ()).thenReturn(location.getZ());
+//        when(mockLocation.getBlock()).thenReturn(location.getWorld()
+//                .getBlockAt((int) location.getX(), (int) location.getY(), (int) location.getZ()));
+//        when(mockLocation.getWorld()).thenReturn(location.getWorld());
+//        return mockLocation;
+//    }
 }

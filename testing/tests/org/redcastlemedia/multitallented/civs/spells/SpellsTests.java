@@ -78,7 +78,7 @@ public class SpellsTests {
 
     public static void loadSpellTypeHunger() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("icon", "WOOL.14");
+        config.set("icon", "RED_WOOL");
         config.set("type", "spell");
         config.set("name", "Hunger");
         ConfigurationSection conditions = new YamlConfiguration();

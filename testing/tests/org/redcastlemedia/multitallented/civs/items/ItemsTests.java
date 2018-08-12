@@ -137,7 +137,7 @@ public class ItemsTests {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "Shelter");
-        config.set("icon", "WOOD");
+        config.set("icon", "OAK_WOOD");
         config.set("build-radius", 5);
         config.set("qty", 1);
         itemManager.loadRegionType(config);
