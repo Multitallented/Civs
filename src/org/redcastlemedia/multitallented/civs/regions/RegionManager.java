@@ -3,20 +3,18 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
+import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -28,9 +26,19 @@ import java.util.*;
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
     private static RegionManager regionManager;
+    private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
+    private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
 
     public RegionManager() {
         regionManager = this;
+    }
+
+    public void addCreateRegionListener(String key, CreateRegionListener listener) {
+        createRegionListeners.put(key, listener);
+    }
+
+    public void addDestroyRegionListener(String key, DestroyRegionListener listener) {
+        destroyRegionListener.put(key, listener);
     }
 
     public void addRegion(Region region) {
@@ -325,13 +333,12 @@ public class RegionManager {
             return;
         }
 
-        if (regionType.getEffects().containsKey("tnt_cannon")) {
-            ItemStack controllerWand = new ItemStack(Material.STICK, 1);
-            ItemMeta im = controllerWand.getItemMeta();
-            im.setDisplayName("Cannon Controller " + Region.locationToString(location));
-            controllerWand.setItemMeta(im);
-
-            location.getWorld().dropItemNaturally(block.getRelative(BlockFace.UP, 2).getLocation(), controllerWand);
+        for (String effect : regionType.getEffects().keySet()) {
+            if (createRegionListeners.get(effect) != null &&
+                    !createRegionListeners.get(effect).createRegionHandler(block)) {
+                event.setCancelled(true);
+                return;
+            }
         }
 
         //TODO remove rebuildRegion

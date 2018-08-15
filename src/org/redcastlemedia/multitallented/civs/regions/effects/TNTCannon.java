@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -10,18 +11,35 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class TNTCannon implements Listener {
+public class TNTCannon implements Listener, CreateRegionListener {
 //    private final HashMap<TNTPrimed, FiredTNT> firedTNT = new HashMap<>();
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
 
+    public TNTCannon() {
+        RegionManager.getInstance().addCreateRegionListener("tnt_cannon", this);
+    }
+
+    @Override
+    public boolean createRegionHandler(Block block) {
+        Location location = block.getLocation();
+        ItemStack controllerWand = new ItemStack(Material.STICK, 1);
+        ItemMeta im = controllerWand.getItemMeta();
+        im.setDisplayName("Cannon Controller " + Region.locationToString(location));
+        controllerWand.setItemMeta(im);
+
+        location.getWorld().dropItemNaturally(block.getRelative(BlockFace.UP, 2).getLocation(), controllerWand);
+        return true;
+    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
