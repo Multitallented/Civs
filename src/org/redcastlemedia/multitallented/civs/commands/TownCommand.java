@@ -88,7 +88,8 @@ public class TownCommand implements CivCommand {
             name = intersectTown.getName();
             TownManager.getInstance().removeTown(intersectTown, false);
         }
-        Town town = new Town(name, townType.getProcessedName(), newTownLocation, people, townType.getPower(), townType.getMaxPower());
+        //TODO count all structures that provide housing
+        Town town = new Town(name, townType.getProcessedName(), newTownLocation, people, townType.getPower(), townType.getMaxPower(), 0, 1);
         townManager.addTown(town);
         townManager.saveTown(town);
         player.getInventory().remove(itemStack);

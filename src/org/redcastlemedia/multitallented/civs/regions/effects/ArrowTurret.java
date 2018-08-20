@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ArrowTurret implements Listener {
+    public static String KEY = "arrow_turret";
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
 
     public static void shootArrow(Region r, LivingEntity livingEntity, String vars, boolean runUpkeep) {
@@ -219,5 +220,4 @@ public class ArrowTurret implements Listener {
 
         return true;
     }
-
 }

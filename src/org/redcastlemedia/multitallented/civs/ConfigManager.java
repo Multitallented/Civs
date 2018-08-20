@@ -42,6 +42,8 @@ public class ConfigManager {
     double moneyPerKarma;
     int karmaPerKill;
     int karmaPerKillStreak;
+    int powerPerKill;
+    int powerPerNPCKill;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -73,6 +75,8 @@ public class ConfigManager {
     public double getMoneyPerKarma() { return moneyPerKarma; }
     public int getKarmaPerKill() { return karmaPerKill; }
     public int getKarmaPerKillStreak() { return karmaPerKillStreak; }
+    public int getPowerPerKill() { return powerPerKill; }
+    public int getPowerPerNPCKill() { return powerPerNPCKill; }
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -155,6 +159,8 @@ public class ConfigManager {
             moneyPerKarma = config.getDouble("money.karma", 0.1);
             karmaPerKill = config.getInt("karma-per-kill", 1);
             karmaPerKillStreak = config.getInt("karma-per-kill-streak", 1);
+            powerPerKill = config.getInt("power-per-kill", 1);
+            powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -188,6 +194,8 @@ public class ConfigManager {
         moneyPerKarma = 0.1;
         karmaPerKillStreak = 1;
         karmaPerKill = 1;
+        powerPerKill = 1;
+        powerPerNPCKill = 1;
     }
 
     public static ConfigManager getInstance() {

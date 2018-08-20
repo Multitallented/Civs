@@ -8,6 +8,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
+import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
 
 public class RegionTickThread implements Runnable {
 
@@ -17,17 +18,21 @@ public class RegionTickThread implements Runnable {
         for (Region region : regionManager.getAllRegions()) {
             boolean hasUpkeep = region.runUpkeep();
 
-            if (hasUpkeep && region.getEffects().containsKey("arrow_turret")) {
+            if (hasUpkeep && region.getEffects().containsKey(ArrowTurret.KEY)) {
                 shootArrow(region);
+            }
+            if (region.getEffects().containsKey(VillagerEffect.KEY)) {
+                VillagerEffect.spawnVillager(region);
             }
         }
     }
 
     //Shoot arrows at mobs
     private void shootArrow(Region region) {
+        //TODO shoot at players too
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         Location location = region.getLocation();
-        for (Entity e : location.getChunk().getEntities()) {
+        for (Entity e : location.getChunk().getEntities()) { //TODO fix this so it gets all entities in range
             if (!(e instanceof Monster)) {
                 continue;
             }
@@ -35,7 +40,7 @@ public class RegionTickThread implements Runnable {
             if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
                 continue;
             }
-            ArrowTurret.shootArrow(region, monster, region.getEffects().get("arrow_turret"), false);
+            ArrowTurret.shootArrow(region, monster, region.getEffects().get(ArrowTurret.KEY), false);
             break;
         }
     }

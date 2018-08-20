@@ -156,12 +156,17 @@ public class TownManager {
             people.put(UUID.fromString(key), config.getString("people." + key));
         }
         int maxPower = config.getInt("max-power", 500);
+        int power = config.getInt("power", maxPower);
+        int housing = config.getInt("housing", 0);
+        int population = config.getInt("population", 1);
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
                 people,
+                power,
                 maxPower,
-                maxPower);
+                housing,
+                population);
         addTown(town);
     }
     public void addTown(Town town) {
@@ -250,6 +255,8 @@ public class TownManager {
             for (UUID key : town.getPeople().keySet()) {
                 config.set("people." + key, town.getPeople().get(key));
             }
+            config.set("housing", town.getHousing());
+            config.set("population", town.getPopulation());
 
             //TODO save all town properties
             config.save(townFile);

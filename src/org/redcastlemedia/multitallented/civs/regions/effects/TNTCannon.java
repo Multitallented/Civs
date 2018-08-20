@@ -30,7 +30,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
     }
 
     @Override
-    public boolean createRegionHandler(Block block) {
+    public boolean createRegionHandler(Block block, Player player) {
         Location location = block.getLocation();
         ItemStack controllerWand = new ItemStack(Material.STICK, 1);
         ItemMeta im = controllerWand.getItemMeta();

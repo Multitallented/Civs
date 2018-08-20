@@ -402,7 +402,7 @@ public class ItemManager {
                                 !town.getPeople().get(civilian.getUuid()).contains("owner")) {
                             continue;
                         }
-                        if (requirement <= town.countPeople("member")) {
+                        if (requirement <= town.countPeopleWithRole("member")) {
                             continue outer;
                         }
                     }

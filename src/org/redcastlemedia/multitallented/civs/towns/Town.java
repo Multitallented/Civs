@@ -14,14 +14,19 @@ public class Town {
     private Location location;
     private String name;
     private HashMap<UUID, String> people;
+    private int housing;
+    private int population;
 
-    public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower) {
+    public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
+                int housing, int population) {
         this.name = name;
         this.type = type;
         this.location = location;
         this.people = people;
         this.power = power;
         this.maxPower = maxPower;
+        this.housing = housing;
+        this.population = population;
     }
 
     public String getType() {
@@ -45,7 +50,7 @@ public class Town {
         this.power = power;
     }
 
-    public int countPeople(String role) {
+    public int countPeopleWithRole(String role) {
         if (role == null) {
             return people.size();
         }
@@ -56,5 +61,19 @@ public class Town {
             }
         }
         return count;
+    }
+
+    public int getHousing() {
+        return this.housing;
+    }
+    public void setHousing(int housing) {
+        this.housing = housing;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+    public void setPopulation(int population) {
+        this.population = population;
     }
 }

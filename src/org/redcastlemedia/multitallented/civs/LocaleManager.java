@@ -277,6 +277,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".destroy", "Destroy"));
             currentLanguage.put("town-power",
                     localeConfig.getString(langKey + ".town-power", "Power: $1/$2"));
+            currentLanguage.put("building-requires-2space",
+                    localeConfig.getString(langKey + ".building-requires-2space", "This building requires 2 empty spaces above the central chest"));
             languageMap.put(langKey, currentLanguage);
         }
     }

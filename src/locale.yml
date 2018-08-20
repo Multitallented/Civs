@@ -115,6 +115,7 @@ en:
   hold-town: "Please hold a town item"
   no-commands-in-jail: "You cant use commands in jail for another $1"
   mana-use-exp: "You cant use this unless you have full mana"
+  building-requires-2space: "This building requires 2 empty spaces above the central chest"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

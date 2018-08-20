@@ -23,6 +23,8 @@ money:
   karma: 0.1
 karma-per-kill: 1
 karma-per-kill-streak: 1
+power-per-kill: 1
+power-per-npc-kill: 1
 folders:
   farms: STONE_HOE
 item-groups:
