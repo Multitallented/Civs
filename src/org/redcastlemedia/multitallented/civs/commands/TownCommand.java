@@ -11,6 +11,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -88,8 +91,21 @@ public class TownCommand implements CivCommand {
             name = intersectTown.getName();
             TownManager.getInstance().removeTown(intersectTown, false);
         }
-        //TODO count all structures that provide housing
-        Town town = new Town(name, townType.getProcessedName(), newTownLocation, people, townType.getPower(), townType.getMaxPower(), 0, 1);
+
+        int housingCount = 0;
+        for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (regionType.getEffects().containsKey("housing")) {
+                housingCount++;
+            }
+        }
+
+        Town town = new Town(name,
+                townType.getProcessedName(),
+                newTownLocation,
+                people,
+                townType.getPower(),
+                townType.getMaxPower(), housingCount, people.size());
         townManager.addTown(town);
         townManager.saveTown(town);
         player.getInventory().remove(itemStack);
@@ -97,5 +113,15 @@ public class TownCommand implements CivCommand {
                 "town-created").replace("$1", town.getName()));
 
         return true;
+    }
+
+    public Set<Region> getRegionsInTown(Town town) {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        return getRegionsInTown(town.getLocation(), townType.getBuildRadius(), townType.getBuildRadiusY());
+    }
+
+    public Set<Region> getRegionsInTown(Location location, int radius, int radiusY) {
+        //TODO fix this to account for vertical radius being different
+        return RegionManager.getInstance().getContainingRegions(location, radius);
     }
 }

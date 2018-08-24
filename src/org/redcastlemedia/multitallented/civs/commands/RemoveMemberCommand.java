@@ -92,6 +92,9 @@ public class RemoveMemberCommand implements CivCommand {
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null) {
             town.getPeople().remove(invitee.getUniqueId());
+            if (town.getPopulation() > 1) {
+                town.setPopulation(town.getPopulation() - 1);
+            }
             TownManager.getInstance().saveTown(town);
         }
         return true;
