@@ -211,7 +211,7 @@ public abstract class Menu implements Listener {
         for (CVItem item : items) {
             Material mat = item.getMat();
             if (mat == Material.RED_BED || mat == Material.BLACK_BED || mat == Material.BLUE_BED
-                    || mat == Material.BROWN_BED || mat == Material.CYAN_BED || mat == Material.GRAY_BED
+                    || mat == Material.BROWN_BED || mat == Material.CYAN_BED
                     || mat == Material.GRAY_BED || mat == Material.GREEN_BED || mat == Material.LIGHT_BLUE_BED
                     || mat == Material.LIGHT_GRAY_BED || mat == Material.LIME_BED || mat == Material.MAGENTA_BED
                     || mat == Material.ORANGE_BED || mat == Material.PINK_BED || mat == Material.PURPLE_BED
