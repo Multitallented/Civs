@@ -8,11 +8,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -20,6 +23,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doReturn;
@@ -70,5 +75,46 @@ public class RegionEffectTests {
         when(entityDeathEvent.getEntity()).thenReturn(villager);
         villagerEffect.onVillagerDeath(entityDeathEvent);
         assertEquals(299, this.town.getPower());
+    }
+
+    @Test
+    public void villagerShouldSpawnNewVillager() {
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble");
+        Villager villager = VillagerEffect.spawnVillager(region);
+        assertNotNull(villager);
+    }
+
+    @Test
+    public void villagerShouldNotSpawnIfOnCooldown() {
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble");
+        VillagerEffect.spawnVillager(region);
+        Villager villager = VillagerEffect.spawnVillager(region);
+        assertNull(villager);
+    }
+
+    @Test
+    public void villagerShouldNotSpawnIfAtMaxVillagers() {
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble");
+        VillagerEffect villagerEffect = new VillagerEffect();
+        Player player = mock(Player.class);
+        Block block = TestUtil.createBlock(Material.CHEST, townLocation);
+        doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
+        when(block.getWorld()).thenReturn(mock(World.class));
+
+        villagerEffect.createRegionHandler(block, player);
+        Villager villager = VillagerEffect.spawnVillager(region);
+        assertNotNull(villager);
+        VillagerEffect.townCooldowns.clear();
+        villager = VillagerEffect.spawnVillager(region);
+        assertNull(villager);
+    }
+
+    @After
+    public void cleanUp() {
+        VillagerEffect.townCooldowns.clear();
+        VillagerEffect.townLimit.clear();
     }
 }

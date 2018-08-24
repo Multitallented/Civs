@@ -44,6 +44,7 @@ public class ConfigManager {
     int karmaPerKillStreak;
     int powerPerKill;
     int powerPerNPCKill;
+    long villagerCooldown;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -77,6 +78,7 @@ public class ConfigManager {
     public int getKarmaPerKillStreak() { return karmaPerKillStreak; }
     public int getPowerPerKill() { return powerPerKill; }
     public int getPowerPerNPCKill() { return powerPerNPCKill; }
+    public long getVillagerCooldown() { return villagerCooldown; }
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -161,6 +163,7 @@ public class ConfigManager {
             karmaPerKillStreak = config.getInt("karma-per-kill-streak", 1);
             powerPerKill = config.getInt("power-per-kill", 1);
             powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
+            villagerCooldown = config.getLong("villager-cooldown", 300);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -196,6 +199,7 @@ public class ConfigManager {
         karmaPerKill = 1;
         powerPerKill = 1;
         powerPerNPCKill = 1;
+        villagerCooldown = 300;
     }
 
     public static ConfigManager getInstance() {

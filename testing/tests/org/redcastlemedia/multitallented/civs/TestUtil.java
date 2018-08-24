@@ -1,13 +1,16 @@
 package org.redcastlemedia.multitallented.civs;
 
+import net.minecraft.server.v1_13_R1.Village;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -109,12 +112,9 @@ public class TestUtil {
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
         when(im.getDisplayName()).thenReturn("Civs Cobble");
 
-        World world = mock(World.class);
-        when(world.getName()).thenReturn("world");
-        when(world.getMaxHeight()).thenReturn(255);
-        World world2 = mock(World.class);
-        when(world2.getName()).thenReturn("world2");
-        when(world2.getMaxHeight()).thenReturn(255);
+        WorldImpl world = new WorldImpl("world");
+        WorldImpl world2 = new WorldImpl("world2");
+
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
@@ -143,18 +143,18 @@ public class TestUtil {
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
 
 
-        when(world.getBlockAt(0, 0,0)).thenReturn(block);
-        when(world.getBlockAt(1, 0,0)).thenReturn(block2);
-        when(world.getBlockAt(2, 0,0)).thenReturn(block3);
-        when(world.getBlockAt(3, 0,0)).thenReturn(block4);
-        when(world.getBlockAt(1, 100,0)).thenReturn(block5);
-        when(world.getBlockAt(10, 100,0)).thenReturn(block6);
-        when(world.getBlockAt(1, 0,93)).thenReturn(block7);
-        when(world.getBlockAt(-1, 0,106)).thenReturn(block8);
-        when(world.getBlockAt(1, 1,1)).thenReturn(block9);
-        when(world.getBlockAt(0, 1,1)).thenReturn(block10);
-        when(world.getBlockAt(4, 101,1)).thenReturn(block11);
-        when(world.getBlockAt(2, 0,1)).thenReturn(block12);
+        world.putBlock(0,0,0,block);
+        world.putBlock(1,0,0,block2);
+        world.putBlock(2,0,0,block3);
+        world.putBlock(3,0,0,block4);
+        world.putBlock(1,100,0,block5);
+        world.putBlock(10,100,0, block6);
+        world.putBlock(1,0,93, block7);
+        world.putBlock(-1, 0, 106, block8);
+        world.putBlock(1,1,1, block9);
+        world.putBlock(0,1,1, block10);
+        world.putBlock(4,101,1,block11);
+        world.putBlock(2,0,1,block12);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
@@ -166,19 +166,14 @@ public class TestUtil {
         blockUnique6 = createUniqueBlock(Material.CHEST, null, new Location(world, 509, 0,0), false);
         blockUnique7 = createUniqueBlock(Material.CHEST, null, new Location(world, 511, 0,0), true);
 
-        when(world.getBlockAt(4, 0,0)).thenReturn(blockUnique);
-        when(world.getBlockAt(2, 50,0)).thenReturn(blockUnique2);
-        when(world.getBlockAt(3, 100,0)).thenReturn(blockUnique3);
-        when(world.getBlockAt(0, 0,100)).thenReturn(blockUnique4);
-        when(world.getBlockAt(500, 0,0)).thenReturn(blockUnique5);
-        when(world.getBlockAt(509, 0,0)).thenReturn(blockUnique6);
-        when(world.getBlockAt(511, 0,0)).thenReturn(blockUnique7);
-        when(world.getBlockAt(any())).thenAnswer(new Answer() {
-            public Block answer(InvocationOnMock invocation) {
-                Location location = (Location) invocation.getArguments()[0];
-                return location.getWorld().getBlockAt((int) location.getX(), (int) location.getY(), (int) location.getZ());
-            }
-        });
+        world.putBlock(4,0,0,blockUnique);
+        world.putBlock(2,50,0,blockUnique2);
+        world.putBlock(3,100,0,blockUnique3);
+        world.putBlock(0,0,100,blockUnique4);
+        world.putBlock(500,0,0,blockUnique5);
+        world.putBlock(509,0,0,blockUnique6);
+        world.putBlock(511,0,0,blockUnique7);
+
         Bukkit.setServer(server);
     }
 

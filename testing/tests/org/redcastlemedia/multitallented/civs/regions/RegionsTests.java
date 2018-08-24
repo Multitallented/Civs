@@ -77,9 +77,9 @@ public class RegionsTests {
     public void regionShouldBeCreatedWithAllReqs() {
         loadRegionTypeCobble();
 
-        World world = Bukkit.getWorld("world");
-        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+//        World world = Bukkit.getWorld("world");
+//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -111,9 +111,9 @@ public class RegionsTests {
         loadRegionTypeCobble3();
 
         World world = Bukkit.getWorld("world");
-        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
-        when(world.getBlockAt(1,1,1)).thenReturn(TestUtil.block9);
+//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+//        when(world.getBlockAt(1,1,1)).thenReturn(TestUtil.block9);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -156,9 +156,9 @@ public class RegionsTests {
         loadRegionTypeCobble();
 
         World world = Bukkit.getWorld("world");
-        when(world.getBlockAt(1,50,0)).thenReturn(TestUtil.block2);
-        when(world.getBlockAt(11,50,0)).thenReturn(TestUtil.block3);
-        when(world.getBlockAt(2,50,0)).thenReturn(TestUtil.blockUnique2);
+//        when(world.getBlockAt(1,50,0)).thenReturn(TestUtil.block2);
+//        when(world.getBlockAt(11,50,0)).thenReturn(TestUtil.block3);
+//        when(world.getBlockAt(2,50,0)).thenReturn(TestUtil.blockUnique2);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
         doReturn(cobbleStack).when(event3).getItemInHand();
@@ -274,9 +274,9 @@ public class RegionsTests {
         regionManager.addRegion(region);
 
 
-        World world = Bukkit.getWorld("world");
-        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
+//        World world = Bukkit.getWorld("world");
+//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
+//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -581,4 +581,12 @@ public class RegionsTests {
         ItemManager.getInstance().loadRegionType(config);
     }
 
+    public static Region createNewRegion(String type) {
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Region region = new Region(type, owners, location1, getRadii(), new HashMap<String, String>());
+        RegionManager.getInstance().addRegion(region);
+        return region;
+    }
 }
