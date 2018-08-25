@@ -3,19 +3,13 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -23,7 +17,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,18 +127,18 @@ public class RegionActionMenu extends Menu {
         if (block.getState() instanceof Chest) {
             chest = (Chest) block.getState();
         }
-        boolean hasReagents = regionType.getReagents().isEmpty() ||
-                (chest != null && Util.containsItems(regionType.getReagents(), chest.getInventory()));
+//        boolean hasUpkeepItems = regionType.getReagents().isEmpty() ||
+//                (chest != null && Util.containsItems(regionType.getReagents(), chest.getInventory()));
         //2 Is Working
         CVItem cvItem1;
-        if (hasReagents) {
-            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
+        if (region.hasUpkeepItems()) {
+            cvItem1 = CVItem.createCVItemFromString("GREEN_WOOL");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
             cvItem1.setLore(lore);
         } else {
-            cvItem1 = CVItem.createCVItemFromString("WOOL.14");
+            cvItem1 = CVItem.createCVItemFromString("RED_WOOL");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-not-working"));

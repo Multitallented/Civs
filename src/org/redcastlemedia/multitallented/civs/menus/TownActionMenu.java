@@ -99,7 +99,7 @@ public class TownActionMenu extends Menu {
             //TODO show grace period
         }
         inventory.setItem(1, cvItem1.createItemStack());
-//        if (hasReagents) {
+//        if (hasUpkeepItems) {
 //            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
 //            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
 //            lore = new ArrayList<>();

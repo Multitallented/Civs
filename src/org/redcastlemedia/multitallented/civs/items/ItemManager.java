@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -198,18 +199,28 @@ public class ItemManager {
         for (String req : config.getStringList("build-reqs")) {
             reqs.add(CVItem.createListFromString(req));
         }
-        List<List<CVItem>> reagents = new ArrayList<>();
-        for (String reagent : config.getStringList("reagents")) {
-            reagents.add(CVItem.createListFromString(reagent));
+        List<RegionUpkeep> upkeeps = new ArrayList<>();
+        ConfigurationSection upkeepSection = config.getConfigurationSection("upkeep");
+        if (upkeepSection != null) {
+            for (String key : upkeepSection.getKeys(false)) {
+                List<List<CVItem>> reagents = new ArrayList<>();
+                for (String reagent : config.getStringList("upkeep." + key + ".reagents")) {
+                    reagents.add(CVItem.createListFromString(reagent));
+                }
+                List<List<CVItem>> inputs = new ArrayList<>();
+                for (String input : config.getStringList("upkeep." + key + ".input")) {
+                    inputs.add(CVItem.createListFromString(input));
+                }
+                List<List<CVItem>> outputs = new ArrayList<>();
+                for (String output : config.getStringList("upkeep." + key + ".output")) {
+                    outputs.add(CVItem.createListFromString(output));
+                }
+                double payout = config.getDouble("upkeep." + key + ".payout", 0);
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout);
+                upkeeps.add(regionUpkeep);
+            }
         }
-        List<List<CVItem>> inputs = new ArrayList<>();
-        for (String input : config.getStringList("input")) {
-            inputs.add(CVItem.createListFromString(input));
-        }
-        List<List<CVItem>> outputs = new ArrayList<>();
-        for (String output : config.getStringList("output")) {
-            outputs.add(CVItem.createListFromString(output));
-        }
+
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {
             String[] effectSplit = s.split(":");
@@ -242,10 +253,7 @@ public class ItemManager {
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 reqs,
-                reagents,
-                inputs,
-                outputs,
-                config.getDouble("payout", 0),
+                upkeeps,
                 effects,
                 buildRadius,
                 buildRadiusX,

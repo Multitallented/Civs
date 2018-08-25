@@ -47,19 +47,22 @@ public class RegionTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.CHEST)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Reagents", ""));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.HOPPER)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getInput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Input", ""));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getInputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.DISPENSER)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getOutput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Output", ""));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getOutputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
@@ -76,7 +79,7 @@ public class RegionTypeInfoMenu extends Menu {
         return createMenu(civilian, regionType, true);
     }
     public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
-        Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -120,43 +123,46 @@ public class RegionTypeInfoMenu extends Menu {
         //4 biome/location reqs
         //5 town reqs
 
-        //8 back button
-        inventory.setItem(8, getBackButton(civilian));
-
-        //9 build-reqs
+        //6 build-reqs
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
         cvItem1.setDisplayName("Build Reqs");
         lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
                 .replace("$1", regionType.getName()));
         cvItem1.setLore(lore);
-        inventory.setItem(9, cvItem1.createItemStack());
+        inventory.setItem(6, cvItem1.createItemStack());
 
-        //10 reagents
-        CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
-        cvItem2.setDisplayName("Reagents");
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
-                .replace("$1", regionType.getName()));
-        cvItem2.setLore(lore);
-        inventory.setItem(10, cvItem2.createItemStack());
+        //8 back button
+        inventory.setItem(8, getBackButton(civilian));
 
-        //11 upkeep
-        CVItem cvItem3 = CVItem.createCVItemFromString("HOPPER");
-        cvItem3.setDisplayName("Upkeep");
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
-                .replace("$1", regionType.getName()));
-        cvItem3.setLore(lore);
-        inventory.setItem(11, cvItem3.createItemStack());
-        //12 output
-        CVItem cvItem4 = CVItem.createCVItemFromString("DISPENSER");
-        cvItem4.setDisplayName("Output");
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
-                .replace("$1", regionType.getName()));
-        cvItem4.setLore(lore);
-        inventory.setItem(12, cvItem4.createItemStack());
+        for (int i = 0; i < regionType.getUpkeeps().size(); i++) {
+            //9 reagents
+            CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
+            cvItem2.setDisplayName("Reagents" + i);
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
+                    .replace("$1", regionType.getName()));
+            cvItem2.setLore(lore);
+            inventory.setItem(9+i*9, cvItem2.createItemStack());
+
+            //10 upkeep
+            CVItem cvItem3 = CVItem.createCVItemFromString("HOPPER");
+            cvItem3.setDisplayName("Input" + i);
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
+                    .replace("$1", regionType.getName()));
+            cvItem3.setLore(lore);
+            inventory.setItem(10, cvItem3.createItemStack());
+
+            //11 output
+            CVItem cvItem4 = CVItem.createCVItemFromString("DISPENSER");
+            cvItem4.setDisplayName("Output" + i);
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
+                    .replace("$1", regionType.getName()));
+            cvItem4.setLore(lore);
+            inventory.setItem(11, cvItem4.createItemStack());
+        }
 
         //TODO finish this stub
 

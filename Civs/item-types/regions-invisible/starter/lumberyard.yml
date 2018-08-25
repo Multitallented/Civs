@@ -21,8 +21,8 @@ effects:
 period: 30
 group: shop
 upkeep:
--
-  inputs: g:log*4,COAL.0*1,COAL.1*2
-  payout: 4
+  0:
+    inputs: g:log*4,COAL.0*1,COAL.1*2
+    payout: 4
 description:
   en: 'Sells 4 logs or 1 coal or 2 charcoal for $4'

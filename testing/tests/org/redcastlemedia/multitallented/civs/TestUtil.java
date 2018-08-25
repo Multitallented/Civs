@@ -243,6 +243,7 @@ public class TestUtil {
         when(inventory.getContents()).thenReturn(itemStacks);
         when(inventory.addItem(Matchers.any(ItemStack.class))).thenThrow(new SuccessException());
         when(chest.getInventory()).thenReturn(inventory);
+        when(chest.getBlockInventory()).thenReturn(inventory);
         MaterialData materialData = mock(MaterialData.class);
         when(block.getState()).thenReturn(chest);
         when(chest.getData()).thenReturn(materialData);

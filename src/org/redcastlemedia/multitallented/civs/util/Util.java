@@ -102,6 +102,9 @@ public class Util {
         return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
     }
     public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
+        if (req.isEmpty()) {
+            return true;
+        }
         if (inv == null) {
             return false;
         }

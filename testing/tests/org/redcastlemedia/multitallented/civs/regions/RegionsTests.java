@@ -1,11 +1,11 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -441,9 +441,9 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
-        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>());
         regionManager.addRegion(region);
-        assertFalse(region.hasReagents());
+        assertFalse(region.hasUpkeepItems());
     }
     //TODO figure out why inventory has no items
     /*@Test
@@ -454,7 +454,7 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
         regionManager.addRegion(region);
-        assertTrue(region.hasReagents());
+        assertTrue(region.hasUpkeepItems());
     }*/
 
     public static int[] getRadii() {
@@ -502,10 +502,10 @@ public class RegionsTests {
         reagents.add("IRON_PICKAXE");
         reagents.add("GOLD_BLOCK");
         reagents.add("IRON_BLOCK");
-        config.set("input", reagents);
+        config.set("upkeep.0.input", reagents);
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
-        config.set("output", outputs);
+        config.set("upkeep.0.output", outputs);
         ItemManager.getInstance().loadRegionType(config);
     }
 

@@ -2,12 +2,10 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -316,7 +314,7 @@ public class Region {
         }
         return hasReqs ? null : itemCheck;
     }
-//    public boolean hasReagents() {
+//    public boolean hasUpkeepItems() {
 //        Block block = location.getBlock();
 //        if (!(block.getState() instanceof Chest)) {
 //            return false;
@@ -364,30 +362,45 @@ public class Region {
         long period = regionType.getPeriod();
         return lastTick + period * 1000 < System.currentTimeMillis();
     }
-    public boolean hasReagents() {
+    public boolean hasUpkeepItems() {
+        return hasUpkeepItems(false);
+    }
+    public boolean hasUpkeepItems(boolean ignoreReagents) {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
-        Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
+        if (regionType.getUpkeeps().isEmpty()) {
             return true;
         }
+        Block block = location.getBlock();
+        if (!(block.getState() instanceof Chest)) {
+            return needsReagentsOrInput();
+        }
         Chest chest = (Chest) block.getState();
-        return (regionType.getReagents().isEmpty() ||
-                Util.containsItems(regionType.getReagents(), chest.getInventory()))
-                && (regionType.getInput().isEmpty() ||
-                Util.containsItems(regionType.getInput(), chest.getInventory()));
+        for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            System.out.println(regionUpkeep.getInputs().size() + ":" + regionUpkeep.getReagents().size());
+            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
+                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+                return true;
+            }
+        }
+        return false;
     }
     public boolean hasInput() {
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
-        Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
-            return true;
-        }
-        Chest chest = (Chest) block.getState();
-        return regionType.getInput().isEmpty() ||
-                Util.containsItems(regionType.getInput(), chest.getInventory());
+        return hasUpkeepItems(true);
     }
     public void tick() {
         this.lastTick = System.currentTimeMillis();
+    }
+
+    public boolean needsReagentsOrInput() {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            if (!regionUpkeep.getReagents().isEmpty() ||
+                    !regionUpkeep.getInputs().isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean runUpkeep() {
@@ -402,46 +415,52 @@ public class Region {
         if (block.getState() instanceof Chest) {
             chest = (Chest) block.getState();
         }
-        boolean hasReagents = hasReagents();
-        boolean hasInput = hasInput();
-        boolean emptyOutput = regionType.getOutput().isEmpty();
 
-        if (!hasReagents || !hasInput ||
-                (chest != null && !emptyOutput && chest.getInventory().firstEmpty() == -1)) {
-            return false;
+        if (chest == null) {
+            return needsReagentsOrInput();
         }
-
-        boolean hasMoney = false;
-        if (Civs.econ != null) {
-            double payout = regionType.getPayout();
-            payout = payout / getOwners().size();
-            for (UUID uuid : getOwners()) {
-                OfflinePlayer player = Bukkit.getPlayer(uuid);
-                if (player == null) {
-                    continue;
-                }
-                if (payout > 0) {
-                    Civs.econ.depositPlayer(player, payout);
-                    hasMoney = true;
-                } else if (Civs.econ.has(player, payout)) {
-                    Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                    hasMoney = true;
-                }
+        boolean hadUpkeep = false;
+        for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            boolean hasReagents = Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
+                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+            if (!hasReagents) {
+                continue;
             }
-        } else {
-            hasMoney = true;
-        }
-        if (!hasMoney) {
-            return false;
-        }
-        if (chest != null) {
-            Util.removeItems(regionType.getInput(), chest.getInventory());
-        }
-        if (chest != null) {
-            Util.addItems(regionType.getOutput(), chest.getInventory());
-        }
 
-        tick();
-        return true;
+            boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
+            boolean fullChest = chest.getBlockInventory().firstEmpty() == -1;
+
+            if (!emptyOutput && fullChest) {
+                continue;
+            }
+            boolean hasMoney = false;
+            if (Civs.econ != null) {
+                double payout = regionUpkeep.getPayout();
+                payout = payout / getOwners().size();
+                for (UUID uuid : getOwners()) {
+                    OfflinePlayer player = Bukkit.getPlayer(uuid);
+                    if (player == null) {
+                        continue;
+                    }
+                    if (payout > 0) {
+                        Civs.econ.depositPlayer(player, payout);
+                        hasMoney = true;
+                    } else if (Civs.econ.has(player, payout)) {
+                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                        hasMoney = true;
+                    }
+                }
+            } else {
+                hasMoney = true;
+            }
+            if (!hasMoney) {
+                continue;
+            }
+            Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+            Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());
+            tick();
+            hadUpkeep = true;
+        }
+        return hadUpkeep;
     }
 }

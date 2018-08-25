@@ -16,7 +16,6 @@ import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,7 +74,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
             }
         }
         Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
-        if (!region.hasReagents()) {
+        if (!region.hasUpkeepItems()) {
             return;
         }
         event.setCancelled(true);
