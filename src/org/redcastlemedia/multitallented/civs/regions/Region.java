@@ -376,7 +376,6 @@ public class Region {
         }
         Chest chest = (Chest) block.getState();
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            System.out.println(regionUpkeep.getInputs().size() + ":" + regionUpkeep.getReagents().size());
             if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
                 return true;
