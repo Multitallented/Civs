@@ -2,7 +2,7 @@ type: region
 icon: BEACON
 name: CouncilRoom
 max: 1
-price: 100
+price: 200
 
 build-reqs:
 - CHEST*4
@@ -13,6 +13,7 @@ build-reqs:
 - g:primary*350
 - g:stairs*4
 - BOOKSHELF*8
+- g:sign*8
 build-radius: 5
 effects:
 - block_break

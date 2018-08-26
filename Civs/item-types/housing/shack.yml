@@ -1,0 +1,25 @@
+type: region
+icon: RED_BED
+name: Shack
+max: 2
+price: 100
+group: house
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- g:roof*49
+- g:secondary*
+
+build-radius: 3
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing
+
+description:
+  en: "The most basic house"
