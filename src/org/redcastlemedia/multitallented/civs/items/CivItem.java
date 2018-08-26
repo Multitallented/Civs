@@ -32,7 +32,12 @@ public abstract class CivItem extends CVItem {
     public int getCivQty() { return qty; }
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
-    public double getPrice() { return price * ConfigManager.getInstance().getPriceMultiplier(); }
+
+    public double getPrice() {
+        ConfigManager configManager = ConfigManager.getInstance();
+        return price * configManager.getPriceMultiplier() + configManager.getPriceBase();
+    }
+
     public String getPermission() { return permission; }
     public String getProcessedName() {
         return processItemName(getDisplayName());

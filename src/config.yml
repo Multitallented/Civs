@@ -2,12 +2,17 @@ black-list-worlds:
 - Hub
 default-language: en
 allow-civ-item-sharing: false
+#ignore other plugins when checking if an explosion is cancelled
+#before reducing power
 explosion-override: false
 use-starter-book: true
-price-multiplier: 1
+price-multiplier: 1 #multiplier for prices before adding base price
+price-base: 0 #added to all item prices
 exp-modifier: 0.2
 jail-time-seconds: 300
+#cooldown before spawning a new villager in seconds
 villager-cooldown: 300
+#cooldown before killing the same player reduces the town power
 death-grace-period-seconds: 60
 points:
   killstreak: 0.1
@@ -28,7 +33,6 @@ power-per-kill: 1
 power-per-npc-kill: 1
 folders:
   farms: STONE_HOE
-  starter: GRASS
 item-groups:
   wood: OAK_WOOD,SPRUCE_WOOD,BIRCH_WOOD,JUNGLE_WOOD,DARK_OAK_WOOD,ACACIA_WOOD
   log: OAK_LOG,SPURCE_LOG,BIRCH_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG

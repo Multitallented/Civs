@@ -19,6 +19,7 @@ public class ConfigManager {
     boolean allowCivItemDropping;
     boolean explosionOverride;
     double priceMultiplier;
+    double priceBase;
     double expModifier;
     int expBase;
     HashMap<String, String> itemGroups;
@@ -56,6 +57,7 @@ public class ConfigManager {
     public boolean getExplosionOverride() { return explosionOverride; }
     public boolean getUseStarterBook() { return useStarterBook; }
     public double getPriceMultiplier() { return priceMultiplier; }
+    public double getPriceBase() { return priceBase; }
     public double getExpModifier() { return expModifier; }
     public int getExpBase() { return expBase; }
     public long getJailTime() { return jailTime; }
@@ -115,6 +117,7 @@ public class ConfigManager {
             allowCivItemDropping = config.getBoolean("explosion-override", false);
             useStarterBook = config.getBoolean("use-starter-book", true);
             priceMultiplier = config.getDouble("price-multiplier", 1);
+            priceBase = config.getDouble("price-base", 0);
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
@@ -176,6 +179,7 @@ public class ConfigManager {
         explosionOverride = false;
         useStarterBook = true;
         priceMultiplier = 1;
+        priceBase = 0;
         expModifier = 0.2;
         expBase = 100;
         itemGroups = new HashMap<>();
