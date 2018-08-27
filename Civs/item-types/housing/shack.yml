@@ -9,7 +9,13 @@ build-reqs:
 - CHEST*2
 - g:door*1
 - g:roof*49
-- g:secondary*
+- g:secondary*42
+- g:primary*140
+- g:window*4
+- g:bed*1
+- g:sign*1
+- FURNACE*1
+- CRAFTING_TABLE*1
 
 build-radius: 3
 effects:
@@ -20,6 +26,9 @@ effects:
 - door_use
 - chest_use
 - housing
+upkeep:
+  0:
+
 
 description:
   en: "The most basic house"
