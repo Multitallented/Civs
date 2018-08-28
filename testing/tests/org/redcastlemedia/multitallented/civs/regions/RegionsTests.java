@@ -17,6 +17,9 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -445,17 +448,60 @@ public class RegionsTests {
         regionManager.addRegion(region);
         assertFalse(region.hasUpkeepItems());
     }
-    //TODO figure out why inventory has no items
-    /*@Test
+    @Test
     public void regionShouldHaveReagents() {
         loadRegionTypeCobble4();
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
-        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>());
         regionManager.addRegion(region);
         assertTrue(region.hasUpkeepItems());
-    }*/
+    }
+
+    @Test
+    public void regionShouldNotHavePowerReagents() {
+        loadRegionTypePower(true);
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("power", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        assertFalse(region.hasUpkeepItems());
+    }
+
+    @Test
+    public void regionShouldHavePowerReagents() {
+        loadRegionTypePower(true);
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("power", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townName", "hamlet", location1,
+                owners, 300, 300, 2, 1);
+        TownManager.getInstance().addTown(town);
+        assertTrue(region.hasUpkeepItems());
+        region.runUpkeep();
+        assertEquals(299, town.getPower());
+    }
+
+    @Test
+    public void regionShouldAddPowerToTown() {
+        loadRegionTypePower(false);
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("power", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townName", "hamlet", location1,
+                owners, 300, 300, 2, 1);
+        TownManager.getInstance().addTown(town);
+        region.runUpkeep();
+        assertEquals(301, town.getPower());
+    }
 
     public static int[] getRadii() {
         int[] radiuses = new int[6];
@@ -467,6 +513,29 @@ public class RegionsTests {
         radiuses[5] = 5;
         return radiuses;
     }
+
+    public static void loadRegionTypePower(boolean consume) {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "power");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        reqs.add("g:glass*1");
+        reqs.add("g:door*1");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        ArrayList<String> powerReq = new ArrayList<>();
+        powerReq.add("t:power*1");
+        if (consume) {
+            config.set("upkeeps.0.input", powerReq);
+        } else {
+            config.set("upkeeps.0.output", powerReq);
+        }
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
     public static void loadRegionTypeCobble4() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");
@@ -481,6 +550,9 @@ public class RegionsTests {
         effects.add("block_place");
         effects.add("block_break");
         config.set("effects", effects);
+        ArrayList<String> inputs = new ArrayList<>();
+        inputs.add("IRON_PICKAXE*1");
+        config.set("upkeeps.0.inputs", inputs);
         ItemManager.getInstance().loadRegionType(config);
     }
 
