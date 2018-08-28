@@ -58,7 +58,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
         }
         Region region = RegionManager.getInstance().getRegionAt(id);
         if (region == null || !region.getOwners().contains(player.getUniqueId())) {
-            player.sendMessage(Civs.getPrefix() + "You must be an owner to use this.");
+            player.sendMessage(Civs.getPrefix() + "You must be an owner to use this."); //TODO localize
             return;
         }
         long cooldown = 8;
@@ -81,7 +81,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
 
         if (cooldowns.get(id) != null && cooldowns.get(id) > System.currentTimeMillis()) {
             //TODO show how long till reload is done
-            player.sendMessage(Civs.getPrefix() + "That " + region.getType() + " is reloading.");
+            player.sendMessage(Civs.getPrefix() + "That " + region.getType() + " is reloading."); //TODO localize
             return;
         }
         HashSet<Material> materialHashSet = new HashSet<>();
@@ -90,7 +90,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
             return;
         }
         if (targetLocation.distanceSquared(fireLocation) < 1600) {
-            player.sendMessage(Civs.getPrefix() + "That target is too close to shoot at.");
+            player.sendMessage(Civs.getPrefix() + "That target is too close to shoot at."); //TODO localize
             return;
         }
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
@@ -164,7 +164,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
             currPlayer.playSound(fireLocation, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
         }
 
-        player.sendMessage(Civs.getPrefix() + "Your " + region.getType() + " has fired ordinance at your new target.");
+        player.sendMessage(Civs.getPrefix() + "Your " + region.getType() + " has fired ordinance at your new target."); //TODO localize
     }
 
     private double functionDx(double deltaX, double deltaY, double v) {
@@ -174,71 +174,4 @@ public class TNTCannon implements Listener, CreateRegionListener {
             return 10000;
         }
     }
-
-        /*@EventHandler
-        public void onTwoSecondEvent(ToTwoSecondEvent event) {
-            HashSet<TNTPrimed> removeTNT = new HashSet<TNTPrimed>();
-            for (FiredTNT tnt : firedTNT.values()) {
-                if (tnt.getStage() < 2) {
-                    removeTNT.add(tnt.getTNT());
-                }
-                TNTPrimed tntPrimed = tnt.getTNT();
-                Location tntLocation = tntPrimed.getLocation();
-                tntPrimed.remove();
-                tntPrimed = tntLocation.getWorld().spawn(tntLocation, TNTPrimed.class);
-                Vector vector = new Vector();
-                //TODO set velocity and decrement the stage
-            }
-            for (TNTPrimed tnt : removeTNT) {
-                firedTNT.remove(tnt);
-            }
-            HashSet<Integer> removeMe = new HashSet<Integer>();
-            for (Integer id : cooldowns.keySet()) {
-                if (cooldowns.get(id) < System.currentTimeMillis()) {
-                    removeMe.add(id);
-                }
-            }
-            for (Integer id : removeMe) {
-                cooldowns.remove(id);
-            }
-        }*/
-
-    /*private class FiredTNT {
-        private int stage;
-        private Location startLocation;
-        private Location targetLocation;
-        private TNTPrimed tnt;
-
-        public FiredTNT(TNTPrimed tnt, int stage, Location startLocation, Location targetLocation) {
-            this.tnt = tnt;
-            this.stage = stage;
-            this.startLocation = startLocation;
-            this.targetLocation = targetLocation;
-        }
-
-        public void setTNT(TNTPrimed tnt) {
-            this.tnt = tnt;
-        }
-        public void setStage(int stage) {
-            this.stage = stage;
-        }
-        public void setStartLocation(Location startLocation) {
-            this.startLocation = startLocation;
-        }
-        public void setTargetLocation(Location targetLocation) {
-            this.targetLocation = targetLocation;
-        }
-        public TNTPrimed getTNT() {
-            return tnt;
-        }
-        public int getStage() {
-            return stage;
-        }
-        public Location getStartLocation() {
-            return startLocation;
-        }
-        public Location getTargetLocation() {
-            return targetLocation;
-        }
-    }*/
 }

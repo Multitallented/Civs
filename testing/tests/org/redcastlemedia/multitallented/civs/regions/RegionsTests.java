@@ -503,14 +503,51 @@ public class RegionsTests {
         assertEquals(301, town.getPower());
     }
 
+    @Test
+    public void regionShouldConsiderAlliesAsGuests() {
+        UUID uuid1 = new UUID(1, 3);
+        Region region = load2TownsWith1Region(uuid1, true);
+        assertEquals("guest", region.getPeople().get(uuid1));
+    }
+
+    @Test
+    public void regionShouldNotConsiderEveryoneAsGuest() {
+        UUID uuid1 = new UUID(1, 3);
+        Region region = load2TownsWith1Region(uuid1, false);
+        assertNull(region.getPeople().get(uuid1));
+    }
+
+    private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        UUID uuid = new UUID(1, 4);
+        owners.put(uuid, "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("power", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townName", "hamlet", location1,
+                new HashMap<>(), 300, 300, 2, 1);
+        TownManager.getInstance().addTown(town);
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        Town town1 = new Town("townName1", "hamlet", location,
+                new HashMap<>(), 300, 300, 2, 1);
+        town1.getPeople().put(uuid1, "member");
+        TownManager.getInstance().addTown(town);
+        if (allied) {
+            town.getAllies().add("townName1");
+            town1.getAllies().add("townName");
+        }
+        return region;
+    }
+
     public static int[] getRadii() {
         int[] radiuses = new int[6];
-        radiuses[0] = 5;
-        radiuses[1] = 5;
-        radiuses[2] = 5;
-        radiuses[3] = 5;
-        radiuses[4] = 5;
-        radiuses[5] = 5;
+        for (int i = 0; i < 6; i++) {
+            radiuses[i] = 5;
+        }
         return radiuses;
     }
 
