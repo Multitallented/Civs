@@ -60,7 +60,6 @@ public class Region {
 
         for (String name : town.getAllies()) {
             Town currentTown = townManager.getTown(name);
-            System.out.println(name);
             if (currentTown != null) {
                 for (UUID uuid : currentTown.getPeople().keySet()) {
                     if (!newPeople.containsKey(uuid)) {
