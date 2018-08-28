@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 public class RegionsTests {
     private RegionManager regionManager;
+    private TownManager townManager;
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -42,6 +43,7 @@ public class RegionsTests {
     @Before
     public void onBefore() {
         regionManager = new RegionManager();
+        townManager = new TownManager();
     }
 
     @Test
@@ -507,7 +509,7 @@ public class RegionsTests {
     public void regionShouldConsiderAlliesAsGuests() {
         UUID uuid1 = new UUID(1, 3);
         Region region = load2TownsWith1Region(uuid1, true);
-        assertEquals("guest", region.getPeople().get(uuid1));
+        assertEquals("ally", region.getPeople().get(uuid1));
     }
 
     @Test
@@ -527,18 +529,18 @@ public class RegionsTests {
         regionManager.addRegion(region);
 
         TownTests.loadTownTypeHamlet();
-        Town town = new Town("townName", "hamlet", location1,
+        Town town = new Town("townname", "hamlet", location1,
                 new HashMap<>(), 300, 300, 2, 1);
-        TownManager.getInstance().addTown(town);
+        townManager.addTown(town);
 
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        Town town1 = new Town("townName1", "hamlet", location,
+        Town town1 = new Town("townname1", "hamlet", location,
                 new HashMap<>(), 300, 300, 2, 1);
         town1.getPeople().put(uuid1, "member");
-        TownManager.getInstance().addTown(town);
+        townManager.addTown(town1);
         if (allied) {
-            town.getAllies().add("townName1");
-            town1.getAllies().add("townName");
+            town.getAllies().add("townname1");
+            town1.getAllies().add("townname");
         }
         return region;
     }
