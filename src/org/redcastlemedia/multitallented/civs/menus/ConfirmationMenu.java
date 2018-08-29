@@ -56,6 +56,10 @@ public class ConfirmationMenu extends Menu {
             }
 
             clearHistory(civilian.getUuid());
+            if (Civs.econ == null) {
+                player.sendMessage(Civs.getPrefix() + " Econ plugin not enabled or hooked through Vault.");
+                return;
+            }
             Civs.econ.withdrawPlayer(player, civItem.getPrice());
             event.getWhoClicked().sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "item-bought")
