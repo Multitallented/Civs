@@ -526,12 +526,10 @@ public class RegionsTests {
         effects.add("block_place");
         effects.add("block_break");
         config.set("effects", effects);
-        ArrayList<String> powerReq = new ArrayList<>();
-        powerReq.add("t:power*1");
         if (consume) {
-            config.set("upkeeps.0.input", powerReq);
+            config.set("upkeeps.0.power-input", 1);
         } else {
-            config.set("upkeeps.0.output", powerReq);
+            config.set("upkeeps.0.power-output", 1);
         }
         ItemManager.getInstance().loadRegionType(config);
     }
