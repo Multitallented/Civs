@@ -378,6 +378,9 @@ public class Region {
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+                if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0) {
+                    continue;
+                }
                 return true;
             }
         }

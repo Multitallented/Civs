@@ -9,6 +9,33 @@ public class RegionUpkeep {
     private final List<List<CVItem>> inputs;
     private final List<List<CVItem>> outputs;
     private final double payout;
+    private int powerReagent;
+    private int powerInput;
+    private int powerOutput;
+
+    public int getPowerReagent() {
+        return powerReagent;
+    }
+
+    public void setPowerReagent(int powerReagent) {
+        this.powerReagent = powerReagent;
+    }
+
+    public int getPowerInput() {
+        return powerInput;
+    }
+
+    public void setPowerInput(int powerInput) {
+        this.powerInput = powerInput;
+    }
+
+    public int getPowerOutput() {
+        return powerOutput;
+    }
+
+    public void setPowerOutput(int powerOutput) {
+        this.powerOutput = powerOutput;
+    }
 
     public RegionUpkeep(List<List<CVItem>> reagents,
                         List<List<CVItem>> inputs,

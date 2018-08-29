@@ -217,6 +217,9 @@ public class ItemManager {
                 }
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
                 RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout);
+                regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
+                regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
+                regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));
                 upkeeps.add(regionUpkeep);
             }
         }
