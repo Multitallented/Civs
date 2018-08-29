@@ -64,7 +64,7 @@ public class CommunityMenu extends Menu {
         //TODO populate items here
 
         //0 Players
-        CVItem cvItem = CVItem.createCVItemFromString("SKULL.3");
+        CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
         cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
         inventory.setItem(0, cvItem.createItemStack());
 

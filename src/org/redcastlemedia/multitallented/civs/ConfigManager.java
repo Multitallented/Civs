@@ -144,7 +144,7 @@ public class ConfigManager {
             }
             creatureHealth = new HashMap<>();
             ConfigurationSection section3 = config.getConfigurationSection("creature-health");
-            if (section != null) {
+            if (section3 != null) {
                 for (String key : section3.getKeys(false)) {
                     creatureHealth.put(key, config.getInt("creature-health." + key, -1));
                 }

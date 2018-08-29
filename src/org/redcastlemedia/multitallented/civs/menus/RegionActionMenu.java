@@ -149,7 +149,7 @@ public class RegionActionMenu extends Menu {
         //3 Location/Town
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town != null) {
-            CVItem cvItem2 = CVItem.createCVItemFromString("WOOD_DOOR");
+            CVItem cvItem2 = CVItem.createCVItemFromString("OAK_DOOR");
             cvItem2.setDisplayName(town.getName());
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-in-town").replace("$1", town.getName()));
@@ -165,13 +165,14 @@ public class RegionActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
+        //TODO fix this null pointer when clicking on someone elses region
         if (region.getPeople().get(civilian.getUuid()).equals("owner")) {
-            CVItem skull = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
 
             //10 Add person - works for people in region only
-            CVItem skull2 = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
         }

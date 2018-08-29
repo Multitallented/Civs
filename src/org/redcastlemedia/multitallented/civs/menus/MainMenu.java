@@ -110,7 +110,7 @@ public class MainMenu extends Menu {
         inventory.setItem(4, cvItemBlue.createItemStack());
 
         //5 Regions
-        CVItem cvItemRegion = CVItem.createCVItemFromString("WOOD.1");
+        CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD.1");
         cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
         inventory.setItem(5, cvItemRegion.createItemStack());
 

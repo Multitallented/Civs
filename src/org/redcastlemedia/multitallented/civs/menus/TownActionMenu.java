@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -126,12 +127,12 @@ public class TownActionMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
         //9 People
         if (town.getPeople().get(civilian.getUuid()).equals("owner")) {
-            CVItem skull = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
 
             //10 Add person - works for people in region only
-            CVItem skull2 = CVItem.createCVItemFromString("SKULL_ITEM.3");
+            CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
         }
