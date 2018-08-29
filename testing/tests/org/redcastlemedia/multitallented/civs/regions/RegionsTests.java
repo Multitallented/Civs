@@ -42,6 +42,8 @@ public class RegionsTests {
     @Before
     public void onBefore() {
         regionManager = new RegionManager();
+        new TownManager();
+        new ItemManager();
     }
 
     @Test
@@ -497,7 +499,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townName", "hamlet", location1,
-                owners, 300, 300, 2, 1);
+                owners, 300, 305, 2, 1);
         TownManager.getInstance().addTown(town);
         region.runUpkeep();
         assertEquals(301, town.getPower());
@@ -527,9 +529,9 @@ public class RegionsTests {
         effects.add("block_break");
         config.set("effects", effects);
         if (consume) {
-            config.set("upkeeps.0.power-input", 1);
+            config.set("upkeep.0.power-input", 1);
         } else {
-            config.set("upkeeps.0.power-output", 1);
+            config.set("upkeep.0.power-output", 1);
         }
         ItemManager.getInstance().loadRegionType(config);
     }

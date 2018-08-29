@@ -9,6 +9,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -378,8 +380,11 @@ public class Region {
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
-                if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0) {
-                    continue;
+                if ((!ignoreReagents && regionUpkeep.getPowerReagent() > 0) || regionUpkeep.getPowerInput() > 0) {
+                    Town town = TownManager.getInstance().getTownAt(location);
+                    if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
+                        continue;
+                    }
                 }
                 return true;
             }
@@ -418,8 +423,8 @@ public class Region {
             chest = (Chest) block.getState();
         }
 
-        if (chest == null) {
-            return needsReagentsOrInput();
+        if (chest == null && needsReagentsOrInput()) {
+            return false;
         }
         boolean hadUpkeep = false;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
@@ -457,6 +462,22 @@ public class Region {
             }
             if (!hasMoney) {
                 continue;
+            }
+            if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
+                Town town = TownManager.getInstance().getTownAt(location);
+                if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
+                    continue;
+                }
+                boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
+                if (regionUpkeep.getPowerInput() > 0) {
+                    town.setPower(town.getPower() - regionUpkeep.getPowerInput());
+                }
+                if (regionUpkeep.getPowerOutput() > 0) {
+                    town.setPower(town.getPower() + regionUpkeep.getPowerOutput());
+                }
+                if (powerMod) {
+                    TownManager.getInstance().saveTown(town);
+                }
             }
             Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
             Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());

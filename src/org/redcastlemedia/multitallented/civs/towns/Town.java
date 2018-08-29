@@ -47,7 +47,11 @@ public class Town {
         this.maxPower = maxPower;
     }
     public void setPower(int power) {
-        this.power = power;
+        if (power > this.maxPower) {
+            this.power = maxPower;
+        } else {
+            this.power = power;
+        }
     }
 
     public int countPeopleWithRole(String role) {
