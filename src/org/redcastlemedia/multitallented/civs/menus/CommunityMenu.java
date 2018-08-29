@@ -69,7 +69,7 @@ public class CommunityMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Towns
-        CVItem cvItem3 = CVItem.createCVItemFromString("BED");
+        CVItem cvItem3 = CVItem.createCVItemFromString("RED_BED");
         cvItem3.setDisplayName(localeManager.getTranslation(locale, "towns"));
         inventory.setItem(1, cvItem3.createItemStack());
 

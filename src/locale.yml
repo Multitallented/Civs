@@ -1,6 +1,6 @@
 en:
   name: English
-  icon: WOOL.14
+  icon: RED_WOOL
   starter-book: Menu for Civs
   next-button: Next
   prev-button: Previous
@@ -133,7 +133,7 @@ en:
   karma-lost: "Karma: -$1, $2 money lost"
 pt_br:
   name: Português Brasil
-  icon: WOOL.11
+  icon: CYAN_WOOL
   #language-menu
   language-menu: Selecione sua Linguagem
   language-set: "Sua linguagem foi definida para $1"
@@ -227,13 +227,13 @@ pt_br:
   hold-town: "Por favor, segure um Item de Cidade"
 es:
   name: Spanish
-  icon: WOOL.4
+  icon: YELLOW_WOOL
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
   name: French
-  icon: WOOL.3
+  icon: BLUE_WOOL
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
   name: German
-  icon: WOOL.15
+  icon: BLACK_WOOL
   no-region-type-found: "Keine Regionstyp für $1 gefunden"
