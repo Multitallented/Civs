@@ -165,8 +165,8 @@ public class RegionActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
-        //TODO fix this null pointer when clicking on someone elses region
-        if (region.getPeople().get(civilian.getUuid()).equals("owner")) {
+        if (region.getPeople().get(civilian.getUuid()) != null &&
+                region.getPeople().get(civilian.getUuid()).equals("owner")) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
