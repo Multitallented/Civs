@@ -1,0 +1,21 @@
+type: region
+icon: ARROW
+name: ArrowTrap
+price: 500
+
+build-reqs:
+- g:fence*4
+- DISPENSER*1
+- REDSTONE*4
+
+build-radius: 1
+effect-radius: 15
+effects:
+- arrow_turret:3.3.2 #damage.speed.spread
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+description:
+  en: "A contraption that shoots arrows at nearby intruders"

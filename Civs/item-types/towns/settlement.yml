@@ -1,0 +1,28 @@
+type: town
+icon: GLOWSTONE
+name: Settlement
+max: 1
+price: 2000
+group: town
+
+build-reqs:
+- councilroom
+
+critical-build-reqs:
+- councilroom
+
+build-radius: 16
+build-radius-y: 500
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- power_shield #TODO migrate this from Townships
+- control_override #TODO migrate this from Townships
+
+power: 1000
+max-power: 1000
+
+description:
+  en: "The first level of a town"
