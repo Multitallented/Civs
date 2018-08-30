@@ -28,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,6 @@ public class ViewMembersMenu extends Menu {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
-        LocaleManager localeManager = LocaleManager.getInstance();
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
         Town town = TownManager.getInstance().getTown(locationString);
@@ -60,8 +60,7 @@ public class ViewMembersMenu extends Menu {
             return;
         }
 
-        if (event.getCurrentItem().getType() == Material.PLAYER_HEAD &&
-                event.getCurrentItem().getDurability() == (short) 3) {
+        if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
 
             Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
             if (player.getUniqueId().equals(civilian.getUuid())) {
@@ -83,35 +82,17 @@ public class ViewMembersMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, Town town) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
-        ArrayList<String> lore;
         //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
-        int i=9;
-        for (UUID uuid : town.getPeople().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) {
-                continue;
-            }
-            ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
-            SkullMeta im = (SkullMeta) playerItem.getItemMeta();
-            im.setDisplayName(player.getName());
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), town.getPeople().get(uuid)));
-            im.setLore(lore);
-            im.setOwner(player.getName());
-            playerItem.setItemMeta(im);
-            inventory.setItem(i, playerItem);
-            i++;
-        }
+        setInventoryItems(inventory, town.getPeople(), civilian);
 
         return inventory;
     }
@@ -119,36 +100,39 @@ public class ViewMembersMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, Region region) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         //0 Icon
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
-        ArrayList<String> lore;
-        //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
+        //TODO set lore?
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
+        setInventoryItems(inventory, region.getPeople(), civilian);
+
+        return inventory;
+    }
+
+    private static void setInventoryItems(Inventory inventory, HashMap<UUID, String> people, Civilian civilian) {
+        ArrayList<String> lore;
         int i=9;
-        for (UUID uuid : region.getPeople().keySet()) {
+        for (UUID uuid : people.keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
                 continue;
             }
-            ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+            ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta im = (SkullMeta) playerItem.getItemMeta();
             im.setDisplayName(player.getName());
             lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), region.getPeople().get(uuid)));
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), people.get(uuid)));
             im.setLore(lore);
-            im.setOwner(player.getName());
+            im.setOwningPlayer(player);
             playerItem.setItemMeta(im);
             inventory.setItem(i, playerItem);
             i++;
         }
-
-        return inventory;
     }
 }

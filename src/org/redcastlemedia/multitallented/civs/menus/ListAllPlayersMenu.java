@@ -10,10 +10,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 public class ListAllPlayersMenu extends Menu {
     public static String MENU_NAME = "CivsPlayers";
@@ -123,10 +126,10 @@ public class ListAllPlayersMenu extends Menu {
         });
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
             Player player = players.get(k);
-            ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+            ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
-            isMeta.setOwner(player.getName());
+            isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;

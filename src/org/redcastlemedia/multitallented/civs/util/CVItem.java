@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import java.util.ArrayList;
@@ -73,7 +74,8 @@ public class CVItem {
         }
 
         if (mat == null) {
-            return null;
+            mat = Material.STONE;
+            Civs.logger.severe(Civs.getPrefix() + "Unable to parse material " + materialString);
         }
         int quantity = Integer.parseInt(quantityString);
         int chance = Integer.parseInt(chanceString);

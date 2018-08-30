@@ -100,7 +100,7 @@ public class MainMenu extends Menu {
         inventory.setItem(2, cvItemClass.createItemStack());
 
         //3 Spells
-        CVItem cvItemSpell = CVItem.createCVItemFromString("POTION.16385");
+        CVItem cvItemSpell = CVItem.createCVItemFromString("POTION");
         cvItemSpell.setDisplayName(localeManager.getTranslation(locale, "spells"));
         inventory.setItem(3, cvItemSpell.createItemStack());
 
@@ -110,7 +110,7 @@ public class MainMenu extends Menu {
         inventory.setItem(4, cvItemBlue.createItemStack());
 
         //5 Regions
-        CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD.1");
+        CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
         cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
         inventory.setItem(5, cvItemRegion.createItemStack());
 

@@ -93,7 +93,7 @@ public class MemberActionMenu extends Menu {
 
         //11 set guest
         if (!role.equals("guest")) {
-            CVItem cvItem1 = CVItem.createCVItemFromString("STONE.2");
+            CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "guest-description"));
@@ -122,13 +122,13 @@ public class MemberActionMenu extends Menu {
         //1 Player
         Player player = Bukkit.getPlayer(uuid);
         String role = town.getPeople().get(uuid);
-        ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta im = (SkullMeta) playerItem.getItemMeta();
         im.setDisplayName(player.getName());
         lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), town.getPeople().get(uuid)));
         im.setLore(lore);
-        im.setOwner(player.getName());
+        im.setOwningPlayer(player);
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
@@ -152,13 +152,13 @@ public class MemberActionMenu extends Menu {
         //1 Player
         Player player = Bukkit.getPlayer(uuid);
         String role = region.getPeople().get(uuid);
-        ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta im = (SkullMeta) playerItem.getItemMeta();
         im.setDisplayName(player.getName());
         lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), region.getPeople().get(uuid)));
         im.setLore(lore);
-        im.setOwner(player.getName());
+        im.setOwningPlayer(player);
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 

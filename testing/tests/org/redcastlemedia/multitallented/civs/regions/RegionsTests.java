@@ -261,18 +261,18 @@ public class RegionsTests {
         Location location6 = new Location(Bukkit.getWorld("world"), 100, 1000, 0);
         Location location7 = new Location(Bukkit.getWorld("world"), 1000, 0, 0);
         Location location8 = new Location(Bukkit.getWorld("world"), 1050, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location3, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location4, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location5, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location6, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location7, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location3, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location4, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location5, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location6, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location7, getRadii(), new HashMap<>()));
         assertSame(location5, regionManager.getRegionAt(location5).getLocation());
         assertSame(location2, regionManager.getRegionAt(location2).getLocation());
         assertSame(location1, regionManager.getRegionAt(location1).getLocation());
         assertSame(location7, regionManager.getRegionAt(location7).getLocation());
-        regionManager.addRegion(new Region("cobble", owners, location8, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location8, getRadii(), new HashMap<>()));
         assertSame(location8, regionManager.getRegionAt(location8).getLocation());
     }
 
@@ -282,13 +282,10 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>());
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>());
         regionManager.addRegion(region);
 
 
-//        World world = Bukkit.getWorld("world");
-//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -350,8 +347,8 @@ public class RegionsTests {
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world"), 5, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<>()));
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         assertEquals(2, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), regionType.getEffectRadius() - regionType.getBuildRadius()).size());
     }
@@ -363,8 +360,8 @@ public class RegionsTests {
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world2"), 0, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
-        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
+        regionManager.addRegion(new Region("cobble", owners, location2, getRadii(), new HashMap<>()));
         assertEquals(1, regionManager.getRegionEffectsAt(TestUtil.player.getLocation(), 0).size());
     }
 
@@ -374,7 +371,7 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 500, 0, 0);
-        regionManager.addRegion(new Region("shelter", owners, location1, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("shelter", owners, location1, getRadii(), new HashMap<>()));
 
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
@@ -398,7 +395,7 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
@@ -413,7 +410,7 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
@@ -429,7 +426,7 @@ public class RegionsTests {
         UUID uuid = new UUID(1, 4);
         owners.put(uuid, "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<String, String>()));
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>()));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
