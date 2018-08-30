@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 public class RegionsTests {
     private RegionManager regionManager;
+    private TownManager townManager;
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -42,7 +43,7 @@ public class RegionsTests {
     @Before
     public void onBefore() {
         regionManager = new RegionManager();
-        new TownManager();
+        townManager = new TownManager();
         new ItemManager();
     }
 
@@ -505,14 +506,51 @@ public class RegionsTests {
         assertEquals(301, town.getPower());
     }
 
+    @Test
+    public void regionShouldConsiderAlliesAsGuests() {
+        UUID uuid1 = new UUID(1, 3);
+        Region region = load2TownsWith1Region(uuid1, true);
+        assertEquals("ally", region.getPeople().get(uuid1));
+    }
+
+    @Test
+    public void regionShouldNotConsiderEveryoneAsGuest() {
+        UUID uuid1 = new UUID(1, 3);
+        Region region = load2TownsWith1Region(uuid1, false);
+        assertNull(region.getPeople().get(uuid1));
+    }
+
+    private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        UUID uuid = new UUID(1, 4);
+        owners.put(uuid, "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("power", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townname", "hamlet", location1,
+                new HashMap<>(), 300, 300, 2, 1);
+        townManager.addTown(town);
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        Town town1 = new Town("townname1", "hamlet", location,
+                new HashMap<>(), 300, 300, 2, 1);
+        town1.getPeople().put(uuid1, "member");
+        townManager.addTown(town1);
+        if (allied) {
+            town.getAllies().add("townname1");
+            town1.getAllies().add("townname");
+        }
+        return region;
+    }
+
     public static int[] getRadii() {
         int[] radiuses = new int[6];
-        radiuses[0] = 5;
-        radiuses[1] = 5;
-        radiuses[2] = 5;
-        radiuses[3] = 5;
-        radiuses[4] = 5;
-        radiuses[5] = 5;
+        for (int i = 0; i < 6; i++) {
+            radiuses[i] = 5;
+        }
         return radiuses;
     }
 

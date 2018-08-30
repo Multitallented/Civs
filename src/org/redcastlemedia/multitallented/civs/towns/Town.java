@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.towns;
 import org.bukkit.Location;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class Town {
@@ -16,6 +17,7 @@ public class Town {
     private HashMap<UUID, String> people;
     private int housing;
     private int population;
+    private HashSet<String> allies;
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int population) {
@@ -27,6 +29,7 @@ public class Town {
         this.maxPower = maxPower;
         this.housing = housing;
         this.population = population;
+        this.allies = new HashSet<>();
     }
 
     public String getType() {
@@ -37,6 +40,7 @@ public class Town {
     }
     public String getName() { return name; }
     public HashMap<UUID, String> getPeople() { return people; }
+    public HashSet<String> getAllies() { return allies; }
     public int getMaxPower() {
         return maxPower;
     }
@@ -53,6 +57,7 @@ public class Town {
             this.power = power;
         }
     }
+    public void setAllies(HashSet<String> allies) { this.allies = allies; }
 
     public int countPeopleWithRole(String role) {
         if (role == null) {

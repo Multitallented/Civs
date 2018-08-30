@@ -2,7 +2,9 @@ type: region
 icon: SIGN
 name: CouncilRoom
 max: 1
-price: 200
+
+pre-reqs:
+- permission:civs.create.councilroom
 
 build-reqs:
 - CHEST*4
@@ -22,6 +24,14 @@ effects:
 - block_fire
 - door_use
 - chest_use
+- port #TODO migrate this from Townships
+- indestructible #TODO make this
+
+period: daily #TODO fix this
+upkeeps:
+  0:
+    output:
+    - t:power*50 #TODO fix this
 
 period: daily
 upkeeps:

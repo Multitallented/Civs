@@ -46,7 +46,29 @@ public class Region {
         return type;
     }
     public HashMap<UUID, String> getPeople() {
-        return people;
+        TownManager townManager = TownManager.getInstance();
+        Town town = townManager.getTownAt(location);
+        if (town == null) {
+            return people;
+        }
+        HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
+        for (UUID uuid : town.getPeople().keySet()) {
+            if (!newPeople.containsKey(uuid)) {
+                newPeople.put(uuid, "ally");
+            }
+        }
+
+        for (String name : town.getAllies()) {
+            Town currentTown = townManager.getTown(name);
+            if (currentTown != null) {
+                for (UUID uuid : currentTown.getPeople().keySet()) {
+                    if (!newPeople.containsKey(uuid)) {
+                        newPeople.put(uuid, "ally");
+                    }
+                }
+            }
+        }
+        return newPeople;
     }
     public HashMap<String, String> getEffects() { return effects; }
     public Set<UUID> getOwners() {
