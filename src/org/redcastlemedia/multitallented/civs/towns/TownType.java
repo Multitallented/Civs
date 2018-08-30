@@ -64,7 +64,6 @@ public class TownType extends CivItem {
                 ItemType.TOWN,
                 name,
                 icon.getMat(),
-                icon.getDamage(),
                 civQty,
                 civMin,
                 civMax,

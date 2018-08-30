@@ -15,59 +15,41 @@ import java.util.List;
  */
 public class CVItem {
     private Material mat;
-    private final int damage;
     private int qty;
     private final double chance;
-    private final boolean wildDamage;
     private String displayName = null;
-    private List<String> lore = new ArrayList<String>();
+    private List<String> lore = new ArrayList<>();
 
-    public CVItem(Material mat, int qty, int damage, int chance, String displayName, List<String> lore) {
+    public CVItem(Material mat, int qty, int chance, String displayName, List<String> lore) {
         this.mat = mat;
-        this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
-        wildDamage = damage == -1;
         this.displayName = displayName;
         this.lore = lore;
     }
 
-    public CVItem(Material mat, int qty, int damage, int chance, String displayName) {
+    public CVItem(Material mat, int qty, int chance, String displayName) {
         this.mat = mat;
-        this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
-        wildDamage = damage == -1;
         this.displayName = displayName;
     }
 
-    public CVItem(Material mat, int qty, int damage, int chance) {
+    public CVItem(Material mat, int qty, int chance) {
         this.mat = mat;
-        this.damage = damage;
         this.qty = qty;
         this.chance = ((double) chance) / 100;
-        wildDamage = damage == -1;
     }
 
-    public CVItem(Material mat, int qty, int damage) {
-        this.mat = mat;
-        this.damage = damage;
-        this.qty = qty;
-        this.chance = 1;
-        wildDamage = damage == -1;
-    }
     public CVItem(Material mat, int qty) {
         this.mat = mat;
-        this.damage = -1;
         this.qty = qty;
         this.chance = 1;
-        wildDamage = true;
     }
 
     public static CVItem createCVItemFromString(String materialString)  {
         String quantityString = "1";
         String chanceString = "100";
-        String damageString = "-1";
         Material mat;
 
         String[] splitString;
@@ -76,16 +58,11 @@ public class CVItem {
         for (;;) {
             int asteriskIndex = materialString.indexOf("*");
             int percentIndex = materialString.indexOf("%");
-            int dotIndex = materialString.indexOf(".");
-            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > dotIndex) {
+            if (asteriskIndex != -1 && asteriskIndex > percentIndex) {
                 splitString = materialString.split("\\*");
                 quantityString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (dotIndex != -1 && dotIndex > percentIndex && dotIndex > asteriskIndex) {
-                splitString = materialString.split("\\.");
-                damageString = splitString[splitString.length - 1];
-                materialString = splitString[0];
-            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > dotIndex) {
+            } else if (percentIndex != -1 && percentIndex > asteriskIndex) {
                 splitString = materialString.split("%");
                 chanceString = splitString[splitString.length - 1];
                 materialString = splitString[0];
@@ -99,9 +76,8 @@ public class CVItem {
             return null;
         }
         int quantity = Integer.parseInt(quantityString);
-        int damage = Integer.parseInt(damageString);
         int chance = Integer.parseInt(chanceString);
-        return new CVItem(mat, quantity, damage, chance);
+        return new CVItem(mat, quantity, chance);
     }
 
     private static Material getMaterialFromString(String materialString) {
@@ -113,18 +89,18 @@ public class CVItem {
         return mat;
     }
 
-    public boolean damageMatches(short durability) {
-        int dur = (int) durability;
-        if (dur == damage) {
-            return true;
-        }
-        if ((mat == Material.OAK_LOG || mat == Material.BIRCH_LOG || mat == Material.SPRUCE_LOG
-                || mat == Material.JUNGLE_LOG || mat == Material.DARK_OAK_LOG || mat == Material.ACACIA_LOG) &&
-                ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
-            return true;
-        }
-        return false;
-    }
+//    public boolean damageMatches(short durability) {
+//        int dur = (int) durability;
+//        if (dur == damage) {
+//            return true;
+//        }
+//        if ((mat == Material.OAK_LOG || mat == Material.BIRCH_LOG || mat == Material.SPRUCE_LOG
+//                || mat == Material.JUNGLE_LOG || mat == Material.DARK_OAK_LOG || mat == Material.ACACIA_LOG) &&
+//                ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean equivalentItem(ItemStack iss) {
         return equivalentItem(iss, false);
@@ -144,13 +120,10 @@ public class CVItem {
     public static CVItem createFromItemStack(ItemStack is) {
         if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null) {
             if (is.getItemMeta().getLore() != null) {
-                return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
+                return new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
             } else {
-                return new CVItem(is.getType(),is.getAmount(), is.getDurability(), 100, is.getItemMeta().getDisplayName());
+                return new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName());
             }
-        }
-        if (is.getDurability() > 0) {
-            return new CVItem(is.getType(),is.getAmount(), is.getDurability());
         }
         return new CVItem(is.getType(),is.getAmount());
     }
@@ -186,12 +159,7 @@ public class CVItem {
     }
 
     public ItemStack createItemStack() {
-        ItemStack is;
-        if (isWildDamage()) {
-            is = new ItemStack(mat, qty);
-        } else {
-            is = new ItemStack(mat, qty, (short) damage);
-        }
+        ItemStack is = new ItemStack(mat, qty);
         if (!is.hasItemMeta()) {
             is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
         }
@@ -218,11 +186,9 @@ public class CVItem {
             boolean equivalentNames = (nullComparison && nullName) || ((!nullComparison && !nullName) && iss.getItemMeta().getDisplayName().equals(getDisplayName()));
 
             return iss.getType() == getMat() &&
-                    (isWildDamage() || damageMatches(iss.getDurability())) &&
                     equivalentNames;
         } else {
-            return iss.getType() == getMat() &&
-                    (isWildDamage() || damageMatches(iss.getDurability()));
+            return iss.getType() == getMat();
         }
     }
 
@@ -233,11 +199,9 @@ public class CVItem {
     public boolean equivalentCVItem(CVItem iss, boolean useDisplayName) {
         if (useDisplayName) {
             return iss.getMat() == getMat() &&
-                    (isWildDamage() || iss.isWildDamage() || damageMatches((short) iss.getDamage())) &&
                     ((getDisplayName() == null && iss.getDisplayName() == null) || getDisplayName().equals(iss.getDisplayName()));
         } else {
-            return iss.getMat() == getMat() &&
-                    (isWildDamage() || iss.isWildDamage() || damageMatches((short) iss.getDamage()));
+            return iss.getMat() == getMat();
         }
     }
 
@@ -256,14 +220,8 @@ public class CVItem {
     public Material getMat() {
         return mat;
     }
-    public int getDamage() {
-        return damage;
-    }
     public int getQty() {
         return qty;
-    }
-    public boolean isWildDamage() {
-        return wildDamage;
     }
     public double getChance() {
         return chance;
@@ -280,6 +238,6 @@ public class CVItem {
 
     @Override
     public CVItem clone() {
-        return new CVItem(mat, qty, damage, (int) chance, displayName, lore);
+        return new CVItem(mat, qty, (int) chance, displayName, lore);
     }
 }

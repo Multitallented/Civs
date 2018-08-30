@@ -85,12 +85,12 @@ public class MainMenu extends Menu {
 
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();
-        CVItem cvItem = new CVItem(Material.GRASS, 1, -1, 100, localeManager.getTranslation(locale, "language-menu"));
+        CVItem cvItem = new CVItem(Material.GRASS, 1, 100, localeManager.getTranslation(locale, "language-menu"));
         inventory.setItem(8, cvItem.createItemStack());
 
         //1 Shop
         if (Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop")) {
-            CVItem cvItem1 = new CVItem(Material.EMERALD, 1, -1, 100, localeManager.getTranslation(locale, "shop"));
+            CVItem cvItem1 = new CVItem(Material.EMERALD, 1, 100, localeManager.getTranslation(locale, "shop"));
             inventory.setItem(1, cvItem1.createItemStack());
         }
 
@@ -119,7 +119,7 @@ public class MainMenu extends Menu {
 //        inventory.setItem(4, cvItem2.createItemStack());
 
         //6 Community
-        CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, -1, 100, localeManager.getTranslation(locale, "community"));
+        CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, 100, localeManager.getTranslation(locale, "community"));
         inventory.setItem(6, cvItem3.createItemStack());
 
         return inventory;

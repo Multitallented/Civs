@@ -86,7 +86,7 @@ public class ViewMembersMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         //0 Icon
-        CVItem cvItem = new CVItem(townType.getMat(), 1, townType.getDamage());
+        CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
         ArrayList<String> lore;
         //TODO set lore
@@ -122,7 +122,7 @@ public class ViewMembersMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1, regionType.getDamage());
+        CVItem cvItem = new CVItem(regionType.getMat(), 1);
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
         ArrayList<String> lore;
         //TODO set lore

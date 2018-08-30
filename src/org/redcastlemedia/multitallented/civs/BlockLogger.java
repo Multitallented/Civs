@@ -69,7 +69,6 @@ public class BlockLogger {
                         CVItem cvItem = finalBlocks.get(location);
                         String locationString = Region.locationToString(location);
                         config.set(locationString + ".mat", cvItem.getMat().toString());
-                        config.set(locationString + ".damage", cvItem.getDamage());
                         config.set(locationString + ".name", cvItem.getDisplayName());
                         config.set(locationString + ".lore", cvItem.getLore());
                     }
@@ -105,7 +104,6 @@ public class BlockLogger {
                     CVItem cvItem = new CVItem(
                             Material.valueOf(config.getString(s + ".mat")),
                             1,
-                            config.getInt(s + ".damage"),
                             100,
                             config.getString(s + ".name"),
                             config.getStringList(s + ".lore")

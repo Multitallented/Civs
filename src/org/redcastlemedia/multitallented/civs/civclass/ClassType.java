@@ -26,7 +26,6 @@ public class ClassType extends CivItem {
                 ItemType.CLASS,
                 name,
                 icon.getMat(),
-                icon.getDamage(),
                 children.isEmpty() ? 1 : children.size(),
                 0,
                 1,

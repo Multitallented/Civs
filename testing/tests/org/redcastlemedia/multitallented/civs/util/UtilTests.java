@@ -28,7 +28,7 @@ public class UtilTests {
 
     @Test
     public void cvItemShouldCreateItemStack() {
-        CVItem cvItem = new CVItem(Material.COBBLESTONE,1, -1, 100, "CustomCobble");
+        CVItem cvItem = new CVItem(Material.COBBLESTONE,1, 100, "CustomCobble");
         ItemStack is = cvItem.createItemStack();
         assertEquals(Material.COBBLESTONE, is.getType());
     }
@@ -36,12 +36,12 @@ public class UtilTests {
     @Test
     public void cvItemFromStringShouldSetValuesProperly() {
         CVItem cvItem = CVItem.createCVItemFromString("COBBLESTONE*2%50");
-        assertTrue(cvItem.isWildDamage() && cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);
+        assertTrue(cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);
     }
     @Test
     public void cvItemFromStringShouldSetValuesProperly2() {
-        CVItem cvItem = CVItem.createCVItemFromString("dark oak log.1*64");
-        assertTrue(cvItem.getDamage() == 1 && cvItem.getMat() == Material.DARK_OAK_LOG && cvItem.getQty() == 64);
+        CVItem cvItem = CVItem.createCVItemFromString("dark oak log*64");
+        assertTrue(cvItem.getMat() == Material.DARK_OAK_LOG && cvItem.getQty() == 64);
     }
     @Test
     public void itemGroupShouldReturnProperCVItems() {

@@ -49,7 +49,6 @@ public class RegionType extends CivItem {
                 true,
                 ItemType.REGION,
                 name, icon.getMat(),
-                icon.getDamage(),
                 civQty,
                 civMin,
                 civMax,

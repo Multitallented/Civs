@@ -63,7 +63,6 @@ public abstract class CivItem extends CVItem {
                    ItemType itemType,
                    String name,
                    Material material,
-                   int damage,
                    int qty,
                    int min,
                    int max,
@@ -71,7 +70,7 @@ public abstract class CivItem extends CVItem {
                    String permission,
                    HashMap<String, String> description,
                    List<String> groups) {
-        super(material, 1, damage, 100, "Civs " + name);
+        super(material, 1, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
         this.itemType = itemType;
         this.reqs = reqs;

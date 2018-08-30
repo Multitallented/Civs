@@ -170,20 +170,11 @@ public class RecipeMenu extends Menu {
         Menu.sanitizeGUIItems(proxyInv);
         Menu.sanitizeCycleItems(cycleItems);
 
-        ArrayList<String> lore;
         for (Integer pIndex : proxyInv.keySet()) {
             CVItem nextItem = proxyInv.get(pIndex);
-            ItemStack is;
-            if (nextItem.isWildDamage()) {
-                is = new ItemStack(nextItem.getMat(), nextItem.getQty());
-                ItemMeta isMeta = is.getItemMeta();
-                lore = new ArrayList<String>();
-                lore.add("Any type acceptable");
-                isMeta.setLore(lore);
-                is.setItemMeta(isMeta);
-            } else {
-                is = new ItemStack(nextItem.getMat(), nextItem.getQty(), (short) nextItem.getDamage());
-            }
+            ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+            ItemMeta isMeta = is.getItemMeta();
+            is.setItemMeta(isMeta);
             inv.setItem(pIndex + 9, is);
         }
 

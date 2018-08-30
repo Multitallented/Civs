@@ -207,12 +207,7 @@ public class Util {
             double prevChance = 0;
             for (CVItem item : tempItems) {
                 if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
-                    ItemStack is = null;
-                    if (!item.isWildDamage()) {
-                        is = new ItemStack(item.getMat(), 1, (short) item.getDamage());
-                    } else {
-                        is = new ItemStack(item.getMat(), 1);
-                    }
+                    ItemStack is = new ItemStack(item.getMat(), 1);
                     if (item.getDisplayName() != null) {
                         ItemMeta im = is.getItemMeta();
                         im.setDisplayName(item.getDisplayName());
@@ -227,16 +222,15 @@ public class Util {
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    int damageValue = item.isWildDamage() ? 0 : item.getDamage();
                     String displayName = is.hasItemMeta() ? is.getItemMeta().getDisplayName() : null;
                     List<String> lore = is.hasItemMeta() ? is.getItemMeta().getLore() : null;
                     for (ItemStack iss : inv) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
-                                isa = new ItemStack(is.getType(), max, (short) damageValue);
+                                isa = new ItemStack(is.getType(), max);
                             } else {
-                                isa = new ItemStack(is.getType(), amount, (short) damageValue);
+                                isa = new ItemStack(is.getType(), amount);
                             }
                             if (displayName != null) {
                                 ItemMeta ima = isa.getItemMeta();
@@ -255,7 +249,6 @@ public class Util {
                             }
                         }
                         if (iss.getType() == is.getType() &&
-                                iss.getDurability() == is.getDurability() &&
                                 iss.getAmount() < iss.getMaxStackSize() &&
                                 ((!iss.hasItemMeta() && !is.hasItemMeta()) ||
                                         (iss.hasItemMeta() && is.hasItemMeta() &&

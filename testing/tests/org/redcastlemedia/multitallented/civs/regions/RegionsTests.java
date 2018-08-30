@@ -156,10 +156,6 @@ public class RegionsTests {
         for (List<CVItem> itemSet : missingBlocks) {
             for (CVItem item : itemSet) {
                 missingMessage.append(item.getMat().name());
-                if (!item.isWildDamage()) {
-                    missingMessage.append(".");
-                    missingMessage.append(item.getDamage());
-                }
                 missingMessage.append("*");
                 missingMessage.append(item.getQty());
                 missingMessage.append(" or ");

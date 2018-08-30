@@ -144,7 +144,6 @@ public class ItemManager {
                 config.getStringList("reqs"),
                 name,
                 icon.getMat(),
-                icon.getDamage(),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
                 config.getInt("max", -1),
