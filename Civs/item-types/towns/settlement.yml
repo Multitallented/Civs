@@ -20,6 +20,7 @@ effects:
 - block_fire
 - power_shield #TODO migrate this from Townships
 - control_override #TODO migrate this from Townships
+- claim_at_zero #TODO create this
 
 power: 1000
 max-power: 1000

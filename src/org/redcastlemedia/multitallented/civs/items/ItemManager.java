@@ -266,6 +266,7 @@ public class ItemManager {
                 rebuild,
                 description,
                 config.getLong("period", 0),
+                config.getString("period", "false").equals("daily"),
                 config.getStringList("groups"));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;

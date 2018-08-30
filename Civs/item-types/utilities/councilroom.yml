@@ -30,12 +30,6 @@ effects:
 period: daily #TODO fix this
 upkeeps:
   0:
-    output:
-    - t:power*50 #TODO fix this
-
-period: daily
-upkeeps:
-  0:
     power-output: 50
     output:
     - REDSTONE*1

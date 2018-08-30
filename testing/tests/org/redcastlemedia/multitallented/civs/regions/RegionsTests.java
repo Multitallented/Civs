@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
+import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -520,6 +522,38 @@ public class RegionsTests {
         assertNull(region.getPeople().get(uuid1));
     }
 
+    @Test
+    public void dailyRegionShouldUpkeepDaily() {
+        loadRegionTypeDaily();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townname", "hamlet", location1,
+                owners, 300, 305, 2, 1);
+        TownManager.getInstance().addTown(town);
+        new DailyScheduler().run();
+        assertEquals(302, town.getPower());
+    }
+
+    @Test
+    public void dailyRegionShouldNotRunUpkeepTick() {
+        loadRegionTypeDaily();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        TownTests.loadTownTypeHamlet();
+        Town town = new Town("townname", "hamlet", location1,
+                owners, 300, 305, 2, 1);
+        TownManager.getInstance().addTown(town);
+        new RegionTickThread().run();
+        assertEquals(300, town.getPower());
+    }
+
     private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
@@ -552,6 +586,21 @@ public class RegionsTests {
             radiuses[i] = 5;
         }
         return radiuses;
+    }
+
+    public static void loadRegionTypeDaily() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "daily");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        config.set("effects", effects);
+        config.set("upkeep.0.power-output", 2);
+        config.set("period", "daily");
+        ItemManager.getInstance().loadRegionType(config);
     }
 
     public static void loadRegionTypePower(boolean consume) {
