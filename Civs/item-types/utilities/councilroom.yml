@@ -27,7 +27,7 @@ effects:
 - port #TODO migrate this from Townships
 - indestructible #TODO make this
 
-period: daily #TODO fix this
+period: daily
 upkeeps:
   0:
     power-output: 50

@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -304,18 +305,19 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));
-            List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
+            List<List<CVItem>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
             if (missingBlocks != null) {
-                for (String message : generateMissingReqsMessage(missingBlocks)) {
-                    player.sendMessage(message);
-                }
+//                for (String message : generateMissingReqsMessage(missingBlocks)) {
+//                    player.sendMessage(message);
+//                }
+                player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
             }
             return;
         }
         HashMap<UUID, String> people;
         if (rebuildRegion != null) {
             people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
-            //TODO copy over other stuff too
+            //TODO copy over other stuff too?
             removeRegion(rebuildRegion);
         } else {
             people = new HashMap<>();
@@ -346,26 +348,6 @@ public class RegionManager {
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects()));
-    }
-
-    public List<String> generateMissingReqsMessage(List<HashSet<CVItem>> missingBlocks) {
-        StringBuilder missingMessage = new StringBuilder();
-        for (HashSet<CVItem> itemSet : missingBlocks) {
-            for (CVItem item : itemSet) {
-                missingMessage.append(item.getMat().name());
-                if (!item.isWildDamage()) {
-                    missingMessage.append(".");
-                    missingMessage.append(item.getDamage());
-                }
-                missingMessage.append("*");
-                missingMessage.append(item.getQty());
-                missingMessage.append(" or ");
-            }
-            missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
-            missingMessage.append(", ");
-        }
-        missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
-        return Util.textWrap(ChatColor.RED + "", missingMessage.toString());
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {
@@ -405,12 +387,12 @@ public class RegionManager {
     }
     public Set<Region> getRegionsXYZ(Location location, int modifierX, int modifierY, int modifierZ, boolean useEffects) {
         String worldName = location.getWorld().getName();
-        HashSet<Region> effects = new HashSet<>();
-        if (regions.get(worldName) == null) {
-            return effects;
+        HashSet<Region> returnRegions = new HashSet<>();
+        if (this.regions.get(worldName) == null) {
+            return returnRegions;
         }
-        for (int i=regions.get(worldName).size() - 1; i>-1; i--) {
-            Region region = regions.get(worldName).get(i);
+        for (int i = this.regions.get(worldName).size() - 1; i>-1; i--) {
+            Region region = this.regions.get(worldName).get(i);
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (!useEffects) {
                 boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX &&
@@ -421,7 +403,7 @@ public class RegionManager {
                         location.getZ() < region.getLocation().getZ() + region.getRadiusZP() + 1 + modifierZ;
 
                 if (withinX && withinY && withinZ) {
-                    effects.add(region);
+                    returnRegions.add(region);
                     continue;
                 }
                 if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX) {
@@ -436,12 +418,12 @@ public class RegionManager {
                         location.getZ() < region.getLocation().getZ() + regionType.getEffectRadius() + 1 + modifierZ;
 
                 if (withinX && withinY && withinZ) {
-                    effects.add(region);
+                    returnRegions.add(region);
                     continue;
                 }
             }
         }
-        return effects;
+        return returnRegions;
     }
 
     public static synchronized RegionManager getInstance() {

@@ -251,17 +251,17 @@ public class Region {
         }
         return radii;
     }
-    public static List<HashSet<CVItem>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
+    public static List<List<CVItem>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashSet<CVItem>> itemCheck = new ArrayList<>();
+        List<List<CVItem>> itemCheck = new ArrayList<>();
         CVItem missingItem = null;
         if (missingStack != null) {
             missingItem = CVItem.createFromItemStack(missingStack);
         }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
-            HashSet<CVItem> currentReqMap = new HashSet<>();
+            ArrayList<CVItem> currentReqMap = new ArrayList<>();
             for (CVItem currentItem : currentList) {
                 CVItem currentClone = currentItem.clone();
                 if (missingItem != null && missingItem.equivalentCVItem(currentClone)) {
@@ -306,7 +306,7 @@ public class Region {
 
                     CVItem destroyIndex = null;
                     int i=0;
-                    outer1: for (HashSet<CVItem> tempMap : itemCheck) {
+                    outer1: for (List<CVItem> tempMap : itemCheck) {
                         for (CVItem item : tempMap) {
                             if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), false)) {
                                 if (item.getQty() < 2) {
@@ -338,47 +338,7 @@ public class Region {
         }
         return hasReqs ? null : itemCheck;
     }
-//    public boolean hasUpkeepItems() {
-//        Block block = location.getBlock();
-//        if (!(block.getState() instanceof Chest)) {
-//            return false;
-//        }
-//        Chest chest = (Chest) block.getState();
-//
-//        if (chest.getInventory().firstEmpty() == -1) {
-//            return false;
-//        }
-//        ItemManager itemManager = ItemManager.getInstance();
-//        RegionType regionType = (RegionType) itemManager.getItemType(type);
-//        outer: for (List<CVItem> currentList : regionType.getReagents()) {
-//            boolean hasItem = false;
-//            for (CVItem item : currentList) {
-//                if (item.isWildDamage() && item.getDisplayName() == null &&
-//                        chest.getInventory().contains(item.getMat())) {
-//                    hasItem = true;
-//                    break;
-//                } else if (item.isWildDamage() && item.getDisplayName() != null) {
-//                    for (ItemStack is : chest.getInventory()) {
-//                        if (is != null &&
-//                                is.hasItemMeta() &&
-//                                is.getItemMeta().getDisplayName().equals(item.getDisplayName()) &&
-//                                is.getType() == item.getMat()) {
-//                            hasItem = true;
-//                            break;
-//                        }
-//                    }
-//                } else if (!item.isWildDamage() &&
-//                        chest.getInventory().contains(item.createItemStack())) {
-//                    hasItem = true;
-//                    break;
-//                }
-//            }
-//            if (!hasItem) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+
     public boolean shouldTick() {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);

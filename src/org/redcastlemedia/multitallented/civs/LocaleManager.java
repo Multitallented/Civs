@@ -279,6 +279,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-power", "Power: $1/$2"));
             currentLanguage.put("building-requires-2space",
                     localeConfig.getString(langKey + ".building-requires-2space", "This building requires 2 empty spaces above the central chest"));
+            currentLanguage.put("missing-blocks-build",
+                    localeConfig.getString(langKey + ".missing-blocks-build", "You need to place these missing blocks to build a $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

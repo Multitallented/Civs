@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -85,9 +87,6 @@ public class RegionsTests {
     public void regionShouldBeCreatedWithAllReqs() {
         loadRegionTypeCobble();
 
-//        World world = Bukkit.getWorld("world");
-//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -118,10 +117,6 @@ public class RegionsTests {
     public void regionShouldBeCreatedWithAllGroupReqs() {
         loadRegionTypeCobble3();
 
-        World world = Bukkit.getWorld("world");
-//        when(world.getBlockAt(1,0,0)).thenReturn(TestUtil.block2);
-//        when(world.getBlockAt(2,0,0)).thenReturn(TestUtil.block3);
-//        when(world.getBlockAt(1,1,1)).thenReturn(TestUtil.block9);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block3);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -151,22 +146,35 @@ public class RegionsTests {
         loadRegionTypeCobble4();
 
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        List<HashSet<CVItem>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
-        List<String> missingMessage = regionManager.generateMissingReqsMessage(missingItems);
-//        for (String s : missingMessage) {
-//            System.out.println(s);
-//        }
+        List<List<CVItem>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
+        List<String> missingMessage = generateMissingReqsMessage(missingItems);
         assertTrue(missingMessage.get(0).startsWith("§cGRAVEL"));
+    }
+
+    private List<String> generateMissingReqsMessage(List<List<CVItem>> missingBlocks) {
+        StringBuilder missingMessage = new StringBuilder();
+        for (List<CVItem> itemSet : missingBlocks) {
+            for (CVItem item : itemSet) {
+                missingMessage.append(item.getMat().name());
+                if (!item.isWildDamage()) {
+                    missingMessage.append(".");
+                    missingMessage.append(item.getDamage());
+                }
+                missingMessage.append("*");
+                missingMessage.append(item.getQty());
+                missingMessage.append(" or ");
+            }
+            missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
+            missingMessage.append(", ");
+        }
+        missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
+        return Util.textWrap(ChatColor.RED + "", missingMessage.toString());
     }
 
     @Test
     public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
 
-        World world = Bukkit.getWorld("world");
-//        when(world.getBlockAt(1,50,0)).thenReturn(TestUtil.block2);
-//        when(world.getBlockAt(11,50,0)).thenReturn(TestUtil.block3);
-//        when(world.getBlockAt(2,50,0)).thenReturn(TestUtil.blockUnique2);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
         doReturn(cobbleStack).when(event3).getItemInHand();

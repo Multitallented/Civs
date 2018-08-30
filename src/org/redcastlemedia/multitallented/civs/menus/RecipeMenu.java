@@ -6,6 +6,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -32,6 +34,17 @@ public class RecipeMenu extends Menu {
         }
     }
 
+    public static Inventory createMenu(List<List<CVItem>> items, UUID uuid, ItemStack icon, String regionTypeName) {
+        Inventory inventory = createMenu(items, uuid, icon);
+        CVItem cvItem = CVItem.createCVItemFromString("RED_WOOL");
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                "missing-blocks-build").replace("$1", regionTypeName));
+        inventory.setItem(1, cvItem.createItemStack());
+        inventory.setItem(8, null); //remove back button
+
+        return inventory;
+    }
 
     public static Inventory createMenu(List<List<CVItem>> items, UUID uuid, ItemStack icon) {
         int index = 0;

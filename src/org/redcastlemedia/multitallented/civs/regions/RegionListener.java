@@ -96,7 +96,7 @@ public class RegionListener implements Listener {
             regionManager.removeRegion(region, true);
             return;
         }
-        List<HashSet<CVItem>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+        List<List<CVItem>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
                 blockBreakEvent.getBlock().getState().getData().toItemStack(1));
         if (region.getPeople().containsKey(player.getUniqueId()) &&
@@ -105,7 +105,7 @@ public class RegionListener implements Listener {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "broke-own-region").replace("$1", region.getType()));
             StringBuilder missingReqs = new StringBuilder();
-            for (HashSet<CVItem> map : missingBlocks) {
+            for (List<CVItem> map : missingBlocks) {
                 for (CVItem key : map) {
                     missingReqs.append(key.getMat().toString());
                     missingReqs.append("*");
