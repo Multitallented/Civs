@@ -2,10 +2,18 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -16,6 +24,7 @@ import java.util.Locale;
 public class Util {
 
     public static ArrayList<String> textWrap(String prefix, String input) {
+        prefix = ChatColor.WHITE + prefix;
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
         String[] sends = sendMe.split(" ");
@@ -275,5 +284,23 @@ public class Util {
         }
 
         return remainingItems;
+    }
+
+    public static boolean hasOverride(Region region, Civilian civilian) {
+        Town town = TownManager.getInstance().getTownAt(region.getLocation());
+        return hasOverride(region, civilian, town);
+    }
+
+    public static boolean hasOverride(Region region, Civilian civilian, Town town) {
+        boolean override = false;
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        if (town != null && civilian != null) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            override = !regionType.getEffects().containsKey("cant_override") &&
+                    townType.getEffects().contains("control_override") &&
+                    town.getPeople().get(civilian.getUuid()) != null &&
+                    town.getPeople().get(civilian.getUuid()).equals("owner");
+        }
+        return override;
     }
 }

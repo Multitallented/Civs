@@ -184,7 +184,6 @@ public class CVItem {
         if (useDisplayName) {
             boolean nullComparison = getDisplayName() == null;
             boolean hasItemMeta = iss.hasItemMeta();
-            String name = iss.getItemMeta().getDisplayName();
             boolean issNullName = hasItemMeta && iss.getItemMeta().getDisplayName() == null;
             boolean nullName = !hasItemMeta || issNullName;
 

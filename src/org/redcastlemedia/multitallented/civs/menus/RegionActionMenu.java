@@ -16,7 +16,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,8 +162,8 @@ public class RegionActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
-        if (region.getPeople().get(civilian.getUuid()) != null &&
-                region.getPeople().get(civilian.getUuid()).equals("owner")) {
+        if (Util.hasOverride(region, civilian, town) || (region.getPeople().get(civilian.getUuid()) != null &&
+                region.getPeople().get(civilian.getUuid()).equals("owner"))) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
