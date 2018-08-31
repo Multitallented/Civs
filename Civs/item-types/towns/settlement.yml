@@ -19,7 +19,7 @@ effects:
 - block_liquid
 - block_fire
 - power_shield
-- control_override #TODO migrate this from Townships
+- control_override
 - claim_at_zero #TODO create this
 
 power: 1000
