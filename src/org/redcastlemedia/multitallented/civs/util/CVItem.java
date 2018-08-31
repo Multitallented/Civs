@@ -183,7 +183,10 @@ public class CVItem {
     public boolean equivalentItem(ItemStack iss, boolean useDisplayName) {
         if (useDisplayName) {
             boolean nullComparison = getDisplayName() == null;
-            boolean nullName = !iss.hasItemMeta() || iss.getItemMeta().getDisplayName() == null;
+            boolean hasItemMeta = iss.hasItemMeta();
+            String name = iss.getItemMeta().getDisplayName();
+            boolean issNullName = hasItemMeta && iss.getItemMeta().getDisplayName() == null;
+            boolean nullName = !hasItemMeta || issNullName;
 
             boolean equivalentNames = (nullComparison && nullName) || ((!nullComparison && !nullName) && iss.getItemMeta().getDisplayName().equals(getDisplayName()));
 

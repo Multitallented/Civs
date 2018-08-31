@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import net.minecraft.server.v1_13_R2.TileEntityChest;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,7 +10,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_13_R2.block.CraftChest;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
@@ -102,7 +105,7 @@ public class TestUtil {
         when(server.getItemFactory()).thenReturn(itemFactory);
         ItemMeta im = mock(ItemMeta.class);
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
-        when(im.getDisplayName()).thenReturn("Civs Cobble");
+//        when(im.getDisplayName()).thenReturn("Civs Cobble");
 
         WorldImpl world = new WorldImpl("world");
         WorldImpl world2 = new WorldImpl("world2");
@@ -199,10 +202,6 @@ public class TestUtil {
     public static Block createBlock(Material mat, Location location) {
         Block block = mock(Block.class);
         BlockState state = mock(BlockState.class);
-        MaterialData data = mock(MaterialData.class);
-        ItemStack itemStack = createItemStack(mat);
-        when(data.toItemStack(1)).thenReturn(itemStack);
-        when(state.getData()).thenReturn(data);
         when(block.getState()).thenReturn(state);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
@@ -213,38 +212,29 @@ public class TestUtil {
         Block block = mock(Block.class);
         when(block.getType()).thenReturn(mat);
         Chest chest = mock(Chest.class);
-        Inventory inventory = mock(Inventory.class);
-        when(inventory.firstEmpty()).thenReturn(1);
-        ArrayList<ItemStack> arrayIS = new ArrayList<>();
+        Inventory inventory1 = new InventoryImpl();
         if (containsPickaxe) {
-            arrayIS.add(new ItemStack(Material.IRON_PICKAXE, 1));
+            inventory1.addItem(mockItemStack(Material.IRON_PICKAXE, 1, null, new ArrayList<>()));
         }
-        arrayIS.add(null);
-        arrayIS.add(null);
-        arrayIS.add(null);
-        ListIterator<ItemStack> invIterator = arrayIS.listIterator();
-        when(inventory.iterator()).thenReturn(invIterator);
-        ItemStack[] itemStacks = new ItemStack[3];
-        if (containsPickaxe) {
-            itemStacks[0] = new ItemStack(Material.IRON_PICKAXE, 1);
-        } else {
-            itemStacks[0] = null;
-        }
-        itemStacks[1] = null;
-        itemStacks[2] = null;
-        when(inventory.getContents()).thenReturn(itemStacks);
-        when(inventory.addItem(Matchers.any(ItemStack.class))).thenThrow(new SuccessException());
-        when(chest.getInventory()).thenReturn(inventory);
-        when(chest.getBlockInventory()).thenReturn(inventory);
-        MaterialData materialData = mock(MaterialData.class);
+        when(chest.getBlockInventory()).thenReturn(inventory1);
+        when(chest.getInventory()).thenReturn(inventory1);
         when(block.getState()).thenReturn(chest);
-        when(chest.getData()).thenReturn(materialData);
-        ItemStack is = createUniqueItemStack(mat, name);
-        when(materialData.toItemStack(1)).thenReturn(is);
-        when(materialData.toItemStack(Matchers.anyInt())).thenReturn(is);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
         return block;
+    }
+
+    public static ItemStack mockItemStack(Material mat, int qty, String name, List<String> lore) {
+        ItemStack itemStack = mock(ItemStack.class);
+        when(itemStack.getType()).thenReturn(mat);
+        when(itemStack.getAmount()).thenReturn(qty);
+
+        ItemMeta itemMeta = mock(ItemMeta.class);
+        when(itemStack.hasItemMeta()).thenReturn(true);
+        when(itemMeta.getDisplayName()).thenReturn(name);
+        when(itemMeta.getLore()).thenReturn(lore);
+        when(itemStack.getItemMeta()).thenReturn(itemMeta);
+        return itemStack;
     }
 
 //    private static Location getMockLocation(Location location) {

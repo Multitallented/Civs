@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,7 +58,7 @@ public class RegionsTests {
     }
 
     @Test
-    public void regionManagerShouldLoadRegionTypesFromConfig() {
+    public void itemManagerShouldLoadRegionTypesFromConfig() {
         loadRegionTypeCobble();
         assertNotNull(ItemManager.getInstance().getItemType("cobble"));
     }
@@ -99,12 +100,10 @@ public class RegionsTests {
         Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
         Block chestBlock = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", regionLocation, false);
         when(event1.getBlockPlaced()).thenReturn(chestBlock);
-        CVItem item = CVItem.createCVItemFromString("CHEST");
-        item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        item.setLore(lore);
-        doReturn(item.createItemStack()).when(event1).getItemInHand();
+        ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
+        doReturn(itemStack).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -127,12 +126,9 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
-        CVItem item = CVItem.createCVItemFromString("CHEST");
-        item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        item.setLore(lore);
-        doReturn(item.createItemStack()).when(event1).getItemInHand();
+        doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -209,12 +205,9 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique3);
-        CVItem item = CVItem.createCVItemFromString("CHEST");
-        item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        item.setLore(lore);
-        doReturn(item.createItemStack()).when(event1).getItemInHand();
+        doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
@@ -325,12 +318,10 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
-        CVItem item = CVItem.createCVItemFromString("CHEST");
-        item.setDisplayName("Civs Cobble");
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        item.setLore(lore);
-        doReturn(item.createItemStack()).when(event1).getItemInHand();
+        ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
+        doReturn(itemStack).when(event1).getItemInHand();
 
 
         RegionListener regionListener = new RegionListener();
@@ -436,9 +427,7 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         Block block2 = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", location1, false);
         when(event1.getBlockPlaced()).thenReturn(block2);
-        CVItem cvItem = CVItem.createCVItemFromString("CHEST");
-        cvItem.setDisplayName("Civs cobble");
-        ItemStack itemStack = cvItem.createItemStack();
+        ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", new ArrayList<>());
         when(event1.getItemInHand()).thenReturn(itemStack);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         regionListener.onBlockPlace(event1);
@@ -464,6 +453,20 @@ public class RegionsTests {
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>());
         regionManager.addRegion(region);
         assertTrue(region.hasUpkeepItems());
+    }
+
+    @Test
+    public void regionShouldRunUpkeep() {
+        loadRegionTypeCobble4();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>());
+        regionManager.addRegion(region);
+        region.runUpkeep();
+        Chest chest = (Chest) location1.getBlock().getState();
+        assertEquals(Material.GOLDEN_PICKAXE, chest.getBlockInventory().getContents()[0].getType());
+        chest.getBlockInventory().setItem(0, TestUtil.mockItemStack(Material.IRON_PICKAXE, 1, null, new ArrayList<>()));
     }
 
     @Test
@@ -639,9 +642,13 @@ public class RegionsTests {
         effects.add("block_place");
         effects.add("block_break");
         config.set("effects", effects);
-        ArrayList<String> inputs = new ArrayList<>();
-        inputs.add("IRON_PICKAXE*1");
-        config.set("upkeeps.0.inputs", inputs);
+        ArrayList<String> input = new ArrayList<>();
+        ArrayList<String> output = new ArrayList<>();
+        config.set("period", 60);
+        input.add("IRON_PICKAXE*1");
+        output.add("GOLDEN_PICKAXE*1");
+        config.set("upkeep.0.input", input);
+        config.set("upkeep.0.output", output);
         ItemManager.getInstance().loadRegionType(config);
     }
 

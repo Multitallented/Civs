@@ -100,7 +100,7 @@ public class RegionListener implements Listener {
         }
         List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
-                blockBreakEvent.getBlock().getState().getData().toItemStack(1));
+                new ItemStack(blockBreakEvent.getBlock().getType(), 1));
         if (region.getPeople().containsKey(player.getUniqueId()) &&
                  missingBlocks != null && !missingBlocks.isEmpty()) {
             blockBreakEvent.setCancelled(true);
