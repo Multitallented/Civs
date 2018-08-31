@@ -204,6 +204,14 @@ public class ProtectionHandler implements Listener {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
+            if (checkEffectAt(event.getLocation(), player, "power_shield", 0)) {
+                Town town = TownManager.getInstance().getTownAt(event.getLocation());
+                if (town != null) {
+                    town.setPower(town.getPower() - 1);
+                    TownManager.getInstance().saveTown(town);
+                    setCancelled = true;
+                }
+            }
         }
         if (setCancelled) {
             event.setCancelled(true);
