@@ -31,6 +31,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 
 public class CivilianListener implements Listener {
@@ -155,6 +156,11 @@ public class CivilianListener implements Listener {
         Block block = event.getClickedBlock();
         Region region = RegionManager.getInstance().getRegionAt(block.getLocation());
         if (region == null) {
+            Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
+            for (Region r : regionSet) {
+                player.openInventory(RegionActionMenu.createMenu(civilian, r));
+                return;
+            }
             player.performCommand("cv");
             return;
         }
