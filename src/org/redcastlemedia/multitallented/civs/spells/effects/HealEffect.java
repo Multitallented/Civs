@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.spells.effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -45,9 +46,9 @@ public class HealEffect extends Effect {
             return false;
         }
         LivingEntity livingEntity = (LivingEntity) target;
-        if (livingEntity.getMaxHealth() - livingEntity.getHealth() < this.heal) {
+        if (livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() - livingEntity.getHealth() < this.heal) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(ChatColor.RED + Civs.getPrefix() + " already has enough health.");
+                origin.sendMessage(ChatColor.RED + Civs.getPrefix() + " already has enough health.");
             }
             return false;
         }
@@ -74,11 +75,11 @@ public class HealEffect extends Effect {
             return;
         }
         double health = livingEntity.getHealth();
-        double maxHealth = livingEntity.getMaxHealth();
+        double maxHealth = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         livingEntity.setHealth(Math.min(maxHealth, health + event.getAmount()));
-        if (player != null) {
+//        if (player != null) {
 //            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
-        }
+//        }
     }
 
     @Override
@@ -90,7 +91,7 @@ public class HealEffect extends Effect {
         }
         LivingEntity livingEntity = (LivingEntity) target;
         returnMap.put("health", livingEntity.getHealth());
-        returnMap.put("maxHealth", livingEntity.getMaxHealth());
+        returnMap.put("maxHealth", livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         return returnMap;
     }
 }

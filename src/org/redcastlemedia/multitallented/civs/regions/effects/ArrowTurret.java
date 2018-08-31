@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -168,7 +169,7 @@ public class ArrowTurret implements Listener {
         }
         Arrow arrow = (Arrow) projectile;
         Player damagee = (Player) event.getEntity();
-        double maxHP = damagee.getMaxHealth();
+        double maxHP = damagee.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(); //TODO check to make sure this works
         if (arrowDamages.get(arrow) == null) {
             return;
         }

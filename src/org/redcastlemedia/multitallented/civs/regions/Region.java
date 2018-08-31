@@ -167,7 +167,7 @@ public class Region {
                     int i=0;
                     outer1: for (HashSet<CVItem> tempMap : itemCheck) {
                         for (CVItem item : tempMap) {
-                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), false)) {
+                            if (item.getMat() == currentBlock.getType()) {
                                 if (item.getQty() < 2) {
                                     destroyIndex = item;
                                 } else {
@@ -194,7 +194,7 @@ public class Region {
             Block centerBlock = location.getBlock();
             if (centerBlock == null) {
                 hasReqs = false;
-            } else if (!regionType.equivalentItem(centerBlock.getState().getData().toItemStack(1), false)) {
+            } else if (regionType.getMat() != centerBlock.getType()) {
                 hasReqs = false;
             }
         }
@@ -308,7 +308,7 @@ public class Region {
                     int i=0;
                     outer1: for (List<CVItem> tempMap : itemCheck) {
                         for (CVItem item : tempMap) {
-                            if (item.equivalentItem(currentBlock.getState().getData().toItemStack(1), false)) {
+                            if (item.getMat() == currentBlock.getType()) {
                                 if (item.getQty() < 2) {
                                     destroyIndex = item;
                                 } else {

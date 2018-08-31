@@ -108,7 +108,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onCivilianBlockPlace(BlockPlaceEvent event) {
-        ItemStack is = event.getBlockPlaced().getState().getData().toItemStack();
+        ItemStack is = new ItemStack(event.getBlockPlaced().getType(), 1);
         if (!CVItem.isCivsItem(is)) {
             return;
         }

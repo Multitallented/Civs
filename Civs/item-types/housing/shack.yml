@@ -1,5 +1,5 @@
 type: region
-icon: RED_BED
+icon: CHEST
 name: Shack
 max: 2
 price: 100
@@ -26,8 +26,10 @@ effects:
 - door_use
 - chest_use
 - housing
+period: daily
 upkeep:
   0:
+    payout: 100
 
 
 description:
