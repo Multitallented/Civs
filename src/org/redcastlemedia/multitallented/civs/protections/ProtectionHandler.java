@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,6 +40,10 @@ public class ProtectionHandler implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         RegionManager regionManager = RegionManager.getInstance();
+        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL &&
+                RegionManager.getInstance().getContainingRegions(event.getBlock().getLocation(), 0).isEmpty()) {
+            return;
+        }
         boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled) {
             event.setCancelled(true);

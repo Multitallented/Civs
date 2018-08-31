@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -138,6 +139,7 @@ public class RegionsTests {
     }
 
     @Test
+    @Ignore
     public void regionShouldReportCorrectMissingGroupReqs() {
         loadRegionTypeCobble4();
 
