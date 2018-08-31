@@ -18,7 +18,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- power_shield #TODO migrate this from Townships
+- power_shield
 - control_override #TODO migrate this from Townships
 - claim_at_zero #TODO create this
 

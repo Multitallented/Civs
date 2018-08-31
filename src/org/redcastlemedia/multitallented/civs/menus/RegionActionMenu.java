@@ -109,7 +109,7 @@ public class RegionActionMenu extends Menu {
         //0 Icon
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
-        ArrayList<String> lore = new ArrayList<>();
+        ArrayList<String> lore;
         //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
@@ -122,13 +122,6 @@ public class RegionActionMenu extends Menu {
         }
 
 
-        Block block = region.getLocation().getBlock();
-        Chest chest = null;
-        if (block.getState() instanceof Chest) {
-            chest = (Chest) block.getState();
-        }
-//        boolean hasUpkeepItems = regionType.getReagents().isEmpty() ||
-//                (chest != null && Util.containsItems(regionType.getReagents(), chest.getInventory()));
         //2 Is Working
         CVItem cvItem1;
         if (region.hasUpkeepItems()) {
@@ -158,9 +151,11 @@ public class RegionActionMenu extends Menu {
         }
 
         //6 Destroy
-        CVItem destroy = CVItem.createCVItemFromString("BARRIER");
-        destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
-        inventory.setItem(6, destroy.createItemStack());
+        if (!regionType.getEffects().containsKey("indestructible")) {
+            CVItem destroy = CVItem.createCVItemFromString("BARRIER");
+            destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
+            inventory.setItem(6, destroy.createItemStack());
+        }
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

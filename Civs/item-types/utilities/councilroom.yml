@@ -25,7 +25,7 @@ effects:
 - door_use
 - chest_use
 - port #TODO migrate this from Townships
-- indestructible #TODO make this
+- indestructible
 
 period: daily
 upkeeps:

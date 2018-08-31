@@ -53,14 +53,26 @@ public class ProtectionHandler implements Listener {
             if (region == null) {
                 return;
             }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (region.getLocation().equals(event.getBlock().getLocation())) {
-                regionManager.removeRegion(region, true);
+                removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }
             int[] radii = Region.hasRequiredBlocks(region.getType().toLowerCase(), region.getLocation());
             if (radii.length == 0) {
-                regionManager.removeRegion(region, true);
+                removeRegionIfNotIndestructible(region, regionType, event);
             }
+        }
+    }
+
+    private void removeRegionIfNotIndestructible(Region region, RegionType regionType, BlockBreakEvent event) {
+        if (regionType.getEffects().containsKey("indestructible")) {
+            event.setCancelled(true);
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        } else {
+            RegionManager.getInstance().removeRegion(region, true);
         }
     }
 
@@ -217,7 +229,6 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
             return;
         }
-        //TODO power shield for super regions
 
         final Location location = event.getLocation();
         CheckRegionBlocks checkRegionBlocks = new CheckRegionBlocks(location);
