@@ -34,7 +34,7 @@ public class RecipeMenu extends Menu {
         }
     }
 
-    public static Inventory createMenu(List<List<CVItem>> items, UUID uuid, ItemStack icon, String regionTypeName) {
+    public static Inventory createMenu(List<HashMap<Material, Integer>> items, UUID uuid, ItemStack icon, String regionTypeName) {
         Inventory inventory = createMenu(items, uuid, icon);
         CVItem cvItem = CVItem.createCVItemFromString("RED_WOOL");
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
@@ -46,69 +46,86 @@ public class RecipeMenu extends Menu {
         return inventory;
     }
 
-    public static Inventory createMenu(List<List<CVItem>> items, UUID uuid, ItemStack icon) {
+    public static Inventory createMenuCVItem(List<List<CVItem>> items, UUID uuid, ItemStack icon) {
+        List<HashMap<Material, Integer>> returnList = new ArrayList<>();
+        for (List<CVItem> list : items) {
+            HashMap<Material, Integer> returnMap = new HashMap<>();
+            for (CVItem item : list) {
+                returnMap.put(item.getMat(), item.getQty());
+            }
+            returnList.add(returnMap);
+        }
+
+
+        return createMenu(returnList, uuid, icon);
+    }
+
+    public static Inventory createMenu(List<HashMap<Material, Integer>> items, UUID uuid, ItemStack icon) {
         int index = 0;
         HashMap<Integer, CVItem> proxyInv = new HashMap<>();
         HashMap<Integer, List<CVItem>> cycleItems = new HashMap<>();
 
-        for (List<CVItem> subItems : items) {
+        for (HashMap<Material, Integer> subItems : items) {
             if (subItems.size() == 1) {
-                CVItem item = subItems.get(0);
-                int qty = item.getQty();
+                for (Material mat : subItems.keySet()) {
+                    CVItem item = new CVItem(mat, subItems.get(mat));
+                    int qty = item.getQty();
 
-                ItemStack is = new ItemStack(item.getMat());
-                int maxStack = is.getMaxStackSize();
+                    ItemStack is = new ItemStack(item.getMat());
+                    int maxStack = is.getMaxStackSize();
 
-                while (qty > maxStack) {
+                    while (qty > maxStack) {
+                        CVItem tempItem = item.clone();
+                        tempItem.setQty(maxStack);
+                        proxyInv.put(index, tempItem);
+                        index++;
+                        qty -= maxStack;
+                    }
+
                     CVItem tempItem = item.clone();
-                    tempItem.setQty(maxStack);
+                    tempItem.setQty(qty);
                     proxyInv.put(index, tempItem);
                     index++;
-                    qty -= maxStack;
                 }
-
-                CVItem tempItem = item.clone();
-                tempItem.setQty(qty);
-                proxyInv.put(index, tempItem);
-                index++;
             } else if (!subItems.isEmpty()) {
                 int baseIndex = index;
                 int baseIndexOffset = 0;
 
-                CVItem item = subItems.get(0);
-                int qty = item.getQty();
+//                CVItem item = subItems.get(0);
+//                int qty = item.getQty();
 
-                ItemStack is = new ItemStack(item.getMat());
-                int maxStack = is.getMaxStackSize();
+//                ItemStack is = new ItemStack(item.getMat());
+//                int maxStack = is.getMaxStackSize();
                 int orMax = 0;
-                while (qty > maxStack) {
-                    CVItem tempItem = item.clone();
-                    tempItem.setQty(maxStack);
-                    proxyInv.put(index, tempItem);
-                    List<CVItem> tempListItems = new ArrayList<>();
-                    tempListItems.add(tempItem);
-                    cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
-                    index++;
-                    orMax++;
-                    baseIndexOffset++;
-                    qty -= maxStack;
-                }
+//                while (qty > maxStack) {
+//                    CVItem tempItem = item.clone();
+//                    tempItem.setQty(maxStack);
+//                    proxyInv.put(index, tempItem);
+//                    List<CVItem> tempListItems = new ArrayList<>();
+//                    tempListItems.add(tempItem);
+//                    cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+//                    index++;
+//                    orMax++;
+//                    baseIndexOffset++;
+//                    qty -= maxStack;
+//                }
 
-                CVItem tempItem = item.clone();
-                tempItem.setQty(qty);
-                proxyInv.put(index, tempItem);
-                ArrayList<CVItem> tempListItems = new ArrayList<>();
-                tempListItems.add(tempItem);
-                cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+//                CVItem tempItem = item.clone();
+//                tempItem.setQty(qty);
+//                proxyInv.put(index, tempItem);
+//                ArrayList<CVItem> tempListItems = new ArrayList<>();
+//                tempListItems.add(tempItem);
+//                cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
                 index++;
-                orMax++;
+//                orMax++;
 
                 int reqIndex = 1;
-                for (CVItem currItem : subItems) {
-                    if (currItem.equals(item)) {
-                        continue;
-                    }
-                    baseIndexOffset = 0;
+                for (Material currMat : subItems.keySet()) {
+                    CVItem currItem = new CVItem(currMat, subItems.get(currMat));
+//                    if (currItem.equals(item)) {
+//                        continue;
+//                    }
+//                    baseIndexOffset = 0;
 
                     ItemStack cis = new ItemStack(currItem.getMat());
                     int cqty = currItem.getQty();

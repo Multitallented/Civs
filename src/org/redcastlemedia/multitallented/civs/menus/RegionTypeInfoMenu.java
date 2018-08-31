@@ -41,28 +41,28 @@ public class RegionTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getReqs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getReqs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.CHEST)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
             int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Reagents", ""));
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getUpkeeps().get(index).getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.HOPPER)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
             int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Input", ""));
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getInputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getUpkeeps().get(index).getInputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.DISPENSER)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
             int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Output", ""));
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(regionType.getUpkeeps().get(index).getOutputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getUpkeeps().get(index).getOutputs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {

@@ -146,15 +146,16 @@ public class RegionsTests {
         loadRegionTypeCobble4();
 
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        List<List<CVItem>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
+        List<HashMap<Material, Integer>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
         List<String> missingMessage = generateMissingReqsMessage(missingItems);
         assertTrue(missingMessage.get(0).startsWith("§cGRAVEL"));
     }
 
-    private List<String> generateMissingReqsMessage(List<List<CVItem>> missingBlocks) {
+    private List<String> generateMissingReqsMessage(List<HashMap<Material, Integer>> missingBlocks) {
         StringBuilder missingMessage = new StringBuilder();
-        for (List<CVItem> itemSet : missingBlocks) {
-            for (CVItem item : itemSet) {
+        for (HashMap<Material, Integer> itemSet : missingBlocks) {
+            for (Material mat : itemSet.keySet()) {
+                CVItem item = new CVItem(mat, itemSet.get(mat));
                 missingMessage.append(item.getMat().name());
                 missingMessage.append("*");
                 missingMessage.append(item.getQty());

@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
@@ -251,23 +248,23 @@ public class Region {
         }
         return radii;
     }
-    public static List<List<CVItem>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
+    public static List<HashMap<Material, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        List<List<CVItem>> itemCheck = new ArrayList<>();
+        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         CVItem missingItem = null;
         if (missingStack != null) {
             missingItem = CVItem.createFromItemStack(missingStack);
         }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
-            ArrayList<CVItem> currentReqMap = new ArrayList<>();
+            HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
-                CVItem currentClone = currentItem.clone();
-                if (missingItem != null && missingItem.equivalentCVItem(currentClone)) {
-                    currentClone.setQty(currentClone.getQty() + 1);
+                if (missingItem != null && missingItem.equivalentCVItem(currentItem)) {
+                    currentReqMap.put(currentItem.getMat(), currentItem.getQty() + 1);
+                } else {
+                    currentReqMap.put(currentItem.getMat(), currentItem.getQty());
                 }
-                currentReqMap.add(currentClone);
             }
             itemCheck.add(currentReqMap);
         }
@@ -300,27 +297,25 @@ public class Region {
             for (int y=yMin; y<yMax; y++) {
                 for (int z=zMin; z<zMax; z++) {
                     Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null) {
+                    if (currentBlock == null || currentBlock.getType() == Material.AIR) {
                         continue;
                     }
 
-                    CVItem destroyIndex = null;
-                    int i=0;
-                    outer1: for (List<CVItem> tempMap : itemCheck) {
-                        for (CVItem item : tempMap) {
-                            if (item.getMat() == currentBlock.getType()) {
-                                if (item.getQty() < 2) {
-                                    destroyIndex = item;
-                                } else {
-                                    item.setQty(item.getQty() - 1);
-                                }
-                                regionManager.adjustRadii(radii, location, x,y,z);
-                                break outer1;
+                    int i = 0;
+                    boolean destroyIndex = false;
+                    for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(currentBlock.getType())) {
+                            if (tempMap.get(currentBlock.getType()) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
                             }
+                            regionManager.adjustRadii(radii, location, x, y, z);
+                            break;
                         }
                         i++;
                     }
-                    if (destroyIndex != null) {
+                    if (destroyIndex) {
                         if (itemCheck.size() < 2) {
                             hasReqs = true;
                             break outer;

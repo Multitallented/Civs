@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -96,7 +98,7 @@ public class RegionListener implements Listener {
             regionManager.removeRegion(region, true);
             return;
         }
-        List<List<CVItem>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+        List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
                 blockBreakEvent.getBlock().getState().getData().toItemStack(1));
         if (region.getPeople().containsKey(player.getUniqueId()) &&
@@ -105,8 +107,9 @@ public class RegionListener implements Listener {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "broke-own-region").replace("$1", region.getType()));
             StringBuilder missingReqs = new StringBuilder();
-            for (List<CVItem> map : missingBlocks) {
-                for (CVItem key : map) {
+            for (HashMap<Material, Integer> map : missingBlocks) {
+                for (Material mat : map.keySet()) {
+                    CVItem key = new CVItem(mat, map.get(mat));
                     missingReqs.append(key.getMat().toString());
                     missingReqs.append("*");
                     missingReqs.append(key.getQty());

@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -305,7 +306,7 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));
-            List<List<CVItem>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
+            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
             if (missingBlocks != null) {
 //                for (String message : generateMissingReqsMessage(missingBlocks)) {
 //                    player.sendMessage(message);
