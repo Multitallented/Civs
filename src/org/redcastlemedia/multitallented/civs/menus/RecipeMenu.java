@@ -41,7 +41,7 @@ public class RecipeMenu extends Menu {
         cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "missing-blocks-build").replace("$1", regionTypeName));
         inventory.setItem(1, cvItem.createItemStack());
-        inventory.setItem(8, null); //remove back button
+        inventory.setItem(8, new ItemStack(Material.AIR)); //remove back button
 
         return inventory;
     }

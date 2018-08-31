@@ -1,18 +1,15 @@
 package org.redcastlemedia.multitallented.civs;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
@@ -51,7 +48,7 @@ public class BlockLogger {
 //        }
 //    }
 
-    public void saveBlocks() {
+    private void saveBlocks() {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;

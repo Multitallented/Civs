@@ -118,22 +118,20 @@ public class Region {
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
         RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashSet<CVItem>> itemCheck = new ArrayList<>();
+        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         for (List<CVItem> currentList : regionType.getReqs()) {
-            HashSet<CVItem> currentReqMap = new HashSet<>();
+            HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
-                currentReqMap.add(currentItem.clone());
+                CVItem clone = currentItem.clone();
+                currentReqMap.put(clone.getMat(), clone.getQty());
             }
             itemCheck.add(currentReqMap);
         }
         int[] radii = new int[6];
-        radii[0] = 0;
-        radii[1] = 0;
-        radii[2] = 0;
-        radii[3] = 0;
-        radii[4] = 0;
-        radii[5] = 0;
+        for (int i = 0; i < 6; i++) {
+            radii[i] = 0;
+        }
         if (itemCheck.isEmpty()) {
             radiusCheck(radii, regionType);
             return radii;
@@ -160,23 +158,21 @@ public class Region {
                         continue;
                     }
 
-                    CVItem destroyIndex = null;
+                    boolean destroyIndex = false;
                     int i=0;
-                    outer1: for (HashSet<CVItem> tempMap : itemCheck) {
-                        for (CVItem item : tempMap) {
-                            if (item.getMat() == currentBlock.getType()) {
-                                if (item.getQty() < 2) {
-                                    destroyIndex = item;
-                                } else {
-                                    item.setQty(item.getQty() - 1);
-                                }
-                                regionManager.adjustRadii(radii, location, x,y,z);
-                                break outer1;
+                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(currentBlock.getType())) {
+                            if (tempMap.get(currentBlock.getType()) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
                             }
+                            regionManager.adjustRadii(radii, location, x,y,z);
+                            break outer1;
                         }
                         i++;
                     }
-                    if (destroyIndex != null) {
+                    if (destroyIndex) {
                         if (itemCheck.size() < 2) {
                             hasReqs = true;
                             break outer;
@@ -260,21 +256,19 @@ public class Region {
         for (List<CVItem> currentList : regionType.getReqs()) {
             HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
-                if (missingItem != null && missingItem.equivalentCVItem(currentItem)) {
-                    currentReqMap.put(currentItem.getMat(), currentItem.getQty() + 1);
+                CVItem clone = currentItem.clone();
+                if (missingItem != null && missingItem.equivalentCVItem(clone)) {
+                    currentReqMap.put(clone.getMat(), clone.getQty() + 1);
                 } else {
-                    currentReqMap.put(currentItem.getMat(), currentItem.getQty());
+                    currentReqMap.put(clone.getMat(), clone.getQty());
                 }
             }
             itemCheck.add(currentReqMap);
         }
         int[] radii = new int[6];
-        radii[0] = 0;
-        radii[1] = 0;
-        radii[2] = 0;
-        radii[3] = 0;
-        radii[4] = 0;
-        radii[5] = 0;
+        for (int i = 0; i < 6; i++) {
+            radii[i] = 0;
+        }
         if (itemCheck.isEmpty()) {
             radiusCheck(radii, regionType);
             return itemCheck;
