@@ -18,6 +18,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
+- deny_mob_spawn
 - control_override
 - claim_at_zero #TODO create this
 

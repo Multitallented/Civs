@@ -137,31 +137,65 @@ public class RegionTypeInfoMenu extends Menu {
 
         for (int i = 0; i < regionType.getUpkeeps().size(); i++) {
             //9 reagents
-            CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
-            cvItem2.setDisplayName("Reagents" + i);
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
-                    .replace("$1", regionType.getName()));
-            cvItem2.setLore(lore);
-            inventory.setItem(9+i*9, cvItem2.createItemStack());
+            if (!regionType.getUpkeeps().get(i).getReagents().isEmpty()) {
+                CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
+                cvItem2.setDisplayName("Reagents" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
+                        .replace("$1", regionType.getName()));
+                cvItem2.setLore(lore);
+                inventory.setItem(9 + i * 9, cvItem2.createItemStack());
+            }
 
             //10 upkeep
-            CVItem cvItem3 = CVItem.createCVItemFromString("HOPPER");
-            cvItem3.setDisplayName("Input" + i);
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
-                    .replace("$1", regionType.getName()));
-            cvItem3.setLore(lore);
-            inventory.setItem(10, cvItem3.createItemStack());
+            if (!regionType.getUpkeeps().get(i).getInputs().isEmpty()) {
+                CVItem cvItem3 = CVItem.createCVItemFromString("HOPPER");
+                cvItem3.setDisplayName("Input" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
+                        .replace("$1", regionType.getName()));
+                cvItem3.setLore(lore);
+                inventory.setItem(10, cvItem3.createItemStack());
+            }
 
             //11 output
-            CVItem cvItem4 = CVItem.createCVItemFromString("DISPENSER");
-            cvItem4.setDisplayName("Output" + i);
-            lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
-                    .replace("$1", regionType.getName()));
-            cvItem4.setLore(lore);
-            inventory.setItem(11, cvItem4.createItemStack());
+            if (!regionType.getUpkeeps().get(i).getOutputs().isEmpty()) {
+                CVItem cvItem4 = CVItem.createCVItemFromString("DISPENSER");
+                cvItem4.setDisplayName("Output" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
+                        .replace("$1", regionType.getName()));
+                cvItem4.setLore(lore);
+                inventory.setItem(11, cvItem4.createItemStack());
+            }
+
+            if (regionType.getUpkeeps().get(i).getPayout() > 0) {
+                CVItem cvItem4 = CVItem.createCVItemFromString("EMERALD_BLOCK");
+                cvItem4.setDisplayName("Payout" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "payout")
+                        .replace("$1", regionType.getUpkeeps().get(i).getPayout() + ""));
+                cvItem4.setLore(lore);
+                inventory.setItem(12, cvItem4.createItemStack());
+            }
+            if (regionType.getUpkeeps().get(i).getPowerInput() > 0) {
+                CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_ORE");
+                cvItem4.setDisplayName("PowerInput" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "power-input")
+                        .replace("$1", regionType.getUpkeeps().get(i).getPowerInput() + ""));
+                cvItem4.setLore(lore);
+                inventory.setItem(13, cvItem4.createItemStack());
+            }
+            if (regionType.getUpkeeps().get(i).getPowerOutput() > 0) {
+                CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_TORCH");
+                cvItem4.setDisplayName("PowerOutput" + i);
+                lore = new ArrayList<>();
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "power-output")
+                        .replace("$1", regionType.getUpkeeps().get(i).getPowerOutput() + ""));
+                cvItem4.setLore(lore);
+                inventory.setItem(14, cvItem4.createItemStack());
+            }
         }
 
         //TODO finish this stub
