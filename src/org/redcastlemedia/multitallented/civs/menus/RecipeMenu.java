@@ -61,45 +61,47 @@ public class RecipeMenu extends Menu {
     }
 
     protected static void createCycleItems(int index, HashMap<Material, Integer> subItems,
-                                  HashMap<Integer, List<CVItem>> cycleItems) {
+                                           HashMap<Integer, List<CVItem>> cycleItems,
+                                           HashMap<Integer, CVItem> proxyInv) {
         int baseIndex = index;
         int baseIndexOffset = 0;
 
-//                CVItem item = subItems.get(0);
-//                int qty = item.getQty();
+        Material mat = subItems.keySet().iterator().next();
+        CVItem item = new CVItem(mat, subItems.get(mat));
+        int qty = item.getQty();
 
-//                ItemStack is = new ItemStack(item.getMat());
-//                int maxStack = is.getMaxStackSize();
+        ItemStack is = new ItemStack(item.getMat());
+        int maxStack = is.getMaxStackSize();
         int orMax = 0;
-//                while (qty > maxStack) {
-//                    CVItem tempItem = item.clone();
-//                    tempItem.setQty(maxStack);
-//                    proxyInv.put(index, tempItem);
-//                    List<CVItem> tempListItems = new ArrayList<>();
-//                    tempListItems.add(tempItem);
-//                    cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
-//                    index++;
-//                    orMax++;
-//                    baseIndexOffset++;
-//                    qty -= maxStack;
-//                }
+        while (qty > maxStack) {
+            CVItem tempItem = item.clone();
+            tempItem.setQty(maxStack);
+            proxyInv.put(index, tempItem);
+            List<CVItem> tempListItems = new ArrayList<>();
+            tempListItems.add(tempItem);
+            cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+            index++;
+            orMax++;
+            baseIndexOffset++;
+            qty -= maxStack;
+        }
 
-//                CVItem tempItem = item.clone();
-//                tempItem.setQty(qty);
-//                proxyInv.put(index, tempItem);
-//                ArrayList<CVItem> tempListItems = new ArrayList<>();
-//                tempListItems.add(tempItem);
-//                cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+        CVItem tempItem = item.clone();
+        tempItem.setQty(qty);
+        proxyInv.put(index, tempItem);
+        ArrayList<CVItem> tempListItems = new ArrayList<>();
+        tempListItems.add(tempItem);
+        cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
         index++;
-//                orMax++;
+        orMax++;
 
         int reqIndex = 1;
         for (Material currMat : subItems.keySet()) {
             CVItem currItem = new CVItem(currMat, subItems.get(currMat));
-//                    if (currItem.equals(item)) {
-//                        continue;
-//                    }
-//                    baseIndexOffset = 0;
+            if (currItem.equals(item)) {
+                continue;
+            }
+            baseIndexOffset = 0;
 
             ItemStack cis = new ItemStack(currItem.getMat());
             int cqty = currItem.getQty();
@@ -179,7 +181,7 @@ public class RecipeMenu extends Menu {
                     index++;
                 }
             } else if (!subItems.isEmpty()) {
-                createCycleItems(index, subItems, cycleItems);
+                createCycleItems(index, subItems, cycleItems, proxyInv);
             }
         }
 

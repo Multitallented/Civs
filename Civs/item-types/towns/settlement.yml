@@ -18,7 +18,6 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- power_shield
 - control_override
 - claim_at_zero #TODO create this
 
