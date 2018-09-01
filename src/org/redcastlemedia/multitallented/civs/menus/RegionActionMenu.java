@@ -153,7 +153,8 @@ public class RegionActionMenu extends Menu {
         }
 
         //6 Destroy
-        if (!regionType.getEffects().containsKey("indestructible")) {
+        if (!regionType.getEffects().containsKey("indestructible") &&
+                region.getPeople().containsKey(civilian.getUuid())) {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
             inventory.setItem(6, destroy.createItemStack());
