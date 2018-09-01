@@ -6,8 +6,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -34,40 +32,78 @@ public class RecipeMenu extends Menu {
         }
     }
 
-    public static Inventory createMenu(List<HashMap<Material, Integer>> items, UUID uuid, ItemStack icon, String regionTypeName) {
-        Inventory inventory = createMenu(items, uuid, icon);
-        CVItem cvItem = CVItem.createCVItemFromString("RED_WOOL");
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "missing-blocks-build").replace("$1", regionTypeName));
-        inventory.setItem(1, cvItem.createItemStack());
-        inventory.setItem(8, new ItemStack(Material.AIR)); //remove back button
+    public static Inventory createMenu(List<HashMap<Material, Integer>> items, UUID uuid, ItemStack icon) {
+        List<List<CVItem>> returnList = new ArrayList<>();
+        for (HashMap<Material, Integer> sItems : items) {
+            ArrayList<CVItem> subItems = new ArrayList<>();
+            for (Material mat : sItems.keySet()) {
+                subItems.add(new CVItem(mat, sItems.get(mat)));
+            }
+            returnList.add(subItems);
+        }
 
-        return inventory;
+        return createMenuCVItem(returnList, uuid, icon);
     }
 
     public static Inventory createMenuCVItem(List<List<CVItem>> items, UUID uuid, ItemStack icon) {
-        List<HashMap<Material, Integer>> returnList = new ArrayList<>();
-        for (List<CVItem> list : items) {
-            HashMap<Material, Integer> returnMap = new HashMap<>();
-            for (CVItem item : list) {
-                returnMap.put(item.getMat(), item.getQty());
+        int index = 0;
+        HashMap<Integer, CVItem> proxyInv = new HashMap<>();
+        HashMap<Integer, List<CVItem>> cycleItems = new HashMap<>();
+
+        for (List<CVItem> subItems : items) {
+            if (subItems.size() == 1) {
+                CVItem item = subItems.get(0);
+                int qty = item.getQty();
+
+                ItemStack is = new ItemStack(item.getMat());
+                int maxStack = is.getMaxStackSize();
+
+                while (qty > maxStack) {
+                    CVItem tempItem = item.clone();
+                    tempItem.setQty(maxStack);
+                    proxyInv.put(index, tempItem);
+                    index++;
+                    qty -= maxStack;
+                }
+
+                CVItem tempItem = item.clone();
+                tempItem.setQty(qty);
+                proxyInv.put(index, tempItem);
+                index++;
+            } else if (!subItems.isEmpty()) {
+                createCycleItems(index, subItems, cycleItems, proxyInv);
             }
-            returnList.add(returnMap);
         }
 
 
-        return createMenu(returnList, uuid, icon);
+        Inventory inv = Bukkit.createInventory(null, getInventorySize(index) + 9, MENU_NAME);
+
+        inv.setItem(0, icon);
+        inv.setItem(8, getBackButton(CivilianManager.getInstance().getCivilian(uuid)));
+
+        Menu.sanitizeGUIItems(proxyInv);
+        Menu.sanitizeCycleItems(cycleItems);
+
+        for (Integer pIndex : proxyInv.keySet()) {
+            CVItem nextItem = proxyInv.get(pIndex);
+            ItemStack is;
+            is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+            inv.setItem(pIndex + 9, is);
+        }
+
+        for (Integer cycleIndex : cycleItems.keySet()) {
+            Menu.addCycleItems(uuid, inv, cycleIndex + 9, cycleItems.get(cycleIndex));
+        }
+        return inv;
     }
 
-    protected static void createCycleItems(int index, HashMap<Material, Integer> subItems,
+    protected static void createCycleItems(int index, List<CVItem> subItems,
                                            HashMap<Integer, List<CVItem>> cycleItems,
                                            HashMap<Integer, CVItem> proxyInv) {
         int baseIndex = index;
         int baseIndexOffset = 0;
 
-        Material mat = subItems.keySet().iterator().next();
-        CVItem item = new CVItem(mat, subItems.get(mat));
+        CVItem item = subItems.get(0);
         int qty = item.getQty();
 
         ItemStack is = new ItemStack(item.getMat());
@@ -96,8 +132,7 @@ public class RecipeMenu extends Menu {
         orMax++;
 
         int reqIndex = 1;
-        for (Material currMat : subItems.keySet()) {
-            CVItem currItem = new CVItem(currMat, subItems.get(currMat));
+        for (CVItem currItem : subItems) {
             if (currItem.equals(item)) {
                 continue;
             }
@@ -152,60 +187,4 @@ public class RecipeMenu extends Menu {
             }
         }
     }
-
-    public static Inventory createMenu(List<HashMap<Material, Integer>> items, UUID uuid, ItemStack icon) {
-        int index = 0;
-        HashMap<Integer, CVItem> proxyInv = new HashMap<>();
-        HashMap<Integer, List<CVItem>> cycleItems = new HashMap<>();
-
-        for (HashMap<Material, Integer> subItems : items) {
-            if (subItems.size() == 1) {
-                for (Material mat : subItems.keySet()) {
-                    CVItem item = new CVItem(mat, subItems.get(mat));
-                    int qty = item.getQty();
-
-                    ItemStack is = new ItemStack(item.getMat());
-                    int maxStack = is.getMaxStackSize();
-
-                    while (qty > maxStack) {
-                        CVItem tempItem = item.clone();
-                        tempItem.setQty(maxStack);
-                        proxyInv.put(index, tempItem);
-                        index++;
-                        qty -= maxStack;
-                    }
-
-                    CVItem tempItem = item.clone();
-                    tempItem.setQty(qty);
-                    proxyInv.put(index, tempItem);
-                    index++;
-                }
-            } else if (!subItems.isEmpty()) {
-                createCycleItems(index, subItems, cycleItems, proxyInv);
-            }
-        }
-
-
-        Inventory inv = Bukkit.createInventory(null, getInventorySize(index) + 9, MENU_NAME);
-
-        inv.setItem(0, icon);
-        inv.setItem(8, getBackButton(CivilianManager.getInstance().getCivilian(uuid)));
-
-        Menu.sanitizeGUIItems(proxyInv);
-        Menu.sanitizeCycleItems(cycleItems);
-
-        for (Integer pIndex : proxyInv.keySet()) {
-            CVItem nextItem = proxyInv.get(pIndex);
-            ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
-            ItemMeta isMeta = is.getItemMeta();
-            is.setItemMeta(isMeta);
-            inv.setItem(pIndex + 9, is);
-        }
-
-        for (Integer cycleIndex : cycleItems.keySet()) {
-            Menu.addCycleItems(uuid, inv, cycleIndex + 9, cycleItems.get(cycleIndex));
-        }
-        return inv;
-    }
-
 }
