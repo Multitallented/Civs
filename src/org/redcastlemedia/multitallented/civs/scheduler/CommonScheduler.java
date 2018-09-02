@@ -7,9 +7,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
-import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
-import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -17,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.util.*;
 
@@ -72,19 +71,27 @@ public class CommonScheduler implements Runnable {
         Town town = townManager.getTownAt(player.getLocation());
         Town prevTown = lastTown.get(player.getUniqueId());
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        LocaleManager localeManager = LocaleManager.getInstance();
+        TownType townType = null;
         if (town != null) {
+            townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            PlayerInTownEvent playerInTownEvent = new PlayerInTownEvent(player.getUniqueId(),
+                    town, townType);
+            Bukkit.getPluginManager().callEvent(playerInTownEvent);
             //TODO when player in town
+        }
+        TownType prevTownType = null;
+        if (prevTown != null) {
+            prevTownType = (TownType) ItemManager.getInstance().getItemType(prevTown.getType());
         }
 
         if (prevTown == null && town != null) {
-            enterTown(player, civilian, town);
+            enterTown(player, civilian, town, townType);
         } else if (prevTown != null && town != null &&
                 !prevTown.equals(town)) {
-            exitTown(player, civilian, prevTown);
-            enterTown(player, civilian, town);
+            exitTown(player, civilian, prevTown, prevTownType);
+            enterTown(player, civilian, town, townType);
         } else if (town == null && prevTown != null) {
-            exitTown(player, civilian, prevTown);
+            exitTown(player, civilian, prevTown, prevTownType);
         }
 
         if (town == null && prevTown != null) {
@@ -94,11 +101,17 @@ public class CommonScheduler implements Runnable {
         }
     }
 
-    private void enterTown(Player player, Civilian civilian, Town town) {
+    private void enterTown(Player player, Civilian civilian, Town town, TownType townType) {
+        PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(player.getUniqueId(),
+                town, townType);
+        Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "enter-town").replace("$1", town.getName()));
     }
-    private void exitTown(Player player, Civilian civilian, Town town) {
+    private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
+        PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
+                town, townType);
+        Bukkit.getPluginManager().callEvent(playerExitTownEvent);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "exit-town").replace("$1", town.getName()));
     }
