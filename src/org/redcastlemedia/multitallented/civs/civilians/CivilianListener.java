@@ -24,8 +24,10 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -180,6 +182,18 @@ public class CivilianListener implements Listener {
             return;
         }
         blockLogger.removeBlock(event.getBlock().getLocation());
+        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
+        if (region != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
+            if (cancelled && !event.isCancelled()) {
+                event.setCancelled(true);
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
+            return;
+        }
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }

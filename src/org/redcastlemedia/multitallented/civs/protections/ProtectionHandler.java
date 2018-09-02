@@ -70,14 +70,16 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    private void removeRegionIfNotIndestructible(Region region, RegionType regionType, BlockBreakEvent event) {
+    public static boolean removeRegionIfNotIndestructible(Region region, RegionType regionType, BlockBreakEvent event) {
         if (regionType.getEffects().containsKey("indestructible")) {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            return true;
         } else {
             RegionManager.getInstance().removeRegion(region, true);
+            return false;
         }
     }
 

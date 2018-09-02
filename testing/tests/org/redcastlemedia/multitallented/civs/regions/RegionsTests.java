@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -561,6 +562,20 @@ public class RegionsTests {
         assertEquals(300, town.getPower());
     }
 
+    @Test
+    public void offCenterRegionShouldDestroy() {
+        loadRegionTypeCobbleQuarry();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 6), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 300, 100, 0);
+        Region region = new Region("cobblequarry", owners, location1, getRadii(9,5,7,7,7,7), new HashMap<>());
+        regionManager.addRegion(region);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.blockUnique8, TestUtil.player);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertNull(regionManager.getRegionAt(location1));
+    }
+
     private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
@@ -592,6 +607,16 @@ public class RegionsTests {
         for (int i = 0; i < 6; i++) {
             radiuses[i] = 5;
         }
+        return radiuses;
+    }
+    public static int[] getRadii(int xp, int xn, int yp, int yn, int zp, int zn) {
+        int[] radiuses = new int[6];
+        radiuses[0] = xp;
+        radiuses[1] = zp;
+        radiuses[2] = xn;
+        radiuses[3] = zn;
+        radiuses[4] = yp;
+        radiuses[5] = yn;
         return radiuses;
     }
 
@@ -692,6 +717,16 @@ public class RegionsTests {
         effects.add("block_place");
         effects.add("block_break");
         config.set("effects", effects);
+        config.set("effect-radius", 7);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
+    public static void loadRegionTypeCobbleQuarry() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "cobblequarry");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("CHEST*2");
+        config.set("build-reqs", reqs);
         config.set("effect-radius", 7);
         ItemManager.getInstance().loadRegionType(config);
     }

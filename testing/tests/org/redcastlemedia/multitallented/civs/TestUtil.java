@@ -43,6 +43,7 @@ public class TestUtil {
     public static Block block10;
     public static Block block11;
     public static Block block12;
+    public static Block block13;
     public static Player player;
     public static Block blockUnique;
     public static Block blockUnique2;
@@ -51,6 +52,7 @@ public class TestUtil {
     public static Block blockUnique5;
     public static Block blockUnique6;
     public static Block blockUnique7;
+    public static Block blockUnique8;
 
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
@@ -136,6 +138,7 @@ public class TestUtil {
         block10 = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
+        block13 = createBlock(Material.CHEST, new Location(world, 301, 101, 1));
 
 
         world.putBlock(0,0,0,block);
@@ -150,6 +153,7 @@ public class TestUtil {
         world.putBlock(0,1,1, block10);
         world.putBlock(4,101,1,block11);
         world.putBlock(2,0,1,block12);
+        world.putBlock(301,101,1,block13);
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
@@ -160,6 +164,7 @@ public class TestUtil {
         blockUnique5 = createUniqueBlock(Material.CHEST, null, new Location(world, 500, 0,0), true);
         blockUnique6 = createUniqueBlock(Material.CHEST, null, new Location(world, 509, 0,0), false);
         blockUnique7 = createUniqueBlock(Material.CHEST, null, new Location(world, 511, 0,0), true);
+        blockUnique8 = createUniqueBlock(Material.CHEST, null, new Location(world, 300, 100,0), true);
 
         world.putBlock(4,0,0,blockUnique);
         world.putBlock(2,50,0,blockUnique2);
@@ -168,6 +173,7 @@ public class TestUtil {
         world.putBlock(500,0,0,blockUnique5);
         world.putBlock(509,0,0,blockUnique6);
         world.putBlock(511,0,0,blockUnique7);
+        world.putBlock(511,0,0,blockUnique8);
 
         Bukkit.setServer(server);
     }
