@@ -46,6 +46,7 @@ public class ConfigManager {
     int powerPerKill;
     int powerPerNPCKill;
     long villagerCooldown;
+    boolean denyArrowTurretShootAtMobs;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -81,6 +82,7 @@ public class ConfigManager {
     public int getPowerPerKill() { return powerPerKill; }
     public int getPowerPerNPCKill() { return powerPerNPCKill; }
     public long getVillagerCooldown() { return villagerCooldown; }
+    public boolean getDenyArrowTurretShootAtMobs() { return denyArrowTurretShootAtMobs; }
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -167,6 +169,7 @@ public class ConfigManager {
             powerPerKill = config.getInt("power-per-kill", 1);
             powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
             villagerCooldown = config.getLong("villager-cooldown", 300);
+            denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -204,6 +207,7 @@ public class ConfigManager {
         powerPerKill = 1;
         powerPerNPCKill = 1;
         villagerCooldown = 300;
+        denyArrowTurretShootAtMobs = false;
     }
 
     public static ConfigManager getInstance() {

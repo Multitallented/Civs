@@ -12,6 +12,8 @@ exp-modifier: 0.2
 jail-time-seconds: 300
 #cooldown before spawning a new villager in seconds
 villager-cooldown: 300
+#stops arrow turrets from shooting at monsters
+disable-arrow-turret-shooting-at-mobs: false
 #cooldown before killing the same player reduces the town power
 death-grace-period-seconds: 60
 points:

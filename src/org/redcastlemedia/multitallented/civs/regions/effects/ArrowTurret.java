@@ -12,13 +12,12 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
@@ -34,7 +33,9 @@ public class ArrowTurret implements Listener {
     //Shoot arrows at mobs
     @EventHandler
     public void onRegionTickEvent(RegionTickEvent event) {
-        //TODO config to turn this off for performance reasons?
+        if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs()) {
+            return;
+        }
         Region region = event.getRegion();
         if (!region.getEffects().containsKey(ArrowTurret.KEY)) {
             return;
