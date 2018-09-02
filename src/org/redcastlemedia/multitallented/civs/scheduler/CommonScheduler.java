@@ -7,6 +7,8 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -119,14 +121,20 @@ public class CommonScheduler implements Runnable {
         }
 
         for (Region r : containedRegions) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
-                //TODO enter region things
+                PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
+                        r, regionType);
+                Bukkit.getPluginManager().callEvent(playerEnterRegionEvent);
             }
         }
 
         for (Region r : previousRegions) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!containedRegions.contains(r)) {
-                //TODO exit region things
+                PlayerExitRegionEvent playerExitRegionEvent = new PlayerExitRegionEvent(player.getUniqueId(),
+                        r, regionType);
+                Bukkit.getPluginManager().callEvent(playerExitRegionEvent);
             }
         }
 
