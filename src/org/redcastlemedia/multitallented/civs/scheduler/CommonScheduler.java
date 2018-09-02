@@ -7,8 +7,11 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -104,10 +107,10 @@ public class CommonScheduler implements Runnable {
         containedRegions.addAll(regionManager.getRegionEffectsAt(player.getLocation(), 0));
 
         for (Region region : containedRegions) {
-            //TODO do things when a player is in a region
-            if (region.getEffects().containsKey("arrow_turret")) {
-                ArrowTurret.shootArrow(region, player, region.getEffects().get("arrow_turret"), true);
-            }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            PlayerInRegionEvent playerInRegionEvent = new PlayerInRegionEvent(player.getUniqueId(),
+                    region, regionType);
+            Bukkit.getPluginManager().callEvent(playerInRegionEvent);
         }
 
         ArrayList<Region> previousRegions = lastRegion.get(player.getUniqueId());

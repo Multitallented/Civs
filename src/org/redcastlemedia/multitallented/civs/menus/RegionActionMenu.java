@@ -57,6 +57,9 @@ public class RegionActionMenu extends Menu {
             event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, region));
             return;
         }
+        System.out.println("location string " + locationString);
+        System.out.println("null region " + (region == null));
+        System.out.println("region type " + region.getType());
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),

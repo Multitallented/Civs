@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,19 +19,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class ArrowTurret implements Listener {
     public static String KEY = "arrow_turret";
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
+
+    public static void shootArrow(Region r, UUID uuid, String vars, boolean runUpkeep) {
+        shootArrow(r, Bukkit.getPlayer(uuid), vars, runUpkeep);
+    }
 
     public static void shootArrow(Region r, LivingEntity livingEntity, String vars, boolean runUpkeep) {
         Location l = r.getLocation();
@@ -156,6 +159,13 @@ public class ArrowTurret implements Listener {
         //Spawn and set velocity of the arrow
         Arrow arrow = l.getWorld().spawnArrow(loc, vel, (float) (speed), spread);
         arrowDamages.put(arrow, damage);
+    }
+
+    @EventHandler
+    public void onPlayerInRegion(PlayerInRegionEvent event) {
+        if (event.getRegion().getEffects().containsKey("arrow_turret")) {
+            ArrowTurret.shootArrow(event.getRegion(), event.getUuid(), event.getRegion().getEffects().get("arrow_turret"), true);
+        }
     }
 
     @EventHandler
