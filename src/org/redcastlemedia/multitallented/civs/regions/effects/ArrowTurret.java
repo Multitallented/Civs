@@ -8,10 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -20,7 +17,10 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -30,6 +30,31 @@ import java.util.*;
 public class ArrowTurret implements Listener {
     public static String KEY = "arrow_turret";
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
+
+    //Shoot arrows at mobs
+    @EventHandler
+    public void onRegionTickEvent(RegionTickEvent event) {
+        //TODO config to turn this off for performance reasons?
+        Region region = event.getRegion();
+        if (!region.getEffects().containsKey(ArrowTurret.KEY)) {
+            return;
+        }
+        RegionType regionType = event.getRegionType();
+        Location location = region.getLocation();
+
+        for (Entity e : location.getWorld().getNearbyEntities(location, regionType.getEffectRadius(),
+                regionType.getEffectRadius(), regionType.getEffectRadius())) {
+            if (!(e instanceof Monster)) {
+                continue;
+            }
+            Monster monster = (Monster) e;
+            if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
+                continue;
+            }
+            ArrowTurret.shootArrow(region, monster, region.getEffects().get(ArrowTurret.KEY), false);
+            break;
+        }
+    }
 
     public static void shootArrow(Region r, UUID uuid, String vars, boolean runUpkeep) {
         shootArrow(r, Bukkit.getPlayer(uuid), vars, runUpkeep);

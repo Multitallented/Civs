@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -33,6 +34,14 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         RegionManager regionManager = RegionManager.getInstance();
         regionManager.addCreateRegionListener(KEY, this);
         regionManager.addDestroyRegionListener(KEY, this);
+    }
+
+    @EventHandler
+    public void onRegionTickEvent(RegionTickEvent event) {
+        Region region = event.getRegion();
+        if (region.getEffects().containsKey(VillagerEffect.KEY)) {
+            VillagerEffect.spawnVillager(region);
+        }
     }
 
     @Override
