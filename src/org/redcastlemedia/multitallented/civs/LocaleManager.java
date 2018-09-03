@@ -307,6 +307,24 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".teleported", "You have been teleported!"));
             currentLanguage.put("ports",
                     localeConfig.getString(langKey + ".ports", "Ports"));
+            currentLanguage.put("raid-target-lost",
+                    localeConfig.getString(langKey + ".raid-target-lost", "There is no town named $1 within $2 blocks"));
+            currentLanguage.put("searching-for-target",
+                    localeConfig.getString(langKey + ".searching-for-target", "Searching for raid teleport destination..."));
+            currentLanguage.put("raid-target-blocked",
+                    localeConfig.getString(langKey + ".raid-target-blocked", "Raid teleport destination blocked."));
+            currentLanguage.put("raid-porter-warning",
+                    localeConfig.getString(langKey + ".raid-porter-warning", "WARNING! $1 has created a $2 targeting $3"));
+            currentLanguage.put("raid-remote",
+                    localeConfig.getString(langKey + ".raid-remote", "You have been given an item to control this $1"));
+            currentLanguage.put("raid-sign",
+                    localeConfig.getString(langKey + ".raid-sign", "You need a sign above the chest with the name of the target town"));
+            currentLanguage.put("invalid-target",
+                    localeConfig.getString(langKey + ".invalid-target", "Invalid target"));
+            currentLanguage.put("raid-target-inside-region",
+                    localeConfig.getString(langKey + ".raid-target-inside-region", "You can't set a location inside a region"));
+            currentLanguage.put("location-set",
+                    localeConfig.getString(langKey + ".location-set", "$1 location set"));
             languageMap.put(langKey, currentLanguage);
         }
     }

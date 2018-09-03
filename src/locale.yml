@@ -95,6 +95,7 @@ en:
   town-power: "Power: $1/$2"
   port-warmup: "You will be teleported in $1s"
   teleported: "You have been teleported!"
+  location-set: "$1 location set"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -130,6 +131,14 @@ en:
   need-more-mana: "You need $1 more stamina to do that"
   port-not-found: "No port found"
   region-missing-upkeep-items: "Region does not have required items"
+  raid-target-lost: "There is no town named $1 within $2 blocks"
+  searching-for-target: "Searching for raid teleport destination..."
+  raid-target-blocked: "Raid teleport destination blocked."
+  raid-porter-warning: "WARNING! $1 has created a $2 targeting $3"
+  raid-remote: "You have been given an item to control this $1"
+  raid-sign: "You need a sign above the chest with the name of the target town"
+  invalid-target: "Invalid target"
+  raid-target-inside-region: "You can't set a location inside a region"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

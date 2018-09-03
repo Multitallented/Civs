@@ -18,10 +18,7 @@ import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
-import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
-import org.redcastlemedia.multitallented.civs.regions.effects.TNTCannon;
-import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.*;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
@@ -152,6 +149,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
         Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), this);
 
         new HousingEffect();
     }
