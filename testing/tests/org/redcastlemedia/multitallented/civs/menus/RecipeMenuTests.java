@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -85,18 +86,34 @@ public class RecipeMenuTests {
         assertEquals(Material.SPRUCE_PLANKS, regionType.getReqs().get(5).get(2).getMat());
         assertEquals(Material.BOOKSHELF, regionType.getReqs().get(7).get(0).getMat());
         assertEquals(Material.RED_STAINED_GLASS_PANE, regionType.getReqs().get(2).get(3).getMat());
-        for (int i = 0; i < 17; i++) {
-            if (inventory.getItem(i) != null) {
-                System.out.println(inventory.getItem(i).getType().name());
-            }
-        }
+//        for (int i = 0; i < 17; i++) {
+//            if (inventory.getItem(i) != null) {
+//                System.out.println(inventory.getItem(i).getType().name());
+//            }
+//        }
         assertEquals(Material.SIGN, inventory.getItem(0).getType());
         assertEquals(Material.CHEST, inventory.getItem(9).getType());
         assertEquals(Material.BOOKSHELF, inventory.getItem(22).getType());
         assertEquals(Material.SIGN, inventory.getItem(23).getType());
     }
 
-    private static void loadRegionTypeCouncilRoom() {
+    @Test
+    public void radiusCheckShouldNotMutate() {
+        loadRegionTypeCouncilRoom();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
+        int[] radii = new int[6];
+        radii[0] = 5;
+        radii[1] = 5;
+        radii[2] = 6;
+        radii[3] = 5;
+        radii[4] = 5;
+        radii[5] = 5;
+        int[] newRadii = Region.radiusCheck(radii,regionType);
+        assertEquals(0, newRadii.length);
+        assertEquals(6, radii.length);
+    }
+
+    public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "councilroom");
         config.set("icon", "SIGN");

@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -117,10 +118,13 @@ public class RegionManager {
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
         }
+        System.out.println(region.getId());
         File regionFile = new File(dataFolder, region.getId() + ".yml");
         if (!regionFile.exists()) {
+            System.out.println("file doesn't exist");
             return;
         }
+        System.out.println("file deleted");
         regionFile.delete();
     }
 
@@ -267,6 +271,7 @@ public class RegionManager {
             regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName.toLowerCase());
         } catch (Exception e) {
             Civs.logger.severe("Unable to find region type " + regionTypeName.toLowerCase());
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -276,6 +281,7 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", regionTypeName));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         }
 
@@ -285,18 +291,21 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         } else if (rebuildRegion != null && !regionType.getRebuild().equals(rebuildRegion.getType())) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         } else if (rebuildRegion == null && regionType.getRebuild() != null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
                             .replace("$1", regionTypeName).replace("$2", regionType.getRebuild()));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         }
 
@@ -313,6 +322,7 @@ public class RegionManager {
 //                }
                 player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
             }
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         }
         HashMap<UUID, String> people;
@@ -333,6 +343,7 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "too-close-region")
                             .replace("$1", regionTypeName).replace("$2",currentRegion.getType()));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
         }
 
@@ -340,11 +351,11 @@ public class RegionManager {
             if (createRegionListeners.get(effect) != null &&
                     !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
                 event.setCancelled(true);
+                BlockLogger.getInstance().removeBlock(block.getLocation());
                 return;
             }
         }
 
-        //TODO remove rebuildRegion
 
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));

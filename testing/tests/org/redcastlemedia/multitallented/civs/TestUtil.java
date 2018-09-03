@@ -17,6 +17,7 @@ import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
@@ -166,6 +167,7 @@ public class TestUtil {
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
+        when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
         blockUnique = createUniqueBlock(Material.CHEST, null, new Location(world, 4,0,0), true);
         blockUnique2 = createUniqueBlock(Material.CHEST, null, new Location(world, 2,50,0), false);
         blockUnique3 = createUniqueBlock(Material.CHEST, null, new Location(world, 3,100,0), true);

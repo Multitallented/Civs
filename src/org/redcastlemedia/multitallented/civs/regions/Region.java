@@ -115,11 +115,55 @@ public class Region {
     public static int[] hasRequiredBlocks(String type, Location location) {
         return hasRequiredBlocks(type, location, true);
     }
+
+    public static int[] addItemCheck(int[] radii, Location location, World currentWorld,
+                                     int xMin, int xMax, int yMin, int yMax, int zMin, int zMax,
+                                     List<HashMap<Material, Integer>> itemCheck) {
+
+
+        outer: for (int x=xMin; x<xMax;x++) {
+            for (int y=yMin; y<yMax; y++) {
+                for (int z=zMin; z<zMax; z++) {
+
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
+
+                    boolean destroyIndex = false;
+                    int i=0;
+                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(currentBlock.getType())) {
+
+                            if (tempMap.get(currentBlock.getType()) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
+                            }
+                            RegionManager.getInstance().adjustRadii(radii, location, x,y,z);
+                            break outer1;
+                        }
+                        i++;
+                    }
+                    if (destroyIndex) {
+                        if (itemCheck.size() < 2) {
+                            itemCheck.remove(i);
+                            break outer;
+                        } else {
+                            itemCheck.remove(i);
+                        }
+                    }
+                }
+            }
+        }
+        return radii;
+    }
+
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
-        RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
+
         for (List<CVItem> currentList : regionType.getReqs()) {
             HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
@@ -149,41 +193,10 @@ public class Region {
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
 
-        boolean hasReqs = false;
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null) {
-                        continue;
-                    }
-
-                    boolean destroyIndex = false;
-                    int i=0;
-                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
-                        if (tempMap.containsKey(currentBlock.getType())) {
-                            if (tempMap.get(currentBlock.getType()) < 2) {
-                                destroyIndex = true;
-                            } else {
-                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
-                            }
-                            regionManager.adjustRadii(radii, location, x,y,z);
-                            break outer1;
-                        }
-                        i++;
-                    }
-                    if (destroyIndex) {
-                        if (itemCheck.size() < 2) {
-                            hasReqs = true;
-                            break outer;
-                        } else {
-                            itemCheck.remove(i);
-                        }
-                    }
-                }
-            }
-        }
-        if (hasReqs && useCivItem) {
+        radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
+                itemCheck);
+        boolean hasReqs = itemCheck.isEmpty();
+        if (itemCheck.isEmpty() && useCivItem) {
             Block centerBlock = location.getBlock();
             if (centerBlock == null) {
                 hasReqs = false;
@@ -192,13 +205,18 @@ public class Region {
             }
         }
 
+//        System.out.println("hasReqs " + hasReqs);
+        for (int i = 0; i < radii.length; i++) {
+//            System.out.println("radius" + radii[i]);
+        }
         radii = radiusCheck(radii, regionType);
         if (radii.length == 0) {
+//            System.out.println("radii length 0");
             return radii;
         }
         return hasReqs ? radii : new int[0];
     }
-    private static int[] radiusCheck(int[] radii, RegionType regionType) {
+    public static int[] radiusCheck(int[] radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();
         int zRadius = regionType.getBuildRadiusZ();
@@ -245,7 +263,6 @@ public class Region {
         return radii;
     }
     public static List<HashMap<Material, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
-        RegionManager regionManager = RegionManager.getInstance();
         ItemManager itemManager = ItemManager.getInstance();
         List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         CVItem missingItem = null;
@@ -286,46 +303,13 @@ public class Region {
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
 
-        boolean hasReqs = false;
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null || currentBlock.getType() == Material.AIR) {
-                        continue;
-                    }
-
-                    int i = 0;
-                    boolean destroyIndex = false;
-                    for (HashMap<Material, Integer> tempMap : itemCheck) {
-                        if (tempMap.containsKey(currentBlock.getType())) {
-                            if (tempMap.get(currentBlock.getType()) < 2) {
-                                destroyIndex = true;
-                            } else {
-                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
-                            }
-                            regionManager.adjustRadii(radii, location, x, y, z);
-                            break;
-                        }
-                        i++;
-                    }
-                    if (destroyIndex) {
-                        if (itemCheck.size() < 2) {
-                            hasReqs = true;
-                            break outer;
-                        } else {
-                            itemCheck.remove(i);
-                        }
-                    }
-                }
-            }
-        }
-
+        radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
+                itemCheck);
         radii = radiusCheck(radii, regionType);
         if (radii.length == 0) {
             return itemCheck;
         }
-        return hasReqs ? null : itemCheck;
+        return itemCheck.isEmpty() ? null : itemCheck;
     }
 
     public boolean shouldTick() {
