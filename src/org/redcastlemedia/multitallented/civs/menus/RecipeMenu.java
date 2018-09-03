@@ -71,7 +71,92 @@ public class RecipeMenu extends Menu {
                 proxyInv.put(index, tempItem);
                 index++;
             } else if (!subItems.isEmpty()) {
-                createCycleItems(index, subItems, cycleItems, proxyInv);
+                int baseIndex = index;
+                int baseIndexOffset = 0;
+
+                CVItem item = subItems.get(0);
+                int qty = item.getQty();
+
+                ItemStack is = new ItemStack(item.getMat());
+                int maxStack = is.getMaxStackSize();
+                int orMax = 0;
+                while (qty > maxStack) {
+                    CVItem tempItem = item.clone();
+                    tempItem.setQty(maxStack);
+                    proxyInv.put(index, tempItem);
+                    List<CVItem> tempListItems = new ArrayList<>();
+                    tempListItems.add(tempItem);
+                    cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+                    index++;
+                    orMax++;
+                    baseIndexOffset++;
+                    qty -= maxStack;
+                }
+
+                CVItem tempItem = item.clone();
+                tempItem.setQty(qty);
+                proxyInv.put(index, tempItem);
+                ArrayList<CVItem> tempListItems = new ArrayList<>();
+                tempListItems.add(tempItem);
+                cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
+                index++;
+                orMax++;
+
+                int reqIndex = 1;
+                for (CVItem currItem : subItems) {
+                    if (currItem.equals(item)) {
+                        continue;
+                    }
+                    baseIndexOffset = 0;
+
+                    ItemStack cis = new ItemStack(currItem.getMat());
+                    int cqty = currItem.getQty();
+                    int cMaxStack = cis.getMaxStackSize();
+                    int cMax = 0;
+                    while (cqty > cMaxStack) {
+                        cMax++;
+                        cqty -= cMaxStack;
+
+                        if (!cycleItems.containsKey(baseIndex + baseIndexOffset)) {
+                            cycleItems.put(baseIndex + baseIndexOffset, new ArrayList<CVItem>());
+                        }
+                        CVItem clone = currItem.clone();
+                        clone.setQty(cMaxStack);
+
+                        List<CVItem> subCycleList = cycleItems.get(baseIndex + baseIndexOffset);
+                        while (subCycleList.size() < reqIndex + 1) {
+                            subCycleList.add(new CVItem(Material.AIR, 0, 0));
+                        }
+                        subCycleList.set(reqIndex, clone);
+
+                        baseIndexOffset++;
+                    }
+                    cMax++;
+                    if (!cycleItems.containsKey(baseIndex + baseIndexOffset)) {
+                        cycleItems.put(baseIndex + baseIndexOffset, new ArrayList<CVItem>());
+                    }
+
+                    List<CVItem> subCycleList = cycleItems.get(baseIndex + baseIndexOffset);
+                    while (subCycleList.size() < reqIndex + 1) {
+                        subCycleList.add(new CVItem(Material.AIR, 0, 0));
+                    }
+
+                    CVItem clone = currItem.clone();
+                    clone.setQty(cqty);
+                    subCycleList.set(reqIndex, clone);
+
+                    if (cMax > orMax) {
+                        index += cMax - orMax;
+                        orMax = cMax;
+                    }
+                    reqIndex++;
+                }
+                for (int k = 0; k< orMax; k++) {
+                    List<CVItem> subCycleList = cycleItems.get(baseIndex + k);
+                    while (subCycleList.size() < reqIndex) {
+                        subCycleList.add(new CVItem(Material.AIR, 0, 0));
+                    }
+                }
             }
         }
 
@@ -95,96 +180,5 @@ public class RecipeMenu extends Menu {
             Menu.addCycleItems(uuid, inv, cycleIndex + 9, cycleItems.get(cycleIndex));
         }
         return inv;
-    }
-
-    protected static void createCycleItems(int index, List<CVItem> subItems,
-                                           HashMap<Integer, List<CVItem>> cycleItems,
-                                           HashMap<Integer, CVItem> proxyInv) {
-        int baseIndex = index;
-        int baseIndexOffset = 0;
-
-        CVItem item = subItems.get(0);
-        int qty = item.getQty();
-
-        ItemStack is = new ItemStack(item.getMat());
-        int maxStack = is.getMaxStackSize();
-        int orMax = 0;
-        while (qty > maxStack) {
-            CVItem tempItem = item.clone();
-            tempItem.setQty(maxStack);
-            proxyInv.put(index, tempItem);
-            List<CVItem> tempListItems = new ArrayList<>();
-            tempListItems.add(tempItem);
-            cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
-            index++;
-            orMax++;
-            baseIndexOffset++;
-            qty -= maxStack;
-        }
-
-        CVItem tempItem = item.clone();
-        tempItem.setQty(qty);
-        proxyInv.put(index, tempItem);
-        ArrayList<CVItem> tempListItems = new ArrayList<>();
-        tempListItems.add(tempItem);
-        cycleItems.put(baseIndex + baseIndexOffset, tempListItems);
-        index++;
-        orMax++;
-
-        int reqIndex = 1;
-        for (CVItem currItem : subItems) {
-            if (currItem.equals(item)) {
-                continue;
-            }
-            baseIndexOffset = 0;
-
-            ItemStack cis = new ItemStack(currItem.getMat());
-            int cqty = currItem.getQty();
-            int cMaxStack = cis.getMaxStackSize();
-            int cMax = 0;
-            while (cqty > cMaxStack) {
-                cMax++;
-                cqty -= cMaxStack;
-
-                if (!cycleItems.containsKey(baseIndex + baseIndexOffset)) {
-                    cycleItems.put(baseIndex + baseIndexOffset, new ArrayList<CVItem>());
-                }
-                CVItem clone = currItem.clone();
-                clone.setQty(cMaxStack);
-
-                List<CVItem> subCycleList = cycleItems.get(baseIndex + baseIndexOffset);
-                while (subCycleList.size() < reqIndex + 1) {
-                    subCycleList.add(new CVItem(Material.AIR, 0, 0));
-                }
-                subCycleList.set(reqIndex, clone);
-
-                baseIndexOffset++;
-            }
-            cMax++;
-            if (!cycleItems.containsKey(baseIndex + baseIndexOffset)) {
-                cycleItems.put(baseIndex + baseIndexOffset, new ArrayList<CVItem>());
-            }
-
-            List<CVItem> subCycleList = cycleItems.get(baseIndex + baseIndexOffset);
-            while (subCycleList.size() < reqIndex + 1) {
-                subCycleList.add(new CVItem(Material.AIR, 0, 0));
-            }
-
-            CVItem clone = currItem.clone();
-            clone.setQty(cqty);
-            subCycleList.set(reqIndex, clone);
-
-            if (cMax > orMax) {
-                index += cMax - orMax;
-                orMax = cMax;
-            }
-            reqIndex++;
-        }
-        for (int k = 0; k< orMax; k++) {
-            List<CVItem> subCycleList = cycleItems.get(baseIndex + k);
-            while (subCycleList.size() < reqIndex) {
-                subCycleList.add(new CVItem(Material.AIR, 0, 0));
-            }
-        }
     }
 }

@@ -1,7 +1,6 @@
 type: region
 icon: SIGN
 name: CouncilRoom
-max: 1
 
 pre-reqs:
 - permission:civs.create.councilroom
@@ -24,15 +23,13 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- port #TODO migrate this from Townships
+- port
 - indestructible
 
 period: daily
-upkeeps:
+upkeep:
   0:
     power-output: 50
-    output:
-    - REDSTONE*1
 
 description:
   en: "The central structure for a town"
