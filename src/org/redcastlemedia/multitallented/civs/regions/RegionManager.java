@@ -121,10 +121,8 @@ public class RegionManager {
         System.out.println(region.getId());
         File regionFile = new File(dataFolder, region.getId() + ".yml");
         if (!regionFile.exists()) {
-            System.out.println("file doesn't exist");
             return;
         }
-        System.out.println("file deleted");
         regionFile.delete();
     }
 

@@ -41,6 +41,12 @@ public class CommunityMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
+        if (clickedStack.getType() == Material.ENDER_PEARL) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -87,6 +93,11 @@ public class CommunityMenu extends Menu {
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
         cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
         inventory.setItem(4, cvItem4.createItemStack());
+
+        //5 Ports
+        CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
+        cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
+        inventory.setItem(5, cvItem5.createItemStack());
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

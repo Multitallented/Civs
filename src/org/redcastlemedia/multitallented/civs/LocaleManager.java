@@ -305,6 +305,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".port-warmup", "You will be teleported in $1s"));
             currentLanguage.put("teleported",
                     localeConfig.getString(langKey + ".teleported", "You have been teleported!"));
+            currentLanguage.put("ports",
+                    localeConfig.getString(langKey + ".ports", "Ports"));
             languageMap.put(langKey, currentLanguage);
         }
     }
