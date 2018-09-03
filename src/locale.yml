@@ -92,6 +92,8 @@ en:
   new-town-member: "$1 has joined $2"
   must-be-built-on-top: "A $1 must be built on top of a $2"
   town-power: "Power: $1/$2"
+  port-warmup: "You will be teleported in $1s"
+  teleported: "You have been teleported!"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -125,6 +127,8 @@ en:
   need-more-health: "You need $1 more health to do that"
   need-more-stamina: "You need $1 more stamina to do that"
   need-more-mana: "You need $1 more stamina to do that"
+  port-not-found: "No port found"
+  region-missing-upkeep-items: "Region does not have required items"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

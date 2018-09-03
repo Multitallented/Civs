@@ -233,6 +233,17 @@ public class TownManager {
         return true;
     }
 
+    public Set<Region> getContainingRegions(String townName) {
+        Town town = getTown(townName);
+        if (town == null) {
+            return new HashSet<>();
+        }
+
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        return RegionManager.getInstance().getRegionsXYZ(town.getLocation(), townType.getBuildRadius(),
+                townType.getBuildRadiusY(), townType.getBuildRadius(), false);
+    }
+
     public void saveTown(Town town) {
         if (Civs.getInstance() == null) {
             return;

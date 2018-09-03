@@ -297,6 +297,14 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".need-more-stamina", "You need $1 more stamina to do that"));
             currentLanguage.put("need-more-mana",
                     localeConfig.getString(langKey + ".need-more-mana", "You need $1 more mana to do that"));
+            currentLanguage.put("port-not-found",
+                    localeConfig.getString(langKey + ".port-not-found", "No port found"));
+            currentLanguage.put("region-missing-upkeep-items",
+                    localeConfig.getString(langKey + ".region-missing-upkeep-items", "Region does not have required items"));
+            currentLanguage.put("port-warmup",
+                    localeConfig.getString(langKey + ".port-warmup", "You will be teleported in $1s"));
+            currentLanguage.put("teleported",
+                    localeConfig.getString(langKey + ".teleported", "You have been teleported!"));
             languageMap.put(langKey, currentLanguage);
         }
     }
