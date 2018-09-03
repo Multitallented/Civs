@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -45,7 +46,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     }
 
     @Override
-    public boolean createRegionHandler(Block block, Player player) {
+    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
         if (block.getRelative(BlockFace.UP, 1).getType() != Material.AIR ||
                 block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
 

@@ -47,6 +47,16 @@ public class ConfigManager {
     int powerPerNPCKill;
     long villagerCooldown;
     boolean denyArrowTurretShootAtMobs;
+    int portMana;
+    int portWarmup;
+    int portCooldown;
+    double portMoney;
+    int portDamage;
+    int portStamina;
+    List<String> portReagents;
+    boolean portSlowWarmup;
+    int combatTagDuration;
+    boolean portDuringCombat;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -83,6 +93,31 @@ public class ConfigManager {
     public int getPowerPerNPCKill() { return powerPerNPCKill; }
     public long getVillagerCooldown() { return villagerCooldown; }
     public boolean getDenyArrowTurretShootAtMobs() { return denyArrowTurretShootAtMobs; }
+    public int getPortMana() { return portMana; }
+    public int getPortWarmup() {
+        return portWarmup;
+    }
+    public int getPortCooldown() {
+        return portCooldown;
+    }
+    public double getPortMoney() {
+        return portMoney;
+    }
+    public int getPortDamage() {
+        return portDamage;
+    }
+    public int getPortStamina() {
+        return portStamina;
+    }
+    public List<String> getPortReagents() {
+        return portReagents;
+    }
+    public boolean isPortSlowWarmup() {
+        return portSlowWarmup;
+    }
+    public int getCombatTagDuration() { return combatTagDuration; }
+    public boolean getPortDuringCombat() { return portDuringCombat; }
+
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
             return -1;
@@ -170,6 +205,16 @@ public class ConfigManager {
             powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
+            portMana = config.getInt("port.mana", 0);
+            portWarmup = config.getInt("port.warmpup", 5);
+            portCooldown = config.getInt("port.cooldown", 60);
+            portMoney = config.getDouble("port.money", 0);
+            portDamage = config.getInt("port.damage", 0);
+            portStamina = config.getInt("port.stamina", 0);
+            portSlowWarmup = config.getBoolean("port.slow-warmup", true);
+            portReagents = config.getStringList("port.reagents");
+            combatTagDuration = config.getInt("combat-tag-duration", 60);
+            portDuringCombat = config.getBoolean("port.port-during-combat", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -208,6 +253,16 @@ public class ConfigManager {
         powerPerNPCKill = 1;
         villagerCooldown = 300;
         denyArrowTurretShootAtMobs = false;
+        portMana = 0;
+        portWarmup = 5;
+        portCooldown = 60;
+        portMoney = 0;
+        portDamage = 0;
+        portStamina = 0;
+        portReagents = new ArrayList<>();
+        portSlowWarmup = true;
+        combatTagDuration = 60;
+        portDuringCombat = false;
     }
 
     public static ConfigManager getInstance() {

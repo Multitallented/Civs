@@ -287,6 +287,16 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".power-input", "This region consumes $1 power"));
             currentLanguage.put("power-output",
                     localeConfig.getString(langKey + ".power-output", "This region generates $1 power"));
+            currentLanguage.put("in-combat",
+                    localeConfig.getString(langKey + ".in-combat", "You can't do that in combat"));
+            currentLanguage.put("cooldown",
+                    localeConfig.getString(langKey + ".cooldown", "That is on cooldown for $1s"));
+            currentLanguage.put("need-more-health",
+                    localeConfig.getString(langKey + ".need-more-health", "You need $1 more health to do that"));
+            currentLanguage.put("need-more-stamina",
+                    localeConfig.getString(langKey + ".need-more-stamina", "You need $1 more stamina to do that"));
+            currentLanguage.put("need-more-mana",
+                    localeConfig.getString(langKey + ".need-more-mana", "You need $1 more mana to do that"));
             languageMap.put(langKey, currentLanguage);
         }
     }

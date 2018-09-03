@@ -116,6 +116,10 @@ public class Civs extends JavaPlugin {
         commandList.put("removemember", new RemoveMemberCommand());
         commandList.put("add", new AddMemberCommand());
         commandList.put("town", new TownCommand());
+        PortCommand portCommand = new PortCommand();
+        commandList.put("port", portCommand);
+        commandList.put("spawn", portCommand);
+        commandList.put("home", portCommand);
     }
 
     private void initListeners() {

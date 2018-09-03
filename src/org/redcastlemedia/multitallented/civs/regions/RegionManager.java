@@ -338,7 +338,7 @@ public class RegionManager {
 
         for (String effect : regionType.getEffects().keySet()) {
             if (createRegionListeners.get(effect) != null &&
-                    !createRegionListeners.get(effect).createRegionHandler(block, player)) {
+                    !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
                 event.setCancelled(true);
                 return;
             }

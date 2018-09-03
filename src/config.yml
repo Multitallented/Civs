@@ -16,6 +16,8 @@ villager-cooldown: 300
 disable-arrow-turret-shooting-at-mobs: false
 #cooldown before killing the same player reduces the town power
 death-grace-period-seconds: 60
+#how long a player is considered in combat after taking or dealing damage
+combat-tag-duration: 60
 points:
   killstreak: 0.1
   killjoy: 0.2
@@ -55,3 +57,16 @@ groups:
   quarry: 12
   house: 2
   town: 1
+
+#region port configs
+port:
+  mana: 0
+  warmup: 5
+  cooldown: 60
+  money: 0
+  damage: 0
+  stamina: 0
+  port-during-combat: false
+  #list of items needed but not consumed
+  #reagents: []
+  slow-warmup: true

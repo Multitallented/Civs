@@ -4,10 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -25,6 +27,45 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class DeathListener implements Listener {
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        long combatTagDuration = (long) ConfigManager.getInstance().getCombatTagDuration();
+        combatTagDuration *= 1000;
+        if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
+            civilian.setLastDamage(System.currentTimeMillis());
+        } else {
+            civilian.setLastDamager(null);
+            civilian.setLastDamage(-1);
+        }
+        if (!(event instanceof EntityDamageByEntityEvent)) {
+            return;
+        }
+        EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+
+        Player damager = null;
+        if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+            damager = (Player) entityDamageByEntityEvent.getDamager();
+        } else if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
+            Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
+            if (arrow.getShooter() instanceof Player) {
+                damager = (Player) arrow.getShooter();
+            }
+        }
+        if (damager == null && civilian.getLastDamage() < 0) {
+            return;
+        }
+        civilian.setLastDamage(System.currentTimeMillis());
+        if (damager == null) {
+            return;
+        }
+        civilian.setLastDamager(damager.getUniqueId());
+    }
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
@@ -68,6 +109,8 @@ public class DeathListener implements Listener {
         }
         final Player player = event.getEntity();
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        dyingCiv.setLastDamager(null);
+        dyingCiv.setLastDamage(-1);
 
         Location deathLocation = player.getLocation();
 

@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
     }
 
     @Override
-    public boolean createRegionHandler(Block block, Player player) {
+    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
         Location location = block.getLocation();
         ItemStack controllerWand = new ItemStack(Material.STICK, 1);
         ItemMeta im = controllerWand.getItemMeta();

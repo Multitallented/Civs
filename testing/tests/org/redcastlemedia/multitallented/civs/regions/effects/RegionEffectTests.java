@@ -13,8 +13,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -62,7 +64,9 @@ public class RegionEffectTests {
         Block block = TestUtil.createBlock(Material.CHEST, townLocation);
         doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
         when(block.getWorld()).thenReturn(mock(World.class));
-        villagerEffect.createRegionHandler(block, player);
+        RegionsTests.loadRegionTypeCobble();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        villagerEffect.createRegionHandler(block, player, regionType);
         assertEquals(2, town.getPopulation());
     }
 
@@ -104,7 +108,9 @@ public class RegionEffectTests {
         doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
         when(block.getWorld()).thenReturn(mock(World.class));
 
-        villagerEffect.createRegionHandler(block, player);
+        RegionsTests.loadRegionTypeCobble();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        villagerEffect.createRegionHandler(block, player, regionType);
         Villager villager = VillagerEffect.spawnVillager(region);
         assertNotNull(villager);
         VillagerEffect.townCooldowns.clear();

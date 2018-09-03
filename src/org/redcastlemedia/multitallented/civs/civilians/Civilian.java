@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.civilians;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -34,6 +35,8 @@ public class Civilian {
     private int karma;
     private int mana;
     private int expOrbs;
+    private long lastDamage = -1;
+    private UUID lastDamager;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -101,6 +104,43 @@ public class Civilian {
     public void setMana(int mana) {
         this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
         updateExpBar();
+    }
+    public long getLastDamage() {
+        return lastDamage;
+    }
+    public void setLastDamage(long lastDamage) {
+        this.lastDamage = lastDamage;
+    }
+    public UUID getLastDamager() {
+        return lastDamager;
+    }
+    public void setLastDamager(UUID lastDamager) {
+        this.lastDamager = lastDamager;
+    }
+
+    public boolean isInCombat() {
+        if (lastDamage < 0) {
+            return false;
+        }
+        int combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null || player.isDead()) {
+            lastDamager = null;
+            lastDamage = -1;
+            return false;
+        }
+        if (lastDamager == null || Bukkit.getPlayer(lastDamager) == null ||
+                Bukkit.getPlayer(lastDamager).isDead()) {
+            lastDamager = null;
+            lastDamage = -1;
+            return false;
+        }
+        if (lastDamage + combatTagDuration < System.currentTimeMillis()) {
+            lastDamager = null;
+            lastDamage = -1;
+            return false;
+        }
+        return true;
     }
 
     private void updateExpBar() {
