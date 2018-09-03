@@ -140,34 +140,6 @@ public class RegionsTests {
     }
 
     @Test
-    @Ignore
-    public void regionShouldReportCorrectMissingGroupReqs() {
-        loadRegionTypeCobble4();
-
-        Location regionLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        List<HashMap<Material, Integer>> missingItems = Region.hasRequiredBlocks("cobble", regionLocation, null);
-        List<String> missingMessage = generateMissingReqsMessage(missingItems);
-        assertTrue(missingMessage.get(0).startsWith("§cGRAVEL"));
-    }
-
-    private List<String> generateMissingReqsMessage(List<HashMap<Material, Integer>> missingBlocks) {
-        StringBuilder missingMessage = new StringBuilder();
-        for (HashMap<Material, Integer> itemSet : missingBlocks) {
-            for (Material mat : itemSet.keySet()) {
-                CVItem item = new CVItem(mat, itemSet.get(mat));
-                missingMessage.append(item.getMat().name());
-                missingMessage.append("*");
-                missingMessage.append(item.getQty());
-                missingMessage.append(" or ");
-            }
-            missingMessage.delete(missingMessage.length() - 4, missingMessage.length());
-            missingMessage.append(", ");
-        }
-        missingMessage.delete(missingMessage.length() - 2, missingMessage.length());
-        return Util.textWrap(ChatColor.RED + "", missingMessage.toString());
-    }
-
-    @Test
     public void regionShouldNotBeCreatedWithAllReqsOutOfBounds() {
         loadRegionTypeCobble();
 
@@ -220,6 +192,19 @@ public class RegionsTests {
         assertEquals(3, region.getRadiusXN());
         assertEquals(7, region.getRadiusXP());
         assertEquals(5, region.getRadiusYN());
+    }
+
+    @Test
+    public void detectRegionShouldIgnoreExtraReqs() {
+        loadRegionTypeCobble();
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble"))
+                .when(event1).getItemInHand();
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event1);
+        assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique9.getLocation()));
     }
 
     @Test

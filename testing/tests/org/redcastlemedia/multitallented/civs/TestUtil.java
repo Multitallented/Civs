@@ -54,6 +54,7 @@ public class TestUtil {
     public static Block blockUnique6;
     public static Block blockUnique7;
     public static Block blockUnique8;
+    public static Block blockUnique9;
 
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
@@ -164,6 +165,16 @@ public class TestUtil {
         world.putBlock(4,101,1,block11);
         world.putBlock(2,0,1,block12);
         world.putBlock(301,101,1,block13);
+
+        world.putBlock(1000, 1, 0,
+                createBlock(Material.COBBLESTONE, new Location(world, 1000, 1, 0)));
+        world.putBlock(1000, 2, 0,
+                createBlock(Material.COBBLESTONE, new Location(world, 1000, 2, 0)));
+        world.putBlock(994, 0, 0,
+                createBlock(Material.COBBLESTONE, new Location(world, 994, 0, 0)));
+        world.putBlock(1006, 2, 0,
+                createBlock(Material.GOLD_BLOCK, new Location(world, 1006, 0, 0)));
+
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
@@ -176,6 +187,7 @@ public class TestUtil {
         blockUnique6 = createUniqueBlock(Material.CHEST, null, new Location(world, 509, 0,0), false);
         blockUnique7 = createUniqueBlock(Material.CHEST, null, new Location(world, 511, 0,0), true);
         blockUnique8 = createUniqueBlock(Material.CHEST, null, new Location(world, 300, 100,0), true);
+        blockUnique9 = createUniqueBlock(Material.CHEST, null, new Location(world, 1000, 0,0 ), false);
 
         world.putBlock(4,0,0,blockUnique);
         world.putBlock(2,50,0,blockUnique2);
@@ -185,6 +197,7 @@ public class TestUtil {
         world.putBlock(509,0,0,blockUnique6);
         world.putBlock(511,0,0,blockUnique7);
         world.putBlock(511,0,0,blockUnique8);
+        world.putBlock(1000,0,0,blockUnique9);
 
         Bukkit.setServer(server);
     }
