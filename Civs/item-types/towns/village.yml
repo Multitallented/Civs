@@ -1,17 +1,22 @@
 type: town
 icon: GLOWSTONE
-name: Settlement
+name: Village
 max: 1
-price: 2000
+price: 4000
 group: town
+
+pre-reqs:
+- settlement:population=5
 
 build-reqs:
 - councilroom:1
+- farm:1
 
 critical-build-reqs:
 - councilroom
 
-build-radius: 16
+child: settlement
+build-radius: 24
 build-radius-y: 500
 effects:
 - block_break
@@ -20,10 +25,10 @@ effects:
 - block_fire
 - deny_mob_spawn
 - control_override
-- claim_at_zero #TODO create this
 
 power: 1000
 max-power: 1000
 
+
 description:
-  en: "The first level of a town"
+  en: "The second level of a town"

@@ -260,7 +260,6 @@ public class RegionManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        Location location = block.getLocation();
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 

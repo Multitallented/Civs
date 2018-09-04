@@ -1,0 +1,31 @@
+type: region
+icon: CHEST
+name: CarrotFarm
+max: 1
+price: 40
+group: farm
+
+build-reqs:
+- g:fencegate*2
+- g:fence*32
+- WATER*1
+- CARROTS*48
+
+build-radius: 4
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+period: 600 #10 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_HOE
+    - CARROT*32
+    output:
+    - CARROT*16
+
+
+description:
+  en: "Automatic carrot farm"

@@ -37,6 +37,11 @@ power-per-kill: 1
 power-per-npc-kill: 1
 folders:
   farms: STONE_HOE
+  towns: GLOWSTONE
+  shops: EMERALD
+  utilities: REDSTONE
+  housing: RED_BED
+  defense: ARROW
 item-groups:
   sign: SIGN,WALL_SIGN
   wood: OAK_PLANKS,SPRUCE_PLANKS,BIRCH_PLANKS,JUNGLE_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS
