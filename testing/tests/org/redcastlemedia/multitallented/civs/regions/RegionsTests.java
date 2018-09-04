@@ -199,7 +199,7 @@ public class RegionsTests {
         loadRegionTypeCobble();
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique9);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble"))
                 .when(event1).getItemInHand();
         RegionListener regionListener = new RegionListener();

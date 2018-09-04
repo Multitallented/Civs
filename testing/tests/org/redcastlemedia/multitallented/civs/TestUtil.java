@@ -235,6 +235,9 @@ public class TestUtil {
         when(block.getState()).thenReturn(state);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
+        when(block.getX()).thenReturn((int) location.getX());
+        when(block.getY()).thenReturn((int) location.getY());
+        when(block.getZ()).thenReturn((int) location.getZ());
         return block;
     }
 
@@ -251,6 +254,9 @@ public class TestUtil {
         when(block.getState()).thenReturn(chest);
         when(block.getType()).thenReturn(mat);
         when(block.getLocation()).thenReturn(location);
+        when(block.getX()).thenReturn((int) location.getX());
+        when(block.getY()).thenReturn((int) location.getY());
+        when(block.getZ()).thenReturn((int) location.getZ());
         return block;
     }
 

@@ -118,9 +118,20 @@ public class Region {
 
     public static int[] addItemCheck(int[] radii, Location location, World currentWorld,
                                      int xMin, int xMax, int yMin, int yMax, int zMin, int zMax,
-                                     List<HashMap<Material, Integer>> itemCheck) {
+                                     List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
-
+        HashMap<Material, Integer> maxCheck = new HashMap<>();
+        HashMap<Material, Integer> extras = new HashMap<>();
+        for (HashMap<Material, Integer> tempMap : itemCheck) {
+            for (Material mat : tempMap.keySet()) {
+                if (maxCheck.containsKey(mat)) {
+                    maxCheck.put(mat, maxCheck.get(mat) + tempMap.get(mat));
+                } else {
+                    maxCheck.put(mat, tempMap.get(mat).intValue());
+                }
+            }
+        }
+        List<Block> blocksFound = new ArrayList<>();
         outer: for (int x=xMin; x<xMax;x++) {
             for (int y=yMin; y<yMax; y++) {
                 for (int z=zMin; z<zMax; z++) {
@@ -133,7 +144,11 @@ public class Region {
                     boolean destroyIndex = false;
                     int i=0;
                     outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (maxCheck.containsKey(currentBlock.getType())) {
+                            maxCheck.put(currentBlock.getType(), maxCheck.get(currentBlock.getType()) - 1);
+                        }
                         if (tempMap.containsKey(currentBlock.getType())) {
+                            blocksFound.add(currentBlock);
 
                             if (tempMap.get(currentBlock.getType()) < 2) {
                                 destroyIndex = true;
@@ -148,7 +163,11 @@ public class Region {
                     if (destroyIndex) {
                         if (itemCheck.size() < 2) {
                             itemCheck.remove(i);
-                            break outer;
+                            radii = trimExcessRegion(blocksFound, itemCheck,
+                                    maxCheck, radii, location, regionType);
+                            if (itemCheck.isEmpty()) {
+                                break outer;
+                            }
                         } else {
                             itemCheck.remove(i);
                         }
@@ -157,6 +176,51 @@ public class Region {
             }
         }
         return radii;
+    }
+
+    private static int[] buildNewRadii(List<Block> blocks, Location location) {
+        int[] radii = new int[6];
+        for (int i = 0; i < 6; i++) {
+            radii[i] = 0;
+        }
+        for (Block block : blocks) {
+            RegionManager.getInstance().adjustRadii(radii, location,
+                    block.getX(), block.getY(), block.getZ());
+        }
+        return radii;
+    }
+
+    private static int[] trimExcessRegion(List<Block> blocksFound,
+                                     List<HashMap<Material, Integer>> itemCheck,
+                                     HashMap<Material, Integer> maxCheck,
+                                     int[] radii, Location location, RegionType regionType) {
+        if (radiusCheck(radii, regionType).length > 0) {
+            return radii;
+        }
+
+        int[] returnRadii;
+        do {
+            Block block = blocksFound.remove(0);
+            if (maxCheck.containsKey(block.getType())) {
+                maxCheck.put(block.getType(), maxCheck.get(block.getType()) + 1);
+                if (maxCheck.get(block.getType()) > 0) {
+                    boolean foundMat = false;
+                    for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(block.getType())) {
+                            foundMat = true;
+                            tempMap.put(block.getType(), tempMap.get(block.getType()) + 1);
+                        }
+                    }
+                    if (!foundMat) {
+                        HashMap<Material, Integer> tempMap = new HashMap<>();
+                        tempMap.put(block.getType(), 1);
+                        itemCheck.add(tempMap);
+                    }
+                }
+            }
+            returnRadii = buildNewRadii(blocksFound, location);
+        } while (!blocksFound.isEmpty() && (Arrays.equals(returnRadii, radii) || radiusCheck(returnRadii, regionType).length < 1));
+        return returnRadii;
     }
 
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
@@ -194,7 +258,7 @@ public class Region {
         yMin = yMin < 0 ? 0 : yMin;
 
         radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
-                itemCheck);
+                itemCheck, regionType);
         boolean hasReqs = itemCheck.isEmpty();
         if (itemCheck.isEmpty() && useCivItem) {
             Block centerBlock = location.getBlock();
@@ -205,13 +269,7 @@ public class Region {
             }
         }
 
-//        System.out.println("hasReqs " + hasReqs);
-        for (int i = 0; i < radii.length; i++) {
-//            System.out.println("radius" + radii[i]);
-        }
-        radii = radiusCheck(radii, regionType);
         if (radii.length == 0) {
-//            System.out.println("radii length 0");
             return radii;
         }
         return hasReqs ? radii : new int[0];
@@ -304,7 +362,7 @@ public class Region {
         yMin = yMin < 0 ? 0 : yMin;
 
         radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
-                itemCheck);
+                itemCheck, regionType);
         radii = radiusCheck(radii, regionType);
         if (radii.length == 0) {
             return itemCheck;
