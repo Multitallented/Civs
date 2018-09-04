@@ -219,11 +219,18 @@ public class TestUtil {
                 }
             }
         }
-        for (int x = -8; x < -6; x++) {
-            for (int y = 55; y < 66; y++) {
-                for (int z = 995; z < 1006; z++) {
-                    world.putBlock(x, y, z,
-                            createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));
+        {
+            int i = 0;
+            outer: for (int x = -8; x < -6; x++) {
+                for (int y = 55; y < 66; y++) {
+                    for (int z = 995; z < 1006; z++) {
+                        world.putBlock(x, y, z,
+                                createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));
+                        i++;
+                        if (i > 100) {
+                            break outer;
+                        }
+                    }
                 }
             }
         }

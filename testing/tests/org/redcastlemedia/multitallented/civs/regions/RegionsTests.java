@@ -218,7 +218,7 @@ public class RegionsTests {
                 .when(event1).getItemInHand();
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
-        assertNull(regionManager.getRegionAt(TestUtil.blockUnique10.getLocation()));
+        assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique10.getLocation()));
     }
 
     @Test
