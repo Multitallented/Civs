@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -109,6 +110,7 @@ public class ShopMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         List<CivItem> shopItems = itemManager.getShopItems(civilian, parent);
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(shopItems.size()) + 9, MENU_NAME);
+        Player player = Bukkit.getPlayer(civilian.getUuid());
 
         if (parent != null) {
             inventory.setItem(0, parent.createItemStack());
@@ -117,6 +119,13 @@ public class ShopMenu extends Menu {
 
         int i=9;
         for (CivItem civItem : shopItems) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
+                FolderType folderType = (FolderType) civItem;
+                if (!folderType.getVisible() &&
+                        (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
+                    continue;
+                }
+            }
             if (civItem.getItemType() != CivItem.ItemType.FOLDER && civilian.isAtMax(civItem)) {
                 CVItem item = CVItem.createCVItemFromString("OBSIDIAN");
                 item.setDisplayName(civItem.getDisplayName());
