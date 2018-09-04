@@ -7,6 +7,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -51,6 +52,15 @@ public class TownActionMenu extends Menu {
         //TODO add functionality for clicking some other action items
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "destroy"))) {
+            event.getWhoClicked().closeInventory();
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, town));
+            return;
+        }
+
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
@@ -74,6 +84,7 @@ public class TownActionMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, Town town) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
         //TODO finish this stub
 
@@ -99,6 +110,7 @@ public class TownActionMenu extends Menu {
             cvItem1 = CVItem.createCVItemFromString("RED_WOOL");
             //TODO show grace period
         }
+        //TODO power consumption / generation
         inventory.setItem(1, cvItem1.createItemStack());
 //        if (hasUpkeepItems) {
 //            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
@@ -116,12 +128,25 @@ public class TownActionMenu extends Menu {
 //        inventory.setItem(1, cvItem1.createItemStack());
 
         //2 Location/Nation?
+        //TODO location name
 //        CVItem cvItem2 = CVItem.createCVItemFromString("WOOD_DOOR");
 //        cvItem2.setDisplayName(town.getName());
 //        lore = new ArrayList<>();
 //        lore.add(localeManager.getTranslation(civilian.getLocale(), "region-in-town").replace("$1", town.getName()));
 //        cvItem2.setLore(lore);
 //        inventory.setItem(2, cvItem2.createItemStack());
+
+        //6 Destroy
+        if ((town.getPeople().containsKey(civilian.getUuid()) &&
+                town.getPeople().get(civilian.getUuid()).equals("owner")) ||
+                (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
+            CVItem destroy = CVItem.createCVItemFromString("BARRIER");
+            destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
+            inventory.setItem(6, destroy.createItemStack());
+        }
+
+        //7 Rename
+        //TODO town rename
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

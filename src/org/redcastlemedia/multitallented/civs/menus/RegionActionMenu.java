@@ -91,6 +91,7 @@ public class RegionActionMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, Region region) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
         //TODO finish this stub
 
@@ -154,7 +155,8 @@ public class RegionActionMenu extends Menu {
 
         //6 Destroy
         if (!regionType.getEffects().containsKey("indestructible") &&
-                region.getPeople().containsKey(civilian.getUuid())) {
+                region.getPeople().containsKey(civilian.getUuid()) ||
+                (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
             inventory.setItem(6, destroy.createItemStack());
