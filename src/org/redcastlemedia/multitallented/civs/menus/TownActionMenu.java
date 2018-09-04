@@ -91,12 +91,12 @@ public class TownActionMenu extends Menu {
         CVItem cvItem1;
         //1 Is Working
         if (town.getPower() > 0) {
-            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
+            cvItem1 = CVItem.createCVItemFromString("GREEN_WOOL");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-power").replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
         } else {
-            cvItem1 = CVItem.createCVItemFromString("WOOL.14");
+            cvItem1 = CVItem.createCVItemFromString("RED_WOOL");
             //TODO show grace period
         }
         inventory.setItem(1, cvItem1.createItemStack());
