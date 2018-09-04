@@ -201,6 +201,7 @@ public class TestUtil {
                 matList.add(Material.SIGN);
             }
             matList.add(Material.OAK_DOOR);
+            matList.add(Material.OAK_DOOR);
 
             int i = 0;
             for (int x = -5; x < 6; x++) {

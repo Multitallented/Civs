@@ -121,7 +121,6 @@ public class Region {
                                      List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
         HashMap<Material, Integer> maxCheck = new HashMap<>();
-        HashMap<Material, Integer> extras = new HashMap<>();
         for (HashMap<Material, Integer> tempMap : itemCheck) {
             for (Material mat : tempMap.keySet()) {
                 if (maxCheck.containsKey(mat)) {
