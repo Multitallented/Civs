@@ -18,7 +18,9 @@ public class RegionTickEvent extends Event {
     public HandlerList getHandlers() {
         return hList;
     }
-
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     public RegionTickEvent(Region region, RegionType regionType, boolean hasUpkeep, boolean shouldTick) {
         this.shouldTick = shouldTick;
         this.region = region;

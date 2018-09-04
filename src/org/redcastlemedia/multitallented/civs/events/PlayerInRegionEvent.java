@@ -17,7 +17,9 @@ public class PlayerInRegionEvent extends Event {
     public HandlerList getHandlers() {
         return hList;
     }
-
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     public PlayerInRegionEvent(UUID uuid, Region region, RegionType regionType) {
         this.uuid = uuid;
         this.region = region;

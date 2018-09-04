@@ -17,7 +17,9 @@ public class PlayerExitTownEvent extends Event {
     public HandlerList getHandlers() {
         return hList;
     }
-
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     public PlayerExitTownEvent(UUID uuid, Town town, TownType townType) {
         this.uuid = uuid;
         this.town = town;

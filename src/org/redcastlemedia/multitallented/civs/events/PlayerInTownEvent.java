@@ -19,7 +19,9 @@ public class PlayerInTownEvent extends Event {
     public HandlerList getHandlers() {
         return hList;
     }
-
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     public PlayerInTownEvent(UUID uuid, Town town, TownType townType) {
         this.uuid = uuid;
         this.town = town;

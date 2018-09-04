@@ -42,7 +42,6 @@ public class TownTests {
 
     @Test
     public void findTownAtShouldReturnTown() {
-
         loadTownTypeHamlet();
         Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         loadTown("Silverstone", "hamlet", new Location(Bukkit.getWorld("world"), 100, 0, 0));
