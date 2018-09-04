@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
@@ -205,6 +206,19 @@ public class RegionsTests {
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
         assertNotNull(regionManager.getRegionAt(TestUtil.blockUnique9.getLocation()));
+    }
+
+    @Test
+    public void detectRegionShouldIgnoreExtraGroupReqs() {
+        RecipeMenuTests.loadRegionTypeCouncilRoom();
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique10);
+        doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Councilroom"))
+                .when(event1).getItemInHand();
+        RegionListener regionListener = new RegionListener();
+        regionListener.onBlockPlace(event1);
+        assertNull(regionManager.getRegionAt(TestUtil.blockUnique10.getLocation()));
     }
 
     @Test

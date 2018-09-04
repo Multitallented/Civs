@@ -55,6 +55,7 @@ public class TestUtil {
     public static Block blockUnique7;
     public static Block blockUnique8;
     public static Block blockUnique9;
+    public static Block blockUnique10;
 
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
@@ -174,6 +175,60 @@ public class TestUtil {
                 createBlock(Material.COBBLESTONE, new Location(world, 994, 0, 0)));
         world.putBlock(1006, 2, 0,
                 createBlock(Material.GOLD_BLOCK, new Location(world, 1006, 0, 0)));
+        //Councilroom
+
+        councilroom: {
+            ArrayList<Material> matList = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                matList.add(Material.CHEST);
+            }
+            for (int i = 0; i < 350; i++) {
+                matList.add(Material.OAK_PLANKS);
+            }
+            for (int i = 0; i < 60; i++) {
+                matList.add(Material.OAK_LOG);
+            }
+            for (int i = 0; i < 8; i++) {
+                matList.add(Material.BOOKSHELF);
+            }
+            for (int i = 0; i < 16; i++) {
+                matList.add(Material.GLASS);
+            }
+            for (int i = 0; i < 125; i++) {
+                matList.add(Material.OAK_STAIRS);
+            }
+            for (int i = 0; i < 8; i++) {
+                matList.add(Material.SIGN);
+            }
+            matList.add(Material.OAK_DOOR);
+
+            int i = 0;
+            for (int x = -5; x < 6; x++) {
+                for (int y = 55; y < 66; y++) {
+                    for (int z = 995; z < 1006; z++) {
+                        if (x == 0 && y == 60 && z == 1000) {
+                            continue;
+                        }
+                        world.putBlock(x, y, z,
+                                createBlock(matList.get(i), new Location(world, x, y, z)));
+                        i++;
+                        if (i >= matList.size()) {
+                            break councilroom;
+                        }
+                    }
+                }
+            }
+        }
+        for (int x = -8; x < -6; x++) {
+            for (int y = 55; y < 66; y++) {
+                for (int z = 995; z < 1006; z++) {
+                    world.putBlock(x, y, z,
+                            createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));
+                }
+            }
+        }
+        world.putBlock(0, 0, 1000,
+                createBlock(Material.CHEST, new Location(world, 0, 0, 1000)));
 
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
@@ -188,6 +243,7 @@ public class TestUtil {
         blockUnique7 = createUniqueBlock(Material.CHEST, null, new Location(world, 511, 0,0), true);
         blockUnique8 = createUniqueBlock(Material.CHEST, null, new Location(world, 300, 100,0), true);
         blockUnique9 = createUniqueBlock(Material.CHEST, null, new Location(world, 1000, 0,0 ), false);
+        blockUnique10 = createUniqueBlock(Material.CHEST, null, new Location(world, 0, 60,1000 ), false);
 
         world.putBlock(4,0,0,blockUnique);
         world.putBlock(2,50,0,blockUnique2);
