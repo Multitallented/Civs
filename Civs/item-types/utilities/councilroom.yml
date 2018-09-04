@@ -25,6 +25,7 @@ effects:
 - chest_use
 - port
 - indestructible
+- block_explosion
 
 period: daily
 upkeep:

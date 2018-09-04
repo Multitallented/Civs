@@ -25,7 +25,7 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- housing
+- housing:1
 period: daily
 upkeep:
   0:

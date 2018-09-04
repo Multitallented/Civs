@@ -172,7 +172,7 @@ public class LocaleManager {
             currentLanguage.put("recruiter",
                     localeConfig.getString(langKey + ".recruiter", "Recruiter"));
             currentLanguage.put("not-allowed-place",
-                    localeConfig.getString(langKey + ".not-allowed-place", "You aren't allowed to place $1"));
+                    localeConfig.getString(langKey + ".not-allowed-place", "$1 can not be placed"));
             currentLanguage.put("starter-book",
                     localeConfig.getString(langKey + ".starter-book", "Menu for Civs"));
             currentLanguage.put("set-owner",

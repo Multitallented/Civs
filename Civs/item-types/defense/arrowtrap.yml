@@ -14,8 +14,6 @@ effects:
 - arrow_turret:3.3.2 #damage.speed.spread
 - block_break
 - block_build
-- block_liquid
-- block_fire
 
 description:
   en: "A contraption that shoots arrows at nearby intruders"

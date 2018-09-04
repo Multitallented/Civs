@@ -118,7 +118,7 @@ en:
   no-permission: "Permission denied"
   class-changed: "Your class has changed to $1"
   not-enough-money: "You dont have $$1"
-  not-allowed-place: "You aren't allowed to place $1"
+  not-allowed-place: "$1 can not be placed"
   hold-town: "Please hold a town item"
   no-commands-in-jail: "You cant use commands in jail for another $1"
   mana-use-exp: "You cant use this unless you have full mana"

@@ -73,7 +73,7 @@ public class BlueprintsMenu extends Menu {
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             if (isTown) {
-                lore.add(Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
+                lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", cvItem.getProcessedName())));
             } else {
                 lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
