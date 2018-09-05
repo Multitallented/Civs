@@ -42,6 +42,8 @@ folders:
   utilities: REDSTONE
   housing: RED_BED
   defense: ARROW
+  quarries: STONE_SPADE
+  npchousing: VILLAGER_SPAWN_EGG
 item-groups:
   sign: SIGN,WALL_SIGN
   wood: OAK_PLANKS,SPRUCE_PLANKS,BIRCH_PLANKS,JUNGLE_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS

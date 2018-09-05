@@ -1,0 +1,36 @@
+type: region
+icon: CHEST
+name: CobbleQuarry
+price: 10
+group: raw
+
+build-reqs:
+- FURNACE*2
+- LAVA
+- WATER
+
+build-radius: 2
+effects:
+- block_break
+- block_build
+
+period: 30
+upkeep:
+  0:
+    reagents:
+    - STONE_PICKAXE
+    output:
+    - COBBLESTONE*4
+  1:
+    reagents:
+    - IRON_PICKAXE
+    output:
+    - COBBLESTONE*8
+  2:
+    reagents:
+    - DIAMOND_PICKAXE
+    output:
+    - COBBLESTONE*32
+
+description:
+  en: "Creates cobblestone every 30 seconds"

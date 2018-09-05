@@ -1,9 +1,8 @@
 type: region
-icon: CHEST
+icon: CRAFTING_TABLE
 name: Shack
-max: 2
 price: 100
-group: house
+group: npchouse
 
 build-reqs:
 - CHEST*2
@@ -17,7 +16,8 @@ build-reqs:
 - FURNACE
 - CRAFTING_TABLE
 
-build-radius: 3 #7x7x7
+rebuild: shack
+build-radius: 3
 effects:
 - block_break
 - block_build
@@ -26,15 +26,11 @@ effects:
 - door_use
 - chest_use
 - housing:1
-period: 3600 #1 hour
+- villager
+period: 3600 # 1 hour
 upkeep:
   0:
     power-input: 1
-  1:
-    input:
-    - POTATO*32  # 768 or 12 stacks / day
-    payout: 5.12 # $122.88 / day
-
 
 description:
-  en: "The most basic house"
+  en: "A house for a villager. Counts towards town population"
