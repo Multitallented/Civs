@@ -37,6 +37,7 @@ public class Civilian {
     private int expOrbs;
     private long lastDamage = -1;
     private UUID lastDamager;
+    private Set<UUID> friends = new HashSet<>();
     private List<Bounty> bounties = new ArrayList<>();
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
@@ -123,6 +124,12 @@ public class Civilian {
     }
     public void setBounties(List<Bounty> bounties) {
         this.bounties = bounties;
+    }
+    public Set<UUID> getFriends() {
+        return friends;
+    }
+    public void setFriends(Set<UUID> friends) {
+        this.friends = friends;
     }
 
     public boolean isInCombat() {
@@ -281,7 +288,6 @@ public class Civilian {
     }
 
     public boolean isFriend(Civilian friend) {
-        //TODO fix this
-        return false;
+        return friends.contains(friend.getUuid());
     }
 }

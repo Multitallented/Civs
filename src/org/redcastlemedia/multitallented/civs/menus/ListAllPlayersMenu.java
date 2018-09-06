@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class ListAllPlayersMenu extends Menu {
@@ -69,8 +70,12 @@ public class ListAllPlayersMenu extends Menu {
 
         String playerName = event.getCurrentItem().getItemMeta().getDisplayName();
         if (event.getWhoClicked() instanceof Player) {
-            if (name.equals("Player List")) {
-                appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
+            if (name.equals("Player List") || name.equals("Friend List")) {
+                if (id == null) {
+                    appendHistory(civilian.getUuid(), MENU_NAME);
+                } else {
+                    appendHistory(civilian.getUuid(), MENU_NAME + "," + id);
+                }
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, playerName));
             } else {
@@ -83,6 +88,69 @@ public class ListAllPlayersMenu extends Menu {
 
     public static Inventory createMenu(Civilian civilian, int page) {
         return createMenu(civilian, null, null, page, null);
+    }
+
+    public static Inventory createMenu(Civilian civilian, int page, UUID id) {
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+
+        LocaleManager localeManager = LocaleManager.getInstance();
+
+        //0 Prev button
+        if (page > 0) {
+            CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "prev-button"));
+            inventory.setItem(0, cvItem.createItemStack());
+        }
+
+        //2 Icon
+        CVItem cvItem = CVItem.createCVItemFromString("STONE");
+        cvItem.setDisplayName("Friend List");
+        List<String> lore = new ArrayList<>();
+        lore.add(civilian.getUuid().toString());
+        lore.add(page + "");
+        if (id != null) {
+            lore.add(id.toString());
+        }
+        cvItem.setLore(lore);
+        inventory.setItem(2, cvItem.createItemStack());
+
+        //6 Back button
+        inventory.setItem(6, getBackButton(civilian));
+
+        List<Player> players = new ArrayList<>();
+        Civilian cCivilian = CivilianManager.getInstance().getCivilian(id);
+        for (UUID uuid : cCivilian.getFriends()) {
+            players.add(Bukkit.getPlayer(uuid));
+        }
+        int startIndex = page * 36;
+        //8 Next button
+        if (startIndex + 36 < players.size()) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "next-button"));
+            inventory.setItem(8, cvItem1.createItemStack());
+        }
+
+        int i=9;
+        Collections.sort(players, new Comparator<Player>() {
+            @Override
+            public int compare(Player player1, Player player2) {
+                return player1.getName().compareTo(player2.getName());
+            }
+        });
+        for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
+            Player player = players.get(k);
+            ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta isMeta = (SkullMeta) is.getItemMeta();
+            isMeta.setDisplayName(player.getName());
+            isMeta.setOwningPlayer(player);
+            is.setItemMeta(isMeta);
+            inventory.setItem(i, is);
+            i++;
+        }
+
+        return inventory;
     }
 
     public static Inventory createMenu(Civilian civilian, String name, List<Player> blackList, int page, String id) {

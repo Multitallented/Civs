@@ -43,6 +43,7 @@ public class PlayerProfileMenu extends Menu {
 
         String playerName = event.getInventory().getItem(0).getItemMeta().getDisplayName();
         Player player = Bukkit.getPlayer(playerName);
+        Civilian cPlayer = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
 //        clearHistory(civilian.getUuid());
 //        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
@@ -51,6 +52,38 @@ public class PlayerProfileMenu extends Menu {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, player.getUniqueId()));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "friends"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0, cPlayer.getUuid()));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "add-friend"))) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            civilian.getFriends().add(cPlayer.getUuid());
+            CivilianManager.getInstance().saveCivilian(civilian);
+            event.getWhoClicked().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "friend-added").replace("$1", player.getDisplayName()));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "remove-friend"))) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            civilian.getFriends().remove(cPlayer.getUuid());
+            CivilianManager.getInstance().saveCivilian(civilian);
+            event.getWhoClicked().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "friend-removed").replace("$1", player.getDisplayName()));
             return;
         }
     }
@@ -71,6 +104,12 @@ public class PlayerProfileMenu extends Menu {
         inventory.setItem(0, is);
 
         //1 Friends
+        {
+            CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "friends"));
+            inventory.setItem(1, cvItem.createItemStack());
+        }
 
         //2 Money
         if (Civs.econ != null) {
@@ -78,6 +117,7 @@ public class PlayerProfileMenu extends Menu {
             double money = Civs.econ.getBalance(player);
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "money").replace("$1", money + ""));
+            inventory.setItem(2, cvItem.createItemStack());
         }
 
         //3 Towns
@@ -89,6 +129,17 @@ public class PlayerProfileMenu extends Menu {
         }
 
         //6 Add friend / Remove friend
+        if (!civilian.getFriends().contains(player.getUniqueId())) {
+            CVItem cvItem = CVItem.createCVItemFromString("EMERALD_BLOCK");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "add-friend"));
+            inventory.setItem(6, cvItem.createItemStack());
+        } else {
+            CVItem cvItem = CVItem.createCVItemFromString("BARRIER");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "remove-friend"));
+            inventory.setItem(6, cvItem.createItemStack());
+        }
 
         //8 Back button
         inventory.setItem(8, getBackButton(civilian));

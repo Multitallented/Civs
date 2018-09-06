@@ -351,6 +351,16 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".bounty-set", "A bounty has been set on $1 for $2"));
             currentLanguage.put("bounty-bonus",
                     localeConfig.getString(langKey + ".bounty-bonus", "You collected a bounty of $1"));
+            currentLanguage.put("friends",
+                    localeConfig.getString(langKey + ".friends", "Friends"));
+            currentLanguage.put("add-friend",
+                    localeConfig.getString(langKey + ".add-friend", "Add Friend"));
+            currentLanguage.put("remove-friend",
+                    localeConfig.getString(langKey + ".remove-friend", "Remove Friend"));
+            currentLanguage.put("friend-added",
+                    localeConfig.getString(langKey + ".friend-added", "$1 has been added to your friends list"));
+            currentLanguage.put("friend-removed",
+                    localeConfig.getString(langKey + ".friend-removed", "$1 has been removed from your friends list"));
             languageMap.put(langKey, currentLanguage);
         }
     }

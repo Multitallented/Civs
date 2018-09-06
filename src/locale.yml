@@ -47,6 +47,7 @@ en:
   highest-killstreak: "Highest Killstreak: $1"
   kills: "Kills: $1"
   deaths: "Deaths: $1"
+  friends: "Friends"
 
   #region
   size: Size
@@ -110,6 +111,10 @@ en:
   town-renamed: "Your town has been renamed from $1 to $2"
   bounty-set: "A bounty has been set on $1 for $2"
   bounty-bonus: "You collected a bounty of $1"
+  add-friend: "Add Friend"
+  remove-friend: "Remove Friend"
+  friend-added: "$1 has been added to your friends list"
+  friend-removed: "$1 has been removed from your friends list"
 
   #errors
   no-region-type-found: "No region type found for $1"
