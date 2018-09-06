@@ -60,6 +60,50 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, town));
             return;
         }
+        Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "town-ally"))) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            town.getAllyInvites().add(townOwner.getName());
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-ally-request-sent").replace("$1", townName));
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(uuid).equals("owner")) {
+                    Player pSend = Bukkit.getPlayer(uuid);
+                    if (pSend.isOnline()) {
+                        pSend.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                                "town-ally-request-sent").replace("$1", townName));
+                    }
+                }
+            }
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "town-unally")) && townOwner != null) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            townOwner.getAllies().remove(townName);
+            town.getAllies().remove(townOwner.getName());
+            TownManager.getInstance().saveTown(town);
+            TownManager.getInstance().saveTown(townOwner);
+            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
+                        "town-ally-removed").replace("$1", townOwner.getName())
+                        .replace("$1", townName));
+            }
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(),
+                        "town-ally-invites")) && townOwner != null) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(TownInviteMenu.createMenu(civilian, 0, townName));
+            return;
+        }
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
@@ -124,12 +168,26 @@ public class TownActionMenu extends Menu {
         cvItem2.setLore(lore);
         inventory.setItem(2, cvItem2.createItemStack());
 
+        //3 Ally / Remove ally
+        Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
+        if (townOwner != null && townOwner != town && !townOwner.getAllies().contains(town.getName())) {
+            CVItem cvItem6 = CVItem.createCVItemFromString("IRON_SWORD");
+            cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-ally").replace("$1", town.getName()));
+            inventory.setItem(3, cvItem6.createItemStack());
+        } else if (townOwner != null && townOwner != town) {
+            CVItem cvItem6 = CVItem.createCVItemFromString("CREEPER_HEAD");
+            cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-unally").replace("$1", town.getName()));
+            inventory.setItem(3, cvItem6.createItemStack());
+        }
+
         //5 Bounty
         {
             CVItem cvItem6 = CVItem.createCVItemFromString("SKELETON_SKULL");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "bounty").replace("$1", town.getName()));
-            inventory.setItem(4, cvItem6.createItemStack());
+            inventory.setItem(5, cvItem6.createItemStack());
         }
 
         //6 Destroy
@@ -158,10 +216,20 @@ public class TownActionMenu extends Menu {
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
 
-            //10 Add person - works for people in region only
+            //10 Add person
             CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
+        }
+
+        //11 Alliance Invite
+        if (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).equals("owner") &&
+                !town.getAllyInvites().isEmpty()) {
+            CVItem cvItem3 = CVItem.createCVItemFromString("IRON_SWORD");
+            cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-ally-invites"));
+            inventory.setItem(11, cvItem3.createItemStack());
         }
 
 

@@ -367,6 +367,18 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".region-limit-reached", "A $1 can only have $2 $3"));
             currentLanguage.put("bounty",
                     localeConfig.getString(langKey + ".bounty", "Set a bounty /cv bounty $1 amount"));
+            currentLanguage.put("town-ally",
+                    localeConfig.getString(langKey + ".town-ally", "Set $1 as allies"));
+            currentLanguage.put("town-unally",
+                    localeConfig.getString(langKey + ".town-unally", "Set $1 as enemies"));
+            currentLanguage.put("town-ally-request-sent",
+                    localeConfig.getString(langKey + ".town-ally-request-sent", "An alliance has been proposed to $1"));
+            currentLanguage.put("town-ally-request-accepted",
+                    localeConfig.getString(langKey + ".town-ally-request-accepted", "Alliance has been formed between $1 and $2"));
+            currentLanguage.put("town-ally-removed",
+                    localeConfig.getString(langKey + ".town-ally-removed", "Alliance between $1 and $2 has dissolved"));
+            currentLanguage.put("town-ally-invites",
+                    localeConfig.getString(langKey + ".town-ally-invites", "You have town ally invites"));
             languageMap.put(langKey, currentLanguage);
         }
     }

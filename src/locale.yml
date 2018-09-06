@@ -116,6 +116,12 @@ en:
   friend-added: "$1 has been added to your friends list"
   friend-removed: "$1 has been removed from your friends list"
   bounty: "Set a bounty /cv bounty $1 amount"
+  town-ally: "Set $1 as allies"
+  town-unally: "Set $1 as enemies"
+  town-ally-invites: "You have town ally invites"
+  town-ally-request-sent: "An alliance has been proposed to $1"
+  town-ally-request-accepted: "Alliance has been formed between $1 and $2"
+  town-ally-removed: "Alliance between $1 and $2 has dissolved"
 
   #errors
   no-region-type-found: "No region type found for $1"

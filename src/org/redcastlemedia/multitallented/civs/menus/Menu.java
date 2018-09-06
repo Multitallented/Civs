@@ -156,6 +156,17 @@ public abstract class Menu implements Listener {
             }
             return;
         }
+        if (lastHistory[0].equals(TownInviteMenu.MENU_NAME)) {
+            if (lastHistory.length > 2) {
+                humanEntity.openInventory(TownInviteMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), lastHistory[2]));
+            } else {
+                clearHistory(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "no-permission"
+                ));
+            }
+            return;
+        }
         if (lastHistory[0].equals(TownActionMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             if (lastHistory.length > 1) {

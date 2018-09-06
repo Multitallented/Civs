@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class Town {
@@ -22,6 +23,7 @@ public class Town {
     private int population;
     private HashSet<String> allies;
     private ArrayList<Bounty> bounties;
+    private List<String> allyInvites = new ArrayList<>();
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int population) {
@@ -44,7 +46,28 @@ public class Town {
     }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public HashMap<UUID, String> getPeople() { return people; }
+    public List<String> getAllyInvites() {
+        return allyInvites;
+    }
+
+    public HashMap<UUID, String> getRawPeople() {
+        return people;
+    }
+    public HashMap<UUID, String> getPeople() {
+        if (allies.isEmpty()) {
+            return people;
+        }
+        HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
+        for (String name : allies) {
+            Town town = TownManager.getInstance().getTown(name);
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (!newPeople.containsKey(uuid)) {
+                    newPeople.put(uuid, "ally");
+                }
+            }
+        }
+        return newPeople;
+    }
     public HashSet<String> getAllies() { return allies; }
     public int getMaxPower() {
         return maxPower;

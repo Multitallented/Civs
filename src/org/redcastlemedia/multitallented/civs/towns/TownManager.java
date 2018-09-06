@@ -316,4 +316,15 @@ public class TownManager {
         }
         return commonTowns;
     }
+
+    public Town isOwnerOfATown(Civilian civilian) {
+        for (Town town : sortedTowns) {
+            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
+                    !town.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                continue;
+            }
+            return town;
+        }
+        return null;
+    }
 }
