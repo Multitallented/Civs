@@ -48,6 +48,7 @@ public class PlayerProfileMenu extends Menu {
 //        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
 
         if (event.getCurrentItem().getType().equals(Material.OAK_DOOR)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, player.getUniqueId()));
             return;
@@ -86,6 +87,8 @@ public class PlayerProfileMenu extends Menu {
                     "towns"));
             inventory.setItem(3, cvItem.createItemStack());
         }
+
+        //6 Add friend / Remove friend
 
         //8 Back button
         inventory.setItem(8, getBackButton(civilian));
