@@ -5,13 +5,13 @@ max: 1
 price: 2000
 group: town
 
-build-reqs:
+build-reqs: #TODO make this
 - councilroom:1
 
 critical-build-reqs:
 - councilroom
 
-limits:
+limits: #TODO make this
   shack: 5
   studio: 1
 

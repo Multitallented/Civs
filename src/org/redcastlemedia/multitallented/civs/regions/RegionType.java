@@ -21,6 +21,7 @@ public class RegionType extends CivItem {
     private final int effectRadius;
     private final String rebuild;
     private final boolean dailyPeriod;
+    private final HashSet<String> towns;
     private List<RegionUpkeep> upkeeps;
     private final long period;
 
@@ -41,6 +42,7 @@ public class RegionType extends CivItem {
                       int buildRadiusZ,
                       int effectRadius,
                       String rebuild,
+                      HashSet<String> towns,
                       HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
@@ -68,6 +70,7 @@ public class RegionType extends CivItem {
         this.rebuild = rebuild;
         this.period = period;
         this.dailyPeriod = dailyPeriod;
+        this.towns = towns;
     }
     public String getName() {
         return name;
@@ -99,4 +102,5 @@ public class RegionType extends CivItem {
     public boolean isDailyPeriod() {
         return dailyPeriod;
     }
+    public HashSet<String> getTowns() { return towns; }
 }

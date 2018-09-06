@@ -325,6 +325,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".raid-target-inside-region", "You can't set a location inside a region"));
             currentLanguage.put("location-set",
                     localeConfig.getString(langKey + ".location-set", "$1 location set"));
+            currentLanguage.put("req-build-inside-town",
+                    localeConfig.getString(langKey + ".req-build-inside-town", "This $1 must be built inside $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

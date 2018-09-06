@@ -18,7 +18,9 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -260,6 +262,7 @@ public class RegionManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
+        Location location = block.getLocation();
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
@@ -342,6 +345,30 @@ public class RegionManager {
                             .replace("$1", regionTypeName).replace("$2",currentRegion.getType()));
             BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
+        }
+
+        if (regionType.getTowns() != null) {
+            Town town = TownManager.getInstance().getTownAt(location);
+            if (town == null) {
+                player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
+                        .replace("$1", regionTypeName).replace("$2",
+                            localeManager.getTranslation(civilian.getLocale(), "towns")));
+                event.setCancelled(true);
+                BlockLogger.getInstance().removeBlock(block.getLocation());
+                return;
+            }
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (!regionType.getTowns().contains(townType.getProcessedName()) &&
+                    !regionType.getTowns().contains(townType.getDisplayName())) {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
+                                .replace("$1", regionTypeName).replace("$2",
+                                townType.getDisplayName()));
+                event.setCancelled(true);
+                BlockLogger.getInstance().removeBlock(block.getLocation());
+                return;
+            }
         }
 
         for (String effect : regionType.getEffects().keySet()) {

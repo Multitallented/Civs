@@ -222,7 +222,12 @@ public class ItemManager {
                 upkeeps.add(regionUpkeep);
             }
         }
-
+        HashSet<String> townSet;
+        if (config.isSet("towns")) {
+            townSet = new HashSet<>(config.getStringList("towns"));
+        } else {
+            townSet = null;
+        }
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {
             String[] effectSplit = s.split(":");
@@ -263,6 +268,7 @@ public class ItemManager {
                 buildRadiusZ,
                 effectRadius,
                 rebuild,
+                townSet,
                 description,
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),

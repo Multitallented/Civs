@@ -120,12 +120,24 @@ public class RegionTypeInfoMenu extends Menu {
         }
 
         //3 evolve
+        //TODO evolve regions and exp
+
         //4 biome/location reqs
+        //TODO Biome reqs
+
         //5 town reqs
+        CVItem cvItem5 = CVItem.createCVItemFromString("OAK_DOOR");
+        cvItem5.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "towns"));
+        lore = new ArrayList<>();
+        lore.add(localeManager.getTranslation(civilian.getLocale(), "town-req-desc"));
+        lore.addAll(regionType.getTowns());
+        cvItem5.setLore(lore);
+        inventory.setItem(5, cvItem5.createItemStack());
 
         //6 build-reqs
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
-        cvItem1.setDisplayName("Build Reqs");
+        cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                "build-reqs-title"));
         lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
                 .replace("$1", regionType.getName()));

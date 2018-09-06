@@ -45,7 +45,9 @@ en:
   #region
   size: Size
   range: Range
+  build-reqs-title: Build Reqs
   build-reqs: "All the blocks you need to place to build a $1"
+  reagents-title: Reagents
   reagents: "All the items you need in the $1 chest"
   upkeep: "All the items consumed by the $1"
   output: "All the items created by the $1"
@@ -60,6 +62,7 @@ en:
   region-type: "Region Type"
   destroy: "Destroy"
   region-in-town: "Your region is in $1"
+  town-req-desc: "Your region must be built in:"
   view-members: "View members"
   add-member: "Add member"
   operation: "Operation"
@@ -139,6 +142,7 @@ en:
   raid-sign: "You need a sign above the chest with the name of the target town"
   invalid-target: "Invalid target"
   raid-target-inside-region: "You can't set a location inside a region"
+  req-build-inside-town: "This $1 must be built inside $2"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
