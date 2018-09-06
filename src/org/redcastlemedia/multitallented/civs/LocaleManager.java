@@ -365,6 +365,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".friendly-fire", "You cant damage someone on your friends list"));
             currentLanguage.put("region-limit-reached",
                     localeConfig.getString(langKey + ".region-limit-reached", "A $1 can only have $2 $3"));
+            currentLanguage.put("bounty",
+                    localeConfig.getString(langKey + ".bounty", "Set a bounty /cv bounty $1 amount"));
             languageMap.put(langKey, currentLanguage);
         }
     }

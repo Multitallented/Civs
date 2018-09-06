@@ -115,6 +115,7 @@ en:
   remove-friend: "Remove Friend"
   friend-added: "$1 has been added to your friends list"
   friend-removed: "$1 has been removed from your friends list"
+  bounty: "Set a bounty /cv bounty $1 amount"
 
   #errors
   no-region-type-found: "No region type found for $1"

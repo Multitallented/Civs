@@ -124,6 +124,14 @@ public class TownActionMenu extends Menu {
         cvItem2.setLore(lore);
         inventory.setItem(2, cvItem2.createItemStack());
 
+        //5 Bounty
+        {
+            CVItem cvItem6 = CVItem.createCVItemFromString("SKELETON_SKULL");
+            cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "bounty").replace("$1", town.getName()));
+            inventory.setItem(4, cvItem6.createItemStack());
+        }
+
         //6 Destroy
         if ((town.getPeople().containsKey(civilian.getUuid()) &&
                 town.getPeople().get(civilian.getUuid()).equals("owner")) ||

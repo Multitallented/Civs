@@ -128,6 +128,14 @@ public class PlayerProfileMenu extends Menu {
             inventory.setItem(3, cvItem.createItemStack());
         }
 
+        //4 Bounty
+        {
+            CVItem cvItem = CVItem.createCVItemFromString("SKELETON_SKULL");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "bounty").replace("$1", playerName));
+            inventory.setItem(4, cvItem.createItemStack());
+        }
+
         //6 Add friend / Remove friend
         if (!civilian.getFriends().contains(player.getUniqueId())) {
             CVItem cvItem = CVItem.createCVItemFromString("EMERALD_BLOCK");
