@@ -37,6 +37,7 @@ public class Civilian {
     private int expOrbs;
     private long lastDamage = -1;
     private UUID lastDamager;
+    private List<Bounty> bounties = new ArrayList<>();
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -116,6 +117,12 @@ public class Civilian {
     }
     public void setLastDamager(UUID lastDamager) {
         this.lastDamager = lastDamager;
+    }
+    public List<Bounty> getBounties() {
+        return bounties;
+    }
+    public void setBounties(List<Bounty> bounties) {
+        this.bounties = bounties;
     }
 
     public boolean isInCombat() {

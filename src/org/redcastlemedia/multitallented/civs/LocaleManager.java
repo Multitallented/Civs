@@ -347,6 +347,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".kills", "Kills: $1"));
             currentLanguage.put("deaths",
                     localeConfig.getString(langKey + ".deaths", "Deaths: $1"));
+            currentLanguage.put("bounty",
+                    localeConfig.getString(langKey + ".bounty", "A bounty has been set on $1 for $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

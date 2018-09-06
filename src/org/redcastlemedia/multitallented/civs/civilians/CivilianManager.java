@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -118,6 +119,16 @@ public class CivilianManager {
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
             }
+            if (civConfig.isSet("bounties")) {
+                ArrayList<Bounty> bountyList = new ArrayList<>();
+                ConfigurationSection section1 = civConfig.getConfigurationSection("bounties");
+                for (String key : section1.getKeys(false)) {
+                    Bounty bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
+                            section1.getDouble(key + ".amount"));
+                    bountyList.add(bounty);
+                }
+                civilian.setBounties(bountyList);
+            }
 
             return civilian;
         } catch (Exception ex) {
@@ -193,6 +204,13 @@ public class CivilianManager {
             civConfig.set("points", civilian.getPoints());
             civConfig.set("karma", civilian.getKarma());
             civConfig.set("classes", classes);
+            if (!civilian.getBounties().isEmpty()) {
+                for (int i = 0; i < civilian.getBounties().size(); i++) {
+                    civConfig.set("bounties." + i + ".issuer", civilian.getBounties().get(i).getIssuer().toString());
+                    civConfig.set("bounties." + i + ".amount", civilian.getBounties().get(i).getAmount());
+                }
+            }
+
             for (CivItem item : civilian.getExp().keySet()) {
                 int exp = civilian.getExp().get(item);
                 if (exp < 1) {
