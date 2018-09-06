@@ -11,6 +11,10 @@ build-reqs:
 critical-build-reqs:
 - councilroom
 
+limits:
+  shack: 5
+  studio: 1
+
 build-radius: 16
 build-radius-y: 500
 effects:

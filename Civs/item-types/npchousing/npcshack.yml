@@ -16,6 +16,12 @@ build-reqs:
 - FURNACE
 - CRAFTING_TABLE
 
+towns:
+  - settlement
+  - village
+  - town
+  - capital
+
 rebuild: shack
 build-radius: 3
 effects:

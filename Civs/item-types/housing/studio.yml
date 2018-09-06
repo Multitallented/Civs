@@ -28,6 +28,12 @@ effects:
 - chest_use
 - housing:1
 
+towns:
+  - settlement
+  - village
+  - town
+  - capital
+
 period: 3600 #1 hour
 upkeep:
   0:
