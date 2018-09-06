@@ -1,14 +1,10 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -16,7 +12,6 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -25,12 +20,34 @@ import java.util.*;
 
 public class CivilianManager {
 
-    private HashMap<UUID, Civilian> onlineCivilians = new HashMap<>();
+    private HashMap<UUID, Civilian> civilians = new HashMap<>();
 
     private static CivilianManager civilianManager = null;
 
     public CivilianManager() {
         civilianManager = this;
+        loadAllCivilians();
+    }
+
+    public Collection<Civilian> getCivilians() {
+        return civilians.values();
+    }
+
+    private void loadAllCivilians() {
+        Civs civs = Civs.getInstance();
+        File civilianFolder = new File(civs.getDataFolder(), "players");
+        if (!civilianFolder.exists()) {
+            return;
+        }
+        try {
+            for (File currentFile : civilianFolder.listFiles()) {
+                UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
+                Civilian civilian = loadFromFileCivilian(uuid);
+                civilians.put(uuid, civilian);
+            }
+        } catch (NullPointerException npe) {
+
+        }
     }
 
     public static CivilianManager getInstance() {
@@ -44,18 +61,18 @@ public class CivilianManager {
 
     void loadCivilian(Player player) {
         Civilian civilian = loadFromFileCivilian(player.getUniqueId());
-        onlineCivilians.put(player.getUniqueId(), civilian);
+        civilians.put(player.getUniqueId(), civilian);
     }
     public void createDefaultCivilian(Player player) {
-        onlineCivilians.put(player.getUniqueId(), createDefaultCivilian(player.getUniqueId()));
+        civilians.put(player.getUniqueId(), createDefaultCivilian(player.getUniqueId()));
     }
     void unloadCivilian(Player player) {
         Civilian civilian = getCivilian(player.getUniqueId());
         civilian.setMana(100);
-        onlineCivilians.remove(player.getUniqueId());
+        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
-        Civilian civilian = onlineCivilians.get(uuid);
+        Civilian civilian = civilians.get(uuid);
         if (civilian == null) {
             civilian = loadFromFileCivilian(uuid);
         }
