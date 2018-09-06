@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -384,45 +385,29 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         event.setCancelled(true);
     }
 
-    //TODO fix this when renaming becomes possible
-//    @EventHandler
-//    public void onRename(ToRenameEvent event) {
-//        RegionManager rm = getPlugin().getRegionManager();
-//        for (Region r : rm.getSortedRegions()) {
-//            RegionType rt = rm.getRegionType(r.getType());
-//            if (rt == null) {
-//                continue;
-//            }
-//
-//            boolean hasEffect = false;
-//            for (String s : rt.getEffects()) {
-//                if (s.startsWith("raid_port")) {
-//                    hasEffect = true;
-//                    break;
-//                }
-//            }
-//            if (!hasEffect) {
-//                continue;
-//            }
-//
-//            Sign sign;
-//            Block b = r.getLocation().getBlock().getRelative(BlockFace.UP);
-//            try {
-//                if (!(b instanceof Sign)) {
-//                    continue;
-//                }
-//                sign = (Sign) b;
-//            } catch (Exception e) {
-//                continue;
-//            }
-//            String srName = sign.getLine(0);
-//            SuperRegion sr = rm.getSuperRegion(srName);
-//            if (sr == null) {
-//                continue;
-//            }
-//            if (sr.getName().equals(event.getOldName())) {
-//                sign.setLine(0, event.getNewName());
-//            }
-//        }
-//    }
+    @EventHandler
+    public void onRename(RenameTownEvent event) {
+        RegionManager rm = RegionManager.getInstance();
+        for (Region r : rm.getAllRegions()) {
+            if (!r.getEffects().containsKey("raid_port")) {
+                continue;
+            }
+
+            Sign sign;
+            Block b = r.getLocation().getBlock().getRelative(BlockFace.UP);
+            try {
+                if (!(b instanceof Sign)) {
+                    continue;
+                }
+                sign = (Sign) b;
+            } catch (Exception e) {
+                continue;
+            }
+            String townName = sign.getLine(0);
+            if (!townName.equalsIgnoreCase(event.getOldName())) {
+                continue;
+            }
+            sign.setLine(0, event.getNewName());
+        }
+    }
 }
