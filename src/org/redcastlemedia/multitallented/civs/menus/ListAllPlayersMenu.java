@@ -41,12 +41,17 @@ public class ListAllPlayersMenu extends Menu {
         }
 
         int page = Integer.parseInt(itemStack.getItemMeta().getLore().get(1));
-        String id = itemStack.getItemMeta().getLore().get(2);
+        String id = null;
         List<Player> blackList = new ArrayList<>();
-        for (String s : itemStack.getItemMeta().getLore().get(3).split(",")) {
-            Player player = Bukkit.getPlayer(s);
-            if (player != null) {
-                blackList.add(player);
+        if (itemStack.getItemMeta().getLore().size() > 2) {
+            id = itemStack.getItemMeta().getLore().get(2);
+        }
+        if (itemStack.getItemMeta().getLore().size() > 3) {
+            for (String s : itemStack.getItemMeta().getLore().get(3).split(",")) {
+                Player player = Bukkit.getPlayer(s);
+                if (player != null) {
+                    blackList.add(player);
+                }
             }
         }
         String name = itemStack.getItemMeta().getDisplayName();
@@ -62,14 +67,22 @@ public class ListAllPlayersMenu extends Menu {
             return;
         }
 
-        event.getWhoClicked().closeInventory();
-        clearHistory(civilian.getUuid());
-
         String playerName = event.getCurrentItem().getItemMeta().getDisplayName();
         if (event.getWhoClicked() instanceof Player) {
-            System.out.println("cv add " + playerName + " " + name);
-            ((Player) event.getWhoClicked()).performCommand("cv " + name + " " + playerName + " " + id);
+            if (name.equals("Player List")) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, playerName));
+            } else {
+                event.getWhoClicked().closeInventory();
+                clearHistory(civilian.getUuid());
+                ((Player) event.getWhoClicked()).performCommand("cv " + name + " " + playerName + " " + id);
+            }
         }
+    }
+
+    public static Inventory createMenu(Civilian civilian, int page) {
+        return createMenu(civilian, null, null, page, null);
     }
 
     public static Inventory createMenu(Civilian civilian, String name, List<Player> blackList, int page, String id) {
@@ -87,27 +100,32 @@ public class ListAllPlayersMenu extends Menu {
 
         //2 Icon
         CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName(name);
+        cvItem.setDisplayName(name == null ? "Player List" : name);
         List<String> lore = new ArrayList<>();
         lore.add(civilian.getUuid().toString());
         lore.add(page + "");
-        lore.add(id);
-        StringBuilder blackListString = new StringBuilder();
-        for (Player b : blackList) {
-            blackListString.append(b.getName());
-            blackListString.append(",");
+        if (id != null) {
+            lore.add(id);
         }
-        blackListString.substring(blackListString.length() - 1);
-        lore.add(blackListString.toString());
+        if (blackList != null) {
+            StringBuilder blackListString = new StringBuilder();
+            for (Player b : blackList) {
+                blackListString.append(b.getName());
+                blackListString.append(",");
+            }
+            blackListString.substring(blackListString.length() - 1);
+            lore.add(blackListString.toString());
+        }
         cvItem.setLore(lore);
         inventory.setItem(2, cvItem.createItemStack());
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
 
-        List<Player> players = new ArrayList<>();
-        players.addAll(Bukkit.getOnlinePlayers());
-        players.removeAll(blackList);
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        if (blackList != null) {
+            players.removeAll(blackList);
+        }
         int startIndex = page * 36;
         //8 Next button
         if (startIndex + 36 < players.size()) {

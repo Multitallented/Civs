@@ -47,6 +47,12 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
             return;
         }
+        if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0));
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();

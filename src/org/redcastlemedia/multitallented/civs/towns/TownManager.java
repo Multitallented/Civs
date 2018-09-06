@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import sun.org.mozilla.javascript.internal.UintMap;
 
 import java.io.File;
 import java.io.IOError;
@@ -286,5 +287,16 @@ public class TownManager {
             new TownManager();
         }
         return townManager;
+    }
+
+    public Set<Town> findCommonTowns(Civilian damagerCiv, Civilian dyingCiv) {
+        HashSet<Town> commonTowns = new HashSet<>();
+        for (Town town : sortedTowns) {
+            if (town.getPeople().containsKey(damagerCiv.getUuid()) &&
+                    town.getPeople().containsKey(dyingCiv.getUuid())) {
+                commonTowns.add(town);
+            }
+        }
+        return commonTowns;
     }
 }

@@ -41,6 +41,12 @@ en:
   wars: Wars
   leaderboard: Leaderboard
   ports: Ports
+  money: "Money: $$1"
+  points: "Points: $1"
+  killstreak: "Killstreak: $1"
+  highest-killstreak: "Highest Killstreak: $1"
+  kills: "Kills: $1"
+  deaths: "Deaths: $1"
 
   #region
   size: Size

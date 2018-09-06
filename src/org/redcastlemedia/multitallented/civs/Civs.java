@@ -146,6 +146,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DestroyConfirmationMenu(), this);
         Bukkit.getPluginManager().registerEvents(new PortMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerProfileMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);

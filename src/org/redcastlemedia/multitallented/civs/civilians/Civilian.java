@@ -272,4 +272,9 @@ public class Civilian {
         }
         return count;
     }
+
+    public boolean isFriend(Civilian friend) {
+        //TODO fix this
+        return false;
+    }
 }

@@ -335,6 +335,18 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-renamed", "Your town has been renamed from $1 to $2"));
             currentLanguage.put("missing-region-requirements",
                     localeConfig.getString(langKey + ".missing-region-requirements", "Your $1 is missing required regions"));
+            currentLanguage.put("money",
+                    localeConfig.getString(langKey + ".money", "Money: $$1"));
+            currentLanguage.put("points",
+                    localeConfig.getString(langKey + ".points", "Points: $1"));
+            currentLanguage.put("killstreak",
+                    localeConfig.getString(langKey + ".killstreak", "Killstreak: $1"));
+            currentLanguage.put("highest-killstreak",
+                    localeConfig.getString(langKey + ".highest-killstreak", "Highest Killstreak: $1"));
+            currentLanguage.put("kills",
+                    localeConfig.getString(langKey + ".kills", "Kills: $1"));
+            currentLanguage.put("deaths",
+                    localeConfig.getString(langKey + ".deaths", "Deaths: $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

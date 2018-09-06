@@ -295,12 +295,14 @@ public class DeathListener implements Listener {
 
         //Karma
         double karmaEcon = Math.max(0, -ConfigManager.getInstance().getMoneyPerKarma() * ((double) (dyingCiv.getKarma() - damagerCiv.getKarma())));
-        if (dyingCiv.getKarma() > 1) {
+        if (dyingCiv.getKarma() > 1 ||
+                damagerCiv.isFriend(dyingCiv) ||
+                !TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             karmaEcon = 0;
         }
         int karma = ConfigManager.getInstance().getKarmaPerKill() + ConfigManager.getInstance().getKarmaPerKillStreak() * (damagerCiv.getKillStreak() - dyingCiv.getKillStreak());
         damagerCiv.setKarma(damagerCiv.getKarma() - karma);
-//        psv.setKarma(psv.getKarma() + karma);
+        dyingCiv.setKarma(dyingCiv.getKarma() + karma);
 
         if (Civs.econ != null && karmaEcon != 0) {
             Civs.econ.withdrawPlayer(player, karmaEcon);
