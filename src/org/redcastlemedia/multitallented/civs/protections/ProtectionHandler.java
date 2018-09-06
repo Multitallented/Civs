@@ -40,7 +40,8 @@ public class ProtectionHandler implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         RegionManager regionManager = RegionManager.getInstance();
-        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL &&
+        if ((event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) &&
                 RegionManager.getInstance().getContainingRegions(event.getBlock().getLocation(), 0).isEmpty()) {
             return;
         }
@@ -85,6 +86,10 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) {
+            return;
+        }
         boolean setCancelled = event.isCancelled() || checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_build");
         if (setCancelled) {
             event.setCancelled(true);

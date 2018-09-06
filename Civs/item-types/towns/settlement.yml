@@ -5,7 +5,7 @@ max: 1
 price: 2000
 group: town
 
-build-reqs: #TODO make this
+build-reqs:
 - councilroom:1
 
 critical-build-reqs:
