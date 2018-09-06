@@ -363,6 +363,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".friend-removed", "$1 has been removed from your friends list"));
             currentLanguage.put("friendly-fire",
                     localeConfig.getString(langKey + ".friendly-fire", "You cant damage someone on your friends list"));
+            currentLanguage.put("region-limit-reached",
+                    localeConfig.getString(langKey + ".region-limit-reached", "A $1 can only have $2 $3"));
             languageMap.put(langKey, currentLanguage);
         }
     }

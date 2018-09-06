@@ -13,8 +13,8 @@ build-reqs:
 - farm:1
 
 limits:
-  shack: 5
-  studio: 5
+- shack:5
+- studio:5
 
 critical-build-reqs:
 - councilroom

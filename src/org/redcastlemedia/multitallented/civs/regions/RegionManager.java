@@ -369,6 +369,25 @@ public class RegionManager {
                 BlockLogger.getInstance().removeBlock(block.getLocation());
                 return;
             }
+            if (townType.getRegionLimit(regionTypeName) > 0) {
+                int limit = townType.getRegionLimit(regionTypeName);
+                int count = 0;
+                for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+                    if (region.getType().equals(regionTypeName)) {
+                        count++;
+                        if (count >= limit) {
+                            player.sendMessage(Civs.getPrefix() +
+                                    localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                    .replace("$1", town.getType())
+                                    .replace("$2", limit + "")
+                                    .replace("$3", regionTypeName));
+                            event.setCancelled(true);
+                            BlockLogger.getInstance().removeBlock(block.getLocation());
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         for (String effect : regionType.getEffects().keySet()) {

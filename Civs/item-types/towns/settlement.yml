@@ -11,9 +11,9 @@ build-reqs:
 critical-build-reqs:
 - councilroom
 
-limits: #TODO make this
-  shack: 5
-  studio: 1
+limits:
+- shack:5
+- studio:1
 
 build-radius: 16
 build-radius-y: 500

@@ -161,6 +161,7 @@ en:
   req-build-inside-town: "This $1 must be built inside $2"
   missing-region-requirements: "Your $1 is missing required regions"
   friendly-fire: "You cant damage someone on your friends list"
+  region-limit-reached: "A $1 can only have $2 $3"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

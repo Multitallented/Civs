@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -17,6 +18,7 @@ public class TownType extends CivItem {
     private final int power;
     private final int maxPower;
     private final String child;
+    private final HashMap<String, Integer> regionLimits;
 
     public HashMap<String, Integer> getReqs() {
         return reqs;
@@ -40,6 +42,9 @@ public class TownType extends CivItem {
         return maxPower;
     }
     public String getChild() { return child; }
+    public int getRegionLimit(String regionTypeName) {
+        return regionLimits.get(regionTypeName) == null ? 0 : regionLimits.get(regionTypeName);
+    }
 
     public TownType(String name,
                     CVItem icon,
@@ -50,6 +55,7 @@ public class TownType extends CivItem {
                     double price,
                     String permission,
                     HashMap<String, Integer> reqs,
+                    HashMap<String, Integer> regionLimits,
                     HashSet<String> effects,
                     int buildRadius,
                     int buildRadiusY,
@@ -72,6 +78,7 @@ public class TownType extends CivItem {
                 description,
                 groups);
         this.reqs = reqs;
+        this.regionLimits = regionLimits;
         this.effects = effects;
         this.buildRadius = buildRadius;
         this.buildRadiusY = buildRadiusY;

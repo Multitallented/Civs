@@ -191,6 +191,7 @@ public class ItemManager {
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 convertListToMap(config.getStringList("build-reqs")),
+                convertListToMap(config.getStringList("limits")),
                 effects,
                 buildRadius,
                 config.getInt("build-radius-y", buildRadius),
