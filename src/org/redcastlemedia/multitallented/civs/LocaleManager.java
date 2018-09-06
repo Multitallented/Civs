@@ -327,6 +327,12 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".location-set", "$1 location set"));
             currentLanguage.put("req-build-inside-town",
                     localeConfig.getString(langKey + ".req-build-inside-town", "This $1 must be built inside $2"));
+            currentLanguage.put("rename-town",
+                    localeConfig.getString(langKey + ".rename-town", "Rename town"));
+            currentLanguage.put("rename-desc",
+                    localeConfig.getString(langKey + ".rename-desc", "Use /cv rename oldName newName"));
+            currentLanguage.put("town-renamed",
+                    localeConfig.getString(langKey + ".town-renamed", "Your town has been renamed from $1 to $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

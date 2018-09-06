@@ -117,6 +117,7 @@ public class Civs extends JavaPlugin {
         commandList.put("port", portCommand);
         commandList.put("spawn", portCommand);
         commandList.put("home", portCommand);
+        commandList.put("rename", new RenameCommand());
     }
 
     private void initListeners() {

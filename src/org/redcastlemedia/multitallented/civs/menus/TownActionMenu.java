@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -93,8 +94,9 @@ public class TownActionMenu extends Menu {
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
-        ArrayList<String> lore = new ArrayList<>();
-        //TODO set lore
+        ArrayList<String> lore = new ArrayList<>(Util.textWrap(ChatColor.WHITE + "",
+                townType.getDescription(civilian.getLocale())));
+        cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 
 
@@ -112,29 +114,15 @@ public class TownActionMenu extends Menu {
         }
         //TODO power consumption / generation
         inventory.setItem(1, cvItem1.createItemStack());
-//        if (hasUpkeepItems) {
-//            cvItem1 = CVItem.createCVItemFromString("WOOL.5");
-//            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
-//            lore = new ArrayList<>();
-//            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
-//            cvItem1.setLore(lore);
-//        } else {
-//            cvItem1 = CVItem.createCVItemFromString("WOOL.14");
-//            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
-//            lore = new ArrayList<>();
-//            lore.add(localeManager.getTranslation(civilian.getLocale(), "region-not-working"));
-//            cvItem1.setLore(lore);
-//        }
-//        inventory.setItem(1, cvItem1.createItemStack());
 
         //2 Location/Nation?
-        //TODO location name
-//        CVItem cvItem2 = CVItem.createCVItemFromString("WOOD_DOOR");
-//        cvItem2.setDisplayName(town.getName());
-//        lore = new ArrayList<>();
-//        lore.add(localeManager.getTranslation(civilian.getLocale(), "region-in-town").replace("$1", town.getName()));
-//        cvItem2.setLore(lore);
-//        inventory.setItem(2, cvItem2.createItemStack());
+        //TODO nation display here
+        CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
+        cvItem2.setDisplayName(town.getName());
+        lore.clear();
+        lore.add(Region.locationToString(town.getLocation()));
+        cvItem2.setLore(lore);
+        inventory.setItem(2, cvItem2.createItemStack());
 
         //6 Destroy
         if ((town.getPeople().containsKey(civilian.getUuid()) &&
@@ -143,10 +131,16 @@ public class TownActionMenu extends Menu {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
             inventory.setItem(6, destroy.createItemStack());
-        }
 
-        //7 Rename
-        //TODO town rename
+            //7 Rename
+            CVItem cvItem3 = CVItem.createCVItemFromString("PAPER");
+            cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "rename-town"));
+            lore.clear();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "rename-desc"));
+            cvItem3.setLore(lore);
+            inventory.setItem(7, cvItem3.createItemStack());
+        }
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

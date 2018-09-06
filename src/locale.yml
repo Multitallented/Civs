@@ -99,6 +99,9 @@ en:
   port-warmup: "You will be teleported in $1s"
   teleported: "You have been teleported!"
   location-set: "$1 location set"
+  rename-town: "Rename town"
+  rename-desc: "Use /cv rename oldName newName"
+  town-renamed: "Your town has been renamed from $1 to $2"
 
   #errors
   no-region-type-found: "No region type found for $1"

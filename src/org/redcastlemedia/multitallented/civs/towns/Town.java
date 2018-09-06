@@ -39,6 +39,7 @@ public class Town {
         return location;
     }
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
     public HashMap<UUID, String> getPeople() { return people; }
     public HashSet<String> getAllies() { return allies; }
     public int getMaxPower() {

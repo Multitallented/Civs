@@ -205,13 +205,17 @@ public class TownManager {
         if (Civs.getInstance() == null) {
             return;
         }
+        removeTownFile(town.getName().toLowerCase());
+    }
+    private void removeTownFile(String townName) {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
-        File townFile = new File(townFolder, town.getName().toLowerCase() + ".yml");
+        File townFile = new File(townFolder, townName + ".yml");
         townFile.delete();
     }
+
     public void addInvite(UUID uuid, Town town) {
         invites.put(uuid, town);
     }
