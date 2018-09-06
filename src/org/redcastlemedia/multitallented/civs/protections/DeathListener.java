@@ -246,15 +246,25 @@ public class DeathListener implements Listener {
             return;
         }
 
+        int powerPerKill = ConfigManager.getInstance().getPowerPerKill();
+        if (powerPerKill > 0 && !damagerCiv.getFriends().contains(dyingCiv.getUuid()) &&
+                TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
+                        (!town.getPeople().get(dyingCiv.getUuid()).equals("member") &&
+                        !town.getPeople().get(dyingCiv.getUuid()).equals("owner"))) {
+                    continue;
+                }
+                town.setPower(town.getPower() - powerPerKill);
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+
         dyingCiv.setDeaths(dyingCiv.getDeaths() + 1);
         damagerCiv.setKills(damagerCiv.getKills() + 1);
         damagerCiv.setKillStreak(damagerCiv.getKillStreak() + 1);
 
         double econBonus = 0.0;
-
-//        damagerCiv.addFavoriteWeapon(player.get(PlayerInventory.class).getQuickbar().getCurrentItem().getMaterial().getDisplayName());
-//        dUser.addFavoriteVictim(user.NAME);
-//        user.addFavoriteKiller(dUser.NAME);
 
         double killStreakBonus = ConfigManager.getInstance().getPointsPerKillStreak() * damagerCiv.getKillStreak();
 
