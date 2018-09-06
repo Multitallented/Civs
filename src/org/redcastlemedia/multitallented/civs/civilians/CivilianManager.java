@@ -123,8 +123,14 @@ public class CivilianManager {
                 ArrayList<Bounty> bountyList = new ArrayList<>();
                 ConfigurationSection section1 = civConfig.getConfigurationSection("bounties");
                 for (String key : section1.getKeys(false)) {
-                    Bounty bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
-                            section1.getDouble(key + ".amount"));
+                    Bounty bounty;
+                    if (section1.isSet(key + ".issuer")) {
+                        bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
+                                section1.getDouble(key + ".amount"));
+                    } else {
+                        bounty = new Bounty(null,
+                                section1.getDouble(key + ".amount"));
+                    }
                     bountyList.add(bounty);
                 }
                 civilian.setBounties(bountyList);
@@ -206,7 +212,9 @@ public class CivilianManager {
             civConfig.set("classes", classes);
             if (!civilian.getBounties().isEmpty()) {
                 for (int i = 0; i < civilian.getBounties().size(); i++) {
-                    civConfig.set("bounties." + i + ".issuer", civilian.getBounties().get(i).getIssuer().toString());
+                    if (civilian.getBounties().get(i).getIssuer() != null) {
+                        civConfig.set("bounties." + i + ".issuer", civilian.getBounties().get(i).getIssuer().toString());
+                    }
                     civConfig.set("bounties." + i + ".amount", civilian.getBounties().get(i).getAmount());
                 }
             }
