@@ -38,13 +38,13 @@ public class DeathListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         long combatTagDuration = (long) ConfigManager.getInstance().getCombatTagDuration();
         combatTagDuration *= 1000;
-        if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
-            civilian.setLastDamage(System.currentTimeMillis());
-        } else {
-            civilian.setLastDamager(null);
-            civilian.setLastDamage(-1);
-        }
         if (!(event instanceof EntityDamageByEntityEvent)) {
+            if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
+                civilian.setLastDamage(System.currentTimeMillis());
+            } else {
+                civilian.setLastDamager(null);
+                civilian.setLastDamage(-1);
+            }
             return;
         }
         EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
@@ -60,6 +60,16 @@ public class DeathListener implements Listener {
         }
         if (damager == null && civilian.getLastDamage() < 0) {
             return;
+        }
+        if (damager != null) {
+            Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
+            if (damagerCiv.getFriends().contains(civilian.getUuid())) {
+                event.setCancelled(true);
+                damager.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(damagerCiv.getLocale(),
+                                "friendly-fire"));
+                return;
+            }
         }
         civilian.setLastDamage(System.currentTimeMillis());
         if (damager == null) {

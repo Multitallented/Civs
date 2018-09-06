@@ -361,6 +361,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".friend-added", "$1 has been added to your friends list"));
             currentLanguage.put("friend-removed",
                     localeConfig.getString(langKey + ".friend-removed", "$1 has been removed from your friends list"));
+            currentLanguage.put("friendly-fire",
+                    localeConfig.getString(langKey + ".friendly-fire", "You cant damage someone on your friends list"));
             languageMap.put(langKey, currentLanguage);
         }
     }
