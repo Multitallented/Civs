@@ -31,7 +31,6 @@ public class TownInviteConfirmationMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
         String townName = event.getInventory().getItem(0)
@@ -51,7 +50,16 @@ public class TownInviteConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            //TODO accept alliance invite
+            myTown.getAllies().add(town.getName());
+            town.getAllies().add(myTown.getName());
+            TownManager.getInstance().saveTown(town);
+            TownManager.getInstance().saveTown(myTown);
+            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                Civilian civilian1 = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                cPlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian1.getLocale(),
+                        "town-ally-request-accepted").replace("$1", town.getName())
+                        .replace("$2", myTown.getName()));
+            }
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
