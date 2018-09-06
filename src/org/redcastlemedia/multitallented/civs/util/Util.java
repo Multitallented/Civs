@@ -2,11 +2,14 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public class Util {
 
@@ -139,6 +143,23 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    public static ArrayList<Bounty> readBountyList(FileConfiguration config) {
+        ArrayList<Bounty> bountyList = new ArrayList<>();
+        ConfigurationSection section1 = config.getConfigurationSection("bounties");
+        for (String key : section1.getKeys(false)) {
+            Bounty bounty;
+            if (section1.isSet(key + ".issuer")) {
+                bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
+                        section1.getDouble(key + ".amount"));
+            } else {
+                bounty = new Bounty(null,
+                        section1.getDouble(key + ".amount"));
+            }
+            bountyList.add(bounty);
+        }
+        return bountyList;
     }
 
     public static boolean removeItems(List<List<CVItem>> req, Inventory inv) {

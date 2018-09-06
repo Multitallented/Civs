@@ -2,16 +2,19 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 import sun.org.mozilla.javascript.internal.UintMap;
 
 import java.io.File;
@@ -168,6 +171,9 @@ public class TownManager {
                 maxPower,
                 housing,
                 population);
+        if (config.isSet("bounties")) {
+            town.setBounties(Util.readBountyList(config));
+        }
         addTown(town);
     }
     public void addTown(Town town) {
@@ -274,6 +280,17 @@ public class TownManager {
             }
             config.set("housing", town.getHousing());
             config.set("population", town.getPopulation());
+
+            if (town.getBounties().isEmpty()) {
+                for (int i = 0; i < town.getBounties().size(); i++) {
+                    if (town.getBounties().get(i).getIssuer() != null) {
+                        config.set("bounties." + i + ".issuer", town.getBounties().get(i).getIssuer().toString());
+                    }
+                    config.set("bounties." + i + ".amount", town.getBounties().get(i).getAmount());
+                }
+            } else {
+                config.set("bounties", null);
+            }
 
             //TODO save all town properties
             config.save(townFile);

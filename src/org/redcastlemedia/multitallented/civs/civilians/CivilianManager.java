@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,20 +121,7 @@ public class CivilianManager {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
             }
             if (civConfig.isSet("bounties")) {
-                ArrayList<Bounty> bountyList = new ArrayList<>();
-                ConfigurationSection section1 = civConfig.getConfigurationSection("bounties");
-                for (String key : section1.getKeys(false)) {
-                    Bounty bounty;
-                    if (section1.isSet(key + ".issuer")) {
-                        bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
-                                section1.getDouble(key + ".amount"));
-                    } else {
-                        bounty = new Bounty(null,
-                                section1.getDouble(key + ".amount"));
-                    }
-                    bountyList.add(bounty);
-                }
-                civilian.setBounties(bountyList);
+                civilian.setBounties(Util.readBountyList(civConfig));
             }
 
             return civilian;
@@ -217,6 +205,8 @@ public class CivilianManager {
                     }
                     civConfig.set("bounties." + i + ".amount", civilian.getBounties().get(i).getAmount());
                 }
+            } else {
+                civConfig.set("bounties", null);
             }
 
             for (CivItem item : civilian.getExp().keySet()) {

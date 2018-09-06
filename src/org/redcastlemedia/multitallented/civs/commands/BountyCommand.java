@@ -50,8 +50,7 @@ public class BountyCommand implements CivCommand {
         String amountString = strings[2];
         double amount = Double.parseDouble(amountString);
 
-        Player target = Bukkit.getPlayer(playerName);
-        if (target == null || amount < 1) {
+        if (amount < 1) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "invalid-target"));
@@ -60,7 +59,6 @@ public class BountyCommand implements CivCommand {
             }
             return true;
         }
-
         if (player != null) {
             double balance = Civs.econ.getBalance(player);
             if (balance < amount) {
@@ -70,9 +68,43 @@ public class BountyCommand implements CivCommand {
             }
         }
 
+        Town town = TownManager.getInstance().getTown(playerName);
+        if (town != null) {
+            if (civilian != null) {
+                if (town.getPeople().containsKey(civilian.getUuid())) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                            "invalid-target"));
+                    return true;
+                }
+
+                town.getBounties().add(new Bounty(civilian.getUuid(), amount));
+                Civs.econ.withdrawPlayer(player, amount);
+            } else {
+                town.getBounties().add(new Bounty(null, amount));
+                commandSender.sendMessage(Civs.getPrefix() + "Bounty set on " + playerName + " for $" + amount);
+            }
+            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
+                        "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
+            }
+            return true;
+        }
+
+
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            if (player != null) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "invalid-target"));
+            } else {
+                commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
+            }
+            return true;
+        }
+
         Civilian targetCiv = CivilianManager.getInstance().getCivilian(target.getUniqueId());
         if (civilian != null) {
-            targetCiv.getBounties().add(new Bounty(targetCiv.getUuid(), amount));
+            targetCiv.getBounties().add(new Bounty(civilian.getUuid(), amount));
             Civs.econ.withdrawPlayer(player, amount);
         } else {
             targetCiv.getBounties().add(new Bounty(null, amount));

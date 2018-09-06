@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -315,6 +316,27 @@ public class DeathListener implements Listener {
             Civs.econ.withdrawPlayer(player, Math.abs(ConfigManager.getInstance().getMoneyPerDeath()));
         }
 
+        double bountyBonus = 0;
+        if (!dyingCiv.getBounties().isEmpty()) {
+            Bounty bounty = dyingCiv.getBounties().remove(dyingCiv.getBounties().size() -1);
+            bountyBonus = bounty.getAmount();
+
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (!town.getPeople().containsKey(dyingCiv.getUuid())) {
+                    continue;
+                }
+                if (town.getBounties().isEmpty()) {
+                    continue;
+                }
+                bountyBonus += town.getBounties().remove(town.getBounties().size() -1).getAmount();
+            }
+        }
+        final double BOUNTY_BONUS = bountyBonus;
+
+        if (Civs.econ != null) {
+            Civs.econ.depositPlayer(damager, bountyBonus);
+        }
+
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(), "death"
                 .replace("$1", ConfigManager.getInstance().getPointsPerDeath() + "")));
 
@@ -338,6 +360,17 @@ public class DeathListener implements Listener {
         }
         long interval = 10L;
         final Player dPlayer = damager;
+        if (bountyBonus > 0) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    dPlayer.sendMessage(Civs.getPrefix() + ChatColor.GREEN +
+                            localeManager.getTranslation(damagerCiv.getLocale(), "bounty-bonus")
+                                    .replace("$1", "" + BOUNTY_BONUS));
+                }
+            }, interval);
+            interval += 10L;
+        }
         if (points > 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                 @Override

@@ -1,9 +1,12 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Location;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 public class Town {
@@ -18,6 +21,7 @@ public class Town {
     private int housing;
     private int population;
     private HashSet<String> allies;
+    private ArrayList<Bounty> bounties;
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int population) {
@@ -71,6 +75,13 @@ public class Town {
             }
         }
         return count;
+    }
+
+    public ArrayList<Bounty> getBounties() {
+        return bounties;
+    }
+    public void setBounties(ArrayList<Bounty> bounties) {
+        this.bounties = bounties;
     }
 
     public int getHousing() {

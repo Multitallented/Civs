@@ -109,6 +109,7 @@ en:
   rename-desc: "Use /cv rename oldName newName"
   town-renamed: "Your town has been renamed from $1 to $2"
   bounty-set: "A bounty has been set on $1 for $2"
+  bounty-bonus: "You collected a bounty of $1"
 
   #errors
   no-region-type-found: "No region type found for $1"
