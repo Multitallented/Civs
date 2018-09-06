@@ -156,6 +156,19 @@ public class ItemManager {
         return spellType;
     }
 
+    private HashMap<String, Integer> convertListToMap(List<String> inputList) {
+        HashMap<String, Integer> returnMap = new HashMap<>();
+        for (String currentString : inputList) {
+            String[] splitString = currentString.split(":");
+            if (splitString.length != 2) {
+                returnMap.put(splitString[0], 1);
+            } else {
+                returnMap.put(splitString[0], Integer.parseInt(splitString[1]));
+            }
+        }
+        return returnMap;
+    }
+
     public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
         HashSet<String> effects = new HashSet<>();
@@ -177,7 +190,7 @@ public class ItemManager {
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
                 config.getString("permission"),
-                config.getStringList("build-reqs"),
+                convertListToMap(config.getStringList("build-reqs")),
                 effects,
                 buildRadius,
                 config.getInt("build-radius-y", buildRadius),

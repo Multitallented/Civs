@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -76,6 +77,27 @@ public class TownCommand implements CivCommand {
                     "must-be-built-on-top").replace("$1", townType.getProcessedName())
                     .replace("$2", townType.getChild()));
             return true;
+        }
+
+        if (!townType.getReqs().isEmpty()) {
+            HashMap<String, Integer> checkList = new HashMap<>(townType.getReqs());
+            Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
+                    townType.getBuildRadiusY(), townType.getBuildRadius(), false);
+            for (Region region : regions) {
+                if (checkList.containsKey(region.getType())) {
+                    if (checkList.get(region.getType()) < 2) {
+                        checkList.remove(region.getType());
+                    } else {
+                        checkList.put(region.getType(), checkList.get(region.getType()) - 1);
+                    }
+                }
+            }
+            if (!checkList.isEmpty()) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "missing-region-requirements").replace("$1", townType.getDisplayName()));
+                RegionListMenu.createMenu(checkList);
+                return true;
+            }
         }
 
 

@@ -333,6 +333,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".rename-desc", "Use /cv rename oldName newName"));
             currentLanguage.put("town-renamed",
                     localeConfig.getString(langKey + ".town-renamed", "Your town has been renamed from $1 to $2"));
+            currentLanguage.put("missing-region-requirements",
+                    localeConfig.getString(langKey + ".missing-region-requirements", "Your $1 is missing required regions"));
             languageMap.put(langKey, currentLanguage);
         }
     }

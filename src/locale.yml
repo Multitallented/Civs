@@ -146,6 +146,7 @@ en:
   invalid-target: "Invalid target"
   raid-target-inside-region: "You can't set a location inside a region"
   req-build-inside-town: "This $1 must be built inside $2"
+  missing-region-requirements: "Your $1 is missing required regions"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
