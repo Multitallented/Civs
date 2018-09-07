@@ -42,7 +42,7 @@ folders:
   utilities: REDSTONE
   housing: RED_BED
   defense: ARROW
-  quarries: STONE_SPADE
+  quarries: STONE_SHOVEL
   npchousing: VILLAGER_SPAWN_EGG
 item-groups:
   sign: SIGN,WALL_SIGN

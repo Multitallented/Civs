@@ -135,10 +135,10 @@ public class CVItem {
             String itemGroup = null;
             String params = null;
             for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
-                if (input.startsWith("g:" + currKey)) {
+                if (input.matches("g:" + currKey + "\\*.*")) {
                     key = currKey;
                     itemGroup = ConfigManager.getInstance().getItemGroups().get(key);
-                    params = input.replace("g:" + currKey, "");
+                    params = input.replaceAll("g:" + currKey + "(?=\\*)", "");
                 }
             }
             if (key == null || itemGroup == null || params == null) {
