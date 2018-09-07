@@ -1,0 +1,44 @@
+type: region
+icon: CHEST
+name: Lumberyard
+max: 2
+price: 50
+groups:
+- raw
+- farm
+
+build-reqs:
+- g:log*8
+- g:fence*28
+- g:fencegate*2
+- CHEST*2
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 120 #2 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_AXE
+    output:
+    - OAK_LOG*2
+  1:
+    reagents:
+    - IRON_AXE
+    output:
+    - OAK_LOG*4
+  2:
+    reagents:
+    - DIAMOND_AXE
+    output:
+    - OAK_LOG*8
+
+description:
+  en: "Automated oak log farming"
+  es: "Agricultura automatizada de registro de roble"

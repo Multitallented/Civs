@@ -44,6 +44,8 @@ folders:
   defense: ARROW
   quarries: STONE_SPADE
   npchousing: VILLAGER_SPAWN_EGG
+  factories: CRAFTING_TABLE
+  mines: STONE_PICKAXE
 item-groups:
   sign: SIGN,WALL_SIGN
   wood: OAK_PLANKS,SPRUCE_PLANKS,BIRCH_PLANKS,JUNGLE_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS
