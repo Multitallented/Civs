@@ -139,20 +139,20 @@ public class Region {
                     if (currentBlock == null) {
                         continue;
                     }
-
+                    Material mat = currentBlock.getType();
+                    if (maxCheck.containsKey(mat)) {
+                        maxCheck.put(mat, maxCheck.get(mat) - 1);
+                    }
                     boolean destroyIndex = false;
                     int i=0;
                     outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
-                        if (maxCheck.containsKey(currentBlock.getType())) {
-                            maxCheck.put(currentBlock.getType(), maxCheck.get(currentBlock.getType()) - 1);
-                        }
-                        if (tempMap.containsKey(currentBlock.getType())) {
+                        if (tempMap.containsKey(mat)) {
                             blocksFound.add(currentBlock);
 
-                            if (tempMap.get(currentBlock.getType()) < 2) {
+                            if (tempMap.get(mat) < 2) {
                                 destroyIndex = true;
                             } else {
-                                tempMap.put(currentBlock.getType(), tempMap.get(currentBlock.getType()) - 1);
+                                tempMap.put(mat, tempMap.get(mat) - 1);
                             }
                             RegionManager.getInstance().adjustRadii(radii, location, x,y,z);
                             break outer1;
@@ -211,9 +211,21 @@ public class Region {
                         }
                     }
                     if (!foundMat) {
-                        HashMap<Material, Integer> tempMap = new HashMap<>();
-                        tempMap.put(block.getType(), 1);
-                        itemCheck.add(tempMap);
+                        boolean unfullFilled = true;
+                        itemLoop: for (List<CVItem> tempList : regionType.getReqs()) {
+                            for (CVItem item : tempList) {
+                                if (item.getMat() != block.getType() &&
+                                        maxCheck.get(item.getMat()) < 1) {
+                                    unfullFilled = false;
+                                    break itemLoop;
+                                }
+                            }
+                        }
+                        if (unfullFilled) {
+                            HashMap<Material, Integer> tempMap = new HashMap<>();
+                            tempMap.put(block.getType(), 1);
+                            itemCheck.add(tempMap);
+                        }
                     }
                 }
             }

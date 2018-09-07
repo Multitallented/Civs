@@ -29,6 +29,10 @@ public class CivilianManager {
         loadAllCivilians();
     }
 
+    protected CivilianManager(boolean load) {
+        civilianManager = this;
+    }
+
     public Collection<Civilian> getCivilians() {
         return civilians.values();
     }

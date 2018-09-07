@@ -735,7 +735,7 @@ public class RegionsTests {
         config.set("name", "cobble");
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
-        reqs.add("cobblestone*2");
+        reqs.add("cobblestone*2,GRASS_BLOCK*2");
         reqs.add("gold_block*1");
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();

@@ -40,7 +40,7 @@ public class DeathListenerTests {
     @Before
     public void onBefore() {
         new RegionManager();
-        new CivilianManager();
+        CivilianTests.skipLoadingFiles();
         this.player1 = mock(Player.class);
         when(player1.getUniqueId()).thenReturn(new UUID(1, 3));
         this.player2 = mock(Player.class);

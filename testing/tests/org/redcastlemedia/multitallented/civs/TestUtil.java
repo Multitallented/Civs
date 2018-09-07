@@ -23,6 +23,7 @@ import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.io.File;
@@ -60,6 +61,7 @@ public class TestUtil {
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
 
+        CivilianTests.skipLoadingFiles();
         Server server = mock(Server.class);
         Inventory inventory = new InventoryImpl();
         Logger logger = mock(Logger.class);
@@ -134,8 +136,7 @@ public class TestUtil {
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
 
-        CivilianManager civilianManager = new CivilianManager();
-        civilianManager.createDefaultCivilian(player);
+        CivilianManager.getInstance().createDefaultCivilian(player);
         when(server.getScheduler()).thenReturn(mock(BukkitScheduler.class));
 
         block = createBlock(Material.CHEST, new Location(world, 0, 0, 0));
@@ -173,6 +174,8 @@ public class TestUtil {
                 createBlock(Material.COBBLESTONE, new Location(world, 1000, 2, 0)));
         world.putBlock(994, 0, 0,
                 createBlock(Material.COBBLESTONE, new Location(world, 994, 0, 0)));
+        world.putBlock(994, 1, 0,
+                createBlock(Material.GRASS_BLOCK, new Location(world, 994, 1, 0)));
         world.putBlock(1006, 2, 0,
                 createBlock(Material.GOLD_BLOCK, new Location(world, 1006, 0, 0)));
         //Councilroom
@@ -223,7 +226,7 @@ public class TestUtil {
         {
             int i = 0;
             outer: for (int x = -8; x < -6; x++) {
-                for (int y = 55; y < 66; y++) {
+                for (int y = 53; y < 66; y++) {
                     for (int z = 995; z < 1006; z++) {
                         world.putBlock(x, y, z,
                                 createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));

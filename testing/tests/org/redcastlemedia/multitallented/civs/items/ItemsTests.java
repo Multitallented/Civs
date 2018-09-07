@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 
 import java.util.ArrayList;
 
@@ -33,11 +34,11 @@ public class ItemsTests {
     @Test
     public void newPlayerShouldRecieveAShelterItem() {
         loadRegionTypeShelter();
-        CivilianManager civilianManager = new CivilianManager();
+        CivilianTests.skipLoadingFiles();
         PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianJoin(event);
-        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         boolean hasShelter = false;
         for (CivItem civItem : civilian.getStashItems()) {
             if (civItem.getDisplayName().equals("Civs Shelter")) {
@@ -52,11 +53,10 @@ public class ItemsTests {
         loadSpellTypeBackflip();
         loadRegionTypeShelter();
         loadRegionTypeCityHall();
-        CivilianManager civilianManager = new CivilianManager();
         PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianJoin(event);
-        Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         boolean hasCityHall = false;
         for (CivItem civItem : civilian.getStashItems()) {
             if (civItem.getDisplayName().equals("Civs CityHall")) {
