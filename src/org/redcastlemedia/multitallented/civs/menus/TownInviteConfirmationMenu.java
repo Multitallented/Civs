@@ -11,18 +11,19 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.UUID;
 
-public class ConfirmationMenu extends Menu {
-    static String MENU_NAME = "CivConfirm";
-    public ConfirmationMenu() {
+public class TownInviteConfirmationMenu extends Menu {
+    static String MENU_NAME = "CivConfirmInvite";
+    public TownInviteConfirmationMenu() {
         super(MENU_NAME);
     }
 
@@ -33,10 +34,11 @@ public class ConfirmationMenu extends Menu {
         ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String regionName = event.getInventory().getItem(0)
+        String townName = event.getInventory().getItem(0)
                 .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        CivItem civItem = itemManager.getItemType(regionName);
+        Town town = TownManager.getInstance().getTown(townName);
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
+        Town myTown = TownManager.getInstance().isOwnerOfATown(civilian);
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -46,58 +48,46 @@ public class ConfirmationMenu extends Menu {
             return;
         }
 
-        Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
-            if (civItem.getPrice() > 0 && (Civs.econ == null ||
-                    !Civs.econ.has(player, civItem.getPrice()))) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "not-enough-money").replace("$1", civItem.getPrice() + ""));
-                return;
-            }
-
             clearHistory(civilian.getUuid());
-            if (Civs.econ == null) {
-                player.sendMessage(Civs.getPrefix() + " Econ plugin not enabled or hooked through Vault.");
-                return;
-            }
-            Civs.econ.withdrawPlayer(player, civItem.getPrice());
-            event.getWhoClicked().sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "item-bought")
-                            .replace("$1", civItem.getDisplayName())
-                            .replace("$2", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             event.getWhoClicked().closeInventory();
-            if (event.getWhoClicked().getInventory().firstEmpty() != -1) {
-                event.getWhoClicked().getInventory().addItem(civItem.createItemStack());
-            } else {
-                civilian.getStashItems().add(civItem);
-            }
-            civilianManager.saveCivilian(civilian);
+            //TODO accept alliance invite
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
+            myTown.getAllyInvites().remove(townName);
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "town-ally-request-denied").replace("$1", townName));
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(uuid).equals("owner")) {
+                    Player pSend = Bukkit.getPlayer(uuid);
+                    if (pSend.isOnline()) {
+                        pSend.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                                "town-ally-request-denied").replace("$1", myTown.getName()));
+                    }
+                }
+            }
             return;
         }
     }
 
-    public static Inventory createMenu(Civilian civilian, CivItem civItem) {
+    public static Inventory createMenu(Civilian civilian, String townName) {
+        Town town = TownManager.getInstance().getTown(townName);
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
+        CVItem icon = new CVItem(townType.getMat(), 1, 0, town.getName());
 
-        inventory.setItem(0, civItem.clone().createItemStack());
+        inventory.setItem(0, icon.createItemStack());
 
         CVItem cvItem = CVItem.createCVItemFromString("EMERALD");
-        cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy").replace("$1", civItem.getDisplayName()));
-        List<String> lore = new ArrayList<>();
-        if (civItem.getPrice() > 0) {
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + civItem.getPrice());
-        }
-        cvItem.setLore(lore);
+        cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "confirm"));
         inventory.setItem(3, cvItem.createItemStack());
 
         CVItem cvItem1 = CVItem.createCVItemFromString("BARRIER");
-        cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "cancel"));
+        cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "reject"));
         inventory.setItem(4, cvItem1.createItemStack());
 
         inventory.setItem(8, getBackButton(civilian));

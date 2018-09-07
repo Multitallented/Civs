@@ -96,10 +96,11 @@ public class CommunityMenu extends Menu {
         cvItem2.setDisplayName(localeManager.getTranslation(locale, "your-towns"));
         inventory.setItem(2, cvItem2.createItemStack());
 
-        //3 Wars
+        //3 Alliances
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
-        cvItem1.setDisplayName(localeManager.getTranslation(locale, "wars"));
+        cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
         inventory.setItem(3, cvItem1.createItemStack());
+        //TODO make menu for alliances
 
         //4 PvP leaderboard
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");

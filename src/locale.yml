@@ -39,6 +39,7 @@ en:
   towns: Towns
   your-towns: Your towns
   wars: Wars
+  alliances: Alliances
   leaderboard: Leaderboard
   ports: Ports
   money: "Money: $$1"
@@ -48,6 +49,8 @@ en:
   kills: "Kills: $1"
   deaths: "Deaths: $1"
   friends: "Friends"
+  confirm: "Confirm"
+  reject: "Reject"
 
   #region
   size: Size
@@ -121,6 +124,7 @@ en:
   town-ally-invites: "You have town ally invites"
   town-ally-request-sent: "An alliance has been proposed to $1"
   town-ally-request-accepted: "Alliance has been formed between $1 and $2"
+  town-ally-request-denied: "Alliance request with $1 has been denied"
   town-ally-removed: "Alliance between $1 and $2 has dissolved"
 
   #errors

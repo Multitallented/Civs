@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class TownInviteMenu extends Menu {
-    public static String MENU_NAME = "CivsTownList";
+    public static String MENU_NAME = "CivsTownInvites";
 
     public TownInviteMenu() {
         super(MENU_NAME);
@@ -66,7 +66,7 @@ public class TownInviteMenu extends Menu {
         if (town != null) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + yourTownName);
             event.getWhoClicked().closeInventory();
-            //TODO open invite confirmation menu
+            event.getWhoClicked().openInventory(TownInviteConfirmationMenu.createMenu(civilian, townName));
             return;
         }
     }

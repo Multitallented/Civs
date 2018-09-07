@@ -379,6 +379,14 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-ally-removed", "Alliance between $1 and $2 has dissolved"));
             currentLanguage.put("town-ally-invites",
                     localeConfig.getString(langKey + ".town-ally-invites", "You have town ally invites"));
+            currentLanguage.put("alliances",
+                    localeConfig.getString(langKey + ".alliances", "Alliances"));
+            currentLanguage.put("confirm",
+                    localeConfig.getString(langKey + ".confirm", "Confirm"));
+            currentLanguage.put("reject",
+                    localeConfig.getString(langKey + ".reject", "Reject"));
+            currentLanguage.put("town-ally-request-denied",
+                    localeConfig.getString(langKey + ".town-ally-request-denied", "Alliance request with $1 has been denied"));
             languageMap.put(langKey, currentLanguage);
         }
     }
