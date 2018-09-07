@@ -153,6 +153,9 @@ public class RegionActionMenu extends Menu {
             inventory.setItem(3, cvItem2.createItemStack());
         }
 
+        //4 Rebuild
+        //TODO add rebuild
+
         //6 Destroy
         if (!regionType.getEffects().containsKey("indestructible") &&
                 region.getPeople().containsKey(civilian.getUuid()) ||

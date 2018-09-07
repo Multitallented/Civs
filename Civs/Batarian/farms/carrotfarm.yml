@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 name: CarrotFarm
 max: 1
-price: 40
+price: 250
 groups:
 - farm
 
@@ -11,6 +11,12 @@ build-reqs:
 - g:fence*32
 - WATER*1
 - CARROTS*48
+
+towns:
+- settlement
+- village
+- town
+- capital
 
 build-radius: 4
 effects:
@@ -30,3 +36,4 @@ upkeep:
 
 description:
   en: "Automatic carrot farm"
+  es: "Granja automática de zanahorias"

@@ -1,0 +1,45 @@
+type: region
+icon: CHEST
+name: CobbleQuarry
+price: 40
+groups:
+- raw
+- quarry
+
+build-reqs:
+- FURNACE*2
+- LAVA
+- WATER
+
+towns:
+- settlement
+- village
+- town
+- capital
+
+build-radius: 2
+effects:
+- block_break
+- block_build
+
+period: 30
+upkeep:
+  0:
+    reagents:
+    - STONE_PICKAXE
+    output:
+    - COBBLESTONE*4
+  1:
+    reagents:
+    - IRON_PICKAXE
+    output:
+    - COBBLESTONE*8
+  2:
+    reagents:
+    - DIAMOND_PICKAXE
+    output:
+    - COBBLESTONE*32
+
+description:
+  en: "Creates cobblestone every 30 seconds"
+  es: "Crea adoquines cada 30 segundos"

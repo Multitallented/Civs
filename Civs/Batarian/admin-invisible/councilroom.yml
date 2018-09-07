@@ -1,0 +1,38 @@
+type: region
+icon: SIGN
+name: CouncilRoom
+
+pre-reqs:
+- permission:civs.create.councilroom
+
+build-reqs:
+- CHEST*4
+- g:door*2
+- g:window*16
+- g:roof*121
+- g:secondary*60
+- g:primary*350
+- g:stairs*4
+- BOOKSHELF*8
+- g:sign*8
+build-radius: 5
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- port
+- indestructible
+- block_explosion
+- cant_override
+
+period: daily
+upkeep:
+  0:
+    power-output: 96
+
+description:
+  en: "The central structure for a town. Produces 96 power per day. Also acts as a home port."
+  es: "La estructura central de una ciudad. Produce 96 potencia por día. También actúa como un puerto de origen."

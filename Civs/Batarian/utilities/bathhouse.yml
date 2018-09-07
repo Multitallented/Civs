@@ -1,0 +1,36 @@
+type: region
+icon: CRAFTING_TABLE
+name: BathHouse
+max: 1
+price: 700
+groups:
+- utility
+
+build-reqs:
+- WATER*150
+- g:primary*230
+- g:secondary*40
+- g:fencegate*2
+- FURNACE*14
+
+build-radius: 7
+towns:
+- settlement
+- village
+- town
+- capital
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: daily
+upkeep:
+  0:
+    power-output: 96
+
+description:
+  en: "Provides 96 power to the town each day"
+  es: "Proporciona 96 de energía a la ciudad cada día"

@@ -83,12 +83,24 @@ public class TownCommand implements CivCommand {
             HashMap<String, Integer> checkList = new HashMap<>(townType.getReqs());
             Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
                     townType.getBuildRadiusY(), townType.getBuildRadius(), false);
-            for (Region region : regions) {
+            regionCheck: for (Region region : regions) {
                 if (checkList.containsKey(region.getType())) {
                     if (checkList.get(region.getType()) < 2) {
                         checkList.remove(region.getType());
                     } else {
                         checkList.put(region.getType(), checkList.get(region.getType()) - 1);
+                    }
+                    continue;
+                }
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                for (String groupType : regionType.getGroups()) {
+                    if (checkList.containsKey(groupType)) {
+                        if (checkList.get(region.getType()) < 2) {
+                            checkList.remove(groupType);
+                        } else {
+                            checkList.put(groupType, checkList.get(groupType) - 1);
+                        }
+                        continue regionCheck;
                     }
                 }
             }

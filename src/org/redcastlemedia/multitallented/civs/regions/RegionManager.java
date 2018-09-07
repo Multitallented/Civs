@@ -371,6 +371,12 @@ public class RegionManager {
             }
             if (townType.getRegionLimit(regionTypeName) > 0) {
                 int limit = townType.getRegionLimit(regionTypeName);
+                HashMap<String, Integer> groupLimits = new HashMap<>();
+                for (String group : regionType.getGroups()) {
+                    if (townType.getRegionLimit(group) > 0) {
+                        groupLimits.put(group, townType.getRegionLimit(group));
+                    }
+                }
                 int count = 0;
                 for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
                     if (region.getType().equals(regionTypeName)) {
@@ -384,6 +390,23 @@ public class RegionManager {
                             event.setCancelled(true);
                             BlockLogger.getInstance().removeBlock(block.getLocation());
                             return;
+                        }
+                        RegionType regionType1 = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                        for (String groupType : regionType1.getGroups()) {
+                            if (groupLimits.containsKey(groupType)) {
+                                if (groupLimits.get(groupType) < 2) {
+                                    player.sendMessage(Civs.getPrefix() +
+                                            localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                                    .replace("$1", town.getType())
+                                                    .replace("$2", townType.getRegionLimit(groupType) + "")
+                                                    .replace("$3", groupType));
+                                    event.setCancelled(true);
+                                    BlockLogger.getInstance().removeBlock(block.getLocation());
+                                    return;
+                                } else {
+                                    groupLimits.put(groupType, groupLimits.get(groupType) -1);
+                                }
+                            }
                         }
                     }
                 }

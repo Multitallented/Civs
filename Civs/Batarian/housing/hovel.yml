@@ -1,11 +1,11 @@
 type: region
 icon: CHEST
-name: Studio
+name: Hovel
 max: 2
 price: 200
-group:
-- house
-- studio
+groups:
+- housing
+- hovel
 
 build-reqs:
 - CHEST*2
@@ -31,10 +31,10 @@ effects:
 - housing:1
 
 towns:
-  - settlement
-  - village
-  - town
-  - capital
+- settlement
+- village
+- town
+- capital
 
 period: 3600 #1 hour
 upkeep:
@@ -50,4 +50,5 @@ upkeep:
     payout: 15.6 # 374.4 / day
 
 description:
-  en: "2nd level of house"
+  en: "2nd level of house. Earns $374 for 4.5 stacks of apples per day."
+  es: "2do nivel de la casa. Gana $ 374 por 4.5 pilas de manzanas por día."
