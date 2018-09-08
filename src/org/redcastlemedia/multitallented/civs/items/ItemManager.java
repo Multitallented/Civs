@@ -70,7 +70,7 @@ public class ItemManager {
                         0,
                         null,
                         currParentList,
-                        file.getName().contains("invisible"));
+                        !file.getName().contains("invisible"));
                 itemTypes.put(folderName.toLowerCase(), folderType);
                 if (parentList != null) {
                     parentList.add(folderType);
