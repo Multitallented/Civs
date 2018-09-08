@@ -136,7 +136,7 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onStarterBookClick(PlayerInteractEvent event) {
         if (event.getItem() == null ||
                 (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
