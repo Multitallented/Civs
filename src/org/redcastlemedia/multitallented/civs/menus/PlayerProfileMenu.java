@@ -137,12 +137,12 @@ public class PlayerProfileMenu extends Menu {
         }
 
         //6 Add friend / Remove friend
-        if (!civilian.getFriends().contains(player.getUniqueId())) {
+        if (!civilian.getFriends().contains(player.getUniqueId()) && !civilian.getUuid().equals(player.getUniqueId())) {
             CVItem cvItem = CVItem.createCVItemFromString("EMERALD_BLOCK");
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "add-friend"));
             inventory.setItem(6, cvItem.createItemStack());
-        } else {
+        } else if (!civilian.getUuid().equals(player.getUniqueId())) {
             CVItem cvItem = CVItem.createCVItemFromString("BARRIER");
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "remove-friend"));

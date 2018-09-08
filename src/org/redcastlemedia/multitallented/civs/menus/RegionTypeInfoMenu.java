@@ -126,13 +126,15 @@ public class RegionTypeInfoMenu extends Menu {
         //TODO Biome reqs
 
         //5 town reqs
-        CVItem cvItem5 = CVItem.createCVItemFromString("OAK_DOOR");
-        cvItem5.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "towns"));
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "town-req-desc"));
-        lore.addAll(regionType.getTowns());
-        cvItem5.setLore(lore);
-        inventory.setItem(5, cvItem5.createItemStack());
+        if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {
+            CVItem cvItem5 = CVItem.createCVItemFromString("OAK_DOOR");
+            cvItem5.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "towns"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "town-req-desc"));
+            lore.addAll(regionType.getTowns());
+            cvItem5.setLore(lore);
+            inventory.setItem(5, cvItem5.createItemStack());
+        }
 
         //6 build-reqs
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");

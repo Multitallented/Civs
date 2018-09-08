@@ -196,8 +196,12 @@ public class Civilian {
             return true;
         }
         ConfigManager configManager = ConfigManager.getInstance();
+        if (civItem.getGroups() == null ||
+                civItem.getGroups().isEmpty()) {
+            return false;
+        }
         for (String group : civItem.getGroups()) {
-            if (configManager.getGroups().get(group) != -1 &&
+            if (configManager.getGroups().get(group) != null &&
                     configManager.getGroups().get(group) <= getCountGroup(group)) {
                 return true;
             }
