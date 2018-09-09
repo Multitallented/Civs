@@ -84,21 +84,23 @@ public class TownCommand implements CivCommand {
             Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
                     townType.getBuildRadiusY(), townType.getBuildRadius(), false);
             regionCheck: for (Region region : regions) {
-                if (checkList.containsKey(region.getType())) {
-                    if (checkList.get(region.getType()) < 2) {
-                        checkList.remove(region.getType());
+                String regionTypeName = region.getType().toLowerCase();
+                if (checkList.containsKey(regionTypeName)) {
+                    if (checkList.get(regionTypeName) < 2) {
+                        checkList.remove(regionTypeName);
                     } else {
-                        checkList.put(region.getType(), checkList.get(region.getType()) - 1);
+                        checkList.put(regionTypeName, checkList.get(regionTypeName) - 1);
                     }
                     continue;
                 }
-                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
                 for (String groupType : regionType.getGroups()) {
-                    if (checkList.containsKey(groupType)) {
-                        if (checkList.get(region.getType()) < 2) {
-                            checkList.remove(groupType);
+                    String groupName = groupType.toLowerCase();
+                    if (checkList.containsKey(groupName)) {
+                        if (checkList.get(regionTypeName) < 2) {
+                            checkList.remove(groupName);
                         } else {
-                            checkList.put(groupType, checkList.get(groupType) - 1);
+                            checkList.put(groupName, checkList.get(groupName) - 1);
                         }
                         continue regionCheck;
                     }
@@ -107,7 +109,7 @@ public class TownCommand implements CivCommand {
             if (!checkList.isEmpty()) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "missing-region-requirements").replace("$1", townType.getDisplayName()));
-                RegionListMenu.createMenu(checkList);
+                player.openInventory(RegionListMenu.createMenu(checkList));
                 return true;
             }
         }
