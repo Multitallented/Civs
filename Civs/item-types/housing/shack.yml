@@ -20,10 +20,10 @@ build-reqs:
 - CRAFTING_TABLE
 
 towns:
-  - settlement
-  - village
-  - town
-  - capital
+- settlement
+- village
+- town
+- capital
 
 build-radius: 3 #7x7x7
 effects:
