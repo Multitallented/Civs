@@ -8,7 +8,6 @@ group:
 
 build-reqs:
 - councilroom:1
-- housing:1
 
 critical-build-reqs:
 - councilroom
@@ -19,7 +18,7 @@ limits:
 - hovel:1
 - arrowtrap:1
 
-build-radius: 16
+build-radius: 24
 build-radius-y: 500
 effects:
 - block_break

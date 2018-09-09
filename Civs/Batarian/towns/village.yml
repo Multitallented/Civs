@@ -24,7 +24,7 @@ critical-build-reqs:
 - councilroom
 
 child: settlement
-build-radius: 24
+build-radius: 36
 build-radius-y: 500
 effects:
 - block_break

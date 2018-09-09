@@ -276,7 +276,7 @@ public class TownManager {
             config.set("housing", town.getHousing());
             config.set("population", town.getPopulation());
 
-            if (town.getBounties().isEmpty()) {
+            if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
                     if (town.getBounties().get(i).getIssuer() != null) {
                         config.set("bounties." + i + ".issuer", town.getBounties().get(i).getIssuer().toString());
@@ -290,6 +290,7 @@ public class TownManager {
             //TODO save all town properties
             config.save(townFile);
         } catch (Exception e) {
+            e.printStackTrace();
             Civs.logger.severe("Unable to save town " + town.getName().toLowerCase() + ".yml");
         }
     }

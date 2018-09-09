@@ -169,7 +169,7 @@ public class RegionTypeInfoMenu extends Menu {
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
                         .replace("$1", regionType.getName()));
                 cvItem3.setLore(lore);
-                inventory.setItem(10, cvItem3.createItemStack());
+                inventory.setItem(10 + i * 9, cvItem3.createItemStack());
             }
 
             //11 output
@@ -180,7 +180,7 @@ public class RegionTypeInfoMenu extends Menu {
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
                         .replace("$1", regionType.getName()));
                 cvItem4.setLore(lore);
-                inventory.setItem(11, cvItem4.createItemStack());
+                inventory.setItem(11 + i * 9, cvItem4.createItemStack());
             }
 
             if (regionType.getUpkeeps().get(i).getPayout() > 0) {
@@ -190,7 +190,7 @@ public class RegionTypeInfoMenu extends Menu {
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "payout")
                         .replace("$1", regionType.getUpkeeps().get(i).getPayout() + ""));
                 cvItem4.setLore(lore);
-                inventory.setItem(12, cvItem4.createItemStack());
+                inventory.setItem(12 + i * 9, cvItem4.createItemStack());
             }
             if (regionType.getUpkeeps().get(i).getPowerInput() > 0) {
                 CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_ORE");
@@ -199,7 +199,7 @@ public class RegionTypeInfoMenu extends Menu {
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "power-input")
                         .replace("$1", regionType.getUpkeeps().get(i).getPowerInput() + ""));
                 cvItem4.setLore(lore);
-                inventory.setItem(13, cvItem4.createItemStack());
+                inventory.setItem(13 + i * 9, cvItem4.createItemStack());
             }
             if (regionType.getUpkeeps().get(i).getPowerOutput() > 0) {
                 CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_TORCH");
@@ -208,7 +208,7 @@ public class RegionTypeInfoMenu extends Menu {
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "power-output")
                         .replace("$1", regionType.getUpkeeps().get(i).getPowerOutput() + ""));
                 cvItem4.setLore(lore);
-                inventory.setItem(14, cvItem4.createItemStack());
+                inventory.setItem(14 + i * 9, cvItem4.createItemStack());
             }
         }
 

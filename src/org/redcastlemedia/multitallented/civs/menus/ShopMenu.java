@@ -139,6 +139,7 @@ public class ShopMenu extends Menu {
             }
             CVItem civItem1 = civItem.clone();
             if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
+                civItem1.getLore().clear();
                 civItem1.getLore().add(civilian.getUuid().toString());
                 civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
                         ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));

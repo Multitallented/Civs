@@ -257,7 +257,7 @@ public class ItemManager {
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
-        String rebuild = config.getString("rebuild");
+        String rebuild = config.getString("rebuild", null);
         ConfigurationSection configurationSection = config.getConfigurationSection("description");
         HashMap<String, String> description = new HashMap<>();
         if (configurationSection != null) {

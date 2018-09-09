@@ -210,12 +210,13 @@ public class Civilian {
     }
 
     public int getCountStashItems(String name) {
+        int count = 0;
         for (CivItem civItem : stashItems) {
             if (civItem.getProcessedName().equals(name)) {
-                return civItem.getCivQty();
+                count += civItem.getQty();
             }
         }
-        return 0;
+        return count;
     }
 
     public int getCountGroup(String group) {

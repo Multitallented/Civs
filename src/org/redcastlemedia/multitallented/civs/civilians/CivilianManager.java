@@ -221,7 +221,7 @@ public class CivilianManager {
             civConfig.set("points", civilian.getPoints());
             civConfig.set("karma", civilian.getKarma());
             civConfig.set("classes", classes);
-            if (!civilian.getBounties().isEmpty()) {
+            if (civilian.getBounties() != null && !civilian.getBounties().isEmpty()) {
                 for (int i = 0; i < civilian.getBounties().size(); i++) {
                     if (civilian.getBounties().get(i).getIssuer() != null) {
                         civConfig.set("bounties." + i + ".issuer", civilian.getBounties().get(i).getIssuer().toString());
