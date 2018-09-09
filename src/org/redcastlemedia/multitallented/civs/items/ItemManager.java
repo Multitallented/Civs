@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
@@ -447,5 +448,25 @@ public class ItemManager {
             return false;
         }
         return true;
+    }
+
+    public void addMinItems(Civilian civilian) {
+        for (CivItem civItem : itemTypes.values()) {
+            if (civItem.getCivMin() < 1) {
+                continue;
+            }
+            int count = civilian.getCountStashItems(civItem.getProcessedName());
+            if (count >= civItem.getCivMin()) {
+                continue;
+            }
+            if (hasItemUnlocked(civilian, civItem)) {
+                int add = 0;
+                while(count < civItem.getCivMin() + add) {
+                    civilian.getStashItems().add(civItem);
+                    add++;
+                }
+            }
+        }
+        CivilianManager.getInstance().saveCivilian(civilian);
     }
 }

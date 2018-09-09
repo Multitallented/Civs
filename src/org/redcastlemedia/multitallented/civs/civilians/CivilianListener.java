@@ -14,8 +14,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -228,6 +230,16 @@ public class CivilianListener implements Listener {
         }
         BlockLogger blockLogger = BlockLogger.getInstance();
         blockLogger.putBlock(event.getBlock().getLocation(), CVItem.createFromItemStack(is));
+    }
+
+    @EventHandler
+    public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
+        if (!CVItem.isCivsItem(event.getItem())) {
+            return;
+        }
+        if (event.getDestination() instanceof PlayerInventory) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

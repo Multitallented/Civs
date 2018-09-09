@@ -145,6 +145,8 @@ public class CivilianManager {
                 civilian.setBounties(Util.readBountyList(civConfig));
             }
 
+            ItemManager.getInstance().addMinItems(civilian);
+
             return civilian;
         } catch (Exception ex) {
             Civs.logger.severe("Unable to read " + uuid + ".yml");
