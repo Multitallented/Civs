@@ -234,15 +234,24 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
+            return;
+        }
         if (!CVItem.isCivsItem(event.getItem())) {
             return;
         }
-        if (event.getDestination() instanceof PlayerInventory) {
+        if (!(event.getDestination() instanceof PlayerInventory)) {
             event.setCancelled(true);
+            if (!event.getSource().getViewers().isEmpty()) {
+                HumanEntity humanEntity = event.getSource().getViewers().get(0);
+                Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+            }
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onCivilianClickItem(InventoryClickEvent event) {
         if (!CVItem.isCivsItem(event.getCurrentItem()) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
@@ -265,5 +274,5 @@ public class CivilianListener implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
             return;
         }
-    }
+    }*/
 }

@@ -122,7 +122,7 @@ public class TownActionMenu extends Menu {
                     people.add(player);
                 }
             }
-            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, "add", people, 0, town.getName()));
+            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, "invite", people, 0, town.getName()));
             return;
         }
 
