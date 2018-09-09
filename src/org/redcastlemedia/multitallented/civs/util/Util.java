@@ -55,28 +55,29 @@ public class Util {
         return inputString;
     }
     public static String parseColors(String input) {
-        input = input.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");
-        input = input.replaceAll("@\\{BLACK\\}", ChatColor.BLACK + "");
-        input = input.replaceAll("@\\{BLUE\\}", ChatColor.BLUE + "");
-        input = input.replaceAll("@\\{BOLD\\}", ChatColor.BOLD + "");
-        input = input.replaceAll("@\\{DARK_AQUA\\}", ChatColor.DARK_AQUA + "");
-        input = input.replaceAll("@\\{DARK_BLUE\\}", ChatColor.DARK_BLUE + "");
-        input = input.replaceAll("@\\{DARK_GRAY\\}", ChatColor.DARK_GRAY + "");
-        input = input.replaceAll("@\\{DARK_GREEN\\}", ChatColor.DARK_GREEN + "");
-        input = input.replaceAll("@\\{DARK_PURPLE\\}", ChatColor.DARK_PURPLE + "");
-        input = input.replaceAll("@\\{DARK_RED\\}", ChatColor.DARK_RED + "");
-        input = input.replaceAll("@\\{GOLD\\}", ChatColor.GOLD + "");
-        input = input.replaceAll("@\\{GREEN\\}", ChatColor.GREEN + "");
-        input = input.replaceAll("@\\{ITALIC\\}", ChatColor.ITALIC + "");
-        input = input.replaceAll("@\\{LIGHT_PURPLE\\}", ChatColor.LIGHT_PURPLE + "");
-        input = input.replaceAll("@\\{MAGIC\\}", ChatColor.MAGIC + "");
-        input = input.replaceAll("@\\{RED\\}", ChatColor.RED + "");
-        input = input.replaceAll("@\\{RESET\\}", ChatColor.RESET + "");
-        input = input.replaceAll("@\\{STRIKETHROUGH\\}", ChatColor.STRIKETHROUGH + "");
-        input = input.replaceAll("@\\{UNDERLINE\\}", ChatColor.UNDERLINE + "");
-        input = input.replaceAll("@\\{WHITE\\}", ChatColor.WHITE + "");
-        input = input.replaceAll("@\\{YELLOW\\}", ChatColor.YELLOW + "");
-        return input;
+        String returnInput = new String(input);
+        returnInput = returnInput.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");
+        returnInput = returnInput.replaceAll("@\\{BLACK\\}", ChatColor.BLACK + "");
+        returnInput = returnInput.replaceAll("@\\{BLUE\\}", ChatColor.BLUE + "");
+        returnInput = returnInput.replaceAll("@\\{BOLD\\}", ChatColor.BOLD + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_AQUA\\}", ChatColor.DARK_AQUA + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_BLUE\\}", ChatColor.DARK_BLUE + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_GRAY\\}", ChatColor.DARK_GRAY + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_GREEN\\}", ChatColor.DARK_GREEN + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_PURPLE\\}", ChatColor.DARK_PURPLE + "");
+        returnInput = returnInput.replaceAll("@\\{DARK_RED\\}", ChatColor.DARK_RED + "");
+        returnInput = returnInput.replaceAll("@\\{GOLD\\}", ChatColor.GOLD + "");
+        returnInput = returnInput.replaceAll("@\\{GREEN\\}", ChatColor.GREEN + "");
+        returnInput = returnInput.replaceAll("@\\{ITALIC\\}", ChatColor.ITALIC + "");
+        returnInput = returnInput.replaceAll("@\\{LIGHT_PURPLE\\}", ChatColor.LIGHT_PURPLE + "");
+        returnInput = returnInput.replaceAll("@\\{MAGIC\\}", ChatColor.MAGIC + "");
+        returnInput = returnInput.replaceAll("@\\{RED\\}", ChatColor.RED + "");
+        returnInput = returnInput.replaceAll("@\\{RESET\\}", ChatColor.RESET + "");
+        returnInput = returnInput.replaceAll("@\\{STRIKETHROUGH\\}", ChatColor.STRIKETHROUGH + "");
+        returnInput = returnInput.replaceAll("@\\{UNDERLINE\\}", ChatColor.UNDERLINE + "");
+        returnInput = returnInput.replaceAll("@\\{WHITE\\}", ChatColor.WHITE + "");
+        returnInput = returnInput.replaceAll("@\\{YELLOW\\}", ChatColor.YELLOW + "");
+        return returnInput;
     }
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&

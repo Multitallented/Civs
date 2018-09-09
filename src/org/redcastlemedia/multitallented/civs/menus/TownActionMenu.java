@@ -161,12 +161,14 @@ public class TownActionMenu extends Menu {
 
         //2 Location/Nation?
         //TODO nation display here
-        CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
-        cvItem2.setDisplayName(town.getName());
-        lore.clear();
-        lore.add(Region.locationToString(town.getLocation()));
-        cvItem2.setLore(lore);
-        inventory.setItem(2, cvItem2.createItemStack());
+        if (town.getPeople().containsKey(civilian.getUuid())) {
+            CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
+            cvItem2.setDisplayName(town.getName());
+            lore.clear();
+            lore.add(Region.locationToString(town.getLocation()));
+            cvItem2.setLore(lore);
+            inventory.setItem(2, cvItem2.createItemStack());
+        }
 
         //3 Ally / Remove ally
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
@@ -180,6 +182,17 @@ public class TownActionMenu extends Menu {
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-unally").replace("$1", town.getName()));
             inventory.setItem(3, cvItem6.createItemStack());
+        }
+
+        //4 Population
+        {
+            CVItem cvItem3 = CVItem.createCVItemFromString("PLAYER_HEAD");
+            cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "population"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "pop-desc")
+                    .replace("$1", town.getPopulation() + "").replace("$2", town.getHousing() + ""));
+            cvItem3.setLore(lore);
+            inventory.setItem(9, cvItem3.createItemStack());
         }
 
         //5 Bounty
@@ -211,7 +224,7 @@ public class TownActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
-        if (town.getPeople().get(civilian.getUuid()).equals("owner")) {
+        if (town.getPeople().get(civilian.getUuid()) != null && town.getPeople().get(civilian.getUuid()).equals("owner")) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());

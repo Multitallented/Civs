@@ -387,6 +387,12 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".reject", "Reject"));
             currentLanguage.put("town-ally-request-denied",
                     localeConfig.getString(langKey + ".town-ally-request-denied", "Alliance request with $1 has been denied"));
+            currentLanguage.put("population",
+                    localeConfig.getString(langKey + ".population", "Population"));
+            currentLanguage.put("pop-desc",
+                    localeConfig.getString(langKey + ".pop-desc", "$1 Population / $2 Housing"));
+            currentLanguage.put("create",
+                    localeConfig.getString(langKey + ".create", "Create"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -41,15 +42,15 @@ public class PlayerProfileMenu extends Menu {
             return;
         }
 
-        String playerName = event.getInventory().getItem(0).getItemMeta().getDisplayName();
-        Player player = Bukkit.getPlayer(playerName);
+        UUID uuid = UUID.fromString(event.getInventory().getItem(0).getItemMeta().getLore().get(0));
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Civilian cPlayer = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
 //        clearHistory(civilian.getUuid());
 //        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
 
         if (event.getCurrentItem().getType().equals(Material.OAK_DOOR)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + uuid.toString());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, player.getUniqueId()));
             return;
@@ -57,7 +58,7 @@ public class PlayerProfileMenu extends Menu {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "friends"))) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + playerName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + uuid.toString());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0, cPlayer.getUuid()));
             return;
@@ -71,7 +72,7 @@ public class PlayerProfileMenu extends Menu {
             CivilianManager.getInstance().saveCivilian(civilian);
             event.getWhoClicked().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                            "friend-added").replace("$1", player.getDisplayName()));
+                            "friend-added").replace("$1", player.getName()));
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
@@ -83,22 +84,25 @@ public class PlayerProfileMenu extends Menu {
             CivilianManager.getInstance().saveCivilian(civilian);
             event.getWhoClicked().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                            "friend-removed").replace("$1", player.getDisplayName()));
+                            "friend-removed").replace("$1", player.getName()));
             return;
         }
     }
 
-    public static Inventory createMenu(Civilian civilian, String playerName) {
+    public static Inventory createMenu(Civilian civilian, UUID uuid) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        Player player = Bukkit.getPlayer(playerName);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Civilian currCivilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         //0 Icon
         ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta isMeta = (SkullMeta) is.getItemMeta();
-        isMeta.setDisplayName(playerName);
+        isMeta.setDisplayName(player.getName());
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(player.getUniqueId().toString());
+        isMeta.setLore(lore);
         isMeta.setOwningPlayer(player);
         is.setItemMeta(isMeta);
         inventory.setItem(0, is);
@@ -132,7 +136,7 @@ public class PlayerProfileMenu extends Menu {
         {
             CVItem cvItem = CVItem.createCVItemFromString("SKELETON_SKULL");
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
-                    "bounty").replace("$1", playerName));
+                    "bounty").replace("$1", player.getName()));
             inventory.setItem(4, cvItem.createItemStack());
         }
 

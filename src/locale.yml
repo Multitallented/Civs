@@ -56,6 +56,8 @@ en:
   size: Size
   range: Range
   build-reqs-title: Build Reqs
+  population: Population
+  pop-desc: "$1 Population / $2 Housing"
   build-reqs: "All the blocks you need to place to build a $1"
   reagents-title: Reagents
   reagents: "All the items you need in the $1 chest"
@@ -100,6 +102,7 @@ en:
   invite-owner-region: "You have been become a member of $1"
   owner-invited-region: "$1 has been added to your $2"
   stand-in-region: "Please have $1 stand in the region"
+  create: Create
   town-instructions: "To create a $1, use /cv town MyTownName"
   town-enter: "You have entered $1"
   town-exit: "You have exited $1"

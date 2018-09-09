@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -77,7 +78,8 @@ public class ListAllPlayersMenu extends Menu {
                     appendHistory(civilian.getUuid(), MENU_NAME + "," + id);
                 }
                 event.getWhoClicked().closeInventory();
-                event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, playerName));
+                UUID uuid = UUID.fromString(event.getCurrentItem().getItemMeta().getLore().get(0));
+                event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, uuid));
             } else {
                 event.getWhoClicked().closeInventory();
                 clearHistory(civilian.getUuid());
@@ -118,10 +120,10 @@ public class ListAllPlayersMenu extends Menu {
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
 
-        List<Player> players = new ArrayList<>();
+        List<OfflinePlayer> players = new ArrayList<>();
         Civilian cCivilian = CivilianManager.getInstance().getCivilian(id);
         for (UUID uuid : cCivilian.getFriends()) {
-            players.add(Bukkit.getPlayer(uuid));
+            players.add(Bukkit.getOfflinePlayer(uuid));
         }
         int startIndex = page * 36;
         //8 Next button
@@ -133,17 +135,20 @@ public class ListAllPlayersMenu extends Menu {
         }
 
         int i=9;
-        Collections.sort(players, new Comparator<Player>() {
+        Collections.sort(players, new Comparator<OfflinePlayer>() {
             @Override
-            public int compare(Player player1, Player player2) {
+            public int compare(OfflinePlayer player1, OfflinePlayer player2) {
                 return player1.getName().compareTo(player2.getName());
             }
         });
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
-            Player player = players.get(k);
+            OfflinePlayer player = players.get(k);
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
+            ArrayList<String> lore1 = new ArrayList<>();
+            lore1.add(player.getUniqueId().toString());
+            isMeta.setLore(lore1);
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);

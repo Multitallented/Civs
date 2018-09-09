@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -58,11 +59,11 @@ public class LeaderboardMenu extends Menu {
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, page - 1));
             return;
         }
-        String playerName = event.getCurrentItem().getItemMeta().getDisplayName();
+        UUID uuid = UUID.fromString(event.getCurrentItem().getItemMeta().getLore().get(0));
         if (event.getWhoClicked() instanceof Player) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, playerName));
+            event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, uuid));
         }
     }
 
@@ -113,10 +114,13 @@ public class LeaderboardMenu extends Menu {
 
         int i=9;
         for (int k=startIndex; k<civilianList.size() && k<startIndex+36; k++) {
-            Player player = Bukkit.getPlayer(civilianList.get(k).getUuid());
+            OfflinePlayer player = Bukkit.getOfflinePlayer(civilianList.get(k).getUuid());
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
+            ArrayList<String> lore1 = new ArrayList<>();
+            lore1.add(player.getUniqueId().toString());
+            isMeta.setLore(lore1);
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);

@@ -267,7 +267,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityInteract(EntityInteractEvent event) {
         handleInteract(event.getBlock(), null, event);
     }
@@ -341,7 +341,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockInteract(PlayerInteractEvent event) {
         handleInteract(event.getClickedBlock(), event.getPlayer(), event);
     }

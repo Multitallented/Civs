@@ -451,6 +451,7 @@ public class ItemManager {
     }
 
     public void addMinItems(Civilian civilian) {
+        ArrayList<CivItem> addItems = new ArrayList<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getCivMin() < 1) {
                 continue;
@@ -461,11 +462,14 @@ public class ItemManager {
             }
             if (hasItemUnlocked(civilian, civItem)) {
                 int add = 0;
-                while(count < civItem.getCivMin() + add) {
-                    civilian.getStashItems().add(civItem);
+                while(count + add < civItem.getCivMin()) {
+                    addItems.add(civItem);
                     add++;
                 }
             }
+        }
+        for (CivItem civItem : addItems) {
+            civilian.getStashItems().add(civItem);
         }
         CivilianManager.getInstance().saveCivilian(civilian);
     }

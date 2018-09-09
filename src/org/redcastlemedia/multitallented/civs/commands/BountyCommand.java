@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -95,9 +96,9 @@ public class BountyCommand implements CivCommand {
         if (target == null) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "invalid-target"));
+                        "player-not-online").replace("$1", playerName));
             } else {
-                commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
+                commandSender.sendMessage(Civs.getPrefix() + "Player not online");
             }
             return true;
         }

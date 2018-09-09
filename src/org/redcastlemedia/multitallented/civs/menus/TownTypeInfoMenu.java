@@ -39,13 +39,13 @@ public class TownTypeInfoMenu extends Menu {
             return;
         }
 
-        /*if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
+        if (event.getCurrentItem().getType().equals(Material.OAK_PLANKS)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(townType.getReqs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(townType.getReqs()));
             return;
         }
-        if (event.getCurrentItem().getType().equals(Material.CHEST)) {
+        /*if (event.getCurrentItem().getType().equals(Material.CHEST)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RecipeMenu.createMenu(townType.getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
@@ -76,7 +76,6 @@ public class TownTypeInfoMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, TownType townType) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
 
         //0 Icon
@@ -111,25 +110,37 @@ public class TownTypeInfoMenu extends Menu {
         }*/
 
         //3 Population/Charter
-        //TODO population/charter
+        //TODO population requirements?
 
         //8 back button
         inventory.setItem(8, getBackButton(civilian));
 
         //9 build-reqs
-        /*CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
-        cvItem1.setDisplayName("Build Reqs");
-        lore = new ArrayList<>();
-        lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
-                .replace("$1", itemName));
-        cvItem1.setLore(lore);
-        inventory.setItem(9, cvItem1.createItemStack());*/
+        {
+            CVItem cvItem1 = CVItem.createCVItemFromString("OAK_PLANKS");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "build-reqs-title"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
+                    .replace("$1", itemName));
+            cvItem1.setLore(lore);
+            inventory.setItem(9, cvItem1.createItemStack());
+        }
 
         //10 Expenses
         //TODO expenses
 
         //11 taxes
         //TODO taxes
+
+        //17 Create
+        {
+            CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "create"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "town-instructions"));
+            cvItem1.setLore(lore);
+            inventory.setItem(17, cvItem1.createItemStack());
+        }
 
         //TODO finish this stub
 
