@@ -322,6 +322,10 @@ public class ItemManager {
                 CVItem newItem = civItem.clone();
                 newItem.setQty(civItem.getCivQty());
                 newItems.add(civItem);
+            } else if (civItem.getCivReqs().isEmpty() && civItem.getCivMin() > 0) {
+                CVItem newItem = civItem.clone();
+                newItem.setQty(civItem.getCivMin());
+                newItems.add(civItem);
             }
         }
         return newItems;
