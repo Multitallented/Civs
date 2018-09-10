@@ -22,7 +22,7 @@ public class Town {
     private int housing;
     private int population;
     private HashSet<String> allies;
-    private ArrayList<Bounty> bounties;
+    private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
