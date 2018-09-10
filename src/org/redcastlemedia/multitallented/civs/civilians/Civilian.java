@@ -292,6 +292,21 @@ public class Civilian {
         return count;
     }
 
+    public void sortBounties() {
+        if (bounties.size() < 2) {
+            return;
+        }
+        Collections.sort(bounties, new Comparator<Bounty>() {
+            @Override
+            public int compare(Bounty o1, Bounty o2) {
+                if (o1.getAmount() == o2.getAmount()) {
+                    return 0;
+                }
+                return o1.getAmount() > o2.getAmount() ? 1 : -1;
+            }
+        });
+    }
+
     public boolean isFriend(Civilian friend) {
         return friends.contains(friend.getUuid());
     }

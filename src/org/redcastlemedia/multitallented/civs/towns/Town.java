@@ -3,12 +3,7 @@ package org.redcastlemedia.multitallented.civs.towns;
 import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Town {
     private final String type;
@@ -105,6 +100,20 @@ public class Town {
     }
     public void setBounties(ArrayList<Bounty> bounties) {
         this.bounties = bounties;
+    }
+    public void sortBounties() {
+        if (bounties.size() < 2) {
+            return;
+        }
+        Collections.sort(bounties, new Comparator<Bounty>() {
+            @Override
+            public int compare(Bounty o1, Bounty o2) {
+                if (o1.getAmount() == o2.getAmount()) {
+                    return 0;
+                }
+                return o1.getAmount() > o2.getAmount() ? 1 : -1;
+            }
+        });
     }
 
     public int getHousing() {

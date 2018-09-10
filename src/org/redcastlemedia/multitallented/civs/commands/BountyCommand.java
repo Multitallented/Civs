@@ -84,6 +84,7 @@ public class BountyCommand implements CivCommand {
                 town.getBounties().add(new Bounty(null, amount));
                 commandSender.sendMessage(Civs.getPrefix() + "Bounty set on " + playerName + " for $" + amount);
             }
+            town.sortBounties();
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                 cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
                         "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
@@ -111,6 +112,7 @@ public class BountyCommand implements CivCommand {
             targetCiv.getBounties().add(new Bounty(null, amount));
             commandSender.sendMessage(Civs.getPrefix() + "Bounty set on " + playerName + " for $" + amount);
         }
+        targetCiv.sortBounties();
         for (Player cPlayer : Bukkit.getOnlinePlayers()) {
             cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
                     "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
