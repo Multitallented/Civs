@@ -21,10 +21,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class TownCommand implements CivCommand {
     @Override
@@ -121,10 +118,12 @@ public class TownCommand implements CivCommand {
         people.put(player.getUniqueId(), "owner");
         Location newTownLocation = player.getLocation();
         String name = Util.getValidFileName(args[1]);
+        List<Location> childLocations = new ArrayList<>();
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             people = intersectTown.getPeople();
             newTownLocation = intersectTown.getLocation();
+            childLocations.add(newTownLocation);
             name = intersectTown.getName();
             TownManager.getInstance().removeTown(intersectTown, false);
             if (ConfigManager.getInstance().getTownRings()) {
@@ -146,6 +145,7 @@ public class TownCommand implements CivCommand {
                 people,
                 townType.getPower(),
                 townType.getMaxPower(), housingCount, people.size());
+        town.setChildLocations(childLocations);
         townManager.addTown(town);
         townManager.saveTown(town);
         player.getInventory().remove(itemStack);
