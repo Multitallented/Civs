@@ -375,17 +375,35 @@ public class ProtectionHandler implements Listener {
         return false;
     }
 
-    private boolean checkLocation(Block block, Player player, String type) {
+    protected static boolean checkLocation(Block block, Player player, String type) {
         return checkLocation(block.getLocation(), player, type);
     }
-    private boolean checkLocation(Block block, Player player, String type, String pRole) {
+    protected static boolean checkLocation(Block block, Player player, String type, String pRole) {
         return checkLocation(block.getLocation(), player, type, pRole);
     }
-    private boolean checkLocation(Location location, Player player, String type) {
+    protected static boolean checkLocation(Location location, Player player, String type) {
         return checkLocation(location, player, type, "member");
     }
 
-    private boolean checkLocation(Location location, Player player, String type, String pRole) {
+    protected static boolean checkLocation(Location location, String type) {
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        Town town = townManager.getTownAt(location);
+        if (town != null) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (townType.getEffects().contains(type)) {
+                return true;
+            }
+        }
+        Region region = regionManager.getRegionAt(location);
+        if (region == null ||
+                !region.effects.keySet().contains(type)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected static boolean checkLocation(Location location, Player player, String type, String pRole) {
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

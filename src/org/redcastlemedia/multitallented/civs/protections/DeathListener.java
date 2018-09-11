@@ -36,6 +36,15 @@ public class DeathListener implements Listener {
         }
         Player player = (Player) event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (!civilian.isInCombat()) {
+            boolean setCancelled = event.isCancelled() || ProtectionHandler.checkLocation(player.getLocation(), "deny_damage");
+            if (setCancelled) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         long combatTagDuration = (long) ConfigManager.getInstance().getCombatTagDuration();
         combatTagDuration *= 1000;
         if (!(event instanceof EntityDamageByEntityEvent)) {
@@ -70,6 +79,16 @@ public class DeathListener implements Listener {
                                 "friendly-fire"));
                 return;
             }
+
+            if (!damagerCiv.isInCombat()) {
+                boolean setCancelled = event.isCancelled() || ProtectionHandler.checkLocation(player.getLocation(), "deny_pvp") ||
+                        ProtectionHandler.checkLocation(damager.getLocation(), "deny_pvp");
+                if (setCancelled) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
         }
         civilian.setLastDamage(System.currentTimeMillis());
         if (damager == null) {
