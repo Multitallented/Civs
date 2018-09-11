@@ -153,9 +153,6 @@ public class Town {
         if (townType == null) {
             return;
         }
-        if (!townType.getEffects().contains("ring")) {
-            return;
-        }
 
         final Location l = location;
         int baseY = l.getWorld().getHighestBlockAt(l).getY();
