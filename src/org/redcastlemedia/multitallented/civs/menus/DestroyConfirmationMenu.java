@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -85,6 +86,9 @@ public class DestroyConfirmationMenu extends Menu {
                     return;
                 }
                 TownManager.getInstance().removeTown(town, true);
+                if (ConfigManager.getInstance().getTownRings()) {
+                    town.destroyRing(true);
+                }
             }
             event.getWhoClicked().closeInventory();
             return;

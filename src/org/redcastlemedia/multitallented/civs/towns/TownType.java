@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 

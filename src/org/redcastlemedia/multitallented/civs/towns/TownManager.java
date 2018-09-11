@@ -169,6 +169,13 @@ public class TownManager {
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
+        if (config.isSet("child-locations")) {
+            List<Location> locationList = new ArrayList<>();
+            for (String locationString : config.getStringList("child-locations")) {
+                locationList.add(Region.idToLocation(locationString));
+            }
+            town.setChildLocations(locationList);
+        }
         addTown(town);
     }
     public void addTown(Town town) {
@@ -273,6 +280,11 @@ public class TownManager {
             for (UUID key : town.getPeople().keySet()) {
                 config.set("people." + key, town.getPeople().get(key));
             }
+            List<String> locationList = new ArrayList<>();
+            for (Location lo : town.getChildLocations()) {
+                locationList.add(Region.locationToString(lo));
+            }
+            config.set("child-locations", locationList);
             config.set("housing", town.getHousing());
             config.set("population", town.getPopulation());
 

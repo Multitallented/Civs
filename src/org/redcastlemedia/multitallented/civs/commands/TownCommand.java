@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -126,6 +127,9 @@ public class TownCommand implements CivCommand {
             newTownLocation = intersectTown.getLocation();
             name = intersectTown.getName();
             TownManager.getInstance().removeTown(intersectTown, false);
+            if (ConfigManager.getInstance().getTownRings()) {
+                intersectTown.destroyRing(false);
+            }
         }
 
         int housingCount = 0;
@@ -147,7 +151,9 @@ public class TownCommand implements CivCommand {
         player.getInventory().remove(itemStack);
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                 "town-created").replace("$1", town.getName()));
-
+        if (ConfigManager.getInstance().getTownRings()) {
+            town.createRing();
+        }
         return true;
     }
 
