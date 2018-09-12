@@ -1,11 +1,13 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RegionType extends CivItem {
 
@@ -24,6 +26,7 @@ public class RegionType extends CivItem {
     private final HashSet<String> towns;
     private List<RegionUpkeep> upkeeps;
     private final long period;
+    private final Set<Biome> biomes;
 
     public RegionType(String name,
                       CVItem icon,
@@ -43,6 +46,7 @@ public class RegionType extends CivItem {
                       int effectRadius,
                       String rebuild,
                       HashSet<String> towns,
+                      Set<Biome> biomes,
                       HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
@@ -71,6 +75,7 @@ public class RegionType extends CivItem {
         this.period = period;
         this.dailyPeriod = dailyPeriod;
         this.towns = towns;
+        this.biomes = biomes;
     }
     public String getName() {
         return name;
@@ -103,4 +108,7 @@ public class RegionType extends CivItem {
         return dailyPeriod;
     }
     public HashSet<String> getTowns() { return towns; }
+    public Set<Biome> getBiomes() {
+        return biomes;
+    }
 }

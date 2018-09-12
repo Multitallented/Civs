@@ -393,6 +393,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".pop-desc", "$1 Population / $2 Housing"));
             currentLanguage.put("create",
                     localeConfig.getString(langKey + ".create", "Create"));
+            currentLanguage.put("region-in-biome",
+                    localeConfig.getString(langKey + ".region-in-biome", "You cant build a $1 in a $2"));
+            currentLanguage.put("biomes",
+                    localeConfig.getString(langKey + ".biomes", "Biomes"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -13,7 +13,7 @@ effects:
 - block_liquid
 - block_fire
 - block_explosion
-- deny_damage #TODO make this
+- deny_damage
 - active #TODO make this
 
 period: 3600 # 1 hour

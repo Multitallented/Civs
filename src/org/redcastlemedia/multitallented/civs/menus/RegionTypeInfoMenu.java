@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -123,7 +124,16 @@ public class RegionTypeInfoMenu extends Menu {
         //TODO evolve regions and exp
 
         //4 biome/location reqs
-        //TODO Biome reqs
+        if (!regionType.getBiomes().isEmpty()) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("GRASS_BLOCK");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "biomes"));
+            lore = new ArrayList<>();
+            for (Biome biome : regionType.getBiomes()) {
+                lore.add(biome.name());
+            }
+            inventory.setItem(4, cvItem1.createItemStack());
+        }
 
         //5 town reqs
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {

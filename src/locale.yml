@@ -57,6 +57,7 @@ en:
   range: Range
   build-reqs-title: Build Reqs
   population: Population
+  biomes: Biomes
   pop-desc: "$1 Population / $2 Housing"
   build-reqs: "All the blocks you need to place to build a $1"
   reagents-title: Reagents
@@ -176,6 +177,7 @@ en:
   missing-region-requirements: "Your $1 is missing required regions"
   friendly-fire: "You cant damage someone on your friends list"
   region-limit-reached: "A $1 can only have $2 $3"
+  region-in-biome: "You cant build a $1 in a $2"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

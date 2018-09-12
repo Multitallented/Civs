@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -265,6 +266,12 @@ public class ItemManager {
                 description.put(key, configurationSection.getString(key));
             }
         }
+        Set<Biome> biomes = new HashSet<>();
+        if (config.isSet("biomes")) {
+            for (String s : config.getStringList("biomes")) {
+                biomes.add(Biome.valueOf(s));
+            }
+        }
         RegionType regionType = new RegionType(
                 name,
                 icon,
@@ -284,6 +291,7 @@ public class ItemManager {
                 effectRadius,
                 rebuild,
                 townSet,
+                biomes,
                 description,
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),

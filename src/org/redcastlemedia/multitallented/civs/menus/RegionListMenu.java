@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -28,18 +29,20 @@ public class RegionListMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
-//        if (Menu.isBackButton(event.getCurrentItem(),
-//                CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId()).getLocale())) {
-//            clickBackButton(event.getWhoClicked());
-//            return;
-//        }
+        if (Menu.isBackButton(event.getCurrentItem(),
+                CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId()).getLocale())) {
+            clickBackButton(event.getWhoClicked());
+            return;
+        }
     }
 
-    public static Inventory createMenu(HashMap<String, Integer> regionTypeNames) {
-        int index = 0;
+    public static Inventory createMenu(Civilian civilian, HashMap<String, Integer> regionTypeNames) {
+        int index = 9;
 
 
-        Inventory inv = Bukkit.createInventory(null, getInventorySize(regionTypeNames.size()), MENU_NAME);
+        Inventory inv = Bukkit.createInventory(null, getInventorySize(regionTypeNames.size() + 9), MENU_NAME);
+
+        inv.setItem(8, getBackButton(civilian));
 
         for (String regionTypeName : regionTypeNames.keySet()) {
             CVItem civItem = ItemManager.getInstance().getItemType(regionTypeName);

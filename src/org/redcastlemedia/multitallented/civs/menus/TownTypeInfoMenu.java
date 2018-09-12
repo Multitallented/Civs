@@ -42,7 +42,7 @@ public class TownTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.OAK_PLANKS)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionListMenu.createMenu(townType.getReqs()));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
             return;
         }
         /*if (event.getCurrentItem().getType().equals(Material.CHEST)) {

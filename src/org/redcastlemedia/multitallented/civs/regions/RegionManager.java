@@ -285,6 +285,17 @@ public class RegionManager {
             return;
         }
 
+        if (!regionType.getBiomes().isEmpty()) {
+            if (!regionType.getBiomes().contains(location.getBlock().getBiome())) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(civilian.getLocale(), "region-in-biome")
+                                .replace("$1", regionTypeName).replace("$2", location.getBlock().getBiome().name()));
+                BlockLogger.getInstance().removeBlock(block.getLocation());
+                return;
+            }
+        }
+
         Region rebuildRegion = getRegionAt(block.getLocation());
         if (rebuildRegion != null && regionType.getRebuild() == null) {
             event.setCancelled(true);
