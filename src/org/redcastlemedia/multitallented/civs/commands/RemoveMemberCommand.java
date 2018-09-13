@@ -62,7 +62,7 @@ public class RemoveMemberCommand implements CivCommand {
             }
             return true;
         }
-        if (!Util.hasOverride(region, civilian, town) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+        if (region != null && !Util.hasOverride(region, civilian, town) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;
