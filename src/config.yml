@@ -35,6 +35,8 @@ money:
   karma: 0.1
 karma-per-kill: 1
 karma-per-kill-streak: 1
+#How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
+karma-depreciate-period: 43200 #12 hours
 power-per-kill: 1
 power-per-npc-kill: 1
 folders:

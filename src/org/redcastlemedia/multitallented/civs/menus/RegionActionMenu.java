@@ -132,6 +132,12 @@ public class RegionActionMenu extends Menu {
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
+            int nextUpkeep = region.getSecondsTillNextTick();
+            if (nextUpkeep < 64 && nextUpkeep > 0) {
+                cvItem1.setQty(nextUpkeep);
+            }
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "cooldown")
+                    .replace("$1", nextUpkeep + ""));
             cvItem1.setLore(lore);
         } else {
             cvItem1 = CVItem.createCVItemFromString("RED_WOOL");

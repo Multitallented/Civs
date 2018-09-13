@@ -98,6 +98,12 @@ public class Region {
     public int getRadiusYN() {
         return radiusYN;
     }
+    public int getSecondsTillNextTick() {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        long difference = System.currentTimeMillis() - lastTick;
+        int remainingCooldown = (int) ((regionType.getPeriod() - difference) / 1000);
+        return remainingCooldown < 0 ? 0 : remainingCooldown;
+    }
 
     public String getId() {
         return locationToString(location);

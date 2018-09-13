@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -25,10 +26,12 @@ public class CommonScheduler implements Runnable {
     private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
+    private static long lastKarmaDepreciation = 0;
     private int i = 0;
 
     @Override
     public void run() {
+        depreciateKarma();
 
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         int chunk = players.size() / MAX_TPS;
@@ -51,6 +54,21 @@ public class CommonScheduler implements Runnable {
             i++;
         }
     }
+    private void depreciateKarma() {
+        long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
+        if (lastKarmaDepreciation + karmaPeriod > System.currentTimeMillis()) {
+            return;
+        }
+        lastKarmaDepreciation = System.currentTimeMillis();
+        //TODO make this multi-threaded and lazy
+        for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
+            if (civilian.getKarma() > 1 || civilian.getKarma() < -1) {
+                civilian.setKarma(civilian.getKarma() / 2);
+                CivilianManager.getInstance().saveCivilian(civilian);
+            }
+        }
+    }
+
     void incrementMana(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         double maxMana = 0;
