@@ -397,6 +397,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".region-in-biome", "You cant build a $1 in a $2"));
             currentLanguage.put("biomes",
                     localeConfig.getString(langKey + ".biomes", "Biomes"));
+            currentLanguage.put("leave-town",
+                    localeConfig.getString(langKey + ".leave-town", "Leave Town"));
+            currentLanguage.put("you-left-town",
+                    localeConfig.getString(langKey + ".you-left-town", "You have left $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }
