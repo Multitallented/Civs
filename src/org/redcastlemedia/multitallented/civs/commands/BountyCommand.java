@@ -114,7 +114,8 @@ public class BountyCommand implements CivCommand {
         }
         targetCiv.sortBounties();
         for (Player cPlayer : Bukkit.getOnlinePlayers()) {
-            cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
+            Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+            cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(cCivilian.getLocale(),
                     "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
         }
 
