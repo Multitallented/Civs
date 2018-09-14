@@ -144,6 +144,9 @@ public class CivilianManager {
             if (civConfig.isSet("bounties")) {
                 civilian.setBounties(Util.readBountyList(civConfig));
             }
+            if (civConfig.isSet("last-karma-depreciation")) {
+                civilian.setLastKarmaDepreciation(civConfig.getLong("last-karma-depreciation", -1));
+            }
 
             ItemManager.getInstance().addMinItems(civilian);
 
@@ -242,6 +245,7 @@ public class CivilianManager {
             if (civilian.getRespawnPoint() != null) {
                 civConfig.set("respawn", Region.locationToString(civilian.getRespawnPoint()));
             }
+            civConfig.set("last-karma-depreciation", civilian.getLastKarmaDepreciation());
 
             civConfig.save(civilianFile);
         } catch (Exception ex) {

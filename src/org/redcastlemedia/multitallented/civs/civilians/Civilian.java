@@ -39,6 +39,7 @@ public class Civilian {
     private UUID lastDamager;
     private Set<UUID> friends = new HashSet<>();
     private List<Bounty> bounties = new ArrayList<>();
+    private long lastKarmaDepreciation;
 
     public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -130,6 +131,12 @@ public class Civilian {
     }
     public void setFriends(Set<UUID> friends) {
         this.friends = friends;
+    }
+    public long getLastKarmaDepreciation() {
+        return lastKarmaDepreciation;
+    }
+    public void setLastKarmaDepreciation(long lastKarmaDepreciation) {
+        this.lastKarmaDepreciation = lastKarmaDepreciation;
     }
 
     public boolean isInCombat() {

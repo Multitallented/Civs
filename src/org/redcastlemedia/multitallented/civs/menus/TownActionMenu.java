@@ -113,6 +113,13 @@ public class TownActionMenu extends Menu {
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "leave-town"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(LeaveConfirmationMenu.createMenu(civilian, town));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             event.getWhoClicked().closeInventory();
             List<Player> people = new ArrayList<>();
@@ -235,14 +242,21 @@ public class TownActionMenu extends Menu {
             inventory.setItem(10, skull2.createItemStack());
         }
 
-        //11 Alliance Invite
+        //11 Leave Town
+        if (town.getPeople().get(civilian.getUuid()) != null) {
+            CVItem cvItem2 = CVItem.createCVItemFromString("OAK_DOOR");
+            cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "leave-town"));
+            inventory.setItem(11, cvItem2.createItemStack());
+        }
+
+        //12 Alliance Invite
         if (town.getRawPeople().containsKey(civilian.getUuid()) &&
                 town.getRawPeople().get(civilian.getUuid()).equals("owner") &&
                 !town.getAllyInvites().isEmpty()) {
             CVItem cvItem3 = CVItem.createCVItemFromString("IRON_SWORD");
             cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-ally-invites"));
-            inventory.setItem(11, cvItem3.createItemStack());
+            inventory.setItem(12, cvItem3.createItemStack());
         }
 
 

@@ -89,6 +89,8 @@ en:
   set-member: Set Member
   set-guest: Set Guest
   remove-member: Remove Member
+  leave-town: Leave Town
+  you-left-town: "You have left $1"
   add-member-region: "You have been made a member of $1"
   member-added-region: "$1 is now a member of your $2"
   owner-description: "Owners can do anything in the region"
