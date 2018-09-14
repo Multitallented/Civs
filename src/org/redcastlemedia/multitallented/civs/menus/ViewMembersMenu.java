@@ -49,7 +49,8 @@ public class ViewMembersMenu extends Menu {
 
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Town town = TownManager.getInstance().getTown(locationString);
+        System.out.println(locationString);
+        Town town = TownManager.getInstance().getTown(locationString.toLowerCase());
         Region region = null;
         if (town == null) {
             region = regionManager.getRegionAt(Region.idToLocation(locationString));
