@@ -26,7 +26,6 @@ public class CommonScheduler implements Runnable {
     private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
-    private static long lastKarmaDepreciation = 0;
     private int i = 0;
 
     @Override
@@ -56,16 +55,16 @@ public class CommonScheduler implements Runnable {
     }
     private void depreciateKarma() {
         long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
-        if (lastKarmaDepreciation + karmaPeriod > System.currentTimeMillis()) {
-            return;
-        }
-        lastKarmaDepreciation = System.currentTimeMillis();
-        //TODO make this multi-threaded and lazy
         for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
-            if (civilian.getKarma() > 1 || civilian.getKarma() < -1) {
-                civilian.setKarma(civilian.getKarma() / 2);
-                CivilianManager.getInstance().saveCivilian(civilian);
+            if (civilian.getKarma() < 2 && civilian.getKarma() > -2) {
+                continue;
             }
+            if (civilian.getLastKarmaDepreciation() + karmaPeriod > System.currentTimeMillis()) {
+                continue;
+            }
+            civilian.setLastKarmaDepreciation(System.currentTimeMillis());
+            civilian.setKarma(civilian.getKarma() / 2);
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
 
