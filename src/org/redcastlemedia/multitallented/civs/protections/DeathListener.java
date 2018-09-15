@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -123,7 +124,7 @@ public class DeathListener implements Listener {
                 "no-commands-in-jail").replace("$1", (int) (timeRemaining / 1000) + "s"));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
