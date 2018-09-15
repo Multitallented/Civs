@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -26,6 +28,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
+
+import java.util.ArrayList;
 
 public class DeathListener implements Listener {
 
@@ -141,6 +146,16 @@ public class DeathListener implements Listener {
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         dyingCiv.setLastDamager(null);
         dyingCiv.setLastDamage(-1);
+
+        ArrayList<ItemStack> removeMe = new ArrayList<>();
+        for (ItemStack is : player.getInventory()) {
+            if (is.getType() != Material.AIR && CVItem.isCivsItem(is)) {
+                removeMe.add(is);
+            }
+        }
+        for (ItemStack is : removeMe) {
+            player.getInventory().removeItem(is);
+        }
 
         Location deathLocation = player.getLocation();
 
@@ -292,7 +307,7 @@ public class DeathListener implements Listener {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civ.getLocale(), "kill-streak")
-                        .replace("$1", player.getDisplayName())
+                        .replace("$1", damager.getDisplayName())
                         .replace("$2", damagerCiv.getKillStreak() + ""));
             }
         }

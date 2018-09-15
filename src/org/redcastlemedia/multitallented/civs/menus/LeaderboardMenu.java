@@ -76,7 +76,7 @@ public class LeaderboardMenu extends Menu {
                 if (o1.getPoints() == o2.getPoints()) {
                     return 0;
                 }
-                return o1.getPoints() > o2.getPoints() ? 1 : -1;
+                return o1.getPoints() < o2.getPoints() ? 1 : -1;
             }
         });
 

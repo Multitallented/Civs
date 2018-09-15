@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -42,7 +43,15 @@ public class RegionActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Region region = regionManager.getRegionAt(Region.idToLocation(locationString));
+        Location location = Region.idToLocation(locationString);
+        Region region = regionManager.getRegionAt(location);
+
+        if (region == null) {
+            region = RegionManager.getInstance().getRegionAt(location);
+        }
+        if (region == null) {
+            Civs.logger.severe("Unable to find region at " + locationString);
+        }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());

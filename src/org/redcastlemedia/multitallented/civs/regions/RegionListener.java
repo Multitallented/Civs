@@ -32,7 +32,7 @@ public class RegionListener implements Listener {
      * If placing a region block, try to create a region
      * @param blockPlaceEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
         if (blockPlaceEvent.getBlockPlaced().getState() == null) {

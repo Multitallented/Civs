@@ -218,9 +218,12 @@ public class ListAllPlayersMenu extends Menu {
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
             Player player = players.get(k);
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
+            ArrayList<String> lore2 = new ArrayList<>();
+            lore2.add(player.getUniqueId().toString());
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             isMeta.setOwningPlayer(player);
+            isMeta.setLore(lore2);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;
