@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -184,7 +185,8 @@ public class Civs extends JavaPlugin {
     private void setupChat()
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceHook();
+            PlaceHook placeHook = new PlaceHook();
+            PlaceholderAPI.registerExpansion(placeHook);
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {
