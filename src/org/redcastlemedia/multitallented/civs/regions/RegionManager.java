@@ -30,6 +30,7 @@ import java.util.*;
 
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
+    private HashMap<Location, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
@@ -52,6 +53,7 @@ public class RegionManager {
             regions.put(worldName, new ArrayList<Region>());
         }
         regions.get(worldName).add(region);
+        regionLocations.put(region.getLocation(), region);
         Collections.sort(regions.get(worldName),
                 new Comparator<Region>() {
                     @Override
@@ -112,6 +114,7 @@ public class RegionManager {
 
     public void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getName()).remove(region);
+        regionLocations.remove(region.getLocation());
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
@@ -184,9 +187,9 @@ public class RegionManager {
             for (String s : regionConfig.getConfigurationSection("people").getKeys(false)) {
                 people.put(UUID.fromString(s), regionConfig.getString("people." + s));
             }
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type"));
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionConfig.getString("type").toLowerCase());
             region = new Region(
-                    regionConfig.getString("type"),
+                    regionConfig.getString("type").toLowerCase(),
                     people,
                     location,
                     radii,
@@ -200,6 +203,9 @@ public class RegionManager {
     }
 
     public Region getRegionAt(Location location) {
+        if (regionLocations.get(location) != null) {
+            return regionLocations.get(location);
+        }
         String worldName = location.getWorld().getName();
         if (regions.get(worldName) == null || regions.get(worldName).isEmpty()) {
             return null;

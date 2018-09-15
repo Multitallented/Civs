@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class RegionActionMenu extends Menu {
@@ -48,9 +49,12 @@ public class RegionActionMenu extends Menu {
         System.out.println(location.getX() + ":" + location.getY() + ":" + location.getZ());
         Region region = regionManager.getRegionAt(location);
 
-        if (region == null) {
-            region = RegionManager.getInstance().getRegionAt(location);
-        }
+//        if (region == null) {
+//            Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(location,0);
+//            for (Region r : regionSet) {
+//
+//            }
+//        }
         if (region == null) {
             Civs.logger.severe("Unable to find region at " + locationString);
         }

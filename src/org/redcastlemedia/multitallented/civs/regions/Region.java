@@ -109,6 +109,7 @@ public class Region {
         return locationToString(location);
     }
     public static String locationToString(Location location) {
+        //TODO test this
         return location.getWorld().getName() + "~" + (int) location.getX() + "~" + (int) location.getY() + "~" + (int) location.getZ();
     }
     public static Location idToLocation(String id) {
