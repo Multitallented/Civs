@@ -21,6 +21,7 @@ build-radius: 2
 effects:
 - block_break
 - block_build
+- conveyor:COBBLESTONE
 
 period: 30
 upkeep:

@@ -23,6 +23,7 @@ effects:
 - chest_use
 - block_liquid
 - block_fire
+- conveyor:COAL
 
 period: 3600 #1 hour
 upkeep:
