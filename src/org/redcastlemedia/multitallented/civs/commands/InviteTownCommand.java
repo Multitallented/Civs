@@ -43,6 +43,11 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
+        if (town.getPopulation() >= town.getHousing()) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "not-enough-housing"));
+            return true;
+        }
         if (!town.getPeople().keySet().contains(player.getUniqueId()) &&
                 (town.getPeople().get(player.getUniqueId()).contains("owner") ||
                         town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {

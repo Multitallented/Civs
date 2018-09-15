@@ -180,6 +180,7 @@ en:
   friendly-fire: "You cant damage someone on your friends list"
   region-limit-reached: "A $1 can only have $2 $3"
   region-in-biome: "You cant build a $1 in a $2"
+  not-enough-housing: "You need to build more housing before inviting people"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

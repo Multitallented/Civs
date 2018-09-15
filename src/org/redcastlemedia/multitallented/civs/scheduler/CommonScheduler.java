@@ -55,6 +55,7 @@ public class CommonScheduler implements Runnable {
     }
     private void depreciateKarma() {
         long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
+        //TODO lazy loop this
         for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
             if (civilian.getKarma() < 2 && civilian.getKarma() > -2) {
                 continue;

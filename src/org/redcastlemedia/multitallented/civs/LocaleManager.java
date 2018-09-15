@@ -401,6 +401,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".leave-town", "Leave Town"));
             currentLanguage.put("you-left-town",
                     localeConfig.getString(langKey + ".you-left-town", "You have left $1"));
+            currentLanguage.put("not-enough-housing",
+                    localeConfig.getString(langKey + ".not-enough-housing", "You need to build more housing before inviting people"));
             languageMap.put(langKey, currentLanguage);
         }
     }
