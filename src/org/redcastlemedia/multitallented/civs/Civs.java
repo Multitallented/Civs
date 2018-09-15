@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -23,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 
 import java.io.File;
 import java.util.Date;
@@ -36,7 +36,6 @@ public class Civs extends JavaPlugin {
     public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
-    public static Chat chat;
     private static Civs civs;
     public static Logger logger;
 
@@ -182,15 +181,18 @@ public class Civs extends JavaPlugin {
         }
         return (perm != null);
     }
-    private boolean setupChat()
+    private void setupChat()
     {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-            if (chat != null)
-                System.out.println(Civs.getPrefix() + "Hooked into chat plugin " + chat.getName());
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceHook();
         }
-        return (chat != null);
+//        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+//        if (chatProvider != null) {
+//            chat = chatProvider.getProvider();
+//            if (chat != null)
+//                System.out.println(Civs.getPrefix() + "Hooked into chat plugin " + chat.getName());
+//        }
+//        return (chat != null);
     }
 
     public static Economy getEcon() {

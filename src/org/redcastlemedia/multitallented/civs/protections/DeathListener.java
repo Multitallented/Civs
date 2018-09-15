@@ -124,7 +124,7 @@ public class DeathListener implements Listener {
                 "no-commands-in-jail").replace("$1", (int) (timeRemaining / 1000) + "s"));
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

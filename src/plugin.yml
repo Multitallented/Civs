@@ -1,6 +1,5 @@
 author: Multitallented
 database: false
-author: Multitallented
 description: Allows you to create structures and towns.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
@@ -8,6 +7,8 @@ startup: postworld
 version: 0.0.1-b001
 api-version: 1.13
 depend: [Vault]
+softdepend:
+- PlaceholderAPI
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv', 'towny', 'fa', 'f', 'faction']
@@ -26,4 +27,4 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-loadafter: [Vault]
+loadafter: [Vault, PlaceholderAPI]

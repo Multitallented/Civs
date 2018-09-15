@@ -85,7 +85,7 @@ public class MainMenu extends Menu {
 
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();
-        CVItem cvItem = new CVItem(Material.GRASS, 1, 100, localeManager.getTranslation(locale, "language-menu"));
+        CVItem cvItem = new CVItem(Material.GRASS_BLOCK, 1, 100, localeManager.getTranslation(locale, "language-menu"));
         inventory.setItem(8, cvItem.createItemStack());
 
         //1 Shop
