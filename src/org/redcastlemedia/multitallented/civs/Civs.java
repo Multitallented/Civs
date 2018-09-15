@@ -157,6 +157,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
         Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new ConveyorEffect(), this);
         Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), this);
 
         new HousingEffect();
