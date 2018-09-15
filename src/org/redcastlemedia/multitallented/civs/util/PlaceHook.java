@@ -22,9 +22,20 @@ public class PlaceHook extends PlaceholderExpansion {
             if (town != null) {
                 return town.getName();
             } else {
-
+                int highestPopulation = 0;
+                Town highestTown = null;
+                for (Town to : TownManager.getInstance().getTowns()) {
+                    if (!to.getPeople().containsKey(civilian.getUuid())) {
+                        continue;
+                    }
+                    int pop = to.getPopulation();
+                    if (pop > highestPopulation) {
+                        highestTown = to;
+                        highestPopulation = pop;
+                    }
+                }
+                return highestTown == null ? null : highestTown.getName();
             }
-            return null; //TODO fix this
         }
         return null;
     }

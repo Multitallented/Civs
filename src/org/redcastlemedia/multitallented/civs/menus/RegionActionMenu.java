@@ -43,7 +43,9 @@ public class RegionActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
+        System.out.println(Civs.getPrefix() + locationString);
         Location location = Region.idToLocation(locationString);
+        System.out.println(location.getX() + ":" + location.getY() + ":" + location.getZ());
         Region region = regionManager.getRegionAt(location);
 
         if (region == null) {
