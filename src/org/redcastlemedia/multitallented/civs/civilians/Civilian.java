@@ -219,7 +219,7 @@ public class Civilian {
     public int getCountStashItems(String name) {
         int count = 0;
         for (CivItem civItem : stashItems) {
-            if (civItem.getProcessedName().equals(name)) {
+            if (civItem.getProcessedName().equalsIgnoreCase(name)) {
                 count += civItem.getQty();
             }
         }
@@ -291,11 +291,7 @@ public class Civilian {
             count += is.getAmount();
         }
 
-        for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (region.getOwners().contains(uuid) && region.getType().equalsIgnoreCase(name)) {
-                count++;
-            }
-        }
+        count += getCountRegions(name);
         return count;
     }
 

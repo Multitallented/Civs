@@ -185,8 +185,9 @@ public class Civs extends JavaPlugin {
     private void setupChat()
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            System.out.println(Civs.getPrefix() + "Hooked into PlaceholderAPI");
             PlaceHook placeHook = new PlaceHook();
-            PlaceholderAPI.registerExpansion(placeHook);
+            PlaceholderAPI.registerPlaceholderHook("town_name", placeHook);
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {
