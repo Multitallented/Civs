@@ -256,7 +256,7 @@ public class Civilian {
         for (Region region : RegionManager.getInstance().getAllRegions()) {
             CivItem item = itemManager.getItemType(region.getType());
             if (!item.getGroups().contains(group)) {
-
+                continue;
             }
             if (!region.getOwners().contains(uuid)) {
                 continue;
