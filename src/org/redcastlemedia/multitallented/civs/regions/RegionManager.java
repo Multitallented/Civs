@@ -163,6 +163,7 @@ public class RegionManager {
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
             }
             regionConfig.set("type", region.getType());
+            regionConfig.set("exp", region.getExp());
             regionConfig.save(regionFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
