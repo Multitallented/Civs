@@ -98,7 +98,7 @@ public class TownTests {
         Region region = new Region("cobble", people,
                 regionLocation,
                 RegionsTests.getRadii(),
-                effects);
+                effects,0);
         loadTownTypeTribe();
         Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
 
@@ -131,7 +131,7 @@ public class TownTests {
         Region region = new Region("cobble2", people,
                 new Location(Bukkit.getWorld("world"), 0,0,0),
                 RegionsTests.getRadii(),
-                effects);
+                effects,0);
         loadTownTypeTribe();
         Location townLocation = new Location(Bukkit.getWorld("world"), 1,0,0);
 

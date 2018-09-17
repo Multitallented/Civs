@@ -57,7 +57,7 @@ public class SchedulerTests {
         HashMap<String, String> effects = new HashMap<>();
         Region region = new Region("cobble", people,
                 TestUtil.blockUnique2.getLocation(),
-                RegionsTests.getRadii(), effects);
+                RegionsTests.getRadii(), effects, 0);
         regionManager.addRegion(region);
 
         RegionTickThread regionTickThread = new RegionTickThread();

@@ -75,7 +75,7 @@ public class ProtectionsTests {
         HashMap<String, String> effects = new HashMap<>();
         effects.put("block_break", null);
         effects.put("block_build", null);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects,0));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockBreak(event);
@@ -95,7 +95,7 @@ public class ProtectionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(uuid, "owner");
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>()));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
 
@@ -118,7 +118,7 @@ public class ProtectionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(uuid2, "owner");
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>()));
+        RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
@@ -144,7 +144,7 @@ public class ProtectionsTests {
         effects.put("block_break", null);
         effects.put("block_build", null);
         effects.put("chest_use", null);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects,0));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,null,Bukkit.getWorld("world").getBlockAt(0,0,0), BlockFace.NORTH);
 //        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
@@ -169,7 +169,7 @@ public class ProtectionsTests {
         HashMap<String, String> effects = new HashMap<>();
         effects.put("block_break", null);
         effects.put("block_build", null);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), effects,0));
         ProtectionHandler protectionHandler = new ProtectionHandler();
         PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,null,Bukkit.getWorld("world").getBlockAt(0,0,0), BlockFace.NORTH);
 //        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
@@ -185,7 +185,7 @@ public class ProtectionsTests {
         Region region = new Region("cobble", people,
                 regionLocation,
                 RegionsTests.getRadii(),
-                effects);
+                effects,0);
         RegionManager.getInstance().addRegion(region);
         TNTPrimed tntPrimed = mock(TNTPrimed.class);
         ArrayList<Block> blockList = new ArrayList<>();
