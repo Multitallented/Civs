@@ -132,6 +132,7 @@ en:
   town-ally-request-accepted: "Alliance has been formed between $1 and $2"
   town-ally-request-denied: "Alliance request with $1 has been denied"
   town-ally-removed: "Alliance between $1 and $2 has dissolved"
+  region-evolved: "Your $1 evolved into a $2"
 
   #errors
   no-region-type-found: "No region type found for $1"

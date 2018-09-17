@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -15,7 +16,7 @@ import java.util.*;
 
 public class Region {
 
-    private final String type;
+    private String type;
     private final HashMap<UUID, String> people;
     private final Location location;
     private final int radiusXP;
@@ -24,10 +25,16 @@ public class Region {
     private final int radiusZN;
     private final int radiusYP;
     private final int radiusYN;
+    private double exp;
     public HashMap<String, String> effects;
     private long lastTick = 0;
 
-    public Region(String type, HashMap<UUID, String> people, Location location, int[] buildRadius, HashMap<String, String> effects) {
+    public Region(String type,
+                  HashMap<UUID, String> people,
+                  Location location,
+                  int[] buildRadius,
+                  HashMap<String, String> effects,
+                  double exp) {
         this.type = type;
         this.people = people;
         this.location = location;
@@ -38,10 +45,22 @@ public class Region {
         radiusYP = buildRadius[4];
         radiusYN = buildRadius[5];
         this.effects = effects;
+        this.exp = exp;
     }
+    public double getExp() {
+        return exp;
+    }
+    public void setExp(double exp) {
+        this.exp = exp;
+    }
+    public void setEffects(HashMap<String, String> effects) {
+        this.effects = effects;
+    }
+
     public String getType() {
         return type;
     }
+    public void setType(String type) { this.type = type; }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
@@ -458,10 +477,12 @@ public class Region {
             return false;
         }
         boolean hadUpkeep = false;
+        int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean hasReagents = Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory());
             if (!hasReagents) {
+                i++;
                 continue;
             }
 
@@ -469,6 +490,7 @@ public class Region {
             boolean fullChest = chest.getBlockInventory().firstEmpty() == -1;
 
             if (!emptyOutput && fullChest) {
+                i++;
                 continue;
             }
             boolean hasMoney = false;
@@ -492,11 +514,13 @@ public class Region {
                 hasMoney = true;
             }
             if (!hasMoney) {
+                i++;
                 continue;
             }
             if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
                 Town town = TownManager.getInstance().getTownAt(location);
                 if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
+                    i++;
                     continue;
                 }
                 boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
@@ -512,8 +536,15 @@ public class Region {
             }
             Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
             Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());
+            if (regionUpkeep.getExp() > 0) {
+                exp += regionUpkeep.getExp();
+                RegionManager.getInstance().saveRegion(this);
+            }
+
             tick();
             hadUpkeep = true;
+            Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
+            i++;
         }
         return hadUpkeep;
     }

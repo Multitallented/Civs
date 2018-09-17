@@ -231,7 +231,8 @@ public class ItemManager {
                     outputs.add(CVItem.createListFromString(output));
                 }
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
-                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout);
+                double exp = config.getDouble("upkeep." + key + ".exp", 0);
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp);
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));

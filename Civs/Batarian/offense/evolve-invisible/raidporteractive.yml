@@ -1,8 +1,7 @@
 type: region
 icon: REDSTONE_BLOCK
-name: RaidPorter
+name: RaidPorterActive
 max: 1
-price: 150
 groups:
 - offense
 - raidport
@@ -18,9 +17,4 @@ build-radius: 3 #7x7x7
 effects:
 - block_break
 - block_build
-- charging_raid_port
-- evolve:raidporteractive.2
-period: 240 #4 minutes
-upkeep:
-  0:
-    exp: 1
+- raid_port

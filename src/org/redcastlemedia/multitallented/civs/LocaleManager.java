@@ -403,6 +403,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".you-left-town", "You have left $1"));
             currentLanguage.put("not-enough-housing",
                     localeConfig.getString(langKey + ".not-enough-housing", "You need to build more housing before inviting people"));
+            currentLanguage.put("region-evolved",
+                    localeConfig.getString(langKey + ".region-evolved", "Your $1 evolved into a $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

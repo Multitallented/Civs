@@ -183,6 +183,7 @@ public class RegionManager {
             radii[5] = regionConfig.getInt("yn-radius");
             Location location = Region.idToLocation(regionConfig.getString("location"));
 
+            double exp = regionConfig.getDouble("exp");
             HashMap<UUID, String> people = new HashMap<>();
             for (String s : regionConfig.getConfigurationSection("people").getKeys(false)) {
                 people.put(UUID.fromString(s), regionConfig.getString("people." + s));
@@ -193,7 +194,8 @@ public class RegionManager {
                     people,
                     location,
                     radii,
-                    (HashMap<String, String>) regionType.getEffects().clone()
+                    (HashMap<String, String>) regionType.getEffects().clone(),
+                    exp
             );
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
@@ -442,7 +444,7 @@ public class RegionManager {
 
         player.sendMessage(Civs.getPrefix() +
             localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
-        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects()));
+        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {

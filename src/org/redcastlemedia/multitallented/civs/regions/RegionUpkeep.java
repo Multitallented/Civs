@@ -9,6 +9,7 @@ public class RegionUpkeep {
     private final List<List<CVItem>> inputs;
     private final List<List<CVItem>> outputs;
     private final double payout;
+    private final double exp;
     private int powerReagent;
     private int powerInput;
     private int powerOutput;
@@ -40,11 +41,13 @@ public class RegionUpkeep {
     public RegionUpkeep(List<List<CVItem>> reagents,
                         List<List<CVItem>> inputs,
                         List<List<CVItem>> outputs,
-                        double payout) {
+                        double payout,
+                        double exp) {
         this.reagents = reagents;
         this.inputs = inputs;
         this.outputs = outputs;
         this.payout = payout;
+        this.exp = exp;
     }
 
     public List<List<CVItem>> getReagents() {
@@ -61,5 +64,9 @@ public class RegionUpkeep {
 
     public double getPayout() {
         return payout;
+    }
+
+    public double getExp() {
+        return exp;
     }
 }
