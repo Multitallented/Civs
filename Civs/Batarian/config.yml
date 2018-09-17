@@ -30,7 +30,6 @@ money:
   killstreak: 2
   killjoy: 4
   kill: 80
-  death: 80
   karma: 0.2
 karma-per-kill: 5
 karma-per-kill-streak: 1

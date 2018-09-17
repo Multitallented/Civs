@@ -360,15 +360,16 @@ public class DeathListener implements Listener {
         damagerCiv.setKarma(damagerCiv.getKarma() - karma);
         dyingCiv.setKarma(dyingCiv.getKarma() + karma);
 
-        if (Civs.econ != null && karmaEcon != 0) {
-            Civs.econ.withdrawPlayer(player, karmaEcon);
-            Civs.econ.depositPlayer(damager, karmaEcon);
-        }
-
         //pay econ bonus
         if (Civs.econ != null) {
-            Civs.econ.depositPlayer(damager, Math.max(econBonus,0));
-            Civs.econ.withdrawPlayer(player, Math.abs(ConfigManager.getInstance().getMoneyPerDeath()));
+            double totalExchange = Math.max(econBonus, 0) + karmaEcon;
+            double dyingBalance = Civs.econ.getBalance(player);
+            totalExchange = Math.min(totalExchange, dyingBalance);
+
+            if (totalExchange > 0) {
+                Civs.econ.depositPlayer(damager, totalExchange);
+                Civs.econ.withdrawPlayer(player, totalExchange);
+            }
         }
 
         double bountyBonus = 0;

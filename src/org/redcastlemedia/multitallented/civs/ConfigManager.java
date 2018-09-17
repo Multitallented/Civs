@@ -37,7 +37,6 @@ public class ConfigManager {
     double pointsPerKill;
     double moneyPerKill;
     double pointsPerDeath;
-    double moneyPerDeath;
     double pointsPerHalfHealth;
     double pointsPerQuarterHealth;
     double moneyPerKarma;
@@ -85,7 +84,6 @@ public class ConfigManager {
     public double getPointsPerKill() { return pointsPerKill; }
     public double getMoneyPerKill() { return moneyPerKill; }
     public double getPointsPerDeath() { return pointsPerDeath; }
-    public double getMoneyPerDeath() { return moneyPerDeath; }
     public double getPointsPerHalfHealth() { return pointsPerHalfHealth; }
     public double getPointsPerQuarterHealth() { return pointsPerQuarterHealth; }
     public double getMoneyPerKarma() { return moneyPerKarma; }
@@ -201,7 +199,6 @@ public class ConfigManager {
             pointsPerKill = config.getDouble("points.kill", 1);
             moneyPerKill = config.getDouble("money.kill", 1);
             pointsPerDeath = config.getDouble("points.death", -1);
-            moneyPerDeath = config.getDouble("money.death", -1);
             pointsPerHalfHealth = config.getDouble("points.half-health", 0.5);
             pointsPerQuarterHealth = config.getDouble("points.quarter-health", 1);
             moneyPerKarma = config.getDouble("money.karma", 0.1);
@@ -251,7 +248,6 @@ public class ConfigManager {
         pointsPerKill = 1;
         moneyPerKill = 1;
         pointsPerDeath = -1;
-        moneyPerDeath = -1;
         pointsPerHalfHealth = 0.5;
         pointsPerQuarterHealth = 1;
         moneyPerKarma = 0.1;
