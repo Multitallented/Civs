@@ -1,7 +1,9 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -70,7 +72,16 @@ public class CivilianListener implements Listener {
         UUID uuid = player.getUniqueId();
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         if (civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
-            //TODO deal damage to logging player
+            int penalty = (int) (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() *
+                    ConfigManager.getInstance().getCombatLogPenalty() / 100);
+            if (civilian.getLastDamager() != null) {
+                Player damager = Bukkit.getPlayer(civilian.getLastDamager());
+                if (damager != null && damager.isOnline()) {
+                    player.damage(penalty);
+                }
+            } else {
+                player.damage(penalty);
+            }
         }
 //        civilianManager.unloadCivilian(player);
         CommonScheduler.lastRegion.remove(uuid);

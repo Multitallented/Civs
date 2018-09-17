@@ -1,0 +1,26 @@
+type: region
+icon: REDSTONE_BLOCK
+name: RaidPorter
+max: 1
+price: 150
+groups:
+- offense
+- raidport
+
+build-reqs:
+- TNT*5
+- SIGN*1
+- OBSIDIAN*10
+- IRON_BARS*24
+- REDSTONE_WIRE*4
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- charging_raid_porter
+period: 300 #5 minutes
+evolve: raidporteractive:2
+upkeep:
+  0:
+    exp: 1
