@@ -16,7 +16,7 @@ limits:
 - npchousing:4
 - shack:5
 - hovel:1
-- arrowtrap:1
+- arrowtrapgroup:1
 
 build-radius: 24
 build-radius-y: 500

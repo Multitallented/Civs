@@ -17,7 +17,7 @@ build-reqs:
 limits:
 - shack:5
 - hovel:5
-- arrowtrap:3
+- arrowtrapgroup:3
 - npchousing:12
 
 critical-build-reqs:
