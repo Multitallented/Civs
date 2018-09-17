@@ -310,7 +310,7 @@ public class RegionManager {
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
             BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
-        } else if (rebuildRegion != null && !regionType.getRebuild().equals(rebuildRegion.getType())) {
+        } else if (rebuildRegion != null && !regionType.getRebuild().equalsIgnoreCase(rebuildRegion.getType())) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
