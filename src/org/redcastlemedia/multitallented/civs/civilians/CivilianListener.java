@@ -68,8 +68,11 @@ public class CivilianListener implements Listener {
     public void onCivilianQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        CivilianManager civilianManager = CivilianManager.getInstance();
-        civilianManager.unloadCivilian(player);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        if (civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
+            //TODO deal damage to logging player
+        }
+//        civilianManager.unloadCivilian(player);
         CommonScheduler.lastRegion.remove(uuid);
         CommonScheduler.lastTown.remove(uuid);
         Menu.clearHistory(uuid);

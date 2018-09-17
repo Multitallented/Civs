@@ -19,6 +19,8 @@ disable-arrow-turret-shooting-at-mobs: true
 death-grace-period-seconds: 60
 #how long a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
+#deal percent damage if logging out while in combat
+combat-log-out-percent-damage: 80
 points:
   killstreak: 0.1
   killjoy: 0.2

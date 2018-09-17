@@ -58,6 +58,7 @@ public class ConfigManager {
     boolean portDuringCombat;
     boolean townRings;
     long karmaDepreciatePeriod;
+    int combatLogPenalty;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -121,6 +122,7 @@ public class ConfigManager {
     public long getKarmaDepreciatePeriod() {
         return karmaDepreciatePeriod;
     }
+    public int getCombatLogPenalty() { return combatLogPenalty; }
 
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
@@ -220,6 +222,7 @@ public class ConfigManager {
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             townRings = config.getBoolean("town-rings", true);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
+            combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -269,6 +272,7 @@ public class ConfigManager {
         portDuringCombat = false;
         townRings = true;
         karmaDepreciatePeriod = 43200;
+        combatLogPenalty = 80;
     }
 
     public static ConfigManager getInstance() {
