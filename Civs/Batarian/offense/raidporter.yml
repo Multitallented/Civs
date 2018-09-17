@@ -24,3 +24,7 @@ period: 240 #4 minutes
 upkeep:
   0:
     exp: 1
+
+description:
+  en: "A reliable way to get into an enemy town. Takes 4 minutes to warm up."
+  es: "Una manera confiable de entrar en una ciudad enemiga. Toma 4 minutos para calentar."

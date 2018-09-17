@@ -1,0 +1,32 @@
+type: region
+icon: CHEST
+name: Catapult
+price: 150
+groups:
+- offense
+
+build-reqs:
+- OBSIDIAN*16
+- IRON_BARS*16
+- REDSTONE_BLOCK*2
+- TNT*4
+
+build-radius: 2 #5x5x5
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- tnt_cannon
+
+period: 15
+upkeep:
+  0:
+    reagents:
+    - REDSTONE*8
+    input:
+    - TNT*1
+
+description:
+  en: "Shoots TNT with precision at long range."
+  es: "Dispara TNT con precisión a gran distancia."

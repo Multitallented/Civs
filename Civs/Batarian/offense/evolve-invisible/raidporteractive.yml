@@ -18,3 +18,7 @@ effects:
 - block_break
 - block_build
 - raid_port
+
+description:
+  en: "A reliable way to get into an enemy town. Takes 4 minutes to warm up."
+  es: "Una manera confiable de entrar en una ciudad enemiga. Toma 4 minutos para calentar."
