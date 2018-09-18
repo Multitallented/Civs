@@ -473,21 +473,22 @@ public class Region {
             chest = (Chest) block.getState();
         }
 
-        if (chest == null && needsReagentsOrInput()) {
+        boolean needsItems = needsReagentsOrInput();
+        if (chest == null && needsItems) {
             return false;
         }
         boolean hadUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            boolean hasReagents = Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
-                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+            boolean hasReagents = !needsItems ||  (Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
+                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory()));
             if (!hasReagents) {
                 i++;
                 continue;
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chest.getBlockInventory().firstEmpty() == -1;
+            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
 
             if (!emptyOutput && fullChest) {
                 i++;
@@ -534,8 +535,10 @@ public class Region {
                     TownManager.getInstance().saveTown(town);
                 }
             }
-            Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
-            Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());
+            if (chest != null) {
+                Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+                Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());
+            }
             if (regionUpkeep.getExp() > 0) {
                 exp += regionUpkeep.getExp();
                 RegionManager.getInstance().saveRegion(this);

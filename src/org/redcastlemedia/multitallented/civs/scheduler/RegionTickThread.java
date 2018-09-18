@@ -17,7 +17,12 @@ public class RegionTickThread implements Runnable {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             boolean shouldTick = region.shouldTick();
 
-            boolean hasUpkeep = !regionType.isDailyPeriod() && region.runUpkeep();
+            boolean hasUpkeep = false;
+            try {
+                hasUpkeep = !regionType.isDailyPeriod() && region.runUpkeep();
+            } catch (NullPointerException npe) {
+                
+            }
 
             RegionTickEvent regionTickEvent = new RegionTickEvent(region, regionType, hasUpkeep, shouldTick);
             Bukkit.getPluginManager().callEvent(regionTickEvent);
