@@ -9,9 +9,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class PlaceHook extends PlaceholderHook {
-    public PlaceHook() {
-
-    }
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {

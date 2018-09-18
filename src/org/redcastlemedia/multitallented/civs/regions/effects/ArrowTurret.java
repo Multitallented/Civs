@@ -68,21 +68,19 @@ public class ArrowTurret implements Listener {
         double speed = 0.5;
         int spread = 12;
         String[] parts = vars.split("\\.");
-        if (parts.length > 1) {
-            try {
-                damage = Integer.parseInt(parts[0]);
-            } catch (Exception e) {
-                return;
-            }
+        try {
+            damage = Integer.parseInt(parts[0]);
+        } catch (Exception e) {
+            return;
         }
-        if (parts.length > 2) {
+        if (parts.length > 1) {
             try {
                 speed = Double.parseDouble(parts[1]) / 10;
             } catch (Exception e) {
                 return;
             }
         }
-        if (parts.length > 3) {
+        if (parts.length > 2) {
             try {
                 spread = Integer.parseInt(parts[2]);
             } catch (Exception e) {
@@ -128,7 +126,7 @@ public class ArrowTurret implements Listener {
         }
 
         //Check to see if the Townships has enough reagents
-        if (runUpkeep && !r.runUpkeep()) {
+        if (runUpkeep && !r.runUpkeep(false)) {
             return;
         }
 

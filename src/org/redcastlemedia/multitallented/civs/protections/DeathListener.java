@@ -149,13 +149,13 @@ public class DeathListener implements Listener {
         dyingCiv.setLastDamage(-1);
 
         ArrayList<ItemStack> removeMe = new ArrayList<>();
-        for (ItemStack is : player.getInventory()) {
+        for (ItemStack is : event.getDrops()) {
             if (is.getType() != Material.AIR && CVItem.isCivsItem(is)) {
                 removeMe.add(is);
             }
         }
         for (ItemStack is : removeMe) {
-            player.getInventory().removeItem(is);
+            event.getDrops().remove(is);
         }
 
         Location deathLocation = player.getLocation();

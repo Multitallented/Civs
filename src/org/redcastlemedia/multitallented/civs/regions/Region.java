@@ -411,6 +411,10 @@ public class Region {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
 
+        if (regionType.getPeriod() == 0) {
+            return false;
+        }
+
         long period = regionType.getPeriod();
         return lastTick + period * 1000 < System.currentTimeMillis();
     }
@@ -461,7 +465,11 @@ public class Region {
     }
 
     public boolean runUpkeep() {
-        if (!shouldTick()) {
+        return runUpkeep(true);
+    }
+
+    public boolean runUpkeep(boolean checkTick) {
+        if (checkTick && !shouldTick()) {
             return false;
         }
 
@@ -480,7 +488,7 @@ public class Region {
         boolean hadUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            boolean hasReagents = !needsItems ||  (Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
+            boolean hasReagents = !needsItems || (Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory()));
             if (!hasReagents) {
                 i++;
@@ -495,7 +503,7 @@ public class Region {
                 continue;
             }
             boolean hasMoney = false;
-            if (Civs.econ != null) {
+            if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
                 payout = payout / getOwners().size();
                 for (UUID uuid : getOwners()) {
@@ -544,7 +552,9 @@ public class Region {
                 RegionManager.getInstance().saveRegion(this);
             }
 
-            tick();
+            if (checkTick) {
+                tick();
+            }
             hadUpkeep = true;
             Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
             i++;
