@@ -59,6 +59,7 @@ public class ConfigManager {
     boolean townRings;
     long karmaDepreciatePeriod;
     int combatLogPenalty;
+    boolean destroyTownsAtZero;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -123,6 +124,7 @@ public class ConfigManager {
         return karmaDepreciatePeriod;
     }
     public int getCombatLogPenalty() { return combatLogPenalty; }
+    public boolean getDestroyTownsAtZero() { return destroyTownsAtZero; }
 
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
@@ -223,6 +225,7 @@ public class ConfigManager {
             townRings = config.getBoolean("town-rings", true);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
+            destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -273,6 +276,7 @@ public class ConfigManager {
         townRings = true;
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;
+        destroyTownsAtZero = false;
     }
 
     public static ConfigManager getInstance() {

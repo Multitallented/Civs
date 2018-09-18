@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.util;
 
 
 import me.clip.placeholderapi.PlaceholderHook;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -11,9 +12,15 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 public class PlaceHook extends PlaceholderHook {
 
     @Override
-    public String onPlaceholderRequest(Player p, String params) {
-        if (p == null) { return ""; }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+    public String onRequest(OfflinePlayer offlinePlayer, String params) {
+        if (offlinePlayer == null) {
+            return "";
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(offlinePlayer.getUniqueId());
+        return getReplacement(civilian);
+    }
+
+    private String getReplacement(Civilian civilian) {
         Town town = TownManager.getInstance().isOwnerOfATown(civilian);
         if (town != null) {
             return town.getName();
@@ -30,7 +37,14 @@ public class PlaceHook extends PlaceholderHook {
                     highestPopulation = pop;
                 }
             }
-            return highestTown == null ? null : highestTown.getName();
+            return highestTown == null ? "" : highestTown.getName();
         }
+    }
+
+    @Override
+    public String onPlaceholderRequest(Player p, String params) {
+        if (p == null) { return ""; }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+        return getReplacement(civilian);
     }
 }

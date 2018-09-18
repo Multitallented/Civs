@@ -1,0 +1,37 @@
+type: region
+icon: CHEST
+name: SiegeMachine3
+groups:
+- offense
+- siegemachinegroup
+- townpowerreduce
+
+build-reqs:
+- TNT*5
+- SIGN*1
+- OBSIDIAN*9
+- g:fence*24
+
+build-radius: 3 #7x7x7
+effects:
+- block_build
+- block_break
+- drain_power:90.1
+
+towns:
+- outpost
+- militarybase
+
+upkeep:
+  0:
+    input:
+    - TNT*1
+    - REDSTONE*4
+    - COAL*1
+    output:
+    - GRAVEL*1
+    - DIRT*1
+
+description:
+  en: "The foundation for all wars. Slowly drains power from nearby target town"
+  es: "La base de todas las guerras. Lentamente drena la energía de la ciudad objetivo cercana"

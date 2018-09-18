@@ -409,6 +409,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".anti-camp-activated", "$1's anti-camp has been activated"));
             currentLanguage.put("anti-camp-expired",
                     localeConfig.getString(langKey + ".anti-camp-expired", "$1's anti-camp has expired"));
+            currentLanguage.put("no-blocks-above-chest",
+                    localeConfig.getString(langKey + ".no-blocks-above-chest", "There must not be any blocks above the $1 center"));
+            currentLanguage.put("siege-built",
+                    localeConfig.getString(langKey + ".siege-built", "$1 has created a $2 targeting $3"));
             languageMap.put(langKey, currentLanguage);
         }
     }

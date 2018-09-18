@@ -135,6 +135,7 @@ en:
   region-evolved: "Your $1 evolved into a $2"
   anti-camp-active: "$1's anti-camp has been activated"
   anti-camp-expired: "$1's anti-camp has expired"
+  siege-built: "$1 has created a $2 targeting $3"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -184,6 +185,7 @@ en:
   region-limit-reached: "A $1 can only have $2 $3"
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
+  no-blocks-above-chest: "There must not be any blocks above the $1 center"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
