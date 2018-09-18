@@ -70,21 +70,21 @@ public class ArrowTurret implements Listener {
         String[] parts = vars.split("\\.");
         if (parts.length > 1) {
             try {
-                damage = Integer.parseInt(parts[1]);
+                damage = Integer.parseInt(parts[0]);
             } catch (Exception e) {
                 return;
             }
         }
         if (parts.length > 2) {
             try {
-                speed = Double.parseDouble(parts[2]) / 10;
+                speed = Double.parseDouble(parts[1]) / 10;
             } catch (Exception e) {
                 return;
             }
         }
         if (parts.length > 3) {
             try {
-                spread = Integer.parseInt(parts[3]);
+                spread = Integer.parseInt(parts[2]);
             } catch (Exception e) {
                 return;
             }
@@ -189,8 +189,8 @@ public class ArrowTurret implements Listener {
 
     @EventHandler
     public void onPlayerInRegion(PlayerInRegionEvent event) {
-        if (event.getRegion().getEffects().containsKey("arrow_turret")) {
-            ArrowTurret.shootArrow(event.getRegion(), event.getUuid(), event.getRegion().getEffects().get("arrow_turret"), true);
+        if (event.getRegion().getEffects().containsKey(KEY)) {
+            ArrowTurret.shootArrow(event.getRegion(), event.getUuid(), event.getRegion().getEffects().get(KEY), true);
         }
     }
 
