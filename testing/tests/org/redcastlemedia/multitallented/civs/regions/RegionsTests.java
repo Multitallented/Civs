@@ -495,7 +495,7 @@ public class RegionsTests {
                 owners, 300, 300, 2, 1);
         TownManager.getInstance().addTown(town);
         assertTrue(region.hasUpkeepItems());
-        region.runUpkeep();
+        region.runUpkeep(false);
         assertEquals(299, town.getPower());
     }
 
@@ -511,7 +511,7 @@ public class RegionsTests {
         Town town = new Town("townName", "hamlet", location1,
                 owners, 300, 305, 2, 1);
         TownManager.getInstance().addTown(town);
-        region.runUpkeep();
+        region.runUpkeep(false);
         assertEquals(301, town.getPower());
     }
 

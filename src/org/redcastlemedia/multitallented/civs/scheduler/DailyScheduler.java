@@ -13,7 +13,7 @@ public class DailyScheduler implements Runnable {
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getAllRegions()) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            boolean hasUpkeep = regionType.isDailyPeriod() && region.runUpkeep();
+            boolean hasUpkeep = regionType.isDailyPeriod() && region.runUpkeep(false);
         }
     }
 }
