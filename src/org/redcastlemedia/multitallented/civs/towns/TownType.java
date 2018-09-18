@@ -10,7 +10,7 @@ import java.util.List;
 public class TownType extends CivItem {
 
     private final HashMap<String, Integer> reqs;
-    private final HashSet<String> effects;
+    private final HashMap<String, String> effects;
     private final int buildRadius;
     private final int buildRadiusY;
     private final List<String> criticalReqs;
@@ -22,7 +22,7 @@ public class TownType extends CivItem {
     public HashMap<String, Integer> getReqs() {
         return reqs;
     }
-    public HashSet<String> getEffects() {
+    public HashMap<String, String> getEffects() {
         return effects;
     }
     public int getBuildRadius() {
@@ -55,7 +55,7 @@ public class TownType extends CivItem {
                     String permission,
                     HashMap<String, Integer> reqs,
                     HashMap<String, Integer> regionLimits,
-                    HashSet<String> effects,
+                    HashMap<String, String> effects,
                     int buildRadius,
                     int buildRadiusY,
                     List<String> criticalReqs,

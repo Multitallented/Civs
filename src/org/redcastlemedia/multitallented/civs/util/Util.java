@@ -319,7 +319,7 @@ public class Util {
         if (town != null && civilian != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             override = !regionType.getEffects().containsKey("cant_override") &&
-                    townType.getEffects().contains("control_override") &&
+                    townType.getEffects().containsKey("control_override") &&
                     town.getPeople().get(civilian.getUuid()) != null &&
                     town.getPeople().get(civilian.getUuid()).equals("owner");
         }

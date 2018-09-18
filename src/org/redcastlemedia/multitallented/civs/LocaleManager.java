@@ -405,6 +405,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".not-enough-housing", "You need to build more housing before inviting people"));
             currentLanguage.put("region-evolved",
                     localeConfig.getString(langKey + ".region-evolved", "Your $1 evolved into a $2"));
+            currentLanguage.put("anti-camp-activated",
+                    localeConfig.getString(langKey + ".anti-camp-activated", "$1's anti-camp has been activated"));
+            currentLanguage.put("anti-camp-expired",
+                    localeConfig.getString(langKey + ".anti-camp-expired", "$1's anti-camp has expired"));
             languageMap.put(langKey, currentLanguage);
         }
     }

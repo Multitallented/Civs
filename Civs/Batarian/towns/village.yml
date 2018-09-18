@@ -33,6 +33,7 @@ effects:
 - block_fire
 - deny_mob_spawn
 - control_override
+- anticamp:3.1080 #3 damage for 18 minutes
 
 power: 600
 max-power: 1200

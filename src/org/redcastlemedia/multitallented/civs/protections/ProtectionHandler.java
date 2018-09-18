@@ -391,7 +391,7 @@ public class ProtectionHandler implements Listener {
         Town town = townManager.getTownAt(location);
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (townType.getEffects().contains(type)) {
+            if (townType.getEffects().containsKey(type)) {
                 return true;
             }
         }
@@ -409,7 +409,7 @@ public class ProtectionHandler implements Listener {
         Town town = townManager.getTownAt(location);
         outer: if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (player == null || !townType.getEffects().contains(type)) {
+            if (player == null || !townType.getEffects().containsKey(type)) {
                 break outer;
             }
             String role = town.getPeople().get(player.getUniqueId());

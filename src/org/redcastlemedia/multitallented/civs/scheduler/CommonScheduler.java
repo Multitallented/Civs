@@ -27,6 +27,7 @@ public class CommonScheduler implements Runnable {
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private int i = 0;
+    private boolean notTwoSecond = true;
 
     @Override
     public void run() {
@@ -49,6 +50,10 @@ public class CommonScheduler implements Runnable {
             i=0;
             RegionTickThread regionTickThread = new RegionTickThread();
             regionTickThread.run();
+            notTwoSecond = !notTwoSecond;
+            if (!notTwoSecond) {
+                Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+            }
         } else {
             i++;
         }

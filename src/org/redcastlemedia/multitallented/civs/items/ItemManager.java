@@ -173,8 +173,16 @@ public class ItemManager {
 
     public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
-        HashSet<String> effects = new HashSet<>();
-        effects.addAll(config.getStringList("effects"));
+        HashMap<String, String> effects = new HashMap<>();
+        List<String> configEffects = config.getStringList("effects");
+        for (String effectString : configEffects) {
+            if (effectString.contains(":")) {
+                String[] effectSplit = effectString.split(":");
+                effects.put(effectSplit[0], effectSplit[1]);
+            } else {
+                effects.put(effectString, null);
+            }
+        }
         int buildRadius = config.getInt("build-radius", 20);
         ConfigurationSection configurationSection = config.getConfigurationSection("description");
         HashMap<String, String> description = new HashMap<>();

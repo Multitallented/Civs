@@ -27,6 +27,7 @@ effects:
 - block_fire
 - deny_mob_spawn
 - control_override
+- anticamp:4.1800 #4 damage for 30 minutes
 - claim_at_zero #TODO create this
 
 power: 200
