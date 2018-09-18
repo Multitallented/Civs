@@ -36,7 +36,8 @@ public class RegionActionMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null) {
+        if (event.getCurrentItem() == null ||
+                event.getCurrentItem().getItemMeta() == null) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
@@ -65,7 +66,8 @@ public class RegionActionMenu extends Menu {
         }
         //TODO add functionality for clicking some other action items
 
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+        if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
+                event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().closeInventory();
@@ -81,7 +83,8 @@ public class RegionActionMenu extends Menu {
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
             return;
         }
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+        if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
+                event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
                         "destroy"))) {
             event.getWhoClicked().closeInventory();
@@ -132,7 +135,7 @@ public class RegionActionMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Region Type button
-        if (region.getOwners().contains(civilian.getUuid())) {
+        {
             CVItem cvItemType = regionType.clone();
             cvItemType.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "region-type"));
