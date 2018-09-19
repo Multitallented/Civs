@@ -176,6 +176,8 @@ public class RegionManager {
             return;
         }
     }
+
+    @SuppressWarnings("unchecked")
     private Region loadRegion(File regionFile) {
         FileConfiguration regionConfig = new YamlConfiguration();
         Region region;

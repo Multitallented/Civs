@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -207,6 +209,17 @@ public class TownActionMenu extends Menu {
             CVItem cvItem6 = CVItem.createCVItemFromString("SKELETON_SKULL");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "bounty").replace("$1", town.getName()));
+            lore = new ArrayList<>();
+            int i=0;
+            for (Bounty bounty : town.getBounties()) {
+                OfflinePlayer op = Bukkit.getOfflinePlayer(bounty.getIssuer());
+                lore.add(op.getName() + ": $" + bounty.getAmount());
+                if (i>5) {
+                    break;
+                }
+                i++;
+            }
+            cvItem6.setLore(lore);
             inventory.setItem(5, cvItem6.createItemStack());
         }
 

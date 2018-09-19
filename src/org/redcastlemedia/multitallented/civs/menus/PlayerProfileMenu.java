@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -137,6 +138,17 @@ public class PlayerProfileMenu extends Menu {
             CVItem cvItem = CVItem.createCVItemFromString("SKELETON_SKULL");
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "bounty").replace("$1", player.getName()));
+            lore = new ArrayList<>();
+            int i=0;
+            for (Bounty bounty : currCivilian.getBounties()) {
+                OfflinePlayer op = Bukkit.getOfflinePlayer(bounty.getIssuer());
+                lore.add(op.getName() + ": $" + bounty.getAmount());
+                if (i>5) {
+                    break;
+                }
+                i++;
+            }
+            cvItem.setLore(lore);
             inventory.setItem(4, cvItem.createItemStack());
         }
 
