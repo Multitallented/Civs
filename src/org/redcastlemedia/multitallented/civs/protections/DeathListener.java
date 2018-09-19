@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -136,6 +137,23 @@ public class DeathListener implements Listener {
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);
         CivilianManager.getInstance().saveCivilian(civilian);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFoodHeal(EntityRegainHealthEvent event) {
+        if (event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED ||
+                ConfigManager.getInstance().getFoodHealInCombat()) {
+            return;
+        }
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!civilian.isInCombat()) {
+            return;
+        }
+        event.setCancelled(true);
     }
 
     @EventHandler

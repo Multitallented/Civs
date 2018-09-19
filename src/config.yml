@@ -21,6 +21,8 @@ disable-arrow-turret-shooting-at-mobs: false
 death-grace-period-seconds: 60
 #how long a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
+#should food heal in combat?
+allow-food-heal-in-combat: true
 points:
   killstreak: 0.1
   killjoy: 0.2

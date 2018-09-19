@@ -60,6 +60,7 @@ public class ConfigManager {
     long karmaDepreciatePeriod;
     int combatLogPenalty;
     boolean destroyTownsAtZero;
+    boolean allowFoodHealInCombat;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -125,6 +126,7 @@ public class ConfigManager {
     }
     public int getCombatLogPenalty() { return combatLogPenalty; }
     public boolean getDestroyTownsAtZero() { return destroyTownsAtZero; }
+    public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
 
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
@@ -226,6 +228,7 @@ public class ConfigManager {
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
             destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
+            allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -277,6 +280,7 @@ public class ConfigManager {
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;
         destroyTownsAtZero = false;
+        allowFoodHealInCombat = true;
     }
 
     public static ConfigManager getInstance() {
