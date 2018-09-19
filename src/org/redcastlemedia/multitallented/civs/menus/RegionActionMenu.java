@@ -56,6 +56,7 @@ public class RegionActionMenu extends Menu {
 //        }
         if (region == null) {
             Civs.logger.severe("Unable to find region at " + locationString);
+            return;
         }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {

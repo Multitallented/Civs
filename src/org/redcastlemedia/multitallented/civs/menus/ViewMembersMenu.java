@@ -42,14 +42,14 @@ public class ViewMembersMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta()) {
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() ||
+                event.getWhoClicked() == null) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        System.out.println(locationString);
         Town town = TownManager.getInstance().getTown(locationString.toLowerCase());
         Region region = null;
         if (town == null) {

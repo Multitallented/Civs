@@ -58,7 +58,8 @@ public class TNTCannon implements Listener, CreateRegionListener {
             return;
         }
         Region region = RegionManager.getInstance().getRegionAt(id);
-        if (region == null || !region.getOwners().contains(player.getUniqueId())) {
+        if (region == null || !region.getPeople().containsKey(player.getUniqueId())
+                || !region.getPeople().get(player.getUniqueId()).equals("owner")) {
             player.sendMessage(Civs.getPrefix() + "You must be an owner to use this."); //TODO localize
             return;
         }
@@ -67,12 +68,10 @@ public class TNTCannon implements Listener, CreateRegionListener {
             return;
         }
         String[] effectParts = region.getEffects().get("tnt_cannon").split("\\.");
-        if (effectParts.length > 1) {
-            try {
-                cooldown = Long.parseLong(effectParts[1]);
-            } catch (Exception e) {
-                //Do nothing and just use defaults
-            }
+        try {
+            cooldown = Long.parseLong(effectParts[0]);
+        } catch (Exception e) {
+            //Do nothing and just use defaults
         }
         Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
         if (!region.hasUpkeepItems()) {
