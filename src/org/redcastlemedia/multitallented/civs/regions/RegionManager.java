@@ -30,7 +30,7 @@ import java.util.*;
 
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
-    private HashMap<Location, Region> regionLocations = new HashMap<>();
+    protected HashMap<Location, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
@@ -219,7 +219,7 @@ public class RegionManager {
         double maxdex = regions.get(worldName).size() -1;
         double prevIndex = 0;
         for (;;) {
-            index = (int) Math.round(((maxdex - mindex) / 2) + mindex);
+            index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             Region r = regions.get(worldName).get(index);
             if (prevIndex == index) {
                 if (withinRegion(r, location)) {
