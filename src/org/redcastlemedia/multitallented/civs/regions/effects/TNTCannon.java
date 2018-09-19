@@ -14,6 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -23,10 +25,11 @@ import java.util.HashSet;
 
 public class TNTCannon implements Listener, CreateRegionListener {
 //    private final HashMap<TNTPrimed, FiredTNT> firedTNT = new HashMap<>();
+    private final String KEY = "tnt_cannon";
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
 
     public TNTCannon() {
-        RegionManager.getInstance().addCreateRegionListener("tnt_cannon", this);
+        RegionManager.getInstance().addCreateRegionListener(KEY, this);
     }
 
     @Override
@@ -64,12 +67,11 @@ public class TNTCannon implements Listener, CreateRegionListener {
             return;
         }
         long cooldown = 8;
-        if (!region.getEffects().containsKey("tnt_cannon")) {
+        if (!region.getEffects().containsKey(KEY)) {
             return;
         }
-        String[] effectParts = region.getEffects().get("tnt_cannon").split("\\.");
         try {
-            cooldown = Long.parseLong(effectParts[0]);
+            cooldown = Long.parseLong(region.getEffects().get(KEY));
         } catch (Exception e) {
             //Do nothing and just use defaults
         }
@@ -143,9 +145,9 @@ public class TNTCannon implements Listener, CreateRegionListener {
 //            firedTNT.put(tnt, ftnt);
         cooldowns.put(id, System.currentTimeMillis() + cooldown * 1000);
 
-//        region.runUpkeep();
-        Chest chest = (Chest) region.getLocation().getBlock();
-        chest.getBlockInventory().removeItem(new ItemStack(Material.TNT,1));
+        region.runUpkeep();
+//        Chest chest = (Chest) region.getLocation().getBlock();
+//        chest.getBlockInventory().removeItem(new ItemStack(Material.TNT,1));
 
             /*player.sendMessage(ChatColor.GREEN + "[Townships] Dx: " + deltaX);
             player.sendMessage(ChatColor.GREEN + "[Townships] Velocity: " + newX + ", " + newY + ", " + newZ);
