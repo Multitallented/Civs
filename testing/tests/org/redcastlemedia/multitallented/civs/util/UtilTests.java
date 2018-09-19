@@ -1,17 +1,22 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +29,11 @@ public class UtilTests {
         if (Bukkit.getServer() == null) {
             TestUtil.serverSetup();
         }
+    }
+
+    @Before
+    public void setup() {
+        new TownManager();
     }
 
     @Test
@@ -73,5 +83,36 @@ public class UtilTests {
         verify(inventory).addItem(itemStackArgumentCaptor.capture());
         List<ItemStack> stacks = itemStackArgumentCaptor.getAllValues();
         assertEquals(Material.GRASS, stacks.get(0).getType());
+    }
+
+    @Test
+    public void placeHookShouldReportOwnerName() {
+        CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
+        TownTests.loadTownTypeHamlet();
+        Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        Town town = new Town("mytown", "hamlet", location, people, 100, 100,
+                1, 1);
+        TownManager.getInstance().addTown(town);
+        PlaceHook placeHook = new PlaceHook();
+        assertEquals("mytown", placeHook.onPlaceholderRequest(TestUtil.player, ""));
+    }
+
+    @Test
+    public void placeHookShouldReportHighestPop() {
+        CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
+        TownTests.loadTownTypeHamlet();
+        Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "member");
+        Town town = new Town("mytown1", "hamlet", location, people, 100, 100,
+                3, 2);
+        TownManager.getInstance().addTown(town);
+        Town town1 = new Town("mytown2", "hamlet", location, people, 100, 100,
+                8, 5);
+        TownManager.getInstance().addTown(town1);
+        PlaceHook placeHook = new PlaceHook();
+        assertEquals("mytown2", placeHook.onPlaceholderRequest(TestUtil.player, ""));
     }
 }

@@ -225,7 +225,7 @@ public class RegionManager {
         int index;
         double mindex = 0;
         double maxdex = regions.get(worldName).size() -1;
-        double prevIndex = 0;
+        double prevIndex = -1;
         for (;;) {
             index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             if (prevIndex == index) {
