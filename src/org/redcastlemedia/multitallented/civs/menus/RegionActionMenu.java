@@ -2,8 +2,6 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -17,13 +15,11 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class RegionActionMenu extends Menu {
@@ -46,14 +42,11 @@ public class RegionActionMenu extends Menu {
         RegionManager regionManager = RegionManager.getInstance();
         String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
         Location location = Region.idToLocation(locationString);
+
+        System.out.println(location.getWorld().getName() + ":" +
+                location.getX() + ":" + location.getY() + ":" + location.getZ());
         Region region = regionManager.getRegionAt(location);
 
-//        if (region == null) {
-//            Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(location,0);
-//            for (Region r : regionSet) {
-//
-//            }
-//        }
         if (region == null) {
             Civs.logger.severe("Unable to find region at " + locationString);
             return;

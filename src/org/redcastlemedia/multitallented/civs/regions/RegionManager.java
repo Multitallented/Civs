@@ -54,18 +54,7 @@ public class RegionManager {
         }
         regions.get(worldName).add(region);
         regionLocations.put(region.getLocation(), region);
-        Collections.sort(regions.get(worldName),
-                new Comparator<Region>() {
-                    @Override
-                    public int compare(Region r1, Region r2) {
-                        if (r1.getLocation().getX() - r1.getRadiusXN() > r2.getLocation().getX() - r2.getRadiusXN()) {
-                            return 1;
-                        } else if (r1.getLocation().getX() - r1.getRadiusXN() < r2.getLocation().getX() - r2.getRadiusXN()) {
-                            return -1;
-                        }
-                        return 0;
-                    }
-                });
+        sortRegions(worldName);
         saveRegion(region);
     }
     public void loadAllRegions() {
@@ -83,6 +72,7 @@ public class RegionManager {
                     regions.put(worldName, new ArrayList<Region>());
                 }
                 regions.get(worldName).add(region);
+                sortRegions(worldName);
             }
         } catch (NullPointerException npe) {
             Civs.logger.warning("No region files found to load");
@@ -90,6 +80,22 @@ public class RegionManager {
         }
 
     }
+
+    private void sortRegions(String worldName) {
+        Collections.sort(regions.get(worldName),
+        new Comparator<Region>() {
+            @Override
+            public int compare(Region r1, Region r2) {
+                if (r1.getLocation().getX() - r1.getRadiusXN() > r2.getLocation().getX() - r2.getRadiusXN()) {
+                    return 1;
+                } else if (r1.getLocation().getX() - r1.getRadiusXN() < r2.getLocation().getX() - r2.getRadiusXN()) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
+    }
+
     public Set<Region> getAllRegions() {
         Set<Region> returnSet = new HashSet<>();
         for (String worldName : regions.keySet()) {
@@ -220,22 +226,16 @@ public class RegionManager {
         double prevIndex = 0;
         for (;;) {
             index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
-            Region r = regions.get(worldName).get(index);
             if (prevIndex == index) {
-                if (withinRegion(r, location)) {
-                    return r;
-                } else {
-                    return null;
-                }
+                return null;
             }
+            Region r = regions.get(worldName).get(index);
 
             if (withinRegion(r, location)) {
                 return r;
             } else if (location.getX() < r.getLocation().getX() - r.getRadiusXN()) {
-
                 maxdex = index;
             } else if (location.getX() > r.getLocation().getX() + r.getRadiusXN()) {
-
                 mindex = index;
             } else {
                 return findRegion((int) mindex, (int) maxdex, location, index);
@@ -259,6 +259,9 @@ public class RegionManager {
 
     private boolean withinRegion(Region region, Location location) {
         Location rLocation = region.getLocation();
+        if (rLocation.equals(location)) {
+            return true;
+        }
         return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
                 rLocation.getX() + 1 +region.getRadiusXP() >= location.getX() &&
                 rLocation.getY() - region.getRadiusYN() <= location.getY() &&
