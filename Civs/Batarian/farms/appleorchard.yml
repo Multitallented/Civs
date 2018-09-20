@@ -1,16 +1,16 @@
 type: region
 icon: CHEST
-name: CarrotFarm
+name: AppleOrchard
 max: 1
-price: 250
+price: 200
 groups:
 - farm
 
 build-reqs:
 - g:fencegate*2
 - g:fence*32
-- WATER*1
-- CARROTS*48
+- OAK_LOG*4
+- OAK_LEAVES*12
 
 towns:
 - settlement
@@ -24,17 +24,17 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:CARROT
-period: 150 #2.5 minutes
+- conveyor:APPLE
+period: 300 #5 minutes
 upkeep:
   0:
     reagents:
-    - STONE_HOE
-    - CARROT*32
+    - SHEARS
+    - APPLE*4
     output:
-    - CARROT*16
+    - APPLE*16
 
 
 description:
-  en: "Automatic carrot farm"
-  es: "Granja automática de zanahorias"
+  en: "Automatic apple farm"
+  es: "Granja automática de manzanas"

@@ -31,8 +31,8 @@ upkeep:
     input:
     - STONE_PICKAXE
     output:
-    - COAL
+    - COAL*6
 
 description:
-  en: "Uses stone picks to mine 1 coal per hour"
-  es: "Utiliza picos de piedra para extraer 1 carbón por hora"
+  en: "Uses stone picks to mine 6 coal per hour"
+  es: "Utiliza picos de piedra para extraer 6 carbón por hora"

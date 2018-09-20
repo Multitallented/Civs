@@ -20,9 +20,21 @@ period: 3600 # 1 hour
 upkeep:
   0:
     input:
-    - POTATO*8,CARROT*8,BREAD*6
-    payout: 15
+    - POTATO*32 #.16
+    payout: 5.12
+  1:
+    input:
+    - CARROT*32 #.12
+    payout: 3.84
+  2:
+    input:
+    - BREAD*4 #1.95
+    payout: 7.8
+  3:
+    input:
+    - MELON_SLICE*8 #.11
+    payout: 3.52
 
 description:
-  en: "A safe place to store your items"
-  es: "Un lugar seguro para almacenar tus artículos"
+  en: "A safe place to store your items, and earn some money."
+  es: "Un lugar seguro para almacenar sus artículos y ganar algo de dinero."

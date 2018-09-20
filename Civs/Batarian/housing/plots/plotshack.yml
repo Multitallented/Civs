@@ -1,0 +1,27 @@
+type: region
+icon: CHEST
+name: PlotShack
+groups:
+- housingplot
+
+build-reqs:
+- g:fence*22
+- g:fencegate*2
+
+towns:
+- settlement
+- village
+- town
+- capital
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+
+description:
+  en: "A plot that can be sold, and transformed into a shack."
+  es: "Una trama que puede ser vendida y transformada en una choza."

@@ -1,17 +1,16 @@
 type: region
 icon: CHEST
-name: Lumberyard
+name: AcaciaLumberyard
 max: 2
-price: 50
+price: 100
 groups:
 - raw
 - farm
-
-biomes:
-- FOREST
+- woodwork
 
 build-reqs:
-- g:log*8
+- ACACIA_LOG*8
+- ACACIA_LEAVES*32
 - g:fence*28
 - g:fencegate*2
 - CHEST*2
@@ -23,7 +22,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:OAK_LOG
+- conveyor:ACACIA_LOG
 
 period: 120 #2 minutes
 upkeep:
@@ -31,18 +30,18 @@ upkeep:
     reagents:
     - STONE_AXE
     output:
-    - OAK_LOG*2
+    - ACACIA_LOG*2
   1:
     reagents:
     - IRON_AXE
     output:
-    - OAK_LOG*4
+    - ACACIA_LOG*4
   2:
     reagents:
     - DIAMOND_AXE
     output:
-    - OAK_LOG*8
+    - ACACIA_LOG*8
 
 description:
-  en: "Automated oak log farming"
-  es: "Agricultura automatizada de registro de roble"
+  en: "Automated acacia log farming"
+  es: "Agricultura automatizada de registro de acacia"

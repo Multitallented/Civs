@@ -21,7 +21,7 @@ effects:
 
 towns:
 - outpost
-- militarybase
+- keep
 
 upkeep:
   0:

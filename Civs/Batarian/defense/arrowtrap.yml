@@ -19,6 +19,8 @@ towns:
 - village
 - town
 - capital
+- outpost
+- keep
 
 effects:
 - block_break

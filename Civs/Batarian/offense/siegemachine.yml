@@ -22,7 +22,7 @@ effects:
 
 towns:
 - outpost
-- militarybase
+- keep
 
 period: 240 # 4 minutes
 upkeep:
