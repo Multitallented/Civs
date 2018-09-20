@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -10,6 +11,9 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class PlaceHook extends PlaceholderHook {
+    public PlaceHook() {
+        PlaceholderAPI.registerPlaceholderHook("town_name", this);
+    }
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, String params) {
