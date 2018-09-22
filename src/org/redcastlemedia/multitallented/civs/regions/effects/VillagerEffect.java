@@ -10,6 +10,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -51,7 +52,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
                 block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
 
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
             return false;
         }
 

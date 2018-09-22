@@ -6,7 +6,7 @@ town-rings: true
 #ignore other plugins when checking if an explosion is cancelled
 #before reducing power
 explosion-override: false
-destroy-towns-at-zero: false #should towns be destroyed if at zero power
+destroy-towns-at-zero: true #should towns be destroyed if at zero power
 use-starter-book: true
 price-multiplier: 1 #multiplier for prices before adding base price
 price-base: 0 #added to all item prices

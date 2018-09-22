@@ -19,7 +19,7 @@ build-reqs:
 - FURNACE
 - CRAFTING_TABLE
 
-rebuild: plotshack
+#rebuild: plotshack
 towns:
 - settlement
 - village

@@ -337,43 +337,6 @@ public class RegionManager {
             return;
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), false);
-        if (radii.length == 0) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
-                            .replace("$1", regionTypeName));
-            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
-            if (missingBlocks != null) {
-//                for (String message : generateMissingReqsMessage(missingBlocks)) {
-//                    player.sendMessage(message);
-//                }
-                player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
-            }
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
-        }
-        HashMap<UUID, String> people;
-        if (rebuildRegion != null) {
-            people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
-            //TODO copy over other stuff too?
-            removeRegion(rebuildRegion);
-        } else {
-            people = new HashMap<>();
-            people.put(player.getUniqueId(), "owner");
-        }
-        for (Region currentRegion : regionManager.getRegionsXYZ(block.getLocation(),
-                regionType.getBuildRadiusX(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(), false)) {
-            if (currentRegion == rebuildRegion) {
-                continue;
-            }
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "too-close-region")
-                            .replace("$1", regionTypeName).replace("$2", currentRegion.getType()));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
-        }
 
         Town town = TownManager.getInstance().getTownAt(location);
 
@@ -453,6 +416,46 @@ public class RegionManager {
                 return;
             }
         }
+
+        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), false);
+        if (radii.length == 0) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
+                            .replace("$1", regionTypeName));
+            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
+            if (missingBlocks != null) {
+//                for (String message : generateMissingReqsMessage(missingBlocks)) {
+//                    player.sendMessage(message);
+//                }
+                player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+            }
+            BlockLogger.getInstance().removeBlock(block.getLocation());
+            return;
+        }
+
+        HashMap<UUID, String> people;
+        if (rebuildRegion != null) {
+            people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            //TODO copy over other stuff too?
+            removeRegion(rebuildRegion);
+        } else {
+            people = new HashMap<>();
+            people.put(player.getUniqueId(), "owner");
+        }
+        for (Region currentRegion : regionManager.getRegionsXYZ(block.getLocation(),
+                regionType.getBuildRadiusX(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(), false)) {
+            if (currentRegion == rebuildRegion) {
+                continue;
+            }
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "too-close-region")
+                            .replace("$1", regionTypeName).replace("$2", currentRegion.getType()));
+            BlockLogger.getInstance().removeBlock(block.getLocation());
+            return;
+        }
+
 
 
         player.sendMessage(Civs.getPrefix() +

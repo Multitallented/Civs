@@ -19,7 +19,7 @@ build-reqs:
 - g:secondary*54
 - g:primary*228
 
-rebuild: plothovel
+#rebuild: plothovel
 build-radius: 4 #9x9x9
 effects:
 - block_break

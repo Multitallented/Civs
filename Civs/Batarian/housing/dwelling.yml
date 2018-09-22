@@ -19,7 +19,7 @@ build-reqs:
 - g:secondary*54
 - g:primary*228
 
-rebuild: plotdwelling
+#rebuild: plotdwelling
 build-radius: 5 #11x11x11
 effects:
 - block_break
