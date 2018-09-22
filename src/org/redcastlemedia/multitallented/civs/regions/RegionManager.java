@@ -264,6 +264,9 @@ public class RegionManager {
         if (rLocation.equals(location)) {
             return true;
         }
+        if (!rLocation.getWorld().equals(location.getWorld())) {
+            return false;
+        }
         return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
                 rLocation.getX() + 1 +region.getRadiusXP() >= location.getX() &&
                 rLocation.getY() - region.getRadiusYN() <= location.getY() &&

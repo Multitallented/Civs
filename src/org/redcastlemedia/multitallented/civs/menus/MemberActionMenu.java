@@ -56,7 +56,7 @@ public class MemberActionMenu extends Menu {
             cPlayer.performCommand("cv setmember " + player.getName() + " " + locationString);
             return;
         }
-        if (event.getCurrentItem().getType().equals(Material.STONE)) {
+        if (event.getCurrentItem().getType().equals(Material.DIORITE)) {
             cPlayer.performCommand("cv setguest " + player.getName() + " " + locationString);
             return;
         }
@@ -66,10 +66,11 @@ public class MemberActionMenu extends Menu {
         }
     }
 
-    private static void addItems(Inventory inventory, Civilian civilian, String role, ArrayList<String> lore) {
+    private static void addItems(Inventory inventory, Civilian civilian, String role) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
+        ArrayList<String> lore;
 
         //9 set owner
         if (!role.equals("owner")) {
@@ -116,7 +117,6 @@ public class MemberActionMenu extends Menu {
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
         ArrayList<String> lore;
-        //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Player
@@ -132,7 +132,7 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role, lore);
+        addItems(inventory, civilian, role);
 
         return inventory;
     }
@@ -146,7 +146,6 @@ public class MemberActionMenu extends Menu {
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
         ArrayList<String> lore;
-        //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Player
@@ -162,7 +161,7 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role, lore);
+        addItems(inventory, civilian, role);
 
         return inventory;
     }

@@ -52,7 +52,6 @@ public class TownActionMenu extends Menu {
         TownManager townManager = TownManager.getInstance();
         String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
         Town town = townManager.getTown(townName);
-        //TODO add functionality for clicking some other action items
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
@@ -140,7 +139,6 @@ public class TownActionMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, Town town) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
-        //TODO finish this stub
 
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());

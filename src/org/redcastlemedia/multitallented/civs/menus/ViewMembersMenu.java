@@ -78,7 +78,6 @@ public class ViewMembersMenu extends Menu {
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
-        //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
 
         //8 Back Button
@@ -97,7 +96,6 @@ public class ViewMembersMenu extends Menu {
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
         cvItem.setDisplayName(region.getType() + "@" + region.getId());
         inventory.setItem(0, cvItem.createItemStack());
-        //TODO set lore?
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
