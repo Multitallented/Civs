@@ -114,6 +114,10 @@ public class RegionManager {
                 }
             }
         }
+        for (String key : this.destroyRegionListener.keySet()) {
+            this.destroyRegionListener.get(key).destroyRegionHandler(region);
+        }
+
         TownManager.getInstance().checkCriticalRequirements(region);
         removeRegion(region);
     }
