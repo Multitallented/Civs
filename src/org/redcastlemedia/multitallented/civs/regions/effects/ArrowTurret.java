@@ -101,6 +101,7 @@ public class ArrowTurret implements Listener {
             }
         }
         for (Arrow arrow : removeMe) {
+            arrow.remove();
             arrowDamages.remove(arrow);
         }
 
