@@ -31,7 +31,8 @@ public class PortMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() || (event.getCurrentItem().getType() == Material.STONE &&
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() ||
+                (event.getCurrentItem().getType() == Material.STONE &&
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }

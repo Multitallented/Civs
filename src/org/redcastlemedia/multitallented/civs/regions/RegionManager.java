@@ -232,6 +232,7 @@ public class RegionManager {
         double prevIndex = -1;
         for (;;) {
             index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
+//            System.out.println("mindex " + mindex + ", maxdex " + maxdex + ", index " + index);
             if (prevIndex == index) {
                 return null;
             }
