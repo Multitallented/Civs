@@ -309,7 +309,13 @@ public class DeathListener implements Listener {
                     continue;
                 }
                 town.setPower(town.getPower() - powerPerKill);
-                TownManager.getInstance().saveTown(town);
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
+                        townType.getChild() == null) {
+                    TownManager.getInstance().removeTown(town, true);
+                } else {
+                    TownManager.getInstance().saveTown(town);
+                }
             }
         }
 
