@@ -230,9 +230,13 @@ public class RegionManager {
         double mindex = 0;
         double maxdex = regions.get(worldName).size() -1;
         double prevIndex = -1;
+        boolean roundUp = false;
         for (;;) {
-            index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
-//            System.out.println("mindex " + mindex + ", maxdex " + maxdex + ", index " + index);
+            if (roundUp) {
+                index = (int) Math.ceil(((maxdex - mindex) / 2) + mindex);
+            } else {
+                index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
+            }
             if (prevIndex == index) {
                 return null;
             }
@@ -242,8 +246,10 @@ public class RegionManager {
                 return r;
             } else if (location.getX() < r.getLocation().getX() - r.getRadiusXN()) {
                 maxdex = index;
+                roundUp = false;
             } else if (location.getX() > r.getLocation().getX() + r.getRadiusXN()) {
                 mindex = index;
+                roundUp = true;
             } else {
                 return findRegion((int) mindex, (int) maxdex, location, index);
             }

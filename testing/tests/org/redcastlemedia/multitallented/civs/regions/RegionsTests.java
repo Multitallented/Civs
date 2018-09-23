@@ -99,32 +99,44 @@ public class RegionsTests {
     @Test
     public void getRegionAtShouldReturnExactRegion() {
         loadRegionTypeCobble();
-        Location location = new Location(Bukkit.getWorld("world"), 960, 72, 933);
-        Region region = new Region("cobble", new HashMap<>(), location, getRadii(),
-                new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region);
-        Location location2 = new Location(Bukkit.getWorld("world"), 1000, 72, 1000);
-        Region region2 = new Region("cobble", new HashMap<>(), location2, getRadii(),
-                new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region2);
-        Region region3 = new Region("cobble", new HashMap<>(),
-                new Location(Bukkit.getWorld("world"), 800, 72, 1000),
-                getRadii(), new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region3);
-        Region region4 = new Region("cobble", new HashMap<>(),
-                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
-                getRadii(), new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region4);
-        Region region5 = new Region("cobble", new HashMap<>(),
-                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
-                getRadii(), new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region5);
-        Region region6 = new Region("cobble", new HashMap<>(),
-                new Location(Bukkit.getWorld("world"), -800, 72, -1000),
-                getRadii(), new HashMap<>(), 0);
-        RegionManager.getInstance().addRegion(region6);
-        RegionManager.getInstance().regionLocations.remove(location);
-        assertEquals(region, RegionManager.getInstance().getRegionAt(location));
+        int [] radii = getRadii();
+        Location location1 = new Location(Bukkit.getWorld("world"), 480, 70, 480);
+        Region region1 = new Region("cobble", new HashMap<>(), location1, radii, new HashMap<>(), 0);
+        RegionManager.getInstance().addRegion(region1);
+        RegionManager.getInstance().regionLocations.remove(location1);
+        for (int i=0;i<25;i++) {
+            Location location = new Location(Bukkit.getWorld("world"), 500 + 20 * i, 70, 500+ 20 *i);
+            Region region = new Region("cobble", new HashMap<>(), location, radii, new HashMap<>(), 0);
+            RegionManager.getInstance().addRegion(region);
+            RegionManager.getInstance().regionLocations.remove(location);
+            assertEquals(region1, RegionManager.getInstance().getRegionAt(location1));
+        }
+//        Location location = new Location(Bukkit.getWorld("world"), 960, 72, 933);
+//        Region region = new Region("cobble", new HashMap<>(), location, getRadii(),
+//                new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region);
+//        Location location2 = new Location(Bukkit.getWorld("world"), 1000, 72, 1000);
+//        Region region2 = new Region("cobble", new HashMap<>(), location2, getRadii(),
+//                new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region2);
+//        Region region3 = new Region("cobble", new HashMap<>(),
+//                new Location(Bukkit.getWorld("world"), 800, 72, 1000),
+//                getRadii(), new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region3);
+//        Region region4 = new Region("cobble", new HashMap<>(),
+//                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
+//                getRadii(), new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region4);
+//        Region region5 = new Region("cobble", new HashMap<>(),
+//                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
+//                getRadii(), new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region5);
+//        Region region6 = new Region("cobble", new HashMap<>(),
+//                new Location(Bukkit.getWorld("world"), -800, 72, -1000),
+//                getRadii(), new HashMap<>(), 0);
+//        RegionManager.getInstance().addRegion(region6);
+//        RegionManager.getInstance().regionLocations.remove(location);
+//        assertEquals(region, RegionManager.getInstance().getRegionAt(location));
     }
 
     @Test
