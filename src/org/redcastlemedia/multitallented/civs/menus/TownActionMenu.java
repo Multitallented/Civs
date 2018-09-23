@@ -197,9 +197,11 @@ public class TownActionMenu extends Menu {
             cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "population"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "pop-desc")
-                    .replace("$1", town.getPopulation() + "").replace("$2", town.getHousing() + ""));
+                    .replace("$1", town.getPopulation() + "")
+                    .replace("$2", town.getHousing() + "")
+                    .replace("$3", town.getVillagers() + ""));
             cvItem3.setLore(lore);
-            inventory.setItem(9, cvItem3.createItemStack());
+            inventory.setItem(4, cvItem3.createItemStack());
         }
 
         //5 Bounty
