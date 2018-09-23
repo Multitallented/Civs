@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,11 +17,10 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
+import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +31,15 @@ public class RegionManager {
     protected HashMap<Location, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
+    private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
 
     public RegionManager() {
         regionManager = this;
+    }
+
+    public void addRegionCreatedListener(String key, RegionCreatedListener listener) {
+        regionCreatedListenerHashMap.put(key, listener);
     }
 
     public void addCreateRegionListener(String key, CreateRegionListener listener) {
@@ -56,6 +59,11 @@ public class RegionManager {
         regionLocations.put(region.getLocation(), region);
         sortRegions(worldName);
         saveRegion(region);
+        for (String key : regionCreatedListenerHashMap.keySet()) {
+            if (region.getEffects().containsKey(key)) {
+                regionCreatedListenerHashMap.get(key).regionCreatedHandler(region);
+            }
+        }
     }
     public void loadAllRegions() {
         regions.clear();

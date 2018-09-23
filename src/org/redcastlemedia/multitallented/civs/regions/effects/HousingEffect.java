@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -9,23 +7,12 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-public class HousingEffect implements CreateRegionListener, DestroyRegionListener {
+public class HousingEffect implements RegionCreatedListener, DestroyRegionListener {
     public static String KEY = "housing";
 
     public HousingEffect() {
-        RegionManager.getInstance().addCreateRegionListener(KEY, this);
+        RegionManager.getInstance().addRegionCreatedListener(KEY, this);
         RegionManager.getInstance().addDestroyRegionListener(KEY, this);
-    }
-
-    @Override
-    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
-        Town town = TownManager.getInstance().getTownAt(block.getLocation());
-        int amount = Integer.parseInt(regionType.getEffects().get(KEY));
-        if (town != null) {
-            town.setHousing(town.getHousing() + amount);
-            TownManager.getInstance().saveTown(town);
-        }
-        return true;
     }
 
     @Override
@@ -35,6 +22,16 @@ public class HousingEffect implements CreateRegionListener, DestroyRegionListene
         int amount = Integer.parseInt(regionType.getEffects().get(KEY));
         if (town != null && town.getHousing() > amount) {
             town.setHousing(town.getHousing() - amount);
+            TownManager.getInstance().saveTown(town);
+        }
+    }
+
+    @Override
+    public void regionCreatedHandler(Region region) {
+        Town town = TownManager.getInstance().getTownAt(region.getLocation());
+        int amount = Integer.parseInt(region.getEffects().get(KEY));
+        if (town != null) {
+            town.setHousing(town.getHousing() + amount);
             TownManager.getInstance().saveTown(town);
         }
     }

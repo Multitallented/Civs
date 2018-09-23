@@ -27,7 +27,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import java.lang.ref.PhantomReference;
 import java.util.HashMap;
 
-public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener {
+public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener, RegionCreatedListener {
     public static String KEY = "villager";
     protected static HashMap<String, Long> townCooldowns = new HashMap<>();
     protected static HashMap<String, Integer> townLimit = new HashMap<>();
@@ -35,6 +35,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     public VillagerEffect() {
         RegionManager regionManager = RegionManager.getInstance();
         regionManager.addCreateRegionListener(KEY, this);
+        regionManager.addRegionCreatedListener(KEY, this);
         regionManager.addDestroyRegionListener(KEY, this);
     }
 
@@ -47,16 +48,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     }
 
     @Override
-    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
-        if (block.getRelative(BlockFace.UP, 1).getType() != Material.AIR ||
-                block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
-
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
-            return false;
-        }
-
+    public void regionCreatedHandler(Region region) {
+        Block block = region.getLocation().getBlock();
         block.getWorld().spawn(block.getLocation(), Villager.class);
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
@@ -70,7 +63,18 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
                 townLimit.put(town.getName(), 1);
             }
         }
+    }
 
+    @Override
+    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
+        if (block.getRelative(BlockFace.UP, 1).getType() != Material.AIR ||
+                block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
+
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
+            return false;
+        }
         return true;
     }
 
@@ -111,6 +115,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             }
         }
 
+        townCooldowns.put(town.getName(), System.currentTimeMillis());
+        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
         if (townLimit.containsKey(town.getName()) && townLimit.get(town.getName()) <= villagerCount) {
             return null;
         }
@@ -119,7 +125,6 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
 
 
-        townCooldowns.put(town.getName(), System.currentTimeMillis());
         return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
     }
 
@@ -139,4 +144,5 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             TownManager.getInstance().saveTown(town);
         }
     }
+
 }
