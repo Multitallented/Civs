@@ -14,8 +14,8 @@ critical-build-reqs:
 
 limits:
 - npchousing:4
-- shack:5
-- hovel:1
+- allshack:5
+- allhovel:1
 - arrowtrapgroup:1
 
 build-radius: 24

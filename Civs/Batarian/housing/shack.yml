@@ -6,6 +6,7 @@ price: 100
 groups:
 - housing
 - shack
+- allshack
 
 build-reqs:
 - CHEST*2

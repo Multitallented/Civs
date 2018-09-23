@@ -5,7 +5,7 @@ max: 2
 price: 200
 groups:
 - housing
-- hovel
+- allhovel
 
 build-reqs:
 - CHEST*2
