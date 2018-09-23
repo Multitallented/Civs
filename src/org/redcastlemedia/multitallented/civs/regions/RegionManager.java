@@ -238,6 +238,7 @@ public class RegionManager {
         double mindex = 0;
         double maxdex = regions.get(worldName).size() -1;
         double prevIndex = -5;
+        double prevDiff = 999999;
         boolean roundUp = false;
 //        System.out.println("======== new test ==========");
         for (;;) {
@@ -246,10 +247,7 @@ public class RegionManager {
             } else {
                 index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             }
-//            System.out.println("min " + mindex + ", max " + maxdex + ", in " + index);
-            if (prevIndex == index) {
-                return null;
-            }
+//            System.out.println("min " + mindex + ", max " + maxdex + ", in " + index + ", diff " + Math.abs(maxdex - mindex));
             Region r = regions.get(worldName).get(index);
 
             if (withinRegion(r, location)) {
@@ -261,8 +259,13 @@ public class RegionManager {
                 mindex = index;
                 roundUp = true;
             } else {
-                return findRegion((int) mindex, (int) maxdex, location, index);
+                Region region = findRegion((int) mindex, (int) maxdex, location, index);
+                return region;
             }
+            if (prevIndex == index || prevDiff == Math.abs(maxdex - mindex)) {
+                return null;
+            }
+            prevDiff = Math.abs(maxdex - mindex);
             prevIndex = index;
         }
     }

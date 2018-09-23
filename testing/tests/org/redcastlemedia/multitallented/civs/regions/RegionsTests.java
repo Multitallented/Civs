@@ -109,16 +109,16 @@ public class RegionsTests {
             Region region = new Region("cobble", new HashMap<>(), location, radii, new HashMap<>(), 0);
             RegionManager.getInstance().addRegion(region);
             RegionManager.getInstance().regionLocations.remove(location);
-//            System.out.println("Index: 0, Size: " + (i+1));
+            System.out.println("Index: 0, Size: " + (i+1));
             assertEquals(region1, RegionManager.getInstance().getRegionAt(location1));
-//            System.out.println("Index: " + i + ", Size: " + (i+1));
+            System.out.println("Index: " + (i+1) + ", Size: " + (i+1));
             assertEquals(region, RegionManager.getInstance().getRegionAt(location));
         }
         Location finalLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-//        System.out.println("Null Index, Size: 25");
+        System.out.println("Null Index, Size: 25");
         assertNull(RegionManager.getInstance().getRegionAt(finalLocation));
         for (int i = 0; i < 24; i++) {
-//            System.out.println("Index: " + (i+1) + ", Size: 25");
+            System.out.println("Index: " + (i+1) + ", Size: 25");
             Location location = new Location(Bukkit.getWorld("world"), 500 + 20 * i, 70, 500+ 20 *i);
             assertNotNull(RegionManager.getInstance().getRegionAt(location));
         }
