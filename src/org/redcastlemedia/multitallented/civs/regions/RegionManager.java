@@ -28,7 +28,7 @@ import java.util.*;
 
 public class RegionManager {
     private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
-    protected HashMap<Location, Region> regionLocations = new HashMap<>();
+    protected HashMap<String, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
     private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
@@ -56,7 +56,7 @@ public class RegionManager {
             regions.put(worldName, new ArrayList<Region>());
         }
         regions.get(worldName).add(region);
-        regionLocations.put(region.getLocation(), region);
+        regionLocations.put(region.getId(), region);
         sortRegions(worldName);
         saveRegion(region);
         for (String key : regionCreatedListenerHashMap.keySet()) {
@@ -132,7 +132,7 @@ public class RegionManager {
 
     public void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getName()).remove(region);
-        regionLocations.remove(region.getLocation());
+        regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
@@ -226,8 +226,9 @@ public class RegionManager {
     }
 
     public Region getRegionAt(Location location) {
-        if (regionLocations.get(location) != null) {
-            return regionLocations.get(location);
+        String id = Region.locationToString(location);
+        if (regionLocations.get(id) != null) {
+            return regionLocations.get(id);
         }
         String worldName = location.getWorld().getName();
         if (regions.get(worldName) == null || regions.get(worldName).isEmpty()) {
@@ -247,7 +248,6 @@ public class RegionManager {
             } else {
                 index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             }
-//            System.out.println("min " + mindex + ", max " + maxdex + ", in " + index + ", diff " + Math.abs(maxdex - mindex));
             Region r = regions.get(worldName).get(index);
 
             if (withinRegion(r, location)) {
@@ -259,8 +259,7 @@ public class RegionManager {
                 mindex = index;
                 roundUp = true;
             } else {
-                Region region = findRegion((int) mindex, (int) maxdex, location, index);
-                return region;
+                return findRegion((int) mindex, (int) maxdex, location, index);
             }
             if (prevIndex == index || prevDiff == Math.abs(maxdex - mindex)) {
                 return null;

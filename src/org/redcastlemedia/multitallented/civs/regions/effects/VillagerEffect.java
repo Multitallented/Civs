@@ -40,16 +40,16 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
     @EventHandler
     public void onRegionTickEvent(RegionTickEvent event) {
-//        Region region = event.getRegion();
-//        if (region.getEffects().containsKey(VillagerEffect.KEY)) {
-//            VillagerEffect.spawnVillager(region);
-//        }
+        Region region = event.getRegion();
+        if (region.getEffects().containsKey(VillagerEffect.KEY)) {
+            VillagerEffect.spawnVillager(region);
+        }
     }
 
     @Override
     public void regionCreatedHandler(Region region) {
         Block block = region.getLocation().getBlock();
-//        block.getWorld().spawn(block.getLocation(), Villager.class);
+        block.getWorld().spawn(block.getLocation(), Villager.class);
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
         if (town != null) {
@@ -89,38 +89,37 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     }
 
     public static Villager spawnVillager(Region region) {
-        return null;
-//        Town town = TownManager.getInstance().getTownAt(region.getLocation());
-//        if (town == null) {
-//            return null;
-//        }
-//        long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;
-//        if (townCooldowns.containsKey(town.getName()) &&
-//                townCooldowns.get(town.getName()) + cooldownTime > System.currentTimeMillis()) {
-//            return null;
-//        }
-//
-//        int villagerCount = 0;
-//        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-//        int radius = townType.getBuildRadius();
-//        int radiusY = townType.getBuildRadiusY();
-//        for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {
-//            if (e instanceof Villager) {
-//                villagerCount++;
-//            }
-//        }
-//
-//        townCooldowns.put(town.getName(), System.currentTimeMillis());
-////        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
-//        if (town.getVillagers() <= villagerCount) {
-//            return null;
-//        }
-//        if (!region.getLocation().getChunk().isLoaded()) {
-//            region.getLocation().getChunk().load();
-//        }
-//
-//
-//        return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
+        Town town = TownManager.getInstance().getTownAt(region.getLocation());
+        if (town == null) {
+            return null;
+        }
+        long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;
+        if (townCooldowns.containsKey(town.getName()) &&
+                townCooldowns.get(town.getName()) + cooldownTime > System.currentTimeMillis()) {
+            return null;
+        }
+
+        int villagerCount = 0;
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        int radius = townType.getBuildRadius();
+        int radiusY = townType.getBuildRadiusY();
+        for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {
+            if (e instanceof Villager) {
+                villagerCount++;
+            }
+        }
+
+        townCooldowns.put(town.getName(), System.currentTimeMillis());
+//        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
+        if (town.getVillagers() <= villagerCount) {
+            return null;
+        }
+        if (!region.getLocation().getChunk().isLoaded()) {
+            region.getLocation().getChunk().load();
+        }
+
+
+        return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
     }
 
     @EventHandler
