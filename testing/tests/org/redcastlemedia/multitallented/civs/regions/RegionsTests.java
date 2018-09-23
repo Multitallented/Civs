@@ -104,39 +104,24 @@ public class RegionsTests {
         Region region1 = new Region("cobble", new HashMap<>(), location1, radii, new HashMap<>(), 0);
         RegionManager.getInstance().addRegion(region1);
         RegionManager.getInstance().regionLocations.remove(location1);
-        for (int i=0;i<25;i++) {
+        for (int i=0;i<24;i++) {
             Location location = new Location(Bukkit.getWorld("world"), 500 + 20 * i, 70, 500+ 20 *i);
             Region region = new Region("cobble", new HashMap<>(), location, radii, new HashMap<>(), 0);
             RegionManager.getInstance().addRegion(region);
             RegionManager.getInstance().regionLocations.remove(location);
+//            System.out.println("Index: 0, Size: " + (i+1));
             assertEquals(region1, RegionManager.getInstance().getRegionAt(location1));
+//            System.out.println("Index: " + i + ", Size: " + (i+1));
+            assertEquals(region, RegionManager.getInstance().getRegionAt(location));
         }
-//        Location location = new Location(Bukkit.getWorld("world"), 960, 72, 933);
-//        Region region = new Region("cobble", new HashMap<>(), location, getRadii(),
-//                new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region);
-//        Location location2 = new Location(Bukkit.getWorld("world"), 1000, 72, 1000);
-//        Region region2 = new Region("cobble", new HashMap<>(), location2, getRadii(),
-//                new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region2);
-//        Region region3 = new Region("cobble", new HashMap<>(),
-//                new Location(Bukkit.getWorld("world"), 800, 72, 1000),
-//                getRadii(), new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region3);
-//        Region region4 = new Region("cobble", new HashMap<>(),
-//                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
-//                getRadii(), new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region4);
-//        Region region5 = new Region("cobble", new HashMap<>(),
-//                new Location(Bukkit.getWorld("world"), -800, 72, 1000),
-//                getRadii(), new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region5);
-//        Region region6 = new Region("cobble", new HashMap<>(),
-//                new Location(Bukkit.getWorld("world"), -800, 72, -1000),
-//                getRadii(), new HashMap<>(), 0);
-//        RegionManager.getInstance().addRegion(region6);
-//        RegionManager.getInstance().regionLocations.remove(location);
-//        assertEquals(region, RegionManager.getInstance().getRegionAt(location));
+        Location finalLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
+//        System.out.println("Null Index, Size: 25");
+        assertNull(RegionManager.getInstance().getRegionAt(finalLocation));
+        for (int i = 0; i < 24; i++) {
+//            System.out.println("Index: " + (i+1) + ", Size: 25");
+            Location location = new Location(Bukkit.getWorld("world"), 500 + 20 * i, 70, 500+ 20 *i);
+            assertNotNull(RegionManager.getInstance().getRegionAt(location));
+        }
     }
 
     @Test
@@ -565,7 +550,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townName", "hamlet", location1,
-                owners, 300, 300, 2, 1);
+                owners, 300, 300, 2, 1, 0);
         TownManager.getInstance().addTown(town);
         assertTrue(region.hasUpkeepItems());
         region.runUpkeep(false);
@@ -582,7 +567,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townName", "hamlet", location1,
-                owners, 300, 305, 2, 1);
+                owners, 300, 305, 2, 1, 0);
         TownManager.getInstance().addTown(town);
         region.runUpkeep(false);
         assertEquals(301, town.getPower());
@@ -612,7 +597,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                owners, 300, 305, 2, 1);
+                owners, 300, 305, 2, 1, 0);
         TownManager.getInstance().addTown(town);
         new DailyScheduler().run();
         assertEquals(302, town.getPower());
@@ -628,7 +613,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                owners, 300, 305, 2, 1);
+                owners, 300, 305, 2, 1, 0);
         TownManager.getInstance().addTown(town);
         new RegionTickThread().run();
         assertEquals(300, town.getPower());
@@ -659,12 +644,12 @@ public class RegionsTests {
 
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                new HashMap<>(), 300, 300, 2, 1);
+                new HashMap<>(), 300, 300, 2, 1, 0);
         townManager.addTown(town);
 
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Town town1 = new Town("townname1", "hamlet", location,
-                new HashMap<>(), 300, 300, 2, 1);
+                new HashMap<>(), 300, 300, 2, 1, 0);
         town1.getPeople().put(uuid1, "member");
         townManager.addTown(town1);
         if (allied) {

@@ -30,7 +30,6 @@ import java.util.HashMap;
 public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener, RegionCreatedListener {
     public static String KEY = "villager";
     protected static HashMap<String, Long> townCooldowns = new HashMap<>();
-    protected static HashMap<String, Integer> townLimit = new HashMap<>();
 
     public VillagerEffect() {
         RegionManager regionManager = RegionManager.getInstance();
@@ -55,24 +54,26 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
         if (town != null) {
             town.setPopulation(town.getPopulation() + 1);
+            town.setVillagers(town.getVillagers() + 1);
             TownManager.getInstance().saveTown(town);
-
-            if (townLimit.containsKey(town.getName())) {
-                townLimit.put(town.getName(), townLimit.get(town.getName()));
-            } else {
-                townLimit.put(town.getName(), 1);
-            }
         }
     }
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (block.getRelative(BlockFace.UP, 1).getType() != Material.AIR ||
                 block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
 
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
+            return false;
+        }
+        Town town = TownManager.getInstance().getTownAt(block.getLocation());
+        if (town == null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "req-build-inside-town")
+                    .replace("$1", regionType.getName()).replace("$2", "town"));
             return false;
         }
         return true;
@@ -84,14 +85,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (town == null) {
             return;
         }
-        if (!townLimit.containsKey(town.getName())) {
-            return;
-        }
-        if (townLimit.get(town.getName()) < 2) {
-            townLimit.remove(town.getName());
-        } else {
-            townLimit.put(town.getName(), townLimit.get(town.getName()) - 1);
-        }
+        town.setVillagers(Math.max(0, town.getVillagers() - 1));
     }
 
     public static Villager spawnVillager(Region region) {
@@ -116,8 +110,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
 
         townCooldowns.put(town.getName(), System.currentTimeMillis());
-        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
-        if (townLimit.containsKey(town.getName()) && townLimit.get(town.getName()) <= villagerCount) {
+//        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
+        if (town.getVillagers() <= villagerCount) {
             return null;
         }
         if (!region.getLocation().getChunk().isLoaded()) {

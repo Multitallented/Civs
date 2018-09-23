@@ -93,7 +93,7 @@ public class UtilTests {
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town("mytown", "hamlet", location, people, 100, 100,
-                1, 1);
+                1, 1, 0);
         TownManager.getInstance().addTown(town);
         PlaceHook placeHook = new PlaceHook();
         assertEquals("mytown", placeHook.onPlaceholderRequest(TestUtil.player, ""));
@@ -107,10 +107,10 @@ public class UtilTests {
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "member");
         Town town = new Town("mytown1", "hamlet", location, people, 100, 100,
-                3, 2);
+                3, 2,0);
         TownManager.getInstance().addTown(town);
         Town town1 = new Town("mytown2", "hamlet", location, people, 100, 100,
-                8, 5);
+                8, 5, 0);
         TownManager.getInstance().addTown(town1);
         PlaceHook placeHook = new PlaceHook();
         assertEquals("mytown2", placeHook.onPlaceholderRequest(TestUtil.player, ""));

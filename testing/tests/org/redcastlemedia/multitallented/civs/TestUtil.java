@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -305,6 +306,7 @@ public class TestUtil {
         when(block.getX()).thenReturn((int) location.getX());
         when(block.getY()).thenReturn((int) location.getY());
         when(block.getZ()).thenReturn((int) location.getZ());
+        when(block.getRelative(any(BlockFace.class), anyInt())).thenReturn(block);
         return block;
     }
 

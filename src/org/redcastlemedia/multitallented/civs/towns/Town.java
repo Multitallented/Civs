@@ -26,9 +26,10 @@ public class Town {
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
     private final int Y_LEVEL = 80;
+    private int villagers;
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
-                int housing, int population) {
+                int housing, int population, int villagers) {
         this.name = name;
         this.type = type;
         this.location = location;
@@ -37,7 +38,16 @@ public class Town {
         this.maxPower = maxPower;
         this.housing = housing;
         this.population = population;
+        this.villagers = villagers;
         this.allies = new HashSet<>();
+    }
+
+    public int getVillagers() {
+        return villagers;
+    }
+
+    public void setVillagers(int villagers) {
+        this.villagers = villagers;
     }
 
     public String getType() {

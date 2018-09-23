@@ -119,6 +119,7 @@ public class TownCommand implements CivCommand {
         Location newTownLocation = player.getLocation();
         String name = Util.getValidFileName(args[1]);
         List<Location> childLocations = new ArrayList<>();
+        int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             people = intersectTown.getPeople();
@@ -129,6 +130,7 @@ public class TownCommand implements CivCommand {
             if (ConfigManager.getInstance().getTownRings()) {
                 intersectTown.destroyRing(false);
             }
+            villagerCount = intersectTown.getVillagers();
         }
 
         int housingCount = 0;
@@ -144,7 +146,7 @@ public class TownCommand implements CivCommand {
                 newTownLocation,
                 people,
                 townType.getPower(),
-                townType.getMaxPower(), housingCount, people.size());
+                townType.getMaxPower(), housingCount, people.size(), villagerCount);
         town.setChildLocations(childLocations);
         townManager.addTown(town);
         townManager.saveTown(town);

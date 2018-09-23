@@ -237,14 +237,16 @@ public class RegionManager {
         int index;
         double mindex = 0;
         double maxdex = regions.get(worldName).size() -1;
-        double prevIndex = -1;
+        double prevIndex = -5;
         boolean roundUp = false;
+//        System.out.println("======== new test ==========");
         for (;;) {
             if (roundUp) {
                 index = (int) Math.ceil(((maxdex - mindex) / 2) + mindex);
             } else {
                 index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             }
+//            System.out.println("min " + mindex + ", max " + maxdex + ", in " + index);
             if (prevIndex == index) {
                 return null;
             }

@@ -158,6 +158,7 @@ public class TownManager {
         int power = config.getInt("power", maxPower);
         int housing = config.getInt("housing", 0);
         int population = config.getInt("population", 1);
+        int villagers = config.getInt("villagers", 0);
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
@@ -165,7 +166,8 @@ public class TownManager {
                 power,
                 maxPower,
                 housing,
-                population);
+                population,
+                villagers);
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
@@ -287,6 +289,7 @@ public class TownManager {
             config.set("child-locations", locationList);
             config.set("housing", town.getHousing());
             config.set("population", town.getPopulation());
+            config.set("villagers", town.getVillagers());
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
