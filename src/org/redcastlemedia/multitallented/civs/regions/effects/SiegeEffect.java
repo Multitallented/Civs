@@ -148,13 +148,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             }
         }, 15L);
 
-        town.setPower(town.getPower() - damage);
-        if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
-                townType.getChild() == null) {
-            TownManager.getInstance().removeTown(town, true);
-        } else {
-            TownManager.getInstance().saveTown(town);
-        }
+        TownManager.getInstance().setTownPower(town, town.getPower() - damage);
     }
 
     @EventHandler

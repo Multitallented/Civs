@@ -308,14 +308,7 @@ public class DeathListener implements Listener {
                         !town.getPeople().get(dyingCiv.getUuid()).equals("owner"))) {
                     continue;
                 }
-                town.setPower(town.getPower() - powerPerKill);
-                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-                if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
-                        townType.getChild() == null) {
-                    TownManager.getInstance().removeTown(town, true);
-                } else {
-                    TownManager.getInstance().saveTown(town);
-                }
+                TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
             }
         }
 

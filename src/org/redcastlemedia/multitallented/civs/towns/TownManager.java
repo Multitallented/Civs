@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -217,6 +218,20 @@ public class TownManager {
             return;
         }
         removeTownFile(town.getName().toLowerCase());
+    }
+    public void setTownPower(Town town, int power) {
+        if (power > town.getMaxPower()) {
+            town.setPower(town.getMaxPower());
+        } else {
+            town.setPower(power);
+        }
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
+                townType.getChild() == null) {
+            TownManager.getInstance().removeTown(town, true);
+        } else {
+            TownManager.getInstance().saveTown(town);
+        }
     }
     private void removeTownFile(String townName) {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");

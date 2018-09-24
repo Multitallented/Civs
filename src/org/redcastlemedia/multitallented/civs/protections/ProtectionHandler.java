@@ -231,8 +231,12 @@ public class ProtectionHandler implements Listener {
             if (checkEffectAt(event.getLocation(), player, "power_shield", 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
-                    town.setPower(town.getPower() - 1);
-                    TownManager.getInstance().saveTown(town);
+                    int powerReduce = 1;
+                    TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                    if (townType.getEffects().get("power_shield") != null) {
+                        powerReduce = Integer.parseInt(townType.getEffects().get("power_shield"));
+                    }
+                    TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
                     setCancelled = true;
                 }
             }

@@ -132,11 +132,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (town == null) {
             return;
         }
-        int townPower = town.getPower();
-        if (townPower > 0) {
-            town.setPower(townPower - ConfigManager.getInstance().getPowerPerNPCKill());
-            TownManager.getInstance().saveTown(town);
-        }
+        TownManager.getInstance().setTownPower(town,
+                town.getPower() - ConfigManager.getInstance().getPowerPerNPCKill());
     }
 
 }

@@ -97,12 +97,8 @@ public class Town {
     public void setMaxPower(int maxPower) {
         this.maxPower = maxPower;
     }
-    public void setPower(int power) {
-        if (power > this.maxPower) {
-            this.power = maxPower;
-        } else {
-            this.power = power;
-        }
+    protected void setPower(int power) {
+        this.power = power;
     }
     public void setAllies(HashSet<String> allies) { this.allies = allies; }
 

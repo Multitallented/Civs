@@ -534,10 +534,10 @@ public class Region {
                 }
                 boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
                 if (regionUpkeep.getPowerInput() > 0) {
-                    town.setPower(town.getPower() - regionUpkeep.getPowerInput());
+                    TownManager.getInstance().setTownPower(town, town.getPower() - regionUpkeep.getPowerInput());
                 }
                 if (regionUpkeep.getPowerOutput() > 0) {
-                    town.setPower(town.getPower() + regionUpkeep.getPowerOutput());
+                    TownManager.getInstance().setTownPower(town, town.getPower() + regionUpkeep.getPowerOutput());
                 }
                 if (powerMod) {
                     TownManager.getInstance().saveTown(town);

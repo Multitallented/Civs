@@ -33,6 +33,7 @@ effects:
 - block_liquid
 - block_fire
 - deny_mob_spawn
+- deny_explosion
 - control_override
 - anticamp:3.1080 #3 damage for 18 minutes
 
