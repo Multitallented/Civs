@@ -550,7 +550,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townName", "hamlet", location1,
-                owners, 300, 300, 2, 1, 0);
+                owners, 300, 300, 2, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         assertTrue(region.hasUpkeepItems());
         region.runUpkeep(false);
@@ -567,7 +567,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townName", "hamlet", location1,
-                owners, 300, 305, 2, 1, 0);
+                owners, 300, 305, 2, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         region.runUpkeep(false);
         assertEquals(301, town.getPower());
@@ -597,7 +597,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                owners, 300, 305, 2, 1, 0);
+                owners, 300, 305, 2, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         new DailyScheduler().run();
         assertEquals(302, town.getPower());
@@ -613,7 +613,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                owners, 300, 305, 2, 1, 0);
+                owners, 300, 305, 2, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         new RegionTickThread().run();
         assertEquals(300, town.getPower());
@@ -644,12 +644,12 @@ public class RegionsTests {
 
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                new HashMap<>(), 300, 300, 2, 1, 0);
+                new HashMap<>(), 300, 300, 2, 1, 0, -1);
         townManager.addTown(town);
 
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Town town1 = new Town("townname1", "hamlet", location,
-                new HashMap<>(), 300, 300, 2, 1, 0);
+                new HashMap<>(), 300, 300, 2, 1, 0, -1);
         town1.getPeople().put(uuid1, "member");
         townManager.addTown(town1);
         if (allied) {

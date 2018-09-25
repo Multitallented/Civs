@@ -25,11 +25,12 @@ public class Town {
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
+    private long lastDisable;
     private final int Y_LEVEL = 80;
     private int villagers;
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
-                int housing, int population, int villagers) {
+                int housing, int population, int villagers, long lastDisable) {
         this.name = name;
         this.type = type;
         this.location = location;
@@ -40,6 +41,14 @@ public class Town {
         this.population = population;
         this.villagers = villagers;
         this.allies = new HashSet<>();
+        this.lastDisable = lastDisable;
+    }
+
+    public long getLastDisable() {
+        return lastDisable;
+    }
+    public void setLastDisable(long lastDisable) {
+        this.lastDisable = lastDisable;
     }
 
     public int getVillagers() {

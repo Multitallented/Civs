@@ -160,6 +160,7 @@ public class TownManager {
         int housing = config.getInt("housing", 0);
         int population = config.getInt("population", 1);
         int villagers = config.getInt("villagers", 0);
+        long lastDisable = config.getLong("last-disable", -1);
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
@@ -168,7 +169,8 @@ public class TownManager {
                 maxPower,
                 housing,
                 population,
-                villagers);
+                villagers,
+                lastDisable);
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
@@ -230,7 +232,11 @@ public class TownManager {
                 townType.getChild() == null) {
             TownManager.getInstance().removeTown(town, true);
         } else {
-            TownManager.getInstance().saveTown(town);
+            if (town.getPower() < 1) {
+                hasGrace(town, true);
+            } else {
+                TownManager.getInstance().saveTown(town);
+            }
         }
     }
     private void removeTownFile(String townName) {
@@ -240,6 +246,34 @@ public class TownManager {
         }
         File townFile = new File(townFolder, townName + ".yml");
         townFile.delete();
+    }
+
+    public boolean hasGrace(Town town, boolean disable) {
+        long grace = getRemainingGracePeriod(town);
+        if (grace < 0 && disable) {
+            long lastDisable = (ConfigManager.getInstance().getTownGracePeriod() * 1000) + System.currentTimeMillis();
+            town.setLastDisable(lastDisable);
+            TownManager.getInstance().saveTown(town);
+            return true;
+        }
+        if (!disable) {
+            if (grace > -1) {
+                town.setLastDisable(-1);
+                TownManager.getInstance().saveTown(town);
+            }
+            return true;
+        }
+        return grace != 0;
+    }
+
+    public long getRemainingGracePeriod(Town town) {
+        if (town == null) {
+            return 0;
+        }
+        if (town.getLastDisable() < 1) {
+            return -1;
+        }
+        return Math.max(0, town.getLastDisable() - System.currentTimeMillis());
     }
 
     public void addInvite(UUID uuid, Town town) {
@@ -305,6 +339,7 @@ public class TownManager {
             config.set("housing", town.getHousing());
             config.set("population", town.getPopulation());
             config.set("villagers", town.getVillagers());
+            config.set("last-disable", town.getLastDisable());
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {

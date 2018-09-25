@@ -161,7 +161,12 @@ public class TownActionMenu extends Menu {
                     .replace("$2", "" + town.getMaxPower()));
         } else {
             cvItem1 = CVItem.createCVItemFromString("RED_WOOL");
-            //TODO show grace period
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-power").replace("$1", "" + town.getPower())
+                    .replace("$2", "" + town.getMaxPower()));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "grace-period")
+                    .replace("$1", (TownManager.getInstance().getRemainingGracePeriod(town) / 1000) + ""));
         }
         //TODO power consumption / generation
         inventory.setItem(1, cvItem1.createItemStack());

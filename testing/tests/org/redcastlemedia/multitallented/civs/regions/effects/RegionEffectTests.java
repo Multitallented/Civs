@@ -48,7 +48,8 @@ public class RegionEffectTests {
         this.townManager = new TownManager();
         TownTests.loadTownTypeHamlet();
         this.townLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        this.town = new Town("Hamlet1", "hamlet", townLocation, new HashMap<>(), 300, 300, 2, 1, 1);
+        this.town = new Town("Hamlet1", "hamlet", townLocation, new HashMap<>(),
+                300, 300, 2, 1, 1, -1);
         townManager.addTown(town);
     }
 

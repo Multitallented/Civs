@@ -148,7 +148,7 @@ public class TownTests {
         owners.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town(name, type,
                 location,
-                owners, 500, 500, 2, 1, 0);
+                owners, 500, 500, 2, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         return town;
     }

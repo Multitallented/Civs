@@ -146,7 +146,7 @@ public class TownCommand implements CivCommand {
                 newTownLocation,
                 people,
                 townType.getPower(),
-                townType.getMaxPower(), housingCount, people.size(), villagerCount);
+                townType.getMaxPower(), housingCount, people.size(), villagerCount, -1);
         town.setChildLocations(childLocations);
         townManager.addTown(town);
         townManager.saveTown(town);

@@ -4,6 +4,9 @@ default-language: en
 allow-civ-item-sharing: false
 #put glowstone rings above towns
 town-rings: true
+#how long a town sits at zero before protection ends
+#if destroy towns at zero is on, then this does nothing
+town-grace-period: 43200 #12 hours
 #ignore other plugins when checking if an explosion is cancelled
 #before reducing power
 explosion-override: false

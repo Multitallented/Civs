@@ -396,7 +396,12 @@ public class ProtectionHandler implements Listener {
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (townType.getEffects().containsKey(type)) {
-                return true;
+
+                boolean hasPower = town.getPower() > 0;
+                boolean hasGrace = hasPower || TownManager.getInstance().hasGrace(town, true);
+                if (hasGrace) {
+                    return true;
+                }
             }
         }
         Region region = regionManager.getRegionAt(location);

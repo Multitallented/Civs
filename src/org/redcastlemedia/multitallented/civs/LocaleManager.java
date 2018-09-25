@@ -413,6 +413,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".no-blocks-above-chest", "There must not be any blocks above the $1 center"));
             currentLanguage.put("siege-built",
                     localeConfig.getString(langKey + ".siege-built", "$1 has created a $2 targeting $3"));
+            currentLanguage.put("grace-period",
+                    localeConfig.getString(langKey + ".grace-period", "Time until defenses drop: $1s"));
             languageMap.put(langKey, currentLanguage);
         }
     }
