@@ -415,6 +415,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".siege-built", "$1 has created a $2 targeting $3"));
             currentLanguage.put("grace-period",
                     localeConfig.getString(langKey + ".grace-period", "Time until defenses drop: $1s"));
+            currentLanguage.put("exclusive",
+                    localeConfig.getString(langKey + ".exclusive", "You cant build a $1 in a town that already has a $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

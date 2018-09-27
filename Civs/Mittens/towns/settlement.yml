@@ -1,0 +1,39 @@
+type: town
+icon: GLOWSTONE
+name: Settlement
+max: 1
+price: 1000
+group:
+- town
+
+build-reqs:
+- councilroom:1
+
+critical-build-reqs:
+- councilroom
+
+limits:
+- npchousing:4
+- allshack:5
+- allhovel:1
+- arrowtrapgroup:1
+
+build-radius: 24
+build-radius-y: 500
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- deny_mob_spawn
+- control_override
+- deny_explosion
+- anticamp:4.1800 #4 damage for 30 minutes
+- claim_at_zero #TODO create this
+
+power: 200
+max-power: 850
+
+description:
+  en: "The first level of a town"
+  es: "El primer nivel de una ciudad"

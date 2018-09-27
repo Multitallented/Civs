@@ -1,0 +1,45 @@
+type: town
+icon: GLOWSTONE
+name: Village
+max: 1
+price: 4000
+group: town
+
+pre-reqs:
+- settlement:population=5
+
+build-reqs:
+- councilroom:1
+- quarry:1
+- utility:1
+- housing:3
+
+limits:
+- allshack:5
+- allhovel:5
+- alldwelling:3
+- arrowtrapgroup:3
+- npchousing:12
+
+critical-build-reqs:
+- councilroom
+
+child: settlement
+build-radius: 36
+build-radius-y: 500
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- deny_mob_spawn
+- deny_explosion
+- control_override
+- anticamp:3.1080 #3 damage for 18 minutes
+
+power: 600
+max-power: 1200
+
+description:
+  en: "The second level of a town"
+  es: "El segundo nivel de una ciudad"

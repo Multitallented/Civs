@@ -1,0 +1,35 @@
+type: region
+icon: CHEST
+name: CoalShop
+max: 1
+price: 250
+groups:
+- shop
+- oreshop
+
+build-reqs:
+- g:fence*16
+- CHEST*2
+- g:wool*25
+
+build-radius: 2
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - COAL*6,CHARCOAL*30 # 24 coal or 120 charcoal / day
+    payout: 18          # $432 / day
+
+description:
+  en: "Sells 144 coal to the server for $432 per day"
+  es: "Vende 144 carbón al servidor por $ 432 por día"

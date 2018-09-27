@@ -1,0 +1,34 @@
+type: region
+icon: CHEST
+name: SiegeMachine
+price: 400
+groups:
+- offense
+- siegemachinegroup
+- townpowerreduce
+
+build-reqs:
+- TNT*5
+- SIGN*1
+- OBSIDIAN*9
+- g:fence*24
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- charging_drain_power
+- evolve:siegemachineactive.2
+
+towns:
+- outpost
+- keep
+
+period: 240 # 4 minutes
+upkeep:
+  0:
+    exp: 1
+
+description:
+  en: "The foundation for all wars. Slowly drains power from nearby target town"
+  es: "La base de todas las guerras. Lentamente drena la energía de la ciudad objetivo cercana"

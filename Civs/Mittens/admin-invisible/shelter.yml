@@ -1,0 +1,40 @@
+type: region
+icon: CHEST
+name: Shelter
+min: 1
+max: 1
+
+build-radius: 5
+effects:
+- block_break
+- block_build
+- chest_use
+- door_use
+- block_liquid
+- block_fire
+- block_explosion
+- deny_damage
+- active #TODO make this
+
+period: 3600 # 1 hour
+upkeep:
+  0:
+    input:
+    - POTATO*32 #.16
+    payout: 5.12
+  1:
+    input:
+    - CARROT*32 #.12
+    payout: 3.84
+  2:
+    input:
+    - BREAD*4 #1.95
+    payout: 7.8
+  3:
+    input:
+    - MELON_SLICE*8 #.11
+    payout: 3.52
+
+description:
+  en: "A safe place to store your items, and earn some money."
+  es: "Un lugar seguro para almacenar sus artículos y ganar algo de dinero."

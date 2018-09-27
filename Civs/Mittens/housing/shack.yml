@@ -1,0 +1,51 @@
+type: region
+icon: CHEST
+name: Shack
+max: 2
+price: 100
+groups:
+- housing
+- shack
+- allshack
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- g:roof*49
+- g:secondary*42
+- g:primary*140
+- g:window*4
+- g:bed*1
+- g:sign*1
+- FURNACE
+- CRAFTING_TABLE
+
+#rebuild: plotshack
+towns:
+- settlement
+- village
+- town
+- capital
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - POTATO*32  # 768 or 12 stacks / day
+    payout: 5.12 # $122.88 / day
+
+
+description:
+  en: "The most basic house. Earns $122 for 12 stacks of potatoes per day."
+  es: "La casa más básica. Gana $ 122 por 12 fajos de papas por día."

@@ -187,6 +187,7 @@ en:
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
   no-blocks-above-chest: "There must not be any blocks above the $1 center"
+  exclusive: "You cant build a $1 in a town that already has a $2"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

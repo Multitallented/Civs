@@ -1,0 +1,48 @@
+type: region
+icon: CHEST
+name: NPCHovel
+max: 2
+price: 200
+groups:
+- npchousing
+- housing
+- allhovel
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- g:window*8
+- g:bed*1
+- g:sign*1
+- FURNACE
+- CRAFTING_TABLE
+- g:roof*81
+- g:secondary*54
+- g:primary*228
+
+rebuild: hovel
+build-radius: 4 #9x9x9
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+- villager
+
+towns:
+- settlement
+- village
+- town
+- capital
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+
+description:
+  en: "A house for a villager. Counts towards town population."
+  es: "Una casa para un aldeano. Cuenta para la población de la ciudad"

@@ -1,0 +1,44 @@
+type: region
+icon: CHEST
+name: StoneWorks
+max: 2
+price: 20
+groups:
+- factory
+
+build-reqs:
+- g:primary*150
+- g:secondary*40
+- g:window*2
+- g:door*1
+- FURNACE*2
+- g:roof*40
+
+build-radius: 3
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- conveyor:STONE_PICKAXE
+
+period: 60 #1 minute
+upkeep:
+  0:
+    input:
+    - COBBLESTONE*8
+    - OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG
+    output:
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+    - STONE_PICKAXE
+
+description:
+  en: "Automated crafting of stone tools"
+  es: "Elaboración automatizada de herramientas de piedra"

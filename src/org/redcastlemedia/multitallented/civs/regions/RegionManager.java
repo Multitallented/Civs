@@ -429,6 +429,20 @@ public class RegionManager {
                     }
                 }
             }
+            if (regionType.getEffects().containsKey("exclusive")) {
+                HashSet<String> exclusiveSet = new HashSet<>(
+                        Arrays.asList(regionType.getEffects().get("exclusive").split("\\.")));
+                for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+                    if (exclusiveSet.contains(region.getType().toLowerCase())) {
+                        player.sendMessage(Civs.getPrefix() +
+                                localeManager.getTranslation(civilian.getLocale(), "exclusive")
+                                .replace("$1", regionTypeName).replace("$2", region.getType()));
+                        event.setCancelled(true);
+                        BlockLogger.getInstance().removeBlock(block.getLocation());
+                        return;
+                    }
+                }
+            }
         }
 
         for (String effect : regionType.getEffects().keySet()) {

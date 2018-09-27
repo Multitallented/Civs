@@ -1,0 +1,53 @@
+type: region
+icon: CHEST
+name: Dwelling
+max: 2
+price: 200
+groups:
+- housing
+- dwelling
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- g:window*8
+- g:bed*1
+- g:sign*1
+- FURNACE
+- CRAFTING_TABLE
+- g:roof*81
+- g:secondary*54
+- g:primary*228
+
+#rebuild: plotdwelling
+build-radius: 5 #11x11x11
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+
+towns:
+- village
+- town
+- capital
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - CARROT*64  # 24 stacks / day
+    payout: 7.68 # $184.32 / day
+  2:
+    input:
+    - APPLE*12   # 288 or 4.5 stacks / day
+    payout: 15.6 # 374.4 / day
+
+description:
+  en: "3rd level of house. Earns $558 for 28.5 stacks per day."
+  es: "2do nivel de la casa. Gana $558 por 28.5 pilas por día."

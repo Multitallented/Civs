@@ -1,0 +1,54 @@
+type: region
+icon: CHEST
+name: Hovel
+max: 2
+price: 200
+groups:
+- housing
+- allhovel
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- g:window*8
+- g:bed*1
+- g:sign*1
+- FURNACE
+- CRAFTING_TABLE
+- g:roof*81
+- g:secondary*54
+- g:primary*228
+
+#rebuild: plothovel
+build-radius: 4 #9x9x9
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+
+towns:
+- settlement
+- village
+- town
+- capital
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - POTATO*32  # 768 or 12 stacks / day
+    payout: 5.12 # $122.88 / day
+  2:
+    input:
+    - APPLE*12   # 288 or 4.5 stacks / day
+    payout: 15.6 # 374.4 / day
+
+description:
+  en: "2nd level of house. Earns $374 for 4.5 stacks of apples per day."
+  es: "2do nivel de la casa. Gana $ 374 por 4.5 pilas de manzanas por día."

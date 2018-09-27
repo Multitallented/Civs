@@ -1,0 +1,34 @@
+type: town
+icon: GLOWSTONE
+name: Outpost
+max: 1
+price: 300
+group:
+- outpost
+
+build-reqs:
+- commandtent:1
+
+critical-build-reqs:
+- commandtent
+
+limits:
+- arrowtrapgroup:1
+- siegemachinegroup:2
+
+build-radius: 18 #18x18x18
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- deny_mob_spawn
+- control_override
+- power_shield
+
+power: 256
+max-power: 256
+
+description:
+  en: "The first level of a siege base."
+  es: "El primer nivel de una base de asedio."
