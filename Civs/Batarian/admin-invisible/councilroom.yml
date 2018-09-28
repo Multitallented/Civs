@@ -1,9 +1,10 @@
 type: region
 icon: SIGN
 name: CouncilRoom
+is-in-shop: false
 
 pre-reqs:
-- permission:civs.create.councilroom
+- perm=civs.create.councilroom
 
 build-reqs:
 - CHEST*4

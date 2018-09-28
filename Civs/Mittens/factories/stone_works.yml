@@ -1,10 +1,12 @@
 type: region
 icon: CHEST
 name: StoneWorks
-max: 2
 price: 20
 groups:
 - factory
+
+pre-reqs:
+- cobble_quarry:built=1
 
 build-reqs:
 - g:primary*150

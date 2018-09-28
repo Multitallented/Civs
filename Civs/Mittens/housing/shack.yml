@@ -8,6 +8,9 @@ groups:
 - shack
 - allshack
 
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
 build-reqs:
 - CHEST*2
 - g:door*1
@@ -20,12 +23,13 @@ build-reqs:
 - FURNACE
 - CRAFTING_TABLE
 
-#rebuild: plotshack
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 build-radius: 3 #7x7x7
 effects:

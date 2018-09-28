@@ -408,35 +408,66 @@ public class ItemManager {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
-                if (req.startsWith("perm")) {
+                //perm=civs.admin
+                if (req.startsWith("perm=")) {
                     String permission = req.replace("perm=", "");
                     if (Civs.perm != null &&
                             Civs.perm.has(player, permission)) {
                         continue outer;
                     } else {
-                        break;
+                        continue;
                     }
+                //member=settlement:town:...
+                } else if (req.startsWith("member=")) {
+                    Set<String> townTypes = new HashSet<>();
+                    String[] townTypeStrings = req.replace("member=", "").split(":");
+                    for (int i = 1; i < townTypeStrings.length; i++) {
+                        townTypes.add(townTypeStrings[i]);
+                    }
+                    for (Town town : TownManager.getInstance().getTowns()) {
+                        if (townTypes.contains(town.getType()) &&
+                                town.getPeople().containsKey(civilian.getUuid())) {
+                            continue outer;
+                        }
+                    }
+                    continue;
+                //population=15
+                } else if (req.startsWith("population=")) {
+                    int pop = Integer.parseInt(req.replace("population=", ""));
+                    for (Town town : TownManager.getInstance().getTowns()) {
+                        if (!town.getPeople().containsKey(civilian.getUuid()) ||
+                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                            continue;
+                        }
+                        if (pop <= town.countPeopleWithRole("member")) {
+                            continue outer;
+                        }
+                    }
+                    continue;
                 }
                 String[] splitReq = req.split(":");
                 CivItem reqItem = itemManager.getItemType(splitReq[0]);
                 if (reqItem == null) {
                     continue;
                 }
+                //house:???
                 if (splitReq.length < 2) {
                     if (civilian.getCountStashItems(splitReq[0]) > 0 ||
                             civilian.getCountNonStashItems(splitReq[0]) > 0) {
                         continue outer;
                     } else {
-                        break;
+                        continue;
                     }
                 }
                 String[] reqParams = splitReq[1].split("=");
+                //settlement:built=1
                 if (reqParams[0].equals("built") && reqItem.getItemType().equals(CivItem.ItemType.REGION)) {
                     if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
-                        break;
+                        continue;
                     }
+                //bash:level=4
                 } else if (reqParams[0].equals("level")) {
                     if (civilian.getExp().get(reqItem) == null) {
                         continue;
@@ -445,15 +476,17 @@ public class ItemManager {
                     if (level >= Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
-                        break;
+                        continue;
                     }
+                //house:has=2
                 } else if (reqParams[0].equals("has")) {
                     if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
-                        break;
+                        continue;
                     }
+                //hamlet:population=15
                 } else if (reqParams[0].equals("population")) {
                     int requirement = Integer.parseInt(reqParams[1]);
                     for (Town town : TownManager.getInstance().getTowns()) {
@@ -466,7 +499,7 @@ public class ItemManager {
                             continue outer;
                         }
                     }
-                    break;
+                    continue;
                 }
             }
             return false;

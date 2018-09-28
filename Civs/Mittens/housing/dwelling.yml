@@ -19,7 +19,7 @@ build-reqs:
 - g:secondary*54
 - g:primary*228
 
-#rebuild: plotdwelling
+rebuild: hovel
 build-radius: 5 #11x11x11
 effects:
 - block_break
@@ -31,9 +31,11 @@ effects:
 - housing:1
 
 towns:
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 period: 3600 #1 hour
 upkeep:
@@ -41,12 +43,16 @@ upkeep:
     power-input: 1
   1:
     input:
-    - CARROT*64  # 24 stacks / day
-    payout: 7.68 # $184.32 / day
+    - POTATO*32  # 768 or 12 stacks / day
+    payout: 5.12 # $122.88 / day
   2:
     input:
     - APPLE*12   # 288 or 4.5 stacks / day
     payout: 15.6 # 374.4 / day
+  3:
+    input:
+    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
+    payout: 12 # $288 / day
 
 description:
   en: "3rd level of house. Earns $558 for 28.5 stacks per day."

@@ -1,11 +1,14 @@
 type: region
-name: ArrowTrap
+name: Arrow_Trap
 icon: CHEST
 price: 500
 groups:
 - defense
 - trap
 - arrowtrapgroup
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis:outpost:base
 
 build-reqs:
 - g:fence*5
@@ -16,11 +19,13 @@ build-radius: 1 #3x3x3
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 - outpost
-- keep
+- base
 
 effects:
 - block_break

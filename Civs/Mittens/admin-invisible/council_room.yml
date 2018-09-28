@@ -1,6 +1,6 @@
 type: region
 icon: SIGN
-name: CouncilRoom
+name: Council_Room
 
 build-reqs:
 - CHEST*4

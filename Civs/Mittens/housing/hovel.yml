@@ -6,6 +6,10 @@ price: 200
 groups:
 - housing
 - allhovel
+is-in-shop: false
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
@@ -19,7 +23,7 @@ build-reqs:
 - g:secondary*54
 - g:primary*228
 
-#rebuild: plothovel
+rebuild: shack
 build-radius: 4 #9x9x9
 effects:
 - block_break
@@ -32,9 +36,11 @@ effects:
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 period: 3600 #1 hour
 upkeep:

@@ -1,10 +1,11 @@
 type: region
-name: ArrowTrapFastest
+name: Arrow_Trap_Fast
 icon: CHEST
 groups:
 - defense
 - trap
 - arrowtrapgroup
+is-in-shop: false
 
 build-reqs:
 - g:fence*5
@@ -15,22 +16,30 @@ build-radius: 1 #3x3x3
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
+- outpost
+- base
 
 effects:
 - block_break
 - block_build
 - block_liquid
 - block_fire
-- arrow_turret:38.42.3
+- arrow_turret:34.38.4
+- evolve:arrow_trap_fastest.150
 
 upkeep:
   0:
     reagents:
     - ARROW*1
     - REDSTONE*4
+    input:
+    - ARROW*1
+    exp: 1
 
 description:
   en: "Shoots arrows at nearby non-members"

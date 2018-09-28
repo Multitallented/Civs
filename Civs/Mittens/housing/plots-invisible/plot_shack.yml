@@ -1,8 +1,12 @@
 type: region
-icon: CHEST
-name: PlotShack
+icon: SIGN
+name: Plot_Shack
 groups:
 - housingplot
+- allshack
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - g:fence*22
@@ -10,9 +14,11 @@ build-reqs:
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 build-radius: 3 #7x7x7
 effects:
@@ -20,6 +26,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
+- buyable:shack #TODO make this
 
 
 description:

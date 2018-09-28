@@ -1,10 +1,12 @@
 type: region
 icon: CHEST
-name: AppleOrchard
-max: 1
+name: Apple_Orchard
 price: 200
 groups:
 - farm
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - g:fencegate*2
@@ -14,9 +16,11 @@ build-reqs:
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 build-radius: 4
 effects:
