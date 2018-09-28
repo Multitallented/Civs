@@ -28,7 +28,8 @@ public class FolderType extends CivItem {
                 price,
                 permission,
                 new HashMap<String, String>(),
-                new ArrayList<String>());
+                new ArrayList<String>(),
+                true);
         this.children = children;
         this.visible = visible;
     }

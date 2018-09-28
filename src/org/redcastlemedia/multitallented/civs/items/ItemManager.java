@@ -126,7 +126,8 @@ public class ItemManager {
                 description,
                 configuration.getStringList("groups"),
                 configuration.getInt("mana-per-second", 1),
-                configuration.getInt("max-mana", 100));
+                configuration.getInt("max-mana", 100),
+                configuration.getBoolean("is-in-shop", true));
 
         itemTypes.put(name, civItem);
         return civItem;
@@ -153,7 +154,8 @@ public class ItemManager {
                 config.getString("permission"),
                 description,
                 config.getStringList("groups"),
-                config);
+                config,
+                config.getBoolean("is-in-shop", true));
         itemTypes.put(name.toLowerCase(), spellType);
         return spellType;
     }
@@ -210,7 +212,8 @@ public class ItemManager {
                 config.getInt("power", 200),
                 config.getInt("max-power", 1000),
                 config.getStringList("groups"),
-                config.getString("child"));
+                config.getString("child"),
+                config.getBoolean("is-in-shop", true));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -304,7 +307,8 @@ public class ItemManager {
                 description,
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),
-                config.getStringList("groups"));
+                config.getStringList("groups"),
+                config.getBoolean("is-in-shop", true));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
@@ -350,9 +354,9 @@ public class ItemManager {
     }
 
     public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
-        return getAllItemsWithParent(civilian, parent);
+        return getAllItemsWithParent(civilian, parent, true);
     }
-    private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent) {
+    private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent, boolean isShop) {
         List<CivItem> returnList = new ArrayList<>();
         HashSet<CivItem> checkList = new HashSet<>();
         if (parent == null) {
@@ -385,8 +389,11 @@ public class ItemManager {
             }
         }
         checkList.clear();
+        boolean isCivAdmin = Civs.perm != null &&
+                Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.admin");
         for (CivItem item : returnList) {
-            if (!hasItemUnlocked(civilian, item)) {
+            if (!hasItemUnlocked(civilian, item) ||
+                    (isShop && !item.getInShop() && !isCivAdmin)) {
                 checkList.add(item);
             }
         }

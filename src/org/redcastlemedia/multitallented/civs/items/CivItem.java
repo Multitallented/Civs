@@ -16,6 +16,7 @@ public abstract class CivItem extends CVItem {
     private final int max;
     private final double price;
     private final String permission;
+    private final boolean isInShop;
     private boolean isPlaceable = false;
     private final HashMap<String, String> description;
     private final List<String> groups;
@@ -32,6 +33,7 @@ public abstract class CivItem extends CVItem {
     public int getCivQty() { return qty; }
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
+    public boolean getInShop() { return isInShop; }
 
     public double getPrice() {
         ConfigManager configManager = ConfigManager.getInstance();
@@ -69,7 +71,8 @@ public abstract class CivItem extends CVItem {
                    double price,
                    String permission,
                    HashMap<String, String> description,
-                   List<String> groups) {
+                   List<String> groups,
+                   boolean isInShop) {
         super(material, 1, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
         this.itemType = itemType;
@@ -81,6 +84,7 @@ public abstract class CivItem extends CVItem {
         this.permission = permission;
         this.description = description;
         this.groups = groups;
+        this.isInShop = isInShop;
     }
 
     public enum ItemType {

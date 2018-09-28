@@ -20,7 +20,8 @@ public class ClassType extends CivItem {
                      HashMap<String, String> description,
                      List<String> groups,
                      int manaPerSecond,
-                     int maxMana) {
+                     int maxMana,
+                     boolean isInShop) {
         super(reqs,
                 false,
                 ItemType.CLASS,
@@ -32,7 +33,8 @@ public class ClassType extends CivItem {
                 price,
                 permission,
                 description,
-                groups);
+                groups,
+                isInShop);
         this.children = children;
         this.manaPerSecond = manaPerSecond;
         this.maxMana = maxMana;

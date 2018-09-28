@@ -50,7 +50,8 @@ public class RegionType extends CivItem {
                       HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
-                      List<String> groups) {
+                      List<String> groups,
+                      boolean isInShop) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -61,7 +62,8 @@ public class RegionType extends CivItem {
                 price,
                 permission,
                 description,
-                groups);
+                groups,
+                isInShop);
         this.name = name;
         this.reqs = reqs;
         this.upkeeps = upkeeps;

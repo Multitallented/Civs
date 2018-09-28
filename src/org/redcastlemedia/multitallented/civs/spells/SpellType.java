@@ -28,7 +28,8 @@ public class SpellType extends CivItem {
                      String permission,
                      HashMap<String, String> description,
                      List<String> groups,
-                     FileConfiguration config) {
+                     FileConfiguration config,
+                     boolean isInShop) {
         super(reqs,
                 false,
                 ItemType.SPELL,
@@ -40,7 +41,8 @@ public class SpellType extends CivItem {
                 price,
                 permission,
                 description,
-                groups);
+                groups,
+                isInShop);
         this.config = config;
         this.components = new HashMap<>();
         ConfigurationSection componentSection = config.getConfigurationSection("components");

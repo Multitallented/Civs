@@ -351,7 +351,7 @@ public class RegionManager {
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
             BlockLogger.getInstance().removeBlock(block.getLocation());
             return;
-        } else if (rebuildRegion == null && regionType.getRebuild() != null) {
+        } else if (rebuildRegion == null && regionType.getRebuild() != null && !regionType.getInShop()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
