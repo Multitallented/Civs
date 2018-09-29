@@ -110,7 +110,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
 
         townCooldowns.put(town.getName(), System.currentTimeMillis());
-//        System.out.println(townLimit.get(town.getName()) + ":" + villagerCount);
+        System.out.println(town.getVillagers() + ":" + villagerCount);
         if (town.getVillagers() <= villagerCount) {
             return null;
         }
