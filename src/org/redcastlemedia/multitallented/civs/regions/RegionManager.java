@@ -298,7 +298,7 @@ public class RegionManager {
                 rLocation.getZ() + 1 + region.getRadiusZP() >= location.getZ();
     }
 
-    void detectNewRegion(BlockPlaceEvent event) {
+    boolean detectNewRegion(BlockPlaceEvent event) {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
@@ -311,8 +311,8 @@ public class RegionManager {
             regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName.toLowerCase());
         } catch (Exception e) {
             Civs.logger.severe("Unable to find region type " + regionTypeName.toLowerCase());
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            event.setCancelled(true);
+            return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
@@ -321,8 +321,7 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", regionTypeName));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         }
 
         if (!regionType.getBiomes().isEmpty()) {
@@ -331,8 +330,7 @@ public class RegionManager {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "region-in-biome")
                                 .replace("$1", regionTypeName).replace("$2", location.getBlock().getBiome().name()));
-                BlockLogger.getInstance().removeBlock(block.getLocation());
-                return;
+                return false;
             }
         }
 
@@ -342,22 +340,19 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         } else if (rebuildRegion != null && !regionType.getRebuild().equalsIgnoreCase(rebuildRegion.getType())) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         } else if (rebuildRegion == null && regionType.getRebuild() != null && !regionType.getInShop()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
                             .replace("$1", regionTypeName).replace("$2", regionType.getRebuild()));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         }
 
 
@@ -370,8 +365,7 @@ public class RegionManager {
                                 .replace("$1", regionTypeName).replace("$2",
                                 localeManager.getTranslation(civilian.getLocale(), "towns")));
                 event.setCancelled(true);
-                BlockLogger.getInstance().removeBlock(block.getLocation());
-                return;
+                return false;
             }
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (!regionType.getTowns().contains(townType.getProcessedName()) &&
@@ -381,8 +375,7 @@ public class RegionManager {
                                 .replace("$1", regionTypeName).replace("$2",
                                 townType.getDisplayName()));
                 event.setCancelled(true);
-                BlockLogger.getInstance().removeBlock(block.getLocation());
-                return;
+                return false;
             }
         }
         if (town != null) {
@@ -406,8 +399,7 @@ public class RegionManager {
                                             .replace("$2", limit + "")
                                             .replace("$3", regionTypeName));
                             event.setCancelled(true);
-                            BlockLogger.getInstance().removeBlock(block.getLocation());
-                            return;
+                            return false;
                         }
                         RegionType regionType1 = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                         for (String groupType : regionType1.getGroups()) {
@@ -419,8 +411,7 @@ public class RegionManager {
                                                     .replace("$2", townType.getRegionLimit(groupType) + "")
                                                     .replace("$3", groupType));
                                     event.setCancelled(true);
-                                    BlockLogger.getInstance().removeBlock(block.getLocation());
-                                    return;
+                                    return false;
                                 } else {
                                     groupLimits.put(groupType, groupLimits.get(groupType) - 1);
                                 }
@@ -438,8 +429,7 @@ public class RegionManager {
                                 localeManager.getTranslation(civilian.getLocale(), "exclusive")
                                 .replace("$1", regionTypeName).replace("$2", region.getType()));
                         event.setCancelled(true);
-                        BlockLogger.getInstance().removeBlock(block.getLocation());
-                        return;
+                        return false;
                     }
                 }
             }
@@ -449,8 +439,7 @@ public class RegionManager {
             if (createRegionListeners.get(effect) != null &&
                     !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
                 event.setCancelled(true);
-                BlockLogger.getInstance().removeBlock(block.getLocation());
-                return;
+                return false;
             }
         }
 
@@ -467,8 +456,7 @@ public class RegionManager {
 //                }
                 player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
             }
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         }
 
         HashMap<UUID, String> people;
@@ -489,8 +477,7 @@ public class RegionManager {
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "too-close-region")
                             .replace("$1", regionTypeName).replace("$2", currentRegion.getType()));
-            BlockLogger.getInstance().removeBlock(block.getLocation());
-            return;
+            return false;
         }
 
 
@@ -498,6 +485,7 @@ public class RegionManager {
         player.sendMessage(Civs.getPrefix() +
                 localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
+        return true;
     }
 
     void adjustRadii(int[] radii, Location location, int x, int y, int z) {

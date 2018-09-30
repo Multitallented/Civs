@@ -178,7 +178,9 @@ public class Region {
                             if (tempMap.get(mat) < 2) {
                                 destroyIndex = true;
                             } else {
-                                tempMap.put(mat, tempMap.get(mat) - 1);
+                                for (Material currentMat : tempMap.keySet()) {
+                                    tempMap.put(currentMat, tempMap.get(mat) - 1);
+                                }
                             }
                             RegionManager.getInstance().adjustRadii(radii, location, x,y,z);
                             break outer1;

@@ -109,13 +109,13 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             }
         }
 
+        System.out.println(Civs.getPrefix() + "Villager Check: " + town.getVillagers() + ":" + villagerCount);
         townCooldowns.put(town.getName(), System.currentTimeMillis());
-        System.out.println(town.getVillagers() + ":" + villagerCount);
         if (town.getVillagers() <= villagerCount) {
             return null;
         }
         if (!region.getLocation().getChunk().isLoaded()) {
-            region.getLocation().getChunk().load();
+            return null;
         }
 
 

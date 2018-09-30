@@ -125,7 +125,7 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianBlockPlace(BlockPlaceEvent event) {
         ItemStack is = new ItemStack(event.getBlockPlaced().getType(), 1);
         if (!CVItem.isCivsItem(is)) {
@@ -189,14 +189,11 @@ public class CivilianListener implements Listener {
     public void onCivilianBlockBreak(BlockBreakEvent event) {
         Location location = event.getBlock().getLocation();
         BlockLogger blockLogger = BlockLogger.getInstance();
-        CVItem cvItem = blockLogger.getBlock(event.getBlock().getLocation());
+        CVItem cvItem = blockLogger.getBlock(location);
         if (cvItem == null || cvItem.getLore() == null || cvItem.getLore().isEmpty() || cvItem.getLore().get(0) == null) {
             return;
         }
         UUID uuid = UUID.fromString(cvItem.getLore().get(0));
-        if (blockLogger.getBlock(location) == null) {
-            return;
-        }
         blockLogger.removeBlock(event.getBlock().getLocation());
         Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
         if (region != null) {
@@ -217,7 +214,8 @@ public class CivilianListener implements Listener {
         lore.add(uuid.toString());
         cvItem.setLore(lore);
         cvItem.setQty(1);
-        if (!uuid.toString().equals(event.getPlayer().getUniqueId().toString())) {
+        if (cvItem.getMat() != event.getBlock().getType() ||
+                !uuid.toString().equals(event.getPlayer().getUniqueId().toString())) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
         } else {
@@ -227,7 +225,7 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 //        ItemStack is = event.getBlock().getState().getData().toItemStack(1);
         ItemStack is = event.getItemInHand();
