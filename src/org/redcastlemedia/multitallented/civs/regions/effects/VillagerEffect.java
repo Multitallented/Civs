@@ -49,7 +49,6 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     @Override
     public void regionCreatedHandler(Region region) {
         Block block = region.getLocation().getBlock();
-        block.getWorld().spawn(block.getLocation(), Villager.class);
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
         if (town != null) {
@@ -112,13 +111,15 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         System.out.println(Civs.getPrefix() + "Villager Check: " + town.getVillagers() + ":" + villagerCount);
         townCooldowns.put(town.getName(), System.currentTimeMillis());
         if (town.getVillagers() <= villagerCount) {
+            System.out.println("too many villagers");
             return null;
         }
         if (!region.getLocation().getChunk().isLoaded()) {
+            System.out.println("chunk not loaded");
             return null;
         }
 
-
+        System.out.println("spawning villager");
         return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
     }
 

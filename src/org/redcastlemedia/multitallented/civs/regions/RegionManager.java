@@ -141,7 +141,7 @@ public class RegionManager {
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
         }
-        System.out.println(region.getId());
+        Civs.logger.info(region.getType() + "@" + region.getId() + " was removed.");
         File regionFile = new File(dataFolder, region.getId() + ".yml");
         if (!regionFile.exists()) {
             return;
