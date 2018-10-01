@@ -417,6 +417,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".grace-period", "Time until defenses drop: $1s"));
             currentLanguage.put("exclusive",
                     localeConfig.getString(langKey + ".exclusive", "You cant build a $1 in a town that already has a $2"));
+            currentLanguage.put("intruder-enter",
+                    localeConfig.getString(langKey + ".intruder-enter", "$1 has entered $2"));
+            currentLanguage.put("intruder-exit",
+                    localeConfig.getString(langKey + ".intruder-exit", "$1 has exited $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

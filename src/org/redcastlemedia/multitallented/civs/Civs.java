@@ -161,6 +161,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new EvolveEffect(), this);
         Bukkit.getPluginManager().registerEvents(new AntiCampEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SiegeEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new IntruderEffect(), this);
 
         new HousingEffect();
     }

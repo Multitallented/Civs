@@ -137,6 +137,8 @@ en:
   anti-camp-expired: "$1's anti-camp has expired"
   siege-built: "$1 has created a $2 targeting $3"
   grace-period: "Time until defenses drop: $1s"
+  intruder-enter: "$1 has entered $2"
+  intruder-exit: "$1 has exited $2"
 
   #errors
   no-region-type-found: "No region type found for $1"
