@@ -1,12 +1,15 @@
 type: region
 icon: CHEST
-name: NPCHovel
+name: NPC_Hovel
 max: 2
 price: 200
 groups:
-- npchousing
+- npchousinggroup
 - housing
 - allhovel
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
@@ -34,9 +37,11 @@ effects:
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 period: 3600 #1 hour
 upkeep:
@@ -46,3 +51,6 @@ upkeep:
 description:
   en: "A house for a villager. Counts towards town population."
   es: "Una casa para un aldeano. Cuenta para la población de la ciudad"
+  ru: "Дом для сельского жителя. Подсчет населения города."
+  de: "Ein Haus für einen Dorfbewohner. Zählt zur Stadtbevölkerung."
+  fr: "Une maison pour un villageois. Compte vers la population de la ville."

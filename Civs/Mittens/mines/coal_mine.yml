@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: CoalMine
+name: Coal_Mine
 max: 1
 price: 150
 groups:
@@ -32,7 +32,20 @@ upkeep:
     - STONE_PICKAXE
     output:
     - COAL*6
+  1:
+    input:
+    - IRON_PICKAXE
+    output:
+    - COAL*8
+  2:
+    input:
+    - DIAMOND_PICKAXE
+    output:
+    - COAL*12
 
 description:
-  en: "Uses stone picks to mine 6 coal per hour"
-  es: "Utiliza picos de piedra para extraer 6 carbón por hora"
+  en: "Creates coal by using pickaxes"
+  es: "Crea carbón utilizando picos"
+  de: "Erzeugt Kohle mithilfe von Spitzhacken"
+  fr: "Crée du charbon en utilisant des pioches"
+  ru: "Создает уголь с помощью кирок"

@@ -1,11 +1,14 @@
 type: region
 icon: CRAFTING_TABLE
-name: NPCShack
+name: NPC_Shack
 price: 100
 groups:
-- npchousing
+- npchousinggroup
 - housing
 - allshack
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
@@ -21,9 +24,11 @@ build-reqs:
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 rebuild: shack
 build-radius: 3
@@ -44,3 +49,6 @@ upkeep:
 description:
   en: "A house for a villager. Counts towards town population."
   es: "Una casa para un aldeano. Cuenta para la población de la ciudad"
+  ru: "Дом для сельского жителя. Подсчет населения города."
+  de: "Ein Haus für einen Dorfbewohner. Zählt zur Stadtbevölkerung."
+  fr: "Une maison pour un villageois. Compte vers la population de la ville."

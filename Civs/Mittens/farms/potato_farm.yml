@@ -46,5 +46,9 @@ upkeep:
 
 
 description:
-  en: "Automatic potato farm"
-  es: "Granja automática de papa"
+  en: "Produces potatoes and poisonous potatoes every 5 minutes"
+  es: "Produce papas y papas venenosas cada 5 minutos"
+  fr: "Produit des pommes de terre et des pommes de terre toxiques toutes les 5 minutes"
+  pt_br: "Produz batatas e batatas venenosas a cada 5 minutos"
+  ru: "Производит картофель и ядовитый картофель каждые 5 минут"
+  de: "Produziert alle 5 Minuten Kartoffeln und giftige Kartoffeln"
