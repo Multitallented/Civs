@@ -44,3 +44,7 @@ upkeep:
 description:
   en: "Automated crafting of stone tools"
   es: "Elaboración automatizada de herramientas de piedra"
+  de: "Automatisierte Herstellung von Steinwerkzeugen"
+  ru: "Автоматическое изготовление каменных инструментов"
+  pt_br: "Elaboração automatizada de ferramentas de pedra"
+  fr: "Fabrication automatisée d'outils en pierre"

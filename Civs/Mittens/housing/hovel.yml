@@ -52,7 +52,7 @@ upkeep:
     payout: 5.12 # $122.88 / day
   2:
     input:
-    - APPLE*12   # 288 or 4.5 stacks / day
+    - APPLE*6   # 144 or 2.25 stacks / day
     payout: 15.6 # 374.4 / day
 
 description:

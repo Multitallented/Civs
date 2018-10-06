@@ -102,6 +102,10 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         int radius = townType.getBuildRadius();
         int radiusY = townType.getBuildRadiusY();
+        if (!town.getLocation().getChunk().isLoaded()) {
+            System.out.println("town chunk not loaded");
+            return null;
+        }
         for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {
             if (e instanceof Villager) {
                 villagerCount++;

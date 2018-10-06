@@ -1,6 +1,6 @@
 type: region
 icon: SIGN
-name: PlotDwelling
+name: Plot_Dwelling
 groups:
 - housingplot
 

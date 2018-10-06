@@ -1,6 +1,6 @@
 type: region
 icon: SIGN
-name: PlotHovel
+name: Plot_Hovel
 groups:
 - housingplot
 
