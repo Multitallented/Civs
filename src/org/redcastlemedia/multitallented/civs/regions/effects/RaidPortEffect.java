@@ -36,19 +36,23 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
     public RaidPortEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
+        RegionManager.getInstance().addCreateRegionListener(CHARGING_KEY, this);
     }
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType rt) {
+        System.out.println("create region handler");
         Location l = block.getLocation();
 
         if (!rt.getEffects().containsKey(KEY) && !rt.getEffects().containsKey(CHARGING_KEY)) {
+            System.out.println("no key");
             return true;
         }
 
         Town town = hasValidSign(l, rt, player.getUniqueId());
 
         if (town == null) {
+            System.out.println("invalid sign");
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -65,6 +69,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         player.sendMessage(Civs.getPrefix() + ChatColor.RED +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-remote")
                 .replace("$1", rt.getName()));
+        System.out.println("success create region handler");
         return true;
     }
 
@@ -76,7 +81,11 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return null;
         }
 
-        int distance = Integer.parseInt(rt.getEffects().get(KEY));
+        String stringDistance = rt.getEffects().get(KEY);
+        int distance = 200;
+        if (stringDistance != null) {
+            distance = Integer.parseInt(stringDistance);
+        }
 
         Sign sign = (Sign) block.getState();
 
@@ -134,7 +143,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         RegionType rt =     (RegionType) ItemManager.getInstance().getItemType(r.getType());
 
         //Check to see if the Townships has enough reagents
-        if (r.hasUpkeepItems()) {
+        if (!r.hasUpkeepItems()) {
             return;
         }
 
@@ -177,6 +186,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         Set<Region> potentialTargets = TownManager.getInstance().getContainingRegions(town.getName());
         int i = 0;
         for (Region currentRegion : potentialTargets) {
+            double rand = Math.random();
+            if (i+1 < potentialTargets.size() && rand < (1 / (double) potentialTargets.size())) {
+                continue;
+            }
             RegionType rt = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
             if (rt == null) {
                 continue;

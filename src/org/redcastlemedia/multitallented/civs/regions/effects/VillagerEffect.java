@@ -103,7 +103,6 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         int radius = townType.getBuildRadius();
         int radiusY = townType.getBuildRadiusY();
         if (!town.getLocation().getChunk().isLoaded()) {
-            System.out.println("town chunk not loaded");
             return null;
         }
         for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {
@@ -112,18 +111,14 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             }
         }
 
-        System.out.println(Civs.getPrefix() + "Villager Check: " + town.getVillagers() + ":" + villagerCount);
         townCooldowns.put(town.getName(), System.currentTimeMillis());
         if (town.getVillagers() <= villagerCount) {
-            System.out.println("too many villagers");
             return null;
         }
         if (!region.getLocation().getChunk().isLoaded()) {
-            System.out.println("chunk not loaded");
             return null;
         }
 
-        System.out.println("spawning villager");
         return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
     }
 

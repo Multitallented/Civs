@@ -4,16 +4,10 @@ name: Keep
 max: 1
 price: 400
 group:
-- outpost
+- offensetown
 
 pre-reqs:
 - outpost:population=1
-
-build-reqs:
-- commandtent:1
-
-critical-build-reqs:
-- commandtent
 
 limits:
 - arrowtrapgroup:2

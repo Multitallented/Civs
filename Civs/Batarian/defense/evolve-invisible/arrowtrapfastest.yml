@@ -1,6 +1,7 @@
 type: region
 name: ArrowTrapFastest
 icon: CHEST
+is-in-shop: false
 groups:
 - defense
 - trap

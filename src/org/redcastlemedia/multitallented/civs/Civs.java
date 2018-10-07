@@ -171,7 +171,7 @@ public class Civs extends JavaPlugin {
         if (rsp != null) {
             econ = rsp.getProvider();
             if (econ != null)
-                System.out.println(Civs.getPrefix() + "Hooked into econ plugin " + econ.getName());
+                getLogger().info(Civs.getPrefix() + "Hooked into econ plugin " + econ.getName());
         }
         return econ != null;
     }
@@ -181,14 +181,14 @@ public class Civs extends JavaPlugin {
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
             if (perm != null)
-                System.out.println(Civs.getPrefix() + "Hooked into perm plugin " + perm.getName());
+                getLogger().info(Civs.getPrefix() + "Hooked into perm plugin " + perm.getName());
         }
         return (perm != null);
     }
     private void setupChat()
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            System.out.println(Civs.getPrefix() + "Hooked into PlaceholderAPI");
+            getLogger().info(Civs.getPrefix() + "Hooked into PlaceholderAPI");
             new PlaceHook();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);

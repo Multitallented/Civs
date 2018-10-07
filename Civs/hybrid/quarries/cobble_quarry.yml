@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: CobbleQuarry
+name: Cobble_Quarry
 price: 40
 groups:
 - raw
@@ -44,3 +44,7 @@ upkeep:
 description:
   en: "Creates cobblestone every 30 seconds"
   es: "Crea adoquines cada 30 segundos"
+  de: "Erzeugt alle 30 Sekunden einen Kopfsteinpflaster"
+  ru: "Создает булыжник каждые 30 секунд"
+  pt_br: "Cria paralelepípedos a cada 30 segundos"
+  fr: "Crée des pavés toutes les 30 secondes"

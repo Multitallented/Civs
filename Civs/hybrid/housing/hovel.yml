@@ -21,7 +21,7 @@ build-reqs:
 - CRAFTING_TABLE
 - g:roof*81
 - g:secondary*54
-- g:primary*228
+- g:primary*188
 
 rebuild: shack
 build-radius: 4 #9x9x9
@@ -53,8 +53,12 @@ upkeep:
   2:
     input:
     - APPLE*6   # 144 or 2.25 stacks / day
-    payout: 15.6 # 374.4 / day
+    payout: 7.8 # 187.2 / day
 
 description:
-  en: "2nd level of house. Earns $374 for 4.5 stacks of apples per day."
-  es: "2do nivel de la casa. Gana $ 374 por 4.5 pilas de manzanas por día."
+  en: "2nd level of house. Earns $310 per day."
+  es: "2do nivel de vivienda. Gana $ 310 por día."
+  fr: "2ème niveau de la maison. Gagne 310 $ par jour."
+  ru: "2-й уровень дома. Зарабатывает 310 долларов США в день."
+  pt_br: "2º nível de casa. Ganhe US $ 310 por dia."
+  de: "2. Ebene des Hauses. Erwirbt $ 310 pro Tag."

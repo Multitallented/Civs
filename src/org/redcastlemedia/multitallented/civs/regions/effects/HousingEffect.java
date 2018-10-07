@@ -17,6 +17,9 @@ public class HousingEffect implements RegionCreatedListener, DestroyRegionListen
 
     @Override
     public void destroyRegionHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         int amount = Integer.parseInt(regionType.getEffects().get(KEY));

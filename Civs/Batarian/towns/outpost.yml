@@ -4,13 +4,7 @@ name: Outpost
 max: 1
 price: 300
 group:
-- outpost
-
-build-reqs:
-- commandtent:1
-
-critical-build-reqs:
-- commandtent
+- offensetown
 
 limits:
 - arrowtrapgroup:1

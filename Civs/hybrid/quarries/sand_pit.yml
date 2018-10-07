@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: SandPit
+name: Sand_Pit
 price: 80
 groups:
 - raw
@@ -44,3 +44,7 @@ upkeep:
 description:
   en: "Creates sand every 30 seconds"
   es: "Crea arena cada 30 segundos"
+  de: "Erzeugt alle 30 Sekunden Sand"
+  ru: "Создает песок каждые 30 секунд"
+  pt_br: "Cria areia a cada 30 segundos"
+  fr: "Crée du sable toutes les 30 secondes"

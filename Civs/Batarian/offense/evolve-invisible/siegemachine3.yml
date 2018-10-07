@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 name: SiegeMachine3
+is-in-shop: false
 groups:
 - offense
 - siegemachinegroup

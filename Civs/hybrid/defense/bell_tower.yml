@@ -1,32 +1,33 @@
 type: region
-name: ArrowTrapFast
+name: Arrow_Trap
 icon: CHEST
-is-in-shop: false
+price: 500
 groups:
 - defense
 - trap
 - arrowtrapgroup
 
-build-reqs:
-- g:fence*5
-- REDSTONE_WIRE*4
-- DISPENSER*1
+pre-reqs:
+- member=village:town:city:metropolis
 
-build-radius: 1 #3x3x3
+build-reqs:
+- #TODO finish this
+
+build-radius: 4 #9x15x9
+build-radius-y: 7
 
 towns:
-- settlement
 - village
 - town
-- capital
+- city
+- metropolis
 
 effects:
 - block_break
 - block_build
 - block_liquid
 - block_fire
-- arrow_turret:34.38.4
-- evolve:arrowtrapfastest.150
+- intruder
 
 upkeep:
   0:

@@ -33,6 +33,11 @@ public class SiegeEffect implements Listener, CreateRegionListener {
     public static String KEY = "drain_power";
     private HashMap<Location, Long> lastUpkeep = new HashMap<>();
 
+    public SiegeEffect() {
+        RegionManager.getInstance().addCreateRegionListener(KEY, this);
+        RegionManager.getInstance().addCreateRegionListener(CHARGING_KEY, this);
+    }
+
     @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
         if (!event.getRegion().getEffects().containsKey(KEY)) {
