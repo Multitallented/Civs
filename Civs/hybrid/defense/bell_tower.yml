@@ -1,17 +1,23 @@
 type: region
-name: Arrow_Trap
-icon: CHEST
-price: 500
+name: Bell_Tower
+icon: GLOWSTONE
+price: 1000
+max: 1
 groups:
 - defense
-- trap
-- arrowtrapgroup
 
 pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-- #TODO finish this
+- CHEST*2
+- g:door*1
+- GLOWSTONE*4
+- g:secondary*55
+- g:primary*188
+- g:roof*81
+- g:glass*8
+- g:window*8
 
 build-radius: 4 #9x15x9
 build-radius-y: 7
@@ -29,16 +35,11 @@ effects:
 - block_fire
 - intruder
 
-upkeep:
-  0:
-    reagents:
-    - ARROW*1
-    - REDSTONE*4
-    input:
-    - ARROW*1
-    exp: 1
-
 description:
-  en: "Shoots arrows at nearby non-members"
-  es: "Dispara flechas a no miembros cercanos"
+  en: "Alerts town members when an intruder has entered the town."
+  es: "Alerta a los miembros de la ciudad cuando un intruso ha entrado en la ciudad."
+  ru: "Оповещает жителей города, когда злоумышленник вошел в город."
+  de: "Warnt die Stadtmitglieder, wenn ein Eindringling die Stadt betreten hat."
+  pt_br: "Alerta os membros da cidade quando um intruso entrou na cidade."
+  fr: "Alerte les membres de la ville lorsqu'un intrus est entré dans la ville."
 
