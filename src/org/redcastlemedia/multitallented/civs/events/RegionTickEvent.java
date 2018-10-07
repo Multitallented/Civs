@@ -13,6 +13,7 @@ public class RegionTickEvent extends Event {
     private final RegionType regionType;
     private final boolean hasUpkeep;
     private final boolean shouldTick;
+    private boolean shouldDestroy = false;
 
     @Override
     public HandlerList getHandlers() {
@@ -27,6 +28,10 @@ public class RegionTickEvent extends Event {
         this.regionType = regionType;
         this.hasUpkeep = hasUpkeep;
     }
+
+    public void setShouldDestroy(boolean shouldDestroy) { this.shouldDestroy = shouldDestroy; }
+
+    public boolean getShouldDestroy() { return shouldDestroy; }
 
     public boolean isShouldTick() {
         return shouldTick;
