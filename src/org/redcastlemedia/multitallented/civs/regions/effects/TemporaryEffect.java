@@ -21,7 +21,7 @@ public class TemporaryEffect implements Listener {
             return;
         }
         long createdTime = created.get(id);
-        long expiry = Long.parseLong(event.getRegion().getEffects().get(KEY));
+        long expiry = Long.parseLong(event.getRegion().getEffects().get(KEY)) * 1000;
         if (createdTime + expiry < System.currentTimeMillis()) {
             event.setShouldDestroy(true);
             created.remove(id);
