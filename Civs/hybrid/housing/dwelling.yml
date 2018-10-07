@@ -2,22 +2,22 @@ type: region
 icon: CHEST
 name: Dwelling
 max: 2
-price: 200
+price: 400
 groups:
 - housing
-- dwelling
+- alldwelling
 
 build-reqs:
-- CHEST*2
+- CHEST*4
 - g:door*1
-- g:window*8
+- g:window*12
 - g:bed*1
 - g:sign*1
-- FURNACE
+- FURNACE*2
 - CRAFTING_TABLE
-- g:roof*81
-- g:secondary*54
-- g:primary*228
+- g:roof*111
+- g:secondary*66
+- g:primary*400
 
 rebuild: hovel
 build-radius: 5 #11x11x11

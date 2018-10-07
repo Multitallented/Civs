@@ -1,0 +1,44 @@
+type: region
+icon: QUARTZ_BLOCK
+name: Church
+max: 1
+price: 800
+groups:
+- defense
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+build-reqs:
+- g:door*1
+- g:glass*24
+- g:sign*1
+- ANVIL,CHIPPED_ANVIL,DAMAGED_ANVIL
+- QUARTZ_SLAB*125,QUARTZ_STAIRS*125
+- QUARTZ_PILLAR*96,CHISELD_QUARTZ_BLOCK*96
+- QUARTZ_BLOCK*600,SMOOTH_QUARTZ*600
+
+build-radius: 7 #15x15x15
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- deny_damage
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+description:
+  en: "A safe place where no one can take damage."
+  es: "Un lugar seguro donde nadie puede recibir daño."
+  de: "Ein sicherer Ort, an dem niemand Schaden nehmen kann."
+  pt_br: "Um lugar seguro onde ninguém pode sofrer danos."
+  fr: "Un endroit sûr où personne ne peut subir de dégâts."
+  ru: "Безопасное место, где никто не может получить урон."
