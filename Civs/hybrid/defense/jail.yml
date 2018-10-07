@@ -1,0 +1,41 @@
+type: region
+icon: IRON_BLOCK
+name: Jail
+max: 1
+price: 600
+groups:
+- defense
+
+pre-reqs:
+- member=town:city:metropolis
+
+towns:
+- town
+- city
+- metropolis
+
+build-radius: 5 #11x11x11
+build-reqs:
+- OBDISIAN*66
+- IRON_BARS*12
+- IRON_DOOR*1
+- g:sign*1
+- g:bed*4
+- DARK_OAK_STAIRS*111,DARK_PRISMARINE_STAIRS*111,DARK_OAK_SLAB*111
+- DARK_OAK_PLANKS*400,BLACK_WOOL*400,BLACK_TERRACOTTA*400,PRISMARINE*400
+
+effects:
+- block_break
+- block_build
+- deny_mob_spawn
+- block_fire
+- door_use
+- jail
+
+description:
+  en: "A place to temporarily trap invaders who die in town."
+  es: "Un lugar para atrapar temporalmente a los invasores que mueren en la ciudad."
+  de: "Ein Ort, um Eindringlinge, die in der Stadt sterben, vorübergehend zu fangen."
+  pt_br: "Um lugar para capturar temporariamente os invasores que morrem na cidade."
+  fr: "Un endroit pour piéger temporairement les envahisseurs qui meurent en ville."
+  ru: "Место для временного захвата захватчиков, которые умирают в городе."
