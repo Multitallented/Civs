@@ -421,6 +421,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".intruder-enter", "$1 has entered $2"));
             currentLanguage.put("intruder-exit",
                     localeConfig.getString(langKey + ".intruder-exit", "$1 has exited $2"));
+            currentLanguage.put("target-inside-town",
+                    localeConfig.getString(langKey + ".target-inside-town", "Target must be inside $1"));
+            currentLanguage.put("raid-target-set",
+                    localeConfig.getString(langKey + ".raid-target-set", "New location set for raid port target"));
             languageMap.put(langKey, currentLanguage);
         }
     }

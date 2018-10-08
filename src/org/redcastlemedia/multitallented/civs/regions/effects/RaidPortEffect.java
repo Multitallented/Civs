@@ -310,9 +310,9 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
                 target.getBlock().getType().isSolid();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onRaidControllerUse(PlayerInteractEvent event) {
-        if (event.isCancelled() || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getClickedBlock() == null) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getClickedBlock() == null) {
             return;
         }
 
@@ -350,13 +350,15 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         Location targetLoc = event.getClickedBlock().getLocation();
+        if (raidLocations.get(r) != null && raidLocations.get(r).equals(targetLoc)) {
+            return;
+        }
         if (!isValidTeleportTarget(targetLoc, true)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "port-not-found"));
             return;
         }
 
-        boolean validTown = false;
         Block block = r.getLocation().getBlock().getRelative(BlockFace.UP);
         if (block.getType() != Material.WALL_SIGN) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -376,7 +378,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         Town town = TownManager.getInstance().getTownAt(targetLoc);
         if (town == null || !town.getName().equals(sign.getLine(0))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
+                    "target-inside-town").replace("$1", sign.getLine(0)));
             event.setCancelled(true);
             return;
         }
@@ -394,7 +396,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         raidLocations.put(r, targetLoc);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "raid-target-inside-region").replace("$1", r.getType()));
+                "raid-target-set"));
         event.setCancelled(true);
     }
 

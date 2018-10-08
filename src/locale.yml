@@ -139,6 +139,7 @@ en:
   grace-period: "Time until defenses drop: $1s"
   intruder-enter: "$1 has entered $2"
   intruder-exit: "$1 has exited $2"
+  raid-target-set: "New location set for raid port target"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -190,6 +191,7 @@ en:
   not-enough-housing: "You need to build more housing before inviting people"
   no-blocks-above-chest: "There must not be any blocks above the $1 center"
   exclusive: "You cant build a $1 in a town that already has a $2"
+  target-inside-town: "Target must be inside $1"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
