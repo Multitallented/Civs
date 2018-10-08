@@ -8,11 +8,15 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class RegionTickThread implements Runnable {
 
     @Override
     public void run() {
         RegionManager regionManager = RegionManager.getInstance();
+        Set<Region> destroyThese = new HashSet<>();
         for (Region region : regionManager.getAllRegions()) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             boolean shouldTick = region.shouldTick();
@@ -26,6 +30,12 @@ public class RegionTickThread implements Runnable {
 
             RegionTickEvent regionTickEvent = new RegionTickEvent(region, regionType, hasUpkeep, shouldTick);
             Bukkit.getPluginManager().callEvent(regionTickEvent);
+            if (regionTickEvent.getShouldDestroy()) {
+                destroyThese.add(regionTickEvent.getRegion());
+            }
+        }
+        for (Region region : destroyThese) {
+            RegionManager.getInstance().removeRegion(region, true);
         }
     }
 }
