@@ -12,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class PlaceHook extends PlaceholderHook {
     public PlaceHook() {
-        PlaceholderAPI.registerPlaceholderHook("town_name", this);
+        PlaceholderAPI.registerPlaceholderHook("civtownname", this);
     }
 
     @Override

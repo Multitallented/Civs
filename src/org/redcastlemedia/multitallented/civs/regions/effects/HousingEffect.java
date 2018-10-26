@@ -22,7 +22,10 @@ public class HousingEffect implements RegionCreatedListener, DestroyRegionListen
         }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        int amount = Integer.parseInt(regionType.getEffects().get(KEY));
+        int amount = 1;
+        if (region.getEffects().get(KEY) != null) {
+            amount = Integer.parseInt(regionType.getEffects().get(KEY));
+        }
         if (town != null && town.getHousing() > amount) {
             town.setHousing(town.getHousing() - amount);
             TownManager.getInstance().saveTown(town);
@@ -31,8 +34,14 @@ public class HousingEffect implements RegionCreatedListener, DestroyRegionListen
 
     @Override
     public void regionCreatedHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
-        int amount = Integer.parseInt(region.getEffects().get(KEY));
+        int amount = 1;
+        if (region.getEffects().get(KEY) != null) {
+            amount = Integer.parseInt(region.getEffects().get(KEY));
+        }
         if (town != null) {
             town.setHousing(town.getHousing() + amount);
             TownManager.getInstance().saveTown(town);
