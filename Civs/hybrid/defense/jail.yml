@@ -16,7 +16,7 @@ towns:
 
 build-radius: 5 #11x11x11
 build-reqs:
-- OBDISIAN*66
+- OBSIDIAN*66
 - IRON_BARS*12
 - IRON_DOOR*1
 - g:sign*1

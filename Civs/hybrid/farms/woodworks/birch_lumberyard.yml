@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: DarkOakLumberyard
+name: Birch_Lumberyard
 max: 2
 price: 100
 groups:
@@ -9,8 +9,8 @@ groups:
 - woodwork
 
 build-reqs:
-- DARK_OAK_LOG*8
-- DARK_OAK_LEAVES*32
+- BIRCH_LOG*8
+- BIRCH_LEAVES*32
 - g:fence*28
 - g:fencegate*2
 - CHEST*2
@@ -22,7 +22,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:DARK_OAK_LOG
+- conveyor:BIRCH_LOG
 
 period: 120 #2 minutes
 upkeep:
@@ -30,18 +30,18 @@ upkeep:
     reagents:
     - STONE_AXE
     output:
-    - DARK_OAK_LOG*2
+    - BIRCH_LOG*2
   1:
     reagents:
     - IRON_AXE
     output:
-    - DARK_OAK_LOG*4
+    - BIRCH_LOG*4
   2:
     reagents:
     - DIAMOND_AXE
     output:
-    - DARK_OAK_LOG*8
+    - BIRCH_LOG*8
 
 description:
-  en: "Automated dark oak log farming"
-  es: "Agricultura automatizada de registro de roble oscuro"
+  en: "Automated birch log farming"
+  es: "Agricultura automatizada de registro de abedul"

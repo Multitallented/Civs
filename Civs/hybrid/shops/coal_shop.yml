@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: CoalShop
+name: Coal_Shop
 max: 1
 price: 250
 groups:
@@ -33,3 +33,7 @@ upkeep:
 description:
   en: "Sells 144 coal to the server for $432 per day"
   es: "Vende 144 carbón al servidor por $ 432 por día"
+  pt_br: "Vende 144 de carvão para o servidor por US $ 432 por dia"
+  ru: "Продает 144 угля на сервер за $ 432 в день"
+  de: "Verkauft 144 Kohle an den Server für $ 432 pro Tag"
+  fr: "Vend 144 charbon au serveur pour 432 $ par jour"

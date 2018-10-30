@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: JungleLumberyard
+name: Jungle_Lumberyard
 max: 2
 price: 100
 groups:

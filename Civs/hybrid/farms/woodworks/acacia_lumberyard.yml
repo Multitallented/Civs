@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: BirchLumberyard
+name: Acacia_Lumberyard
 max: 2
 price: 100
 groups:
@@ -9,8 +9,8 @@ groups:
 - woodwork
 
 build-reqs:
-- BIRCH_LOG*8
-- BIRCH_LEAVES*32
+- ACACIA_LOG*8
+- ACACIA_LEAVES*32
 - g:fence*28
 - g:fencegate*2
 - CHEST*2
@@ -22,7 +22,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:BIRCH_LOG
+- conveyor:ACACIA_LOG
 
 period: 120 #2 minutes
 upkeep:
@@ -30,18 +30,18 @@ upkeep:
     reagents:
     - STONE_AXE
     output:
-    - BIRCH_LOG*2
+    - ACACIA_LOG*2
   1:
     reagents:
     - IRON_AXE
     output:
-    - BIRCH_LOG*4
+    - ACACIA_LOG*4
   2:
     reagents:
     - DIAMOND_AXE
     output:
-    - BIRCH_LOG*8
+    - ACACIA_LOG*8
 
 description:
-  en: "Automated birch log farming"
-  es: "Agricultura automatizada de registro de abedul"
+  en: "Automated acacia log farming"
+  es: "Agricultura automatizada de registro de acacia"

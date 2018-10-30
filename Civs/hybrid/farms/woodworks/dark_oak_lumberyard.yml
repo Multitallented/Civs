@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: OakLumberyard
+name: Dark_Oak_Lumberyard
 max: 2
 price: 100
 groups:
@@ -9,8 +9,8 @@ groups:
 - woodwork
 
 build-reqs:
-- OAK_LOG*8
-- OAK_LEAVES*32
+- DARK_OAK_LOG*8
+- DARK_OAK_LEAVES*32
 - g:fence*28
 - g:fencegate*2
 - CHEST*2
@@ -22,7 +22,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:OAK_LOG
+- conveyor:DARK_OAK_LOG
 
 period: 120 #2 minutes
 upkeep:
@@ -30,18 +30,18 @@ upkeep:
     reagents:
     - STONE_AXE
     output:
-    - OAK_LOG*2
+    - DARK_OAK_LOG*2
   1:
     reagents:
     - IRON_AXE
     output:
-    - OAK_LOG*4
+    - DARK_OAK_LOG*4
   2:
     reagents:
     - DIAMOND_AXE
     output:
-    - OAK_LOG*8
+    - DARK_OAK_LOG*8
 
 description:
-  en: "Automated oak log farming"
-  es: "Agricultura automatizada de registro de roble"
+  en: "Automated dark oak log farming"
+  es: "Agricultura automatizada de registro de roble oscuro"

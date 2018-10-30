@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: AcaciaLumberyard
+name: Spruce_Lumberyard
 max: 2
 price: 100
 groups:
@@ -9,8 +9,8 @@ groups:
 - woodwork
 
 build-reqs:
-- ACACIA_LOG*8
-- ACACIA_LEAVES*32
+- SPRUCE_LOG*8
+- SPRUCE_LEAVES*32
 - g:fence*28
 - g:fencegate*2
 - CHEST*2
@@ -22,7 +22,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:ACACIA_LOG
+- conveyor:SPRUCE_LOG
 
 period: 120 #2 minutes
 upkeep:
@@ -30,18 +30,18 @@ upkeep:
     reagents:
     - STONE_AXE
     output:
-    - ACACIA_LOG*2
+    - SPRUCE_LOG*2
   1:
     reagents:
     - IRON_AXE
     output:
-    - ACACIA_LOG*4
+    - SPRUCE_LOG*4
   2:
     reagents:
     - DIAMOND_AXE
     output:
-    - ACACIA_LOG*8
+    - SPRUCE_LOG*8
 
 description:
-  en: "Automated acacia log farming"
-  es: "Agricultura automatizada de registro de acacia"
+  en: "Automated spruce log farming"
+  es: "Agricultura automatizada de registro de picea"
