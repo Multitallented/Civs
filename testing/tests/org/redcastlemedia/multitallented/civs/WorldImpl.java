@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class WorldImpl implements World {
     private final String name;
-    private HashSet<Entity> nearbyEntities = new HashSet<>();
+    public HashSet<Entity> nearbyEntities = new HashSet<>();
 
     public WorldImpl(String name) {
         this.name = name;
@@ -71,7 +71,9 @@ public class WorldImpl implements World {
 
     @Override
     public Chunk getChunkAt(Location location) {
-        return mock(Chunk.class);
+        Chunk chunk = mock(Chunk.class);
+        when(chunk.isLoaded()).thenReturn(true);
+        return chunk;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class WorldImpl implements World {
 
     @Override
     public boolean isChunkLoaded(Chunk chunk) {
-        return false;
+        return true;
     }
 
     @Override

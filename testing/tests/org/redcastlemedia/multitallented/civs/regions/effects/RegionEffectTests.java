@@ -10,6 +10,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.WorldImpl;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -49,7 +50,7 @@ public class RegionEffectTests {
         TownTests.loadTownTypeHamlet();
         this.townLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         this.town = new Town("Hamlet1", "hamlet", townLocation, new HashMap<>(),
-                300, 300, 2, 1, 1, -1);
+                300, 300, 2, 1, 0, -1);
         townManager.addTown(town);
     }
 
@@ -78,10 +79,11 @@ public class RegionEffectTests {
     }
 
     @Test
-    @Ignore
     public void villagerShouldSpawnNewVillager() {
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
+        VillagerEffect villagerEffect = new VillagerEffect();
+        villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);
         assertNotNull(villager);
     }
@@ -100,14 +102,11 @@ public class RegionEffectTests {
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
         VillagerEffect villagerEffect = new VillagerEffect();
-        Player player = mock(Player.class);
         Block block = TestUtil.createBlock(Material.CHEST, townLocation);
         doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
         when(block.getWorld()).thenReturn(mock(World.class));
 
-        RegionsTests.loadRegionTypeCobble();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
-        villagerEffect.createRegionHandler(block, player, regionType);
+        villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);
         assertNotNull(villager);
         VillagerEffect.townCooldowns.clear();
@@ -117,6 +116,7 @@ public class RegionEffectTests {
 
     @After
     public void cleanUp() {
+        ((WorldImpl) Bukkit.getWorld("world")).nearbyEntities.clear();
         VillagerEffect.townCooldowns.clear();
     }
 }
