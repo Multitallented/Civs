@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: StoneWorks
+name: Stone_Works
 price: 20
 groups:
 - factory

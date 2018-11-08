@@ -1,0 +1,42 @@
+type: region
+icon: CHEST
+name: Dye_Works
+price: 20
+groups:
+- factory
+
+build-reqs:
+- g:primary*200
+- g:secondary*50
+- g:window*4
+- g:door*1
+- g:roof*72
+- g:wool*9
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 15 #15 seconds
+upkeep:
+  0:
+    reagents:
+    - RED_DYE
+    - BLACK_DYE
+    - BLUE_DYE
+    - WHITE_DYE
+    - YELLOW_DYE
+    output:
+    - RED_DYE%7,BLACK_DYE%6,BLUE_DYE%7,BROWN_DYE%6,CYAN_DYE%6,GRAY_DYE%6,GREEN_DYE%7,LIGHT_BLUE_DYE%6,LIGHT_GRAY_DYE%6,LIME_DYE%6,MAGENTA_DYE%6,ORANGE_DYE%6,PINK_DYE%6,PURPLE_DYE%6,WHITE_DYE%6,YELLOW_DYE%7
+
+description:
+  en: "Automated creation of colored dye"
+  es: "Creación automatizada de tinte coloreado."
+  de: "Automatisierte Farbstoffbildung"
+  ru: "Автоматическое создание цветного красителя"
+  pt_br: "Criação automatizada de corante colorido"
+  fr: "Création automatisée de colorants colorés"
