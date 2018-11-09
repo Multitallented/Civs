@@ -31,9 +31,9 @@ upkeep:
     - ARROW*64
 
 description:
-  en: "Automated creation of colored dye"
-  es: "Creación automatizada de tinte coloreado."
-  de: "Automatisierte Farbstoffbildung"
-  ru: "Автоматическое создание цветного красителя"
-  pt_br: "Criação automatizada de corante colorido"
-  fr: "Création automatisée de colorants colorés"
+  en: "Automatic arrow factory"
+  es: "Fábrica automática de flechas"
+  de: "Automatische Pfeilfabrik"
+  ru: "Автоматическая фабрика стрелок"
+  pt_br: "Fábrica de flechas automáticas"
+  fr: "Usine de flèche automatique"
