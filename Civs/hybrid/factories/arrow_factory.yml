@@ -1,0 +1,39 @@
+type: region
+icon: CHEST
+name: Arrow_Factory
+price: 100
+groups:
+- factory
+
+build-reqs:
+- g:primary*200
+- g:secondary*50
+- g:window*4
+- g:door*1
+- g:roof*72
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 300 #5 minutes
+upkeep:
+  0:
+    input:
+    - FEATHER*8
+    - g:log*1
+    - FLINT*8
+    output:
+    - ARROW*64
+
+description:
+  en: "Automated creation of colored dye"
+  es: "Creación automatizada de tinte coloreado."
+  de: "Automatisierte Farbstoffbildung"
+  ru: "Автоматическое создание цветного красителя"
+  pt_br: "Criação automatizada de corante colorido"
+  fr: "Création automatisée de colorants colorés"

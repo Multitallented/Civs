@@ -1,0 +1,40 @@
+type: region
+icon: HAY_BLOCK
+name: Chicken_Coop
+max: 1
+price: 10
+groups:
+- farm
+
+build-reqs:
+- g:log*4
+- g:wood*120
+- IRON_BARS*8
+- HAY_BLOCK*9
+
+build-radius: 3
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- spawn:CHICKEN
+- conveyor:FEATHER
+
+period: 300 #5 minutes
+
+upkeep:
+  0:
+    reagents:
+    - WHEAT_SEEDS*64
+    output:
+    - FEATHER*64
+    - EGG*4
+
+description:
+  en: "Automatic chicken farm"
+  es: "Granja de pollos automatica"
+  fr: "Ferme de poulet automatique"
+  pt_br: "Fazenda de frango automático"
+  ru: "Автоматическая птицефабрика"
+  de: "Automatische Hühnerfarm"
