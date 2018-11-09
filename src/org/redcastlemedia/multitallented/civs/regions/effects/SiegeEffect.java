@@ -221,7 +221,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "built-siege").replace("$1", p.getDisplayName())
+                    civ.getLocale(), "siege-built").replace("$1", p.getDisplayName())
                     .replace("$2", regionType.getName()).replace("$3", town.getName()));
         }
         return true;
