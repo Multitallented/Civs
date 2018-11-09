@@ -20,8 +20,16 @@ effects:
 - block_liquid
 - block_fire
 - spawn:COW
+- conveyor:BEEF
 
 period: 300 #5 minutes
+upkeep:
+  0:
+    reagents:
+    - WHEAT*64
+    output:
+    - BEEF*4
+    - LEATHER*2
 
 description:
   en: "Automatic cow farm"
