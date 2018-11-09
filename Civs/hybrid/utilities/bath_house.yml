@@ -1,10 +1,13 @@
 type: region
 icon: CRAFTING_TABLE
-name: BathHouse
+name: Bath_House
 max: 1
 price: 700
 groups:
 - utility
+
+pre-reqs:
+- member=metropolis
 
 build-reqs:
 - WATER*150
@@ -15,10 +18,7 @@ build-reqs:
 
 build-radius: 7
 towns:
-- settlement
-- village
-- town
-- capital
+- metropolis
 
 effects:
 - block_break
@@ -34,3 +34,7 @@ upkeep:
 description:
   en: "Provides 96 power to the town each day"
   es: "Proporciona 96 de energía a la ciudad cada día"
+  de: "Produziert 96 Kraft pro Tag"
+  ru: "Производит 96 энергии в день"
+  pt_br: "Produz 96 de energia por dia"
+  fr: "Produit 96 puissance par jour"

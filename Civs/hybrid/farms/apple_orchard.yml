@@ -6,7 +6,7 @@ groups:
 - farm
 
 pre-reqs:
-- member=settlement:hamlet:village:town:city:metropolis
+- member=hamlet:village:town:city:metropolis
 
 build-reqs:
 - g:fencegate*2
@@ -15,7 +15,6 @@ build-reqs:
 - OAK_LEAVES*12
 
 towns:
-- settlement
 - hamlet
 - village
 - town
@@ -42,3 +41,7 @@ upkeep:
 description:
   en: "Automatic apple farm"
   es: "Granja automática de manzanas"
+  pt_br: "Fazenda de maçã automática"
+  ru: "Автоматическая яблочная ферма"
+  de: "Automatische Apfelfarm"
+  fr: "Ferme aux pommes automatique"

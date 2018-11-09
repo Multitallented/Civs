@@ -27,6 +27,11 @@ effects:
 - door_use
 - deny_damage
 
+period: daily
+upkeep:
+  0:
+    power-output: 48
+
 towns:
 - settlement
 - hamlet
@@ -36,9 +41,9 @@ towns:
 - metropolis
 
 description:
-  en: "A safe place where no one can take damage."
-  es: "Un lugar seguro donde nadie puede recibir daño."
-  de: "Ein sicherer Ort, an dem niemand Schaden nehmen kann."
-  pt_br: "Um lugar seguro onde ninguém pode sofrer danos."
-  fr: "Un endroit sûr où personne ne peut subir de dégâts."
-  ru: "Безопасное место, где никто не может получить урон."
+  en: "A safe place where no one can take damage. Produces 48 power per day"
+  es: "Un lugar seguro donde nadie puede recibir daño. Produce 48 potencia por día"
+  de: "Ein sicherer Ort, an dem niemand Schaden nehmen kann. Produziert 48 Kraft pro Tag"
+  pt_br: "Um lugar seguro onde ninguém pode sofrer danos. Produz 48 de energia por dia"
+  fr: "Un endroit sûr où personne ne peut subir de dégâts. Produit 48 puissance par jour"
+  ru: "Безопасное место, где никто не может получить урон. Производит 48 энергии в день"

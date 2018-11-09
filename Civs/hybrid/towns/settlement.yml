@@ -14,9 +14,11 @@ critical-build-reqs:
 
 limits:
 - npchousing:4
-- allshack:5
+- allshack:4
 - allhovel:1
-- arrowtrapgroup:1
+- arrowtrapgroup:2
+- church:1
+- smithy:1
 
 build-radius: 24
 build-radius-y: 500
@@ -36,3 +38,7 @@ max-power: 850
 description:
   en: "The first level of a town"
   es: "El primer nivel de una ciudad"
+  fr: "Le premier niveau d'une ville"
+  de: "Die erste Ebene einer Stadt"
+  ru: "Первый уровень города"
+  pt_br: "O primeiro nível de uma cidade"
