@@ -1,6 +1,9 @@
 type: region
 icon: SIGN
 name: Council_Room
+price: 500
+groups:
+- utility
 
 build-reqs:
 - CHEST*4

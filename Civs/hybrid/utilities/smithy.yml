@@ -1,0 +1,46 @@
+type: region
+icon: IRON_BLOCK
+name: Smithy
+price: 150
+groups:
+- utility
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:primary*200
+- g:secondary*50
+- g:window*4
+- g:door*1
+- g:roof*72
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- repair
+
+period: daily
+upkeep:
+  0:
+    power-output: 48
+
+description:
+  en: "Repairs items and creates 48 power per day"
+  es: "Repara artículos y crea 48 de energía por día."
+  de: "Repariert Gegenstände und erzeugt 48 Energie pro Tag"
+  ru: "Ремонтирует предметы и создает 48 ед. В день"
+  pt_br: "Repara itens e cria 48 de energia por dia"
+  fr: "Répare les objets et crée 48 points d'énergie par jour"
