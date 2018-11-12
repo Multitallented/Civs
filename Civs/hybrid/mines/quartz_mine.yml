@@ -1,0 +1,46 @@
+type: region
+icon: CHEST
+name: Quartz_Mine
+max: 1
+price: 150
+groups:
+- mine
+
+build-reqs:
+- g:primary*150
+- g:secondary*12
+- g:window*2
+- g:door*1
+- CHEST*2
+- FURNACE*2
+- QUARTZ_BLOCK*4
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 60 #1 minute
+upkeep:
+  0:
+    input:
+    - IRON_PICKAXE
+    output:
+    - QUARTZ*4
+  1:
+    input:
+    - DIAMOND_PICKAXE
+    output:
+    - QUARTZ*6
+
+description:
+  en: "Creates quartz by using pickaxes"
+  es: "Crea cuarzo utilizando picos."
+  de: "Erzeugt Quarz mit Spitzhacken"
+  fr: "Crée du quartz en utilisant des pioches"
+  ru: "Создает кварц, используя кирки"
+  pt_br: "Cria quartzo usando picaretas"

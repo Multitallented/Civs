@@ -1,0 +1,46 @@
+type: region
+icon: CHEST
+name: Marine_Mine
+max: 1
+price: 150
+groups:
+- mine
+
+build-reqs:
+- g:primary*150
+- g:secondary*12
+- g:window*2
+- g:door*1
+- CHEST*2
+- FURNACE*2
+- PRISMARINE*4
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 60 #1 minute
+upkeep:
+  0:
+    input:
+    - IRON_PICKAXE
+    output:
+    - PRISMARINE_SHARD*4
+  1:
+    input:
+    - DIAMOND_PICKAXE
+    output:
+    - PRISMARINE_SHARD*6
+
+description:
+  en: "Creates prismarine by using pickaxes"
+  es: "Crea prismarine utilizando picos"
+  de: "Erzeugt Prismarine mithilfe von Spitzhacken"
+  fr: "Crée de la prismarine à l'aide de pioches"
+  ru: "Создает призмарин с помощью кирок"
+  pt_br: "Cria prismarinha usando picaretas"

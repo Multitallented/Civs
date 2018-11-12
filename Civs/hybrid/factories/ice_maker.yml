@@ -14,7 +14,7 @@ build-reqs:
 - g:window*2
 - g:door*1
 - g:roof*45
-- g:wool*6
+- SNOW_BLOCK*9
 
 towns:
 - settlement
@@ -31,21 +31,21 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- conveyor:WHITE_WOOL
 
 period: 15 #15 seconds
 upkeep:
   0:
     reagents:
-    - WHITE_WOOL*64
-    - SHEARS
+    - SNOW_BLOCK*64
+    - STONE_SHOVEL
     output:
-    - WHITE_WOOL*4
+    - ICE*9
+    - SNOW_BLOCK*9
 
 description:
-  en: "Automated creation of wool"
-  es: "Creación automatizada de lana."
-  de: "Automatisierte Wollherstellung"
-  ru: "Автоматическое создание шерсти"
-  pt_br: "Criação automatizada de lã"
-  fr: "Création automatisée de laine"
+  en: "Automated creation of ice"
+  es: "Creación automatizada de hielo."
+  de: "Automatisierte Eisbildung"
+  ru: "Автоматическое создание льда"
+  pt_br: "Criação automatizada de gelo"
+  fr: "Création automatisée de glace"
