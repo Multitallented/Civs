@@ -192,6 +192,9 @@ en:
   no-blocks-above-chest: "There must not be any blocks above the $1 center"
   exclusive: "You cant build a $1 in a town that already has a $2"
   target-inside-town: "Target must be inside $1"
+  hold-repair-item: "You must hold the item you wish to repair"
+  cant-repair-item: "That item isn't something you can repair here"
+  more-repair-items: "You don't have enough $1"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

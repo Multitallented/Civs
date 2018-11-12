@@ -425,6 +425,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".target-inside-town", "Target must be inside $1"));
             currentLanguage.put("raid-target-set",
                     localeConfig.getString(langKey + ".raid-target-set", "New location set for raid port target"));
+            currentLanguage.put("hold-repair-item",
+                    localeConfig.getString(langKey + ".hold-repair-item", "You must hold the item you wish to repair"));
+            currentLanguage.put("cant-repair-item",
+                    localeConfig.getString(langKey + ".cant-repair-item", "That item isn't something you can repair here"));
             languageMap.put(langKey, currentLanguage);
         }
     }
