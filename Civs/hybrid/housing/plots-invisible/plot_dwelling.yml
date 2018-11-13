@@ -1,6 +1,7 @@
 type: region
 icon: SIGN
 name: Plot_Dwelling
+is-in-shop: false
 groups:
 - housingplot
 

@@ -2,6 +2,7 @@ type: region
 icon: REDSTONE_BLOCK
 name: Raid_Porter_Active
 max: 1
+is-in-shop: false
 groups:
 - offense
 - raidport

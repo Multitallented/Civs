@@ -1,6 +1,7 @@
 type: region
 icon: SIGN
 name: Plot_Shack
+is-in-shop: false
 groups:
 - housingplot
 - allshack

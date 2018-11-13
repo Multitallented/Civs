@@ -10,6 +10,7 @@ groups:
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
+- hovel:built=1
 
 build-reqs:
 - CHEST*2

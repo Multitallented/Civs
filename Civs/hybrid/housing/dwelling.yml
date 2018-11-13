@@ -7,6 +7,9 @@ groups:
 - housing
 - alldwelling
 
+pre-reqs:
+- member=hamlet:village:town:city:metropolis
+
 build-reqs:
 - CHEST*4
 - g:door*1
