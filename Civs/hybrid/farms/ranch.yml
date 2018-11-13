@@ -1,5 +1,5 @@
 type: region
-icon: HAY_BLOCK
+icon: CHEST
 name: Ranch
 max: 1
 price: 10

@@ -1,5 +1,5 @@
 type: region
-icon: HAY_BLOCK
+icon: CHEST
 name: Chicken_Coop
 max: 1
 price: 10
@@ -8,7 +8,9 @@ groups:
 
 build-reqs:
 - g:log*4
-- g:wood*120
+- g:wood*20
+- g:fence*19
+- g:fencegate*1
 - IRON_BARS*8
 - HAY_BLOCK*9
 

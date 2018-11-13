@@ -119,7 +119,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return null;
         }
 
-        return region.getLocation().getWorld().spawn(region.getLocation(), Villager.class);
+        return region.getLocation().getWorld().spawn(region.getLocation().add(0.5, 0, 0.5), Villager.class);
     }
 
     @EventHandler

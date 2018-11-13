@@ -44,6 +44,6 @@ public class SpawnEffect implements Listener {
             }
         }
 
-        location.getWorld().spawnEntity(location, entityType);
+        location.getWorld().spawnEntity(location.add(0.5,1,0.5), entityType);
     }
 }
