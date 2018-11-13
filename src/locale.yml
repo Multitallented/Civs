@@ -1,6 +1,6 @@
 en:
   name: English
-  icon: BLUE_WOOL
+  icon: RED_WOOL
   starter-book: Menu for Civs
   next-button: Next
   prev-button: Previous
@@ -58,7 +58,7 @@ en:
   build-reqs-title: Build Reqs
   population: Population
   biomes: Biomes
-  pop-desc: "$1 Population, $3 Villagers / $2 Housing"
+  pop-desc: "$1 Population / $2 Housing"
   build-reqs: "All the blocks you need to place to build a $1"
   reagents-title: Reagents
   reagents: "All the items you need in the $1 chest"
@@ -100,8 +100,8 @@ en:
   member-removed-region: "$1 is no longer a member of $2"
   add-owner-region: "You have been made an owner of $1"
   owner-added-region: "$1 is now an owner of your $2"
-  add-guest-region: "You have been made a guest of $1"
-  guest-added-region: "$1 is now a guest of your $2"
+  add-owner-region: "You have been made a guest of $1"
+  owner-added-region: "$1 is now a guest of your $2"
   invite-owner-region: "You have been become a member of $1"
   owner-invited-region: "$1 has been added to your $2"
   stand-in-region: "Please have $1 stand in the region"
@@ -135,11 +135,6 @@ en:
   region-evolved: "Your $1 evolved into a $2"
   anti-camp-active: "$1's anti-camp has been activated"
   anti-camp-expired: "$1's anti-camp has expired"
-  siege-built: "$1 has created a $2 targeting $3"
-  grace-period: "Time until defenses drop: $1s"
-  intruder-enter: "$1 has entered $2"
-  intruder-exit: "$1 has exited $2"
-  raid-target-set: "New location set for raid port target"
 
   #errors
   no-region-type-found: "No region type found for $1"
@@ -189,12 +184,6 @@ en:
   region-limit-reached: "A $1 can only have $2 $3"
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
-  no-blocks-above-chest: "There must not be any blocks above the $1 center"
-  exclusive: "You cant build a $1 in a town that already has a $2"
-  target-inside-town: "Target must be inside $1"
-  hold-repair-item: "You must hold the item you wish to repair"
-  cant-repair-item: "That item isn't something you can repair here"
-  more-repair-items: "You don't have enough $1"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
@@ -271,8 +260,8 @@ pt_br:
   member-removed-region: "$1 não é mais um membro de $2"
   add-owner-region: "Você é agora um dono de $1"
   owner-added-region: "$1 é agora um dono de sua $2"
-  add-guest-region: "Você é agora um convidado de $1"
-  guest-added-region: "$1 é agora um convidado de sua $2"
+  add-owner-region: "Você é agora um convidado de $1"
+  owner-added-region: "$1 é agora um convidado de sua $2"
   invite-owner-region: "Você se tornou um membro de $1"
   owner-invited-region: "$1 foi adicionado a sua $2"
   stand-in-region: "Por favor $1 esteja em uma região"
@@ -306,423 +295,12 @@ pt_br:
 es:
   name: Spanish
   icon: YELLOW_WOOL
-  starter-book: Menu for Civs
-  next-button: Next
-  prev-button: Previous
-  #language-menu
-  language-menu: Select Language
-  language-set: "Your language has been set to $1"
-  back-button: Back
-
-  #shop
-  shop: Shop
-  buy-item: For Sale
-  price: Price
-  buy: "Buy $1"
-  cancel: Cancel
-  item-bought: "Congrats! You just bought $1 for $2"
-  max-item: "You cant buy more than $2 $1"
-
-  #items
-  items: Items
-
-  #classes
-  classes: Classes
-
-  #spells
-  spells: Spells
-
-  #blueprints
-  blueprints: Blueprints
-
-  #regions
-  regions: Regions
-
-  #community
-  community: Community
-  players: Players
-  towns: Towns
-  your-towns: Your towns
-  wars: Wars
-  alliances: Alliances
-  leaderboard: Leaderboard
-  ports: Ports
-  money: "Money: $$1"
-  points: "Points: $1"
-  killstreak: "Killstreak: $1"
-  highest-killstreak: "Highest Killstreak: $1"
-  kills: "Kills: $1"
-  deaths: "Deaths: $1"
-  friends: "Friends"
-  confirm: "Confirm"
-  reject: "Reject"
-
-  #region
-  size: Size
-  range: Range
-  build-reqs-title: Build Reqs
-  population: Population
-  biomes: Biomes
-  pop-desc: "$1 Population, $3 Villagers / $2 Housing"
-  build-reqs: "All the blocks you need to place to build a $1"
-  reagents-title: Reagents
-  reagents: "All the items you need in the $1 chest"
-  upkeep: "All the items consumed by the $1"
-  output: "All the items created by the $1"
-  payout: "This region earns $$1"
-  power-input: "This region consumes $1 power"
-  power-output: "This region generates $1 power"
-  too-close-region: "Your $1 would be too close to a $2"
-  too-close-town: "Your $1 would be too close to another town"
-  town-created: "$1 has been created!"
-  town-destroyed: "$1 has been destroyed!"
-  region-built: "You have successfully built a $1"
-  region-type: "Region Type"
-  destroy: "Destroy"
-  region-in-town: "Your region is in $1"
-  town-req-desc: "Your region must be built in:"
-  view-members: "View members"
-  add-member: "Add member"
-  operation: "Operation"
-  region-working: "Your region is running smoothly"
-  region-not-working: "Your region is missing something"
-  owner: Owner
-  member: Member
-  guest: Guest
-  recruiter: Recruiter
-  set-owner: Set Owner
-  set-member: Set Member
-  set-guest: Set Guest
-  remove-member: Remove Member
-  leave-town: Leave Town
-  you-left-town: "You have left $1"
-  add-member-region: "You have been made a member of $1"
-  member-added-region: "$1 is now a member of your $2"
-  owner-description: "Owners can do anything in the region"
-  guest-description: "Guests can use doors and buttons in the region"
-  member-description: "Members can build and use the region"
-  remove-member-region: "You are no longer a member of $1"
-  member-removed-region: "$1 is no longer a member of $2"
-  add-owner-region: "You have been made an owner of $1"
-  owner-added-region: "$1 is now an owner of your $2"
-  add-guest-region: "You have been made a guest of $1"
-  guest-added-region: "$1 is now a guest of your $2"
-  invite-owner-region: "You have been become a member of $1"
-  owner-invited-region: "$1 has been added to your $2"
-  stand-in-region: "Please have $1 stand in the region"
-  create: Create
-  town-instructions: "To create a $1, use /cv town MyTownName"
-  town-enter: "You have entered $1"
-  town-exit: "You have exited $1"
-  new-town-member: "$1 has joined $2"
-  must-be-built-on-top: "A $1 must be built on top of a $2"
-  town-power: "Power: $1/$2"
-  port-warmup: "You will be teleported in $1s"
-  teleported: "You have been teleported!"
-  location-set: "$1 location set"
-  rename-town: "Rename town"
-  rename-desc: "Use /cv rename oldName newName"
-  town-renamed: "Your town has been renamed from $1 to $2"
-  bounty-set: "A bounty has been set on $1 for $2"
-  bounty-bonus: "You collected a bounty of $1"
-  add-friend: "Add Friend"
-  remove-friend: "Remove Friend"
-  friend-added: "$1 has been added to your friends list"
-  friend-removed: "$1 has been removed from your friends list"
-  bounty: "Set a bounty /cv bounty $1 amount"
-  town-ally: "Set $1 as allies"
-  town-unally: "Set $1 as enemies"
-  town-ally-invites: "You have town ally invites"
-  town-ally-request-sent: "An alliance has been proposed to $1"
-  town-ally-request-accepted: "Alliance has been formed between $1 and $2"
-  town-ally-request-denied: "Alliance request with $1 has been denied"
-  town-ally-removed: "Alliance between $1 and $2 has dissolved"
-  region-evolved: "Your $1 evolved into a $2"
-  anti-camp-active: "$1's anti-camp has been activated"
-  anti-camp-expired: "$1's anti-camp has expired"
-  siege-built: "$1 has created a $2 targeting $3"
-  grace-period: "Time until defenses drop: $1s"
-  intruder-enter: "$1 has entered $2"
-  intruder-exit: "$1 has exited $2"
-
-  #errors
   no-region-type-found: "No se encontró ningún tipo de región para $1"
-  building-too-big: "You're building is too big to be a $1"
-  no-required-blocks: "You haven't placed the required blocks to make a $1"
-  cant-build-on-region: "You can't build a $1 on top of a $2"
-  rebuild-required: "You need to build this $1 on top of a $2"
-  prevent-civs-item-share: "You are not allowed to share Civ items"
-  region-protected: "This region is protected"
-  region-destroyed: "Region $1 has been destroyed!"
-  specify-player-town: "Please specify a player and town"
-  specify-town-name: "Please specify a town name"
-  specify-player-region: "Please specify a player and region"
-  town-not-exist: "$1 is not a town"
-  no-permission-invite: "You don't have permission to invite people to $1"
-  player-not-online: "$1 is not online"
-  invite-player: "$1 would like to invite you to join $2 $3. To join, type /cv accept"
-  already-member: "$1 is already a member of $2"
-  broke-own-region: "Your $1 is missing blocks"
-  no-permission: "Permission denied"
-  class-changed: "Your class has changed to $1"
-  not-enough-money: "You dont have $$1"
-  not-allowed-place: "$1 can not be placed"
-  hold-town: "Please hold a town item"
-  no-commands-in-jail: "You cant use commands in jail for another $1"
-  mana-use-exp: "You cant use this unless you have full mana"
-  building-requires-2space: "This building requires 2 empty spaces above the central chest"
-  missing-blocks-build: "You need to place these missing blocks to build a $1"
-  in-combat: "You can't do that in combat"
-  cooldown: "That is on cooldown for $1s"
-  need-more-health: "You need $1 more health to do that"
-  need-more-stamina: "You need $1 more stamina to do that"
-  need-more-mana: "You need $1 more stamina to do that"
-  port-not-found: "No port found"
-  region-missing-upkeep-items: "Region does not have required items"
-  raid-target-lost: "There is no town named $1 within $2 blocks"
-  searching-for-target: "Searching for raid teleport destination..."
-  raid-target-blocked: "Raid teleport destination blocked."
-  raid-porter-warning: "WARNING! $1 has created a $2 targeting $3"
-  raid-remote: "You have been given an item to control this $1"
-  raid-sign: "You need a sign above the chest with the name of the target town"
-  invalid-target: "Invalid target"
-  raid-target-inside-region: "You can't set a location inside a region"
-  req-build-inside-town: "This $1 must be built inside $2"
-  missing-region-requirements: "Your $1 is missing required regions"
-  friendly-fire: "You cant damage someone on your friends list"
-  region-limit-reached: "A $1 can only have $2 $3"
-  region-in-biome: "You cant build a $1 in a $2"
-  not-enough-housing: "You need to build more housing before inviting people"
-  no-blocks-above-chest: "There must not be any blocks above the $1 center"
-  exclusive: "You cant build a $1 in a town that already has a $2"
-
-  #death
-  repeat-kill: "$1 was killed too recently. No points awarded."
-  kill-streak: "$1 is on a killstreak of $2"
-  kill-joy: "$1 ended $2's killstreak of $3"
-  death: "You lost $1 points for dying"
-  kill: "Kill: $1"
-  low-health: "Low health bonus: $1"
-  killstreak-points: "Killstreak bonus: $1"
-  killjoy-points: "Killjoy bonus: $1"
-  total-points: "Total points: $1"
-  karma: "Karma: $1"
-  karma-gained: "Karma: +$1, $2 money gained"
-  karma-lost: "Karma: -$1, $2 money lost"
 fr:
-  name: Français
-  icon: LIGHT_BLUE_WOOL
+  name: French
+  icon: BLUE_WOOL
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
-  name: Deutsche
+  name: German
   icon: BLACK_WOOL
-  starter-book: Menü für Civs
-  next-button: Nächster
-  prev-button: Bisherige
-  #language-menu
-  language-menu: Sprache auswählen
-  language-set: "Ihre Sprache wurde auf $1 festgelegt"
-  back-button: Zurück
-
-  #shop
-  shop: Geschäft
-  buy-item: Zu verkaufen
-  price: Preis
-  buy: "Kaufen $1"
-  cancel: Stornieren
-  item-bought: "Glückwunsch! Du hast gerade $1 für $2 gekauft"
-  max-item: "Sie können nicht mehr als $2 kaufen $1"
-
-  #items
-  items: Artikel
-
-  #classes
-  classes: Klassen
-
-  #spells
-  spells: Zaubersprüche
-
-  #blueprints
-  blueprints: Blaupausen
-
-  #regions
-  regions: Bereich
-
-  #community
-  community: Gemeinschaft
-  players: Spieler
-  towns: Städte
-  your-towns: Deine Städte
-  wars: Kriege
-  alliances: Allianzen
-  leaderboard: Bestenliste
-  ports: Häfen
-  money: "Geld: $1 $"
-  points: "Ergebnis: $1"
-  killstreak: "Töten bummel: $1"
-  highest-killstreak: "Höchste töten bummel: $1"
-  kills: "Tötet: $1"
-  deaths: "Todesfälle: $1"
-  friends: "Freunde"
-  confirm: "Bestätigen"
-  reject: "Ablehnen"
-
-  #region
-  size: Größe
-  range: Angebot
-  build-reqs-title: Anforderungen erstellen
-  population: Population
-  biomes: Biomes
-  pop-desc: "$1 Population, $3 Dorfbewohner / $2 Gehäuse"
-  build-reqs: "Alle Blöcke, die du platzieren musst, um eine $1 zu bauen"
-  reagents-title: Reagenzien
-  reagents: "Alle Gegenstände, die du in der $1 Truhe brauchst"
-  upkeep: "Alle Gegenstände, die von $1 verbraucht werden"
-  output: "Alle Gegenstände, die von $1 erstellt wurden"
-  payout: "Diese Bereich verdient $ $1"
-  power-input: "Diese Bereich verbraucht $1 Macht"
-
-  #TODO finish this
-  power-output: "This region generates $1 power"
-  too-close-region: "Your $1 would be too close to a $2"
-  too-close-town: "Your $1 would be too close to another town"
-  town-created: "$1 has been created!"
-  town-destroyed: "$1 has been destroyed!"
-  region-built: "You have successfully built a $1"
-  region-type: "Region Type"
-  destroy: "Destroy"
-  region-in-town: "Your region is in $1"
-  town-req-desc: "Your region must be built in:"
-  view-members: "View members"
-  add-member: "Add member"
-  operation: "Operation"
-  region-working: "Your region is running smoothly"
-  region-not-working: "Your region is missing something"
-  owner: Owner
-  member: Member
-  guest: Guest
-  recruiter: Recruiter
-  set-owner: Set Owner
-  set-member: Set Member
-  set-guest: Set Guest
-  remove-member: Remove Member
-  leave-town: Leave Town
-  you-left-town: "You have left $1"
-  add-member-region: "You have been made a member of $1"
-  member-added-region: "$1 is now a member of your $2"
-  owner-description: "Owners can do anything in the region"
-  guest-description: "Guests can use doors and buttons in the region"
-  member-description: "Members can build and use the region"
-  remove-member-region: "You are no longer a member of $1"
-  member-removed-region: "$1 is no longer a member of $2"
-  add-owner-region: "You have been made an owner of $1"
-  owner-added-region: "$1 is now an owner of your $2"
-  add-guest-region: "You have been made a guest of $1"
-  guest-added-region: "$1 is now a guest of your $2"
-  invite-owner-region: "You have been become a member of $1"
-  owner-invited-region: "$1 has been added to your $2"
-  stand-in-region: "Please have $1 stand in the region"
-  create: Create
-  town-instructions: "To create a $1, use /cv town MyTownName"
-  town-enter: "You have entered $1"
-  town-exit: "You have exited $1"
-  new-town-member: "$1 has joined $2"
-  must-be-built-on-top: "A $1 must be built on top of a $2"
-  town-power: "Power: $1/$2"
-  port-warmup: "You will be teleported in $1s"
-  teleported: "You have been teleported!"
-  location-set: "$1 location set"
-  rename-town: "Rename town"
-  rename-desc: "Use /cv rename oldName newName"
-  town-renamed: "Your town has been renamed from $1 to $2"
-  bounty-set: "A bounty has been set on $1 for $2"
-  bounty-bonus: "You collected a bounty of $1"
-  add-friend: "Add Friend"
-  remove-friend: "Remove Friend"
-  friend-added: "$1 has been added to your friends list"
-  friend-removed: "$1 has been removed from your friends list"
-  bounty: "Set a bounty /cv bounty $1 amount"
-  town-ally: "Set $1 as allies"
-  town-unally: "Set $1 as enemies"
-  town-ally-invites: "You have town ally invites"
-  town-ally-request-sent: "An alliance has been proposed to $1"
-  town-ally-request-accepted: "Alliance has been formed between $1 and $2"
-  town-ally-request-denied: "Alliance request with $1 has been denied"
-  town-ally-removed: "Alliance between $1 and $2 has dissolved"
-  region-evolved: "Your $1 evolved into a $2"
-  anti-camp-active: "$1's anti-camp has been activated"
-  anti-camp-expired: "$1's anti-camp has expired"
-  siege-built: "$1 has created a $2 targeting $3"
-  grace-period: "Time until defenses drop: $1s"
-  intruder-enter: "$1 has entered $2"
-  intruder-exit: "$1 has exited $2"
-
-  #errors
   no-region-type-found: "Keine Regionstyp für $1 gefunden"
-  building-too-big: "You're building is too big to be a $1"
-  no-required-blocks: "You haven't placed the required blocks to make a $1"
-  cant-build-on-region: "You can't build a $1 on top of a $2"
-  rebuild-required: "You need to build this $1 on top of a $2"
-  prevent-civs-item-share: "You are not allowed to share Civ items"
-  region-protected: "This region is protected"
-  region-destroyed: "Region $1 has been destroyed!"
-  specify-player-town: "Please specify a player and town"
-  specify-town-name: "Please specify a town name"
-  specify-player-region: "Please specify a player and region"
-  town-not-exist: "$1 is not a town"
-  no-permission-invite: "You don't have permission to invite people to $1"
-  player-not-online: "$1 is not online"
-  invite-player: "$1 would like to invite you to join $2 $3. To join, type /cv accept"
-  already-member: "$1 is already a member of $2"
-  broke-own-region: "Your $1 is missing blocks"
-  no-permission: "Permission denied"
-  class-changed: "Your class has changed to $1"
-  not-enough-money: "You dont have $$1"
-  not-allowed-place: "$1 can not be placed"
-  hold-town: "Please hold a town item"
-  no-commands-in-jail: "You cant use commands in jail for another $1"
-  mana-use-exp: "You cant use this unless you have full mana"
-  building-requires-2space: "This building requires 2 empty spaces above the central chest"
-  missing-blocks-build: "You need to place these missing blocks to build a $1"
-  in-combat: "You can't do that in combat"
-  cooldown: "That is on cooldown for $1s"
-  need-more-health: "You need $1 more health to do that"
-  need-more-stamina: "You need $1 more stamina to do that"
-  need-more-mana: "You need $1 more stamina to do that"
-  port-not-found: "No port found"
-  region-missing-upkeep-items: "Region does not have required items"
-  raid-target-lost: "There is no town named $1 within $2 blocks"
-  searching-for-target: "Searching for raid teleport destination..."
-  raid-target-blocked: "Raid teleport destination blocked."
-  raid-porter-warning: "WARNING! $1 has created a $2 targeting $3"
-  raid-remote: "You have been given an item to control this $1"
-  raid-sign: "You need a sign above the chest with the name of the target town"
-  invalid-target: "Invalid target"
-  raid-target-inside-region: "You can't set a location inside a region"
-  req-build-inside-town: "This $1 must be built inside $2"
-  missing-region-requirements: "Your $1 is missing required regions"
-  friendly-fire: "You cant damage someone on your friends list"
-  region-limit-reached: "A $1 can only have $2 $3"
-  region-in-biome: "You cant build a $1 in a $2"
-  not-enough-housing: "You need to build more housing before inviting people"
-  no-blocks-above-chest: "There must not be any blocks above the $1 center"
-  exclusive: "You cant build a $1 in a town that already has a $2"
-
-  #death
-  repeat-kill: "$1 was killed too recently. No points awarded."
-  kill-streak: "$1 is on a killstreak of $2"
-  kill-joy: "$1 ended $2's killstreak of $3"
-  death: "You lost $1 points for dying"
-  kill: "Kill: $1"
-  low-health: "Low health bonus: $1"
-  killstreak-points: "Killstreak bonus: $1"
-  killjoy-points: "Killjoy bonus: $1"
-  total-points: "Total points: $1"
-  karma: "Karma: $1"
-  karma-gained: "Karma: +$1, $2 money gained"
-  karma-lost: "Karma: -$1, $2 money lost"
-
-ru:
-  name: русский
-  icon: RED_WOOL
-  no-region-type-found: "Тип региона не найден за 1 доллар США"
