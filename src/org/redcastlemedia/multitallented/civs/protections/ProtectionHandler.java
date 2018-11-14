@@ -428,7 +428,7 @@ public class ProtectionHandler implements Listener {
         }
         Region region = regionManager.getRegionAt(location);
         if (region == null ||
-                !region.effects.keySet().contains(type) ||
+                !region.getEffects().containsKey(type) ||
                 player == null) {
             return false;
         }

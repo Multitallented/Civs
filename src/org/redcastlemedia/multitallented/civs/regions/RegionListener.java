@@ -79,7 +79,7 @@ public class RegionListener implements Listener {
      * Prevent non-owners from destroying regions
      * @param blockBreakEvent
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent blockBreakEvent) {
         RegionManager regionManager = RegionManager.getInstance();
         if (ConfigManager.getInstance().getBlackListWorlds().contains(blockBreakEvent.getBlock().getLocation().getWorld().getName())) {

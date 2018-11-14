@@ -447,7 +447,8 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0));
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
@@ -462,7 +463,8 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         regionManager.addRegion(region);
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
@@ -474,7 +476,7 @@ public class RegionsTests {
             regionListener.onBlockBreak(event);
         }
         assertNotNull(regionManager.getRegionAt(location1));
-//        assertTrue(event.isCancelled());
+        assertTrue(event.isCancelled());
     }
 
     @Test
