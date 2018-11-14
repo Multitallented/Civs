@@ -190,7 +190,8 @@ public class CivilianListener implements Listener {
         Location location = event.getBlock().getLocation();
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(location);
-        if (cvItem == null || cvItem.getLore() == null || cvItem.getLore().isEmpty() || cvItem.getLore().get(0) == null) {
+        if (cvItem == null || cvItem.getLore() == null ||
+                cvItem.getLore().isEmpty() || cvItem.getLore().get(0) == null) {
             return;
         }
         UUID uuid = UUID.fromString(cvItem.getLore().get(0));

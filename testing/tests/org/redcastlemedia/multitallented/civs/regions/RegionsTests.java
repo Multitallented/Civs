@@ -462,13 +462,19 @@ public class RegionsTests {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0));
+        Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
+        regionManager.addRegion(region);
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
-        RegionListener regionListener = new RegionListener();
-        regionListener.onBlockBreak(event);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            RegionListener regionListener = new RegionListener();
+            regionListener.onBlockBreak(event);
+        }
         assertNotNull(regionManager.getRegionAt(location1));
+//        assertTrue(event.isCancelled());
     }
 
     @Test
@@ -797,8 +803,9 @@ public class RegionsTests {
         reqs.add("gold_block*1");
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
-        effects.add("block_place");
+        effects.add("block_build");
         effects.add("block_break");
+        config.set("build-radius", 5);
         config.set("effects", effects);
         config.set("effect-radius", 7);
         config.set("period", 100);
