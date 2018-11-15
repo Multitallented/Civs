@@ -61,10 +61,12 @@ public class ProtectionHandler implements Listener {
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (region.getLocation().equals(event.getBlock().getLocation())) {
+                System.out.println("Destroyed region, missing center chest");
                 removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }
             if (!region.hasRequiredBlocks()) {
+                System.out.println("Destroyed region, missing required blocks");
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
         }

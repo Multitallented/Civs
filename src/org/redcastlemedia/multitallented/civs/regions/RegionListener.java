@@ -93,8 +93,9 @@ public class RegionListener implements Listener {
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if ((!region.getPeople().containsKey(player.getUniqueId()) &&
-                Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) ||
+                !region.hasRequiredBlocks()) ||
                 region.getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
+            System.out.println("Destroying region, center chest missing or required blocks");
             regionManager.removeRegion(region, true);
             return;
         }
