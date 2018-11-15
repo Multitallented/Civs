@@ -4,26 +4,30 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SchedulerTests {
     @BeforeClass
@@ -47,6 +51,30 @@ public class SchedulerTests {
         RegionTickThread regionTickThread = new RegionTickThread();
         regionTickThread.run();
     }*/
+
+    @Test
+    public void regionShouldTickWhenZeroPlayersAreOnline() {
+        CommonScheduler commonScheduler = new CommonScheduler();
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble");
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        Bukkit.getPluginManager().callEvent(null);
+        for (int i=0; i<10; i++) {
+            commonScheduler.run();
+        }
+        ArgumentCaptor<Event> tickCaptor = ArgumentCaptor.forClass(Event.class);
+        verify(Bukkit.getPluginManager(), atLeast(4)).callEvent(
+                tickCaptor.capture()
+        );
+        List<Event> capturedTickEvents = tickCaptor.getAllValues();
+        for (Event event : capturedTickEvents) {
+            if (event == null || !(event instanceof RegionTickEvent)) {
+                continue;
+            }
+            RegionTickEvent regionTickEvent = (RegionTickEvent) event;
+            System.out.println(regionTickEvent.isHasUpkeep() + ":" + regionTickEvent.isShouldTick());
+        }
+    }
 
     @Test
     public void checkReagentsBeforeProvidingUpkeep() {

@@ -119,7 +119,7 @@ public class Region {
     }
     public int getSecondsTillNextTick() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
-        long difference = System.currentTimeMillis() - lastTick;
+        long difference = new Date().getTime() - lastTick;
         int remainingCooldown = (int) ((regionType.getPeriod() - difference) / 1000);
         return remainingCooldown < 0 ? 0 : remainingCooldown;
     }
@@ -502,7 +502,7 @@ public class Region {
         }
 
         long period = regionType.getPeriod();
-        return lastTick + period * 1000 < System.currentTimeMillis();
+        return lastTick + period * 1000 < new Date().getTime();
     }
     public boolean hasUpkeepItems() {
         return hasUpkeepItems(false);
@@ -535,7 +535,7 @@ public class Region {
         return hasUpkeepItems(true);
     }
     public void tick() {
-        this.lastTick = System.currentTimeMillis();
+        this.lastTick = new Date().getTime();
     }
 
     public boolean needsReagentsOrInput() {

@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs;
 
-import net.minecraft.server.v1_13_R2.TileEntityChest;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,12 +10,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_13_R2.block.CraftChest;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -28,7 +27,10 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
@@ -58,6 +60,7 @@ public class TestUtil {
     public static Block blockUnique8;
     public static Block blockUnique9;
     public static Block blockUnique10;
+    public static PluginManager pluginManager = mock(PluginManager.class);
 
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
@@ -245,7 +248,8 @@ public class TestUtil {
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
-        when(server.getPluginManager()).thenReturn(mock(PluginManager.class));
+
+        when(server.getPluginManager()).thenReturn(pluginManager);
         blockUnique = createUniqueBlock(Material.CHEST, null, new Location(world, 4,0,0), true);
         blockUnique2 = createUniqueBlock(Material.CHEST, null, new Location(world, 2,50,0), false);
         blockUnique3 = createUniqueBlock(Material.CHEST, null, new Location(world, 3,100,0), true);
