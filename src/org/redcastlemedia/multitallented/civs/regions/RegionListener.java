@@ -92,13 +92,13 @@ public class RegionListener implements Listener {
         Player player = blockBreakEvent.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if ((!region.getPeople().containsKey(player.getUniqueId()) &&
-                !region.hasRequiredBlocks()) ||
-                region.getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
-            System.out.println("Destroying region, center chest missing or required blocks");
-            regionManager.removeRegion(region, true);
-            return;
-        }
+//        if ((!region.getPeople().containsKey(player.getUniqueId()) &&
+//                !region.hasRequiredBlocks()) ||
+//                region.getLocation().equals(blockBreakEvent.getBlock().getLocation())) {
+//            System.out.println("Destroying region, center chest missing or required blocks");
+//            regionManager.removeRegion(region, true);
+//            return;
+//        }
         List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                 region.getLocation(),
                 new ItemStack(blockBreakEvent.getBlock().getType(), 1));
