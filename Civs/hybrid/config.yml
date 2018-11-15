@@ -52,6 +52,10 @@ folders:
   housing: RED_BED
   defense: ARROW
   quarries: STONE_SHOVEL
+  factories: PISTON
+  offense: TNT
+  mines: STONE_PICKAXE
+  woodworks: OAK_LOG
   npchousing: VILLAGER_SPAWN_EGG
 item-groups:
   sign: SIGN,WALL_SIGN

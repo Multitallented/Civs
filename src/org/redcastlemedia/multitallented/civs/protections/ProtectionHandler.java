@@ -64,8 +64,7 @@ public class ProtectionHandler implements Listener {
                 removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }
-            int[] radii = Region.hasRequiredBlocks(region.getType().toLowerCase(), region.getLocation());
-            if (radii.length == 0) {
+            if (!region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
         }

@@ -138,6 +138,98 @@ public class Region {
                 Double.parseDouble(idSplit[2]),
                 Double.parseDouble(idSplit[3]));
     }
+
+    private static List<HashMap<Material, Integer>> cloneReqMap(List<List<CVItem>> reqMap) {
+        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
+        for (List<CVItem> currentList : reqMap) {
+            HashMap<Material, Integer> currentReqMap = new HashMap<>();
+            for (CVItem currentItem : currentList) {
+                CVItem clone = currentItem.clone();
+                currentReqMap.put(clone.getMat(), clone.getQty());
+            }
+            itemCheck.add(currentReqMap);
+        }
+        return itemCheck;
+    }
+
+    public boolean hasRequiredBlocks() {
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionType regionType = (RegionType) itemManager.getItemType(type);
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
+
+        if (itemCheck.isEmpty()) {
+            return true;
+        }
+
+        return addItemCheck(itemCheck);
+    }
+
+    private boolean addItemCheck(List<HashMap<Material, Integer>> itemCheck) {
+        World currentWorld = location.getWorld();
+        int xMax = (int) location.getX() + radiusXP;
+        int xMin = (int) location.getX() - radiusXN;
+        int yMax = (int) location.getY() + radiusYP;
+        int yMin = (int) location.getY() - radiusYN;
+        int zMax = (int) location.getZ() + radiusZP;
+        int zMin = (int) location.getZ() - radiusZN;
+
+        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
+        yMin = yMin < 0 ? 0 : yMin;
+
+        HashMap<Material, Integer> maxCheck = new HashMap<>();
+        for (HashMap<Material, Integer> tempMap : itemCheck) {
+            for (Material mat : tempMap.keySet()) {
+                if (maxCheck.containsKey(mat)) {
+                    maxCheck.put(mat, maxCheck.get(mat) + tempMap.get(mat));
+                } else {
+                    maxCheck.put(mat, tempMap.get(mat).intValue());
+                }
+            }
+        }
+        for (int x=xMin; x<xMax;x++) {
+            for (int y=yMin; y<yMax; y++) {
+                for (int z=zMin; z<zMax; z++) {
+
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
+                    Material mat = currentBlock.getType();
+                    if (maxCheck.containsKey(mat)) {
+                        maxCheck.put(mat, maxCheck.get(mat) - 1);
+                    }
+                    boolean destroyIndex = false;
+                    int i=0;
+                    for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(mat)) {
+
+                            if (tempMap.get(mat) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                for (Material currentMat : tempMap.keySet()) {
+                                    tempMap.put(currentMat, tempMap.get(mat) - 1);
+                                }
+                            }
+                            break;
+                        }
+                        i++;
+                    }
+                    if (destroyIndex) {
+                        if (itemCheck.size() < 2) {
+                            itemCheck.remove(i);
+                            if (itemCheck.isEmpty()) {
+                                return true;
+                            }
+                        } else {
+                            itemCheck.remove(i);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static int[] hasRequiredBlocks(String type, Location location) {
         return hasRequiredBlocks(type, location, true);
     }
@@ -264,17 +356,9 @@ public class Region {
 
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
 
-        for (List<CVItem> currentList : regionType.getReqs()) {
-            HashMap<Material, Integer> currentReqMap = new HashMap<>();
-            for (CVItem currentItem : currentList) {
-                CVItem clone = currentItem.clone();
-                currentReqMap.put(clone.getMat(), clone.getQty());
-            }
-            itemCheck.add(currentReqMap);
-        }
         int[] radii = new int[6];
         for (int i = 0; i < 6; i++) {
             radii[i] = 0;

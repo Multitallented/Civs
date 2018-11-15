@@ -17,7 +17,7 @@ effects:
 - deny_damage
 - active #TODO make this
 
-period: 3600 # 1 hour
+period: 900 # 15 minutes
 upkeep:
   0:
     input:
@@ -33,11 +33,11 @@ upkeep:
     payout: 7.8
   3:
     input:
-    - MELON_SLICE*8 #.11
-    payout: 3.52
+    - MELON_SLICE*32 #.11
+    payout: 10.56
 
 description:
-  en: "A safe place to store your items, and earn some money every hour."
+  en: "A safe place to store your items, and earn some money every 15 minutes."
   es: "Un lugar seguro para almacenar sus artículos y ganar algo de dinero."
   fr: "Un endroit sûr pour stocker vos objets et gagner de l'argent."
   de: "Ein sicherer Ort, um Ihre Gegenstände zu lagern und etwas Geld zu verdienen."
