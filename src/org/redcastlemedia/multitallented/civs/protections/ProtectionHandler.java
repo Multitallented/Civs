@@ -30,8 +30,11 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ProtectionHandler implements Listener {
@@ -61,12 +64,19 @@ public class ProtectionHandler implements Listener {
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (region.getLocation().equals(event.getBlock().getLocation())) {
-                System.out.println("Destroyed region, missing center chest");
                 removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }
-            if (!region.hasRequiredBlocks()) {
-                System.out.println("Destroyed region, missing required blocks");
+            boolean containsReq = false;
+            outer: for (List<CVItem> reqList : regionType.getReqs()) {
+                for (CVItem item : reqList) {
+                    if (item.getMat().equals(event.getBlock().getType())) {
+                        containsReq = true;
+                        break outer;
+                    }
+                }
+            }
+            if (containsReq && !region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
         }
