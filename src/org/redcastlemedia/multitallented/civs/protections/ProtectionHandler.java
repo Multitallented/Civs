@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
@@ -18,6 +15,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -31,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,8 +75,42 @@ public class ProtectionHandler implements Listener {
                     }
                 }
             }
-            if (containsReq && !region.hasRequiredBlocks()) {
+            Player player = event.getPlayer();
+            boolean isNotMember = player == null || region.getOwners().contains(player.getUniqueId()) ||
+                    region.getPeople().containsKey(player.getUniqueId());
+            if (isNotMember && containsReq && !region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
+            }
+            if (isNotMember) {
+                return;
+            }
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+                    region.getLocation(),
+                    new ItemStack(event.getBlock().getType(), 1));
+            if (region.getPeople().containsKey(player.getUniqueId()) &&
+                    missingBlocks != null && !missingBlocks.isEmpty()) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "broke-own-region").replace("$1", region.getType()));
+                StringBuilder missingReqs = new StringBuilder();
+                for (HashMap<Material, Integer> map : missingBlocks) {
+                    for (Material mat : map.keySet()) {
+                        CVItem key = new CVItem(mat, map.get(mat));
+                        missingReqs.append(key.getMat().toString());
+                        missingReqs.append("*");
+                        missingReqs.append(key.getQty());
+                        missingReqs.append(" or ");
+                    }
+                    missingReqs.substring(missingReqs.length() - 4);
+                    missingReqs.append("and ");
+                }
+                missingReqs.substring(missingReqs.length() - 6);
+                List<String> missingList = Util.textWrap(ChatColor.RED + "", missingReqs.toString());
+                for (String s : missingList) {
+                    player.sendMessage(s);
+                }
+                return;
             }
         }
     }
