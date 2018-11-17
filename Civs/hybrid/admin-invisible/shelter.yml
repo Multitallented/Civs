@@ -17,7 +17,7 @@ effects:
 - deny_damage
 - active #TODO make this
 
-period: 900 # 15 minutes
+period: 1800 # 30 minutes
 upkeep:
   0:
     input:

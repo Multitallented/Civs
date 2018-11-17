@@ -48,9 +48,9 @@ public class InviteTownCommand implements CivCommand {
                     "not-enough-housing"));
             return true;
         }
-        if (!town.getPeople().keySet().contains(player.getUniqueId()) &&
-                (town.getPeople().get(player.getUniqueId()).contains("owner") ||
-                        town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {
+        if (!town.getPeople().containsKey(player.getUniqueId()) ||
+                !town.getPeople().get(player.getUniqueId()).contains("owner") ||
+                        !town.getPeople().get(player.getUniqueId()).contains("recruiter")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission-invite").replace("$1", townName));
             return true;
