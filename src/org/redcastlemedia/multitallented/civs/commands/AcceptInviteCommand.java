@@ -37,8 +37,8 @@ public class AcceptInviteCommand implements CivCommand {
         Town town = townManager.getInviteTown(player.getUniqueId());
         if (town != null) {
             townManager.acceptInvite(player.getUniqueId());
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "invite-accepted"));
+//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+//                    "invite-accepted"));
             for (UUID uuid : town.getPeople().keySet()) {
                 Player player1 = Bukkit.getPlayer(uuid);
                 if (player1 != null && player1.isOnline()) {
