@@ -82,7 +82,8 @@ public class TownCommand implements CivCommand {
             Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
                     townType.getBuildRadiusY(), townType.getBuildRadius(), false);
             regionCheck: for (Region region : regions) {
-                String regionTypeName = region.getType().toLowerCase();
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                String regionTypeName = regionType.getProcessedName();
                 if (checkList.containsKey(regionTypeName)) {
                     if (checkList.get(regionTypeName) < 2) {
                         checkList.remove(regionTypeName);
@@ -91,7 +92,6 @@ public class TownCommand implements CivCommand {
                     }
                     continue;
                 }
-                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
                 for (String groupType : regionType.getGroups()) {
                     String groupName = groupType.toLowerCase();
                     if (checkList.containsKey(groupName)) {

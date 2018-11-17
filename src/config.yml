@@ -1,7 +1,7 @@
 black-list-worlds:
 - Hub
 default-language: en
-allow-civ-item-sharing: false
+allow-civ-item-sharing: true
 #put glowstone rings above towns
 town-rings: true
 #how long a town sits at zero before protection ends

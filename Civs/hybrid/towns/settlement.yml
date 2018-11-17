@@ -7,10 +7,10 @@ group:
 - town
 
 build-reqs:
-- councilroom:1
+- council_room:1
 
 critical-build-reqs:
-- councilroom
+- council_room
 
 limits:
 - npchousing:4
@@ -20,7 +20,7 @@ limits:
 - church:1
 - smithy:1
 
-build-radius: 24
+build-radius: 40
 build-radius-y: 500
 effects:
 - block_break

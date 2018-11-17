@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;

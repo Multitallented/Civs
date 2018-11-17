@@ -79,8 +79,9 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Player player = event.getPlayer();
-            boolean isNotMember = player == null || region.getOwners().contains(player.getUniqueId()) ||
-                    region.getPeople().containsKey(player.getUniqueId());
+            boolean isNotMember = player == null ||
+                    (!region.getOwners().contains(player.getUniqueId()) &&
+                    !region.getPeople().containsKey(player.getUniqueId()));
             if (isNotMember && !region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
@@ -91,8 +92,7 @@ public class ProtectionHandler implements Listener {
             List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                     region.getLocation(),
                     new ItemStack(event.getBlock().getType(), 1));
-            if (region.getPeople().containsKey(player.getUniqueId()) &&
-                    missingBlocks != null && !missingBlocks.isEmpty()) {
+            if (missingBlocks != null && !missingBlocks.isEmpty()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "broke-own-region").replace("$1", region.getType()));

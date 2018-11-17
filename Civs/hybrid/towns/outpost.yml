@@ -16,7 +16,7 @@ limits:
 - arrowtrapgroup:1
 - siegemachinegroup:2
 
-build-radius: 18 #18x18x18
+build-radius: 24 #18x18x18
 effects:
 - block_break
 - block_build

@@ -421,7 +421,7 @@ public class ItemManager {
                 } else if (req.startsWith("member=")) {
                     Set<String> townTypes = new HashSet<>();
                     String[] townTypeStrings = req.replace("member=", "").split(":");
-                    for (int i = 1; i < townTypeStrings.length; i++) {
+                    for (int i = 0; i < townTypeStrings.length; i++) {
                         townTypes.add(townTypeStrings[i]);
                     }
                     for (Town town : TownManager.getInstance().getTowns()) {

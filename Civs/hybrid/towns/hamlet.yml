@@ -9,7 +9,7 @@ pre-reqs:
 - settlement:population=5
 
 build-reqs:
-- councilroom:1
+- council_room:1
 - quarry:1
 - utility:1
 - housing:3
@@ -22,10 +22,10 @@ limits:
 - npchousing:12
 
 critical-build-reqs:
-- councilroom
+- council_room
 
 child: settlement
-build-radius: 36
+build-radius: 60
 build-radius-y: 500
 effects:
 - block_break

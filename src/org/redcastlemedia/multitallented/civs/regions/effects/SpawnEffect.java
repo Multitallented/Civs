@@ -31,17 +31,20 @@ public class SpawnEffect implements Listener {
         }
 
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(event.getRegion().getType());
-        int entityCount = 0;
-        for (Entity e : location.getWorld().getNearbyEntities(location,
-                regionType.getEffectRadius(),
-                regionType.getEffectRadius(),
-                regionType.getEffectRadius())) {
-            if (entityType.getEntityClass().isAssignableFrom(e.getClass())) {
-                entityCount++;
-                if (entityCount > 5) {
-                    return;
-                }
-            }
+//        int entityCount = 0;
+        //TODO fix this so that it detects the correct type of entity
+        int radius = Math.max(regionType.getEffectRadius(), regionType.getBuildRadius());
+//        for (Entity e : location.getWorld().getNearbyEntities(location,
+//                radius, radius, radius)) {
+//            if (entityType.getEntityClass().isAssignableFrom(e.getClass())) {
+//                entityCount++;
+//                if (entityCount > 5) {
+//                    return;
+//                }
+//            }
+//        }
+        if (location.getWorld().getNearbyEntities(location, radius, radius, radius).size() > 5) {
+            return;
         }
 
         location.getWorld().spawnEntity(location.add(0.5,1,0.5), entityType);

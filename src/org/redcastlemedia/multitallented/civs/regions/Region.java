@@ -541,8 +541,8 @@ public class Region {
     public boolean needsReagentsOrInput() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if (!regionUpkeep.getReagents().isEmpty() ||
-                    !regionUpkeep.getInputs().isEmpty()) {
+            if (regionUpkeep.getReagents().isEmpty() &&
+                    regionUpkeep.getInputs().isEmpty()) {
                 return true;
             }
         }
@@ -593,7 +593,7 @@ public class Region {
                 double payout = regionUpkeep.getPayout();
                 payout = payout / getOwners().size();
                 for (UUID uuid : getOwners()) {
-                    OfflinePlayer player = Bukkit.getPlayer(uuid);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                     if (player == null) {
                         continue;
                     }

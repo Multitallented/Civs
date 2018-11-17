@@ -20,7 +20,7 @@ limits:
 - siegemachinegroup:4
 
 child: outpost
-build-radius: 28 #28x28x28
+build-radius: 36 #28x28x28
 effects:
 - block_break
 - block_build

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.ArrayList;
 
@@ -72,6 +75,18 @@ public class ItemsTests {
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertFalse(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("cityhall")));
+    }
+
+    @Test
+    public void playerShouldHaveShackUnlocked() {
+        loadRegionTypeShack();
+        TownTests.loadTownTypeHamlet();
+        Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);
+        Town town = TownTests.loadTown("something", "hamlet", location1);
+        town.getPeople().put(TestUtil.player.getUniqueId(), "owner");
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian,
+                ItemManager.getInstance().getItemType("shack")));
     }
 
     @Test
@@ -151,6 +166,18 @@ public class ItemsTests {
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("townhall:built=1");
         preReqs.add("town:built=1");
+        config.set("pre-reqs", preReqs);
+        config.set("build-radius", 7);
+        itemManager.loadRegionType(config);
+    }
+
+    private void loadRegionTypeShack() {
+        ItemManager itemManager = ItemManager.getInstance();
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "Shack");
+        config.set("icon", "CHEST");
+        ArrayList<String> preReqs = new ArrayList<>();
+        preReqs.add("member=hamlet");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
         itemManager.loadRegionType(config);

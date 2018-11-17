@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -439,19 +438,65 @@ public class RegionsTests {
     }
 
     @Test
-    public void regionShouldBeDestroyed() {
+    public void regionShouldBeDestroyedCenter() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(TestUtil.player.getUniqueId(), "owner");
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
-        RegionListener regionListener = new RegionListener();
-        regionListener.onBlockBreak(event);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
         assertNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldBeDestroyedExtra() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
+        regionManager.addRegion(region);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, TestUtil.player);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        assertNotNull(regionManager.getRegionAt(location1));
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void regionShouldBeNotDestroyedUnrelated() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
+        regionManager.addRegion(region);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block4, TestUtil.player);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        assertNotNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldBeNotDestroyedSecondary() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
+        regionManager.addRegion(region);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        assertNotNull(regionManager.getRegionAt(location1));
     }
 
     @Test
@@ -464,14 +509,8 @@ public class RegionsTests {
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         regionManager.addRegion(region);
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
-        CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianBlockBreak(event);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
-        if (!event.isCancelled()) {
-            RegionListener regionListener = new RegionListener();
-            regionListener.onBlockBreak(event);
-        }
         assertNotNull(regionManager.getRegionAt(location1));
         assertTrue(event.isCancelled());
     }
@@ -487,16 +526,27 @@ public class RegionsTests {
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianBlockBreak(event);
-        RegionListener regionListener = new RegionListener();
-        regionListener.onBlockBreak(event);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         Block block2 = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", location1, false);
         when(event1.getBlockPlaced()).thenReturn(block2);
         ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", new ArrayList<>());
         when(event1.getItemInHand()).thenReturn(itemStack);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
+        RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event1);
         assertNotNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldHaveUpkeep() {
+        loadRegionTypeUtility();
+        TownTests.loadTownTypeHamlet();
+        Location location = new Location(Bukkit.getWorld("world"), 4,0,0);
+        TownTests.loadTown("test", "hamlet", location);
+        Region region = RegionsTests.createNewRegion("utility");
+        assertTrue(region.needsReagentsOrInput());
     }
 
     @Test
@@ -847,6 +897,17 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
         config.set("build-radius", 5);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+    public static void loadRegionTypeUtility() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "utility");
+        ArrayList<String> reqs = new ArrayList<>();
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        config.set("effects", effects);
+        config.set("build-radius", 5);
+        config.set("upkeep.0.power-output", 96);
         ItemManager.getInstance().loadRegionType(config);
     }
 
