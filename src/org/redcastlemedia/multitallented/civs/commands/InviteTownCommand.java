@@ -43,12 +43,8 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
-        if (town.getPopulation() >= town.getHousing()) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "not-enough-housing"));
-            return true;
-        }
-        if (!town.getPeople().containsKey(player.getUniqueId()) ||
+        if ((Civs.perm != null && Civs.perm.has(player, "civs.admin")) ||
+                !town.getPeople().containsKey(player.getUniqueId()) ||
                 !town.getPeople().get(player.getUniqueId()).contains("owner") ||
                         !town.getPeople().get(player.getUniqueId()).contains("recruiter")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
@@ -65,6 +61,14 @@ public class InviteTownCommand implements CivCommand {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "already-member").replace("$1", player.getDisplayName())
                     .replace("$2", townName));
+            return true;
+        }
+        boolean adminBypass = Civs.perm != null &&
+                (Civs.perm.has(invitee, "civs.admin") ||
+                Civs.perm.has(player, "civs.admin"));
+        if (adminBypass || town.getPopulation() >= town.getHousing()) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "not-enough-housing"));
             return true;
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
