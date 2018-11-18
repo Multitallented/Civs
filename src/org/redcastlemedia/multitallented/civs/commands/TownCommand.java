@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -136,8 +137,8 @@ public class TownCommand implements CivCommand {
         int housingCount = 0;
         for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (regionType.getEffects().containsKey("housing")) {
-                housingCount++;
+            if (regionType.getEffects().containsKey(HousingEffect.KEY)) {
+                housingCount += Integer.parseInt(regionType.getEffects().get(HousingEffect.KEY));
             }
         }
 
