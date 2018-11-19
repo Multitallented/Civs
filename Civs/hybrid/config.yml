@@ -26,6 +26,8 @@ death-grace-period-seconds: 60
 combat-tag-duration: 60
 #should food heal in combat?
 allow-food-heal-in-combat: true
+#use the class and spell system from Civs
+use-classes-and-spells: false
 points:
   killstreak: 0.1
   killjoy: 0.2

@@ -62,6 +62,7 @@ public class ConfigManager {
     boolean destroyTownsAtZero;
     boolean allowFoodHealInCombat;
     long townGracePeriod;
+    boolean useClassesAndSpells;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -129,6 +130,7 @@ public class ConfigManager {
     public boolean getDestroyTownsAtZero() { return destroyTownsAtZero; }
     public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
     public long getTownGracePeriod() { return townGracePeriod; }
+    public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
 
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
@@ -232,6 +234,7 @@ public class ConfigManager {
             destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
             allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
+            useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -285,6 +288,7 @@ public class ConfigManager {
         destroyTownsAtZero = false;
         allowFoodHealInCombat = true;
         townGracePeriod = 43200; //12 hours
+        useClassesAndSpells = false;
     }
 
     public static ConfigManager getInstance() {

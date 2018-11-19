@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -82,6 +83,9 @@ public class MainMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         String locale = civilian.getLocale();
         clearHistory(civilian.getUuid());
+        boolean useClassesAndSpells = ConfigManager.getInstance().getUseClassesAndSpells();
+
+        int i=1;
 
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -91,36 +95,43 @@ public class MainMenu extends Menu {
         //1 Shop
         if (Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop")) {
             CVItem cvItem1 = new CVItem(Material.EMERALD, 1, 100, localeManager.getTranslation(locale, "shop"));
-            inventory.setItem(1, cvItem1.createItemStack());
+            inventory.setItem(i, cvItem1.createItemStack());
         }
 
-        //2 Classes
-        CVItem cvItemClass = CVItem.createCVItemFromString("DIAMOND_CHESTPLATE");
-        cvItemClass.setDisplayName(localeManager.getTranslation(locale, "classes"));
-        inventory.setItem(2, cvItemClass.createItemStack());
+        if (useClassesAndSpells) {
+            //2 Classes
+            i++;
+            CVItem cvItemClass = CVItem.createCVItemFromString("DIAMOND_CHESTPLATE");
+            cvItemClass.setDisplayName(localeManager.getTranslation(locale, "classes"));
+            inventory.setItem(i, cvItemClass.createItemStack());
 
-        //3 Spells
-        CVItem cvItemSpell = CVItem.createCVItemFromString("POTION");
-        cvItemSpell.setDisplayName(localeManager.getTranslation(locale, "spells"));
-        inventory.setItem(3, cvItemSpell.createItemStack());
+            //3 Spells
+            i++;
+            CVItem cvItemSpell = CVItem.createCVItemFromString("POTION");
+            cvItemSpell.setDisplayName(localeManager.getTranslation(locale, "spells"));
+            inventory.setItem(i, cvItemSpell.createItemStack());
+        }
 
         //4 Blueprints
+        i++;
         CVItem cvItemBlue = CVItem.createCVItemFromString("MAP");
         cvItemBlue.setDisplayName(localeManager.getTranslation(locale, "blueprints"));
-        inventory.setItem(4, cvItemBlue.createItemStack());
+        inventory.setItem(i, cvItemBlue.createItemStack());
 
         //5 Regions
+        i++;
         CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
         cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
-        inventory.setItem(5, cvItemRegion.createItemStack());
+        inventory.setItem(i, cvItemRegion.createItemStack());
 
 //        //4 Items
 //        CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
 //        inventory.setItem(4, cvItem2.createItemStack());
 
         //6 Community
+        i++;
         CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, 100, localeManager.getTranslation(locale, "community"));
-        inventory.setItem(6, cvItem3.createItemStack());
+        inventory.setItem(i, cvItem3.createItemStack());
 
         return inventory;
     }
