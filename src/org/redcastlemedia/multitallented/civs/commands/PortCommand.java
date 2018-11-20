@@ -81,8 +81,6 @@ public class PortCommand implements CivCommand {
             return true;
         }
 
-        //TODO check reagents?
-
         int j = -1;
         Region r = null;
         Location destination = null;
@@ -100,15 +98,17 @@ public class PortCommand implements CivCommand {
                             "port-not-found"));
                     return true;
                 }
-                if (!r.getPeople().containsKey(player.getUniqueId()) || (
+                boolean privatePort = r.getEffects().get("port") != null;
+                if (!r.getPeople().containsKey(player.getUniqueId()) || (privatePort &&
                         !r.getPeople().get(player.getUniqueId()).equals("member") &&
-                        !r.getPeople().get(player.getUniqueId()).equals("owner")
-                        )) {
+                        !r.getPeople().get(player.getUniqueId()).equals("owner"))) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                            "port-not-found"));
+                            "not-member-port"));
                     return true;
                 }
             } catch (Exception e) {
+                Civs.logger.severe("Exception when trying to execute port command");
+                e.printStackTrace();
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "port-not-found"));
                 return true;
@@ -122,9 +122,9 @@ public class PortCommand implements CivCommand {
                 return true;
             }
             for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
-                if (!region.getEffects().containsKey("port") || !region.getPeople().containsKey(player.getUniqueId()) ||
-                        (!region.getPeople().get(player.getUniqueId()).equals("member") &&
-                        !region.getPeople().get(player.getUniqueId()).equals("owner"))) {
+                if (!region.getEffects().containsKey("port") ||
+                        region.getEffects().get("port") == null ||
+                        !region.getPeople().containsKey(player.getUniqueId())) {
                     continue;
                 }
                 r = region;
@@ -141,7 +141,7 @@ public class PortCommand implements CivCommand {
         destination = r.getLocation().add(0, 1,0);
 
         //Check to see if the region has enough reagents
-        if (!r.hasUpkeepItems()) {
+        if (r.getEffects().get("port") != null && !r.hasUpkeepItems()) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "region-missing-upkeep-items"));
             return true;

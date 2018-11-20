@@ -29,7 +29,7 @@ effects:
 - block_fire
 - deny_mob_spawn
 - control_override
-- deny_explosion
+- block_explosion
 - anticamp:4.1800 #4 damage for 30 minutes
 
 power: 200

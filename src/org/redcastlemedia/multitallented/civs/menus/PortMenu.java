@@ -81,6 +81,12 @@ public class PortMenu extends Menu {
             if (!region.getPeople().containsKey(civilian.getUuid())) {
                 continue;
             }
+            //Don't show private ports
+            if (region.getEffects().get("port") != null &&
+                    !region.getPeople().get(civilian.getUuid()).equals("member") &&
+                    !region.getPeople().get(civilian.getUuid()).equals("owner")) {
+                continue;
+            }
             returnSet.add(region);
         }
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
@@ -121,7 +127,13 @@ public class PortMenu extends Menu {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem1 = regionType.clone();
             cvItem1.setDisplayName(region.getId());
-            //TODO add lore
+            lore = new ArrayList<>();
+            lore.add(regionType.getDisplayName());
+            Town town = TownManager.getInstance().getTownAt(region.getLocation());
+            if (town != null) {
+                lore.add(town.getName());
+            }
+            cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
             i++;
         }

@@ -429,6 +429,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".hold-repair-item", "You must hold the item you wish to repair"));
             currentLanguage.put("cant-repair-item",
                     localeConfig.getString(langKey + ".cant-repair-item", "That item isn't something you can repair here"));
+            currentLanguage.put("not-member-port",
+                    localeConfig.getString(langKey + ".not-member-port", "You are not a member of this port"));
             languageMap.put(langKey, currentLanguage);
         }
     }

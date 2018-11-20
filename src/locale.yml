@@ -184,6 +184,7 @@ en:
   region-limit-reached: "A $1 can only have $2 $3"
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
+  not-member-port: "You are not a member of this port"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."

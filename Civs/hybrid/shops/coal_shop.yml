@@ -8,9 +8,9 @@ groups:
 - oreshop
 
 build-reqs:
-- g:fence*16
+- g:fence*14
 - CHEST*2
-- g:wool*25
+- g:wool*20
 
 build-radius: 2
 
