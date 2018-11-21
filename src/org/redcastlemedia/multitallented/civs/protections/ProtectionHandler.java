@@ -320,6 +320,9 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityInteract(EntityInteractEvent event) {
+        if (event.getEntity() instanceof Player) {
+            return;
+        }
         handleInteract(event.getBlock(), null, event);
     }
 
@@ -401,7 +404,6 @@ public class ProtectionHandler implements Listener {
     public void onMobSpawn(CreatureSpawnEvent event) {
         if (!(event.getEntity() instanceof Monster) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
-                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.REINFORCEMENTS ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
             return;
         }

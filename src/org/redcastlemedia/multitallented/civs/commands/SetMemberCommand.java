@@ -93,11 +93,11 @@ public class SetMemberCommand implements CivCommand {
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("member")) {
-            region.getPeople().put(invitee.getUniqueId(), "member");
+            region.setPeople(invitee.getUniqueId(), "member");
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
                 !town.getPeople().get(invitee.getUniqueId()).contains("member")) {
-            town.getPeople().put(invitee.getUniqueId(), "member");
+            town.setPeople(invitee.getUniqueId(), "member");
             TownManager.getInstance().saveTown(town);
         }
         return true;

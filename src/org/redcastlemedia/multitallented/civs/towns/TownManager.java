@@ -290,7 +290,7 @@ public class TownManager {
             return false;
         }
         Town town = invites.get(uuid);
-        town.getPeople().put(uuid, "member");
+        town.setPeople(uuid, "member");
         town.setPopulation(town.getPopulation() + 1);
         saveTown(town);
         invites.remove(uuid);

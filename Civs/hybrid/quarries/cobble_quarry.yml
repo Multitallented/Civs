@@ -11,12 +11,6 @@ build-reqs:
 - LAVA
 - WATER
 
-towns:
-- settlement
-- village
-- town
-- capital
-
 build-radius: 2
 effects:
 - block_break

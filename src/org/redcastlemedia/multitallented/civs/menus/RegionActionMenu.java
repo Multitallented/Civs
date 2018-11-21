@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,9 +87,10 @@ public class RegionActionMenu extends Menu {
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             event.getWhoClicked().closeInventory();
             List<Player> people = new ArrayList<>();
-            for (UUID uuid : region.getPeople().keySet()) {
+            HashMap<UUID, String> peopleMap = region.getPeople();
+            for (UUID uuid : peopleMap.keySet()) {
                 Player player = Bukkit.getPlayer(uuid);
-                if (player != null) {
+                if (player != null && !peopleMap.get(uuid).equals("ally")) {
                     people.add(player);
                 }
             }

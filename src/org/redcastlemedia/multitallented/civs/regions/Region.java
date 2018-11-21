@@ -61,6 +61,9 @@ public class Region {
         return type;
     }
     public void setType(String type) { this.type = type; }
+    public void setPeople(UUID uuid, String role) {
+        people.put(uuid, role);
+    }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

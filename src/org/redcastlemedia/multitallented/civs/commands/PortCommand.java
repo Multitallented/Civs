@@ -141,14 +141,14 @@ public class PortCommand implements CivCommand {
         destination = r.getLocation().add(0, 1,0);
 
         //Check to see if the region has enough reagents
-        if (r.getEffects().get("port") != null && !r.hasUpkeepItems()) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "region-missing-upkeep-items"));
-            return true;
-        }
+//        if (r.getEffects().get("port") != null && !r.hasUpkeepItems()) {
+//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+//                    "region-missing-upkeep-items"));
+//            return true;
+//        }
 
         //Run upkeep but don't need to know if upkeep occured
-        r.runUpkeep();
+//        r.runUpkeep();
 
         final Player p = player;
         final Location l = destination;

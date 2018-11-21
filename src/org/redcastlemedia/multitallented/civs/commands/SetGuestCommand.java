@@ -90,11 +90,11 @@ public class SetGuestCommand implements CivCommand {
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("guest")) {
-            region.getPeople().put(invitee.getUniqueId(), "guest");
+            region.setPeople(invitee.getUniqueId(), "guest");
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
                 !town.getPeople().get(invitee.getUniqueId()).contains("guest")) {
-            town.getPeople().put(invitee.getUniqueId(), "guest");
+            town.setPeople(invitee.getUniqueId(), "guest");
             TownManager.getInstance().saveTown(town);
         }
         return true;

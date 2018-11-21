@@ -11,12 +11,6 @@ build-reqs:
 - FURNACE*2
 - CHEST*2
 
-towns:
-- settlement
-- village
-- town
-- capital
-
 build-radius: 3 #7x7x7
 effects:
 - block_break

@@ -35,6 +35,11 @@ effects:
 - block_fire
 - intruder
 
+period: daily
+upkeep:
+  0:
+    power-output: 48
+
 description:
   en: "Alerts town members when an intruder has entered the town."
   es: "Alerta a los miembros de la ciudad cuando un intruso ha entrado en la ciudad."

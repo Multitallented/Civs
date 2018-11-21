@@ -24,7 +24,6 @@ effects:
 - door_use
 - chest_use
 - port
-- block_explosion
 - cant_override
 - housing:2
 

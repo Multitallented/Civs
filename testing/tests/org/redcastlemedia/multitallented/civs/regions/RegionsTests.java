@@ -4,11 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,6 +20,8 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.PortMenu;
+import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
@@ -688,6 +694,22 @@ public class RegionsTests {
         assertNull(regionManager.getRegionAt(location1));
     }
 
+    @Test
+    public void membersShouldBeAbleToOpenChests() {
+        loadRegionTypePower(false);
+        Region region = PortMenuTests.loadRegion("power");
+        region.getPeople().put(TestUtil.player.getUniqueId(), "member");
+        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(
+                TestUtil.player,
+                Action.RIGHT_CLICK_BLOCK,
+                new ItemStack(Material.AIR),
+                TestUtil.block,
+                BlockFace.NORTH);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockInteract(playerInteractEvent);
+        assertFalse(playerInteractEvent.isCancelled());
+    }
+
     private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
@@ -758,6 +780,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");
         effects.add("block_break");
+        effects.add("chest_use");
         config.set("effects", effects);
         if (consume) {
             config.set("upkeep.0.power-input", 1);

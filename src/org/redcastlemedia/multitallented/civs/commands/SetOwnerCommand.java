@@ -99,11 +99,11 @@ public class SetOwnerCommand implements CivCommand {
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("owner")) {
-            region.getPeople().put(invitee.getUniqueId(), "owner");
+            region.setPeople(invitee.getUniqueId(), "owner");
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
                 !town.getPeople().get(invitee.getUniqueId()).contains("owner")) {
-            town.getPeople().put(invitee.getUniqueId(), "owner");
+            town.setPeople(invitee.getUniqueId(), "owner");
             TownManager.getInstance().saveTown(town);
         }
         return true;

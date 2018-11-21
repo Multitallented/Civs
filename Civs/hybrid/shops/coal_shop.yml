@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 name: Coal_Shop
 max: 1
-price: 250
+price: 150
 groups:
 - shop
 - oreshop

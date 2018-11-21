@@ -83,7 +83,7 @@ public class ViewMembersMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
-        setInventoryItems(inventory, town.getPeople(), civilian);
+        setInventoryItems(inventory, town.getPeople(), civilian, true);
 
         return inventory;
     }
@@ -100,17 +100,20 @@ public class ViewMembersMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
-        setInventoryItems(inventory, region.getPeople(), civilian);
+        setInventoryItems(inventory, region.getPeople(), civilian, false);
 
         return inventory;
     }
 
-    private static void setInventoryItems(Inventory inventory, HashMap<UUID, String> people, Civilian civilian) {
+    private static void setInventoryItems(Inventory inventory,
+                                          HashMap<UUID, String> people,
+                                          Civilian civilian,
+                                          boolean allowAllies) {
         ArrayList<String> lore;
         int i=9;
         for (UUID uuid : people.keySet()) {
             Player player = Bukkit.getPlayer(uuid);
-            if (player == null) {
+            if (player == null || (!allowAllies && people.get(uuid).equals("ally"))) {
                 continue;
             }
             ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);

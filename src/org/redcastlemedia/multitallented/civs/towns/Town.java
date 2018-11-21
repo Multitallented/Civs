@@ -81,6 +81,9 @@ public class Town {
     public HashMap<UUID, String> getRawPeople() {
         return people;
     }
+    public void setPeople(UUID uuid, String role) {
+        people.put(uuid, role);
+    }
     public HashMap<UUID, String> getPeople() {
         if (allies.isEmpty()) {
             return people;

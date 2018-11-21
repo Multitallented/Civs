@@ -86,10 +86,10 @@ public class AddMemberCommand implements CivCommand {
         } else {
             commandSender.sendMessage(Civs.getPrefix() + playerName + " has been added to your " + region.getType());
         }
-        if (!region.getPeople().containsKey(invitee.getUniqueId())) {
-            region.getPeople().put(invitee.getUniqueId(), "member");
+//        if (!region.getPeople().containsKey(invitee.getUniqueId())) {
+            region.setPeople(invitee.getUniqueId(), "member");
             RegionManager.getInstance().saveRegion(region);
-        }
+//        }
         return true;
     }
 }
