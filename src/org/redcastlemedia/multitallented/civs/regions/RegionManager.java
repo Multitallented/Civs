@@ -480,11 +480,10 @@ public class RegionManager {
             return false;
         }
 
-
-
         player.sendMessage(Civs.getPrefix() +
                 localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
+        player.performCommand("cv region " + regionTypeName.toLowerCase());
         return true;
     }
 

@@ -30,11 +30,6 @@ upkeep:
     output:
     - BEEF*4
     - LEATHER*2
-  1:
-    input:
-    - BUCKET
-    output:
-    - MILK_BUCKET
 
 description:
   en: "Automatic cow farm"

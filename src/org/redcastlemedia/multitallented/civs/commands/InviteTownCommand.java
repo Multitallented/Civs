@@ -41,13 +41,14 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
-        if ((Civs.perm != null && Civs.perm.has(player, "civs.admin")) ||
-                !town.getPeople().containsKey(player.getUniqueId()) ||
-                !town.getPeople().get(player.getUniqueId()).contains("owner") ||
-                        !town.getPeople().get(player.getUniqueId()).contains("recruiter")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "no-permission-invite").replace("$1", townName));
-            return true;
+        if (Civs.perm != null && !Civs.perm.has(player, "civs.admin")) {
+            if (!town.getPeople().containsKey(player.getUniqueId()) ||
+                    !town.getPeople().get(player.getUniqueId()).contains("owner") ||
+                    !town.getPeople().get(player.getUniqueId()).contains("recruiter")) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "no-permission-invite").replace("$1", townName));
+                return true;
+            }
         }
         Player invitee = Bukkit.getPlayer(playerName);
         if (invitee == null) {
@@ -64,7 +65,7 @@ public class InviteTownCommand implements CivCommand {
         boolean adminBypass = Civs.perm != null &&
                 (Civs.perm.has(invitee, "civs.admin") ||
                 Civs.perm.has(player, "civs.admin"));
-        if (adminBypass || town.getPopulation() >= town.getHousing()) {
+        if (!adminBypass && town.getPopulation() >= town.getHousing()) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "not-enough-housing"));
             return true;
