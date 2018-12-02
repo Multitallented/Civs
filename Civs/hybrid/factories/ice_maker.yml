@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: Textiles
+name: Ice_Maker
 price: 20
 groups:
 - factory

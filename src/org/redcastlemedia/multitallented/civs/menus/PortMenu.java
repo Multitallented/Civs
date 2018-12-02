@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -65,8 +66,13 @@ public class PortMenu extends Menu {
         if (region != null) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
-//            event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
-            ((Player) event.getWhoClicked()).performCommand("cv port " + itemName);
+            Player player = (Player) event.getWhoClicked();
+            String command = "/cv port " + itemName;
+            PlayerCommandPreprocessEvent commandPreprocessEvent = new PlayerCommandPreprocessEvent(player, command);
+            Bukkit.getPluginManager().callEvent(commandPreprocessEvent);
+            if (!commandPreprocessEvent.isCancelled()) {
+                player.performCommand("cv port " + itemName);
+            }
             return;
         }
     }

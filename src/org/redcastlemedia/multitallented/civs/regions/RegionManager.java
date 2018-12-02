@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -483,7 +484,12 @@ public class RegionManager {
         player.sendMessage(Civs.getPrefix() +
                 localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
-        player.performCommand("cv region " + regionTypeName.toLowerCase());
+        String command = "/cv region " + regionTypeName.toLowerCase();
+        PlayerCommandPreprocessEvent commandEvent = new PlayerCommandPreprocessEvent(player, command);
+        Bukkit.getPluginManager().callEvent(commandEvent);
+        if (!commandEvent.isCancelled()) {
+            player.performCommand("cv region " + regionTypeName.toLowerCase());
+        }
         return true;
     }
 

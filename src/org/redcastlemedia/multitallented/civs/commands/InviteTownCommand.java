@@ -43,8 +43,8 @@ public class InviteTownCommand implements CivCommand {
         }
         if (Civs.perm != null && !Civs.perm.has(player, "civs.admin")) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
-                    !town.getPeople().get(player.getUniqueId()).contains("owner") ||
-                    !town.getPeople().get(player.getUniqueId()).contains("recruiter")) {
+                    (!town.getPeople().get(player.getUniqueId()).contains("owner") &&
+                    !town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "no-permission-invite").replace("$1", townName));
                 return true;
