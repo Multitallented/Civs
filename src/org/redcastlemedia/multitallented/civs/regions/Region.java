@@ -237,7 +237,7 @@ public class Region {
         return hasRequiredBlocks(type, location, true);
     }
 
-    public static int[] addItemCheck(int[] radii, Location location, World currentWorld,
+    private static int[] addItemCheck(int[] radii, Location location, World currentWorld,
                                      int xMin, int xMax, int yMin, int yMax, int zMin, int zMax,
                                      List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
@@ -537,11 +537,11 @@ public class Region {
     public boolean hasInput() {
         return hasUpkeepItems(true);
     }
-    public void tick() {
+    private void tick() {
         this.lastTick = new Date().getTime();
     }
 
-    public boolean needsReagentsOrInput() {
+    boolean needsReagentsOrInput() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if (regionUpkeep.getReagents().isEmpty() &&
@@ -570,13 +570,11 @@ public class Region {
             chest = (Chest) block.getState();
         }
 
-        boolean needsItems = needsReagentsOrInput();
-        if (chest == null && needsItems) {
-            return false;
-        }
         boolean hadUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
+                    !regionUpkeep.getInputs().isEmpty();
             boolean hasReagents = !needsItems || (Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory()));
             if (!hasReagents) {

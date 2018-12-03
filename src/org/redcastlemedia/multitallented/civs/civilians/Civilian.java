@@ -22,7 +22,7 @@ public class Civilian {
     private final HashMap<CivItem, Integer> exp;
     private Set<CivClass> civClasses;
     private String locale;
-    private final ArrayList<CivItem> stashItems;
+    private ArrayList<CivItem> stashItems;
     private final HashMap<String, CivState> states;
     private Location respawnPoint = null;
     private long lastJail = 0;
@@ -82,6 +82,7 @@ public class Civilian {
     public ArrayList<CivItem> getStashItems() {
         return stashItems;
     }
+    public void setStashItems(ArrayList<CivItem> stashItems) { this.stashItems = stashItems; }
     public HashMap<CivItem, Integer> getExp() { return exp; }
     public HashMap<String, CivState> getStates() { return states; }
     public Location getRespawnPoint() { return respawnPoint; }

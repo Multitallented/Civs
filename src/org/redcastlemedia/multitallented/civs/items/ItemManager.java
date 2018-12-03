@@ -514,6 +514,9 @@ public class ItemManager {
                 continue;
             }
             int count = civilian.getCountStashItems(civItem.getProcessedName());
+            if (CivItem.ItemType.REGION == civItem.getItemType()) {
+                count += civilian.getCountRegions(civItem.getProcessedName());
+            }
             if (count >= civItem.getCivMin()) {
                 continue;
             }

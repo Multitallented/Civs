@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

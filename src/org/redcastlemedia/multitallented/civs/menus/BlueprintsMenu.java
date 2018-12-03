@@ -32,9 +32,11 @@ public class BlueprintsMenu extends Menu {
 
     //TODO make this more secure?
     @Override @EventHandler
+    @SuppressWarnings("unchecked")
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
-        if (!event.getInventory().getTitle().equals(MENU_NAME)) {
+        Inventory inventory = event.getInventory();
+        if (!inventory.getTitle().equals(MENU_NAME)) {
             return;
         }
 
@@ -43,17 +45,17 @@ public class BlueprintsMenu extends Menu {
         ArrayList<CivItem> stashItems = civilian.getStashItems();
         ArrayList<CivItem> removeItems = new ArrayList<>();
         for (CivItem item : stashItems) {
-            if (item.getItemType().equals(CivItem.ItemType.REGION) ||
-                    item.getItemType().equals(CivItem.ItemType.TOWN)) {
+            if (item.getItemType() == CivItem.ItemType.REGION ||
+                    item.getItemType() == CivItem.ItemType.TOWN) {
                 removeItems.add(item);
             }
         }
         stashItems.removeAll(removeItems);
-        for (ItemStack is : event.getInventory()) {
+        for (ItemStack is : inventory) {
             if (is == null || !CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName());
             civItem.setQty(is.getAmount());
             stashItems.add(civItem);
         }
