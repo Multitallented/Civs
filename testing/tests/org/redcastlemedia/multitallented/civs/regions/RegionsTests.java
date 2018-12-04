@@ -944,4 +944,10 @@ public class RegionsTests {
         RegionManager.getInstance().addRegion(region);
         return region;
     }
+
+    public static Region createNewRegion(String type, UUID uuid) {
+        Region region = createNewRegion(type);
+        region.setPeople(uuid, "owner");
+        return region;
+    }
 }

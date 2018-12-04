@@ -202,6 +202,8 @@ public class CivilianManager {
 
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
+
+            civConfig.set("items", null);
             for (CivItem civItem : civilian.getStashItems()) {
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     continue;
