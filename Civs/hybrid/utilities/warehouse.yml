@@ -1,0 +1,48 @@
+type: region
+icon: CHEST
+name: Warehouse
+price: 1000
+groups:
+- utility
+
+pre-reqs:
+- member=hamlet:village:town:city:metropolis
+
+towns:
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- CHEST*50
+- g:door*2
+- g:window*8
+- g:roof*140
+- g:secondary*80
+- g:primary*325
+- g:stairs*4
+
+build-radius: 6
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- warehouse #TODO
+
+period: daily
+upkeep:
+  0:
+    power-output: 48
+
+description:
+  en: "Stores and distributes items to regions that need them"
+  es: "Almacena y distribuye artículos a las regiones que los necesitan."
+  de: "Speichert und verteilt Elemente in Regionen, in denen sie benötigt werden"
+  ru: "Сохраняет и распространяет предметы в регионах, которые в них нуждаются"
+  fr: "Stocke et distribue des articles dans les régions qui en ont besoin"
+  pt_br: "Armazena e distribui itens para regiões que precisam deles"

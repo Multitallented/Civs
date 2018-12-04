@@ -537,6 +537,26 @@ public class Region {
     public boolean hasInput() {
         return hasUpkeepItems(true);
     }
+
+    public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        if (regionType.getUpkeeps().size() <= upkeepIndex) {
+            return false;
+        }
+        RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
+        Block block = location.getBlock();
+        if (!(block.getState() instanceof Chest)) {
+            return needsReagentsOrInput();
+        }
+        Chest chest = (Chest) block.getState();
+
+        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
+                Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+            return true;
+        }
+        return false;
+    }
+
     private void tick() {
         this.lastTick = new Date().getTime();
     }

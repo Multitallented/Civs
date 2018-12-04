@@ -166,6 +166,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SpawnEffect(), this);
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
 
         new HousingEffect();
     }

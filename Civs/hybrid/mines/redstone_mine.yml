@@ -1,8 +1,8 @@
 type: region
 icon: CHEST
-name: Coal_Mine
+name: Redstone_Mine
 max: 1
-price: 150
+price: 250
 groups:
 - mine
 
@@ -13,7 +13,7 @@ build-reqs:
 - g:door*1
 - CHEST*2
 - FURNACE*2
-- COAL_ORE*4
+- REDSTONE_ORE*4
 
 build-radius: 4
 
@@ -23,7 +23,7 @@ effects:
 - chest_use
 - block_liquid
 - block_fire
-- conveyor:COAL
+- conveyor:REDSTONE
 
 period: 3600 #1 hour
 upkeep:
@@ -31,22 +31,22 @@ upkeep:
     input:
     - STONE_PICKAXE
     output:
-    - COAL*6
+    - REDSTONE*6
   1:
     input:
     - IRON_PICKAXE
     output:
-    - COAL*8
+    - REDSTONE*8
   2:
     input:
     - DIAMOND_PICKAXE
     output:
-    - COAL*12
+    - REDSTONE*12
 
 description:
-  en: "Creates coal by using pickaxes"
-  es: "Crea carbón utilizando picos"
-  de: "Erzeugt Kohle mithilfe von Spitzhacken"
-  fr: "Crée du charbon en utilisant des pioches"
-  ru: "Создает уголь с помощью кирок"
-  pt_br: "Cria carvão usando picaretas"
+  en: "Creates redstone by using pickaxes"
+  es: "Crea Redstone utilizando picos"
+  de: "Erzeugt roten Stein mit Spitzhacken"
+  fr: "Crée Redstone en utilisant des pioches"
+  ru: "Создает красный камень, используя кирки"
+  pt_br: "Cria redstone usando picaretas"
