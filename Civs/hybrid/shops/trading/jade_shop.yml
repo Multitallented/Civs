@@ -40,12 +40,12 @@ upkeep:
   1:
     input:
     - EMERALD.Jade*16
-    payout: 250          # 250 / day
+    payout: 500          # 500 / day
 
-description: #TODO fix the translations
-  en: "Sells 144 Jade to the server for $432 per day"
-  es: "Vende 144 carbón al servidor por $ 432 por día"
-  pt_br: "Vende 144 de carvão para o servidor por US $ 432 por dia"
-  ru: "Продает 144 угля на сервер за $ 432 в день"
-  de: "Verkauft 144 Kohle an den Server für $ 432 pro Tag"
-  fr: "Vend 144 charbon au serveur pour 432 $ par jour"
+description:
+  en: "Sells 144 Jade to the server for $500 per day. Can't be built in a town with a Jade Mine."
+  es: "Vende 144 Jade al servidor por $ 500 por día. No se puede construir en una ciudad con una mina de jade."
+  pt_br: "Vende 144 Jade ao servidor por US $ 500 por dia. Não pode ser construído em uma cidade com uma mina de jade."
+  ru: "Продает 144 Jade на сервер за 500 долларов США в день. Не может быть построен в городе с нефритовой шахтой."
+  de: "Verkauft 144 Jade an den Server für 500 US-Dollar pro Tag. Kann nicht in einer Stadt mit einer Jade-Mine gebaut werden."
+  fr: "Vend 144 Jade au serveur pour 500 $ par jour. Ne peut pas être construit dans une ville avec une mine de jade."
