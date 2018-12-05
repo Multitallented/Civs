@@ -35,7 +35,7 @@ effects:
 period: daily
 upkeep:
   0:
-    power-output: 48
+    power-output: 96
 
 description:
   en: "Repairs items and creates 48 power per day"

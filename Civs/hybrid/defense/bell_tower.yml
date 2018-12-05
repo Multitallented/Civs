@@ -38,7 +38,7 @@ effects:
 period: daily
 upkeep:
   0:
-    power-output: 48
+    power-output: 96
 
 description:
   en: "Alerts town members when an intruder has entered the town."

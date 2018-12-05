@@ -5,8 +5,8 @@ max: 2
 price: 100
 groups:
 - housing
-- shack
 - allshack
+- baseshack
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
