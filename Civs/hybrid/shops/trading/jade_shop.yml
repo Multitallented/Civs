@@ -1,0 +1,51 @@
+type: region
+icon: CHEST
+name: Jade_Shop
+max: 1
+price: 500
+groups:
+- shop
+- tradeshop
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:fence*14
+- CHEST*2
+- g:wool*20
+
+build-radius: 2
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+- exclusive:jade_mine
+
+period: daily
+upkeep:
+  0:
+    power-input: 12
+  1:
+    input:
+    - EMERALD.Jade*16
+    payout: 250          # 250 / day
+
+description: #TODO fix the translations
+  en: "Sells 144 Jade to the server for $432 per day"
+  es: "Vende 144 carbón al servidor por $ 432 por día"
+  pt_br: "Vende 144 de carvão para o servidor por US $ 432 por dia"
+  ru: "Продает 144 угля на сервер за $ 432 в день"
+  de: "Verkauft 144 Kohle an den Server für $ 432 pro Tag"
+  fr: "Vend 144 charbon au serveur pour 432 $ par jour"
