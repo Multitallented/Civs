@@ -12,18 +12,22 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.InventoryImpl;
+import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -96,6 +100,28 @@ public class BlueprintsMenuTests {
         assertEquals(3, (int) civilian.getStashItems().get("shelter"));
         Inventory inventory = BlueprintsMenu.createMenu(civilian);
         assertEquals(3,inventory.getItem(0).getAmount());
+    }
+
+    @Test
+    public void itemShouldBeCivsItem() {
+        RegionsTests.loadRegionTypeCobble();
+        ItemStackImpl itemStack = new ItemStackImpl(Material.CHEST, 1);
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("something");
+        lore.add("Civs Cobble");
+        ItemMetaImpl itemMeta = new ItemMetaImpl("Civs Cobble", lore);
+        itemStack.setItemMeta(itemMeta);
+        assertTrue(CivItem.isCivsItem(itemStack));
+    }
+
+    @Test
+    public void itemShouldNotBeCivsItem() {
+        RegionsTests.loadRegionTypeCobble();
+        ItemStackImpl itemStack = new ItemStackImpl(Material.CHEST, 1);
+        ArrayList<String> lore = new ArrayList<>();
+        ItemMetaImpl itemMeta = new ItemMetaImpl("Civs Cobble", lore);
+        itemStack.setItemMeta(itemMeta);
+        assertFalse(CivItem.isCivsItem(itemStack));
     }
 
     private void loadRegionTypeShelter() {

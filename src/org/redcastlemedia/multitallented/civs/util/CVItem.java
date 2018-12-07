@@ -108,6 +108,9 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
+        if (im.getLore().size() < 2 || !im.getLore().get(1).equals(im.getDisplayName())) {
+            return false;
+        }
         return im.getDisplayName().contains("Civs ");
     }
 
