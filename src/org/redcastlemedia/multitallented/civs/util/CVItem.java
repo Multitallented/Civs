@@ -51,6 +51,7 @@ public class CVItem {
     public static CVItem createCVItemFromString(String materialString)  {
         String quantityString = "1";
         String chanceString = "100";
+        String nameString = null;
         Material mat;
 
         String[] splitString;
@@ -59,13 +60,18 @@ public class CVItem {
         for (;;) {
             int asteriskIndex = materialString.indexOf("*");
             int percentIndex = materialString.indexOf("%");
-            if (asteriskIndex != -1 && asteriskIndex > percentIndex) {
+            int nameIndex = materialString.indexOf("\\.");
+            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex) {
                 splitString = materialString.split("\\*");
                 quantityString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (percentIndex != -1 && percentIndex > asteriskIndex) {
+            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > nameIndex) {
                 splitString = materialString.split("%");
                 chanceString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else if (nameIndex != -1 && nameIndex > percentIndex && nameIndex > asteriskIndex) {
+                splitString = materialString.split("\\.");
+                nameString = splitString[splitString.length -1];
                 materialString = splitString[0];
             } else {
                 mat = getMaterialFromString(materialString);
@@ -79,30 +85,16 @@ public class CVItem {
         }
         int quantity = Integer.parseInt(quantityString);
         int chance = Integer.parseInt(chanceString);
-        return new CVItem(mat, quantity, chance);
+        if (nameString == null) {
+            return new CVItem(mat, quantity, chance);
+        } else {
+            return new CVItem(mat, quantity, chance, nameString);
+        }
     }
 
     private static Material getMaterialFromString(String materialString) {
-        Material mat = Material.valueOf(materialString.replaceAll(" ", "_").toUpperCase());
-//        if (mat == null) {
-//            int id = Integer.parseInt(materialString);
-//            mat = Material.getMaterial(id);
-//        }
-        return mat;
+        return Material.valueOf(materialString.replaceAll(" ", "_").toUpperCase());
     }
-
-//    public boolean damageMatches(short durability) {
-//        int dur = (int) durability;
-//        if (dur == damage) {
-//            return true;
-//        }
-//        if ((mat == Material.OAK_LOG || mat == Material.BIRCH_LOG || mat == Material.SPRUCE_LOG
-//                || mat == Material.JUNGLE_LOG || mat == Material.DARK_OAK_LOG || mat == Material.ACACIA_LOG) &&
-//                ((damage + 4) == dur || (damage + 8) == dur || (damage + 12) == dur)) {
-//            return true;
-//        }
-//        return false;
-//    }
 
     public boolean equivalentItem(ItemStack iss) {
         return equivalentItem(iss, false);

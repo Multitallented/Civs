@@ -37,7 +37,7 @@ effects:
 period: daily
 upkeep:
   0:
-    power-output: 48
+    power-output: 96
 
 description:
   en: "Stores and distributes items to regions that need them"

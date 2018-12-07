@@ -1,0 +1,54 @@
+type: region
+icon: CHEST
+name: Jade_Mine
+max: 1
+price: 600
+groups:
+- mine
+- trademine
+- trading
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:primary*150
+- g:secondary*12
+- IRON_BARS*2
+- g:door*1
+- CHEST*2
+- FURNACE*2
+- EMERALD_ORE*4
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: daily
+upkeep:
+  0:
+    input:
+    - IRON_PICKAXE
+    output:
+    - EMERALD.Jade*16
+
+description:
+  en: "Creates Jade which can be sold using a Jade Shop. Can't be built in a town with a Jade Shop."
+  es: "Crea Jade que se puede vender utilizando una Tienda de Jade. No se puede construir en una ciudad con una tienda de jade."
+  de: "Erzeugt Jade, die über einen Jade-Shop verkauft werden kann. Kann nicht in einer Stadt mit einem Jade-Shop gebaut werden."
+  fr: "Crée du jade qui peut être vendu en utilisant un magasin de jade. Ne peut pas être construit dans une ville avec un magasin de jade."
+  ru: "Создает нефрит, который можно продать с помощью Jade Shop. Не может быть построен в городе с магазином нефрита."
+  pt_br: "Cria Jade que pode ser vendido usando uma loja de Jade. Não pode ser construído em uma cidade com uma loja de Jade."

@@ -16,7 +16,7 @@ build-reqs:
 
 limits:
 - allshack:5
-- allhovel:5
+- allhovel:4
 - alldwelling:3
 - arrowtrapgroup:3
 - npchousing:12

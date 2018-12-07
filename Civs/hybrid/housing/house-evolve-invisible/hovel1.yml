@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: Hovel
+name: Hovel1
 max: 2
 price: 200
 groups:
@@ -34,7 +34,6 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:hovel1.24
 
 towns:
 - settlement
@@ -52,11 +51,15 @@ upkeep:
     input:
     - POTATO*32  # 768 or 12 stacks / day
     payout: 5.12 # $122.88 / day
+  2:
+    input:
+    - APPLE*6   # 144 or 2.25 stacks / day
+    payout: 7.8 # 187.2 / day
 
 description:
-  en: "2nd level of house. Earns $122 per day."
-  es: "2do nivel de vivienda. Gana $ 122 por día."
-  fr: "2ème niveau de la maison. Gagne 122 $ par jour."
-  ru: "2-й уровень дома. Зарабатывает 122 долларов США в день."
-  pt_br: "2º nível de casa. Ganhe US $ 122 por dia."
-  de: "2. Ebene des Hauses. Erwirbt $ 122 pro Tag."
+  en: "2nd level of house. Earns $310 per day."
+  es: "2do nivel de vivienda. Gana $ 310 por día."
+  fr: "2ème niveau de la maison. Gagne 310 $ par jour."
+  ru: "2-й уровень дома. Зарабатывает 310 долларов США в день."
+  pt_br: "2º nível de casa. Ganhe US $ 310 por dia."
+  de: "2. Ebene des Hauses. Erwirbt $ 310 pro Tag."

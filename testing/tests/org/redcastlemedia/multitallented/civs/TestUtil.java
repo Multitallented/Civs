@@ -27,10 +27,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
@@ -138,7 +135,9 @@ public class TestUtil {
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
+        when(player.getServer()).thenReturn(server);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
+        when(server.getOnlinePlayers()).thenReturn((Collection) new ArrayList<Player>());
 
         CivilianManager.getInstance().createDefaultCivilian(player);
         when(server.getScheduler()).thenReturn(mock(BukkitScheduler.class));

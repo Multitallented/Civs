@@ -1,8 +1,9 @@
 type: region
 icon: CHEST
-name: Dwelling
+name: Dwelling2
 max: 2
 price: 400
+is-in-shop: false
 groups:
 - housing
 - alldwelling
@@ -33,7 +34,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:dwelling1.24
+- evolve:dwelling2.24
 
 towns:
 - hamlet
@@ -50,11 +51,19 @@ upkeep:
     input:
     - POTATO*32  # 768 or 12 stacks / day
     payout: 5.12 # $122.88 / day
+  2:
+    input:
+    - APPLE*6   # 288 or 4.5 stacks / day
+    payout: 7.8 # 187.2 / day
+  3:
+    input:
+    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
+    payout: 12 # $288 / day
 
 description:
-  en: "3rd level of house. Earns $122 per day."
-  es: "3er nivel de la casa. Gana $ 122 por día."
-  de: "3. Ebene des Hauses. Verdient $ 122 pro Tag."
-  pt_br: "3º nível de casa. Ganhe $ 122 por dia."
-  fr: "3ème niveau de la maison. Gagne 122 $ par jour."
-  ru: "3-й уровень дома. Зарабатывает $ 122 в день."
+  en: "3rd level of house. Earns $598 per day."
+  es: "3er nivel de la casa. Gana $ 598 por día."
+  de: "3. Ebene des Hauses. Verdient $ 598 pro Tag."
+  pt_br: "3º nível de casa. Ganhe $ 598 por dia."
+  fr: "3ème niveau de la maison. Gagne 598 $ par jour."
+  ru: "3-й уровень дома. Зарабатывает $ 598 в день."

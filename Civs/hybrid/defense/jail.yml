@@ -32,6 +32,11 @@ effects:
 - door_use
 - jail
 
+period: daily
+upkeep:
+  0:
+    power-output: 96
+
 description:
   en: "A place to temporarily trap invaders who die in town."
   es: "Un lugar para atrapar temporalmente a los invasores que mueren en la ciudad."
