@@ -17,6 +17,8 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class BlueprintsMenu extends Menu {
@@ -42,23 +44,31 @@ public class BlueprintsMenu extends Menu {
 
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        ArrayList<CivItem> stashItems = civilian.getStashItems();
-        ArrayList<CivItem> removeItems = new ArrayList<>();
-        for (CivItem item : stashItems) {
+        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        HashSet<String> removeItems = new HashSet<>();
+        for (String currentName : stashItems.keySet()) {
+            CivItem item = ItemManager.getInstance().getItemType(currentName);
             if (item.getItemType() == CivItem.ItemType.REGION ||
                     item.getItemType() == CivItem.ItemType.TOWN) {
-                removeItems.add(item);
+                removeItems.add(currentName);
             }
         }
-        stashItems.removeAll(removeItems);
+        for (String currentName : removeItems) {
+            stashItems.remove(currentName);
+        }
         for (ItemStack is : inventory) {
-            if (is == null || !CVItem.isCivsItem(is)) {
+            if (!CVItem.isCivsItem(is)) {
                 continue;
             }
             CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName());
-            civItem.setQty(is.getAmount());
-            stashItems.add(civItem);
+            String name = civItem.getProcessedName();
+            if (stashItems.containsKey(name)) {
+                stashItems.put(name, is.getAmount() + stashItems.get(name));
+            } else {
+                stashItems.put(name, is.getAmount());
+            }
         }
+        civilian.setStashItems(stashItems);
         CivilianManager.getInstance().saveCivilian(civilian);
     }
 
@@ -67,20 +77,23 @@ public class BlueprintsMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         int i=0;
-        for (CivItem cvItem : civilian.getStashItems()) {
-            boolean isTown = cvItem.getItemType().equals(CivItem.ItemType.TOWN);
-            if (!cvItem.getItemType().equals(CivItem.ItemType.REGION) && !isTown) {
+        for (String currentName : civilian.getStashItems().keySet()) {
+            CivItem civItem = ItemManager.getInstance().getItemType(currentName);
+            boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
+            if (!civItem.getItemType().equals(CivItem.ItemType.REGION) && !isTown) {
                 continue;
             }
+            CVItem cvItem = civItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
-                        .replace("$1", cvItem.getProcessedName())));
+                        .replace("$1", civItem.getProcessedName())));
             } else {
-                lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
+                lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
+            cvItem.setQty(civilian.getStashItems().get(currentName));
             inventory.setItem(i, cvItem.createItemStack());
             i++;
         }

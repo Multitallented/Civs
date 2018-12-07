@@ -69,7 +69,12 @@ public class ConfirmationMenu extends Menu {
             if (event.getWhoClicked().getInventory().firstEmpty() != -1) {
                 event.getWhoClicked().getInventory().addItem(civItem.createItemStack());
             } else {
-                civilian.getStashItems().add(civItem);
+                if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
+                    civilian.getStashItems().put(civItem.getProcessedName(),
+                            civItem.getQty() + civilian.getStashItems().get(civItem.getProcessedName()));
+                } else {
+                    civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
+                }
             }
             civilianManager.saveCivilian(civilian);
             return;

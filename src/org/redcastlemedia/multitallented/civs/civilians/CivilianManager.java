@@ -108,7 +108,7 @@ public class CivilianManager {
             //TODO load other civilian file properties
 
             ItemManager itemManager = ItemManager.getInstance();
-            ArrayList<CivItem> items = itemManager.loadCivItems(civConfig, uuid);
+            HashMap<String, Integer> items = itemManager.loadCivItems(civConfig, uuid);
             Set<CivClass> classes = new HashSet<>();
             ClassManager classManager = ClassManager.getInstance();
             for (int id : civConfig.getIntegerList("classes")) {
@@ -204,7 +204,8 @@ public class CivilianManager {
             //TODO save other civilian file properties
 
             civConfig.set("items", null);
-            for (CivItem civItem : civilian.getStashItems()) {
+            for (String currentName : civilian.getStashItems().keySet()) {
+                CivItem civItem = ItemManager.getInstance().getItemType(currentName);
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     continue;
                 }

@@ -15,9 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ClassMenu extends Menu {
     private static final String MENU_NAME = "CivsClassStash";
@@ -62,21 +60,29 @@ public class ClassMenu extends Menu {
 
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        ArrayList<CivItem> stashItems = civilian.getStashItems();
-        ArrayList<CivItem> removeItems = new ArrayList<>();
-        for (CivItem item : stashItems) {
+        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        HashSet<String> removeItems = new HashSet<>();
+        for (String name : stashItems.keySet()) {
+            CivItem item = ItemManager.getInstance().getItemType(name);
             if (item.getItemType().equals(CivItem.ItemType.CLASS)) {
-                removeItems.add(item);
+                removeItems.add(name);
             }
         }
-        stashItems.removeAll(removeItems);
+        for (String name : removeItems) {
+            stashItems.remove(name);
+        }
         for (ItemStack is : event.getInventory()) {
-            if (is == null || !CVItem.isCivsItem(is)) {
+            if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+            String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+            CivItem civItem = itemManager.getItemType(itemTypeName);
             civItem.setQty(is.getAmount());
-            stashItems.add(civItem);
+            if (stashItems.containsKey(itemTypeName)) {
+                stashItems.put(itemTypeName, is.getAmount() + stashItems.get(itemTypeName));
+            } else {
+                stashItems.put(itemTypeName, is.getAmount());
+            }
         }
         CivilianManager.getInstance().saveCivilian(civilian);
     }
@@ -85,15 +91,18 @@ public class ClassMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(civilian.getStashItems().size()), MENU_NAME);
 
         int i=0;
-        for (CivItem cvItem : civilian.getStashItems()) {
-            if (!cvItem.getItemType().equals(CivItem.ItemType.CLASS)) {
+        for (String currentName : civilian.getStashItems().keySet()) {
+            CivItem civItem = ItemManager.getInstance().getItemType(currentName);
+            if (!civItem.getItemType().equals(CivItem.ItemType.CLASS)) {
                 continue;
             }
+            CVItem cvItem = civItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             cvItem.setLore(lore);
+            cvItem.setQty(civilian.getStashItems().get(currentName));
             inventory.setItem(i, cvItem.createItemStack());
             i++;
         }

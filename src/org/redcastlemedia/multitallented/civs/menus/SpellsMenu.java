@@ -14,9 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SpellsMenu extends Menu {
     private static final String MENU_NAME = "CivsSpellStash";
@@ -61,21 +59,29 @@ public class SpellsMenu extends Menu {
 
         ItemManager itemManager = ItemManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        ArrayList<CivItem> stashItems = civilian.getStashItems();
-        ArrayList<CivItem> removeItems = new ArrayList<>();
-        for (CivItem item : stashItems) {
+        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        HashSet<String> removeItems = new HashSet<>();
+        for (String currentName : stashItems.keySet()) {
+            CivItem item = ItemManager.getInstance().getItemType(currentName);
             if (item.getItemType().equals(CivItem.ItemType.SPELL)) {
-                removeItems.add(item);
+                removeItems.add(currentName);
             }
         }
-        stashItems.removeAll(removeItems);
+        for (String currentName : removeItems) {
+            stashItems.remove(currentName);
+        }
         for (ItemStack is : event.getInventory()) {
-            if (is == null || !CVItem.isCivsItem(is)) {
+            if (!CVItem.isCivsItem(is)) {
                 continue;
             }
             CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
             civItem.setQty(is.getAmount());
-            stashItems.add(civItem);
+            if (stashItems.containsKey(civItem.getProcessedName())) {
+                stashItems.put(civItem.getProcessedName(),
+                        civItem.getQty() + stashItems.get(civItem.getProcessedName()));
+            } else {
+                stashItems.put(civItem.getProcessedName(), civItem.getQty());
+            }
         }
         CivilianManager.getInstance().saveCivilian(civilian);
     }
@@ -84,7 +90,8 @@ public class SpellsMenu extends Menu {
 
         int i=0;
         ArrayList<CVItem> spellList = new ArrayList<>();
-        for (CivItem cvItem : civilian.getStashItems()) {
+        for (String currentName : civilian.getStashItems().keySet()) {
+            CivItem cvItem = ItemManager.getInstance().getItemType(currentName);
             if (!cvItem.getItemType().equals(CivItem.ItemType.SPELL)) {
                 continue;
             }
@@ -94,6 +101,7 @@ public class SpellsMenu extends Menu {
             lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             newItem.setLore(lore);
+            newItem.setQty(civilian.getStashItems().get(currentName));
             spellList.add(newItem);
             i++;
         }

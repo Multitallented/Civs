@@ -313,8 +313,8 @@ public class ItemManager {
         return regionType;
     }
 
-    public ArrayList<CivItem> loadCivItems(FileConfiguration civConfig, UUID uuid) {
-        ArrayList<CivItem> items = new ArrayList<>();
+    public HashMap<String, Integer> loadCivItems(FileConfiguration civConfig, UUID uuid) {
+        HashMap<String, Integer> items = new HashMap<>();
         ConfigurationSection configurationSection = civConfig.getConfigurationSection("items");
         if (configurationSection == null) {
             return items;
@@ -324,11 +324,7 @@ public class ItemManager {
             if (currentItem == null) {
                 continue;
             }
-            currentItem.setQty(civConfig.getInt("items." + key));
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(uuid.toString());
-            currentItem.setLore(lore);
-            items.add(currentItem);
+            items.put(key, civConfig.getInt("items." + key));
         }
         return items;
     }
@@ -337,17 +333,13 @@ public class ItemManager {
         return itemTypes.get(name.replace("Civs ", "").toLowerCase());
     }
 
-    public ArrayList<CivItem> getNewItems() {
-        ArrayList<CivItem> newItems = new ArrayList<>();
+    public HashMap<String, Integer> getNewItems() {
+        HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
-                CVItem newItem = civItem.clone();
-                newItem.setQty(civItem.getCivQty());
-                newItems.add(civItem);
+                newItems.put(civItem.getProcessedName(), civItem.getQty());
             } else if (civItem.getCivReqs().isEmpty() && civItem.getCivMin() > 0) {
-                CVItem newItem = civItem.clone();
-                newItem.setQty(civItem.getCivMin());
-                newItems.add(civItem);
+                newItems.put(civItem.getProcessedName(), civItem.getQty());
             }
         }
         return newItems;
@@ -529,7 +521,7 @@ public class ItemManager {
             }
         }
         for (CivItem civItem : addItems) {
-            civilian.getStashItems().add(civItem);
+            civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
         }
         CivilianManager.getInstance().saveCivilian(civilian);
     }

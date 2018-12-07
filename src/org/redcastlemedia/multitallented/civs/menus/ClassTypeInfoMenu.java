@@ -61,7 +61,7 @@ public class ClassTypeInfoMenu extends Menu {
 
         if (event.getCurrentItem().getType().equals(Material.ENDER_CHEST)) {
             if (Civs.perm != null && Civs.perm.has(event.getWhoClicked(), "civs.choose") &&
-                    civilian.getStashItems().contains(classType)) {
+                    civilian.getStashItems().keySet().contains(className)) {
 
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + className);
                 event.getWhoClicked().closeInventory();
@@ -110,7 +110,7 @@ public class ClassTypeInfoMenu extends Menu {
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());
         } else if (hasChoosePerms && !alreadyIsClass &&
-                civilian.getStashItems().contains(classType)) {
+                civilian.getStashItems().keySet().contains(classType.getProcessedName())) {
             CVItem switchItem = CVItem.createCVItemFromString("ENDER_CHEST");
             switchItem.setDisplayName("Switch to class");
             inventory.setItem(1, switchItem.createItemStack());

@@ -22,7 +22,7 @@ public class Civilian {
     private final HashMap<CivItem, Integer> exp;
     private Set<CivClass> civClasses;
     private String locale;
-    private ArrayList<CivItem> stashItems;
+    private HashMap<String, Integer> stashItems;
     private final HashMap<String, CivState> states;
     private Location respawnPoint = null;
     private long lastJail = 0;
@@ -41,7 +41,7 @@ public class Civilian {
     private List<Bounty> bounties = new ArrayList<>();
     private long lastKarmaDepreciation;
 
-    public Civilian(UUID uuid, String locale, ArrayList<CivItem> stashItems, Set<CivClass> civClasses,
+    public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
             double points, int karma, int expOrbs) {
         this.uuid = uuid;
@@ -79,10 +79,10 @@ public class Civilian {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-    public ArrayList<CivItem> getStashItems() {
+    public HashMap<String, Integer> getStashItems() {
         return stashItems;
     }
-    public void setStashItems(ArrayList<CivItem> stashItems) { this.stashItems = stashItems; }
+    public void setStashItems(HashMap<String, Integer> stashItems) { this.stashItems = stashItems; }
     public HashMap<CivItem, Integer> getExp() { return exp; }
     public HashMap<String, CivState> getStates() { return states; }
     public Location getRespawnPoint() { return respawnPoint; }
@@ -219,9 +219,9 @@ public class Civilian {
 
     public int getCountStashItems(String name) {
         int count = 0;
-        for (CivItem civItem : stashItems) {
-            if (civItem.getProcessedName().equalsIgnoreCase(name)) {
-                count += civItem.getQty();
+        for (String currentName : stashItems.keySet()) {
+            if (currentName.equalsIgnoreCase(name)) {
+                count += stashItems.get(currentName);
             }
         }
         return count;
@@ -230,9 +230,10 @@ public class Civilian {
     public int getCountGroup(String group) {
         int count = 0;
         ItemManager itemManager = ItemManager.getInstance();
-        for (CivItem item : stashItems) {
+        for (String currentName : stashItems.keySet()) {
+            CivItem item = ItemManager.getInstance().getItemType(currentName);
             if (item.getGroups().contains(group)) {
-                count += item.getQty();
+                count += stashItems.get(currentName);
             }
         }
         for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {

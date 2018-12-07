@@ -58,8 +58,8 @@ public class ConfirmSwitchMenu extends Menu {
             }
             for (CivClass civClass : removeThese) {
                 civilian.getCivClasses().remove(civClass);
-                if (!civilian.getStashItems().contains(classType)) {
-                    civilian.getStashItems().add(classType);
+                if (!civilian.getStashItems().containsKey(classType.getProcessedName())) {
+                    civilian.getStashItems().put(classType.getProcessedName(), classType.getQty());
                 }
             }
 

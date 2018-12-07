@@ -43,8 +43,8 @@ public class ItemsTests {
         civilianListener.onCivilianJoin(event);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         boolean hasShelter = false;
-        for (CivItem civItem : civilian.getStashItems()) {
-            if (civItem.getDisplayName().equals("Civs Shelter")) {
+        for (String currentName : civilian.getStashItems().keySet()) {
+            if (currentName.equalsIgnoreCase("shelter")) {
                 hasShelter = true;
             }
         }
@@ -61,8 +61,8 @@ public class ItemsTests {
         civilianListener.onCivilianJoin(event);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         boolean hasCityHall = false;
-        for (CivItem civItem : civilian.getStashItems()) {
-            if (civItem.getDisplayName().equals("Civs CityHall")) {
+        for (String currentName : civilian.getStashItems().keySet()) {
+            if (currentName.equalsIgnoreCase("cityhall")) {
                 hasCityHall = true;
             }
         }
