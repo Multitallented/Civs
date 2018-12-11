@@ -274,23 +274,16 @@ public class TestUtil {
     }
 
     public static ItemStack createItemStack(Material mat) {
-        ItemStack is = mock(ItemStack.class);
-        when(is.hasItemMeta()).thenReturn(false);
-        when(is.getType()).thenReturn(mat);
-        when(is.getDurability()).thenReturn((short) 0);
-        return is;
+        return new ItemStackImpl(mat, 1);
     }
 
     public static ItemStack createUniqueItemStack(Material mat, String name) {
-        ItemStack is = mock(ItemStack.class);
-        ItemMeta im = mock(ItemMeta.class);
-        when(is.hasItemMeta()).thenReturn(true);
-        when(is.getItemMeta()).thenReturn(im);
-        when(im.getDisplayName()).thenReturn(name);
-        when(is.getType()).thenReturn(mat);
+        ItemStack is = new ItemStackImpl(mat, 1);
+        is.getItemMeta().setDisplayName(name);
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(TestUtil.player.getUniqueId().toString());
-        when(im.getLore()).thenReturn(lore);
+        lore.add("");
+        lore.add(name);
+        is.getItemMeta().setLore(lore);
         return is;
     }
 
@@ -333,26 +326,9 @@ public class TestUtil {
     }
 
     public static ItemStack mockItemStack(Material mat, int qty, String name, List<String> lore) {
-        ItemStack itemStack = mock(ItemStack.class);
-        when(itemStack.getType()).thenReturn(mat);
-        when(itemStack.getAmount()).thenReturn(qty);
-
-        ItemMeta itemMeta = mock(ItemMeta.class);
-        when(itemStack.hasItemMeta()).thenReturn(true);
-        when(itemMeta.getDisplayName()).thenReturn(name);
-        when(itemMeta.getLore()).thenReturn(lore);
-        when(itemStack.getItemMeta()).thenReturn(itemMeta);
+        ItemStack itemStack = new ItemStackImpl(mat, qty);
+        itemStack.getItemMeta().setDisplayName(name);
+        itemStack.getItemMeta().setLore(lore);
         return itemStack;
     }
-
-//    private static Location getMockLocation(Location location) {
-//        Location mockLocation = mock(Location.class);
-//        when(mockLocation.getX()).thenReturn(location.getX());
-//        when(mockLocation.getY()).thenReturn(location.getY());
-//        when(mockLocation.getZ()).thenReturn(location.getZ());
-//        when(mockLocation.getBlock()).thenReturn(location.getWorld()
-//                .getBlockAt((int) location.getX(), (int) location.getY(), (int) location.getZ()));
-//        when(mockLocation.getWorld()).thenReturn(location.getWorld());
-//        return mockLocation;
-//    }
 }

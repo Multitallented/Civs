@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -67,7 +68,8 @@ public class BlueprintsMenuTests {
 
     @Test
     public void stashItemsShouldSaveShelter() {
-        inventory.setItem(0,TestUtil.createUniqueItemStack(Material.CHEST, "Civs Shelter"));
+        ItemStack itemStack = TestUtil.createUniqueItemStack(Material.CHEST, "Civs Shelter");
+        inventory.setItem(0,itemStack);
         blueprintsMenu.onInventoryClose(event);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertEquals(2, civilian.getStashItems().size());
@@ -89,13 +91,16 @@ public class BlueprintsMenuTests {
         RegionsTests.loadRegionTypeCobble();
         ItemStackImpl itemStack = new ItemStackImpl(Material.CHEST, 1);
         itemStack.getItemMeta().setDisplayName("Civs Shelter");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Shelter");
+        itemStack.getItemMeta().setLore(lore);
         ItemStackImpl itemStack2 = new ItemStackImpl(Material.CHEST, 2);
         itemStack2.getItemMeta().setDisplayName("Civs Shelter");
+        itemStack2.getItemMeta().setLore(lore);
         inventory.setItem(0, itemStack);
         inventory.setItem(1, itemStack2);
         blueprintsMenu.onInventoryClose(event);
-        assertEquals(1, itemStack.getAmount());
-        assertEquals(2, itemStack2.getAmount());
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertEquals(3, (int) civilian.getStashItems().get("shelter"));
         Inventory inventory = BlueprintsMenu.createMenu(civilian);

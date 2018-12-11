@@ -167,6 +167,7 @@ public class RegionsTests {
         when(event1.getBlockPlaced()).thenReturn(chestBlock);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Cobble");
         ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
         doReturn(itemStack).when(event1).getItemInHand();
 
@@ -193,6 +194,7 @@ public class RegionsTests {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Cobble");
         doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
@@ -245,6 +247,7 @@ public class RegionsTests {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique3);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Cobble");
         doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
@@ -384,6 +387,7 @@ public class RegionsTests {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Cobble");
         ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
         doReturn(itemStack).when(event1).getItemInHand();
 
@@ -539,7 +543,7 @@ public class RegionsTests {
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         Block block2 = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", location1, false);
         when(event1.getBlockPlaced()).thenReturn(block2);
-        ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", new ArrayList<>());
+        ItemStack itemStack = TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble");
         when(event1.getItemInHand()).thenReturn(itemStack);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         RegionListener regionListener = new RegionListener();
