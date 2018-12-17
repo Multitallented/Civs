@@ -45,9 +45,6 @@ public class ShopMenu extends Menu {
             return;
         }
         ItemManager itemManager = ItemManager.getInstance();
-        if (!CVItem.isCivsItem(clickedStack)) {
-            return;
-        }
         itemName = CivItem.processItemName(itemName);
         CivItem civItem = itemManager.getItemType(itemName);
         if (civItem == null) {
@@ -141,6 +138,7 @@ public class ShopMenu extends Menu {
             if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
                 civItem1.getLore().clear();
                 civItem1.getLore().add(civilian.getUuid().toString());
+                civItem1.getLore().add(civItem1.getDisplayName());
                 civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
                         ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));
                 civItem1.getLore().addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));

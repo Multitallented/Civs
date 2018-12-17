@@ -76,6 +76,9 @@ public class RegionManager {
         try {
             for (File file : regionFolder.listFiles()) {
                 Region region = loadRegion(file);
+                if (region == null) {
+                    continue;
+                }
                 String worldName = region.getLocation().getWorld().getName();
                 if (!regions.containsKey(worldName)) {
                     regions.put(worldName, new ArrayList<Region>());

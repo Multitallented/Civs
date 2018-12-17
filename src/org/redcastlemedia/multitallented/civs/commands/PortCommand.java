@@ -73,9 +73,9 @@ public class PortCommand implements CivCommand {
             return true;
         }
 
-        if (Civs.econ != null &&
-                !Civs.econ.has(player, ConfigManager.getInstance().getPortMoney())) {
-            double moneyNeeded = ConfigManager.getInstance().getPortMoney();
+        double moneyNeeded = ConfigManager.getInstance().getPortMoney();
+        if (moneyNeeded > 0 && Civs.econ != null &&
+                !Civs.econ.has(player, moneyNeeded)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "not-enough-money").replace("$1", moneyNeeded + ""));
             return true;
@@ -182,9 +182,9 @@ public class PortCommand implements CivCommand {
                     civilian.setMana(civilian.getMana() - ConfigManager.getInstance().getPortMana());
                 }
 
-                if (Civs.econ != null &&
-                        !Civs.econ.has(p, ConfigManager.getInstance().getPortMoney())) {
-                    double moneyNeeded = ConfigManager.getInstance().getPortMoney();
+                double moneyNeeded = ConfigManager.getInstance().getPortMoney();
+                if (moneyNeeded > 0 && Civs.econ != null &&
+                        !Civs.econ.has(p, moneyNeeded)) {
                     p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                             "not-enough-money").replace("$1", moneyNeeded + ""));
                     return;

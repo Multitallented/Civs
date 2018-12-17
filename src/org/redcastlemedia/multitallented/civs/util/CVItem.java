@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -108,7 +109,7 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
-        if (im.getLore().size() < 2 || !im.getLore().get(1).equals(im.getDisplayName())) {
+        if (im.getLore() == null || im.getLore().size() < 2 || !im.getLore().get(1).equals(im.getDisplayName())) {
             return false;
         }
         return im.getDisplayName().contains("Civs ");
@@ -166,11 +167,10 @@ public class CVItem {
         }
         if (lore == null) {
             lore = new ArrayList<>();
-        }
-        if (!lore.isEmpty()) {
+        } else if (!lore.isEmpty()) {
             im.setLore(lore);
         }
-        im.removeItemFlags();
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         is.setItemMeta(im);
         return is;
     }

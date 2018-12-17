@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -35,6 +36,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -190,39 +192,38 @@ public class CivilianListener implements Listener {
         Location location = event.getBlock().getLocation();
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(location);
-        if (cvItem == null || cvItem.getLore() == null ||
-                cvItem.getLore().isEmpty() || cvItem.getLore().get(0) == null) {
+        if (cvItem == null) {
             return;
         }
-        UUID uuid = UUID.fromString(cvItem.getLore().get(0));
+        UUID uuid = null;
+        if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
+            System.out.println("null lore");
+            uuid = UUID.fromString(cvItem.getLore().get(0));
+        }
         blockLogger.removeBlock(event.getBlock().getLocation());
-        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
-        if (region != null) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
-            if (cancelled && !event.isCancelled()) {
-                event.setCancelled(true);
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            }
-            return;
-        }
-        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
-            return;
-        }
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(uuid.toString());
-        cvItem.setLore(lore);
+//        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
+//        if (region != null) {
+//            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+//            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
+//            if (cancelled && !event.isCancelled()) {
+//                event.setCancelled(true);
+//                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+//                event.getPlayer().sendMessage(Civs.getPrefix() +
+//                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+//            }
+//            System.out.println("protection cancelled");
+//            return;
+//        }
         cvItem.setQty(1);
-        if (cvItem.getMat() != event.getBlock().getType() ||
-                !uuid.toString().equals(event.getPlayer().getUniqueId().toString())) {
+        if (!ConfigManager.getInstance().getAllowSharingCivsItems() || uuid == null || cvItem.getMat() != event.getBlock().getType() ||
+                !uuid.equals(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
         } else {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
-            location.getWorld().dropItemNaturally(location, cvItem.createItemStack());
+            ItemStack itemStack = cvItem.createItemStack();
+            location.getWorld().dropItemNaturally(location, itemStack);
         }
     }
 
@@ -241,8 +242,16 @@ public class CivilianListener implements Listener {
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
+        CVItem cvItem = CVItem.createFromItemStack(is);
+        if (cvItem.getLore() == null || cvItem.getLore().isEmpty()) {
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(civilian.getUuid().toString());
+            lore.add(cvItem.getDisplayName());
+            lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            cvItem.setLore(lore);
+        }
         BlockLogger blockLogger = BlockLogger.getInstance();
-        blockLogger.putBlock(event.getBlock().getLocation(), CVItem.createFromItemStack(is));
+        blockLogger.putBlock(event.getBlock().getLocation(), cvItem);
     }
 
     @EventHandler

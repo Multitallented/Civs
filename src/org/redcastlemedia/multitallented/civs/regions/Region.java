@@ -618,7 +618,9 @@ public class Region {
                     if (player == null) {
                         continue;
                     }
-                    if (payout > 0) {
+                    if (payout == 0) {
+                        hasMoney = true;
+                    } else if (payout > 0) {
                         Civs.econ.depositPlayer(player, payout);
                         hasMoney = true;
                     } else if (Civs.econ.has(player, payout)) {
