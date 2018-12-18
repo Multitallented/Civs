@@ -223,7 +223,22 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
             ItemStack itemStack = cvItem.createItemStack();
-            location.getWorld().dropItemNaturally(location, itemStack);
+            Player player = event.getPlayer();
+            int firstEmptyIndex = player.getInventory().firstEmpty();
+            if (firstEmptyIndex > -1) {
+                player.getInventory().setItem(firstEmptyIndex, itemStack);
+            } else {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+                CivItem civItem = ItemManager.getInstance().getItemType(cvItem.getDisplayName());
+                if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
+                    civilian.getStashItems().put(civItem.getProcessedName(),
+                            civilian.getStashItems().get(civItem.getProcessedName()) + 1);
+                } else {
+                    civilian.getStashItems().put(civItem.getProcessedName(), 1);
+                }
+                CivilianManager.getInstance().saveCivilian(civilian);
+            }
+//            location.getWorld().dropItemNaturally(location, itemStack);
         }
     }
 
