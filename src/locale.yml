@@ -167,7 +167,7 @@ en:
   cooldown: "That is on cooldown for $1s"
   need-more-health: "You need $1 more health to do that"
   need-more-stamina: "You need $1 more stamina to do that"
-  need-more-mana: "You need $1 more stamina to do that"
+  need-more-mana: "You need $1 more mana to do that"
   port-not-found: "No port found"
   region-missing-upkeep-items: "Region does not have required items"
   raid-target-lost: "There is no town named $1 within $2 blocks"
@@ -202,9 +202,12 @@ en:
 pt_br:
   name: Português Brasil
   icon: CYAN_WOOL
+  starter-book: Menu do Civs
+  next-button: Próximo
+  prev-button: Anterior
   #language-menu
-  language-menu: Selecione sua Linguagem
-  language-set: "Sua linguagem foi definida para $1"
+  language-menu: Selecione sua linguagem
+  language-set: "Sua língua foi definida para: $1"
   back-button: Voltar
 
   #shop
@@ -213,76 +216,142 @@ pt_br:
   price: Preço
   buy: "Comprar $1"
   cancel: Cancelar
-  item-bought: "Parabéns! Você comprou $1 por $2"
+  item-bought: "Parabéns! Você acabou de comprar $1 por $2"
   max-item: "Você não pode comprar mais de $2 $1"
 
   #items
   items: Itens
-
+  
+  #classes
+  classes: Classes
+  
+  #spells
+  spells: Habilidades
+ 
+  #blueprints
+  blueprints: Projetos
+  
+  #regions
+  regions: Regiões
+  
   #community
   community: Comunidade
   players: Jogadores
-  towns: Cidades
-  your-towns: Suas Cidades
+  towns: Vilas
+  your-towns: Suas vilas
   wars: Guerras
+  alliances: Alianças
   leaderboard: Placar
+  ports: Teletransportadores
+  money: "Dinheiro: $$1"
+  killstreak: "Sequência de vítimas: $1"
+  points: "Pontos: $1"
+  highest-killstreak: "Maior sequência: $1"
+  kills: "Vítimas: $1"
+  deaths: "Mortes: $1"
+  friends: "Amigos"
+  confirm: "Confirmar"
+  reject: "Rejeitar"
   
   #region
   size: Tamanho
   range: Alcance
-  build-reqs: "Todos os blocos que você precisa colocar para construir $1"
-  reagents: "Todos os itens que você precisa no baú $1"
+  build-reqs-title: Requisitos da construção
+  population: População
+  biomes: Biomas
+  pop-desc: "$1 População / $2 Moradias"
+  build-reqs: "Todos os blocos que necessitam ser colocados para construir $1"
+  reagents-title: Reagentes
+  reagents: "Todos os itens que você precisa no bau de $1"
   upkeep: "Todos os itens consumidos por $1"
   output: "Todos os itens criados por $1"
-  too-close-region: "Sua $1 ficaria muito próxima a $2"
-  too-close-town: "Sua $1 ficaria muito próxima a uma cidade"
-  town-created: "$1 foi criada!"
+  payout: "Essa região ganha $$1"
+  power-input: "Essa região consome $1 de poder"
+  power-output: "Essa região gera $1 de poder"
+  too-close-region: "Sua $1 esta próxima de mais de uma $2"
+  too-close-town: "Sua $1 esta próxima de mais de uma outra vila"
+  town-created: "$1 foi construída"
+  town-destroyed: "$1 foi destruída"
   region-built: "Você construiu com sucesso uma $1"
+  region-type: "Tipo de região"
+  destroy: "Destruir"
   region-in-town: "Sua região esta em $1"
+  town-req-desc: "Sua região precisa ser construída em:"
   view-members: "Ver membros"
-  add-member: "Adicionar membro"
+  add-member: "Adicionar membros"
   operation: "Operação"
-  region-working: "Sua região esta funcionando"
-  region-not-working: "Sua região esta precisando de algo"
+  region-working: "Sua região esta funcionando corretamente"
+  region-not-working: "Tem algo faltando em sua região"
   owner: Dono
   member: Membro
   guest: Convidado
   recruiter: Recrutador
-  set-owner: Definir Dono
-  set-member: Definir Membro
-  set-guest: Definir Convidado
-  remove-member: Remover Membro
-  add-member-region: "Você é agora um membro de $1"
-  member-added-region: "$1 agora é um membro de sua $2"
-  owner-description: "Donos podem fazer tudo na região"
-  guest-description: "Convidados podem usar portas e botões na região"
-  member-description: "Membros podem construir e usar a região"
+  set-owner: Definir dono
+  set-member: Definir membro
+  set-guest: Definir convidado
+  remove-member: Remover membro
+  leave-town: Sair da vila
+  you-left-town: "Você saiu de $1"
+  add-member-region: "Você foi definido como membro de $1"
+  member-added-region: "$1 é agora um membro de sua $2"
+  owner-description: "Donos podem fazer qualquer coisa na região"
+  guest-description: "Convidados podem abrir portas e usar botões na região"
+  member-description: "Membros podem construir e utilizar a região"
   remove-member-region: "Você não é mais um membro de $1"
   member-removed-region: "$1 não é mais um membro de $2"
-  add-owner-region: "Você é agora um dono de $1"
+  add-owner-region: "Você foi definido como dono de1 $1"
   owner-added-region: "$1 é agora um dono de sua $2"
-  add-guest-region: "Você é agora um convidado de $1"
+  add-guest-region: "Você foi definido como convidado de $1"
   guest-added-region: "$1 é agora um convidado de sua $2"
-  invite-owner-region: "Você se tornou um membro de $1"
-  owner-invited-region: "$1 foi adicionado a sua $2"
-  stand-in-region: "Por favor $1 esteja em uma região"
-  town-instructions: "Para criar uma $1, use /cv town NomeDaCidade"
+  #NEED MORE INFORMATION
+  invite-owner-region: "You have been become a member of $1"
+  #NEED MORE INFORMATION
+  owner-invited-region: "$1 foi adicionado em sua $2"
+  stand-in-region: "Por favor, faça com que $1 esteja na região"
+  create: Criar
+  town-instructions: "Para criar $1, use /cv town NomeDaVila"
   town-enter: "Você entrou em $1"
   town-exit: "Você saiu de $1"
+  new-town-member: "$1 se juntou a $2"
+  must-be-built-on-top: "Uma $1 precisa ser construída em cima de uma $2"
+  town-power: "Poder: $1/$2"
+  port-warmup: "Você será teletransportado em $1s"
+  teleported: "Você foi teletransportado!"
+  location-set: "$1 local selecionado"
+  rename-town: "Renomear vila"
+  rename-desc: "Use /cv rename nomeVelho nomeNovo"
+  town-renamed: "Sua vila foi renomeada de $1 para $2"
+  bounty-set: "Uma recompensa foi colocada em $1 por $2"
+  bounty-bonus: "Você coletou a recompensa de $1"
+  add-friend: "Adicionar amigo"
+  remove-friend: "Remover amigo"
+  friend-added: "$1 foi adicionado a sua lista de amigos"
+  friend-removed: "$1 foi removido da sua lista de amigos"
+  bounty: "Colocar recompensa: /cv bounty $1 quantidade"
+  town-ally: "Definir $1 como aliados"
+  town-unally: "Definir $1 como inimigos"
+  town-ally-invites: "Você tem pedidos de alianças"
+  town-ally-request-sent: "Uma proposta de aliança foi enviada a $1"
+  town-ally-request-accepted: "Uma aliança foi formada entre $1 e $2"
+  town-ally-request-denied: "A proposta de aliança com $1 foi rejeitada"
+  town-ally-removed: "A aliança entre $1 e $2 foi dissolvida"
+  region-evolved: "Sua $1 evoluiu para uma $2"
+  anti-camp-active: "O anti-camp de $1 foi ativado"
+  anti-camp-expired: "O anti-camp de $1 acabou"
   
   #errors
   no-region-type-found: "Nenhuma região encontrada para $1"
-  building-too-big: "Sua construção é muito grande para ser $1"
+  building-too-big: "Sua construção é muito grande para ser uma $1"
   no-required-blocks: "Você não colocou todos os blocos requeridos para $1"
   cant-build-on-region: "Você não pode construir uma $1 em cima de uma $2"
   rebuild-required: "Você precisa construir uma $1 em cima de uma $2"
   prevent-civs-item-share: "Você não tem permissão para compartilhar itens de Civs"
   region-protected: "Esta região esta protegida"
-  region-destroyed: "A região $1 foi destruida!"
-  specify-player-town: "Por favor, especifique um jogador de uma cidade"
-  specify-town-name: "Por favor, especifique um nome de cidade"
+  region-destroyed: "A região $1 foi destruída!"
+  specify-player-town: "Por favor, especifique um jogador de uma vila"
+  specify-town-name: "Por favor, especifique um nome de vila"
   specify-player-region: "Por favor, especifique um jogador e uma região"
-  town-not-exist: "$1 não é uma cidade"
+  town-not-exist: "$1 não é uma vila"
   no-permission-invite: "Você não tem permissão para convidar pessoas para $1"
   player-not-online: "$1 não esta Online"
   invite-player: "$1 gostaria de te convidar para juntar-se a $2 $3"
@@ -292,7 +361,48 @@ pt_br:
   class-changed: "Sua classe mudou para $1"
   not-enough-money: "Você não tem $$1"
   not-allowed-place: "Você não tem permissão para colocar $1"
-  hold-town: "Por favor, segure um Item de Cidade"
+  hold-town: "Por favor, segure um item de vila"
+  no-commands-in-jail: "Você não pode usar comandos na prisão por mais $1"
+  mana-use-exp: "Você não pode usar isso sem estar com a mana cheia"
+  building-requires-2space: "Essa construção requer 2 blocos de ar em cima do baú central"
+  missing-blocks-build: "Você precisa colocar esses blocos que faltam para construir uma $1"
+  in-combat: "Você não pode fazer isso em combate"
+  cooldown: "Isso esta em recarga por mais $1s"
+  need-more-health: "Você precisa de mais $1 de vida para fazer isso"
+  need-more-stamina: "Você precisa de mais $1 de energia para fazer isso"
+  need-more-mana: "Você precisa de mais $1 de mana para fazer isso"
+  port-not-found: "Teletransportador não encontrado"
+  region-missing-upkeep-items: "Região não tem os itens necessários"
+  raid-target-lost: "Não existe vila com nome de $1 na área de $2 blocos"
+  searching-for-target: "Procurando por alvo de teletransportador de ataque..."
+  raid-target-blocked: "Teletransportador de ataque bloqueado"
+  raid-porter-warning: "ALERTA! $1 criou um $2 atacando $3"
+  raid-remote: "Foi dado a voCê um item para controlar $1"
+  raid-sign: "Você precisa de uma placa com o nome da vila alvo em cima do baú"
+  invalid-target: "Alvo inválido"
+  raid-target-inside-region: "Você não pode definir um local dentro de uma região"
+  req-build-inside-town: "Essa $1 precisa ser construída dentro de uma $2"
+  missing-region-requirements: "Sua $1 esta com falta de construções requeridas"
+  friendly-fire: "Você não pode atacar alguém da sua lista de amigos"
+  region-limit-reached: "Um $1 só pode ter $2 $3"
+  region-in-biome: "Você não pode construir uma $1 em um $2"
+  not-enough-housing: "Você precisa de mais habitações para convidar mais jogadores"
+  not-member-port: "Você não é um membro deste teletransportador"
+  
+  #death
+  repeat-kill: "$1 foi morto recentemente. Nenhum ponto adquirido."
+  kill-streak: "$1 esta em uma killstreak de $2"
+  kill-joy: "$1 acabou com a killstreak de $2 de $3"
+  death: "Você perdeu $1 pontos por morrer"
+  kill: "Vítima: $1"
+  low-health: "Bônus por vida baixa: $1"
+  killstreak-points: "Bônus por Killstreak: $1"
+  killjoy-points: "Bônus por Killjoy: $1"
+  total-points: "Total de pontos: $1"
+  karma: "Karma: $1"
+  karma-gained: "Karma: +$1, $2 de dinheiro ganho"
+  karma-lost: "Karma: -$1, $2 de dinheiro perdido"
+  
 es:
   name: Spanish
   icon: YELLOW_WOOL
