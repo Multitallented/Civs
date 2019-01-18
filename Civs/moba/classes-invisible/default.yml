@@ -1,0 +1,16 @@
+type: class
+icon: STONE
+name: Default
+
+items: []
+# - hunger
+
+shop:
+- archer
+# - barbarian
+# - burglar
+# - swordsage
+# - farmer
+# - miner
+# - fisherman
+# - builder
