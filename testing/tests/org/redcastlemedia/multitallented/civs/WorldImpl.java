@@ -243,7 +243,7 @@ public class WorldImpl implements World {
 
     @Override
     public UUID getUID() {
-        return null;
+        return UUID.fromString("d2460330-f815-4339-9b11-cf10755ccef9");
     }
 
     @Override

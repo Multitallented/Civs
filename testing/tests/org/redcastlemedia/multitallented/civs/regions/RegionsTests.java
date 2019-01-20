@@ -87,7 +87,13 @@ public class RegionsTests {
 
     @Test
     public void stringToLocationShouldWork() {
-        assertEquals(933, Region.idToLocation("world~960~72~933").getZ(), 0.01);
+        assertEquals(933, Region.idToLocation("d2460330-f815-4339-9b11-cf10755ccef9~960~72~933").getZ(), 0.01);
+    }
+
+    @Test
+    public void stringToLocationShouldHandleDecimals() {
+        Location location = new Location(Bukkit.getWorld("world"), -809.9937, 65, -781);
+        assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~-809~65~-781", Region.locationToString(location));
     }
 
     @Test
