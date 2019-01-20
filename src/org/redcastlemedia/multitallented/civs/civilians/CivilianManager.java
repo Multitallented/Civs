@@ -147,6 +147,13 @@ public class CivilianManager {
             if (civConfig.isSet("last-karma-depreciation")) {
                 civilian.setLastKarmaDepreciation(civConfig.getLong("last-karma-depreciation", -1));
             }
+            if (civConfig.isSet("friends")) {
+                HashSet<UUID> friendSet = new HashSet<>();
+                for (String uuidString : civConfig.getStringList("friends")) {
+                    friendSet.add(UUID.fromString(uuidString));
+                }
+                civilian.setFriends(friendSet);
+            }
 
             ItemManager.getInstance().addMinItems(civilian);
 
@@ -237,6 +244,15 @@ public class CivilianManager {
                 }
             } else {
                 civConfig.set("bounties", null);
+            }
+            if (civilian.getFriends() != null && !civilian.getFriends().isEmpty()) {
+                ArrayList<String> friendList = new ArrayList<>();
+                for (UUID uuid : civilian.getFriends()) {
+                    friendList.add(uuid.toString());
+                }
+                civConfig.set("friends", friendList);
+            } else {
+                civConfig.set("friends", null);
             }
 
             for (CivItem item : civilian.getExp().keySet()) {
