@@ -88,13 +88,13 @@ public class CivilianListener implements Listener {
         TownManager.getInstance().clearInvite(uuid);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianGainExp(PlayerExpChangeEvent event) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         civilian.setExpOrbs(event.getAmount());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianUseExp(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
@@ -112,7 +112,7 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
         if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
@@ -136,7 +136,7 @@ public class CivilianListener implements Listener {
             return;
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianDispense(BlockDispenseEvent event) {
         ItemStack is = event.getItem();
         if (!CVItem.isCivsItem(is)) {
@@ -265,7 +265,7 @@ public class CivilianListener implements Listener {
         blockLogger.putBlock(event.getBlock().getLocation(), cvItem);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;

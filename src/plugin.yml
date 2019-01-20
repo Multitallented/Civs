@@ -3,12 +3,14 @@ database: false
 description: Allows you to create structures and towns.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
-startup: postworld
+load: POSTWORLD
 version: 0.0.1-b001
 api-version: 1.13
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
+- My_Worlds
+- MultiverseCore
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv', 'towny', 'fa', 'f', 'faction']

@@ -131,12 +131,24 @@ public class Region {
         return locationToString(location);
     }
     public static String locationToString(Location location) {
-        //TODO test this
-        return location.getWorld().getName() + "~" + (int) location.getX() + "~" + (int) location.getY() + "~" + (int) location.getZ();
+        if (location == null || location.getWorld() == null) {
+            return null;
+        }
+        return location.getWorld().getUID().toString() + "~" + (int) location.getX() + "~" + (int) location.getY() + "~" + (int) location.getZ();
     }
     public static Location idToLocation(String id) {
         String[] idSplit = id.split("~");
-        return new Location(Bukkit.getWorld(idSplit[0]),
+        if (idSplit.length < 4) {
+            return null;
+        }
+        World world = Bukkit.getWorld(UUID.fromString(idSplit[0]));
+        if (world == null) {
+            world = Bukkit.getWorld(idSplit[0]);
+        }
+        if (world == null) {
+            Civs.logger.severe("Null world for " + idSplit[0] + ", " + idSplit.length);
+        }
+        return new Location(world,
                 Double.parseDouble(idSplit[1]),
                 Double.parseDouble(idSplit[2]),
                 Double.parseDouble(idSplit[3]));

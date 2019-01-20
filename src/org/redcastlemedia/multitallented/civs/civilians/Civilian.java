@@ -74,6 +74,9 @@ public class Civilian {
     }
     public Set<CivClass> getCivClasses() { return civClasses; }
     public String getLocale() {
+        if (locale == null) {
+            locale = ConfigManager.getInstance().getDefaultLanguage();
+        }
         return locale;
     }
     public void setLocale(String locale) {

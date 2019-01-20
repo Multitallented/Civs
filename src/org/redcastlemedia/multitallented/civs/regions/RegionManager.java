@@ -119,6 +119,9 @@ public class RegionManager {
     public void removeRegion(Region region, boolean broadcast) {
         if (broadcast) {
             for (Player player : Bukkit.getOnlinePlayers()) {
+                if (!region.getLocation().getWorld().equals(player.getWorld())) {
+                    continue;
+                }
                 if (player.getLocation().distance(region.getLocation()) < 25) {
                     Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     player.sendMessage(Civs.getPrefix() +
@@ -230,6 +233,9 @@ public class RegionManager {
     }
 
     public Region getRegionAt(Location location) {
+        if (location == null) {
+            return null;
+        }
         String id = Region.locationToString(location);
         if (regionLocations.get(id) != null) {
             return regionLocations.get(id);

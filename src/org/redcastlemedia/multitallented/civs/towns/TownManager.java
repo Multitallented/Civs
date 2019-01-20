@@ -63,6 +63,9 @@ public class TownManager {
             int radiusY = townType.getBuildRadiusY();
             Location townLocation = town.getLocation();
 
+            if (townLocation.getWorld() == null) {
+                continue;
+            }
             if (!townLocation.getWorld().equals(location.getWorld())) {
                 continue;
             }

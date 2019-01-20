@@ -14,6 +14,8 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -39,7 +41,7 @@ import java.util.Set;
 public class ProtectionHandler implements Listener {
 
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         RegionManager regionManager = RegionManager.getInstance();
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
@@ -128,7 +130,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) {
@@ -145,7 +147,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         if (!event.getBlock().getType().equals(Material.CAKE)) {
             return;
@@ -160,7 +162,7 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         if (event.getBlock().getType() == Material.AIR) {
             return;
@@ -171,7 +173,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
         if (event.getIgnitingBlock() == null) {
             return;
@@ -186,7 +188,7 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
         boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled) {
@@ -198,7 +200,7 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         for (Block block : event.getBlocks()) {
             boolean checkLocation = checkLocation(block, null, "block_build");
@@ -208,7 +210,7 @@ public class ProtectionHandler implements Listener {
             }
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
         boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_build");
         if (setCancelled) {
@@ -236,7 +238,7 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHangingBreakEvent(HangingBreakEvent event) {
         if (event instanceof HangingBreakByEntityEvent) {
             onPaintingBreak((HangingBreakByEntityEvent) event);
@@ -312,6 +314,28 @@ public class ProtectionHandler implements Listener {
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true);
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), "block_break");
+        if (cancel) {
+            event.setCancelled(true);
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBucketEmpty(PlayerBucketFillEvent event) {
+        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), "block_build");
+        if (cancel) {
+            event.setCancelled(true);
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            event.getPlayer().sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
     }
 
@@ -397,14 +421,17 @@ public class ProtectionHandler implements Listener {
         handleInteract(event.getClickedBlock(), event.getPlayer(), event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onMobSpawn(CreatureSpawnEvent event) {
         if (!(event.getEntity() instanceof Monster) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
             return;
         }
-        event.setCancelled(event.isCancelled() || checkLocation(event.getLocation(), null, "deny_mob_spawn"));
+        boolean cancel = event.isCancelled() || checkLocation(event.getLocation(), null, "deny_mob_spawn");
+        if (cancel) {
+            event.setCancelled(true);
+        }
     }
 
     private boolean checkEffectAt(Location location, Player player, String type, int mod) {
