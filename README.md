@@ -18,7 +18,7 @@
 ---
 **Team & Support:** We offer support via GitHub, but if you need to contact us directly, we also have a Discord Channel which you can join by clicking in  the link below, also here is the list of current team members:
  * Multitallented - Developer (Discord: N/A)
- * Louis BloodRose - Documenter (Discord: Louis BloodRose#3819)
+ * Clockworker - Documenter (Discord: Clockworker#3819)
 
 Discord Link: TBA
 
