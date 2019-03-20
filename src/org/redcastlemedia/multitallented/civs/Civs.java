@@ -87,11 +87,11 @@ public class Civs extends JavaPlugin {
     }
 
     private void initScheduler() {
-        Date date = new Date();
-        date.setSeconds(0);
-        date.setMinutes(0);
-        date.setHours(0);
-        long timeUntilDay = (86400000 + date.getTime() - System.currentTimeMillis()) / 50;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        long timeUntilDay = (86400000 + calendar.getTimeInMillis() - System.currentTimeMillis()) / 50;
         System.out.println(getPrefix() + timeUntilDay + " ticks until 00:00");
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
