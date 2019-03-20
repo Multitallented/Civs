@@ -25,7 +25,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 
 import java.io.File;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
