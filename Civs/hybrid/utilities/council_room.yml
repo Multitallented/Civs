@@ -4,6 +4,7 @@ name: Council_Room
 price: 500
 groups:
 - utility
+- town_center
 
 build-reqs:
 - CHEST*4

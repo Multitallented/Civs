@@ -224,15 +224,15 @@ public abstract class Menu implements Listener {
         return returnHistory == null ? new ArrayList<String>() : returnHistory;
     }
 
-    public static void sanitizeCycleItems(HashMap<Integer, List<CVItem>> items) {
+    static void sanitizeCycleItems(HashMap<Integer, List<CVItem>> items) {
         for (Integer i : items.keySet()) {
             sanitizeGUIItems(items.get(i));
         }
     }
-    public static void sanitizeGUIItems(HashMap<Integer, CVItem> items) {
+    static void sanitizeGUIItems(HashMap<Integer, CVItem> items) {
         sanitizeGUIItems(items.values());
     }
-    public static void sanitizeGUIItems(Collection<CVItem> items) {
+    private static void sanitizeGUIItems(Collection<CVItem> items) {
         for (CVItem item : items) {
             Material mat = item.getMat();
             if (mat == Material.RED_BED || mat == Material.BLACK_BED || mat == Material.BLUE_BED
@@ -254,6 +254,8 @@ public abstract class Menu implements Listener {
                 item.setMat(Material.WATER_BUCKET);
             } else if (mat == Material.LAVA) {
                 item.setMat(Material.LAVA_BUCKET);
+            } else if (mat == Material.POTATOES) {
+                item.setMat(Material.POTATO);
             }
         }
     }
@@ -263,7 +265,7 @@ public abstract class Menu implements Listener {
         }
     }
 
-    public synchronized static void addCycleItems(UUID uuid, Inventory inv, int index, List<CVItem> items) {
+    synchronized static void addCycleItems(UUID uuid, Inventory inv, int index, List<CVItem> items) {
 
         boolean startCycleThread = guis.isEmpty();
         if (guis.containsKey(uuid)) {
@@ -294,7 +296,7 @@ public abstract class Menu implements Listener {
 //        history.remove(he.getUniqueId());
     }
 
-    public synchronized static void clearCycleItems(UUID uuid) {
+    private synchronized static void clearCycleItems(UUID uuid) {
         guis.remove(uuid);
     }
     private static class ItemCycleThread extends Thread {

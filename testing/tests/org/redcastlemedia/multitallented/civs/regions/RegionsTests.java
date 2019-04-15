@@ -33,10 +33,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -720,6 +717,21 @@ public class RegionsTests {
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
         assertFalse(playerInteractEvent.isCancelled());
+    }
+
+    @Test
+    public void regionShouldBeFound() {
+        loadRegionTypeCobble();
+        Region region = createNewRegion("cobble");
+        region.getLocation().setX(2390);
+        region.getLocation().setY(65);
+        region.getLocation().setZ(1481);
+        Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(region.getLocation().add(0,1,0),
+                40,
+                500,
+                40,
+                false);
+        assertTrue(!regions.isEmpty());
     }
 
     private Region load2TownsWith1Region(UUID uuid1, boolean allied) {
