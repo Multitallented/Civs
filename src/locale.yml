@@ -137,6 +137,7 @@ en:
   anti-camp-expired: "$1's anti-camp has expired"
 
   #errors
+  cant-place-town: "Type /cv town townNameHere"
   no-region-type-found: "No region type found for $1"
   building-too-big: "You're building is too big to be a $1"
   no-required-blocks: "You haven't placed the required blocks to make a $1"
@@ -340,6 +341,7 @@ pt_br:
   anti-camp-expired: "O anti-camp de $1 acabou"
   
   #errors
+  cant-place-town: "Datilografar /cv town nomeDaCidadeVaiAqui"
   no-region-type-found: "Nenhuma região encontrada para $1"
   building-too-big: "Sua construção é muito grande para ser uma $1"
   no-required-blocks: "Você não colocou todos os blocos requeridos para $1"
@@ -406,12 +408,15 @@ pt_br:
 es:
   name: Spanish
   icon: YELLOW_WOOL
+  cant-place-town: "Escribe /cv town nombreDeLaCiudadVaAqui"
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
   name: French
   icon: BLUE_WOOL
+  cant-place-town: "Tapez /cv town nomDeLaVilleVaIci"
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
   name: German
   icon: BLACK_WOOL
+  cant-place-town: "Tippst /cv town ortsnameGehtHier"
   no-region-type-found: "Keine Regionstyp für $1 gefunden"

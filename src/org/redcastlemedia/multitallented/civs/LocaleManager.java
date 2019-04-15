@@ -97,6 +97,8 @@ public class LocaleManager {
             currentLanguage.put("region-built",
                     localeConfig.getString(langKey + ".region-built", "You have successfully built a $1"));
 
+            currentLanguage.put("cant-place-town",
+                    localeConfig.getString(langKey + "cant-place-town", "Type /cv town townNameHere"));
             currentLanguage.put("no-region-type-found",
                     localeConfig.getString(langKey + ".no-region-type-found", "No region type found for $1"));
             currentLanguage.put("building-too-big",
