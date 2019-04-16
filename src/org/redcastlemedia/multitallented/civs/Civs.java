@@ -62,13 +62,28 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info("v" + VERSION + " is now enabled");
+        getLogger().info(LogInfo.INFO);
+        getLogger().info(LogInfo.PH_VOID);
+
+        getLogger().info(LogInfo.PH_INFO);
+        if (econ != null)
+            getLogger().info(LogInfo.HOOKECON + econ.getName());
+        if (perm != null)
+            getLogger().info(LogInfo.HOOKPERM + perm.getName());
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            getLogger().info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        getLogger().info(LogInfo.PH_INFO);
+
+        getLogger().info(LogInfo.PH_VOID);
+
+        getLogger().info(LogInfo.ENABLED);
     }
 
     @Override
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
-        getLogger().info("v" + VERSION + " is now disabled");
+        getLogger().info(LogInfo.DISABLED);
     }
 
 
@@ -175,8 +190,6 @@ public class Civs extends JavaPlugin {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
-            if (econ != null)
-                getLogger().info(Civs.getPrefix() + "Hooked into econ plugin " + econ.getName());
         }
         return econ != null;
     }
@@ -185,15 +198,13 @@ public class Civs extends JavaPlugin {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
-            if (perm != null)
-                getLogger().info(Civs.getPrefix() + "Hooked into perm plugin " + perm.getName());
         }
         return (perm != null);
     }
     private void setupChat()
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().info(Civs.getPrefix() + "Hooked into PlaceholderAPI");
+            //getLogger().info(LogInfo.HOOKCHAT);
             new PlaceHook();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
@@ -212,7 +223,7 @@ public class Civs extends JavaPlugin {
         return perm;
     }
     public static String getPrefix() {
-        return ChatColor.GREEN + "[" + NAME + "] ";
+        return "[" + NAME + "] ";
     }
     public static synchronized Civs getInstance() {
         return civs;
