@@ -70,8 +70,7 @@ public class Civs extends JavaPlugin {
             getLogger().info(LogInfo.HOOKECON + econ.getName());
         if (perm != null)
             getLogger().info(LogInfo.HOOKPERM + perm.getName());
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
-        {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             getLogger().info(LogInfo.HOOKCHAT + "PlaceholderAPI");
         }
         getLogger().info(LogInfo.PH_INFO);
