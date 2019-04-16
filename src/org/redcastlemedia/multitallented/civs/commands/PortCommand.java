@@ -83,7 +83,7 @@ public class PortCommand implements CivCommand {
 
         int j = -1;
         Region r = null;
-        Location destination = null;
+        Location destination;
         if (args[0].equalsIgnoreCase("port") && args.length > 1) {
             //Check if region is a port
             try {
@@ -138,7 +138,10 @@ public class PortCommand implements CivCommand {
         } else {
             return true;
         }
-        destination = r.getLocation().add(0, 1,0);
+        destination = new Location(r.getLocation().getWorld(),
+                r.getLocation().getX(),
+                r.getLocation().getY() + 1,
+                r.getLocation().getZ());
 
         //Check to see if the region has enough reagents
 //        if (r.getEffects().get("port") != null && !r.hasUpkeepItems()) {
@@ -154,12 +157,12 @@ public class PortCommand implements CivCommand {
         final Location l = destination;
 
         long delay = 1L;
-        long warmup = ConfigManager.getInstance().getPortWarmup() * 50;
+        long warmup = ConfigManager.getInstance().getPortWarmup() * 20;
         if (warmup > 0) {
             delay = warmup;
         }
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                "port-warmup").replace("$1", (warmup / 50) + ""));
+                "port-warmup").replace("$1", (warmup / 20) + ""));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (int) warmup, 2));
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
