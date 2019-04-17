@@ -77,7 +77,7 @@ public class Civs extends JavaPlugin {
 
         getLogger().info(LogInfo.PH_VOID);
 
-        getLogger().info(LogInfo.ENABLED);;
+        getLogger().info(LogInfo.ENABLED);
     }
 
     @Override
