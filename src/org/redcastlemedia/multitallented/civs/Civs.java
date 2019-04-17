@@ -222,8 +222,7 @@ public class Civs extends JavaPlugin {
     public static Permission getPerm() {
         return perm;
     }
-    public static String getPrefix() {
-        return "[" + NAME + "] ";
+    public static String getPrefix() { return ChatColor.GREEN + "[" + NAME + "] ";
     }
     public static synchronized Civs getInstance() {
         return civs;
