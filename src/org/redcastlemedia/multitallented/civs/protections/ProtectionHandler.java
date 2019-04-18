@@ -50,7 +50,7 @@ public class ProtectionHandler implements Listener {
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
         }
-        if (event.isCancelled() && event.getPlayer() != null) {
+        if (event.isCancelled()) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));

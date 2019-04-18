@@ -1,19 +1,32 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import net.minecraft.server.v1_13_R2.StructureBoundingBox;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
-import org.bukkit.block.data.type.StructureBlock;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
@@ -22,7 +35,6 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.PortMenu;
 import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
@@ -32,11 +44,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
-
-import java.util.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class RegionsTests {
     private RegionManager regionManager;
@@ -70,7 +77,7 @@ public class RegionsTests {
     @Test
     public void regionIdShouldBeAccurate() {
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        assertEquals("world~0~0~0", Region.locationToString(location));
+        assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~0~0~0", Region.locationToString(location));
     }
 
     @Test
@@ -79,7 +86,7 @@ public class RegionsTests {
         Location location = new Location(Bukkit.getWorld("world"), 960, 72, 933);
         Region region = new Region("cobble", new HashMap<>(), location, getRadii(),
                 new HashMap<>(), 0);
-        assertEquals("world~960~72~933", region.getId());
+        assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~960~72~933", region.getId());
     }
 
     @Test

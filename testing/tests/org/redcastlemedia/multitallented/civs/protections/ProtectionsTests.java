@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -48,9 +49,7 @@ public class ProtectionsTests {
         new RegionManager();
         new TownManager();
         block = mock(Block.class);
-        World world = mock(World.class);
-        when(world.getName()).thenReturn("world");
-        when(block.getLocation()).thenReturn(new Location(world, 0, 0,0));
+        when(block.getLocation()).thenReturn(new Location(TestUtil.world, 0, 0,0));
     }
 
     @Test
@@ -66,9 +65,11 @@ public class ProtectionsTests {
     public void blockBreakInProtectionShouldBeCancelled() {
         RegionsTests.loadRegionTypeCobble();
         Player player = mock(Player.class);
+        when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid = new UUID(1, 2);
         when(player.getUniqueId()).thenReturn(uuid);
         Player player2 = mock(Player.class);
+        when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 

@@ -16,11 +16,11 @@ public class PlaceHook extends PlaceholderHook {
     }
 
     @Override
-    public String onRequest(OfflinePlayer offlinePlayer, String params) {
-        if (offlinePlayer == null) {
+    public String onPlaceholderRequest(Player player, String params) {
+        if (player == null) {
             return "";
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(offlinePlayer.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         return getReplacement(civilian);
     }
 
@@ -43,12 +43,5 @@ public class PlaceHook extends PlaceholderHook {
             }
             return highestTown == null ? "" : highestTown.getName();
         }
-    }
-
-    @Override
-    public String onPlaceholderRequest(Player p, String params) {
-        if (p == null) { return ""; }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-        return getReplacement(civilian);
     }
 }
