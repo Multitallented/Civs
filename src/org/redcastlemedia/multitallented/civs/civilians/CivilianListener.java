@@ -198,7 +198,6 @@ public class CivilianListener implements Listener {
         }
         UUID uuid = null;
         if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
-            System.out.println("null lore");
             uuid = UUID.fromString(cvItem.getLore().get(0));
         }
         blockLogger.removeBlock(event.getBlock().getLocation());

@@ -112,10 +112,8 @@ public class RegionActionMenu extends Menu {
         } catch (NullPointerException npe) {
             if (region == null) {
                 Civs.logger.severe("Unable load null region");
-                System.out.println("Unable load null region");
             } else {
                 Civs.logger.severe("Unable to load region type " + region.getType());
-                System.out.println("Unable to load region type " + region.getType());
             }
             return inventory;
         }

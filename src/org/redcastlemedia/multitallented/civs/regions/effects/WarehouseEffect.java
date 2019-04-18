@@ -173,7 +173,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
             File dataFile = new File(dataFolder, r.getId() + ".yml");
             if (!dataFile.exists()) {
-                System.out.println("[Townships] data file not found " + r.getId() + ".yml");
+                Civs.logger.severe("Data file not found " + r.getId() + ".yml");
                 return;
             }
             FileConfiguration config = new YamlConfiguration();

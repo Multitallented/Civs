@@ -72,7 +72,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).severe(Matchers.anyString());
@@ -80,7 +79,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).warning(Matchers.anyString());
@@ -88,7 +86,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).info(Matchers.anyString());
