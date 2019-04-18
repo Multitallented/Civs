@@ -57,6 +57,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- https://github.com/Shynixn/StructureBlockLib -->
         <dependency>
             <groupId>com.github.shynixn.structureblocklib</groupId>
             <artifactId>structureblocklib-bukkit-core</artifactId>
