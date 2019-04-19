@@ -13,7 +13,7 @@ build-reqs:
 - g:door*1
 - CHEST*2
 - FURNACE*2
-- PRISMARINE*4
+- PRISMARINE_BRICKS*4
 
 build-radius: 4
 
