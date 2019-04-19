@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -27,6 +28,14 @@ public class PlaceHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
+        if (player == null) {
+            return "";
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        return getReplacement(civilian);
+    }
+    @Override
+    public String onPlaceholderRequest(Player player, String identifier) {
         if (player == null) {
             return "";
         }
