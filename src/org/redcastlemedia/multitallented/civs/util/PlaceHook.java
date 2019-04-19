@@ -1,18 +1,17 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
-import org.bukkit.OfflinePlayer;
+import me.clip.placeholderapi.external.EZPlaceholderHook;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-public class PlaceHook extends PlaceholderHook {
+public class PlaceHook extends EZPlaceholderHook {
     public PlaceHook() {
-        PlaceholderAPI.registerPlaceholderHook("civtownname", this);
+        super(Civs.getInstance(), "civtownname");
     }
 
     @Override
