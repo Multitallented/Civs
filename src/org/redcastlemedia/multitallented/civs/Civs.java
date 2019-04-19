@@ -205,7 +205,7 @@ public class Civs extends JavaPlugin {
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             //getLogger().info(LogInfo.HOOKCHAT);
-            new PlaceHook().register();
+            new PlaceHook();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {
