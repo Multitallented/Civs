@@ -28,19 +28,21 @@ public class PlaceHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
-        if (player == null) {
-            return "";
-        }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return getReplacement(civilian);
+        return "working";
+//        if (player == null) {
+//            return "";
+//        }
+//        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+//        return getReplacement(civilian);
     }
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        if (player == null) {
-            return "";
-        }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return getReplacement(civilian);
+        return "alsoworking";
+//        if (player == null) {
+//            return "";
+//        }
+//        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+//        return getReplacement(civilian);
     }
 
     private String getReplacement(Civilian civilian) {
