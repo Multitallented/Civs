@@ -319,7 +319,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), "block_break");
+        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), event.getPlayer(), "block_build");
         if (cancel) {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
@@ -330,7 +330,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketFillEvent event) {
-        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), "block_build");
+        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), event.getPlayer(), "block_break");
         if (cancel) {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
