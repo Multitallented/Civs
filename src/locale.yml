@@ -8,6 +8,7 @@ en:
   language-menu: Select Language
   language-set: "Your language has been set to $1"
   back-button: Back
+  click-info: "Click for more info"
 
   #shop
   shop: Shop

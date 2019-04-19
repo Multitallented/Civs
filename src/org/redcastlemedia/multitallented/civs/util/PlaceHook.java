@@ -4,6 +4,7 @@ package org.redcastlemedia.multitallented.civs.util;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -12,37 +13,40 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 public class PlaceHook extends PlaceholderExpansion {
 
     @Override
+    public boolean canRegister() {
+        return true;
+    }
+
+    @Override
     public String getIdentifier() {
         return "civs";
     }
 
     @Override
     public String getAuthor() {
-        return "Multitallented";
+        return Civs.getInstance().getDescription().getAuthors().toString();
     }
 
     @Override
     public String getVersion() {
-        return "1.0.0";
+        return Civs.getInstance().getDescription().getVersion();
     }
 
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
-        return "working";
-//        if (player == null) {
-//            return "";
-//        }
-//        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-//        return getReplacement(civilian);
+        if (player == null) {
+            return "";
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        return getReplacement(civilian);
     }
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        return "alsoworking";
-//        if (player == null) {
-//            return "";
-//        }
-//        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-//        return getReplacement(civilian);
+        if (player == null) {
+            return "";
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        return getReplacement(civilian);
     }
 
     private String getReplacement(Civilian civilian) {

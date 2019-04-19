@@ -7,7 +7,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -28,7 +30,8 @@ public class RegionListener implements Listener {
             return;
         }
 
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(blockPlaceEvent.getBlockPlaced().getLocation().getWorld().getName())) {
+        if (ConfigManager.getInstance().getBlackListWorlds()
+                .contains(blockPlaceEvent.getBlockPlaced().getLocation().getWorld().getName())) {
             return;
         }
 
@@ -37,9 +40,22 @@ public class RegionListener implements Listener {
         }
         ItemStack heldItem = blockPlaceEvent.getItemInHand();
 
-        if (CVItem.isCivsItem(heldItem)) {
-            regionManager.detectNewRegion(blockPlaceEvent);
+        if (!CVItem.isCivsItem(heldItem)) {
+            return;
         }
+        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+
+        if (civItem.getItemType() == CivItem.ItemType.TOWN) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(blockPlaceEvent.getPlayer().getUniqueId());
+            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "cant-place-town"));
+            return;
+        }
+
+        if (civItem.getItemType() != CivItem.ItemType.REGION) {
+            return;
+        }
+        regionManager.detectNewRegion(blockPlaceEvent);
     }
 
     /**

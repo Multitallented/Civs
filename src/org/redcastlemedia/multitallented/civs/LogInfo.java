@@ -2,16 +2,17 @@ package org.redcastlemedia.multitallented.civs;
 
 public class LogInfo
 {
-    public static String NAME = "Civs";
-    public static String DESC = "A powerful Town plugin for RPG/RTS Themed servers.\n| Allows you to build towns\n| with defenses, farms mines and more.\n|\n| Former HeroStronghold / Townships.";
-    public static String VERSION = "0.0.1";
+    public static String NAME = Civs.getInstance().getDescription().getName();
+    public static String DESC = "A powerful town plugin for RPG/RTS themed servers.\n| Allows you to build towns\n| " +
+            "with defenses, farms mines and more.\n|\n| Formerly HeroStronghold / Townships.";
+    public static String VERSION = Civs.getInstance().getDescription().getVersion();
     public static String AUTHOR = "Multitallented";
     public static String CONTRIBUTORS = "Clockworker";
     public static String ENABLED = NAME + " Version: " + VERSION + " is now enabled!";
     public static String DISABLED = NAME + " Version: " + VERSION + " is now disabled!";
     public static String INFO = "\n"
             + "----------------------------------------------------------------------\n| "
-            + "Welcome to Civs!\n|\n| Plugin Name: " + NAME + "\n| Plugin Version: " + VERSION + "\n| Author: "
+            + "Welcome to " + NAME + "!\n|\n| Plugin Version: " + VERSION + "\n| Author: "
             + AUTHOR + "\n| Contributors: " + CONTRIBUTORS + "\n| Description: " + DESC
             + "\n----------------------------------------------------------------------";
     public static String HOOKECON = "| Hooked into Economy plugin: ";

@@ -119,7 +119,7 @@ public class RegionActionMenu extends Menu {
         }
         //0 Icon
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
-        cvItem.setDisplayName(region.getType() + "@" + region.getId());
+        cvItem.setDisplayName(region.getType() + "@" + region.getLocation().toString());
         ArrayList<String> lore;
         //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
@@ -129,6 +129,10 @@ public class RegionActionMenu extends Menu {
             CVItem cvItemType = regionType.clone();
             cvItemType.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "region-type"));
+            lore = new ArrayList<>();
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "click-info"));
+            cvItemType.setLore(lore);
             inventory.setItem(1, cvItemType.createItemStack());
         }
 
