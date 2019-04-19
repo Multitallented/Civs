@@ -49,6 +49,12 @@ public class UtilTests {
         assertTrue(cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);
     }
     @Test
+    public void cvItemFromStringWithNameShouldSetValuesProperly() {
+        CVItem cvItem = CVItem.createCVItemFromString("PRISMARINE.Jade*2");
+        assertTrue(cvItem.getMat() == Material.PRISMARINE && cvItem.getQty() == 2 &&
+                cvItem.getDisplayName().equals("Jade"));
+    }
+    @Test
     public void cvItemFromStringShouldSetValuesProperly2() {
         CVItem cvItem = CVItem.createCVItemFromString("dark oak log*64");
         assertTrue(cvItem.getMat() == Material.DARK_OAK_LOG && cvItem.getQty() == 64);

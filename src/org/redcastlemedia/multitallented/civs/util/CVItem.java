@@ -61,7 +61,7 @@ public class CVItem {
         for (;;) {
             int asteriskIndex = materialString.indexOf("*");
             int percentIndex = materialString.indexOf("%");
-            int nameIndex = materialString.indexOf("\\.");
+            int nameIndex = materialString.indexOf(".");
             if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex) {
                 splitString = materialString.split("\\*");
                 quantityString = splitString[splitString.length - 1];

@@ -1,20 +1,13 @@
 package org.redcastlemedia.multitallented.civs;
 
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.Multimap;
 
 public class ItemMetaImpl implements ItemMeta {
 
@@ -137,57 +130,6 @@ public class ItemMetaImpl implements ItemMeta {
     public void setUnbreakable(boolean b) {
 
     }
-
-    @Override
-    public boolean hasAttributeModifiers() {
-        return false;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
-        return null;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot) {
-        return null;
-    }
-
-    @Override
-    public Collection<AttributeModifier> getAttributeModifiers(Attribute attribute) {
-        return null;
-    }
-
-    @Override
-    public boolean addAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
-        return false;
-    }
-
-    @Override
-    public void setAttributeModifiers(Multimap<Attribute, AttributeModifier> multimap) {
-
-    }
-
-    @Override
-    public boolean removeAttributeModifier(Attribute attribute) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAttributeModifier(EquipmentSlot equipmentSlot) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
-        return false;
-    }
-
-    @Override
-    public CustomItemTagContainer getCustomTagContainer() {
-        return null;
-    }
-
     @Override
     public ItemMetaImpl clone() {
         return new ItemMetaImpl(displayName, lore);
