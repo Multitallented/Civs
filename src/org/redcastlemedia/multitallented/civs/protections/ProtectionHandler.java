@@ -46,7 +46,7 @@ public class ProtectionHandler implements Listener {
         RegionManager regionManager = RegionManager.getInstance();
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"));
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
         }
@@ -136,7 +136,7 @@ public class ProtectionHandler implements Listener {
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlockPlaced(), event.getPlayer(), "block_build");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), "block_build");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -152,7 +152,7 @@ public class ProtectionHandler implements Listener {
         if (!event.getBlock().getType().equals(Material.CAKE)) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -167,7 +167,7 @@ public class ProtectionHandler implements Listener {
         if (event.getBlock().getType() == Material.AIR) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), null, "block_liquid");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), null, "block_liquid");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -178,7 +178,7 @@ public class ProtectionHandler implements Listener {
         if (event.getIgnitingBlock() == null) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getIgnitingBlock(), event.getPlayer(), "block_fire");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getIgnitingBlock(), event.getPlayer(), "block_fire");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -190,7 +190,7 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -203,7 +203,7 @@ public class ProtectionHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         for (Block block : event.getBlocks()) {
-            boolean checkLocation = checkLocation(block, null, "block_build");
+            boolean checkLocation = shouldBlockAction(block, null, "block_build");
             if (checkLocation) {
                 event.setCancelled(true);
                 break;
@@ -212,7 +212,7 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getBlock(), event.getPlayer(), "block_build");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_build");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -228,7 +228,7 @@ public class ProtectionHandler implements Listener {
         if (event.getRemover() instanceof Player) {
             player = (Player) event.getRemover();
         }
-        boolean setCancelled = event.isCancelled() || checkLocation(event.getEntity().getLocation(), player, "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(), player, "block_break");
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -244,7 +244,7 @@ public class ProtectionHandler implements Listener {
             onPaintingBreak((HangingBreakByEntityEvent) event);
             return;
         }
-        checkLocation(event.getEntity().getLocation(), null, "block_break");
+        shouldBlockAction(event.getEntity().getLocation(), null, "block_break");
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -253,28 +253,28 @@ public class ProtectionHandler implements Listener {
             return;
         }
         boolean setCancelled = !event.isCancelled() &&
-                checkEffectAt(event.getLocation(), null, "block_explosion", 5);
+                shouldBlockActionEffect(event.getLocation(), null, "block_explosion", 5);
         if (setCancelled) {
             event.setCancelled(true);
             return;
         }
         if (event.getEntity() instanceof Creeper) {
-            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_creeper", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_creeper", 5);
         } else if (event.getEntity() instanceof Fireball) {
-            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), null, "block_ghast", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_ghast", 5);
         } else if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
             Player player = null;
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            setCancelled = !event.isCancelled() && checkEffectAt(event.getLocation(), player, "block_tnt", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), player, "block_tnt", 5);
             if (setCancelled && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
-            if (checkEffectAt(event.getLocation(), player, "power_shield", 0)) {
+            if (shouldBlockActionEffect(event.getLocation(), player, "power_shield", 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
                     int powerReduce = 1;
@@ -319,7 +319,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), event.getPlayer(), "block_build");
+        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_build");
         if (cancel) {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
@@ -330,7 +330,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketFillEvent event) {
-        boolean cancel = checkLocation(event.getBlockClicked().getLocation(), event.getPlayer(), "block_break");
+        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_break");
         if (cancel) {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
@@ -366,7 +366,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "door_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "door_use", null));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
@@ -377,7 +377,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF) {
-            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "chest_use"));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
@@ -386,7 +386,7 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "block_break", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_break", null));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
@@ -400,14 +400,14 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
                 mat == Material.OAK_BUTTON) {
-            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "button_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "button_use", null));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         } else {
-            event.setCancelled(event.isCancelled() || checkLocation(clickedBlock, player, "block_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_use", null));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
@@ -428,13 +428,13 @@ public class ProtectionHandler implements Listener {
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
             return;
         }
-        boolean cancel = event.isCancelled() || checkLocation(event.getLocation(), null, "deny_mob_spawn");
+        boolean cancel = event.isCancelled() || shouldBlockAction(event.getLocation(), null, "deny_mob_spawn");
         if (cancel) {
             event.setCancelled(true);
         }
     }
 
-    private boolean checkEffectAt(Location location, Player player, String type, int mod) {
+    private boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -447,22 +447,37 @@ public class ProtectionHandler implements Listener {
             if (role == null || (role.contains("member") && location != region.getLocation())) {
                 continue;
             }
-            return true;
+            return false;
         }
-        return false;
+        Town town = TownManager.getInstance().getTownAt(location);
+        if (town != null) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (!townType.getEffects().keySet().contains(type)) {
+                return true;
+            }
+            if (player == null) {
+                return true;
+            }
+//            String role = town.getPeople().get(player.getUniqueId());
+//            if (role == null || (role.contains("member"))) {
+//                return false;
+//            }
+            return false;
+        }
+        return true;
     }
 
-    protected static boolean checkLocation(Block block, Player player, String type) {
-        return checkLocation(block.getLocation(), player, type);
+    protected static boolean shouldBlockAction(Block block, Player player, String type) {
+        return shouldBlockAction(block.getLocation(), player, type);
     }
-    protected static boolean checkLocation(Block block, Player player, String type, String pRole) {
-        return checkLocation(block.getLocation(), player, type, pRole);
+    protected static boolean shouldBlockAction(Block block, Player player, String type, String pRole) {
+        return shouldBlockAction(block.getLocation(), player, type, pRole);
     }
-    protected static boolean checkLocation(Location location, Player player, String type) {
-        return checkLocation(location, player, type, "member");
+    protected static boolean shouldBlockAction(Location location, Player player, String type) {
+        return shouldBlockAction(location, player, type, "member");
     }
 
-    protected static boolean checkLocation(Location location, String type) {
+    protected static boolean shouldBlockAction(Location location, String type) {
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
@@ -485,7 +500,7 @@ public class ProtectionHandler implements Listener {
         return true;
     }
 
-    protected static boolean checkLocation(Location location, Player player, String type, String pRole) {
+    protected static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

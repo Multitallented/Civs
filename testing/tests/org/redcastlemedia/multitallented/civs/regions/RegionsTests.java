@@ -949,6 +949,7 @@ public class RegionsTests {
         ArrayList<String> reqs = new ArrayList<>();
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_explosion");
         config.set("effects", effects);
         config.set("build-radius", 5);
         ItemManager.getInstance().loadRegionType(config);
