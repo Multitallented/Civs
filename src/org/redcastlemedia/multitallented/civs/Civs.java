@@ -43,7 +43,7 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
-        setupChat();
+        setupPlaceholders();
         setupEconomy();
         setupPermissions();
 
@@ -190,25 +190,20 @@ public class Civs extends JavaPlugin {
         new HousingEffect();
     }
 
-    public boolean setupEconomy() {
+    private void setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
         }
-        return econ != null;
     }
-    private boolean setupPermissions()
-    {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
         }
-        return (perm != null);
     }
-    private void setupChat()
-    {
+    public void setupPlaceholders() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            //getLogger().info(LogInfo.HOOKCHAT);
             new PlaceHook().register();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);

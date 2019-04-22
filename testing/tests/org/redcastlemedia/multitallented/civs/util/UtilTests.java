@@ -102,7 +102,7 @@ public class UtilTests {
                 1, 1, 0, -1);
         TownManager.getInstance().addTown(town);
         PlaceHook placeHook = new PlaceHook();
-        assertEquals("mytown", placeHook.onPlaceholderRequest(TestUtil.player, ""));
+        assertEquals("mytown", placeHook.onPlaceholderRequest(TestUtil.player, "townname"));
     }
 
     @Test
@@ -119,6 +119,24 @@ public class UtilTests {
                 8, 5, 0, -1);
         TownManager.getInstance().addTown(town1);
         PlaceHook placeHook = new PlaceHook();
-        assertEquals("mytown2", placeHook.onPlaceholderRequest(TestUtil.player, ""));
+        assertEquals("mytown2", placeHook.onPlaceholderRequest(TestUtil.player, "townname"));
+    }
+
+    @Test
+    public void placeholderKarmaShouldReportCivKarma() {
+        CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.setKarma(6);
+        PlaceHook placeHook = new PlaceHook();
+        assertEquals("6", placeHook.onPlaceholderRequest(TestUtil.player, "karma"));
+    }
+
+    @Test
+    public void placeholderKillsShouldReportCivKills() {
+        CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.setKills(4);
+        PlaceHook placeHook = new PlaceHook();
+        assertEquals("4", placeHook.onPlaceholderRequest(TestUtil.player, "kills"));
     }
 }

@@ -5,12 +5,24 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class PlaceHook extends PlaceholderExpansion {
+
+    private static final String ROOT_ID = "civs";
+    private static final String TOWN_NAME = "townname";
+    private static final String KARMA = "karma";
+    private static final String KILLS = "kills";
+    private static final String KILLSTREAK = "killstreak";
+    private static final String HIGHEST_KILLSTREAK = "highestkillstreak";
+    private static final String DEATHS = "deaths";
+    private static final String POINTS = "points";
+    private static final String HIGHEST_BOUNTY = "highestbounty";
+    private static final String MANA = "mana";
 
     @Override
     public boolean canRegister() {
@@ -19,7 +31,7 @@ public class PlaceHook extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier() {
-        return "civs";
+        return ROOT_ID;
     }
 
     @Override
@@ -38,7 +50,7 @@ public class PlaceHook extends PlaceholderExpansion {
             return "";
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return getReplacement(civilian);
+        return routePlaceholder(civilian, identifier);
     }
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
@@ -46,7 +58,32 @@ public class PlaceHook extends PlaceholderExpansion {
             return "";
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return getReplacement(civilian);
+        return routePlaceholder(civilian, identifier);
+    }
+
+    private String routePlaceholder(Civilian civilian, String identifier) {
+        if (TOWN_NAME.equals(identifier)) {
+            return getReplacement(civilian);
+        } else if (KARMA.equals(identifier)) {
+            return "" + civilian.getKarma();
+        } else if (KILLS.equals(identifier)) {
+            return "" + civilian.getKills();
+        } else if (KILLSTREAK.equals(identifier)) {
+            return "" + civilian.getKillStreak();
+        } else if (HIGHEST_KILLSTREAK.equals(identifier)) {
+            return "" + civilian.getHighestKillStreak();
+        } else if (DEATHS.equals(identifier)) {
+            return "" + civilian.getDeaths();
+        } else if (POINTS.equals(identifier)) {
+            return "" + civilian.getPoints();
+        } else if (MANA.equals(identifier)) {
+            return "" + civilian.getMana();
+        } else if (HIGHEST_BOUNTY.equals(identifier)) {
+            Bounty bounty = civilian.getHighestBounty();
+            return "" + bounty.getIssuer() + " $" + bounty.getAmount();
+        } else {
+            return "";
+        }
     }
 
     private String getReplacement(Civilian civilian) {
