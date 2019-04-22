@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -86,6 +87,15 @@ public class MainMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean civAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+
+        if (civAdmin && BlockLogger.getInstance().getTutorialLocation() == null) {
+            // TODO open menu confirmation to set tutorial location
+        } else if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
+            // TODO open menu confirmation to begin tutorial
+        }
+
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         String locale = civilian.getLocale();
         clearHistory(civilian.getUuid());

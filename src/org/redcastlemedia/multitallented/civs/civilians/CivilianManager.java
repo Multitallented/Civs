@@ -137,7 +137,8 @@ public class CivilianManager {
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs,
+                    civConfig.getBoolean("ask-for-tutorial", true));
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -181,7 +182,7 @@ public class CivilianManager {
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),
                 classes,
-                new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs);
+                new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
