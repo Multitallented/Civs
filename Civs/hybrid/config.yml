@@ -96,4 +96,5 @@ port:
 
 tutorial:
   use-tutorial: true
+  use-guide: true
   url: "https://www.youtube.com/watch?v=QBakYUDSL2I"

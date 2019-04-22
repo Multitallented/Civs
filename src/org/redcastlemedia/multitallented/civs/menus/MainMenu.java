@@ -100,7 +100,7 @@ public class MainMenu extends Menu {
 
 
         //0 Guide
-        if (ConfigManager.getInstance().isUseTutorial()) {
+        if (ConfigManager.getInstance().isUseGuide()) {
             CVItem cvItem4 = new CVItem(Material.ENCHANTED_BOOK, 1, 100,
                     localeManager.getTranslation(locale, "guide"));
             inventory.setItem(i, cvItem4.createItemStack());

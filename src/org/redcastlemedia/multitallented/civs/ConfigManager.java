@@ -70,6 +70,9 @@ public class ConfigManager {
     boolean useTutorial;
 
     @Getter
+    boolean useGuide;
+
+    @Getter
     String tutorialUrl;
 
     public String getDefaultLanguage() {
@@ -244,6 +247,7 @@ public class ConfigManager {
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
             useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
+            useGuide = config.getBoolean("tutorial.use-guide", true);
             tutorialUrl = config.getString("tutorial.url");
 
         } catch (Exception e) {
@@ -300,6 +304,7 @@ public class ConfigManager {
         townGracePeriod = 43200; //12 hours
         useClassesAndSpells = false;
         useTutorial = true;
+        useGuide = true;
     }
 
     public static ConfigManager getInstance() {
