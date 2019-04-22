@@ -8,6 +8,8 @@ en:
   language-menu: Select Language
   language-set: "Your language has been set to $1"
   back-button: Back
+  tutorial-click: "Please watch the Civs guide"
+  tutorial-wiki: "Civs wiki"
 
   #shop
   shop: Shop

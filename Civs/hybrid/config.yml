@@ -93,3 +93,7 @@ port:
   #list of items needed but not consumed
   #reagents: []
   slow-warmup: true
+
+tutorial:
+  use-tutorial: true
+  url: "https://www.youtube.com/watch?v=QBakYUDSL2I"

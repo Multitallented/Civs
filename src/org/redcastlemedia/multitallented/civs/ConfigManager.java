@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.Getter;
+
 public class ConfigManager {
 
 
@@ -63,6 +65,12 @@ public class ConfigManager {
     boolean allowFoodHealInCombat;
     long townGracePeriod;
     boolean useClassesAndSpells;
+
+    @Getter
+    boolean useTutorial;
+
+    @Getter
+    String tutorialUrl;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -235,6 +243,8 @@ public class ConfigManager {
             allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
             useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
+            useTutorial = config.getBoolean("tutorial.use-tutorial", true);
+            tutorialUrl = config.getString("tutorial.url");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -289,6 +299,7 @@ public class ConfigManager {
         allowFoodHealInCombat = true;
         townGracePeriod = 43200; //12 hours
         useClassesAndSpells = false;
+        useTutorial = true;
     }
 
     public static ConfigManager getInstance() {

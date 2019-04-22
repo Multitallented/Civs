@@ -433,6 +433,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".cant-repair-item", "That item isn't something you can repair here"));
             currentLanguage.put("not-member-port",
                     localeConfig.getString(langKey + ".not-member-port", "You are not a member of this port"));
+            currentLanguage.put("tutorial-click",
+                    localeConfig.getString(langKey + ".tutorial-click", "Please watch the Civs guide"));
+            currentLanguage.put("tutorial-wiki",
+                    localeConfig.getString(langKey + ".tutorial-wiki", "Civs wiki"));
             languageMap.put(langKey, currentLanguage);
         }
     }
