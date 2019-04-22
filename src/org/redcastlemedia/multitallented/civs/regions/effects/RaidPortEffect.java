@@ -41,18 +41,15 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType rt) {
-        System.out.println("create region handler");
         Location l = block.getLocation();
 
         if (!rt.getEffects().containsKey(KEY) && !rt.getEffects().containsKey(CHARGING_KEY)) {
-            System.out.println("no key");
             return true;
         }
 
         Town town = hasValidSign(l, rt, player.getUniqueId());
 
         if (town == null) {
-            System.out.println("invalid sign");
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -69,7 +66,6 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         player.sendMessage(Civs.getPrefix() + ChatColor.RED +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-remote")
                 .replace("$1", rt.getName()));
-        System.out.println("success create region handler");
         return true;
     }
 

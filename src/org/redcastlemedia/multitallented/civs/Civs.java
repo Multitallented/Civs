@@ -43,7 +43,7 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
-        setupChat();
+        setupPlaceholders();
         setupEconomy();
         setupPermissions();
 
@@ -62,22 +62,7 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info(LogInfo.INFO);
-        getLogger().info(LogInfo.PH_VOID);
-
-        getLogger().info(LogInfo.PH_INFO);
-        if (econ != null)
-            getLogger().info(LogInfo.HOOKECON + econ.getName());
-        if (perm != null)
-            getLogger().info(LogInfo.HOOKPERM + perm.getName());
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().info(LogInfo.HOOKCHAT + "PlaceholderAPI");
-        }
-        getLogger().info(LogInfo.PH_INFO);
-
-        getLogger().info(LogInfo.PH_VOID);
-
-        getLogger().info(LogInfo.ENABLED);
+        fancyPrintLog();
     }
 
     @Override
@@ -101,13 +86,32 @@ public class Civs extends JavaPlugin {
         return civCommand.runCommand(commandSender, command, message, args);
     }
 
+    private void fancyPrintLog() {
+        logger.info(LogInfo.INFO);
+        logger.info(LogInfo.PH_VOID);
+
+        logger.info(LogInfo.PH_INFO);
+        if (econ != null)
+            logger.info(LogInfo.HOOKECON + econ.getName());
+        if (perm != null)
+            logger.info(LogInfo.HOOKPERM + perm.getName());
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        logger.info(LogInfo.PH_INFO);
+
+        logger.info(LogInfo.PH_VOID);
+
+        logger.info(LogInfo.ENABLED);
+    }
+
     private void initScheduler() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         long timeUntilDay = (86400000 + calendar.getTimeInMillis() - System.currentTimeMillis()) / 50;
-        System.out.println(getPrefix() + timeUntilDay + " ticks until 00:00");
+        Civs.logger.info(timeUntilDay + " ticks until 00:00");
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
@@ -186,26 +190,21 @@ public class Civs extends JavaPlugin {
         new HousingEffect();
     }
 
-    public boolean setupEconomy() {
+    private void setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
         }
-        return econ != null;
     }
-    private boolean setupPermissions()
-    {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             perm = permissionProvider.getProvider();
         }
-        return (perm != null);
     }
-    private void setupChat()
-    {
+    public void setupPlaceholders() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            //getLogger().info(LogInfo.HOOKCHAT);
-            new PlaceHook();
+            new PlaceHook().register();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {
@@ -222,8 +221,7 @@ public class Civs extends JavaPlugin {
     public static Permission getPerm() {
         return perm;
     }
-    public static String getPrefix() {
-        return "[" + NAME + "] ";
+    public static String getPrefix() { return ChatColor.GREEN + "[" + NAME + "] ";
     }
     public static synchronized Civs getInstance() {
         return civs;

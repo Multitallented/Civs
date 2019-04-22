@@ -17,6 +17,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
@@ -32,6 +33,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -133,11 +135,6 @@ public class CivilianListener implements Listener {
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
-            if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "cant-place-town"));
-            }
             return;
         }
     }
@@ -198,7 +195,6 @@ public class CivilianListener implements Listener {
         }
         UUID uuid = null;
         if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
-            System.out.println("null lore");
             uuid = UUID.fromString(cvItem.getLore().get(0));
         }
         blockLogger.removeBlock(event.getBlock().getLocation());
@@ -286,6 +282,16 @@ public class CivilianListener implements Listener {
                 humanEntity.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
             }
+        }
+    }
+
+    @EventHandler
+    public void onPluginEnable(PluginEnableEvent event) {
+        if (!"PlaceholderAPI".equals(event.getPlugin().getName())) {
+            return;
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceHook().register();
         }
     }
 

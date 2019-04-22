@@ -72,7 +72,6 @@ public class SchedulerTests {
                 continue;
             }
             RegionTickEvent regionTickEvent = (RegionTickEvent) event;
-            System.out.println(regionTickEvent.isHasUpkeep() + ":" + regionTickEvent.isShouldTick());
         }
     }
 

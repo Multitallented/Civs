@@ -2,6 +2,8 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +42,10 @@ public class MainMenu extends Menu {
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
             return;
+        }
+        if (Material.ENCHANTED_BOOK == clickedStack.getType()) {
+            event.getWhoClicked().closeInventory();
+            printTutorial(event.getWhoClicked(), civilian);
         }
         if (itemName.equals(localeManager.getTranslation(locale, "shop"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
@@ -85,12 +91,21 @@ public class MainMenu extends Menu {
         clearHistory(civilian.getUuid());
         boolean useClassesAndSpells = ConfigManager.getInstance().getUseClassesAndSpells();
 
-        int i=1;
+        int i=0;
 
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem cvItem = new CVItem(Material.GRASS_BLOCK, 1, 100, localeManager.getTranslation(locale, "language-menu"));
         inventory.setItem(8, cvItem.createItemStack());
+
+
+        //0 Guide
+        if (ConfigManager.getInstance().isUseTutorial()) {
+            CVItem cvItem4 = new CVItem(Material.ENCHANTED_BOOK, 1, 100,
+                    localeManager.getTranslation(locale, "guide"));
+            inventory.setItem(i, cvItem4.createItemStack());
+        }
+        i++;
 
         //1 Shop
         if (Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop")) {
@@ -134,6 +149,14 @@ public class MainMenu extends Menu {
         inventory.setItem(i, cvItem3.createItemStack());
 
         return inventory;
+    }
+
+    private void printTutorial(HumanEntity player, Civilian civilian) {
+        String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
+        player.sendMessage("-----------------" + Civs.NAME + "-----------------");
+        player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
+        player.sendMessage(tutorialUrl);
+        player.sendMessage("--------------------------------------");
     }
 
 }

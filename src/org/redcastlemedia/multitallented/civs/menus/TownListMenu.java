@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,11 +36,12 @@ public class TownListMenu extends Menu {
         }
         ItemStack itemStack = event.getInventory().getItem(2);
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(
+                itemStack.getItemMeta().getLore().get(0).replaceAll("§", "")));
         int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName().replace("Icon", ""));
         UUID uuid = null;
         if (itemStack.getItemMeta().getLore().size() > 1) {
-            uuid = UUID.fromString(itemStack.getItemMeta().getLore().get(1));
+            uuid = UUID.fromString(itemStack.getItemMeta().getLore().get(1).replaceAll("§", ""));
         }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -111,9 +113,20 @@ public class TownListMenu extends Menu {
         CVItem cvItem = CVItem.createCVItemFromString("STONE");
         cvItem.setDisplayName("Icon" + page);
         List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
+        String uuidString = civilian.getUuid().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : uuidString.toCharArray()) {
+            stringBuilder.append(ChatColor.COLOR_CHAR);
+            stringBuilder.append(c);
+        }
+        lore.add(stringBuilder.toString());
         if (uuid != null) {
-            lore.add(uuid.toString());
+            stringBuilder = new StringBuilder();
+            for (char c : uuid.toString().toCharArray()) {
+                stringBuilder.append(ChatColor.COLOR_CHAR);
+                stringBuilder.append(c);
+            }
+            lore.add(stringBuilder.toString());
         }
         cvItem.setLore(lore);
         inventory.setItem(2, cvItem.createItemStack());

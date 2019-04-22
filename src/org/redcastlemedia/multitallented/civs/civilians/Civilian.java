@@ -13,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.util.*;
 
@@ -313,6 +315,26 @@ public class Civilian {
                 return o1.getAmount() > o2.getAmount() ? 1 : -1;
             }
         });
+    }
+
+    public Bounty getHighestBounty() {
+        Bounty highestBounty = null;
+        for (Bounty bounty : this.bounties) {
+            if (highestBounty == null || highestBounty.getAmount() < bounty.getAmount()) {
+                highestBounty = bounty;
+            }
+        }
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.getPeople().containsKey(uuid)) {
+                continue;
+            }
+            for (Bounty bounty : town.getBounties()) {
+                if (highestBounty == null || highestBounty.getAmount() < bounty.getAmount()) {
+                    highestBounty = bounty;
+                }
+            }
+        }
+        return highestBounty;
     }
 
     public boolean isFriend(Civilian friend) {

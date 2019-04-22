@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -33,6 +34,7 @@ import java.util.logging.Logger;
 import static org.mockito.Mockito.*;
 
 public class TestUtil {
+    public static WorldImpl world;
     public static Block block;
     public static Block block2;
     public static Block block3;
@@ -70,7 +72,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).severe(Matchers.anyString());
@@ -78,7 +79,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).warning(Matchers.anyString());
@@ -86,7 +86,6 @@ public class TestUtil {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] args = invocationOnMock.getArguments();
-                System.out.println(args[0]);
                 return args[0];
             }
         }).when(logger).info(Matchers.anyString());
@@ -127,7 +126,7 @@ public class TestUtil {
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
 //        when(im.getDisplayName()).thenReturn("Civs Cobble");
 
-        WorldImpl world = new WorldImpl("world");
+        world = new WorldImpl("world");
         WorldImpl world2 = new WorldImpl("world2");
 
         UUID uuid = new UUID(1,2);
@@ -136,6 +135,7 @@ public class TestUtil {
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player.getServer()).thenReturn(server);
+        when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
         when(server.getOnlinePlayers()).thenReturn((Collection) new ArrayList<Player>());
 

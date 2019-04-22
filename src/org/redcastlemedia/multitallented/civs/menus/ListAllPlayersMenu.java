@@ -1,11 +1,13 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -35,7 +37,8 @@ public class ListAllPlayersMenu extends Menu {
             return;
         }
         ItemStack itemStack = event.getInventory().getItem(2);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
+        String cUuidString = itemStack.getItemMeta().getLore().get(0).replaceAll("§", "");
+        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(cUuidString));
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -78,7 +81,8 @@ public class ListAllPlayersMenu extends Menu {
                     appendHistory(civilian.getUuid(), MENU_NAME + "," + id);
                 }
                 event.getWhoClicked().closeInventory();
-                UUID uuid = UUID.fromString(event.getCurrentItem().getItemMeta().getLore().get(0));
+                String uuidString = event.getCurrentItem().getItemMeta().getLore().get(0).replaceAll("§", "");
+                UUID uuid = UUID.fromString(uuidString);
                 event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, uuid));
             } else {
                 event.getWhoClicked().closeInventory();
@@ -109,7 +113,13 @@ public class ListAllPlayersMenu extends Menu {
         CVItem cvItem = CVItem.createCVItemFromString("STONE");
         cvItem.setDisplayName("Friend List");
         List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
+        String uuidString1 = civilian.getUuid().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : uuidString1.toCharArray()) {
+            stringBuilder.append(ChatColor.COLOR_CHAR);
+            stringBuilder.append(c);
+        }
+        lore.add(stringBuilder.toString());
         lore.add(page + "");
         if (id != null) {
             lore.add(id.toString());
@@ -147,7 +157,13 @@ public class ListAllPlayersMenu extends Menu {
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             ArrayList<String> lore1 = new ArrayList<>();
-            lore1.add(player.getUniqueId().toString());
+            String uuidString = player.getUniqueId().toString();
+            StringBuilder hiddenUUID = new StringBuilder();
+            for (char c : uuidString.toCharArray()) {
+                hiddenUUID.append(ChatColor.COLOR_CHAR);
+                hiddenUUID.append(c);
+            }
+            lore1.add(hiddenUUID.toString());
             isMeta.setLore(lore1);
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
@@ -175,7 +191,13 @@ public class ListAllPlayersMenu extends Menu {
         CVItem cvItem = CVItem.createCVItemFromString("STONE");
         cvItem.setDisplayName(name == null ? "Player List" : name);
         List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
+        String uuidString1 = civilian.getUuid().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : uuidString1.toCharArray()) {
+            stringBuilder.append(ChatColor.COLOR_CHAR);
+            stringBuilder.append(c);
+        }
+        lore.add(stringBuilder.toString());
         lore.add(page + "");
         if (id != null) {
             lore.add(id);
@@ -219,7 +241,13 @@ public class ListAllPlayersMenu extends Menu {
             Player player = players.get(k);
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             ArrayList<String> lore2 = new ArrayList<>();
-            lore2.add(player.getUniqueId().toString());
+            String uuidString = player.getUniqueId().toString();
+            StringBuilder hiddenUUID = new StringBuilder();
+            for (char c : uuidString.toCharArray()) {
+                hiddenUUID.append(ChatColor.COLOR_CHAR);
+                hiddenUUID.append(c);
+            }
+            lore2.add(hiddenUUID.toString());
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             isMeta.setOwningPlayer(player);

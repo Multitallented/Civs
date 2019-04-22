@@ -38,6 +38,7 @@ public class TownTests {
     @Before
     public void onBefore() {
         townManager = new TownManager();
+        new RegionManager();
     }
 
     @Test
@@ -115,7 +116,7 @@ public class TownTests {
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         protectionHandler.onBlockBreak(blockBreakEvent);
-        if (blockBreakEvent.isCancelled()) {
+        if (!blockBreakEvent.isCancelled()) {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
 //        regionManager.removeRegion(region, false);
@@ -158,6 +159,9 @@ public class TownTests {
         config.set("name", "Hamlet");
         config.set("type", "town");
         config.set("build-radius", 25);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_explosion");
+        config.set("effects", effects);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }
 

@@ -1,27 +1,89 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-public class PlaceHook extends PlaceholderHook {
-    public PlaceHook() {
-        PlaceholderAPI.registerPlaceholderHook("civtownname", this);
+public class PlaceHook extends PlaceholderExpansion {
+
+    private static final String ROOT_ID = "civs";
+    private static final String TOWN_NAME = "townname";
+    private static final String KARMA = "karma";
+    private static final String KILLS = "kills";
+    private static final String KILLSTREAK = "killstreak";
+    private static final String HIGHEST_KILLSTREAK = "highestkillstreak";
+    private static final String DEATHS = "deaths";
+    private static final String POINTS = "points";
+    private static final String HIGHEST_BOUNTY = "highestbounty";
+    private static final String MANA = "mana";
+
+    @Override
+    public boolean canRegister() {
+        return true;
     }
 
     @Override
-    public String onRequest(OfflinePlayer offlinePlayer, String params) {
-        if (offlinePlayer == null) {
+    public String getIdentifier() {
+        return ROOT_ID;
+    }
+
+    @Override
+    public String getAuthor() {
+        return Civs.getInstance().getDescription().getAuthors().toString();
+    }
+
+    @Override
+    public String getVersion() {
+        return Civs.getInstance().getDescription().getVersion();
+    }
+
+    @Override
+    public String onRequest(OfflinePlayer player, String identifier) {
+        if (player == null) {
             return "";
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(offlinePlayer.getUniqueId());
-        return getReplacement(civilian);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        return routePlaceholder(civilian, identifier);
+    }
+    @Override
+    public String onPlaceholderRequest(Player player, String identifier) {
+        if (player == null) {
+            return "";
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        return routePlaceholder(civilian, identifier);
+    }
+
+    private String routePlaceholder(Civilian civilian, String identifier) {
+        if (TOWN_NAME.equals(identifier)) {
+            return getReplacement(civilian);
+        } else if (KARMA.equals(identifier)) {
+            return "" + civilian.getKarma();
+        } else if (KILLS.equals(identifier)) {
+            return "" + civilian.getKills();
+        } else if (KILLSTREAK.equals(identifier)) {
+            return "" + civilian.getKillStreak();
+        } else if (HIGHEST_KILLSTREAK.equals(identifier)) {
+            return "" + civilian.getHighestKillStreak();
+        } else if (DEATHS.equals(identifier)) {
+            return "" + civilian.getDeaths();
+        } else if (POINTS.equals(identifier)) {
+            return "" + civilian.getPoints();
+        } else if (MANA.equals(identifier)) {
+            return "" + civilian.getMana();
+        } else if (HIGHEST_BOUNTY.equals(identifier)) {
+            Bounty bounty = civilian.getHighestBounty();
+            return "" + bounty.getIssuer() + " $" + bounty.getAmount();
+        } else {
+            return "";
+        }
     }
 
     private String getReplacement(Civilian civilian) {
@@ -43,12 +105,5 @@ public class PlaceHook extends PlaceholderHook {
             }
             return highestTown == null ? "" : highestTown.getName();
         }
-    }
-
-    @Override
-    public String onPlaceholderRequest(Player p, String params) {
-        if (p == null) { return ""; }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-        return getReplacement(civilian);
     }
 }

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -21,7 +22,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,10 +50,9 @@ public class ProtectionsTests {
     public void onBefore() {
         new RegionManager();
         new TownManager();
+        new RegionManager();
         block = mock(Block.class);
-        World world = mock(World.class);
-        when(world.getName()).thenReturn("world");
-        when(block.getLocation()).thenReturn(new Location(world, 0, 0,0));
+        when(block.getLocation()).thenReturn(new Location(TestUtil.world, 0, 0,0));
     }
 
     @Test
@@ -66,9 +68,11 @@ public class ProtectionsTests {
     public void blockBreakInProtectionShouldBeCancelled() {
         RegionsTests.loadRegionTypeCobble();
         Player player = mock(Player.class);
+        when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid = new UUID(1, 2);
         when(player.getUniqueId()).thenReturn(uuid);
         Player player2 = mock(Player.class);
+        when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 
@@ -229,5 +233,56 @@ public class ProtectionsTests {
         ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
         checkRegionBlocks.run();
         assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    @Test
+    public void explosionInRegionShouldBeProtected() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        explodeInProtectedRegion(regionLocation, false);
+        assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    @Test
+    public void explosionInTownShouldBeProtected() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        explodeInProtectedRegion(regionLocation, true);
+        assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    private void explodeInProtectedRegion(Location regionLocation, boolean useTown) {
+        Region region;
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        if (useTown) {
+            RegionsTests.loadRegionTypeCobble();
+            region = new Region("cobble", people,
+                    regionLocation,
+                    RegionsTests.getRadii(),
+                    effects,0);
+            TownTests.loadTownTypeHamlet();
+            TownTests.loadTown("testTown", "hamlet", regionLocation);
+        } else {
+            RegionsTests.loadRegionTypeShelter();
+            effects.put("block_explosion", "");
+            region = new Region("cobble", people,
+                    regionLocation,
+                    RegionsTests.getRadii(),
+                    effects,0);
+        }
+        try {
+            when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        } catch (SuccessException e) {
+            // Do nothing
+        }
+        RegionManager.getInstance().addRegion(region);
+        TNTPrimed tntPrimed = mock(TNTPrimed.class);
+        ArrayList<Block> blockList = new ArrayList<>();
+        EntityExplodeEvent event = new EntityExplodeEvent(tntPrimed,
+                regionLocation.add(0, 1,0),
+                blockList,
+                (float) 2);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onEntityExplode(event);
     }
 }

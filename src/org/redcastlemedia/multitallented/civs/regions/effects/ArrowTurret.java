@@ -246,9 +246,9 @@ public class ArrowTurret implements Listener {
         BlockIterator bi = new BlockIterator(shootHere.getWorld(), start, end, 0, (int) shootHere.distance(targetHere));
         while (bi.hasNext()) {
             Block block = bi.next();
-            System.out.println(Civs.getPrefix() + ((int) block.getLocation().getX()) +
-                    ":" + ((int) block.getLocation().getY()) + ":" +
-                    ((int) block.getLocation().getZ()) + " " + !Util.isSolidBlock(block.getType()));
+//            System.out.println(Civs.getPrefix() + ((int) block.getLocation().getX()) +
+//                    ":" + ((int) block.getLocation().getY()) + ":" +
+//                    ((int) block.getLocation().getZ()) + " " + !Util.isSolidBlock(block.getType()));
             if (!Util.isSolidBlock(block.getType())) {
                 return false;
             }

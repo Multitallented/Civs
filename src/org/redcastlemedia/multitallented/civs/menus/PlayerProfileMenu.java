@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -43,7 +44,8 @@ public class PlayerProfileMenu extends Menu {
             return;
         }
 
-        UUID uuid = UUID.fromString(event.getInventory().getItem(0).getItemMeta().getLore().get(0));
+        String cUuidString = event.getInventory().getItem(0).getItemMeta().getLore().get(0).replaceAll("§", "");
+        UUID uuid = UUID.fromString(cUuidString);
         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Civilian cPlayer = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
@@ -102,7 +104,15 @@ public class PlayerProfileMenu extends Menu {
         SkullMeta isMeta = (SkullMeta) is.getItemMeta();
         isMeta.setDisplayName(player.getName());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(player.getUniqueId().toString());
+
+        String uuidString1 = player.getUniqueId().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : uuidString1.toCharArray()) {
+            stringBuilder.append(ChatColor.COLOR_CHAR);
+            stringBuilder.append(c);
+        }
+        lore.add(stringBuilder.toString());
+
         isMeta.setLore(lore);
         isMeta.setOwningPlayer(player);
         is.setItemMeta(isMeta);

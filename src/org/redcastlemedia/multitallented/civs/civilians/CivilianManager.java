@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -213,6 +214,9 @@ public class CivilianManager {
             civConfig.set("items", null);
             for (String currentName : civilian.getStashItems().keySet()) {
                 CivItem civItem = ItemManager.getInstance().getItemType(currentName);
+                if (civItem == null) {
+                    continue;
+                }
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     continue;
                 }
