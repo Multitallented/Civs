@@ -53,6 +53,10 @@ public class Civilian {
 
     @Getter
     @Setter
+    private boolean isInTutorial = false;
+
+    @Getter
+    @Setter
     private boolean askForTutorial;
 
     public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
