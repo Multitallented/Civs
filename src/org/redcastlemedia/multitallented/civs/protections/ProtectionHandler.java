@@ -441,19 +441,19 @@ public class ProtectionHandler implements Listener {
                 continue;
             }
             if (player == null) {
-                continue;
+                return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
             if (role == null || (role.contains("member") && location != region.getLocation())) {
-                continue;
+                return true;
             }
-            return false;
+            return true;
         }
         Town town = TownManager.getInstance().getTownAt(location);
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (!townType.getEffects().keySet().contains(type)) {
-                return true;
+                return false;
             }
             if (player == null) {
                 return true;
@@ -464,7 +464,7 @@ public class ProtectionHandler implements Listener {
 //            }
             return false;
         }
-        return true;
+        return false;
     }
 
     protected static boolean shouldBlockAction(Block block, Player player, String type) {

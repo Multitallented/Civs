@@ -50,6 +50,7 @@ public class ProtectionsTests {
     public void onBefore() {
         new RegionManager();
         new TownManager();
+        new RegionManager();
         block = mock(Block.class);
         when(block.getLocation()).thenReturn(new Location(TestUtil.world, 0, 0,0));
     }
@@ -269,7 +270,11 @@ public class ProtectionsTests {
                     RegionsTests.getRadii(),
                     effects,0);
         }
-        when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        try {
+            when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        } catch (SuccessException e) {
+            // Do nothing
+        }
         RegionManager.getInstance().addRegion(region);
         TNTPrimed tntPrimed = mock(TNTPrimed.class);
         ArrayList<Block> blockList = new ArrayList<>();

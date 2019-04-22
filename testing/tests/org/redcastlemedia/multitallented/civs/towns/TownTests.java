@@ -38,6 +38,7 @@ public class TownTests {
     @Before
     public void onBefore() {
         townManager = new TownManager();
+        new RegionManager();
     }
 
     @Test
@@ -115,7 +116,7 @@ public class TownTests {
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
         protectionHandler.onBlockBreak(blockBreakEvent);
-        if (blockBreakEvent.isCancelled()) {
+        if (!blockBreakEvent.isCancelled()) {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
 //        regionManager.removeRegion(region, false);

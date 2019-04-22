@@ -138,7 +138,7 @@ public class RegionManager {
     }
 
     public void removeRegion(Region region) {
-        regions.get(region.getLocation().getWorld().getName()).remove(region);
+        regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();
         if (civs == null) {
@@ -240,14 +240,14 @@ public class RegionManager {
         if (regionLocations.get(id) != null) {
             return regionLocations.get(id);
         }
-        String worldName = location.getWorld().getName();
-        if (regions.get(worldName) == null || regions.get(worldName).isEmpty()) {
+        UUID worldUuid = location.getWorld().getUID();
+        if (regions.get(worldUuid) == null || regions.get(worldUuid).isEmpty()) {
             return null;
         }
 
         int index;
         double mindex = 0;
-        double maxdex = regions.get(worldName).size() -1;
+        double maxdex = regions.get(worldUuid).size() -1;
         double prevIndex = -5;
         double prevDiff = 999999;
         boolean roundUp = false;
@@ -258,7 +258,7 @@ public class RegionManager {
             } else {
                 index = (int) Math.floor(((maxdex - mindex) / 2) + mindex);
             }
-            Region r = regions.get(worldName).get(index);
+            Region r = regions.get(worldUuid).get(index);
 
             if (withinRegion(r, location)) {
                 return r;
@@ -280,13 +280,13 @@ public class RegionManager {
     }
 
     private Region findRegion(int index1, int index2, Location location, int index) {
-        String worldName = location.getWorld().getName();
+        UUID worldUuid = location.getWorld().getUID();
         for (int i=index1; i<index2; i++) {
             if (i==index) {
                 continue;
             }
-            if (withinRegion(regions.get(worldName).get(i), location)) {
-                return regions.get(worldName).get(i);
+            if (withinRegion(regions.get(worldUuid).get(i), location)) {
+                return regions.get(worldUuid).get(i);
             }
         }
         return null;
