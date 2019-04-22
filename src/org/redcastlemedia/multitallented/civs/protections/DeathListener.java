@@ -8,7 +8,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -45,7 +44,7 @@ public class DeathListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!civilian.isInCombat()) {
-            boolean setCancelled = event.isCancelled() || ProtectionHandler.checkLocation(player.getLocation(), "deny_damage");
+            boolean setCancelled = event.isCancelled() || ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
             if (setCancelled) {
                 event.setCancelled(true);
                 return;
@@ -88,8 +87,8 @@ public class DeathListener implements Listener {
             }
 
             if (!damagerCiv.isInCombat()) {
-                boolean setCancelled = event.isCancelled() || ProtectionHandler.checkLocation(player.getLocation(), "deny_pvp") ||
-                        ProtectionHandler.checkLocation(damager.getLocation(), "deny_pvp");
+                boolean setCancelled = event.isCancelled() || ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_pvp") ||
+                        ProtectionHandler.shouldBlockAction(damager.getLocation(), "deny_pvp");
                 if (setCancelled) {
                     event.setCancelled(true);
                     return;

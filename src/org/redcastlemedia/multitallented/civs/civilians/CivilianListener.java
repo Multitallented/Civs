@@ -133,11 +133,6 @@ public class CivilianListener implements Listener {
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
-            if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "cant-place-town"));
-            }
             return;
         }
     }

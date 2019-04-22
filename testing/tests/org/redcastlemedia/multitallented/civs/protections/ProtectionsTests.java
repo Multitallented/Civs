@@ -22,7 +22,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -230,5 +232,52 @@ public class ProtectionsTests {
         ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
         checkRegionBlocks.run();
         assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    @Test
+    public void explosionInRegionShouldBeProtected() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        explodeInProtectedRegion(regionLocation, false);
+        assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    @Test
+    public void explosionInTownShouldBeProtected() {
+        Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, 0);
+        explodeInProtectedRegion(regionLocation, true);
+        assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
+    }
+
+    private void explodeInProtectedRegion(Location regionLocation, boolean useTown) {
+        Region region;
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        if (useTown) {
+            RegionsTests.loadRegionTypeCobble();
+            region = new Region("cobble", people,
+                    regionLocation,
+                    RegionsTests.getRadii(),
+                    effects,0);
+            TownTests.loadTownTypeHamlet();
+            TownTests.loadTown("testTown", "hamlet", regionLocation);
+        } else {
+            RegionsTests.loadRegionTypeShelter();
+            effects.put("block_explosion", "");
+            region = new Region("cobble", people,
+                    regionLocation,
+                    RegionsTests.getRadii(),
+                    effects,0);
+        }
+        when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());
+        RegionManager.getInstance().addRegion(region);
+        TNTPrimed tntPrimed = mock(TNTPrimed.class);
+        ArrayList<Block> blockList = new ArrayList<>();
+        EntityExplodeEvent event = new EntityExplodeEvent(tntPrimed,
+                regionLocation.add(0, 1,0),
+                blockList,
+                (float) 2);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onEntityExplode(event);
     }
 }

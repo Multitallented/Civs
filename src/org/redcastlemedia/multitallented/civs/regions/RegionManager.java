@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class RegionManager {
-    private HashMap<String, ArrayList<Region>> regions = new HashMap<>();
+    private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
     protected HashMap<String, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
@@ -52,13 +52,13 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
-        String worldName = region.getLocation().getWorld().getName();
-        if (!regions.containsKey(worldName)) {
-            regions.put(worldName, new ArrayList<Region>());
+        UUID worldUuid = region.getLocation().getWorld().getUID();
+        if (!regions.containsKey(worldUuid)) {
+            regions.put(worldUuid, new ArrayList<Region>());
         }
-        regions.get(worldName).add(region);
+        regions.get(worldUuid).add(region);
         regionLocations.put(region.getId(), region);
-        sortRegions(worldName);
+        sortRegions(worldUuid);
         saveRegion(region);
         for (String key : regionCreatedListenerHashMap.keySet()) {
             if (region.getEffects().containsKey(key)) {
@@ -79,7 +79,7 @@ public class RegionManager {
                 if (region == null) {
                     continue;
                 }
-                String worldName = region.getLocation().getWorld().getName();
+                UUID worldName = region.getLocation().getWorld().getUID();
                 if (!regions.containsKey(worldName)) {
                     regions.put(worldName, new ArrayList<Region>());
                 }
@@ -93,7 +93,7 @@ public class RegionManager {
 
     }
 
-    private void sortRegions(String worldName) {
+    private void sortRegions(UUID worldName) {
         Collections.sort(regions.get(worldName),
         new Comparator<Region>() {
             @Override
@@ -110,7 +110,7 @@ public class RegionManager {
 
     public Set<Region> getAllRegions() {
         Set<Region> returnSet = new HashSet<>();
-        for (String worldName : regions.keySet()) {
+        for (UUID worldName : regions.keySet()) {
             returnSet.addAll(regions.get(worldName));
         }
         return returnSet;
@@ -538,13 +538,13 @@ public class RegionManager {
         return getRegionsXYZ(location, modifier, modifier, modifier, useEffects);
     }
     public Set<Region> getRegionsXYZ(Location location, int modifierX, int modifierY, int modifierZ, boolean useEffects) {
-        String worldName = location.getWorld().getName();
+        UUID worldUuid = location.getWorld().getUID();
         HashSet<Region> returnRegions = new HashSet<>();
-        if (this.regions.get(worldName) == null) {
+        if (this.regions.get(worldUuid) == null) {
             return returnRegions;
         }
-        for (int i = this.regions.get(worldName).size() - 1; i>-1; i--) {
-            Region region = this.regions.get(worldName).get(i);
+        for (int i = this.regions.get(worldUuid).size() - 1; i>-1; i--) {
+            Region region = this.regions.get(worldUuid).get(i);
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (!useEffects) {
                 boolean withinX = location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX &&

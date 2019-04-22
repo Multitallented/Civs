@@ -437,6 +437,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".tutorial-click", "Please watch the Civs guide"));
             currentLanguage.put("tutorial-wiki",
                     localeConfig.getString(langKey + ".tutorial-wiki", "Civs wiki"));
+            currentLanguage.put("click-info",
+                    localeConfig.getString(langKey + ".click-info", "Click for more info"));
             languageMap.put(langKey, currentLanguage);
         }
     }

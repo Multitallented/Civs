@@ -158,6 +158,9 @@ public class TownTests {
         config.set("name", "Hamlet");
         config.set("type", "town");
         config.set("build-radius", 25);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_explosion");
+        config.set("effects", effects);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }
 

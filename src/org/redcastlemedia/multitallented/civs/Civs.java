@@ -62,22 +62,7 @@ public class Civs extends JavaPlugin {
 
         initScheduler();
         civs = this;
-        getLogger().info(LogInfo.INFO);
-        getLogger().info(LogInfo.PH_VOID);
-
-        getLogger().info(LogInfo.PH_INFO);
-        if (econ != null)
-            getLogger().info(LogInfo.HOOKECON + econ.getName());
-        if (perm != null)
-            getLogger().info(LogInfo.HOOKPERM + perm.getName());
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().info(LogInfo.HOOKCHAT + "PlaceholderAPI");
-        }
-        getLogger().info(LogInfo.PH_INFO);
-
-        getLogger().info(LogInfo.PH_VOID);
-
-        getLogger().info(LogInfo.ENABLED);
+        fancyPrintLog();
     }
 
     @Override
@@ -99,6 +84,25 @@ public class Civs extends JavaPlugin {
             return true;
         }
         return civCommand.runCommand(commandSender, command, message, args);
+    }
+
+    private void fancyPrintLog() {
+        logger.info(LogInfo.INFO);
+        logger.info(LogInfo.PH_VOID);
+
+        logger.info(LogInfo.PH_INFO);
+        if (econ != null)
+            logger.info(LogInfo.HOOKECON + econ.getName());
+        if (perm != null)
+            logger.info(LogInfo.HOOKPERM + perm.getName());
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        logger.info(LogInfo.PH_INFO);
+
+        logger.info(LogInfo.PH_VOID);
+
+        logger.info(LogInfo.ENABLED);
     }
 
     private void initScheduler() {
@@ -205,7 +209,7 @@ public class Civs extends JavaPlugin {
     {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             //getLogger().info(LogInfo.HOOKCHAT);
-            new PlaceHook();
+            new PlaceHook().register();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {
