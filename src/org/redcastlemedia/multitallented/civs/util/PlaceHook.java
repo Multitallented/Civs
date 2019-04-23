@@ -80,6 +80,9 @@ public class PlaceHook extends PlaceholderExpansion {
             return "" + civilian.getMana();
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
+            if (bounty == null) {
+                return "";
+            }
             return "" + bounty.getIssuer() + " $" + bounty.getAmount();
         } else {
             return "";
