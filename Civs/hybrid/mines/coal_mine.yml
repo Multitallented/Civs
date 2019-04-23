@@ -33,13 +33,19 @@ upkeep:
     output:
     - COAL*6
   1:
-    input:
+    reagents:
     - IRON_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
     output:
     - COAL*8
   2:
-    input:
+    reagents:
     - DIAMOND_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
     output:
     - COAL*12
 

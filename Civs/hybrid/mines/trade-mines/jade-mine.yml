@@ -40,7 +40,7 @@ effects:
 period: daily
 upkeep:
   0:
-    input:
+    reagents:
     - IRON_PICKAXE
     output:
     - EMERALD.Jade*16
