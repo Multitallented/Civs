@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class CivilianTests {
     public void localeTestShouldReturnProperLanguageString() {
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new HashMap<>(), null, new HashMap<CivItem, Integer>(),
-                0, 0,0,0,0, 0, 0);
+                0, 0,0,0,0, 0, 0, false);
 
         assertEquals("No se encontró ningún tipo de región",
                 localeManager.getTranslation(civilian.getLocale(), "no-region-type-found"));
@@ -80,6 +81,19 @@ public class CivilianTests {
         Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
         assertFalse(civilian.isAtMax(itemManager.getItemType("cobble")));
     }
+
+//    @Test
+//    public void highestBountyShouldWork() {
+//        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+//        ArrayList<Bounty> bountyArrayList = new ArrayList<>();
+//        UUID uuid = new UUID(2,6);
+//        bountyArrayList.add(new Bounty(new UUID(2,4),10));
+//        bountyArrayList.add(new Bounty(uuid,20));
+//        civilian.setBounties(bountyArrayList);
+//        PlaceHook placeHook = new PlaceHook();
+//        String placeholder = placeHook.onPlaceholderRequest(TestUtil.player, "highestbounty");
+//        assertEquals(uuid + " $20.0", placeholder);
+//    }
 
     public static void loadCivilian(Player player) {
         CivilianManager.getInstance().loadCivilian(player);
