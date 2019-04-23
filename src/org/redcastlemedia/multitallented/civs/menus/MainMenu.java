@@ -91,9 +91,13 @@ public class MainMenu extends Menu {
         boolean civAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
 
         if (civAdmin && BlockLogger.getInstance().getTutorialLocation() == null) {
-            // TODO open menu confirmation to set tutorial location
+            if (!civilian.isAskForTutorial()) {
+                civilian.setAskForTutorial(true);
+            } else {
+                return StartTutorialMenu.createMenu(civilian, true);
+            }
         } else if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
-            // TODO open menu confirmation to begin tutorial
+            return StartTutorialMenu.createMenu(civilian, false);
         }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);

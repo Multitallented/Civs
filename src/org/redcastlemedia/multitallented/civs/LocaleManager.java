@@ -441,6 +441,14 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".click-info", "Click for more info"));
             currentLanguage.put("guide",
                     localeConfig.getString(langKey + ".guide", "Guide"));
+            currentLanguage.put("start-tutorial",
+                    localeConfig.getString(langKey + ".start-tutorial", "Start Tutorial"));
+            currentLanguage.put("start-tutorial-desc",
+                    localeConfig.getString(langKey + ".start-tutorial-desc", "Complete this short tutorial to receive diamonds"));
+            currentLanguage.put("set-tutorial",
+                    localeConfig.getString(langKey + ".set-tutorial", "Set Tutorial"));
+            currentLanguage.put("set-tutorial-desc",
+                    localeConfig.getString(langKey + ".set-tutorial-desc", "Click this to set the location of the Civs tutorial"));
             languageMap.put(langKey, currentLanguage);
         }
     }

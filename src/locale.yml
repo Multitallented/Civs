@@ -8,6 +8,11 @@ en:
   language-menu: Select Language
   language-set: "Your language has been set to $1"
   back-button: Back
+  start-tutorial: "Start Tutorial"
+  start-tutorial-desc: "Complete this short tutorial to receive diamonds"
+  set-tutorial: "Set Tutorial"
+  set-tutorial-desc: "Click this to set the location of the Civs tutorial"
+  skip: "Skip"
   tutorial-click: "Please watch the Civs guide"
   tutorial-wiki: "Civs wiki"
   click-info: "Click for more info"
