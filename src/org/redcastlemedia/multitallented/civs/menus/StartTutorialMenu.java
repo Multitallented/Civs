@@ -42,7 +42,7 @@ public class StartTutorialMenu extends Menu {
             event.getWhoClicked().closeInventory();
 
             String name = event.getCurrentItem().getItemMeta().getDisplayName();
-            if (name.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "set-tutorial"))) {
+            if (name.equals(localeManager.getTranslation(civilian.getLocale(), "set-tutorial"))) {
                 BlockLogger.getInstance().saveTutorialLocation(event.getWhoClicked().getLocation());
             } else {
                 civilian.setInTutorial(true);

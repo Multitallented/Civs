@@ -8,6 +8,8 @@ en:
   language-menu: Select Language
   language-set: "Your language has been set to $1"
   back-button: Back
+
+  #Tutorial
   start-tutorial: "Start Tutorial"
   start-tutorial-desc: "Complete this short tutorial to receive diamonds"
   set-tutorial: "Set Tutorial"

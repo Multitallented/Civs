@@ -390,6 +390,17 @@ public class ItemManager {
             }
         }
         returnList.removeAll(checkList);
+
+        checkList.clear();
+        for (CivItem currentItem : returnList) {
+            if (currentItem.getItemType() != CivItem.ItemType.FOLDER) {
+                continue;
+            }
+            if (getAllItemsWithParent(civilian, currentItem, true).isEmpty()) {
+                checkList.add(currentItem);
+            }
+        }
+        returnList.removeAll(checkList);
         return returnList;
     }
 
