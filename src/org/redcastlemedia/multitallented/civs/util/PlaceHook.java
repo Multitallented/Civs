@@ -83,6 +83,8 @@ public class PlaceHook extends PlaceholderExpansion {
             Bounty bounty = civilian.getHighestBounty();
             if (bounty == null) {
                 return "";
+            } else if (bounty.getIssuer() == null) {
+                return "Unknown $" + bounty.getAmount();
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(bounty.getIssuer());
             return offlinePlayer.getName() + " $" + bounty.getAmount();
