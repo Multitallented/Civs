@@ -139,56 +139,6 @@ public class ItemMetaImpl implements ItemMeta {
     }
 
     @Override
-    public boolean hasAttributeModifiers() {
-        return false;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
-        return null;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot) {
-        return null;
-    }
-
-    @Override
-    public Collection<AttributeModifier> getAttributeModifiers(Attribute attribute) {
-        return null;
-    }
-
-    @Override
-    public boolean addAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
-        return false;
-    }
-
-    @Override
-    public void setAttributeModifiers(Multimap<Attribute, AttributeModifier> multimap) {
-
-    }
-
-    @Override
-    public boolean removeAttributeModifier(Attribute attribute) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAttributeModifier(EquipmentSlot equipmentSlot) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAttributeModifier(Attribute attribute, AttributeModifier attributeModifier) {
-        return false;
-    }
-
-    @Override
-    public CustomItemTagContainer getCustomTagContainer() {
-        return null;
-    }
-
-    @Override
     public ItemMetaImpl clone() {
         return new ItemMetaImpl(displayName, lore);
     }

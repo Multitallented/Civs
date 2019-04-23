@@ -1,9 +1,16 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -16,7 +23,8 @@ import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Civilian {
 
@@ -43,9 +51,17 @@ public class Civilian {
     private List<Bounty> bounties = new ArrayList<>();
     private long lastKarmaDepreciation;
 
+    @Getter
+    @Setter
+    private boolean isInTutorial = false;
+
+    @Getter
+    @Setter
+    private boolean askForTutorial;
+
     public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-            double points, int karma, int expOrbs) {
+            double points, int karma, int expOrbs, boolean askForTutorial) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -60,6 +76,7 @@ public class Civilian {
         this.karma = karma;
         this.mana = 0;
         this.expOrbs = expOrbs;
+        this.askForTutorial = askForTutorial;
 //        Player player;
 //        try {
 //            player = Bukkit.getPlayer(uuid);

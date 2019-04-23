@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.util;
 
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -80,7 +81,13 @@ public class PlaceHook extends PlaceholderExpansion {
             return "" + civilian.getMana();
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
-            return "" + bounty.getIssuer() + " $" + bounty.getAmount();
+            if (bounty == null) {
+                return "";
+            } else if (bounty.getIssuer() == null) {
+                return "Unknown $" + bounty.getAmount();
+            }
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(bounty.getIssuer());
+            return offlinePlayer.getName() + " $" + bounty.getAmount();
         } else {
             return "";
         }

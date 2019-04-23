@@ -1,6 +1,11 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import com.sun.media.jfxmedia.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,8 +27,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.*;
 
 public class TownCommand implements CivCommand {
     @Override

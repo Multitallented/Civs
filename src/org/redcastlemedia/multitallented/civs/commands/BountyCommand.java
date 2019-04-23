@@ -107,9 +107,11 @@ public class BountyCommand implements CivCommand {
         Civilian targetCiv = CivilianManager.getInstance().getCivilian(target.getUniqueId());
         if (civilian != null) {
             targetCiv.getBounties().add(new Bounty(civilian.getUuid(), amount));
+            CivilianManager.getInstance().saveCivilian(targetCiv);
             Civs.econ.withdrawPlayer(player, amount);
         } else {
             targetCiv.getBounties().add(new Bounty(null, amount));
+            CivilianManager.getInstance().saveCivilian(targetCiv);
             commandSender.sendMessage(Civs.getPrefix() + "Bounty set on " + playerName + " for $" + amount);
         }
         targetCiv.sortBounties();
