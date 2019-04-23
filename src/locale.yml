@@ -15,6 +15,7 @@ en:
   set-tutorial: "Set Tutorial"
   set-tutorial-desc: "Click this to set the location of the Civs tutorial"
   skip: "Skip"
+  tutorial-one: "Welcome to Civs! To start, open your book, go to blueprints, take your shelter, and place it."
   tutorial-click: "Please watch the Civs guide"
   tutorial-wiki: "Civs wiki"
   click-info: "Click for more info"

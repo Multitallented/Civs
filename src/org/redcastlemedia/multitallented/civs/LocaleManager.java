@@ -449,6 +449,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".set-tutorial", "Set Tutorial"));
             currentLanguage.put("set-tutorial-desc",
                     localeConfig.getString(langKey + ".set-tutorial-desc", "Click this to set the location of the Civs tutorial"));
+            currentLanguage.put("tutorial-one",
+                    localeConfig.getString(langKey + ".tutorial-one", "Welcome to Civs! To start, open your book, go to blueprints, take your shelter, and place it."));
             languageMap.put(langKey, currentLanguage);
         }
     }
