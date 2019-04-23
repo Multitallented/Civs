@@ -119,7 +119,7 @@ public class RegionActionMenu extends Menu {
         }
         //0 Icon
         CVItem cvItem = new CVItem(regionType.getMat(), 1);
-        cvItem.setDisplayName(region.getType() + "@" + region.getLocation().toString());
+        cvItem.setDisplayName(region.getType() + "@" + region.getId());
         ArrayList<String> lore;
         //TODO set lore
         inventory.setItem(0, cvItem.createItemStack());
