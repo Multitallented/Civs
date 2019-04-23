@@ -911,6 +911,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_build");
         effects.add("block_break");
+        effects.add("housing:2");
         config.set("build-radius", 5);
         config.set("effects", effects);
         config.set("effect-radius", 7);

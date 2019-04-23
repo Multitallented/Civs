@@ -23,7 +23,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class CommandTests {
+public class LanguageTests {
 
     @BeforeClass
     public static void onBeforeEverything() {
