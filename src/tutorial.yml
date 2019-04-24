@@ -1,0 +1,71 @@
+default:
+- type: build
+  region: shelter
+  messages:
+    en: "First, open your book, go to blueprints, take your shelter, and place it."
+    fr: "Commencez par ouvrir votre livre, allez dans les plans, prenez votre abri et placez-le."
+    es: "Primero, abra su libro, vaya a los planos, tome su refugio y colóquelo."
+    pt_br: "Primeiro, abra seu livro, vá para plantas, pegue seu abrigo e coloque-o."
+    ru: "Сначала откройте свою книгу, зайдите в чертежи, найдите укрытие и разместите его."
+    de: "Öffnen Sie zuerst Ihr Buch, gehen Sie zu den Bauplänen, nehmen Sie Ihre Unterkunft und platzieren Sie es."
+- type: upkeep
+  region: shelter
+  messages:
+    en: "Next, gather 4 bread, 32 carrots, 32 steak, or 32 potatoes. Put them in the shelter chest."
+    fr: "Ensuite, ramassez 4 pains, 32 carottes, 32 steaks ou 32 pommes de terre. Mettez-les dans le coffre de l'abri."
+    es: "Luego, reúne 4 panes, 32 zanahorias, 32 bistecs o 32 papas. Ponlos en el cofre del refugio."
+    pt_br: "Em seguida, reúna 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no baú do abrigo."
+    ru: "Затем соберите 4 хлебов, 32 моркови, 32 стейка или 32 картофеля. Положите их в сундук с укрытием."
+    de: "Als nächstes sammeln Sie 4 Brot, 32 Karotten, 32 Steak oder 32 Kartoffeln. Legen Sie sie in die Schutzkiste."
+- type: buy
+  region: coal_shop
+  messages:
+    en: "The shelter pays you for food, but the coal shop pays more. Open your book, go to the shop, and buy the coal shop."
+    fr: "Le refuge vous paye pour la nourriture, mais le magasin de charbon paie plus. Ouvrez votre livre, allez au magasin et achetez le magasin de charbon."
+    es: "El refugio le paga por la comida, pero la tienda de carbón paga más. Abre tu libro, ve a la tienda y compra la tienda de carbón."
+    pt_br: "O abrigo paga por comida, mas a loja de carvão paga mais. Abra seu livro, vá até a loja e compre a loja de carvão."
+    ru: "Приют платит вам за еду, а угольный магазин платит больше. Откройте свою книгу, идите в магазин и купите угольный магазин."
+    de: "Das Tierheim zahlt Sie für Nahrung, aber der Kohlenladen zahlt mehr. Öffne dein Buch, gehe in den Laden und kaufe den Kohlenladen."
+- type: build
+  region: coal_shop
+  messages:
+    en: "Place 25 wool, 14 fences, and 2 chests. Then place the coal shop."
+    fr: "Placez 25 laines, 14 clôtures et 2 coffres. Ensuite, placez le magasin de charbon."
+    es: "Coloca 25 lanas, 14 vallas, y 2 cofres. A continuación, coloque la tienda de carbón."
+    pt_br: "Coloque 25 lã, 14 cercas e 2 baús. Em seguida, coloque a loja de carvão."
+    ru: "Поместите 25 шерсти, 14 заборов и 2 сундука. Затем разместите угольный цех."
+    de: "Platziere 25 Wolle, 14 Zäune und 2 Truhen. Dann legen Sie den Kohlenladen."
+- type: choose
+  paths:
+  - warrior
+  - builder
+  - merchant
+  names:
+    warrior:
+      en: "Warrior"
+      fr: "Guerrier"
+      es: "Guerrero"
+      pt_br: "Guerreiro"
+      ru: "воин"
+      de: "Krieger"
+    builder:
+      en: "Builder"
+      fr: "Constructeur"
+      es: "Constructor"
+      pt_br: "Construtor"
+      ru: "строитель"
+      de: "Baumeister"
+    merchant:
+      en: "Merchant"
+      fr: "Marchand"
+      es: "Comerciante"
+      pt_br: "Comerciante"
+      ru: "коммерсант"
+      de: "Händler"
+
+warrior:
+-
+builder:
+-
+merchant:
+-
