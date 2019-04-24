@@ -54,3 +54,12 @@ hs_err_pid*
 out/
 *.iml
 mavenVersion.xml
+
+_windows/*
+codestyles/*
+code.style.schemes.xml
+colors.scheme.xml
+debugger.xml
+editor.xml
+vcs.xml
+ide.general.xml
