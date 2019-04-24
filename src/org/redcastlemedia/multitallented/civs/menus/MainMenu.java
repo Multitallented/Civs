@@ -87,17 +87,8 @@ public class MainMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian) {
-        Player player = Bukkit.getPlayer(civilian.getUuid());
-        boolean civAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
-
-        if (civAdmin && BlockLogger.getInstance().getTutorialLocation() == null) {
-            if (!civilian.isAskForTutorial()) {
-                civilian.setAskForTutorial(true);
-            } else {
-                return StartTutorialMenu.createMenu(civilian, true);
-            }
-        } else if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
-            return StartTutorialMenu.createMenu(civilian, false);
+        if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
+            return StartTutorialMenu.createMenu(civilian);
         }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
