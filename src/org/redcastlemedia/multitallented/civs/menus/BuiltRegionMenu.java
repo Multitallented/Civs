@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -39,11 +40,10 @@ public class BuiltRegionMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName() == null) {
             return;
         }
-        String name = event.getCurrentItem().getItemMeta().getDisplayName();
-        String id = name.split("@")[1];
-        Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(id));
+        String name = event.getCurrentItem().getItemMeta().getLore().get(0).replaceAll("§", "");
+        Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(name));
         if (region == null) {
-            Civs.logger.severe("Unable to find region at " + id);
+            Civs.logger.severe("Unable to find region at " + name);
             return;
         }
         appendHistory(civilian.getUuid(), MENU_NAME);
@@ -64,10 +64,18 @@ public class BuiltRegionMenu extends Menu {
         for (Region region : regions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem = new CVItem(regionType.getMat(), 1);
-            cvItem.setDisplayName(region.getType() + "@" + region.getId());
+            cvItem.setDisplayName(region.getType() + "@" + region.getLocation().getWorld().getName() + ":" +
+                    (int) region.getLocation().getX() + "x, " +
+                    (int) region.getLocation().getY() + "y, " +
+                    (int) region.getLocation().getZ() + "z");
             List<String> lore = new ArrayList<>();
-
-            //TODO set lore
+            String id = region.getId();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (char c : id.toCharArray()) {
+                stringBuilder.append(ChatColor.COLOR_CHAR);
+                stringBuilder.append(c);
+            }
+            lore.add(stringBuilder.toString());
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());
             i++;

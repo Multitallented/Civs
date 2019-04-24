@@ -34,8 +34,8 @@ upkeep:
     payout: 7.8
   3:
     input:
-    - MELON_SLICE*32 #.11
-    payout: 10.56
+    - COOKED_BEEF*32 #.10
+    payout: 10.24
 
 description:
   en: "A safe place to store your items, and earn some money every 15 minutes."

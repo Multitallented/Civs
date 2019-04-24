@@ -10,7 +10,7 @@ groups:
 build-reqs:
 - g:fence*14
 - CHEST*2
-- g:wool*20
+- g:wool*25
 
 build-radius: 2
 
