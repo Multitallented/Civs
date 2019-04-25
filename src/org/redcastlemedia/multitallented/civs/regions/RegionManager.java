@@ -93,6 +93,10 @@ public class RegionManager {
 
     }
 
+    public Region getRegionById(String id) {
+        return regionLocations.get(id);
+    }
+
     private void sortRegions(UUID worldName) {
         Collections.sort(regions.get(worldName),
         new Comparator<Region>() {

@@ -176,7 +176,7 @@ public class ConfigManager {
             blackListWorlds = config.getStringList("blacklist-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
-            allowCivItemDropping = config.getBoolean("explosion-override", false);
+            explosionOverride = config.getBoolean("explosion-override", false);
             useStarterBook = config.getBoolean("use-starter-book", true);
             priceMultiplier = config.getDouble("price-multiplier", 1);
             priceBase = config.getDouble("price-base", 0);
