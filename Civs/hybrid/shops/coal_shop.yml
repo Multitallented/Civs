@@ -9,7 +9,8 @@ groups:
 
 build-reqs:
 - g:fence*14
-- CHEST*2
+- CHEST*1
+- COAL_BLOCK*1
 - g:wool*25
 
 build-radius: 2

@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -441,6 +442,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".click-info", "Click for more info"));
             currentLanguage.put("guide",
                     localeConfig.getString(langKey + ".guide", "Guide"));
+            currentLanguage.put("more-repair-items",
+                    localeConfig.getString(langKey + ".more-repair-items", "You need more $1 to repair that item"));
             languageMap.put(langKey, currentLanguage);
         }
     }
