@@ -28,8 +28,10 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -41,6 +43,19 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CivilianListener implements Listener {
+
+    private static CivilianListener civilianListener;
+
+    public CivilianListener() {
+        civilianListener = this;
+    }
+
+    public static CivilianListener getInstance() {
+        if (civilianListener == null) {
+            new CivilianListener();
+        }
+        return civilianListener;
+    }
 
     @EventHandler
     public void onCivilianJoin(PlayerJoinEvent event) {
@@ -202,21 +217,20 @@ public class CivilianListener implements Listener {
             uuid = UUID.fromString(cvItem.getLore().get(0));
         }
         blockLogger.removeBlock(event.getBlock().getLocation());
-//        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
-//        if (region != null) {
-//            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-//            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
-//            if (cancelled && !event.isCancelled()) {
-//                event.setCancelled(true);
-//                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-//                event.getPlayer().sendMessage(Civs.getPrefix() +
-//                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-//            }
-//            System.out.println("protection cancelled");
-//            return;
-//        }
+        Region region = RegionManager.getInstance()
+                .getRegionById(Region.locationToString(event.getBlock().getLocation()));
+        if (region != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
+            if (cancelled) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+                event.getPlayer().sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            }
+        }
         cvItem.setQty(1);
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() || uuid == null || cvItem.getMat() != event.getBlock().getType() ||
+        if (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
+                uuid == null || cvItem.getMat() != event.getBlock().getType() ||
                 !uuid.equals(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
