@@ -80,6 +80,11 @@ public class RegionsTests {
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~0~0~0", Region.locationToString(location));
     }
+    @Test
+    public void regionIdShouldBeAccurateWithDecimals() {
+        Location location = new Location(Bukkit.getWorld("world"), 50.5, 69.5, -447.5);
+        assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~50~69~-447", Region.locationToString(location));
+    }
 
     @Test
     public void regionShouldReportIdProperly() {

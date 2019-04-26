@@ -6,8 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.Repairable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -28,12 +30,12 @@ public class RepairEffect implements Listener {
             case WOODEN_PICKAXE:
             case WOODEN_SHOVEL:
             case WOODEN_SWORD:
-                returnSet.add(Material.OAK_WOOD);
-                returnSet.add(Material.SPRUCE_WOOD);
-                returnSet.add(Material.BIRCH_WOOD);
-                returnSet.add(Material.JUNGLE_WOOD);
-                returnSet.add(Material.DARK_OAK_WOOD);
-                returnSet.add(Material.ACACIA_WOOD);
+                returnSet.add(Material.OAK_PLANKS);
+                returnSet.add(Material.SPRUCE_PLANKS);
+                returnSet.add(Material.BIRCH_PLANKS);
+                returnSet.add(Material.JUNGLE_PLANKS);
+                returnSet.add(Material.DARK_OAK_PLANKS);
+                returnSet.add(Material.ACACIA_PLANKS);
                 return returnSet;
             case LEATHER_CHESTPLATE:
             case LEATHER_HELMET:
@@ -89,7 +91,7 @@ public class RepairEffect implements Listener {
         } return null;
     }
 
-    private int getRepairCost(Material mat, Damageable is)
+    private int getRepairCost(Material mat, ItemStack is)
     {
         int amt = 1;
 //        System.out.println("Durability: " + mat.getMaxDurability() + ":" + is.getDurability());
@@ -100,7 +102,7 @@ public class RepairEffect implements Listener {
             case WOODEN_SWORD:
             case BOW:
             case FISHING_ROD:
-                amt = (int)((double) is.getDamage() / mat.getMaxDurability() * 1.0D);
+                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 1.0D);
                 return amt < 1 ? 1 : amt;
             case SHEARS:
             case GOLDEN_PICKAXE:
@@ -112,7 +114,7 @@ public class RepairEffect implements Listener {
             case GOLDEN_HELMET:
             case GOLDEN_LEGGINGS:
             case GOLDEN_BOOTS:
-                amt = (int)((double) is.getDamage() / mat.getMaxDurability() * 3.0D);
+                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 3.0D);
                 return amt < 1 ? 1 : amt;
             case IRON_PICKAXE:
             case IRON_SHOVEL:
@@ -123,7 +125,7 @@ public class RepairEffect implements Listener {
             case IRON_HELMET:
             case IRON_LEGGINGS:
             case IRON_BOOTS:
-                amt = (int)((double) is.getDamage() / mat.getMaxDurability() * 4.0D);
+                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 4.0D);
                 return amt < 1 ? 1 : amt;
             case DIAMOND_PICKAXE:
             case DIAMOND_SHOVEL:
@@ -134,7 +136,7 @@ public class RepairEffect implements Listener {
             case DIAMOND_HELMET:
             case DIAMOND_LEGGINGS:
             case DIAMOND_BOOTS:
-                amt = (int)((double) is.getDamage() / mat.getMaxDurability() * 7.0D);
+                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 7.0D);
                 return amt < 1 ? 1 : amt;
             case STONE_AXE:
             case STONE_HOE:
@@ -145,14 +147,16 @@ public class RepairEffect implements Listener {
             case LEATHER_HELMET:
             case LEATHER_LEGGINGS:
             case LEATHER_BOOTS:
-                amt = (int)((double) is.getDamage() / mat.getMaxDurability() * 2.0D);
+                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 2.0D);
                 return amt < 1 ? 1 : amt;
         } return 0;
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if ((event.isCancelled()) || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK))) {
+        if ((event.isCancelled()) || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
+                (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK)) ||
+                event.getHand().equals(EquipmentSlot.HAND)) {
             return;
         }
 
@@ -171,19 +175,20 @@ public class RepairEffect implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!(item instanceof Damageable)) {
+
+        if (getRequiredReagent(item.getType()) == null) {
             return;
         }
-        Damageable is = (Damageable) item;
         if (item.getType() == Material.AIR) {
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "hold-repair-item"));
             return;
         }
-        if (is.getDamage() >= item.getType().getMaxDurability()) {
+
+        if (item.getDurability() >= item.getType().getMaxDurability()) {
             return;
         }
-        int repairCost = getRepairCost(item.getType(), is);
+        int repairCost = getRepairCost(item.getType(), item);
         if (repairCost == 0) {
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "cant-repair-item"));
@@ -198,7 +203,6 @@ public class RepairEffect implements Listener {
                 if (firstMat == null) {
                     firstMat = mat;
                 }
-//              System.out.println("Cost: " + reagent.name() + ":" + repairCost);
                 ItemStack cost = new ItemStack(mat, repairCost);
                 if (!hasReagentCost(player, cost)) {
                     continue;
@@ -213,7 +217,7 @@ public class RepairEffect implements Listener {
                 return;
             }
         }
-        is.setDamage(0);
+        item.setDurability((short) 0);
     }
 
     protected boolean hasReagentCost(Player player, ItemStack itemStack) {

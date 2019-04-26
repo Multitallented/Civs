@@ -134,7 +134,24 @@ public class Region {
         if (location == null || location.getWorld() == null) {
             return null;
         }
-        return location.getWorld().getUID().toString() + "~" + (int) location.getX() + "~" + (int) location.getY() + "~" + (int) location.getZ();
+        StringBuilder builder = new StringBuilder();
+        builder.append(location.getWorld().getUID().toString());
+        builder.append("~");
+        if (location.getX() > 0) {
+            builder.append((int) Math.floor(location.getX()));
+        } else {
+            builder.append((int) Math.ceil(location.getX()));
+        }
+        builder.append("~");
+        builder.append((int) Math.floor(location.getY()));
+        builder.append("~");
+        if (location.getZ() > 0) {
+            builder.append((int) Math.floor(location.getZ()));
+        } else {
+            builder.append((int) Math.ceil(location.getZ()));
+        }
+
+        return builder.toString();
     }
     public static Location idToLocation(String id) {
         String[] idSplit = id.split("~");

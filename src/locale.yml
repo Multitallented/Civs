@@ -197,6 +197,9 @@ en:
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
   not-member-port: "You are not a member of this port"
+  cant-repair-item: "That item isn't something you can repair here"
+  more-repair-items: "You need more $1 to repair that item"
+  hold-repair-item: "You must hold the item you wish to repair"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
