@@ -223,6 +223,7 @@ public class CivilianManager {
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
 
+            civConfig.set("ask-for-tutorial", civilian.isAskForTutorial());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());
