@@ -134,11 +134,18 @@ public class CivilianManager {
                 }
             }
 
+            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
+            String tutorialPath = civConfig.getString("tutorial-path", "default");
+
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
                     civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs,
                     civConfig.getBoolean("ask-for-tutorial", true));
+            civilian.setTutorialIndex(tutorialIndex);
+            civilian.setTutorialPath(tutorialPath);
+            civilian.setTutorialProgress(tutorialProgress);
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -178,11 +185,15 @@ public class CivilianManager {
                 expOrbs = player.getTotalExperience();
             }
         }
-        return new Civilian(uuid,
+        Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 ItemManager.getInstance().getNewItems(),
                 classes,
                 new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+        civilian.setTutorialPath("default");
+        civilian.setTutorialIndex(0);
+        civilian.setTutorialProgress(-1);
+        return civilian;
     }
     public void saveCivilian(Civilian civilian) {
         Civs civs = Civs.getInstance();
@@ -211,6 +222,10 @@ public class CivilianManager {
 
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
+
+            civConfig.set("tutorial-index", civilian.getTutorialIndex());
+            civConfig.set("tutorial-path", civilian.getTutorialPath());
+            civConfig.set("tutorial-progress", civilian.getTutorialProgress());
 
             civConfig.set("items", null);
             for (String currentName : civilian.getStashItems().keySet()) {

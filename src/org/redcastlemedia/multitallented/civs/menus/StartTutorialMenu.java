@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -44,23 +45,16 @@ public class StartTutorialMenu extends Menu {
             return;
         }
 
-        Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
 
-            civilian.setInTutorial(true);
-
-            // TODO send player a message for what to do first in the tutorial
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(), "tutorial-one"));
-
+            TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            civilian.setInTutorial(false);
             civilian.setAskForTutorial(false);
             civilianManager.saveCivilian(civilian);
             event.getWhoClicked().openInventory(MainMenu.createMenu(civilian));

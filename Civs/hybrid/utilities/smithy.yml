@@ -38,9 +38,9 @@ upkeep:
     power-output: 96
 
 description:
-  en: "Repairs items and creates 48 power per day"
-  es: "Repara artículos y crea 48 de energía por día."
-  de: "Repariert Gegenstände und erzeugt 48 Energie pro Tag"
-  ru: "Ремонтирует предметы и создает 48 ед. В день"
-  pt_br: "Repara itens e cria 48 de energia por dia"
-  fr: "Répare les objets et crée 48 points d'énergie par jour"
+  en: "Right click the iron block to repair items. Creates 48 power per day"
+  es: "Haga clic derecho en el bloque de hierro para reparar los artículos. Crea 48 de energía por día."
+  de: "Klicken Sie mit der rechten Maustaste auf den Eisenblock, um Gegenstände zu reparieren. Erzeugt 48 Energie pro Tag"
+  ru: "Щелкните правой кнопкой мыши железный блок, чтобы починить предметы. Создает 48 сил в день"
+  pt_br: "Clique com o botão direito no bloco de ferro para reparar itens. Cria 48 de energia por dia"
+  fr: "Faites un clic droit sur le bloc de fer pour réparer les objets. Crée 48 puissances par jour"

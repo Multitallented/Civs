@@ -3,8 +3,12 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -134,7 +138,24 @@ public class Region {
         if (location == null || location.getWorld() == null) {
             return null;
         }
-        return location.getWorld().getUID().toString() + "~" + (int) location.getX() + "~" + (int) location.getY() + "~" + (int) location.getZ();
+        StringBuilder builder = new StringBuilder();
+        builder.append(location.getWorld().getUID().toString());
+        builder.append("~");
+        if (location.getX() > 0) {
+            builder.append((int) Math.floor(location.getX()));
+        } else {
+            builder.append((int) Math.ceil(location.getX()));
+        }
+        builder.append("~");
+        builder.append((int) Math.floor(location.getY()));
+        builder.append("~");
+        if (location.getZ() > 0) {
+            builder.append((int) Math.floor(location.getZ()));
+        } else {
+            builder.append((int) Math.ceil(location.getZ()));
+        }
+
+        return builder.toString();
     }
     public static Location idToLocation(String id) {
         String[] idSplit = id.split("~");
@@ -679,6 +700,16 @@ public class Region {
             hadUpkeep = true;
             Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
             i++;
+        }
+        if (hadUpkeep) {
+            for (UUID uuid : getOwners()) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (!player.isOnline()) {
+                    continue;
+                }
+                Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+                TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
+            }
         }
         return hadUpkeep;
     }

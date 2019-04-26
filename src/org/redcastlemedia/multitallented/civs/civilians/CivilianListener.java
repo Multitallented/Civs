@@ -86,9 +86,6 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-        if (civilian.isInTutorial()) {
-            // TODO remove any shelter or coalshop owned by the player
-        }
 
         if (civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
             int penalty = (int) (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() *

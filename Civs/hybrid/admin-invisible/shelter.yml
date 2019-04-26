@@ -34,7 +34,7 @@ upkeep:
     payout: 7.8
   3:
     input:
-    - COOKED_BEEF*32 #.10
+    - BEEF*32 #.10
     payout: 10.24
 
 description:

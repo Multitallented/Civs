@@ -1,6 +1,6 @@
 en:
   name: English
-  icon: RED_WOOL
+  icon: WHITE_WOOL
   starter-book: Menu for Civs
   next-button: Next
   prev-button: Previous
@@ -13,12 +13,11 @@ en:
   start-tutorial: "Start Tutorial"
   start-tutorial-desc: "Complete this short tutorial to receive diamonds"
   skip: "Skip"
-  welcome-civs: "Welcome to Civs!"
-  tutorial-one: "Open your book, go to blueprints, take your shelter, and place it."
   tutorial-click: "Please watch the Civs guide"
   tutorial-wiki: "Civs wiki"
   click-info: "Click for more info"
   guide: "Guide"
+  choose-path: "Choose your path"
 
   #shop
   shop: Shop
@@ -197,6 +196,9 @@ en:
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"
   not-member-port: "You are not a member of this port"
+  cant-repair-item: "That item isn't something you can repair here"
+  more-repair-items: "You need more $1 to repair that item"
+  hold-repair-item: "You must hold the item you wish to repair"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
@@ -417,17 +419,26 @@ pt_br:
   karma-lost: "Karma: -$1, $2 de dinheiro perdido"
   
 es:
-  name: Spanish
+  name: Español
   icon: YELLOW_WOOL
-  cant-place-town: "Escribe /cv town nombreDeLaCiudadVaAqui"
+  starter-book: "Menú para Civs"
+  cant-place-town: "Escribe /cv town nombre_de_la_ciudad_va_aqui"
   no-region-type-found: "No se encontró ningún tipo de región para $1"
 fr:
-  name: French
+  name: Français
   icon: BLUE_WOOL
-  cant-place-town: "Tapez /cv town nomDeLaVilleVaIci"
+  starter-book: "Menu pour Civs"
+  cant-place-town: "Tapez /cv town nom_de_la_ville_va_ici"
   no-region-type-found: "Aucun type de région trouvé pour $1"
 de:
-  name: German
+  name: Deutsche
   icon: BLACK_WOOL
-  cant-place-town: "Tippst /cv town ortsnameGehtHier"
+  starter-book: "Menü für Civs"
+  cant-place-town: "Tippst /cv town ortsname_geht_hier"
   no-region-type-found: "Keine Regionstyp für $1 gefunden"
+ru:
+  name: русский
+  icon: RED_WOOL
+  starter-book: "Меню для Civs"
+  cant-place-town: "вводите /cv town название_города_здесь"
+  no-region-type-found: "Для $1 не найден тип региона"

@@ -7,7 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class LocaleManager {
@@ -441,14 +440,14 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".click-info", "Click for more info"));
             currentLanguage.put("guide",
                     localeConfig.getString(langKey + ".guide", "Guide"));
+            currentLanguage.put("more-repair-items",
+                    localeConfig.getString(langKey + ".more-repair-items", "You need more $1 to repair that item"));
             currentLanguage.put("start-tutorial",
                     localeConfig.getString(langKey + ".start-tutorial", "Start Tutorial"));
             currentLanguage.put("start-tutorial-desc",
                     localeConfig.getString(langKey + ".start-tutorial-desc", "Complete this short tutorial to receive diamonds"));
-            currentLanguage.put("tutorial-one",
-                    localeConfig.getString(langKey + ".tutorial-one", "Welcome to Civs! To start, open your book, go to blueprints, take your shelter, and place it."));
-            currentLanguage.put("welcome-civs",
-                    localeConfig.getString(langKey + ".welcome-civs", "Welcome to Civs!"));
+            currentLanguage.put("choose-path",
+                    localeConfig.getString(langKey + ".choose-path", "Choose your path"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
@@ -496,13 +497,11 @@ public class RegionManager {
 
         player.sendMessage(Civs.getPrefix() +
                 localeManager.getTranslation(civilian.getLocale(), "region-built").replace("$1", regionTypeName));
+
+        TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
+
         addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
-        String command = "/cv region " + regionTypeName.toLowerCase();
-        PlayerCommandPreprocessEvent commandEvent = new PlayerCommandPreprocessEvent(player, command);
-        Bukkit.getPluginManager().callEvent(commandEvent);
-        if (!commandEvent.isCancelled()) {
-            player.performCommand("cv region " + regionTypeName.toLowerCase());
-        }
+
         return true;
     }
 
