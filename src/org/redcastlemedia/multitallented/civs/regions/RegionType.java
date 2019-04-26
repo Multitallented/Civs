@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import lombok.Getter;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -28,6 +29,9 @@ public class RegionType extends CivItem {
     private final long period;
     private final Set<Biome> biomes;
 
+    @Getter
+    private final boolean rebuildRequired;
+
     public RegionType(String name,
                       CVItem icon,
                       List<String> civReqs,
@@ -51,7 +55,8 @@ public class RegionType extends CivItem {
                       long period,
                       boolean dailyPeriod,
                       List<String> groups,
-                      boolean isInShop) {
+                      boolean isInShop,
+                      boolean rebuildRequired) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -78,6 +83,7 @@ public class RegionType extends CivItem {
         this.dailyPeriod = dailyPeriod;
         this.towns = towns;
         this.biomes = biomes;
+        this.rebuildRequired = rebuildRequired;
     }
     public String getName() {
         return name;

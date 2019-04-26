@@ -10,12 +10,14 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class RegionTypeInfoMenu extends Menu {
@@ -119,11 +121,16 @@ public class RegionTypeInfoMenu extends Menu {
 
         //2 Rebuild
         if (regionType.getRebuild() != null) {
-            CVItem rebuildItem = itemManager.getItemType(regionType.getRebuild().toLowerCase()).clone();
-            lore = new ArrayList<>();
-//            lore.add();
-            rebuildItem.setLore(lore);
-            inventory.setItem(2, rebuildItem.createItemStack());
+            String rebuildType = regionType.getRebuild();
+            List<CivItem> rebuildGroup = ItemManager.getInstance().getItemGroup(rebuildType);
+            if (!rebuildGroup.isEmpty()) {
+                CivItem baseRebuildItem = rebuildGroup.get(0);
+                CVItem rebuildItem = baseRebuildItem.clone();
+                lore = new ArrayList<>();
+//              lore.add();
+                rebuildItem.setLore(lore);
+                inventory.setItem(2, rebuildItem.createItemStack());
+            }
         }
 
         //3 evolve

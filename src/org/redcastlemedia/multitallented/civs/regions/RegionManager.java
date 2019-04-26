@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
@@ -349,19 +350,27 @@ public class RegionManager {
         }
 
         Region rebuildRegion = getRegionAt(block.getLocation());
+        List<CivItem> itemList = ItemManager.getInstance().getItemGroup(regionType.getRebuild());
+        boolean hasType = false;
+        for (CivItem item : itemList) {
+            if (item.getProcessedName().equals(rebuildRegion.getType())) {
+                hasType = true;
+                break;
+            }
+        }
         if (rebuildRegion != null && regionType.getRebuild() == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion != null && !regionType.getRebuild().equalsIgnoreCase(rebuildRegion.getType())) {
+        } else if (rebuildRegion != null && !hasType) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", regionTypeName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion == null && regionType.getRebuild() != null && !regionType.getInShop()) {
+        } else if (rebuildRegion == null && regionType.getRebuild() != null && regionType.isRebuildRequired()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")

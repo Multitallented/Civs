@@ -7,7 +7,6 @@ groups:
 - housing
 - allhovel
 - basehovel
-is-in-shop: false
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
@@ -25,6 +24,7 @@ build-reqs:
 - g:primary*160
 
 rebuild: baseshack
+rebuild-required: true
 build-radius: 4 #9x9x9
 effects:
 - block_break

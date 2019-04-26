@@ -308,7 +308,8 @@ public class ItemManager {
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),
                 config.getStringList("groups"),
-                config.getBoolean("is-in-shop", true));
+                config.getBoolean("is-in-shop", true),
+                config.getBoolean("rebuild-required", false));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
@@ -331,6 +332,18 @@ public class ItemManager {
 
     public CivItem getItemType(String name) {
         return itemTypes.get(name.replace("Civs ", "").toLowerCase());
+    }
+
+    public List<CivItem> getItemGroup(String groupName) {
+        ArrayList<CivItem> returnList = new ArrayList<>();
+
+        for (CivItem item : this.itemTypes.values()) {
+            if (item.getGroups().contains(groupName)) {
+                returnList.add(item);
+            }
+        }
+
+        return returnList;
     }
 
     public HashMap<String, Integer> getNewItems() {
