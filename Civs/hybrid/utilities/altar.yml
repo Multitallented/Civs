@@ -1,0 +1,45 @@
+type: region
+icon: CHEST
+name: Altar
+price: 100
+groups:
+  - utility
+
+
+build-reqs:
+  - g:primary*32
+  - g:secondary*16
+  - g:stairs*16
+  - g:log*8
+  - iron_block*1
+
+build-radius: 3
+
+effects:
+  - block_break
+  - block_build
+  - block_liquid
+  - block_fire
+
+period: 3600
+upkeep:
+  0:
+    reagents:
+    - IRON_SWORD*1
+    outputt:
+    - DIAMOND_SWORD*1
+    - DIAMOND_HELMET*1
+    - DIAMOND_CHESTPLATE*1
+    - DIAMOND_LEGGINGS*1
+    - DIAMOND_BOOTS*1
+    - BOW*1
+    - ARROW*32
+    payout: -300
+
+description:
+  en: "Right click the iron block to repair items. Creates 48 power per day"
+  es: "Haga clic derecho en el bloque de hierro para reparar los artículos. Crea 48 de energía por día."
+  de: "Klicken Sie mit der rechten Maustaste auf den Eisenblock, um Gegenstände zu reparieren. Erzeugt 48 Energie pro Tag"
+  ru: "Щелкните правой кнопкой мыши железный блок, чтобы починить предметы. Создает 48 сил в день"
+  pt_br: "Clique com o botão direito no bloco de ferro para reparar itens. Cria 48 de energia por dia"
+  fr: "Faites un clic droit sur le bloc de fer pour réparer les objets. Crée 48 puissances par jour"

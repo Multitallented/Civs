@@ -1,0 +1,54 @@
+type: region
+icon: CHEST
+name: Bank
+price: 200
+groups:
+  - utility
+
+pre-reqs:
+  - member=village:town:city:metropolis
+
+towns:
+  - village
+  - town
+  - city
+  - metropolis
+
+build-reqs:
+  - g:primary*240
+  - g:secondary*60
+  - g:window*12
+  - g:door*6
+  - g:roof*96
+  - GOLD_BLOCK*4
+  - g:fence*18
+  - chest*12
+build-radius: 5
+
+effects:
+  - block_break
+  - block_build
+  - block_liquid
+  - block_fire
+  - door_use
+  - chest_use
+
+period: 21600
+upkeep:
+  0:
+    power-output: 96
+  1:
+    reagents:
+    - PAPER*1
+    input:
+    - EMERALD*5
+    payout: 55
+  2:
+    reagents:
+      - CHEST*1
+    output:
+      - EMERALD*5
+    payout: -55
+description:
+  en: "The bank of a village, produces power. This building exchanges emeralds"
+  pt_br: "O banco de uma vila, produz poder. Essa construção troca esmeraldas"
