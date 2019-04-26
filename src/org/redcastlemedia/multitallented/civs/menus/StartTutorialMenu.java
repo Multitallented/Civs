@@ -33,14 +33,9 @@ public class StartTutorialMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
 
-        if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
-            clickBackButton(event.getWhoClicked());
-            return;
-        }
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -49,6 +44,8 @@ public class StartTutorialMenu extends Menu {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
 
+            civilian.setTutorialIndex(0);
+            CivilianManager.getInstance().saveCivilian(civilian);
             TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian);
             return;
         }
@@ -76,8 +73,6 @@ public class StartTutorialMenu extends Menu {
         CVItem cvItem1 = CVItem.createCVItemFromString("BARRIER");
         cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "skip"));
         inventory.setItem(4, cvItem1.createItemStack());
-
-        inventory.setItem(8, getBackButton(civilian));
 
         return inventory;
     }

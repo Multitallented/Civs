@@ -628,8 +628,14 @@ public class Region {
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
-            boolean hasReagents = !needsItems || (Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory()) &&
-                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory()));
+            if (needsItems && chest == null) {
+                continue;
+            }
+            boolean containsReagents = chest != null &&
+                    Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory());
+            boolean containsInputs = chest != null &&
+                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+            boolean hasReagents = !needsItems || (containsReagents && containsInputs);
             if (!hasReagents) {
                 i++;
                 continue;
@@ -637,7 +643,6 @@ public class Region {
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
             boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
-
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;

@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -47,6 +48,7 @@ public class UtilTests {
     public void cvItemFromStringShouldSetValuesProperly() {
         CVItem cvItem = CVItem.createCVItemFromString("COBBLESTONE*2%50");
         assertTrue(cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);
+        assertNull(cvItem.getDisplayName());
     }
     @Test
     public void cvItemFromStringWithNameShouldSetValuesProperly() {

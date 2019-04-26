@@ -89,7 +89,9 @@ public class CVItem {
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            return new CVItem(mat, quantity, chance, nameString);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(nameString);
+            return new CVItem(mat, quantity, chance, nameString, lore);
         }
     }
 
@@ -158,20 +160,22 @@ public class CVItem {
 
     public ItemStack createItemStack() {
         ItemStack is = new ItemStack(mat, qty);
-        if (!is.hasItemMeta()) {
-            is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
+        if (displayName != null || (lore != null && !lore.isEmpty())) {
+            if (!is.hasItemMeta()) {
+                is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
+            }
+            ItemMeta im = is.getItemMeta();
+            if (displayName != null) {
+                im.setDisplayName(displayName);
+            }
+            if (lore == null) {
+                lore = new ArrayList<>();
+            } else if (!lore.isEmpty()) {
+                im.setLore(lore);
+            }
+            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            is.setItemMeta(im);
         }
-        ItemMeta im = is.getItemMeta();
-        if (displayName != null) {
-            im.setDisplayName(displayName);
-        }
-        if (lore == null) {
-            lore = new ArrayList<>();
-        } else if (!lore.isEmpty()) {
-            im.setLore(lore);
-        }
-        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        is.setItemMeta(im);
         return is;
     }
 

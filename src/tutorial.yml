@@ -79,11 +79,11 @@ builder:
     de: "Baumeister"
   steps: []
 merchant:
- names:
-   en: "Merchant"
-   fr: "Marchand"
-   es: "Comerciante"
-   pt_br: "Comerciante"
-   ru: "коммерсант"
-   de: "Händler"
+  names:
+    en: "Merchant"
+    fr: "Marchand"
+    es: "Comerciante"
+    pt_br: "Comerciante"
+    ru: "коммерсант"
+    de: "Händler"
   steps: []

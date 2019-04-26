@@ -448,6 +448,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".start-tutorial-desc", "Complete this short tutorial to receive diamonds"));
             currentLanguage.put("choose-path",
                     localeConfig.getString(langKey + ".choose-path", "Choose your path"));
+            currentLanguage.put("skip",
+                    localeConfig.getString(langKey + ".skip", "Skip"));
             languageMap.put(langKey, currentLanguage);
         }
     }
