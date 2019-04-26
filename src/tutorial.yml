@@ -101,6 +101,10 @@ warrior:
     kill-type: player
     rewards:
       money: 250
+      items:
+      - DIAMOND*3
+      - OBSIDIAN*14
+      - FLINT_AND_STEEL
     messages:
       en: "Here's an enchanted golden apple. Now you have everything you need. Your next goal is to kill someone."
       fr: "Voici une pomme d'or enchantée. Maintenant, vous avez tout ce dont vous avez besoin. Votre prochain objectif est de tuer quelqu'un."
@@ -132,6 +136,7 @@ warrior:
       ru: "Когда ваш raid_porter активен, встаньте на него сверху, чтобы телепортироваться в город."
       de: "Sobald Ihr raid_porter aktiv ist, stellen Sie sich darauf, um in die Stadt zu teleportieren."
   #TODO add steps to build a keep and siege machine
+  #TODO eventually destroy a town?
 builder:
   icon: DIAMOND_BLOCK
   names:
@@ -141,7 +146,99 @@ builder:
     pt_br: "Construtor"
     ru: "строитель"
     de: "Baumeister"
-  steps: []
+  steps:
+  - type: buy
+    region: council_room
+    rewards:
+      items:
+      - SUGAR_CANE*8
+      - COW_SPAWN_EGG*2
+      - OAK_SAPLING*4
+    messages:
+      en: "Begin by buying the council_room. This is the heart of a town. It creates power, protects against PVP, and provides 2 housing."
+      fr: "Commencez par acheter la council_room. C'est le coeur d'une ville. Il crée de l'énergie, protège contre les PVP et fournit 2 logements."
+      es: "Comience por comprar la sala de consejo. Este es el corazón de una ciudad. Crea energía, protege contra PVP y proporciona 2 carcasas."
+      pt_br: "Comece comprando o council_room. Este é o coração de uma cidade. Cria energia, protege contra PVP e fornece 2 alojamentos."
+      ru: "Начните с покупки совета. Это сердце города. Он создает энергию, защищает от PVP и обеспечивает 2 корпуса."
+      de: "Beginnen Sie mit dem Kauf des council_room. Dies ist das Herz einer Stadt. Es erzeugt Strom, schützt vor PVP und bietet 2 Gehäuse."
+  - type: build
+    region: council_room
+    rewards:
+      money: 500
+    messages:
+      en: "Now build the council_room."
+      fr: "Maintenant, construisez la council_room."
+      es: "Ahora construye la council_room."
+      pt_br: "Agora construa o council_room."
+      ru: "Теперь постройте комнату совета."
+      de: "Baue jetzt den council_room."
+  - type: buy
+    region: settlement
+    rewards:
+      items:
+      - DIAMOND*3
+      - IRON_BLOCK*3
+      money: 250
+    messages:
+      en: "Now that you've built the heart of the town, claim your land. Buy the settlement."
+      fr: "Maintenant que vous avez construit le cœur de la ville, revendiquez votre terre. Achetez le règlement."
+      es: "Ahora que has construido el corazón de la ciudad, reclama tu tierra. Comprar el asentamiento."
+      pt_br: "Agora que você construiu o coração da cidade, reivindique sua terra. Compre o assentamento."
+      ru: "Теперь, когда вы построили сердце города, заберите свою землю. Купить поселок."
+      de: "Nachdem Sie das Herz der Stadt gebaut haben, fordern Sie Ihr Land heraus. Kaufen Sie die Siedlung."
+  - type: build
+    region: shack
+    rewards:
+      items:
+      - GLOWSTONE*32
+      money: 200
+    messages:
+      en: "Congratulations! Create your claim with /cv town town_name_goes_here. When you've done that buy and build a shack."
+      fr: "Toutes nos félicitations! Créez votre revendication avec /cv town nom_de_la_ville_va_ici. Lorsque vous avez terminé, achetez et construisez une Shack."
+      es: "¡Felicidades! Cree su reclamo con /cv town nombre_de_la_ciudad_va_aqui. Cuando hayas hecho esa compra y construye una Shack."
+      pt_br: "Parabéns! Crie sua reivindicação com /cv town nome_da_cidade_vai_aqui. Quando você fez isso, compre e construa um Shack."
+      ru: "Поздравляем! Создайте заявку с помощью /cv town название_города_здесь. Когда вы это сделаете, купите и постройте Shack."
+      de: "Herzliche Glückwünsche! Erstellen Sie Ihren Anspruch mit /cv town ortsname_geht_hier. Wenn du das getan hast, kaufe und baue eine Shack."
+  - type: build
+    region: npcshack
+    rewards:
+      items:
+      - EMERALD*64
+      - QUARTZ_BLOCK*64
+      - QUARTZ_BLOCK*64
+      - QUARTZ_BLOCK*64
+    messages:
+      en: "A Shack provides housing. Housing is required to invite people to your town. Now buy and place an NPCShack inside your Shack."
+      fr: "Une Shack fournit un logement. Le logement est nécessaire pour inviter des personnes dans votre ville. Maintenant, achetez et placez un NPCShack dans votre Shack."
+      es: "Una Shack proporciona alojamiento. Se requiere alojamiento para invitar a personas a tu ciudad. Ahora compra y coloca un NPCShack dentro de tu Shack."
+      pt_br: "Uma Shack fornece alojamento. A moradia é necessária para convidar pessoas para sua cidade. Agora compre e coloque um NPCShack dentro do seu Shack."
+      ru: "Хижина предоставляет жилье. Жилье требуется для приглашения людей в ваш город. Теперь купите и поместите NPCShack в вашу хижину."
+      de: "Eine Shack bietet Unterkunft. Wohnraum ist erforderlich, um Menschen in Ihre Stadt einzuladen. Kaufen Sie jetzt einen NPCShack und platzieren Sie ihn in Ihrer Shack."
+  - type: build
+    region: church
+    rewards:
+      money: 350
+    messages:
+      en: "Villagers count as population. If they die, the town loses power. Villagers respawn too. Now build a church."
+      fr: "Les villageois comptent comme population. S'ils meurent, la ville perd son pouvoir. Les villageois réapparaissent aussi. Maintenant, construisez une église."
+      es: "Los aldeanos cuentan como población. Si mueren, el pueblo pierde poder. Los aldeanos también reaparecen. Ahora construye una iglesia."
+      pt_br: "Os aldeões contam como população. Se eles morrem, a cidade perde o poder. Os aldeões também reaparecem. Agora construa uma igreja."
+      ru: "Сельские жители считаются населением. Если они умрут, город потеряет власть. Жители деревни тоже возрождаются. Теперь постройте церковь."
+      de: "Dorfbewohner zählen als Bevölkerung. Wenn sie sterben, verliert die Stadt an Macht. Dorfbewohner respawnen ebenfalls. Bauen Sie jetzt eine Kirche."
+  - type: build
+    region: arrow_trap
+    rewards:
+      items:
+      - ARROW*64
+      - ARROW*64
+      - ARROW*64
+    messages:
+      en: "It is important to create buildings that generate power. Power protects the town. Build an arrow_trap to further defend your town."
+      fr: "Il est important de créer des bâtiments générateurs d'énergie. Le pouvoir protège la ville. Construisez un arrow_trap pour défendre davantage votre ville."
+      es: "Es importante crear edificios que generen energía. El poder protege al pueblo. Construye una arrow_trap para defender aún más tu ciudad."
+      pt_br: "É importante criar edifícios que gerem energia. O poder protege a cidade. Construa uma arrow_trap para defender ainda mais a sua cidade."
+      ru: "Важно создавать здания, которые генерируют энергию. Власть защищает город. Постройте arrow_trap для дальнейшей защиты вашего города."
+      de: "Es ist wichtig, Gebäude zu schaffen, die Strom erzeugen. Macht schützt die Stadt. Baue eine arrow_trap, um deine Stadt weiter zu verteidigen."
 merchant:
   icon: DIAMOND*64
   names:
@@ -151,4 +248,76 @@ merchant:
     pt_br: "Comerciante"
     ru: "коммерсант"
     de: "Händler"
-  steps: []
+  steps:
+  - type: upkeep
+    region: shack
+    rewards:
+      money: 400
+    messages:
+      en: "Join a town. Then, buy a shack from someone in that town. Once they set you as an owner of the Shack, put some bread in the Shack chest."
+      fr: "Rejoindre une ville. Ensuite, achetez une cabane à quelqu'un de cette ville. Une fois qu'ils vous ont désigné comme propriétaire de la cabane, mettez du pain dans le coffre de la cabane."
+      es: "Únete a un pueblo. Entonces, compre una choza de alguien en esa ciudad. Una vez que te hayan establecido como propietario de la Cabaña, pon un poco de pan en el cofre de la Cabaña."
+      pt_br: "Junte-se a uma cidade. Então, compre um barraco de alguém naquela cidade. Uma vez que você o tenha definido como dono do Shack, coloque um pouco de pão no baú do Shack."
+      ru: "Присоединяйся к городу. Тогда купите хижину у кого-то в этом городе. Как только они установят вас как владельца Шака, положите немного хлеба в сундук Шака"
+      de: "Trete einer Stadt bei. Dann kaufen Sie eine Hütte von jemandem in dieser Stadt. Sobald Sie Sie als Besitzer der Hütte eingestellt haben, legen Sie etwas Brot in die Hütte-Truhe."
+  - type: buy
+    region: hovel
+    rewards:
+      items:
+      - OAK_LOG*64
+      - OAK_LOG*64
+      - GLASS*16
+      - WHITE_WOOL*16
+      - COBBLESTONE*64
+      money: 200
+    messages:
+      en: "Houses can be upgraded to give you more money. Buy the Hovel from the shop."
+      fr: "Les maisons peuvent être améliorées pour vous donner plus d'argent. Achetez le Hovel au magasin."
+      es: "Las casas pueden ser mejoradas para darle más dinero. Compra el Hovel en la tienda."
+      pt_br: "Casas podem ser atualizadas para lhe dar mais dinheiro. Compre o Hovel da loja."
+      ru: "Дома могут быть улучшены, чтобы дать вам больше денег. Купите Лавку в магазине."
+      de: "Häuser können aufgewertet werden, um mehr Geld zu erhalten. Kaufen Sie die Hovel im Shop."
+  - type: build
+    region: hovel
+    rewards:
+      items:
+      - POTATO*64
+      - POTATO*64
+      - POTATO*64
+    messages:
+      en: "Add on to your Shack to make it a 9x9x9 region, then place the Hovel chest inside."
+      fr: "Ajoutez à votre cabane pour en faire une région 9x9x9, puis placez le coffre Hovel à l'intérieur."
+      es: "Agrega a tu Shack para convertirla en una región de 9x9x9, luego coloca el cofre Hovel dentro."
+      pt_br: "Acrescente ao seu Shack para torná-lo uma região 9x9x9, depois coloque o baú do Hovel dentro."
+      ru: "Добавьте к своей хижине, чтобы сделать ее 9х9х9 областью, затем поместите сундук Хоувела внутрь."
+      de: "Fügen Sie Ihrem Shack eine 9x9x9-gebiet, hinzu und platzieren Sie die Hovel-Truhe darin."
+  - type: upkeep
+    region: hovel1
+    rewards:
+      items:
+      - POWERED_RAIL*2
+      - REDSTONE*16
+      - RAIL*32
+      - CHEST_MINECART
+    messages:
+      en: "Put 384 potatoes in your Hovel chest. In 12 hours, your Hovel will sell all of them and upgrade to a Hovel1."
+      fr: "Mettez 384 pommes de terre dans votre poitrine Hovel. En 12 heures, votre Hovel les vendra tous et passera à un Hovel1."
+      es: "Pon 384 papas en tu arcón de Hovel. En 12 horas, su Hovel los venderá todos y se actualizará a un Hovel1."
+      pt_br: "Coloque 384 batatas no peito do Hovel. Em 12 horas, o seu Hovel venderá todos eles e fará o upgrade para um Hovel1."
+      ru: "Поместите 384 картофеля в сундук Ховеля. Через 12 часов ваш Ховел продаст их всех и перейдет на Ховела1."
+      de: "Legen Sie 384 Kartoffeln in Ihre Hovel-Truhe. In 12 Stunden verkauft Ihre Hovel alle und baut ein Upgrade auf eine Hovel1 auf."
+  - type: build
+    region: apple_orchard
+    rewards:
+      money: 500
+    messages:
+      en: "Buy and build an apple_orchard. Build a mine cart track from inside your apple_orchard to inside your Hovel1. Place a powered rail on an incline inside the apple_orchard."
+      fr: "Achetez et construisez un verger de pommiers. Construisez une piste de minecart depuis votre verger de pommiers jusqu’à l’intérieur de votre Hovel1. Placez un rail électrique sur une pente à l'intérieur de la pomme_orchard."
+      es: "Compra y construye un huerto de manzanas. Construye una pista de minecartes desde dentro de tu huerto de manzanas hasta dentro de tu Hovel1. Coloque un riel eléctrico en una pendiente dentro del apple_orchard."
+      pt_br: "Compre e construa um pomar de maçãs. Construa uma pista de minecart de dentro do seu pomar para dentro do seu Hovel1. Coloque um trilho em uma inclinação dentro do apple_orchard."
+      ru: "Купить и построить яблоневый сад. Постройте гусеничную дорожку изнутри вашего яблоневого сада внутрь вашего Ховела1 Поместите силовой рельс на уклон внутри яблоневого сада."
+      de: "Kaufe und baue einen Apfelgarten. Baue eine Minecart-Spur von deinem Apfelgarten bis zu deinem Hovel1. Platzieren Sie eine angetriebene Schiene auf einer Steigung im Apfel_orchard."
+
+  # TODO market?
+  # TODO town trade?
+  # TODO continue up the housing track?

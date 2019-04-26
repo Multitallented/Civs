@@ -3,12 +3,10 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -98,7 +96,6 @@ public class MainMenu extends Menu {
         boolean useClassesAndSpells = ConfigManager.getInstance().getUseClassesAndSpells();
 
         int i=0;
-
         //8 Language Select
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem cvItem = new CVItem(Material.GRASS_BLOCK, 1, 100, localeManager.getTranslation(locale, "language-menu"));

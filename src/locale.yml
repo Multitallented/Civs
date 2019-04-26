@@ -354,7 +354,7 @@ pt_br:
   anti-camp-expired: "O anti-camp de $1 acabou"
   
   #errors
-  cant-place-town: "Datilografar /cv town nomeDaCidadeVaiAqui"
+  cant-place-town: "Datilografar /cv town nome_da_cidade_vai_aqui"
   no-region-type-found: "Nenhuma região encontrada para $1"
   building-too-big: "Sua construção é muito grande para ser uma $1"
   no-required-blocks: "Você não colocou todos os blocos requeridos para $1"
