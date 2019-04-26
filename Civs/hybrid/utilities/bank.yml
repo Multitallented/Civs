@@ -33,7 +33,7 @@ effects:
   - door_use
   - chest_use
 
-period: 21600
+period: daily
 upkeep:
   0:
     power-output: 96
@@ -41,14 +41,18 @@ upkeep:
     reagents:
     - PAPER*1
     input:
-    - EMERALD*5
-    payout: 55
+    - EMERALD*64
+    payout: 640
   2:
     reagents:
       - CHEST*1
     output:
-      - EMERALD*5
-    payout: -55
+      - EMERALD*64
+    payout: -640
 description:
-  en: "The bank of a village, produces power. This building exchanges emeralds"
-  pt_br: "O banco de uma vila, produz poder. Essa construção troca esmeraldas"
+  en: "Produces 96 power per day. Converts 64 emeralds to $640 or vice versa."
+  fr: "Produit 96 puissance par jour. Convertit 64 émeraudes à 640$ ou vice versa."
+  es: "Produce 96 de energía por día. Convierte 64 esmeraldas a $640 o viceversa."
+  ru: "Производит 96 мощности в день. Конвертирует 64 изумруда в 640 долларов или наоборот"
+  de: "Produziert 96 Energie pro Tag. Wandelt 64 Smaragde in $640 oder umgekehrt um."
+  pt_br: "Produz 96 de energia por dia. Converte 64 esmeraldas para $640 ou vice versa."

@@ -74,9 +74,64 @@ warrior:
   - type: buy
     region: altar
     rewards:
-      items: []
+      items:
+      - IRON_BLOCK*3
+      - IRON_SWORD
+      money: 300
     messages:
-      en: ""
+      en: "First, buy the altar. You can use this altar to get diamond gear."
+      fr: "Tout d'abord, achetez l'autel. Vous pouvez utiliser cet autel pour obtenir du diamant."
+      es: "En primer lugar, comprar el altar. Puede utilizar este altar para obtener engranajes de diamante."
+      pt_br: "Primeiro, compre o altar. Você pode usar este altar para obter equipamentos de diamante."
+      ru: "Сначала купите алтарь. Вы можете использовать этот алтарь, чтобы получить алмазное снаряжение."
+      de: "Zuerst den Altar kaufen. Sie können diesen Altar verwenden, um ein Diamantenzahnrad zu erhalten."
+  - type: upkeep
+    region: altar
+    rewards:
+      items:
+      - ENCHANTED_GOLDEN_APPLE
+    messages:
+      en: "Now, put an iron sword in the altar chest. If you have $300, then you will receive your gear."
+      fr: "Maintenant, placez une épée de fer dans le coffre de l'autel. Si vous avez 300$, vous recevrez votre équipement."
+      es: "Ahora, pon una espada de hierro en el cofre del altar. Si tienes $300, entonces recibirás tu equipo."
+      pt_br: "Agora, coloque uma espada de ferro no baú do altar. Se você tiver $300, receberá seu equipamento."
+      ru: "Теперь поместите железный меч в сундук алтаря. Если у вас есть 300 долларов, вы получите свое снаряжение."
+      de: "Stecke jetzt ein Eisenschwert in die Altarbrust. Wenn Sie 300 € haben, erhalten Sie Ihre Ausrüstung."
+  - type: kill
+    kill-type: player
+    rewards:
+      money: 250
+    messages:
+      en: "Here's an enchanted golden apple. Now you have everything you need. Your next goal is to kill someone."
+      fr: "Voici une pomme d'or enchantée. Maintenant, vous avez tout ce dont vous avez besoin. Votre prochain objectif est de tuer quelqu'un."
+      es: "Aquí hay una manzana dorada encantada. Ahora tienes todo lo que necesitas. Tu próximo objetivo es matar a alguien."
+      pt_br: "Aqui está uma maçã dourada encantada. Agora você tem tudo que precisa. Seu próximo objetivo é matar alguém."
+      ru: "Вот заколдованное золотое яблоко. Теперь у вас есть все, что вам нужно. Ваша следующая цель - убить кого-то."
+      de: "Hier ist ein verzauberter goldener Apfel. Jetzt hast du alles was du brauchst. Dein nächstes Ziel ist es, jemanden zu töten."
+  - type: build
+    region: raid_porter
+    rewards:
+      money: 350
+    messages:
+      en: "Congrats! You are now a common warrior. Now to become a raider. Buy and build a raid_porter close to a town."
+      fr: "Félicitations! Vous êtes maintenant un guerrier ordinaire. Maintenant, pour devenir un raider. Achetez et construisez un raid_porter près d'une ville."
+      es: "Felicidades Ahora eres un guerrero común. Ahora para convertirse en un asaltante. Compra y construye un raid_porter cerca de una ciudad."
+      pt_br: "Parabéns! Você é agora um guerreiro comum. Agora, para se tornar um atacante. Compre e construa um raid_porter perto de uma cidade."
+      ru: "Поздравляем! Теперь ты обычный воин. Теперь стать рейдером. Купить и построить raid_porter близко к городу."
+      de: "Glückwunsch! Du bist jetzt ein gewöhnlicher Krieger. Nun, um ein Raider zu werden. Kaufe und baue einen raid_porter in der Nähe einer Stadt."
+  - type: upkeep
+    region: raid_porter
+    rewards:
+      items:
+      - TNT*12
+    messages:
+      en: "Once your raid_porter is active, stand on top of it to teleport into the town."
+      fr: "Une fois que votre raid_porter est actif, placez-vous dessus pour vous téléporter dans la ville."
+      es: "Una vez que su raid_porter esté activo, párese sobre él para teletransportarse a la ciudad."
+      pt_br: "Uma vez que seu raid_porter estiver ativo, fique em cima dele para se teletransportar para a cidade."
+      ru: "Когда ваш raid_porter активен, встаньте на него сверху, чтобы телепортироваться в город."
+      de: "Sobald Ihr raid_porter aktiv ist, stellen Sie sich darauf, um in die Stadt zu teleportieren."
+  #TODO add steps to build a keep and siege machine
 builder:
   icon: DIAMOND_BLOCK
   names:
