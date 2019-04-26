@@ -62,6 +62,7 @@ default:
     - merchant
 
 warrior:
+  icon: DIAMOND_SWORD
   names:
     en: "Warrior"
     fr: "Guerrier"
@@ -69,8 +70,15 @@ warrior:
     pt_br: "Guerreiro"
     ru: "воин"
     de: "Krieger"
-  steps: []
+  steps:
+  - type: buy
+    region: altar
+    rewards:
+      items: []
+    messages:
+      en: ""
 builder:
+  icon: DIAMOND_BLOCK
   names:
     en: "Builder"
     fr: "Constructeur"
@@ -80,6 +88,7 @@ builder:
     de: "Baumeister"
   steps: []
 merchant:
+  icon: DIAMOND*64
   names:
     en: "Merchant"
     fr: "Marchand"

@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class MainMenu extends Menu {
@@ -159,6 +160,7 @@ public class MainMenu extends Menu {
     private void printTutorial(HumanEntity player, Civilian civilian) {
         String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
         player.sendMessage("-----------------" + Civs.NAME + "-----------------");
+        TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
         player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
         player.sendMessage(tutorialUrl);
         player.sendMessage("--------------------------------------");

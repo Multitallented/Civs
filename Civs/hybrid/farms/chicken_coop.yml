@@ -9,9 +9,9 @@ groups:
 build-reqs:
 - g:log*4
 - g:wood*20
+- IRON_BARS*8
 - g:fence*19
 - g:fencegate*1
-- IRON_BARS*8
 - HAY_BLOCK*9
 
 build-radius: 3
