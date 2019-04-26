@@ -18,7 +18,7 @@ default:
   - type: upkeep
     region: shelter
     rewards:
-      money: 250
+      money: 200
     messages:
       en: "Next, gather 4 bread, 32 carrots, 32 steak, or 32 potatoes. Put them in the shelter chest."
       fr: "Ensuite, ramassez 4 pains, 32 carottes, 32 steaks ou 32 pommes de terre. Mettez-les dans le coffre de l'abri."
@@ -31,7 +31,7 @@ default:
     rewards:
       items:
       - COAL_BLOCK
-      - WOOL*25
+      - WHITE_WOOL*25
       - OAK_FENCE*14
       - CHEST
     messages:
@@ -46,7 +46,7 @@ default:
     rewards:
       items:
       - COAL*36
-      money: 250
+      money: 200
     messages:
       en: "Place 25 wool, 14 fences, and 2 chests. Then place the coal shop."
       fr: "Placez 25 laines, 14 clôtures et 2 coffres. Ensuite, placez le magasin de charbon."

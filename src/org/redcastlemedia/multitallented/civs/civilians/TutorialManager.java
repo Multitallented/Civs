@@ -67,7 +67,8 @@ public class TutorialManager {
             return;
         }
 
-        if ((type.equals(TutorialType.BUILD) || type.equals(TutorialType.UPKEEP)) &&
+        if ((type.equals(TutorialType.BUILD) || type.equals(TutorialType.UPKEEP) ||
+                type.equals(TutorialType.BUY)) &&
                 !param.equalsIgnoreCase(((String) step.get("region")))) {
             return;
         }
@@ -164,6 +165,7 @@ public class TutorialManager {
         BUILD,
         UPKEEP,
         CHOOSE,
-        KILL
+        KILL,
+        BUY
     }
 }

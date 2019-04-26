@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -76,6 +77,7 @@ public class ConfirmationMenu extends Menu {
                     civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
                 }
             }
+            TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUY, civItem.getProcessedName());
             civilianManager.saveCivilian(civilian);
             return;
         }
