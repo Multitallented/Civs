@@ -46,7 +46,8 @@ default:
     rewards:
       items:
       - COAL*36
-      money: 200
+      - DIAMOND*3
+      money: 150
     messages:
       en: "Place 25 wool, 14 fences, and 2 chests. Then place the coal shop."
       fr: "Placez 25 laines, 14 clôtures et 2 coffres. Ensuite, placez le magasin de charbon."
