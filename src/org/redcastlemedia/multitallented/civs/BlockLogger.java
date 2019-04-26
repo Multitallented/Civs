@@ -19,9 +19,6 @@ public class BlockLogger {
     private static BlockLogger blockLogger = null;
     private HashMap<Location, CVItem> blocks = new HashMap<>();
 
-    @Getter
-    private Location tutorialLocation = null;
-
 //    private long lastSave = 0;
 //    private int intervalId = -1;
 
@@ -55,28 +52,6 @@ public class BlockLogger {
 //            lastSave = System.currentTimeMillis();
 //        }
 //    }
-
-    public void saveTutorialLocation(Location location) {
-        this.tutorialLocation = location;
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
-        final File blockData = new File(civs.getDataFolder(), "block-data.yml");
-        Runnable runMe = new Runnable() {
-            @Override
-            public void run() {
-                FileConfiguration config = new YamlConfiguration();
-                try {
-                    config.load(blockData);
-                    config.set("tutorial-location", Region.locationToString(tutorialLocation));
-                    config.save(blockData);
-                } catch (InvalidConfigurationException | IOException e) {
-                    Civs.logger.severe("Unable to save location to block-logger.yml");
-                }
-            }
-        };
-    }
 
     private void saveBlocks() {
         Civs civs = Civs.getInstance();
@@ -126,10 +101,6 @@ public class BlockLogger {
         FileConfiguration config = new YamlConfiguration();
         try {
             config.load(blockData);
-            String tutorialLocationString = config.getString("tutorial-location", null);
-            if (tutorialLocationString != null) {
-                this.tutorialLocation = Region.idToLocation(tutorialLocationString);
-            }
             for (String s : config.getKeys(false)) {
                 try {
                     CVItem cvItem = new CVItem(

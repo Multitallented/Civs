@@ -138,13 +138,7 @@ public class TownCommand implements CivCommand {
             villagerCount = intersectTown.getVillagers();
         }
 
-        int housingCount = 0;
-        for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (regionType.getEffects().containsKey(HousingEffect.KEY)) {
-                housingCount += Integer.parseInt(regionType.getEffects().get(HousingEffect.KEY));
-            }
-        }
+        int housingCount = getHousingCount(newTownLocation, townType);
 
         Town town = new Town(name,
                 townType.getProcessedName(),
@@ -162,6 +156,17 @@ public class TownCommand implements CivCommand {
             town.createRing();
         }
         return true;
+    }
+
+    int getHousingCount(Location newTownLocation, TownType townType) {
+        int housingCount = 0;
+        for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (regionType.getEffects().containsKey(HousingEffect.KEY)) {
+                housingCount += Integer.parseInt(regionType.getEffects().get(HousingEffect.KEY));
+            }
+        }
+        return housingCount;
     }
 
     public Set<Region> getRegionsInTown(Town town) {

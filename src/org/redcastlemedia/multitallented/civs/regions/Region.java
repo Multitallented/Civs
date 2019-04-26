@@ -3,8 +3,12 @@ package org.redcastlemedia.multitallented.civs.regions;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -696,6 +700,16 @@ public class Region {
             hadUpkeep = true;
             Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
             i++;
+        }
+        if (hadUpkeep) {
+            for (UUID uuid : getOwners()) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (!player.isOnline()) {
+                    continue;
+                }
+                Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+                TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
+            }
         }
         return hadUpkeep;
     }

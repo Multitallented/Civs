@@ -27,13 +27,19 @@ effects:
 period: 60 #1 minute
 upkeep:
   0:
-    input:
+    reagents:
     - IRON_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
     output:
     - QUARTZ*4
   1:
-    input:
+    reagents:
     - DIAMOND_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
     output:
     - QUARTZ*6
 

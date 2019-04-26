@@ -53,11 +53,19 @@ public class Civilian {
 
     @Getter
     @Setter
-    private boolean isInTutorial = false;
+    private int tutorialIndex;
+
+    @Getter
+    @Setter
+    private String tutorialPath;
 
     @Getter
     @Setter
     private boolean askForTutorial;
+
+    @Getter
+    @Setter
+    private int tutorialProgress;
 
     public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,

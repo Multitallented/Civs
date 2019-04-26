@@ -10,6 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.*;
@@ -50,6 +51,7 @@ public class Civs extends JavaPlugin {
         new ConfigManager(new File(getDataFolder(), "config.yml"));
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new ItemManager();
+        new TutorialManager();
         new BlockLogger();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();
@@ -130,7 +132,6 @@ public class Civs extends JavaPlugin {
         commandList.put("setguest", new SetGuestCommand());
         commandList.put("removemember", new RemoveMemberCommand());
         commandList.put("add", new AddMemberCommand());
-        commandList.put("region", new RegionCommand());
         commandList.put("town", new TownCommand());
         PortCommand portCommand = new PortCommand();
         commandList.put("port", portCommand);
