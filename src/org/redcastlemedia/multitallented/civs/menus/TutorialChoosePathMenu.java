@@ -34,6 +34,7 @@ public class TutorialChoosePathMenu extends Menu {
         String pathName = im.getLore().get(0);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
+        event.getWhoClicked().closeInventory();
         civilian.setTutorialIndex(0);
         civilian.setTutorialProgress(0);
         civilian.setTutorialPath(pathName);
