@@ -36,7 +36,7 @@ public class RegionTickThread implements Runnable {
             }
         }
         for (Region region : destroyThese) {
-            RegionManager.getInstance().removeRegion(region, true);
+            RegionManager.getInstance().removeRegion(region, true, true);
         }
     }
 }

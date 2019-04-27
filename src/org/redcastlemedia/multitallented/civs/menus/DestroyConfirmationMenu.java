@@ -76,7 +76,7 @@ public class DestroyConfirmationMenu extends Menu {
                             localeManager.getTranslation(civilian.getLocale(), "no-permission"));
                     return;
                 }
-                RegionManager.getInstance().removeRegion(region, true);
+                RegionManager.getInstance().removeRegion(region, true, true);
                 BlockBreakEvent blockBreakEvent = new BlockBreakEvent(region.getLocation().getBlock(), player);
                 CivilianListener.getInstance().onCivilianBlockBreak(blockBreakEvent);
             } else if (town != null) {

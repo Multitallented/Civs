@@ -121,7 +121,7 @@ public class RegionManager {
         return returnSet;
     }
 
-    public void removeRegion(Region region, boolean broadcast) {
+    public void removeRegion(Region region, boolean broadcast, boolean checkCritReqs) {
         if (broadcast) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!region.getLocation().getWorld().equals(player.getWorld())) {
@@ -138,7 +138,9 @@ public class RegionManager {
             this.destroyRegionListener.get(key).destroyRegionHandler(region);
         }
 
-        TownManager.getInstance().checkCriticalRequirements(region);
+        if (checkCritReqs) {
+            TownManager.getInstance().checkCriticalRequirements(region);
+        }
         removeRegion(region);
     }
 
@@ -486,7 +488,7 @@ public class RegionManager {
         if (rebuildRegion != null) {
             people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
             //TODO copy over other stuff too?
-            removeRegion(rebuildRegion);
+            removeRegion(rebuildRegion, false, false);
         } else {
             people = new HashMap<>();
             people.put(player.getUniqueId(), "owner");

@@ -125,7 +125,7 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             return true;
         } else {
-            RegionManager.getInstance().removeRegion(region, true);
+            RegionManager.getInstance().removeRegion(region, true, true);
             return false;
         }
     }
@@ -312,7 +312,7 @@ public class ProtectionHandler implements Listener {
                 }
             }
             for (Region region : tempArray) {
-                regionManager.removeRegion(region, true);
+                regionManager.removeRegion(region, true, true);
             }
         }
     }

@@ -140,7 +140,7 @@ public class TownTests {
         TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         Town town = loadTown("Sanmak-kol", "tribe", townLocation);
-        regionManager.removeRegion(region, false);
+        regionManager.removeRegion(region, false, true);
         assertEquals(town, townManager.getTownAt(townLocation));
     }
 
