@@ -10,9 +10,9 @@ en:
   back-button: Back
 
   #Tutorial
-  start-tutorial: "Start Tutorial"
-  start-tutorial-desc: "Complete this short tutorial to receive diamonds"
-  skip: "Skip"
+  start-tutorial: "Achievements On"
+  start-tutorial-desc: "Receive money and items for completing achievements"
+  skip: "Achievements Off"
   tutorial-click: "Please watch the Civs guide"
   tutorial-wiki: "Civs wiki"
   click-info: "Click for more info"

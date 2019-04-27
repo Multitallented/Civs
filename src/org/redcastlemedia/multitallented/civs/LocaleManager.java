@@ -443,13 +443,13 @@ public class LocaleManager {
             currentLanguage.put("more-repair-items",
                     localeConfig.getString(langKey + ".more-repair-items", "You need more $1 to repair that item"));
             currentLanguage.put("start-tutorial",
-                    localeConfig.getString(langKey + ".start-tutorial", "Start Tutorial"));
+                    localeConfig.getString(langKey + ".start-tutorial", "Achievements On"));
             currentLanguage.put("start-tutorial-desc",
-                    localeConfig.getString(langKey + ".start-tutorial-desc", "Complete this short tutorial to receive diamonds"));
+                    localeConfig.getString(langKey + ".start-tutorial-desc", "Receive money and items for completing achievements"));
             currentLanguage.put("choose-path",
                     localeConfig.getString(langKey + ".choose-path", "Choose your path"));
             currentLanguage.put("skip",
-                    localeConfig.getString(langKey + ".skip", "Skip"));
+                    localeConfig.getString(langKey + ".skip", "Achievements Off"));
             languageMap.put(langKey, currentLanguage);
         }
     }

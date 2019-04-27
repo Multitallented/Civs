@@ -161,6 +161,7 @@ public class TownTests {
         config.set("build-radius", 25);
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
+        effects.add("deny_mob_spawn");
         config.set("effects", effects);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }

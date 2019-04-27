@@ -4,7 +4,6 @@ name: NPC_Shack
 price: 100
 groups:
 - npchousinggroup
-- housing
 - allshack
 
 pre-reqs:

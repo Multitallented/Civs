@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -228,8 +229,12 @@ public class Civilian {
 
     public boolean isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
+        int rebuildBonus = 0;
+        if (CivItem.ItemType.REGION == civItem.getItemType() && null != ((RegionType) civItem).getRebuild()) {
+            rebuildBonus = 1;
+        }
         boolean atMax = civItem.getCivMax() != -1 &&
-                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+                civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return true;
         }
@@ -240,7 +245,7 @@ public class Civilian {
         }
         for (String group : civItem.getGroups()) {
             if (configManager.getGroups().get(group) != null &&
-                    configManager.getGroups().get(group) <= getCountGroup(group)) {
+                    configManager.getGroups().get(group) + rebuildBonus <= getCountGroup(group)) {
                 return true;
             }
         }

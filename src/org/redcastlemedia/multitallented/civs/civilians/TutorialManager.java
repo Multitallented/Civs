@@ -35,6 +35,10 @@ public class TutorialManager {
     }
 
     private void loadTutorialFile() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
+
         File dataFolder = Civs.getInstance().getDataFolder();
         File tutorialFile = new File(dataFolder, "tutorial.yml");
         tutorialConfig = new YamlConfiguration();
@@ -48,6 +52,10 @@ public class TutorialManager {
     }
 
     public void completeStep(Civilian civilian, TutorialType type, String param) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
+
         if (civilian.getTutorialIndex() == -1) {
             return;
         }

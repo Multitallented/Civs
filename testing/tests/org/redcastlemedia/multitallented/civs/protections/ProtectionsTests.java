@@ -249,6 +249,22 @@ public class ProtectionsTests {
         assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 
+    @Test
+    public void denyMonsterSpawnShouldProtect() {
+        RegionsTests.loadRegionTypeShelter();
+        RegionsTests.createNewRegion("shelter");
+        Location location = TestUtil.block.getLocation();
+        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
+    }
+
+    @Test
+    public void denyMonsterSpawnShouldProtectInTown() {
+        TownTests.loadTownTypeHamlet();
+        TownTests.loadTown("test", "hamlet", TestUtil.block.getLocation());
+        Location location = TestUtil.block.getLocation();
+        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
+    }
+
     private void explodeInProtectedRegion(Location regionLocation, boolean useTown) {
         Region region;
         HashMap<UUID, String> people = new HashMap<>();

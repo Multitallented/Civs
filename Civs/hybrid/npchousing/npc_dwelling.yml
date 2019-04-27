@@ -4,7 +4,6 @@ name: NPC_Dwelling
 max: 2
 price: 400
 groups:
-- housing
 - npchousinggroup
 - alldwelling
 

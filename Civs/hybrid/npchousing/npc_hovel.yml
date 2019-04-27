@@ -5,7 +5,6 @@ max: 2
 price: 200
 groups:
 - npchousinggroup
-- housing
 - allhovel
 
 pre-reqs:
