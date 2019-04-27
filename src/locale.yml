@@ -68,7 +68,7 @@ en:
   build-reqs-title: Build Reqs
   population: Population
   biomes: Biomes
-  pop-desc: "$1 Population / $2 Housing"
+  pop-desc: "$1 Population / $2 Housing / $3 Villagers"
   build-reqs: "All the blocks you need to place to build a $1"
   reagents-title: Reagents
   reagents: "All the items you need in the $1 chest"

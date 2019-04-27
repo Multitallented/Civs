@@ -249,22 +249,6 @@ public class ProtectionsTests {
         assertNotNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 
-    @Test
-    public void denyMonsterSpawnShouldProtect() {
-        RegionsTests.loadRegionTypeShelter();
-        RegionsTests.createNewRegion("shelter");
-        Location location = TestUtil.block.getLocation();
-        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
-    }
-
-    @Test
-    public void denyMonsterSpawnShouldProtectInTown() {
-        TownTests.loadTownTypeHamlet();
-        TownTests.loadTown("test", "hamlet", TestUtil.block.getLocation());
-        Location location = TestUtil.block.getLocation();
-        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
-    }
-
     private void explodeInProtectedRegion(Location regionLocation, boolean useTown) {
         Region region;
         HashMap<UUID, String> people = new HashMap<>();
@@ -300,5 +284,33 @@ public class ProtectionsTests {
                 (float) 2);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onEntityExplode(event);
+    }
+
+    @Test
+    public void explosionShouldBeCancelled() {
+        RegionsTests.loadRegionTypeShelter();
+        RegionsTests.createNewRegion("shelter");
+        Location secondaryLocation = new Location(Bukkit.getWorld("world"), 11, 0,0);
+        Location tertiaryLocation = new Location(Bukkit.getWorld("world"), 15, 0,0);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        assertTrue(protectionHandler.shouldBlockActionEffect(TestUtil.block.getLocation(),null, "block_explosion", 5));
+        assertTrue(protectionHandler.shouldBlockActionEffect(secondaryLocation,null, "block_explosion", 5));
+        assertFalse(protectionHandler.shouldBlockActionEffect(tertiaryLocation,null, "block_explosion", 5));
+    }
+
+    @Test
+    public void denyMonsterSpawnShouldProtect() {
+        RegionsTests.loadRegionTypeShelter();
+        RegionsTests.createNewRegion("shelter");
+        Location location = TestUtil.block.getLocation();
+        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
+    }
+
+    @Test
+    public void denyMonsterSpawnShouldProtectInTown() {
+        TownTests.loadTownTypeHamlet();
+        TownTests.loadTown("test", "hamlet", TestUtil.block.getLocation());
+        Location location = TestUtil.block.getLocation();
+        assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
     }
 }

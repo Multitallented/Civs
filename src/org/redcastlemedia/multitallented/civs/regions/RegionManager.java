@@ -354,10 +354,16 @@ public class RegionManager {
         Region rebuildRegion = getRegionAt(block.getLocation());
         List<CivItem> itemList = ItemManager.getInstance().getItemGroup(regionType.getRebuild());
         boolean hasType = false;
-        for (CivItem item : itemList) {
-            if (item.getProcessedName().equals(rebuildRegion.getType())) {
+        outer: for (CivItem item : itemList) {
+            if (item.getProcessedName().equalsIgnoreCase(rebuildRegion.getType())) {
                 hasType = true;
-                break;
+                break outer;
+            }
+            for (String group : item.getGroups()) {
+                if (group.equalsIgnoreCase(rebuildRegion.getType())) {
+                    hasType = true;
+                    break outer;
+                }
             }
         }
         if (rebuildRegion != null && regionType.getRebuild() == null) {
@@ -510,7 +516,7 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, regionType.getEffects(), 0));
+        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, (HashMap) regionType.getEffects().clone(), 0));
 
         return true;
     }

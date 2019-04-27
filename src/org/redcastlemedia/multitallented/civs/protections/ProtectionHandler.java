@@ -434,7 +434,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    private boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
+    boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -467,17 +467,17 @@ public class ProtectionHandler implements Listener {
         return false;
     }
 
-    protected static boolean shouldBlockAction(Block block, Player player, String type) {
+    static boolean shouldBlockAction(Block block, Player player, String type) {
         return shouldBlockAction(block.getLocation(), player, type);
     }
-    protected static boolean shouldBlockAction(Block block, Player player, String type, String pRole) {
+    static boolean shouldBlockAction(Block block, Player player, String type, String pRole) {
         return shouldBlockAction(block.getLocation(), player, type, pRole);
     }
-    protected static boolean shouldBlockAction(Location location, Player player, String type) {
+    static boolean shouldBlockAction(Location location, Player player, String type) {
         return shouldBlockAction(location, player, type, "member");
     }
 
-    protected static boolean shouldBlockAction(Location location, String type) {
+    static boolean shouldBlockAction(Location location, String type) {
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
@@ -500,7 +500,7 @@ public class ProtectionHandler implements Listener {
         return true;
     }
 
-    protected static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
+    static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

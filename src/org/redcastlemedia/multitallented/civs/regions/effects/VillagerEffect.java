@@ -85,6 +85,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return;
         }
         town.setVillagers(Math.max(0, town.getVillagers() - 1));
+        town.setPopulation(Math.max(0, town.getPopulation() - 1));
+        TownManager.getInstance().saveTown(town);
     }
 
     public static Villager spawnVillager(Region region) {

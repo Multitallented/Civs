@@ -391,7 +391,7 @@ public class LocaleManager {
             currentLanguage.put("population",
                     localeConfig.getString(langKey + ".population", "Population"));
             currentLanguage.put("pop-desc",
-                    localeConfig.getString(langKey + ".pop-desc", "$1 Population, $3 Villagers / $2 Housing"));
+                    localeConfig.getString(langKey + ".pop-desc", "$1 Population / $2 Housing / $3 Villagers"));
             currentLanguage.put("create",
                     localeConfig.getString(langKey + ".create", "Create"));
             currentLanguage.put("region-in-biome",
