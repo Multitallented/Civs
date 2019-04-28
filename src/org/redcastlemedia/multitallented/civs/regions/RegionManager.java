@@ -354,15 +354,18 @@ public class RegionManager {
         Region rebuildRegion = getRegionAt(block.getLocation());
         List<CivItem> itemList = ItemManager.getInstance().getItemGroup(regionType.getRebuild());
         boolean hasType = false;
-        outer: for (CivItem item : itemList) {
-            if (item.getProcessedName().equalsIgnoreCase(rebuildRegion.getType())) {
-                hasType = true;
-                break outer;
-            }
-            for (String group : item.getGroups()) {
-                if (group.equalsIgnoreCase(rebuildRegion.getType())) {
+        if (rebuildRegion != null) {
+            outer:
+            for (CivItem item : itemList) {
+                if (item.getProcessedName().equalsIgnoreCase(rebuildRegion.getType())) {
                     hasType = true;
                     break outer;
+                }
+                for (String group : item.getGroups()) {
+                    if (group.equalsIgnoreCase(rebuildRegion.getType())) {
+                        hasType = true;
+                        break outer;
+                    }
                 }
             }
         }
