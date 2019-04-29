@@ -6,11 +6,11 @@ groups:
 - factory
 
 build-reqs:
-- g:primary*110
-- g:secondary*30
+- g:primary*90
+- g:secondary*25
 - g:window*4
 - g:door*1
-- g:roof*60
+- g:roof*40
 - g:wool*9
 
 build-radius: 4

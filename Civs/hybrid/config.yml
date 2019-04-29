@@ -58,6 +58,7 @@ folders:
   offense: TNT
   mines: STONE_PICKAXE
   woodworks: OAK_LOG
+  animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
 item-groups:
   sign: SIGN,WALL_SIGN

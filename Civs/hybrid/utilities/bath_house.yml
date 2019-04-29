@@ -26,10 +26,10 @@ effects:
 - block_liquid
 - block_fire
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 1
 
 description:
   en: "Provides 96 power to the town each day"

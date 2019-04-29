@@ -33,22 +33,22 @@ effects:
   - door_use
   - chest_use
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 1
   1:
     reagents:
     - PAPER*1
     input:
-    - EMERALD*64
-    payout: 640
+    - EMERALD*16
+    payout: 160
   2:
     reagents:
       - CHEST*1
     output:
-      - EMERALD*64
-    payout: -640
+      - EMERALD*16
+    payout: -160
 description:
   en: "Produces 96 power per day. Converts 64 emeralds to $640 or vice versa."
   fr: "Produit 96 puissance par jour. Convertit 64 émeraudes à 640$ ou vice versa."

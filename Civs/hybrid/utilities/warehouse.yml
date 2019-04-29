@@ -32,12 +32,12 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- warehouse #TODO
+- warehouse
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 1
 
 description:
   en: "Stores and distributes items to regions that need them"

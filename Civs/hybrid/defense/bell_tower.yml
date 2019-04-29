@@ -15,7 +15,7 @@ build-reqs:
 - GLOWSTONE*4
 - g:secondary*45
 - g:primary*140
-- g:roof*81
+- g:roof*60
 - g:glass*8
 - g:window*8
 
@@ -35,10 +35,10 @@ effects:
 - block_fire
 - intruder
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 1
 
 description:
   en: "Alerts town members when an intruder has entered the town."

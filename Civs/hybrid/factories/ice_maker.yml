@@ -5,9 +5,6 @@ price: 20
 groups:
 - factory
 
-pre-reqs:
-- member=settlement:hamlet:village:town:city:metropolis
-
 build-reqs:
 - g:primary*70
 - g:secondary*12
@@ -15,14 +12,6 @@ build-reqs:
 - g:door*1
 - g:roof*30
 - SNOW_BLOCK*9
-
-towns:
-- settlement
-- hamlet
-- village
-- town
-- city
-- metropolis
 
 build-radius: 3
 

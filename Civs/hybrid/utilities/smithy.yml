@@ -32,10 +32,10 @@ effects:
 - block_fire
 - repair
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 1
 
 description:
   en: "Right click the iron block to repair items. Creates 48 power per day"

@@ -1,0 +1,44 @@
+type: region
+icon: CHEST
+name: Sheep_Farm
+max: 1
+price: 10
+groups:
+- farm
+
+build-reqs:
+- g:log*4
+- g:wood*20
+- g:fence*19
+- g:fencegate*1
+- WHITE_WOOL*6
+
+build-radius: 3
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- spawn:SHEEP
+
+period: 300 #5 minutes
+
+upkeep:
+  0:
+    reagents:
+    - WHEAT*64
+    output:
+    - MUTTON*4
+  1:
+    reagents:
+    - SHEARS
+    output:
+    - WHITE_WOOL*4
+
+description:
+  en: "Automatic sheep farm"
+  es: "Granja de ovejas automática"
+  fr: "Élevage automatique"
+  pt_br: "Fazenda de ovelhas automática"
+  ru: "Автоматическая овцеводческая ферма"
+  de: "Automatische Schäferei"
