@@ -381,7 +381,15 @@ public class PlayerInventoryImpl implements PlayerInventory {
 
     @Override
     public ItemStack getItemInMainHand() {
-        return null;
+        ItemStackImpl itemStack = new ItemStackImpl(Material.GLOWSTONE,1);
+        ItemMetaImpl itemMeta = new ItemMetaImpl();
+        itemMeta.setDisplayName("Civs Tribe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Tribe");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     @Override

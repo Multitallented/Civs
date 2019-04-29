@@ -49,6 +49,8 @@ public class TestUtil {
     public static Block block12;
     public static Block block13;
     public static Player player;
+    public static Player player2;
+    public static Block block14;
     public static Block blockUnique;
     public static Block blockUnique2;
     public static Block blockUnique3;
@@ -136,6 +138,13 @@ public class TestUtil {
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player.getServer()).thenReturn(server);
         when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
+        UUID uuid2 = new UUID(1,3);
+        player2 = mock(Player.class);
+        when(player2.getUniqueId()).thenReturn(uuid2);
+        when(player2.getLocation()).thenReturn(new Location(world, -8197,69,3196));
+        when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
+        when(player2.getServer()).thenReturn(server);
+        when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
         when(server.getOnlinePlayers()).thenReturn((Collection) new ArrayList<Player>());
 
@@ -155,6 +164,7 @@ public class TestUtil {
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
         block13 = createBlock(Material.CHEST, new Location(world, 301, 101, 1));
+        block14 = createBlock(Material.WALL_SIGN, new Location(world, -8197, 68, 3196));
 
 
         world.putBlock(0,0,0,block);
@@ -170,6 +180,7 @@ public class TestUtil {
         world.putBlock(4,101,1,block11);
         world.putBlock(2,0,1,block12);
         world.putBlock(301,101,1,block13);
+        world.putBlock(-8197,68,3196, block14);
 
         world.putBlock(1000, 1, 0,
                 createBlock(Material.COBBLESTONE, new Location(world, 1000, 1, 0)));

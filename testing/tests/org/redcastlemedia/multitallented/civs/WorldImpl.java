@@ -61,7 +61,11 @@ public class WorldImpl implements World {
 
     @Override
     public Block getHighestBlockAt(Location location) {
-        return null;
+        Block block = mock(Block.class);
+        Location thisLocation = new Location(location.getWorld(),
+                location.getX(), 255, location.getZ());
+        when(block.getLocation()).thenReturn(thisLocation);
+        return block;
     }
 
     @Override

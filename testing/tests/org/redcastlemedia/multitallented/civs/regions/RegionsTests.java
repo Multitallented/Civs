@@ -985,9 +985,22 @@ public class RegionsTests {
         RegionManager.getInstance().addRegion(region);
         return region;
     }
+    public static Region createNewRegion(String type, Location location) {
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(new UUID(1, 4), "owner");
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        Region region = new Region(type, owners, location, getRadii(), (HashMap) regionType.getEffects().clone(),0);
+        RegionManager.getInstance().addRegion(region);
+        return region;
+    }
 
     public static Region createNewRegion(String type, UUID uuid) {
         Region region = createNewRegion(type);
+        region.setPeople(uuid, "owner");
+        return region;
+    }
+    public static Region createNewRegion(String type, UUID uuid, Location location) {
+        Region region = createNewRegion(type, location);
         region.setPeople(uuid, "owner");
         return region;
     }

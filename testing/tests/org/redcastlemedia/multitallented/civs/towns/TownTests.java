@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
+import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -144,6 +145,32 @@ public class TownTests {
         assertEquals(town, townManager.getTownAt(townLocation));
     }
 
+    @Test
+    public void townShouldBeCreated() {
+        RegionsTests.loadRegionTypeCobble();
+        loadTownTypeTribe();
+        RegionsTests.createNewRegion("cobble", TestUtil.player.getUniqueId());
+        TownCommand townCommand = new TownCommand();
+        String[] params = new String[2];
+        params[0] = "town";
+        params[1] = "test";
+        townCommand.runCommand(TestUtil.player, null, "cv", params);
+        assertEquals(1, TownManager.getInstance().getTowns().size());
+    }
+
+    @Test
+    public void townShouldBeCreatedWithNegatives() {
+        RegionsTests.loadRegionTypeCobble();
+        loadTownTypeTribe();
+        RegionsTests.createNewRegion("cobble", TestUtil.player2.getUniqueId(), TestUtil.block14.getLocation());
+        TownCommand townCommand = new TownCommand();
+        String[] params = new String[2];
+        params[0] = "town";
+        params[1] = "test";
+        townCommand.runCommand(TestUtil.player2, null, "cv", params);
+        assertEquals(1, TownManager.getInstance().getTowns().size());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
@@ -172,6 +199,7 @@ public class TownTests {
         config.set("type", "town");
         ArrayList<String> critReqs = new ArrayList<>();
         critReqs.add("cobble");
+        config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
         ItemManager.getInstance().loadTownType(config, "tribe");

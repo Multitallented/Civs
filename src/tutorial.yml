@@ -300,12 +300,12 @@ merchant:
       - RAIL*32
       - CHEST_MINECART
     messages:
-      en: "Put 384 potatoes in your Hovel chest. In 12 hours, your Hovel will sell all of them and upgrade to a Hovel1."
-      fr: "Mettez 384 pommes de terre dans votre poitrine Hovel. En 12 heures, votre Hovel les vendra tous et passera à un Hovel1."
-      es: "Pon 384 papas en tu arcón de Hovel. En 12 horas, su Hovel los venderá todos y se actualizará a un Hovel1."
-      pt_br: "Coloque 384 batatas no peito do Hovel. Em 12 horas, o seu Hovel venderá todos eles e fará o upgrade para um Hovel1."
-      ru: "Поместите 384 картофеля в сундук Ховеля. Через 12 часов ваш Ховел продаст их всех и перейдет на Ховела1."
-      de: "Legen Sie 384 Kartoffeln in Ihre Hovel-Truhe. In 12 Stunden verkauft Ihre Hovel alle und baut ein Upgrade auf eine Hovel1 auf."
+      en: "Put 384 potatoes in your Hovel chest. In 24 hours, your Hovel will sell all of them and upgrade to a Hovel1."
+      fr: "Mettez 384 pommes de terre dans votre poitrine Hovel. En 24 heures, votre Hovel les vendra tous et passera à un Hovel1."
+      es: "Pon 384 papas en tu arcón de Hovel. En 24 horas, su Hovel los venderá todos y se actualizará a un Hovel1."
+      pt_br: "Coloque 384 batatas no peito do Hovel. Em 24 horas, o seu Hovel venderá todos eles e fará o upgrade para um Hovel1."
+      ru: "Поместите 384 картофеля в сундук Ховеля. Через 24 часов ваш Ховел продаст их всех и перейдет на Ховела1."
+      de: "Legen Sie 384 Kartoffeln in Ihre Hovel-Truhe. In 24 Stunden verkauft Ihre Hovel alle und baut ein Upgrade auf eine Hovel1 auf."
   - type: build
     region: apple_orchard
     rewards:
