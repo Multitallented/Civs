@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -88,18 +89,40 @@ public class TownManager {
 
     public void checkCriticalRequirements(Region region) {
         Town town = getTownAt(region.getLocation());
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         RegionManager regionManager = RegionManager.getInstance();
         if (town == null) {
             return;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
-            return;
+            boolean containsReq = false;
+            for (String currentReq : regionType.getGroups()) {
+                if (townType.getCriticalReqs().contains(currentReq)) {
+                    containsReq = true;
+                    break;
+                }
+            }
+            if (!containsReq) {
+                return;
+            }
         }
         boolean hasReq = false;
-        for (Region containedRegion : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
-            if (containedRegion.getType().equalsIgnoreCase(region.getType()) && region != containedRegion) {
+        outer: for (Region containedRegion :
+                regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
+            if (region.equals(containedRegion)) {
+                continue;
+            }
+            if (containedRegion.getType().equalsIgnoreCase(region.getType())) {
                 hasReq = true;
+                break;
+            }
+            RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
+            for (String currentReq : containedType.getGroups()) {
+                if (regionType.getGroups().contains(currentReq)) {
+                    hasReq = true;
+                    break outer;
+                }
             }
         }
         if (!hasReq) {

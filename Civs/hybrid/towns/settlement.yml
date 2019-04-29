@@ -10,7 +10,7 @@ build-reqs:
 - council_room:1
 
 critical-build-reqs:
-- council_room
+- town_center
 
 limits:
 - npchousing:4

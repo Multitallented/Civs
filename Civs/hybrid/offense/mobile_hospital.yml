@@ -1,0 +1,33 @@
+type: region
+icon: WHITE_WOOL
+name: Mobile_Hospital
+max: 1
+price: 200
+groups:
+- offense
+
+build-radius: 4 # 9x9x9
+build-reqs:
+- g:window*4
+- g:door*1
+- g:sign*1
+- g:bed*4
+- BIRCH_STAIRS*40,BIRCH_SLAB*40
+- BIRCH_PLANKS*120,WHITE_WOOL*120,WHITE_TERRACOTTA*120,WHITE_CONCRETE*120
+- RED_WOOL*5,RED_TERRACOTTA*5,RED_CONCRETE*5
+
+effects:
+- block_break
+- block_build
+- block_fire
+- door_use
+- potion:HEAL
+- temporary:1800 # 30 minutes
+
+description:
+  en: "Heals all players inside the mobile hospital. Destroys itself in 30 minutes."
+  es: "Cura a todos los jugadores dentro del hospital móvil. Se destruye en 30 minutos."
+  de: "Heilt alle Spieler im mobilen Krankenhaus. Zerstört sich in 30 Minuten."
+  pt_br: "Cura todos os jogadores dentro do hospital móvel. Destrói-se em 30 minutos."
+  fr: "Soigne tous les joueurs à l'intérieur de l'hôpital mobile. Se détruit en 30 minutes."
+  ru: "Лечит всех игроков внутри мобильной больницы. Уничтожает себя за 30 минут."

@@ -1,0 +1,47 @@
+type: region
+icon: WHITE_WOOL
+name: Hospital
+max: 1
+price: 800
+groups:
+- defense
+
+pre-reqs:
+- member=hamlet:village:town:city:metropolis
+
+towns:
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-radius: 6 #13x13x13
+build-reqs:
+- g:window*16
+- g:door*1
+- g:sign*1
+- g:bed*12
+- BIRCH_STAIRS*70,BIRCH_SLAB*70
+- BIRCH_PLANKS*220,WHITE_WOOL*220,WHITE_TERRACOTTA*220,WHITE_CONCRETE*220
+- RED_WOOL*5,RED_TERRACOTTA*5,RED_CONCRETE*5
+
+effects:
+- block_break
+- block_build
+- block_fire
+- door_use
+- potion:HEAL
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+
+description:
+  en: "Heals all players inside the hospital. Creates 192 power per day."
+  es: "Cura a todos los jugadores dentro del hospital. Crea 192 de energía por día."
+  de: "Heilt alle Spieler im Krankenhaus. Erzeugt 192 Energie pro Tag."
+  pt_br: "Cura todos os jogadores dentro do hospital. Cria 192 de energia por dia."
+  fr: "Soigne tous les joueurs à l'intérieur de l'hôpital. Crée 192 points de puissance par jour."
+  ru: "Лечит всех игроков внутри больницы. Создает 192 силы в день."

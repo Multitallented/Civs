@@ -24,7 +24,7 @@ limits:
 - npchousing:9
 
 critical-build-reqs:
-- council_room
+- town_center
 
 child: settlement
 build-radius: 60
