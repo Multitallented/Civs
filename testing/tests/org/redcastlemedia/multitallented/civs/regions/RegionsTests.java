@@ -101,6 +101,21 @@ public class RegionsTests {
     }
 
     @Test
+    public void convertStringToLocationAndBackShouldBeTheSameNegative() {
+        Location location = new Location(Bukkit.getWorld("world"), -809.9937, 65, -781);
+        Location location2 = Region.idToLocation(Region.locationToString(location));
+        assertEquals(-809, location2.getX(), 0.1);
+        assertEquals(-781, location2.getZ(), 0.1);
+    }
+
+    @Test
+    public void convertStringToLocationAndBackShouldEqualOriginalString() {
+        String locationString = "d2460330-f815-4339-9b11-cf10755ccef9~-960~72~933";
+        Location location = Region.idToLocation(locationString);
+        assertEquals(locationString, Region.locationToString(location));
+    }
+
+    @Test
     public void stringToLocationShouldHandleDecimals() {
         Location location = new Location(Bukkit.getWorld("world"), -809.9937, 65, -781);
         assertEquals("d2460330-f815-4339-9b11-cf10755ccef9~-809~65~-781", Region.locationToString(location));

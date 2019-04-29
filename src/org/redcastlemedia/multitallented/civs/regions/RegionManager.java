@@ -89,6 +89,7 @@ public class RegionManager {
                 }
                 regions.get(worldName).add(region);
                 sortRegions(worldName);
+                regionLocations.put(region.getId(), region);
             }
         } catch (NullPointerException npe) {
             Civs.logger.warning("No region files found to load");
@@ -274,7 +275,6 @@ public class RegionManager {
         double prevIndex = -5;
         double prevDiff = 999999;
         boolean roundUp = false;
-//        System.out.println("======== new test ==========");
         for (;;) {
             if (roundUp) {
                 index = (int) Math.ceil(((maxdex - mindex) / 2) + mindex);

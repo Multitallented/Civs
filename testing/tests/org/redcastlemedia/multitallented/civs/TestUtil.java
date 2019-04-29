@@ -256,6 +256,7 @@ public class TestUtil {
                 createBlock(Material.CHEST, new Location(world, 0, 0, 1000)));
 
         when(server.getWorld("world")).thenReturn(world);
+        when(server.getWorld(world.getUID())).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
         when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
 
