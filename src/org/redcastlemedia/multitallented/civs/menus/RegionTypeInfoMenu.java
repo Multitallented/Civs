@@ -55,7 +55,11 @@ public class RegionTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.CHEST)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("Reagents", ""));
+            String displayName = event.getCurrentItem().getItemMeta().getDisplayName();
+            if (!displayName.contains("Reagents")) {
+                return;
+            }
+            int index = Integer.parseInt(displayName.replace("Reagents", ""));
             event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getUpkeeps().get(index).getReagents(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
