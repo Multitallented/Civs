@@ -224,6 +224,8 @@ public class TownManager {
         }
         removeTownFile(town.getName().toLowerCase());
     }
+
+    // TODO town devolve
     public void setTownPower(Town town, int power) {
         if (power > town.getMaxPower()) {
             town.setPower(town.getMaxPower());

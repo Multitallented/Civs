@@ -38,7 +38,7 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 1
+    power-output: 2
 
 description:
   en: "Alerts town members when an intruder has entered the town."

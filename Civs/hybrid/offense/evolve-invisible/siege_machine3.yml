@@ -17,7 +17,7 @@ build-radius: 3 #7x7x7
 effects:
 - block_build
 - block_break
-- drain_power:90.1
+- drain_power:90.1 # 960 / day
 
 towns:
 - outpost

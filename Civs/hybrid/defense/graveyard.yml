@@ -33,10 +33,10 @@ effects:
 - deny_mob_spawn
 - door_use
 
-period: daily
+period: 900 # 15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 2
 
 description:
   en: "A place for town members to respawn. Also prevents damage."

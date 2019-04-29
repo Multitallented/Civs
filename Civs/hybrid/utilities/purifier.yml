@@ -22,31 +22,31 @@ effects:
 - block_liquid
 - block_fire
 
-period: 1800 #30 minutes
+period: 900 #15 minutes
 upkeep:
   0:
     power-output: 1
   1:
     input:
-    - ROTTEN_FLESH*24
+    - ROTTEN_FLESH*12
     output:
-    - LEATHER*24
+    - LEATHER*12
   2:
     input:
-    - POISONOUS_POTATO*32
+    - POISONOUS_POTATO*16
     output:
-    - POTATO*32
+    - POTATO*16
   3:
     input:
-    - DEAD_BUSH*16
+    - DEAD_BUSH*8
     output:
-    - WHEAT*16
+    - WHEAT*8
 
 
 description:
-  en: "Transforms rotten flesh into leather and removes poison from potatoes every 30 minutes."
-  es: "Transforma la carne podrida en cuero y elimina el veneno de las papas cada 30 minutos."
-  pt_br: "Transforma a carne podre em couro e remove o veneno das batatas a cada 30 minutos."
-  ru: "Превращает гнилое мясо в кожу и удаляет яд из картофеля каждые 30 минут."
-  de: "Verwandelt verfaultes Fleisch in Leder und entfernt alle 30 Minuten Gift aus Kartoffeln."
-  fr: "Transforme la chair pourrie en cuir et élimine le poison des pommes de terre toutes les 30 minutes."
+  en: "Transforms rotten flesh into leather and removes poison from potatoes every 15 minutes."
+  es: "Transforma la carne podrida en cuero y elimina el veneno de las papas cada 15 minutos."
+  pt_br: "Transforma a carne podre em couro e remove o veneno das batatas a cada 15 minutos."
+  ru: "Превращает гнилое мясо в кожу и удаляет яд из картофеля каждые 15 минут."
+  de: "Verwandelt verfaultes Fleisch in Leder und entfernt alle 15 Minuten Gift aus Kartoffeln."
+  fr: "Transforme la chair pourrie en cuir et élimine le poison des pommes de terre toutes les 15 minutes."

@@ -32,10 +32,10 @@ effects:
 - door_use
 - jail
 
-period: daily
+period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 96
+    power-output: 2
 
 description:
   en: "A place to temporarily trap invaders who die in town."

@@ -3,8 +3,8 @@ icon: GLOWSTONE
 name: Settlement
 max: 1
 price: 1000
-group:
-- town
+groups:
+- superregion
 
 build-reqs:
 - council_room:1
@@ -32,8 +32,8 @@ effects:
 - block_explosion
 - anticamp:4.1800 #4 damage for 30 minutes
 
-power: 200
-max-power: 850
+power: 300
+max-power: 2040
 
 description:
   en: "The first level of a town"

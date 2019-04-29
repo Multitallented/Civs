@@ -44,8 +44,8 @@ karma-per-kill: 1
 karma-per-kill-streak: 1
 #How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
-power-per-kill: 1
-power-per-npc-kill: 1
+power-per-kill: 12
+power-per-npc-kill: 4
 folders:
   farms: STONE_HOE
   towns: GLOWSTONE
@@ -80,7 +80,7 @@ groups:
   shop: 3
   quarry: 12
   housing: 2
-  town: 1
+  superregion: 1
 
 #region port configs
 port:

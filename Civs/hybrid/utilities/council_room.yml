@@ -32,12 +32,12 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 1
+    power-output: 2
 
 description:
-  en: "The central structure for a town. Produces 96 power per day. Also acts as a home port."
-  es: "La estructura central de una ciudad. Produce 96 potencia por día. También actúa como un puerto de origen."
-  de: "Die zentrale Struktur für eine Stadt. Produziert 96 Kraft pro Tag. Funktioniert auch als Heimathafen."
-  ru: "Центральная структура для города. Производит 96 энергии в день. Также выступает в качестве домашнего порта."
-  pt_br: "A estrutura central de uma cidade. Produz 96 de energia por dia. Também atua como um porto de origem."
-  fr: "La structure centrale d'une ville. Produit 96 puissance par jour. Agit également comme port d'attache."
+  en: "The central structure for a town. Produces 192 power per day. Also acts as a home port."
+  es: "La estructura central de una ciudad. Produce 192 potencia por día. También actúa como un puerto de origen."
+  de: "Die zentrale Struktur für eine Stadt. Produziert 192 Kraft pro Tag. Funktioniert auch als Heimathafen."
+  ru: "Центральная структура для города. Производит 192 энергии в день. Также выступает в качестве домашнего порта."
+  pt_br: "A estrutura central de uma cidade. Produz 192 de energia por dia. Também atua como um porto de origem."
+  fr: "La structure centrale d'une ville. Produit 192 puissance par jour. Agit également comme port d'attache."

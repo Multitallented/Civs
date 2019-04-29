@@ -36,7 +36,7 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 1
+    power-output: 2
   1:
     reagents:
     - PAPER*1
@@ -50,9 +50,9 @@ upkeep:
       - EMERALD*16
     payout: -160
 description:
-  en: "Produces 96 power per day. Converts 64 emeralds to $640 or vice versa."
-  fr: "Produit 96 puissance par jour. Convertit 64 émeraudes à 640$ ou vice versa."
-  es: "Produce 96 de energía por día. Convierte 64 esmeraldas a $640 o viceversa."
-  ru: "Производит 96 мощности в день. Конвертирует 64 изумруда в 640 долларов или наоборот"
-  de: "Produziert 96 Energie pro Tag. Wandelt 64 Smaragde in $640 oder umgekehrt um."
-  pt_br: "Produz 96 de energia por dia. Converte 64 esmeraldas para $640 ou vice versa."
+  en: "Produces 192 power per day. Converts 64 emeralds to $640 or vice versa."
+  fr: "Produit 192 puissance par jour. Convertit 64 émeraudes à 640$ ou vice versa."
+  es: "Produce 192 de energía por día. Convierte 64 esmeraldas a $640 o viceversa."
+  ru: "Производит 192 мощности в день. Конвертирует 64 изумруда в 640 долларов или наоборот"
+  de: "Produziert 192 Energie pro Tag. Wandelt 64 Smaragde in $640 oder umgekehrt um."
+  pt_br: "Produz 192 de energia por dia. Converte 64 esmeraldas para $640 ou vice versa."

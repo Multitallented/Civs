@@ -29,12 +29,12 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 1
+    power-output: 2
 
 description:
-  en: "Provides 96 power to the town each day"
-  es: "Proporciona 96 de energía a la ciudad cada día"
-  de: "Produziert 96 Kraft pro Tag"
-  ru: "Производит 96 энергии в день"
-  pt_br: "Produz 96 de energia por dia"
-  fr: "Produit 96 puissance par jour"
+  en: "Provides 192 power to the town each day"
+  es: "Proporciona 192 de energía a la ciudad cada día"
+  de: "Produziert 192 Kraft pro Tag"
+  ru: "Производит 192 энергии в день"
+  pt_br: "Produz 192 de energia por dia"
+  fr: "Produit 192 puissance par jour"
