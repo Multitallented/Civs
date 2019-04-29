@@ -19,9 +19,9 @@ build-reqs:
 - g:sign*1
 - FURNACE
 - CRAFTING_TABLE
-- g:roof*81
-- g:secondary*54
-- g:primary*228
+- g:roof*80
+- g:secondary*55
+- g:primary*160
 
 rebuild: basehovel
 build-radius: 4 #9x9x9

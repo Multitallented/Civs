@@ -9,11 +9,11 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:primary*140
-- g:secondary*40
+- g:primary*70
+- g:secondary*12
 - g:window*2
 - g:door*1
-- g:roof*45
+- g:roof*30
 - SNOW_BLOCK*9
 
 towns:

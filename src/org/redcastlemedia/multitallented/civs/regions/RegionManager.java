@@ -4,11 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -141,10 +144,23 @@ public class RegionManager {
         if (checkCritReqs) {
             TownManager.getInstance().checkCriticalRequirements(region);
         }
+        Block block = region.getLocation().getBlock();
+        if (block instanceof Chest) {
+            ItemStack[] contents = ((Chest) block).getBlockInventory().getContents();
+            for (ItemStack is : contents) {
+                if (is != null) {
+                    block.getWorld().dropItemNaturally(block.getLocation(), is);
+                }
+            }
+            ((Chest) block).getBlockInventory().clear();
+        }
+
+        region.getLocation().getBlock().setType(Material.AIR);
+        BlockLogger.getInstance().removeBlock(region.getLocation());
         removeRegion(region);
     }
 
-    public void removeRegion(Region region) {
+    private void removeRegion(Region region) {
         regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();

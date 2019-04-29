@@ -7,7 +7,7 @@ groups:
 - mine
 
 build-reqs:
-- g:primary*150
+- g:primary*90
 - g:secondary*12
 - IRON_BARS*2
 - g:door*1

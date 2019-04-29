@@ -13,8 +13,8 @@ build-reqs:
 - CHEST*2
 - g:door*1
 - GLOWSTONE*4
-- g:secondary*55
-- g:primary*188
+- g:secondary*45
+- g:primary*140
 - g:roof*81
 - g:glass*8
 - g:window*8

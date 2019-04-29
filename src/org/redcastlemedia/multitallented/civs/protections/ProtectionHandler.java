@@ -164,10 +164,13 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        if (event.getBlock().getType() == Material.AIR) {
+        if (event.getBlock().getType() == Material.AIR ||
+                !ConfigManager.getInstance().isCheckWaterSpread()) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), null, "block_liquid");
+        boolean shouldTakeActionFrom = shouldBlockAction(event.getBlock(), null, "block_liquid");
+        boolean shouldTakeActionTo = shouldBlockAction(event.getToBlock(), null, "block_liquid");
+        boolean setCancelled = event.isCancelled() || (!shouldTakeActionFrom && shouldTakeActionTo);
         if (setCancelled) {
             event.setCancelled(true);
         }

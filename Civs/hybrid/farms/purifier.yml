@@ -9,8 +9,8 @@ build-reqs:
 - CHEST*2
 - g:door*1
 - g:roof*49
-- g:secondary*40
-- g:primary*90
+- g:secondary*30
+- g:primary*60
 - g:window*4
 - FURNACE
 - CRAFTING_TABLE
@@ -22,7 +22,7 @@ effects:
 - block_liquid
 - block_fire
 
-period: 600 #10 minutes
+period: 300 #5 minutes
 upkeep:
   0:
     input:
@@ -37,9 +37,9 @@ upkeep:
 
 
 description:
-  en: "Transforms rotten flesh into leather and removes poison from potatoes every 10 minutes."
-  es: "Transforma la carne podrida en cuero y elimina el veneno de las papas cada 10 minutos."
-  pt_br: "Transforma a carne podre em couro e remove o veneno das batatas a cada 10 minutos."
-  ru: "Превращает гнилое мясо в кожу и удаляет яд из картофеля каждые 10 минут."
-  de: "Verwandelt verfaultes Fleisch in Leder und entfernt alle 10 Minuten Gift aus Kartoffeln."
-  fr: "Transforme la chair pourrie en cuir et élimine le poison des pommes de terre toutes les 10 minutes."
+  en: "Transforms rotten flesh into leather and removes poison from potatoes every 5 minutes."
+  es: "Transforma la carne podrida en cuero y elimina el veneno de las papas cada 5 minutos."
+  pt_br: "Transforma a carne podre em couro e remove o veneno das batatas a cada 5 minutos."
+  ru: "Превращает гнилое мясо в кожу и удаляет яд из картофеля каждые 5 минут."
+  de: "Verwandelt verfaultes Fleisch in Leder und entfernt alle 5 Minuten Gift aus Kartoffeln."
+  fr: "Transforme la chair pourrie en cuir et élimine le poison des pommes de terre toutes les 5 minutes."

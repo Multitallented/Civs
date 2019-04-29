@@ -67,6 +67,9 @@ public class ConfigManager {
     boolean useClassesAndSpells;
 
     @Getter
+    boolean checkWaterSpread;
+
+    @Getter
     boolean useTutorial;
 
     @Getter
@@ -249,6 +252,7 @@ public class ConfigManager {
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
             useGuide = config.getBoolean("tutorial.use-guide", true);
             tutorialUrl = config.getString("tutorial.url");
+            checkWaterSpread = config.getBoolean("check-water-spread", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -305,6 +309,7 @@ public class ConfigManager {
         useClassesAndSpells = false;
         useTutorial = true;
         useGuide = true;
+        checkWaterSpread = true;
     }
 
     public static ConfigManager getInstance() {
