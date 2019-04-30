@@ -49,6 +49,9 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
     @Override
     public void regionCreatedHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Block block = region.getLocation().getBlock();
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
@@ -80,6 +83,9 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
     @Override
     public void destroyRegionHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town == null) {
             return;

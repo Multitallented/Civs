@@ -52,6 +52,7 @@ upkeep:
     input:
     - POTATO*32  # 768 or 12 stacks / day
     payout: 5.12 # $122.88 / day
+    exp: 1
 
 description:
   en: "2nd level of house. Earns $122 per day."

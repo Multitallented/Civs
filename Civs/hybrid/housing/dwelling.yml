@@ -50,10 +50,12 @@ upkeep:
     input:
     - POTATO*32  # 768 or 12 stacks / day
     payout: 5.12 # $122.88 / day
+    exp: 1
   2:
     input:
     - APPLE*6   # 144 or 2.25 stacks / day
     payout: 7.8 # 187.2 / day
+    exp: 1
 
 description:
   en: "3rd level of house. Earns $309 per day."
