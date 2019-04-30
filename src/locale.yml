@@ -199,6 +199,7 @@ en:
   cant-repair-item: "That item isn't something you can repair here"
   more-repair-items: "You need more $1 to repair that item"
   hold-repair-item: "You must hold the item you wish to repair"
+  player-not-found: "Player $1 not found"
 
   #death
   repeat-kill: "$1 was killed too recently. No points awarded."
