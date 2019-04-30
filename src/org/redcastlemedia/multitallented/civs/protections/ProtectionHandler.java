@@ -205,9 +205,13 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        boolean allProtected = shouldBlockAction(event.getBlock(), null, "block_build");
         for (Block block : event.getBlocks()) {
             boolean checkLocation = shouldBlockAction(block, null, "block_build");
-            if (checkLocation) {
+            if (!checkLocation) {
+                allProtected = false;
+            }
+            if (checkLocation && !allProtected) {
                 event.setCancelled(true);
                 break;
             }
@@ -215,7 +219,8 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_build");
+        boolean setCancelled = event.isCancelled() ||
+                shouldBlockAction(event.getBlock(), event.getPlayer(), "block_build");
         if (setCancelled) {
             event.setCancelled(true);
         }
