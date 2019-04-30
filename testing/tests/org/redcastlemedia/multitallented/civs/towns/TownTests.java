@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
@@ -127,13 +128,15 @@ public class TownTests {
     @Test
     public void townShouldNotBeDestroyedWhenNormalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble2();
+        RegionsTests.loadRegionTypeShelter();
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         HashMap<String, String> effects = new HashMap<>();
-        Region region = new Region("cobble2", people,
+        Region region = new Region("shelter", people,
                 new Location(Bukkit.getWorld("world"), 0,0,0),
                 RegionsTests.getRadii(),
                 effects,0);
+        RegionsTests.createNewRegion("cobble");
         loadTownTypeTribe();
         Location townLocation = new Location(Bukkit.getWorld("world"), 1,0,0);
 
@@ -154,7 +157,11 @@ public class TownTests {
         String[] params = new String[2];
         params[0] = "town";
         params[1] = "test";
-        townCommand.runCommand(TestUtil.player, null, "cv", params);
+        try {
+            townCommand.runCommand(TestUtil.player, null, "cv", params);
+        } catch (SuccessException successException) {
+            // Do nothing
+        }
         assertEquals(1, TownManager.getInstance().getTowns().size());
     }
 
@@ -167,7 +174,11 @@ public class TownTests {
         String[] params = new String[2];
         params[0] = "town";
         params[1] = "test";
-        townCommand.runCommand(TestUtil.player2, null, "cv", params);
+        try {
+            townCommand.runCommand(TestUtil.player2, null, "cv", params);
+        } catch (SuccessException successException) {
+            // Do nothing
+        }
         assertEquals(1, TownManager.getInstance().getTowns().size());
     }
 
@@ -176,7 +187,7 @@ public class TownTests {
         owners.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town(name, type,
                 location,
-                owners, 500, 500, 2, 1, 0, -1);
+                owners, 500, 500, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         return town;
     }

@@ -156,7 +156,9 @@ public class RegionManager {
             ((Chest) block).getBlockInventory().clear();
         }
 
-        region.getLocation().getBlock().setType(Material.AIR);
+        if (Civs.getInstance() != null) {
+            region.getLocation().getBlock().setType(Material.AIR);
+        }
         BlockLogger.getInstance().removeBlock(region.getLocation());
         removeRegion(region);
     }
