@@ -295,4 +295,14 @@ public class CivilianManager {
             return;
         }
     }
+
+    public void deleteCivilian(Civilian civilian) {
+        civilians.remove(civilian.getUuid());
+        File playerFolder = new File(Civs.getInstance().getDataFolder(), "players");
+        File playerFile = new File(playerFolder, civilian.getUuid() + ".yml");
+        if (!playerFile.exists()) {
+            return;
+        }
+        playerFile.delete();
+    }
 }

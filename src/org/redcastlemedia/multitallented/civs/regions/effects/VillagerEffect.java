@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -52,7 +53,6 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
         if (town != null) {
-            town.setPopulation(town.getPopulation() + 1);
             town.setVillagers(town.getVillagers() + 1);
             TownManager.getInstance().saveTown(town);
         }
@@ -85,13 +85,19 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return;
         }
         town.setVillagers(Math.max(0, town.getVillagers() - 1));
-        town.setPopulation(Math.max(0, town.getPopulation() - 1));
         TownManager.getInstance().saveTown(town);
     }
 
-    public static Villager spawnVillager(Region region) {
+    static Villager spawnVillager(Region region) {
+        if (!region.getLocation().getChunk().isLoaded()) {
+            return null;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town == null) {
+            return null;
+        }
+        // Don't spawn a villager if there aren't players in the town
+        if (CommonScheduler.lastTown.values().contains(town)) {
             return null;
         }
         long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;
@@ -115,9 +121,6 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
         townCooldowns.put(town.getName(), System.currentTimeMillis());
         if (town.getVillagers() <= villagerCount) {
-            return null;
-        }
-        if (!region.getLocation().getChunk().isLoaded()) {
             return null;
         }
 

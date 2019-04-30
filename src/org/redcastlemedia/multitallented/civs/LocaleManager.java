@@ -450,6 +450,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".choose-path", "Choose your path"));
             currentLanguage.put("skip",
                     localeConfig.getString(langKey + ".skip", "Achievements Off"));
+            currentLanguage.put("player-not-found",
+                    localeConfig.getString(langKey + ".player-not-found", "Player $1 not found"));
             languageMap.put(langKey, currentLanguage);
         }
     }

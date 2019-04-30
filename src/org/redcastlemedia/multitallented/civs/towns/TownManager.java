@@ -184,7 +184,6 @@ public class TownManager {
         int maxPower = config.getInt("max-power", 500);
         int power = config.getInt("power", maxPower);
         int housing = config.getInt("housing", 0);
-        int population = config.getInt("population", 1);
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
         Town town = new Town(name,
@@ -194,7 +193,6 @@ public class TownManager {
                 power,
                 maxPower,
                 housing,
-                population,
                 villagers,
                 lastDisable);
         if (config.isSet("bounties")) {
@@ -319,7 +317,6 @@ public class TownManager {
         }
         Town town = invites.get(uuid);
         town.setPeople(uuid, "member");
-        town.setPopulation(town.getPopulation() + 1);
         saveTown(town);
         invites.remove(uuid);
         return true;

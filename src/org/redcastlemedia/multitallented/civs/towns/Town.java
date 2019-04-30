@@ -20,7 +20,6 @@ public class Town {
     private String name;
     private HashMap<UUID, String> people;
     private int housing;
-    private int population;
     private HashSet<String> allies;
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
@@ -30,7 +29,7 @@ public class Town {
     private int villagers;
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
-                int housing, int population, int villagers, long lastDisable) {
+                int housing, int villagers, long lastDisable) {
         this.name = name;
         this.type = type;
         this.location = location;
@@ -38,7 +37,6 @@ public class Town {
         this.power = power;
         this.maxPower = maxPower;
         this.housing = housing;
-        this.population = population;
         this.villagers = villagers;
         this.allies = new HashSet<>();
         this.lastDisable = lastDisable;
@@ -156,12 +154,8 @@ public class Town {
     }
 
     public int getPopulation() {
-        return population;
+        return people.size() + getVillagers();
     }
-    public void setPopulation(int population) {
-        this.population = population;
-    }
-
     private int x = 0;
     private int z = 0;
     public void createRing() {
