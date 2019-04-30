@@ -1,0 +1,48 @@
+type: region
+icon: CHEST
+name: Gunpowder_Mine
+max: 1
+price: 2000
+groups:
+- mine
+
+build-reqs:
+- g:primary*110
+- g:secondary*12
+- TNT*2
+- g:door*1
+- CHEST*2
+- FURNACE*2
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+- conveyor:GUNPOWDER
+
+period: 1800 #0.5 hours
+upkeep:
+  0:
+    input:
+    - IRON_PICKAXE
+    output:
+    - GUNPOWDER*6
+  1:
+    reagents:
+    - DIAMOND_PICKAXE
+    input:
+    - IRON_PICKAXE
+    output:
+    - GUNPOWDER*8
+
+description:
+  en: "Creates gunpowder by using iron pickaxes"
+  es: "Crea pólvora utilizando picos de hierro."
+  de: "Erzeugt Schießpulver mit Eisen-Spitzhacken"
+  fr: "Crée de la poudre à canon en utilisant des pioches en fer"
+  ru: "Создает порох с помощью железных кирок"
+  pt_br: "Cria pólvora usando picaretas de ferro"
