@@ -33,7 +33,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:dwelling1.24
+- evolve:dwelling1.12
 
 towns:
 - hamlet
@@ -50,7 +50,6 @@ upkeep:
     input:
     - POTATO*32  # 768 or 12 stacks / day
     payout: 5.12 # $122.88 / day
-    exp: 1
   2:
     input:
     - APPLE*6   # 144 or 2.25 stacks / day

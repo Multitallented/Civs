@@ -35,7 +35,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:house2.48
+- evolve:house2.24
 
 towns:
 - hamlet
@@ -52,12 +52,10 @@ upkeep:
     input: #2.11
     - BREAD*6  # 144 or 2.25 stacks / day
     payout: 46.8 # $303.84 / day
-    exp: 1
   2:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
     payout: 7.8 # $187.2 / day
-    exp: 1
   3:
     input:
     - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6

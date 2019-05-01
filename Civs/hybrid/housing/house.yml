@@ -34,7 +34,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:house1.48
+- evolve:house1.24
 
 towns:
 - hamlet
@@ -56,7 +56,6 @@ upkeep:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
     payout: 7.8 # $187.2 / day
-    exp: 1
 
 description:
   en: "4th level of house. Earns $491 per day."

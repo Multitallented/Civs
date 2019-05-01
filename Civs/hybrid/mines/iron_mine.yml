@@ -18,6 +18,14 @@ build-reqs:
 - FURNACE*2
 - IRON_ORE*4
 
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
 build-radius: 4
 
 effects:
