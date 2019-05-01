@@ -24,7 +24,7 @@ public class ResetCommand implements CivCommand {
         if (!isAdmin || args.length < 2) {
             return true;
         }
-        OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[1]);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
         if (offlinePlayer == null) {
             if (commandSender instanceof Player) {
                 Player player = (Player) commandSender;
