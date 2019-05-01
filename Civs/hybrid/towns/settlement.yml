@@ -19,6 +19,7 @@ limits:
 - arrowtrapgroup:2
 - church:1
 - smithy:1
+- purifier:1
 
 build-radius: 40
 build-radius-y: 500

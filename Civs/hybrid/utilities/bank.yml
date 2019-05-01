@@ -3,35 +3,35 @@ icon: CHEST
 name: Bank
 price: 200
 groups:
-  - utility
+- utility
 
 pre-reqs:
-  - member=village:town:city:metropolis
+- member=village:town:city:metropolis
 
 towns:
-  - village
-  - town
-  - city
-  - metropolis
+- village
+- town
+- city
+- metropolis
 
 build-reqs:
-  - g:primary*180
-  - g:secondary*50
-  - g:window*12
-  - g:door*6
-  - g:roof*96
-  - GOLD_BLOCK*4
-  - g:fence*18
-  - chest*12
+- g:primary*180
+- g:secondary*50
+- g:window*12
+- g:door*6
+- g:roof*96
+- GOLD_BLOCK*4
+- g:fence*18
+- chest*12
 build-radius: 5
 
 effects:
-  - block_break
-  - block_build
-  - block_liquid
-  - block_fire
-  - door_use
-  - chest_use
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
 
 period: 900 #15 minutes
 upkeep:
