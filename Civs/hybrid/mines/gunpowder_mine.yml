@@ -24,20 +24,20 @@ effects:
 - block_fire
 - conveyor:GUNPOWDER
 
-period: 1800 #0.5 hours
+period: 3600 # 1 hour
 upkeep:
   0:
     input:
     - IRON_PICKAXE
     output:
-    - GUNPOWDER*6
+    - GUNPOWDER*5
   1:
     reagents:
     - DIAMOND_PICKAXE
     input:
     - IRON_PICKAXE
     output:
-    - GUNPOWDER*8
+    - GUNPOWDER*7
 
 description:
   en: "Creates gunpowder by using iron pickaxes"
