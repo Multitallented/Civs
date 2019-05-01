@@ -9,10 +9,9 @@ groups:
 - trading
 
 pre-reqs:
-- member=settlement:hamlet:village:town:city:metropolis
+- member=hamlet:village:town:city:metropolis
 
 towns:
-- settlement
 - hamlet
 - village
 - town
