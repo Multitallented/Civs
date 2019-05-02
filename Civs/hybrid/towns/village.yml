@@ -31,6 +31,8 @@ limits:
 - church:1
 - bank:1
 - warehouse:1
+- barracks:1
+- inn:1
 
 critical-build-reqs:
 - town_center

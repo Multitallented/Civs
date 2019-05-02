@@ -1,7 +1,7 @@
 type: region
 icon: BLACK_BED
 name: Inn
-max: 1
+max: 2
 price: 750
 groups:
 - publichousing
