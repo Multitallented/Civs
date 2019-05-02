@@ -68,17 +68,7 @@ public class LeaderboardMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, int page) {
-        ArrayList<Civilian> civilianList = new ArrayList<>(CivilianManager.getInstance().getCivilians());
-
-        Collections.sort(civilianList, new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian o1, Civilian o2) {
-                if (o1.getPoints() == o2.getPoints()) {
-                    return 0;
-                }
-                return o1.getPoints() < o2.getPoints() ? 1 : -1;
-            }
-        });
+        ArrayList<Civilian> civilianList = CivilianManager.getInstance().getSortedCivilians();
 
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 

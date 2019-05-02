@@ -15,6 +15,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -310,28 +312,64 @@ public class CivilianListener implements Listener {
         }
     }
 
-    /*@EventHandler
+//    @EventHandler(ignoreCancelled = true)
+//    public void onItemMoveEvent(InventoryMoveItemEvent event) {
+//        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
+//            return;
+//        }
+//        if (!CVItem.isCivsItem(event.getItem())) {
+//            return;
+//        }
+//        event.setCancelled(true);
+//    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCivilianDragItem(InventoryDragEvent event) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
+            return;
+        }
+        ItemStack dragged = event.getOldCursor();
+        if (!CVItem.isCivsItem(dragged) ||
+                event.getInventory().getTitle().startsWith("Civ")) {
+            return;
+        }
+
+        int inventorySize = event.getInventory().getSize();
+        for (int i : event.getRawSlots()) {
+            if (i < inventorySize) {
+                event.setCancelled(true);
+                HumanEntity humanEntity = event.getWhoClicked();
+                Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
+                humanEntity.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+                return;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
-        if (!CVItem.isCivsItem(event.getCurrentItem()) || event.getClickedInventory().getTitle().startsWith("Civ")) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
+            return;
+        }
+        boolean shiftClick = event.getClick().isShiftClick() && event.getClickedInventory() != null &&
+                event.getClickedInventory().equals(event.getWhoClicked().getInventory());
+        boolean dragToChest = event.getClickedInventory() != null &&
+                !event.getClickedInventory().equals(event.getWhoClicked().getInventory());
+
+        ItemStack stackInQuestion = shiftClick ? event.getCurrentItem() : event.getCursor();
+
+        if (stackInQuestion == null || (!shiftClick && !dragToChest)) {
+            return;
+        }
+
+        if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();
-        ItemStack clickedStack = event.getCurrentItem();
-        String uuidString;
-        try {
-            uuidString = clickedStack.getItemMeta().getLore().get(0);
-        } catch (Exception e) {
-            Civs.logger.warning("Unable to find Civs Item UUID");
-            return;
-        }
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
-                CVItem.isCivsItem(clickedStack) &&
-                !humanEntity.getUniqueId().toString().equals(uuidString)) {
-            event.setCancelled(true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
-            humanEntity.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
-            return;
-        }
-    }*/
+        event.setCancelled(true);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
+        humanEntity.sendMessage(Civs.getPrefix() +
+                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+    }
 }

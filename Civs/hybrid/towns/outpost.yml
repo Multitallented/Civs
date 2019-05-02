@@ -1,5 +1,5 @@
 type: town
-icon: GLOWSTONE
+icon: TNT
 name: Outpost
 max: 1
 price: 300
@@ -7,10 +7,10 @@ group:
 - outpost
 
 build-reqs:
-- commandtent:1
+- command_tent:1
 
 critical-build-reqs:
-- commandtent
+- command_tent
 
 limits:
 - arrowtrapgroup:1

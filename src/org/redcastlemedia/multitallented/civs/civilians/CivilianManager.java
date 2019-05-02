@@ -22,6 +22,7 @@ import java.util.*;
 public class CivilianManager {
 
     private HashMap<UUID, Civilian> civilians = new HashMap<>();
+    private ArrayList<Civilian> sortedCivilians = new ArrayList<>();
 
     private static CivilianManager civilianManager = null;
 
@@ -38,6 +39,10 @@ public class CivilianManager {
         return civilians.values();
     }
 
+    public ArrayList<Civilian> getSortedCivilians() {
+        return sortedCivilians;
+    }
+
     private void loadAllCivilians() {
         Civs civs = Civs.getInstance();
         File civilianFolder = new File(civs.getDataFolder(), "players");
@@ -49,10 +54,12 @@ public class CivilianManager {
                 UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
                 Civilian civilian = loadFromFileCivilian(uuid);
                 civilians.put(uuid, civilian);
+                sortedCivilians.add(civilian);
             }
         } catch (NullPointerException npe) {
 
         }
+        sortCivilians();
     }
 
     public static CivilianManager getInstance() {
@@ -69,7 +76,21 @@ public class CivilianManager {
         civilians.put(player.getUniqueId(), civilian);
     }
     public void createDefaultCivilian(Player player) {
-        civilians.put(player.getUniqueId(), createDefaultCivilian(player.getUniqueId()));
+        Civilian civilian = createDefaultCivilian(player.getUniqueId());
+        civilians.put(player.getUniqueId(), civilian);
+        sortedCivilians.add(civilian);
+        sortCivilians();
+    }
+    private void sortCivilians() {
+        Collections.sort(sortedCivilians, new Comparator<Civilian>() {
+            @Override
+            public int compare(Civilian o1, Civilian o2) {
+                if (o1.getPoints() == o2.getPoints()) {
+                    return 0;
+                }
+                return o1.getPoints() < o2.getPoints() ? 1 : -1;
+            }
+        });
     }
     void unloadCivilian(Player player) {
         Civilian civilian = getCivilian(player.getUniqueId());
