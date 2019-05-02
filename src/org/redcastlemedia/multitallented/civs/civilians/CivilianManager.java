@@ -59,7 +59,6 @@ public class CivilianManager {
         } catch (NullPointerException npe) {
 
         }
-        sortCivilians();
     }
 
     public static CivilianManager getInstance() {
@@ -79,9 +78,8 @@ public class CivilianManager {
         Civilian civilian = createDefaultCivilian(player.getUniqueId());
         civilians.put(player.getUniqueId(), civilian);
         sortedCivilians.add(civilian);
-        sortCivilians();
     }
-    private void sortCivilians() {
+    public void sortCivilians() {
         Collections.sort(sortedCivilians, new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {

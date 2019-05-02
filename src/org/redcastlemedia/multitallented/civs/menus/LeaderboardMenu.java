@@ -68,6 +68,7 @@ public class LeaderboardMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, int page) {
+        CivilianManager.getInstance().sortCivilians();
         ArrayList<Civilian> civilianList = CivilianManager.getInstance().getSortedCivilians();
 
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
