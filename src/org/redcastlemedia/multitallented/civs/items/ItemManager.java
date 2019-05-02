@@ -511,7 +511,7 @@ public class ItemManager {
                                 !town.getPeople().get(civilian.getUuid()).contains("owner")) {
                             continue;
                         }
-                        if (requirement <= town.countPeopleWithRole("member")) {
+                        if (requirement <= town.getPopulation()) {
                             continue outer;
                         }
                     }
