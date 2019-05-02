@@ -1,5 +1,5 @@
 type: region
-icon: CHEST
+icon: CRAFTING_TABLE
 name: NPC_Dwelling
 max: 2
 price: 400
