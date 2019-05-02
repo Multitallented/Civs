@@ -19,10 +19,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class CivilianManager {
 
     private HashMap<UUID, Civilian> civilians = new HashMap<>();
     private ArrayList<Civilian> sortedCivilians = new ArrayList<>();
+    @Getter
+    @Setter
+    private boolean listNeedsToBeSorted = false;
 
     private static CivilianManager civilianManager = null;
 
@@ -40,6 +46,7 @@ public class CivilianManager {
     }
 
     public ArrayList<Civilian> getSortedCivilians() {
+        sortCivilians();
         return sortedCivilians;
     }
 
@@ -59,6 +66,7 @@ public class CivilianManager {
         } catch (NullPointerException npe) {
 
         }
+        sortCivilians();
     }
 
     public static CivilianManager getInstance() {
@@ -78,8 +86,12 @@ public class CivilianManager {
         Civilian civilian = createDefaultCivilian(player.getUniqueId());
         civilians.put(player.getUniqueId(), civilian);
         sortedCivilians.add(civilian);
+        listNeedsToBeSorted = true;
     }
     public void sortCivilians() {
+        if (!listNeedsToBeSorted) {
+            return;
+        }
         Collections.sort(sortedCivilians, new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {

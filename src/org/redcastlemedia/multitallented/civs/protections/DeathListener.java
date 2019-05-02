@@ -366,6 +366,7 @@ public class DeathListener implements Listener {
         points += healthBonus;
         dyingCiv.setPoints(dyingCiv.getPoints() + ConfigManager.getInstance().getPointsPerDeath());
         damagerCiv.setPoints(damagerCiv.getPoints() + points);
+        CivilianManager.getInstance().setListNeedsToBeSorted(true);
 
         //Karma
         double karmaEcon = Math.max(0, -ConfigManager.getInstance().getMoneyPerKarma() * ((double) (dyingCiv.getKarma() - damagerCiv.getKarma())));
