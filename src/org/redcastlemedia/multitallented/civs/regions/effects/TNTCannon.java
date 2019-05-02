@@ -1,27 +1,29 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.*;
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class TNTCannon implements Listener, CreateRegionListener {
 //    private final HashMap<TNTPrimed, FiredTNT> firedTNT = new HashMap<>();
@@ -46,8 +48,9 @@ public class TNTCannon implements Listener, CreateRegionListener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if ((event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
-                event.getPlayer().getInventory().getItemInMainHand() == null || event.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null ||
+        if (event.getHand() == EquipmentSlot.OFF_HAND ||
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+                event.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null ||
                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null ||
                 !event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Cannon Controller")) {
             return;
@@ -86,8 +89,12 @@ public class TNTCannon implements Listener, CreateRegionListener {
             player.sendMessage(Civs.getPrefix() + "That " + region.getType() + " is reloading."); //TODO localize
             return;
         }
-        HashSet<Material> materialHashSet = new HashSet<>();
-        Location targetLocation = player.getTargetBlock(materialHashSet, 100).getLocation();
+        Block block = player.getTargetBlockExact(100, FluidCollisionMode.ALWAYS);
+        if (block == null) {
+            player.sendMessage(Civs.getPrefix() + "That target is too far away"); //TODO localize
+            return;
+        }
+        Location targetLocation = block.getLocation();
         if (!targetLocation.getWorld().equals(fireLocation.getWorld())) {
             return;
         }
@@ -146,8 +153,6 @@ public class TNTCannon implements Listener, CreateRegionListener {
         cooldowns.put(id, System.currentTimeMillis() + cooldown * 1000);
 
         region.runUpkeep();
-//        Chest chest = (Chest) region.getLocation().getBlock();
-//        chest.getBlockInventory().removeItem(new ItemStack(Material.TNT,1));
 
             /*player.sendMessage(ChatColor.GREEN + "[Townships] Dx: " + deltaX);
             player.sendMessage(ChatColor.GREEN + "[Townships] Velocity: " + newX + ", " + newY + ", " + newZ);
@@ -166,7 +171,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
             currPlayer.playSound(fireLocation, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
         }
 
-        player.sendMessage(Civs.getPrefix() + "Your " + region.getType() + " has fired ordinance at your new target."); //TODO localize
+        player.sendMessage(Civs.getPrefix() + "Your " + region.getType() + " has fired TNT at your new target."); //TODO localize
     }
 
     private double functionDx(double deltaX, double deltaY, double v) {

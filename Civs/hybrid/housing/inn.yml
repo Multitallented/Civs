@@ -1,0 +1,51 @@
+type: region
+icon: RED_BED
+name: Inn
+max: 1
+price: 750
+groups:
+- publichousing
+
+pre-reqs:
+- member=village:town:city:metropolis
+
+towns:
+- village
+- town
+- city
+- metropolis
+
+build-radius: 9 #19x19x19
+build-reqs:
+- g:window*32
+- g:door*13
+- g:sign*12
+- g:bed*12
+- CHEST*12
+- FURNACE*12
+- CRAFTING_TABLE*12
+- g:roof*250
+- g:primary*900
+- g:secondary*150
+
+effects:
+- block_break
+- block_build
+- block_fire
+- door_use
+- exclusive:barracks
+- housing:12
+- port
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 1
+
+description:
+  en: "Adds 12 housing to the town. Creates 96 power per day."
+  es: "Añade 12 viviendas al pueblo. Crea 96 de energía por día."
+  de: "Fügt der Stadt 12 Wohnungen hinzu. Erzeugt 96 Energie pro Tag."
+  pt_br: "Adiciona 12 casas para a cidade. Cria 96 de energia por dia."
+  fr: "Ajoute 12 logements à la ville. Crée 96 points de puissance par jour."
+  ru: "Добавляет 12 жилья в город. Создает 96 силы в день."
