@@ -13,7 +13,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.ArrayList;
@@ -31,7 +33,8 @@ public class ItemsTests {
 
     @Before
     public void onBefore() {
-
+        new TownManager();
+        new RegionManager();
     }
 
     @Test
@@ -122,6 +125,17 @@ public class ItemsTests {
         CivItem shelter = itemManager.getItemType("shelter");
         civilian.getExp().put(shelter, 520);
         assertTrue(itemManager.hasItemUnlocked(civilian, itemManager.getItemType("rage")));
+    }
+
+    @Test
+    public void hamletShouldBeUnlocked() {
+        TownTests.loadTownTypeTribe();
+        Town town = TownTests.loadTown("test", "tribe", TestUtil.player.getLocation());
+        town.setVillagers(4);
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        TownTests.loadTownTypeTribe2();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe2")));
     }
 
     private void loadSpellTypeBackflip() {
