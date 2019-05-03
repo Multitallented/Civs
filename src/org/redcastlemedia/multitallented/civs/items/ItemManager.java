@@ -213,6 +213,7 @@ public class ItemManager {
                 config.getInt("max-power", 1000),
                 config.getStringList("groups"),
                 config.getString("child"),
+                config.getInt("child-population", 0),
                 config.getBoolean("is-in-shop", true));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;

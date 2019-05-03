@@ -102,7 +102,6 @@ public class CommonScheduler implements Runnable {
             PlayerInTownEvent playerInTownEvent = new PlayerInTownEvent(player.getUniqueId(),
                     town, townType);
             Bukkit.getPluginManager().callEvent(playerInTownEvent);
-            //TODO when player in town
         }
         TownType prevTownType = null;
         if (prevTown != null) {

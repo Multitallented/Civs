@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class TownType extends CivItem {
 
     private final HashMap<String, Integer> reqs;
@@ -17,6 +20,8 @@ public class TownType extends CivItem {
     private final int power;
     private final int maxPower;
     private final String child;
+    @Getter
+    private final int childPopulation;
     private final HashMap<String, Integer> regionLimits;
 
     public HashMap<String, Integer> getReqs() {
@@ -64,6 +69,7 @@ public class TownType extends CivItem {
                     int maxPower,
                     List<String> groups,
                     String child,
+                    int childPopulation,
                     boolean isInShop) {
         super(civReqs,
                 false,
@@ -87,5 +93,6 @@ public class TownType extends CivItem {
         this.power = power;
         this.maxPower = maxPower;
         this.child = child;
+        this.childPopulation = childPopulation;
     }
 }

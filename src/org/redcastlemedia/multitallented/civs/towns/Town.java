@@ -10,9 +10,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.util.*;
 
-public class Town {
-    private final String type;
+import lombok.Getter;
+import lombok.Setter;
 
+public class Town {
+    @Getter
+    @Setter
+    private String type;
 
     private int maxPower;
     private int power;
@@ -226,8 +230,8 @@ public class Town {
         }, 2 * radius);
     }
 
-    public void destroyRing(boolean destroyAll) {
-        removeOuterRing();
+    public void destroyRing(boolean destroyAll, boolean useGravel) {
+        removeOuterRing(useGravel);
 
         if (!destroyAll) {
             return;
@@ -257,7 +261,7 @@ public class Town {
 
                         @Override
                         public void run() {
-                            removeRing(loc, srType.getBuildRadius());
+                            removeRing(loc, srType.getBuildRadius(), useGravel);
                         }
 
                     }, delay);
@@ -265,14 +269,17 @@ public class Town {
         }
     }
 
-    private void removeOuterRing() {
+    private void removeOuterRing(boolean useGravel) {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
         final int radius = townType.getBuildRadius();
-        removeRing(location, radius);
+        removeRing(location, radius, useGravel);
     }
 
-    private void removeRing(final Location l, final int radius) {
+    private void removeRing(final Location l, final int radius, boolean setGravel) {
         final World world = l.getWorld();
+        if (world == null) {
+            return;
+        }
         x = 0;
         z = 0;
         int baseY = l.getWorld().getHighestBlockAt(l).getY();
@@ -290,10 +297,17 @@ public class Town {
                             int asdf = (int) Math.sqrt(radius*radius - (x * x));
                             int zp = asdf + (int) l.getZ();
                             int zn = (int) l.getZ() - asdf;
-                            world.getBlockAt(xp, yL, zp).setType(Material.GRAVEL);
-                            world.getBlockAt(xn, yL, zp).setType(Material.GRAVEL);
-                            world.getBlockAt(xp, yL, zn).setType(Material.GRAVEL);
-                            world.getBlockAt(xn, yL, zn).setType(Material.GRAVEL);
+                            if (setGravel) {
+                                world.getBlockAt(xp, yL, zp).setType(Material.GRAVEL);
+                                world.getBlockAt(xn, yL, zp).setType(Material.GRAVEL);
+                                world.getBlockAt(xp, yL, zn).setType(Material.GRAVEL);
+                                world.getBlockAt(xn, yL, zn).setType(Material.GRAVEL);
+                            } else {
+                                world.getBlockAt(xp, yL, zp).setType(Material.AIR);
+                                world.getBlockAt(xn, yL, zp).setType(Material.AIR);
+                                world.getBlockAt(xp, yL, zn).setType(Material.AIR);
+                                world.getBlockAt(xn, yL, zn).setType(Material.AIR);
+                            }
 
                         }
                         x++;

@@ -91,7 +91,7 @@ public class DestroyConfirmationMenu extends Menu {
                 }
                 TownManager.getInstance().removeTown(town, true);
                 if (ConfigManager.getInstance().getTownRings()) {
-                    town.destroyRing(true);
+                    town.destroyRing(true, true);
                 }
             }
             event.getWhoClicked().closeInventory();

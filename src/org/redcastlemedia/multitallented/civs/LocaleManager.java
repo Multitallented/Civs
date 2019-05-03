@@ -452,6 +452,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".skip", "Achievements Off"));
             currentLanguage.put("player-not-found",
                     localeConfig.getString(langKey + ".player-not-found", "Player $1 not found"));
+            currentLanguage.put("devolve-town",
+                    localeConfig.getString(langKey + ".devolve-town", "$1 has run out of power and has been downgraded to a $2!"));
+            currentLanguage.put("population-req",
+                    localeConfig.getString(langKey + ".population-req", "Requires a $1 with $2 population"));
             languageMap.put(langKey, currentLanguage);
         }
     }

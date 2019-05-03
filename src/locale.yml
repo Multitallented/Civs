@@ -67,7 +67,9 @@ en:
   range: Range
   build-reqs-title: Build Reqs
   population: Population
+  population-req: "Requires a $1 with $2 population"
   biomes: Biomes
+  devolve-town: "$1 has run out of power and has been downgraded to a $2!"
   pop-desc: "$1 Population / $2 Housing / $3 Villagers"
   build-reqs: "All the blocks you need to place to build a $1"
   reagents-title: Reagents

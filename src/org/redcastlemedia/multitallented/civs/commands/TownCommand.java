@@ -127,14 +127,21 @@ public class TownCommand implements CivCommand {
         int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
+            if (intersectTown.getPopulation() < townType.getChildPopulation()) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(), "population-req")
+                        .replace("$1", intersectTown.getType())
+                        .replace("$2", "" + townType.getChildPopulation()));
+                return true;
+            }
             people = intersectTown.getPeople();
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
             TownManager.getInstance().removeTown(intersectTown, false);
-            if (ConfigManager.getInstance().getTownRings()) {
-                intersectTown.destroyRing(false);
-            }
+            // Don't destroy the ring on upgrade
+//            if (ConfigManager.getInstance().getTownRings()) {
+//                intersectTown.destroyRing(false);
+//            }
             villagerCount = intersectTown.getVillagers();
         }
 

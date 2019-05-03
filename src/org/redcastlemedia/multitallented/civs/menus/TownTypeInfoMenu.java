@@ -101,6 +101,7 @@ public class TownTypeInfoMenu extends Menu {
         }
 
         //2 Rebuild
+        // TODO rebuild
         /*if (townType.getRebuild() != null) {
             CVItem rebuildItem = itemManager.getItemType(townType.getRebuild().toLowerCase()).clone();
             lore = new ArrayList<>();
@@ -110,7 +111,17 @@ public class TownTypeInfoMenu extends Menu {
         }*/
 
         //3 Population/Charter
-        //TODO population requirements?
+        if (townType.getChild() != null &&
+                townType.getChildPopulation() > 0) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("PLAYER_HEAD");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "population"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "population-req")
+                    .replace("$1", townType.getChild())
+                    .replace("$2", "" +townType.getChildPopulation()));
+            cvItem1.setLore(lore);
+            inventory.setItem(3, cvItem1.createItemStack());
+        }
 
         //8 back button
         inventory.setItem(8, getBackButton(civilian));

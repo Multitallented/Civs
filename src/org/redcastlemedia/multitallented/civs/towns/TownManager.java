@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -243,10 +244,12 @@ public class TownManager {
         if (Civs.getInstance() == null) {
             return;
         }
+        if (ConfigManager.getInstance().getTownRings()) {
+            town.destroyRing(true, broadcast);
+        }
         removeTownFile(town.getName().toLowerCase());
     }
 
-    // TODO town devolve
     public void setTownPower(Town town, int power) {
         if (power > town.getMaxPower()) {
             town.setPower(town.getMaxPower());
@@ -259,12 +262,36 @@ public class TownManager {
             TownManager.getInstance().removeTown(town, true);
         } else {
             if (town.getPower() < 1) {
-                hasGrace(town, true);
+                if (townType.getChild() != null) {
+                    devolveTown(town, townType);
+                } else {
+                    hasGrace(town, true);
+                }
             } else {
                 TownManager.getInstance().saveTown(town);
             }
         }
     }
+
+    private void devolveTown(Town town, TownType townType) {
+        if (townType.getChild() != null) {
+            return;
+        }
+        town.destroyRing(false, true);
+        TownType childTownType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
+        town.setType(childTownType.getProcessedName());
+        town.setPower(childTownType.getPower());
+        town.setMaxPower(childTownType.getMaxPower());
+        TownManager.getInstance().saveTown(town);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "devolve-town")
+                    .replace("$1", town.getName())
+                    .replace("$2", childTownType.getProcessedName()));
+        }
+    }
+
     private void removeTownFile(String townName) {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {

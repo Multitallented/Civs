@@ -38,6 +38,7 @@ critical-build-reqs:
 - town_center
 
 child: hamlet
+child-population: 10
 build-radius: 80
 build-radius-y: 500
 effects:

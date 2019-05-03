@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,7 +19,10 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.google.common.util.concurrent.AbstractScheduledService;
 
 public class CommandTests {
 
@@ -94,7 +98,11 @@ public class CommandTests {
         String[] args = new String[3];
         args[0] = "town";
         args[1] = "test2";
-        townCommand.runCommand(TestUtil.player, null, "town", args);
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException successException) {
+            // Do nothing
+        }
         assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
     }
 }
