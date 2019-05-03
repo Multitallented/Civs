@@ -200,7 +200,7 @@ builder:
       ru: "Поздравляем! Создайте заявку с помощью /cv town название_города_здесь. Когда вы это сделаете, купите и постройте Shack."
       de: "Herzliche Glückwünsche! Erstellen Sie Ihren Anspruch mit /cv town ortsname_geht_hier. Wenn du das getan hast, kaufe und baue eine Shack."
   - type: build
-    region: npcshack
+    region: npc_shack
     rewards:
       items:
       - EMERALD*64
