@@ -1,4 +1,6 @@
-package org.redcastlemedia.multitallented.civs;
+package org.redcastlemedia.multitallented.civs.util;
+
+import org.redcastlemedia.multitallented.civs.Civs;
 
 public class LogInfo
 {

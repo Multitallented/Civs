@@ -45,23 +45,27 @@ public class MemberActionMenu extends Menu {
             return;
         }
 
-        clearHistory(civilian.getUuid());
+//        clearHistory(civilian.getUuid());
 //        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
 
         if (event.getCurrentItem().getType().equals(Material.GOLD_BLOCK)) {
             cPlayer.performCommand("cv setowner " + player.getName() + " " + locationString);
+            clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.IRON_BLOCK)) {
             cPlayer.performCommand("cv setmember " + player.getName() + " " + locationString);
+            clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.DIORITE)) {
             cPlayer.performCommand("cv setguest " + player.getName() + " " + locationString);
+            clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
             cPlayer.performCommand("cv removemember " + player.getName() + " " + locationString);
+            clickBackButton(cPlayer);
             return;
         }
     }

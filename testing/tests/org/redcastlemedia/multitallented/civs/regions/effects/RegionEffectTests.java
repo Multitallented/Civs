@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -80,8 +81,12 @@ public class RegionEffectTests {
 
     @Test
     public void villagerShouldSpawnNewVillager() {
+        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
+        HashMap<String, String> effectMap = new HashMap<>();
+        effectMap.put("villager","");
+        region.setEffects(effectMap);
         VillagerEffect villagerEffect = new VillagerEffect();
         villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);
@@ -101,10 +106,14 @@ public class RegionEffectTests {
     public void villagerShouldNotSpawnIfAtMaxVillagers() {
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
+        HashMap<String, String> effectMap = new HashMap<>();
+        effectMap.put("villager","");
+        region.setEffects(effectMap);
         VillagerEffect villagerEffect = new VillagerEffect();
         Block block = TestUtil.createBlock(Material.CHEST, townLocation);
         doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
         when(block.getWorld()).thenReturn(mock(World.class));
+        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
 
         villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);
