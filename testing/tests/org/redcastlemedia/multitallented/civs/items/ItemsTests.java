@@ -130,12 +130,12 @@ public class ItemsTests {
     @Test
     public void hamletShouldBeUnlocked() {
         TownTests.loadTownTypeTribe();
-        Town town = TownTests.loadTown("test", "tribe", TestUtil.player.getLocation());
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
         town.setVillagers(4);
         town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
-        TownTests.loadTownTypeTribe2();
+        TownTests.loadTownTypeHamlet();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe2")));
+        assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe")));
     }
 
     private void loadSpellTypeBackflip() {

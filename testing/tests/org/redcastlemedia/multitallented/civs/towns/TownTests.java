@@ -217,16 +217,17 @@ public class TownTests {
     }
     public static void loadTownTypeTribe2() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Tribe2");
+        config.set("name", "Tribe");
         config.set("type", "town");
         ArrayList<String> critReqs = new ArrayList<>();
         critReqs.add("cobble");
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("tribe:population=5");
         config.set("pre-reqs", preReqs);
+        config.set("child", "hamlet");
         config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
-        ItemManager.getInstance().loadTownType(config, "tribe2");
+        ItemManager.getInstance().loadTownType(config, "tribe");
     }
 }

@@ -945,6 +945,27 @@ public class RegionsTests {
         config.set("output", outputs);
         ItemManager.getInstance().loadRegionType(config);
     }
+
+    public static void loadRegionTypeCobbleGroup() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "town_hall");
+        config.set("max", 1);
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("cobble");
+        config.set("groups", groups);
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2,GRASS_BLOCK*2");
+        reqs.add("gold_block*1");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_build");
+        effects.add("block_break");
+        config.set("build-radius", 5);
+        config.set("effects", effects);
+        config.set("effect-radius", 7);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
     public static void loadRegionTypeDirt() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "dirt");

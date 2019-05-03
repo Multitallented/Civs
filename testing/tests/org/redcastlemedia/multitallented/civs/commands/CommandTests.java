@@ -11,11 +11,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 public class CommandTests {
@@ -60,5 +62,39 @@ public class CommandTests {
         args[0] = "port";
         args[1] = region.getId();
         portCommand.runCommand(TestUtil.player, null, "cv", args);
+    }
+
+    @Test
+    public void playerShouldBeAbleToUpgradeTown() {
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeTribe2();
+        Location location = TestUtil.player.getLocation();
+        Town town = TownTests.loadTown("test", "hamlet", location);
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[3];
+        args[0] = "town";
+        args[1] = "test2";
+        townCommand.runCommand(TestUtil.player, null, "town", args);
+        assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
+    }
+
+    @Test
+    public void playerShouldBeAbleToUpgradeTownGroup() {
+        RegionsTests.loadRegionTypeCobbleGroup();
+        RegionsTests.createNewRegion("town_hall");
+        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeTribe2();
+        Location location = TestUtil.player.getLocation();
+        Town town = TownTests.loadTown("test", "hamlet", location);
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[3];
+        args[0] = "town";
+        args[1] = "test2";
+        townCommand.runCommand(TestUtil.player, null, "town", args);
+        assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
     }
 }
