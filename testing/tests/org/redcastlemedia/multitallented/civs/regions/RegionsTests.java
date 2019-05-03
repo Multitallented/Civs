@@ -975,6 +975,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
         ItemManager.getInstance().loadRegionType(config);

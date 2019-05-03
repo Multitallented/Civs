@@ -98,7 +98,8 @@ public class PortCommand implements CivCommand {
                             "port-not-found"));
                     return true;
                 }
-                boolean privatePort = r.getEffects().get("port") != null;
+                boolean privatePort = r.getEffects().get("port") != null &&
+                        !r.getEffects().get("port").equals("");
                 if (!r.getPeople().containsKey(player.getUniqueId()) || (privatePort &&
                         !r.getPeople().get(player.getUniqueId()).equals("member") &&
                         !r.getPeople().get(player.getUniqueId()).equals("owner"))) {
