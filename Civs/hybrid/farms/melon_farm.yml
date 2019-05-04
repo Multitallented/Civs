@@ -10,10 +10,10 @@ pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-  - g:fencegate*4
-  - g:fence*38
-  - WATER*2
-  - MELON*20
+- g:fencegate*4
+- g:fence*38
+- WATER*2
+- MELON*20
 
 towns:
 - village
