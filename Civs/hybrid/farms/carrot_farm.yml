@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: CarrotFarm
+name: Carrot_Farm
 max: 1
 price: 250
 groups:
@@ -21,14 +21,14 @@ towns:
 - city
 - metropolis
 
-build-radius: 4
+build-radius: 4 # 9x9x9
 effects:
 - block_break
 - block_build
 - block_liquid
 - block_fire
 - conveyor:CARROT
-period: 150 #2.5 minutes
+period: 500 # 5 minutes
 upkeep:
   0:
     reagents:
@@ -39,5 +39,9 @@ upkeep:
 
 
 description:
-  en: "Automatic carrot farm"
-  es: "Granja automática de zanahorias"
+  en: "Creates 16 carrots every 5 minutes."
+  es: "Crea 16 zanahorias cada 5 minutos."
+  fr: "Crée 16 carottes toutes les 5 minutes."
+  pt_br: "Cria 16 cenouras a cada 5 minutos."
+  ru: "Создает 16 моркови каждые 5 минут."
+  de: "Erzeugt alle 5 Minuten 16 Karotten."
