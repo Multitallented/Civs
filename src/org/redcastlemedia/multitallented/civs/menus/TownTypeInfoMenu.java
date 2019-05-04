@@ -101,14 +101,16 @@ public class TownTypeInfoMenu extends Menu {
         }
 
         //2 Rebuild
-        // TODO rebuild
-        /*if (townType.getRebuild() != null) {
-            CVItem rebuildItem = itemManager.getItemType(townType.getRebuild().toLowerCase()).clone();
+        if (townType.getChild() != null) {
+            CVItem rebuildItem = ItemManager.getInstance()
+                    .getItemType(townType.getChild().toLowerCase()).clone();
             lore = new ArrayList<>();
-//            lore.add();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
+                    .replace("$1", townType.getProcessedName())
+                    .replace("$2", townType.getChild()));
             rebuildItem.setLore(lore);
             inventory.setItem(2, rebuildItem.createItemStack());
-        }*/
+        }
 
         //3 Population/Charter
         if (townType.getChild() != null &&
