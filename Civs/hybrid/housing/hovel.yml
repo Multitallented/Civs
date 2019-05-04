@@ -7,6 +7,7 @@ groups:
 - housing
 - allhovel
 - basehovel
+- allhousing
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

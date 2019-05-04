@@ -7,6 +7,7 @@ groups:
 - housing
 - allshack
 - baseshack
+- allhousing
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
