@@ -6,6 +6,7 @@ price: 200
 groups:
 - npchousinggroup
 - allhovel
+- allhousing
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

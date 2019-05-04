@@ -13,7 +13,7 @@ build-reqs:
 - council_room:1
 - quarry:1
 - utility:1
-- housing:3
+- allhousing:3
 
 limits:
 - allshack:5
