@@ -10,6 +10,7 @@ groups:
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
+- dwelling:built=1
 
 build-reqs:
 - CHEST*4
@@ -24,6 +25,7 @@ build-reqs:
 - g:primary*300
 
 rebuild: basehovel
+rebuild-required: true
 build-radius: 5 #11x11x11
 effects:
 - block_break
