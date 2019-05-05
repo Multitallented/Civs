@@ -239,6 +239,22 @@ builder:
       pt_br: "É importante criar edifícios que gerem energia. O poder protege a cidade. Construa uma arrow_trap para defender ainda mais a sua cidade."
       ru: "Важно создавать здания, которые генерируют энергию. Власть защищает город. Постройте arrow_trap для дальнейшей защиты вашего города."
       de: "Es ist wichtig, Gebäude zu schaffen, die Strom erzeugen. Macht schützt die Stadt. Baue eine arrow_trap, um deine Stadt weiter zu verteidigen."
+  - type: build
+    region: hovel
+    rewards:
+      money: 400
+      items:
+      - ARROW*64
+      - ARROW*64
+      - REDSTONE*64
+      - OBSIDIAN*14
+    messages:
+      en: "Settlements are limited to 4 shacks. To maximize your housing, build a shack, then buy and place a hovel inside that shack."
+      es: "Los asentamientos están limitados a 4 chozas. Para maximizar su vivienda, construya una choza, luego compre y coloque una casucha dentro de esa choza."
+      fr: "Les colonies sont limitées à 4 cabanes. Pour maximiser votre logement, construisez une cabane, puis achetez et placez un taudis à l'intérieur de cette cabane."
+      pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
+      ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
+      de: "Siedlungen sind auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
 merchant:
   icon: DIAMOND*64
   names:
@@ -317,7 +333,19 @@ merchant:
       pt_br: "Compre e construa um pomar de maçãs. Construa uma pista de minecart de dentro do seu pomar para dentro do seu Hovel1. Coloque um trilho em uma inclinação dentro do apple_orchard."
       ru: "Купить и построить яблоневый сад. Постройте гусеничную дорожку изнутри вашего яблоневого сада внутрь вашего Ховела1 Поместите силовой рельс на уклон внутри яблоневого сада."
       de: "Kaufe und baue einen Apfelgarten. Baue eine Minecart-Spur von deinem Apfelgarten bis zu deinem Hovel1. Platzieren Sie eine angetriebene Schiene auf einer Steigung im Apfel_orchard."
-
+  - type: build
+    region: dwelling
+    rewards:
+      items:
+      - SALMON*36
+      - EMERALD*32
+    messages:
+      en: "Time to upgrade again. Buy and place a dwelling inside your Hovel1."
+      fr: "Il est temps de mettre à jour à nouveau. Achetez et placez une habitation dans votre Hovel1."
+      es: "Es hora de actualizar de nuevo. Compra y coloca una vivienda dentro de tu Hovel1."
+      pt_br: "Hora de atualizar novamente. Compre e coloque uma residência dentro do seu Hovel1."
+      ru: "Время обновить снова. Купите и разместите жилище в своем Hovel1."
+      de: "Zeit zum erneuten Upgrade. Kaufen und platzieren Sie eine Wohnung in Ihrem Hovel1."
   # TODO market?
   # TODO town trade?
   # TODO continue up the housing track?
