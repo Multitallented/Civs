@@ -255,6 +255,22 @@ builder:
       pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
       ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
       de: "Siedlungen sind auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
+  - type: build
+    region: arrow_factory
+    rewards:
+      items:
+      - FLINT*64
+      - FLINT*64
+      - FEATHER*64
+      - FEATHER*64
+      - OAK_LOG*64
+    messages:
+      en: "Next, build an arrow_factory to provide arrows to your defenses."
+      fr: "Ensuite, construisez une arrow_factory pour fournir des flèches à vos défenses."
+      es: "A continuación, construye un arrow_factory para proporcionar flechas a tus defensas."
+      pt_br: "Em seguida, construa uma arrow_factory para fornecer setas às suas defesas."
+      ru: "Затем создайте arrow_factory, чтобы обеспечить стрелки для вашей защиты."
+      de: "Als Nächstes erstellen Sie eine arrow_factory, um Pfeile für Ihre Abwehr bereitzustellen."
 merchant:
   icon: DIAMOND*64
   names:
@@ -346,6 +362,36 @@ merchant:
       pt_br: "Hora de atualizar novamente. Compre e coloque uma residência dentro do seu Hovel1."
       ru: "Время обновить снова. Купите и разместите жилище в своем Hovel1."
       de: "Zeit zum erneuten Upgrade. Kaufen und platzieren Sie eine Wohnung in Ihrem Hovel1."
+  - type: build
+    region: house
+    rewards:
+    messages:
+      en: ""
+      fr: ""
+      es: ""
+      pt_br: ""
+      ru: ""
+      de: ""
+  - type: upkeep
+    region: house1
+    rewards:
+      messages:
+        en: ""
+        fr: ""
+        es: ""
+        pt_br: ""
+        ru: ""
+        de: ""
+  - type: upkeep
+    region: house2
+    rewards:
+      messages:
+        en: ""
+        fr: ""
+        es: ""
+        pt_br: ""
+        ru: ""
+        de: ""
   # TODO market?
   # TODO town trade?
   # TODO continue up the housing track?

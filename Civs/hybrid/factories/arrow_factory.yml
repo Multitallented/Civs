@@ -6,6 +6,7 @@ groups:
 - factory
 
 build-reqs:
+- GRAVEL*8
 - g:primary*90
 - g:secondary*20
 - g:window*4
