@@ -60,7 +60,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         try {
             config.load(dataFile);
             List<String> locationList = config.getStringList("chests");
-            locationList.add(l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ());
+            locationList.add(Region.locationToString(l));
             config.set("chests", locationList);
             config.save(dataFile);
         } catch (Exception e) {
@@ -334,13 +334,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     private ArrayList<Location> processLocationList(List<String> input, World world) {
         ArrayList<Location> tempList = new ArrayList<Location>();
         for (String s : input) {
-            String[] splitString = s.split(":");
-            if (s.length() < 4) {
-                continue;
-            }
-            tempList.add(new Location(world, Double.parseDouble(splitString[1]),
-                    Double.parseDouble(splitString[2]),
-                    Double.parseDouble(splitString[3])));
+            tempList.add(Region.idToLocation(s));
         }
         return tempList;
     }
