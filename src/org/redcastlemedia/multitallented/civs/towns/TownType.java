@@ -22,6 +22,7 @@ public class TownType extends CivItem {
     private final String child;
     @Getter
     private final int childPopulation;
+    @Getter
     private final HashMap<String, Integer> regionLimits;
 
     public HashMap<String, Integer> getReqs() {

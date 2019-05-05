@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TownTypeInfoMenu extends Menu {
@@ -56,13 +57,19 @@ public class TownTypeInfoMenu extends Menu {
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RecipeMenu.createMenu(townType.getInput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
-        }
-        if (event.getCurrentItem().getType().equals(Material.DISPENSER)) {
+        }*/
+        if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenu(townType.getOutput(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
             return;
-        }*/
+        }
+        if (event.getCurrentItem().getType().equals(Material.RED_WOOL)) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getRegionLimits()));
+            return;
+        }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
@@ -139,17 +146,28 @@ public class TownTypeInfoMenu extends Menu {
             inventory.setItem(9, cvItem1.createItemStack());
         }
 
-        //10 Expenses
-        //TODO expenses
+        //11 Expenses
+        //TODO expenses?
 
-        //11 taxes
-        //TODO taxes
+        //12 taxes
+        //TODO taxes?
+
+        //16 Limits
+        {
+            CVItem cvItem1 = CVItem.createCVItemFromString("RED_WOOL");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "limits"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "click-for-region-limits"));
+            cvItem1.setLore(lore);
+            inventory.setItem(16, cvItem1.createItemStack());
+        }
 
         //17 Create
         {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_PICKAXE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "create"));
             lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "click-for-req-regions"));
             lore.add(localeManager.getTranslation(civilian.getLocale(), "town-instructions"));
             cvItem1.setLore(lore);
             inventory.setItem(17, cvItem1.createItemStack());

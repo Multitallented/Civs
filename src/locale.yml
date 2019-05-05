@@ -118,7 +118,9 @@ en:
   owner-invited-region: "$1 has been added to your $2"
   stand-in-region: "Please have $1 stand in the region"
   create: Create
-  town-instructions: "To create a $1, use /cv town MyTownName"
+  click-for-region-limits: "Click here for a list of region limits"
+  click-for-req-regions: "Click here for a list of required regions"
+  town-instructions: "Create a $1, by using /cv town MyTownName"
   town-enter: "You have entered $1"
   town-exit: "You have exited $1"
   new-town-member: "$1 has joined $2"
@@ -194,6 +196,7 @@ en:
   req-build-inside-town: "This $1 must be built inside $2"
   missing-region-requirements: "Your $1 is missing required regions"
   friendly-fire: "You cant damage someone on your friends list"
+  limits: "Limits"
   region-limit-reached: "A $1 can only have $2 $3"
   region-in-biome: "You cant build a $1 in a $2"
   not-enough-housing: "You need to build more housing before inviting people"

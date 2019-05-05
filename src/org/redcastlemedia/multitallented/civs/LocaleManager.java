@@ -456,6 +456,12 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".devolve-town", "$1 has run out of power and has been downgraded to a $2!"));
             currentLanguage.put("population-req",
                     localeConfig.getString(langKey + ".population-req", "Requires a $1 with $2 population"));
+            currentLanguage.put("limits",
+                    localeConfig.getString(langKey + ".limits", "Limits"));
+            currentLanguage.put("click-for-req-regions",
+                    localeConfig.getString(langKey + ".click-for-req-regions", "Click here for a list of required regions"));
+            currentLanguage.put("click-for-region-limits",
+                    localeConfig.getString(langKey + ".click-for-region-limits", "Click here for a list of region limits"));
             languageMap.put(langKey, currentLanguage);
         }
     }
