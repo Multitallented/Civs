@@ -1,0 +1,47 @@
+type: region
+icon: CHEST
+name: Mule_Farm
+max: 1
+price: 1500
+groups:
+- farm
+
+pre-reqs:
+- member=village:town:city:metropolis
+
+towns:
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:fencegate*2
+- g:fence*46
+- WATER*1
+- CHEST*2
+- HAY_BLOCK*4
+
+build-radius: 6 # 13x13x13
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- spawn:MULE
+
+period: 3600 # 1 hour
+upkeep:
+  0:
+    reagents:
+    - APPLE*64
+    output:
+    - SADDLE*1
+
+description:
+  en: "Creates mules and saddles every hour."
+  es: "Crea mulas y monturas cada hora."
+  fr: "Crée des mules et des selles toutes les heures."
+  pt_br: "Cria mulas e selas a cada hora."
+  ru: "Создает мулов и седел каждый час."
+  de: "Erzeugt jede Stunde Maultiere und Sättel."

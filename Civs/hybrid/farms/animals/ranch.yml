@@ -29,7 +29,7 @@ upkeep:
     - WHEAT*64
     output:
     - BEEF*4
-    - LEATHER*2
+    - LEATHER
 
 description:
   en: "Automatic cow farm"

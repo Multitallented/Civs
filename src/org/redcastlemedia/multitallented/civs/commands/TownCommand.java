@@ -137,7 +137,7 @@ public class TownCommand implements CivCommand {
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
-            TownManager.getInstance().removeTown(intersectTown, false);
+            TownManager.getInstance().removeTown(intersectTown, false, false);
             // Don't destroy the ring on upgrade
 //            if (ConfigManager.getInstance().getTownRings()) {
 //                intersectTown.destroyRing(false);

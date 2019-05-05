@@ -13,7 +13,7 @@ build-reqs:
 - g:fencegate*2
 - g:fence*32
 - WATER*1
-- POTATOES*48
+- WHEAT*48
 
 towns:
 - hamlet
@@ -34,14 +34,14 @@ upkeep:
   0:
     reagents:
     - STONE_HOE
-    - POTATO*32
+    - WHEAT*16
     output:
     - WHEAT*20
     - DEAD_BUSH%50,WHEAT%50
     - DEAD_BUSH*2%50,WHEAT%50
     - DEAD_BUSH*3%50,WHEAT%50
-    - DEAD_BUSH*5%50,WHEAT%50
-    - DEAD_BUSH*8%50,WHEAT%50
+    - DEAD_BUSH*4%50,WHEAT%50
+    - DEAD_BUSH*6%50,WHEAT%50
 
 
 description:

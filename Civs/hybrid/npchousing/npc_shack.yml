@@ -32,6 +32,7 @@ towns:
 - metropolis
 
 rebuild: baseshack
+rebuild-required: true
 build-radius: 3
 effects:
 - block_break

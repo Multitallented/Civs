@@ -45,10 +45,10 @@ public class ArrowTurret implements Listener {
 
         for (Entity e : location.getWorld().getNearbyEntities(location, regionType.getEffectRadius(),
                 regionType.getEffectRadius(), regionType.getEffectRadius())) {
-            if (!(e instanceof Monster)) {
+            if ((!(e instanceof Monster) && !(e instanceof Phantom))) {
                 continue;
             }
-            Monster monster = (Monster) e;
+            LivingEntity monster = (LivingEntity) e;
             if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
                 continue;
             }

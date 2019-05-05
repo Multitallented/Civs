@@ -537,7 +537,8 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        addRegion(new Region(regionType.getName(), people, block.getLocation(), radii, (HashMap) regionType.getEffects().clone(), 0));
+        Location regionLocation = Region.idToLocation(Region.locationToString(location));
+        addRegion(new Region(regionType.getName(), people, regionLocation, radii, (HashMap) regionType.getEffects().clone(), 0));
 
         return true;
     }

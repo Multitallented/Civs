@@ -1,12 +1,10 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.io.File;
-import java.util.*;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -26,13 +24,19 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.io.File;
+import java.util.*;
+
 public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static final String KEY = "warehouse";
     public HashMap<Region, ArrayList<Location>> invs = new HashMap<>();
+    public WarehouseEffect() {
+        RegionManager.getInstance().addRegionCreatedListener(KEY, this);
+    }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChestPlace(BlockPlaceEvent event) {
-        if (event.isCancelled() || event.getBlock().getType() != Material.CHEST) {
+        if (event.getBlock().getType() != Material.CHEST) {
             return;
         }
 
@@ -41,7 +45,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         if (r == null) {
             return;
         }
-        RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
 
         if (!r.getEffects().containsKey(KEY)) {
             return;
@@ -60,7 +63,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         try {
             config.load(dataFile);
             List<String> locationList = config.getStringList("chests");
-            locationList.add(l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ());
+            locationList.add(Region.locationToString(l));
             config.set("chests", locationList);
             config.save(dataFile);
         } catch (Exception e) {
@@ -82,11 +85,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
         ArrayList<Location> chests = new ArrayList<>();
-        try {
-            chests.add(r.getLocation());
-        } catch (Exception e) {
-            return;
-        }
+        chests.add(r.getLocation());
 
         RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
         double lx = Math.floor(r.getLocation().getX()) + 0.4;
@@ -130,7 +129,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             config.load(dataFile);
             ArrayList<String> locationList = new ArrayList<String>();
             for (Location l : chests) {
-                locationList.add(l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ());
+                locationList.add(Region.locationToString(l));
             }
             config.set("chests", locationList);
             config.save(dataFile);
@@ -166,7 +165,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
         //Check for excess chests
-        if (!invs.containsKey(r)) {
+        if (!invs.containsKey(r) && Civs.getInstance() != null) {
             File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
             if (!dataFolder.exists()) {
                 return;
@@ -179,7 +178,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             FileConfiguration config = new YamlConfiguration();
             try {
                 config.load(dataFile);
-                ArrayList<Location> tempLocations = processLocationList(config.getStringList("chests"), r.getLocation().getWorld());
+                ArrayList<Location> tempLocations = processLocationList(config.getStringList("chests"));
                 for (Location lo : tempLocations) {
                     Block block = lo.getBlock();
                     if (block.getType() != Material.CHEST) {
@@ -281,6 +280,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         ArrayList<Region> deliverTo = new ArrayList<>();
         //Check if any regions nearby need items
         Town sr = TownManager.getInstance().getTownAt(r.getLocation());
+        if (sr == null) {
+            return;
+        }
         outer: for (Region re : TownManager.getInstance().getContainingRegions(sr.getName())) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
             boolean hasMember = false;
@@ -304,7 +306,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 continue outer;
             }
             for (int i=0; i<regionType.getUpkeeps().size(); i++) {
-                if (re.hasUpkeepItems(i, true)) {
+                if (!re.hasUpkeepItems(i, false)) {
                     deliverTo.add(re);
                     break;
                 }
@@ -315,14 +317,14 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 continue;
             }
             Chest chest = (Chest) re.getLocation().getBlock().getState();
-            RegionType ret = (RegionType) ItemManager.getInstance().getItemType(re.getType());
-            if (ret == null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
+            if (regionType == null) {
                 continue;
             }
             if (chest.getBlockInventory() == null) {
                 continue;
             }
-            List<List<CVItem>> missingItems = getMissingItems(ret, chest);
+            List<List<CVItem>> missingItems = getMissingItems(regionType, chest);
 
             if (missingItems.isEmpty()) {
                 continue;
@@ -331,16 +333,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
     }
 
-    private ArrayList<Location> processLocationList(List<String> input, World world) {
+    private ArrayList<Location> processLocationList(List<String> input) {
         ArrayList<Location> tempList = new ArrayList<Location>();
         for (String s : input) {
-            String[] splitString = s.split(":");
-            if (s.length() < 4) {
-                continue;
+            Location location = Region.idToLocation(s);
+            if (location != null) {
+                tempList.add(location);
             }
-            tempList.add(new Location(world, Double.parseDouble(splitString[1]),
-                    Double.parseDouble(splitString[2]),
-                    Double.parseDouble(splitString[3])));
         }
         return tempList;
     }
@@ -357,7 +356,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         return returnMe;
     }
 
-    private void moveNeededItems(Region destination, ArrayList<Chest> availableItems, List<List<CVItem>> neededItems) {
+    void moveNeededItems(Region destination, ArrayList<Chest> availableItems, List<List<CVItem>> neededItems) {
         Chest destinationChest = null;
 
         try {
@@ -383,13 +382,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
                         int i = 0;
                         for (ItemStack is : inv.getContents()) {
-                            if (is != null && is.getType() != Material.AIR && orReq.equivalentItem(is, true)) {
+                            if (is != null && is.getType() != Material.AIR && orReq.equivalentItem(is, orReq.getDisplayName() != null)) {
 
                                 if (!itemsToMove.containsKey(chest)) {
                                     itemsToMove.put(chest, new HashMap<Integer, ItemStack>());
                                 }
 
-                                ItemStack nIS = new ItemStack(is);
+                                ItemStack nIS = CVItem.createFromItemStack(is).createItemStack();
                                 if (orReq.getQty() > is.getAmount()) {
                                     orReq.setQty(orReq.getQty() - is.getAmount());
                                     itemsToMove.get(chest).put(i, nIS);
@@ -440,7 +439,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         destinationChest.update();
     }
 
-    private List<List<CVItem>> getMissingItems(RegionType rt, Chest chest) {
+    List<List<CVItem>> getMissingItems(RegionType rt, Chest chest) {
         List<List<CVItem>> req = new ArrayList<>();
         for (RegionUpkeep regionUpkeep : rt.getUpkeeps()) {
             for (List<CVItem> list : regionUpkeep.getInputs()) {

@@ -118,7 +118,8 @@ public class CVItem {
     }
 
     public static CVItem createFromItemStack(ItemStack is) {
-        if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null) {
+        if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null &&
+                !"".equals(is.getItemMeta().getDisplayName())) {
             if (is.getItemMeta().getLore() != null) {
                 return new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
             } else {

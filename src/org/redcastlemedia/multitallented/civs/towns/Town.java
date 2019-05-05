@@ -324,10 +324,18 @@ public class Town {
                             int asdf = (int) Math.sqrt(radius*radius - (z * z));
                             int xp = asdf + (int) l.getX();
                             int xn = (int) l.getX() - asdf;
-                            world.getBlockAt(xp, yL, zp).setType(Material.GRAVEL);
-                            world.getBlockAt(xn, yL, zp).setType(Material.GRAVEL);
-                            world.getBlockAt(xp, yL, zn).setType(Material.GRAVEL);
-                            world.getBlockAt(xn, yL, zn).setType(Material.GRAVEL);
+                            if (setGravel) {
+                                world.getBlockAt(xp, yL, zp).setType(Material.GRAVEL);
+                                world.getBlockAt(xn, yL, zp).setType(Material.GRAVEL);
+                                world.getBlockAt(xp, yL, zn).setType(Material.GRAVEL);
+                                world.getBlockAt(xn, yL, zn).setType(Material.GRAVEL);
+                            } else {
+                                world.getBlockAt(xp, yL, zp).setType(Material.AIR);
+                                world.getBlockAt(xn, yL, zp).setType(Material.AIR);
+                                world.getBlockAt(xp, yL, zn).setType(Material.AIR);
+                                world.getBlockAt(xn, yL, zn).setType(Material.AIR);
+                            }
+
 
                         }
                         z++;

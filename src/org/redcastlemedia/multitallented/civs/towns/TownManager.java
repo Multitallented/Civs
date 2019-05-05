@@ -232,6 +232,9 @@ public class TownManager {
         }
     }
     public void removeTown(Town town, boolean broadcast) {
+        removeTown(town, broadcast, true);
+    }
+    public void removeTown(Town town, boolean broadcast, boolean destroyRing) {
         if (broadcast) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Civilian civ = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -244,7 +247,7 @@ public class TownManager {
         if (Civs.getInstance() == null) {
             return;
         }
-        if (ConfigManager.getInstance().getTownRings()) {
+        if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
         removeTownFile(town.getName().toLowerCase());

@@ -31,31 +31,35 @@ public class CommonScheduler implements Runnable {
 
     @Override
     public void run() {
-        depreciateKarma();
+        try {
+            depreciateKarma();
 
-        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        int chunk = players.size() / MAX_TPS;
-        for (int j=chunk * i; j<(i==MAX_TPS - 1 ? players.size() : chunk * (i+1)); j++) {
-            try {
-                Player player = (Player) players.toArray()[j];
-                playerInRegion(player);
-                playerInTown(player);
-                incrementMana(player);
-            } catch (Exception e) {
+            Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+            int chunk = players.size() / MAX_TPS;
+            for (int j = chunk * i; j < (i == MAX_TPS - 1 ? players.size() : chunk * (i + 1)); j++) {
+                try {
+                    Player player = (Player) players.toArray()[j];
+                    playerInRegion(player);
+                    playerInTown(player);
+                    incrementMana(player);
+                } catch (Exception e) {
 
+                }
+                //            Thread.yield();
             }
-//            Thread.yield();
-        }
-        if (i == MAX_TPS -1) {
-            i=0;
-            RegionTickThread regionTickThread = new RegionTickThread();
-            regionTickThread.run();
-            notTwoSecond = !notTwoSecond;
-            if (!notTwoSecond) {
-                Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+            if (i == MAX_TPS - 1) {
+                i = 0;
+                RegionTickThread regionTickThread = new RegionTickThread();
+                regionTickThread.run();
+                notTwoSecond = !notTwoSecond;
+                if (!notTwoSecond) {
+                    Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+                }
+            } else {
+                i++;
             }
-        } else {
-            i++;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void depreciateKarma() {
