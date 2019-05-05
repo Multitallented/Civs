@@ -166,7 +166,7 @@ public class ConveyorEffect implements Listener {
                 return;
             }
             Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
-            if (region != null) {
+            if (region != null && !r.equals(region)) {
                 Chest currentChest = null;
                 try {
                     currentChest = (Chest) region.getLocation().getBlock().getState();
