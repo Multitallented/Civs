@@ -910,6 +910,20 @@ public class RegionsTests {
         ItemManager.getInstance().loadRegionType(config);
     }
 
+    public static void loadRegionTypeWarehouse() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "warehouse");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_place");
+        effects.add("block_break");
+        effects.add("warehouse");
+        config.set("effects", effects);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
     public static void loadRegionTypeCobbleQuarry() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobblequarry");
