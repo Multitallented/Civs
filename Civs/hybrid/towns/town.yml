@@ -1,0 +1,68 @@
+type: town
+icon: GLOWSTONE
+name: Town
+max: 1
+price: 16000
+groups:
+- superregion
+
+pre-reqs:
+- village:population=20
+
+build-reqs:
+- town_hall:1
+- quarry:1
+- farm:3
+- utility:4
+- allhousing:16
+
+limits:
+- allshack:8
+- allhovel:7
+- alldwelling:6
+- allhouse:5
+- allchalet:4
+- allmansion:3
+- allmanor:2
+- arrowtrapgroup:10
+- npchousing:25
+- library:1
+- smithy:1
+- purifier:1
+- church:1
+- bank:1
+- warehouse:1
+- barracks:1
+- inn:1
+- jail:1
+- alchemical_lab:1
+- power_capacitor:2
+- embassy:3
+
+critical-build-reqs:
+- town_center
+
+child: village
+child-population: 20
+build-radius: 110
+build-radius-y: 500
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- deny_mob_spawn
+- block_explosion
+- control_override
+- anticamp:2.1500 #2 damage for 25 minutes
+
+power: 1500
+max-power: 5100
+
+description:
+  en: "The fourth level of a town."
+  es: "El cuarto nivel de un pueblo."
+  de: "Die vierte Ebene einer Stadt."
+  ru: "Четвертый уровень города."
+  pt_br: "O quarto nível de uma cidade."
+  fr: "Le quatrième niveau d'une ville."

@@ -431,7 +431,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onMobSpawn(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof Monster) ||
+        if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
             return;
