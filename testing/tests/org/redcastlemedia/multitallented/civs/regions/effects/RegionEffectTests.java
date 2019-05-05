@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
+import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -126,10 +127,11 @@ public class RegionEffectTests {
     }
 
     @Test
-    public void warehouseShouldMoveItems() {
+    public void warehouseShouldFindNeededItems() {
         RegionsTests.loadRegionTypeCobble3();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         RegionsTests.loadRegionTypeWarehouse();
+        RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
         Location location = new Location(Bukkit.getWorld("world"), 2,50,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
         Location location2 = new Location(Bukkit.getWorld("world"), 3,100,0);
@@ -140,7 +142,16 @@ public class RegionEffectTests {
         availableItems.add(warehouseChest);
 
         WarehouseEffect warehouseEffect = new WarehouseEffect();
-        warehouseEffect.moveNeededItems(cobbleRegion, availableItems, warehouseEffect.getMissingItems(regionType, cobbleChest));
+        RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
+        ArrayList<Location> inventoryLocations = new ArrayList<>();
+        inventoryLocations.add(TestUtil.blockUnique3.getLocation());
+        warehouseEffect.invs.put(warehouse, inventoryLocations);
+
+        TownTests.loadTownTypeHamlet();
+        Location townLocation = new Location(Bukkit.getWorld("world"), 2, 75, 0);
+        TownTests.loadTown("test", "hamlet", townLocation);
+
+        warehouseEffect.onCustomEvent(regionTickEvent);
         assertEquals(Material.IRON_PICKAXE, ((Chest) TestUtil.blockUnique2.getState()).getBlockInventory().getItem(0).getType());
     }
 

@@ -165,7 +165,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
         //Check for excess chests
-        if (!invs.containsKey(r)) {
+        if (!invs.containsKey(r) && Civs.getInstance() != null) {
             File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
             if (!dataFolder.exists()) {
                 return;
@@ -280,6 +280,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         ArrayList<Region> deliverTo = new ArrayList<>();
         //Check if any regions nearby need items
         Town sr = TownManager.getInstance().getTownAt(r.getLocation());
+        if (sr == null) {
+            return;
+        }
         outer: for (Region re : TownManager.getInstance().getContainingRegions(sr.getName())) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
             boolean hasMember = false;
@@ -303,7 +306,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 continue outer;
             }
             for (int i=0; i<regionType.getUpkeeps().size(); i++) {
-                if (re.hasUpkeepItems(i, false)) {
+                if (!re.hasUpkeepItems(i, false)) {
                     deliverTo.add(re);
                     break;
                 }

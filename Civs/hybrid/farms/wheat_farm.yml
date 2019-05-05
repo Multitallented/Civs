@@ -13,7 +13,7 @@ build-reqs:
 - g:fencegate*2
 - g:fence*32
 - WATER*1
-- WHEAT_SEEDS*48
+- WHEAT*48
 
 towns:
 - hamlet
