@@ -30,7 +30,7 @@ public class ConveyorEffect implements Listener {
         if (event.isCancelled() || event.getBlock().getType() != Material.POWERED_RAIL) {
             return;
         }
-        Location location = event.getBlock().getLocation();
+        Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         ArrayList<Region> regions = new ArrayList<>(RegionManager.getInstance()
                 .getRegions(location, 0, false));
         if (regions.isEmpty()) {

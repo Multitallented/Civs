@@ -41,7 +41,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType rt) {
-        Location l = block.getLocation();
+        Location l = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
 
         if (!rt.getEffects().containsKey(KEY) && !rt.getEffects().containsKey(CHARGING_KEY)) {
             return true;

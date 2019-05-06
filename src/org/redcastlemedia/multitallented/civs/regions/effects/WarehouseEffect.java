@@ -40,7 +40,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        Location l = event.getBlock().getLocation();
+        Location l = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         Region r = RegionManager.getInstance().getRegionAt(l);
         if (r == null) {
             return;

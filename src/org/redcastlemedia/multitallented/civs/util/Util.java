@@ -35,7 +35,7 @@ public class Util {
                 location1.getWorld() == null || location2.getWorld() == null) {
             return location1 == null && location2 == null;
         }
-        if (location1.getWorld().equals(location2.getWorld())) {
+        if (!location1.getWorld().getUID().equals(location2.getWorld().getUID())) {
             return false;
         }
         boolean xEq = Math.abs(location1.getX() - location2.getX()) < 1;

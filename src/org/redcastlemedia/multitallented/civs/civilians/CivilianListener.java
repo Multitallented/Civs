@@ -190,7 +190,12 @@ public class CivilianListener implements Listener {
             return;
         }
         Block block = event.getClickedBlock();
-        Region region = RegionManager.getInstance().getRegionAt(block.getLocation());
+        if (block == null) {
+            player.performCommand("cv");
+            return;
+        }
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
+        Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
             for (Region r : regionSet) {
@@ -205,7 +210,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        Location location = event.getBlock().getLocation();
+        Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(location);
         if (cvItem == null) {
@@ -217,7 +222,7 @@ public class CivilianListener implements Listener {
         }
         blockLogger.removeBlock(event.getBlock().getLocation());
         Region region = RegionManager.getInstance()
-                .getRegionById(Region.locationToString(event.getBlock().getLocation()));
+                .getRegionById(Region.blockLocationToString(event.getBlock().getLocation()));
         if (region != null) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);

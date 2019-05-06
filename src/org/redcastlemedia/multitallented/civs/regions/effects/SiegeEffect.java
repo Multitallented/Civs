@@ -191,7 +191,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
                 !regionType.getEffects().containsKey(CHARGING_KEY)) {
             return true;
         }
-        Location l = block.getLocation();
+        Location l = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         Block b = l.getBlock().getRelative(BlockFace.UP);

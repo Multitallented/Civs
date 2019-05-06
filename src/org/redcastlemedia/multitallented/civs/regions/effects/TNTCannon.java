@@ -94,7 +94,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
             player.sendMessage(Civs.getPrefix() + "That target is too far away"); //TODO localize
             return;
         }
-        Location targetLocation = block.getLocation();
+        Location targetLocation = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         if (!targetLocation.getWorld().equals(fireLocation.getWorld())) {
             return;
         }
