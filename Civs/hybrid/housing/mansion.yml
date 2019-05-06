@@ -1,0 +1,70 @@
+type: region
+icon: CHEST
+name: Mansion
+max: 2
+price: 2000
+groups:
+- housing
+- allmansion
+- basemansion
+- allhousing
+
+pre-reqs:
+- member=village:town:city:metropolis
+
+build-reqs:
+- CHEST*8
+- g:door*1
+- g:window*16
+- g:bed*1
+- g:sign*1
+- FURNACE*2
+- CRAFTING_TABLE
+- g:roof*170
+- g:secondary*130
+- g:primary*400
+
+rebuild: basechalet
+rebuild-required: true
+build-radius: 10 #21x21x21
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+- evolve:mansion1.24
+
+towns:
+- village
+- town
+- city
+- metropolis
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input: #2.11
+    - BREAD*6  # 144 or 2.25 stacks / day
+    payout: 46.8 # $303.84 / day
+  2:
+    input:
+    - CARROT*16   # 384 or 6 stacks / day
+    payout: 10.2 # $244.8 / day
+  3:
+    input:
+    - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
+    payout: 4.2 # $100.8 / day
+    exp: 1
+
+description:
+  en: "6th level of house. Earns $648 per day."
+  es: "6er nivel de la casa. Gana $ 648 por día."
+  de: "6. Ebene des Hauses. Verdient $ 648 pro Tag."
+  pt_br: "6º nível de casa. Ganhe $ 648 por dia."
+  fr: "6ème niveau de la maison. Gagne 648 $ par jour."
+  ru: "6-й уровень дома. Зарабатывает $ 648 в день."

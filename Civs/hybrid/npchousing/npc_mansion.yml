@@ -1,8 +1,8 @@
 type: region
 icon: CRAFTING_TABLE
-name: NPC_Chalet
+name: NPC_Mansion
 max: 2
-price: 1400
+price: 2000
 groups:
 - npchousinggroup
 - allchalet
@@ -10,7 +10,7 @@ groups:
 
 pre-reqs:
 - member=village:town:city:metropolis
-- chalet:built=1
+- mansion:built=1
 
 build-reqs:
 - CHEST*8
@@ -24,9 +24,9 @@ build-reqs:
 - g:secondary*130
 - g:primary*400
 
-rebuild: basechalet
+rebuild: basemansion
 rebuild-required: true
-build-radius: 8 #17x17x17
+build-radius: 10 #21x21x21
 effects:
 - block_break
 - block_build
@@ -42,7 +42,7 @@ towns:
 - city
 - metropolis
 
-period: 7200 #2 hour
+period: 7200 #2 hours
 upkeep:
   0:
     power-input: 1
