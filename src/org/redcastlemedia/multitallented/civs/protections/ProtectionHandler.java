@@ -44,6 +44,7 @@ public class ProtectionHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         RegionManager regionManager = RegionManager.getInstance();
+        Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"));
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
@@ -56,12 +57,12 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
         if (!event.isCancelled()) {
-            Region region = regionManager.getRegionAt(event.getBlock().getLocation());
+            Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (region.getLocation().equals(event.getBlock().getLocation())) {
+            if (region.getLocation().equals(location)) {
                 removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }
@@ -476,10 +477,12 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Block block, Player player, String type) {
-        return shouldBlockAction(block.getLocation(), player, type);
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
+        return shouldBlockAction(location, player, type);
     }
     static boolean shouldBlockAction(Block block, Player player, String type, String pRole) {
-        return shouldBlockAction(block.getLocation(), player, type, pRole);
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
+        return shouldBlockAction(location, player, type, pRole);
     }
     static boolean shouldBlockAction(Location location, Player player, String type) {
         return shouldBlockAction(location, player, type, "member");

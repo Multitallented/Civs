@@ -211,6 +211,9 @@ public class RegionManager {
             regionConfig.set("zn-radius", region.getRadiusZN());
             regionConfig.set("zp-radius", region.getRadiusZP());
             for (UUID uuid : region.getPeople().keySet()) {
+                if ("ally".equals(region.getPeople().get(uuid))) {
+                    continue;
+                }
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
             }
             regionConfig.set("type", region.getType());
@@ -337,7 +340,7 @@ public class RegionManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
-        Location location = block.getLocation();
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
@@ -369,7 +372,7 @@ public class RegionManager {
             }
         }
 
-        Region rebuildRegion = getRegionAt(block.getLocation());
+        Region rebuildRegion = getRegionAt(location);
         List<CivItem> itemList = ItemManager.getInstance().getItemGroup(regionType.getRebuild());
         boolean hasType = false;
         if (rebuildRegion != null) {
@@ -495,13 +498,13 @@ public class RegionManager {
             }
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), false);
+        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, false);
         if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));
-            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), block.getLocation(), null);
+            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
             if (missingBlocks != null) {
 //                for (String message : generateMissingReqsMessage(missingBlocks)) {
 //                    player.sendMessage(message);
@@ -520,7 +523,7 @@ public class RegionManager {
             people = new HashMap<>();
             people.put(player.getUniqueId(), "owner");
         }
-        for (Region currentRegion : regionManager.getRegionsXYZ(block.getLocation(),
+        for (Region currentRegion : regionManager.getRegionsXYZ(location,
                 regionType.getBuildRadiusX(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(), false)) {
             if (currentRegion == rebuildRegion) {
                 continue;
@@ -537,8 +540,7 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        Location regionLocation = Region.idToLocation(Region.locationToString(location));
-        addRegion(new Region(regionType.getName(), people, regionLocation, radii, (HashMap) regionType.getEffects().clone(), 0));
+        addRegion(new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0));
 
         return true;
     }

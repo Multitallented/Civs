@@ -152,20 +152,19 @@ public class RepairEffect implements Listener {
         } return 0;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if ((event.isCancelled()) || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
+        if (event.getClickedBlock() == null || event.getHand() == null) {
+            return;
+        }
+
+        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
                 (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK)) ||
                 event.getHand().equals(EquipmentSlot.HAND)) {
             return;
         }
 
-        Region r = null;
-        Set<Region> potentialRegions = RegionManager.getInstance().getContainingRegions(event.getClickedBlock().getLocation(), 0);
-        for (Region region : potentialRegions) {
-            r = region;
-            break;
-        }
+        Region r = RegionManager.getInstance().getRegionAt(event.getClickedBlock().getLocation());
 
         if (r == null || !r.getEffects().containsKey(KEY)) {
             return;
