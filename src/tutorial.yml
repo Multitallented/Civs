@@ -365,33 +365,42 @@ merchant:
   - type: build
     region: house
     rewards:
+      items:
+      - BREAD*64
+      - BREAD*64
+      - BREAD*16
+      money: 100
     messages:
-      en: ""
-      fr: ""
-      es: ""
-      pt_br: ""
-      ru: ""
-      de: ""
+      en: "Dwellings give you a lot of money, but a House gives you more. Buy and upgrade your Dwelling to a House."
+      fr: "Les habitations vous rapportent beaucoup d’argent, mais une maison vous en donne plus. Achetez et améliorez votre logement dans une maison."
+      es: "Las viviendas te dan mucho dinero, pero una casa te da más. Compra y mejora tu vivienda a una casa."
+      pt_br: "As moradias dão muito dinheiro, mas uma casa lhe dá mais. Compre e atualize sua residência para uma casa."
+      ru: "Жилища дают вам много денег, а дом - больше. Купите и обновите свое жилище до дома."
+      de: "Wohnungen geben Ihnen viel Geld, aber ein Haus gibt Ihnen mehr. Kaufen Sie Ihre Wohnung und bauen Sie sie in ein Haus auf."
   - type: upkeep
     region: house1
     rewards:
-      messages:
-        en: ""
-        fr: ""
-        es: ""
-        pt_br: ""
-        ru: ""
-        de: ""
+      items:
+      - SALMON*64
+      - SALMON*64
+    messages:
+      en: "Put this bread in your House to upgrade it to a House1."
+      fr: "Mettez ce pain dans votre maison pour le transformer en maison1."
+      es: "Ponga este pan en su casa para actualizarlo a un House1."
+      pt_br: "Coloque este pão em sua casa para atualizá-lo para uma casa1."
+      ru: "Поместите этот хлеб в свой Дом, чтобы улучшить его до Дома1."
+      de: "Legen Sie dieses Brot in Ihr Haus, um es zu einem Haus1 zu verbessern."
   - type: upkeep
     region: house2
     rewards:
-      messages:
-        en: ""
-        fr: ""
-        es: ""
-        pt_br: ""
-        ru: ""
-        de: ""
+      money: 300
+    messages:
+      en: "Put these salmon in your House1 to upgrade it to a House2."
+      fr: "Mettez ces saumons dans votre maison 1 pour le transformer en maison 2."
+      es: "Ponga estos salmones en su Casa 1 para mejorar a una Casa 2."
+      pt_br: "Coloque esses salmões em sua casa 1 para atualizá-los para uma casa 2."
+      ru: "Поместите этого лосося в свой Дом 1, чтобы улучшить его до Дома 2."
+      de: "Setzen Sie diese Lachse in Ihr Haus 1 ein, um ein Haus 2 zu erhalten."
   # TODO market?
   # TODO town trade?
   # TODO continue up the housing track?
