@@ -4,6 +4,7 @@ name: Catapult
 price: 150
 groups:
 - offense
+level: 1
 
 build-reqs:
 - OBSIDIAN*16

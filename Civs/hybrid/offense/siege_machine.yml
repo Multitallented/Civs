@@ -6,6 +6,7 @@ groups:
 - offense
 - siegemachinegroup
 - townpowerreduce
+level: 1
 
 build-reqs:
 - TNT*5

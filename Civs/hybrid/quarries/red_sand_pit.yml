@@ -5,6 +5,7 @@ price: 80
 groups:
 - raw
 - quarry
+level: 1
 
 build-reqs:
 - RED_SAND*48

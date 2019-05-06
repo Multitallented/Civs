@@ -6,6 +6,7 @@ groups:
 - defense
 - trap
 - arrowtrapgroup
+level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis:outpost:base

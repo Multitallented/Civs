@@ -4,6 +4,7 @@ name: Purifier
 price: 5
 groups:
 - farm
+level: 1
 
 build-reqs:
 - CHEST*2

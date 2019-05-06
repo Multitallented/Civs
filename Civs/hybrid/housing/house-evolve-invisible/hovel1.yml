@@ -9,6 +9,7 @@ groups:
 - basehovel
 - allhousing
 is-in-shop: false
+level: 1
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

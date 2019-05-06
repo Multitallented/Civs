@@ -4,6 +4,7 @@ name: Greenhouse
 price: 20
 groups:
 - farm
+level: 1
 
 
 build-reqs:

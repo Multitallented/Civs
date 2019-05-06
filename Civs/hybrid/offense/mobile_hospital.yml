@@ -5,6 +5,7 @@ max: 1
 price: 200
 groups:
 - offense
+level: 1
 
 build-radius: 4 # 9x9x9
 build-reqs:

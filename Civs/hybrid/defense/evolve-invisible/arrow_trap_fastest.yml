@@ -6,6 +6,7 @@ groups:
 - trap
 - arrowtrapgroup
 is-in-shop: false
+level: 2
 
 build-reqs:
 - g:fence*5

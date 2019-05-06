@@ -6,6 +6,7 @@ price: 100
 groups:
 - shop
 - oreshop
+level: 1
 
 build-reqs:
 - g:fence*14

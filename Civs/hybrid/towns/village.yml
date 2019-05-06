@@ -5,6 +5,7 @@ max: 1
 price: 8000
 groups:
 - superregion
+level: 4
 
 pre-reqs:
 - hamlet:population=10

@@ -5,6 +5,7 @@ max: 1
 price: 250
 groups:
 - mine
+level: 1
 
 build-reqs:
 - g:primary*110

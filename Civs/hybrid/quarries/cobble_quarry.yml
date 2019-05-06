@@ -5,6 +5,7 @@ price: 40
 groups:
 - raw
 - quarry
+level: 1
 
 build-reqs:
 - FURNACE*2

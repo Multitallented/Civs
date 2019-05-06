@@ -5,6 +5,7 @@ max: 1
 price: 10
 groups:
 - shop
+level: 1
 
 build-reqs:
 - g:fence*12

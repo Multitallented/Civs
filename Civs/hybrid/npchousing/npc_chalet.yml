@@ -7,6 +7,7 @@ groups:
 - npchousinggroup
 - allchalet
 - allhousing
+level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis

@@ -5,6 +5,7 @@ price: 1000
 max: 1
 groups:
 - utility
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis

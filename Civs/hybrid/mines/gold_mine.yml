@@ -5,6 +5,7 @@ max: 1
 price: 350
 groups:
 - mine
+level: 5
 
 pre-reqs:
 - member=town:city:metropolis

@@ -7,6 +7,7 @@ groups:
 - npchousinggroup
 - allhovel
 - allhousing
+level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

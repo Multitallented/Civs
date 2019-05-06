@@ -4,6 +4,7 @@ name: Stone_Works
 price: 20
 groups:
 - factory
+level: 1
 
 pre-reqs:
 - cobble_quarry:built=1

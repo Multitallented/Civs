@@ -1,6 +1,7 @@
 type: region
 icon: STONE
 name: Graveyard
+level: 1
 groups: []
 
 pre-reqs:

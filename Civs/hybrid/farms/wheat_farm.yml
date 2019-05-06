@@ -5,6 +5,7 @@ max: 1
 price: 100
 groups:
 - farm
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis

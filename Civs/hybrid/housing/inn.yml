@@ -5,6 +5,7 @@ max: 2
 price: 750
 groups:
 - publichousing
+level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis

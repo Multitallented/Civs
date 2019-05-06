@@ -9,6 +9,7 @@ groups:
 - allmansion
 - basemansion
 - allhousing
+level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis

@@ -5,6 +5,7 @@ max: 1
 price: 16000
 groups:
 - superregion
+level: 5
 
 pre-reqs:
 - village:population=20

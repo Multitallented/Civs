@@ -5,6 +5,7 @@ max: 1
 price: 1000
 groups:
 - superregion
+level: 2
 
 build-reqs:
 - council_room:1

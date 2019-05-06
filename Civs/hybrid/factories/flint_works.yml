@@ -4,6 +4,7 @@ name: Flint_Works
 price: 20
 groups:
 - factory
+level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

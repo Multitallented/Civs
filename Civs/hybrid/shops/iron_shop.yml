@@ -6,6 +6,7 @@ price: 100
 groups:
 - shop
 - oreshop
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis

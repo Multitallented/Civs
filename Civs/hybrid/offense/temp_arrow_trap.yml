@@ -6,9 +6,7 @@ groups:
 - defense
 - trap
 - arrowtrapgroup
-
-pre-reqs:
-- member=settlement:hamlet:village:town:city:metropolis:outpost:base
+level: 1
 
 build-reqs:
 - g:fence*5
@@ -17,16 +15,6 @@ build-reqs:
 
 build-radius: 1 #3x3x3
 effect-radius: 17
-
-towns:
-- settlement
-- hamlet
-- village
-- town
-- city
-- metropolis
-- outpost
-- base
 
 effects:
 - block_break

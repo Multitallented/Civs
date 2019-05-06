@@ -4,6 +4,7 @@ name: Bank
 price: 200
 groups:
 - utility
+level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis

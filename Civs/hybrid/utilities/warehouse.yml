@@ -4,6 +4,7 @@ name: Warehouse
 price: 1000
 groups:
 - utility
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis

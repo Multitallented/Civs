@@ -4,6 +4,7 @@ name: Iron_Works
 price: 150
 groups:
 - factory
+level: 2
 
 pre-reqs:
 - iron_mine:built=1

@@ -4,6 +4,7 @@ name: Smithy
 price: 150
 groups:
 - utility
+level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis

@@ -5,6 +5,7 @@ max: 1
 price: 250
 groups:
 - farm
+level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis

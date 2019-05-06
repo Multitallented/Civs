@@ -4,6 +4,7 @@ name: Ice_Maker
 price: 20
 groups:
 - factory
+level: 1
 
 build-reqs:
 - g:primary*70

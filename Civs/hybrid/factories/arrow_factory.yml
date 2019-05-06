@@ -4,6 +4,7 @@ name: Arrow_Factory
 price: 100
 groups:
 - factory
+level: 1
 
 build-reqs:
 - GRAVEL*8

@@ -4,6 +4,7 @@ name: Apple_Orchard
 price: 200
 groups:
 - farm
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis

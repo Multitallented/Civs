@@ -5,6 +5,7 @@ max: 1
 price: 600
 groups:
 - defense
+level: 5
 
 pre-reqs:
 - member=town:city:metropolis

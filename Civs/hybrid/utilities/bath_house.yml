@@ -5,6 +5,7 @@ max: 1
 price: 700
 groups:
 - utility
+level: 7
 
 pre-reqs:
 - member=metropolis

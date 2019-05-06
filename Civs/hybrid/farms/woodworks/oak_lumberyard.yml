@@ -7,6 +7,7 @@ groups:
 - raw
 - farm
 - woodwork
+level: 1
 
 build-reqs:
 - OAK_LOG*8

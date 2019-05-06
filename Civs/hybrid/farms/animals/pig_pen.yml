@@ -5,6 +5,7 @@ max: 1
 price: 10
 groups:
 - farm
+level: 1
 
 build-reqs:
 - g:log*4

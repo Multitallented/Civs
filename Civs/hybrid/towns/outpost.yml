@@ -5,6 +5,7 @@ max: 1
 price: 300
 group:
 - outpost
+level: 1
 
 build-reqs:
 - command_tent:1

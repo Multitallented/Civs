@@ -8,6 +8,7 @@ groups:
 - allhouse
 - basehouse
 - allhousing
+level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
