@@ -31,8 +31,12 @@ import java.util.*;
 public class Util {
 
     public static boolean equivalentLocations(Location location1, Location location2) {
-        if (location1 == null || location2 == null) {
+        if (location1 == null || location2 == null ||
+                location1.getWorld() == null || location2.getWorld() == null) {
             return location1 == null && location2 == null;
+        }
+        if (location1.getWorld().equals(location2.getWorld())) {
+            return false;
         }
         boolean xEq = Math.abs(location1.getX() - location2.getX()) < 1;
         boolean yEq = Math.abs(location1.getY() - location2.getY()) < 1;
