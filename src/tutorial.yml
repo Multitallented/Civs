@@ -240,22 +240,6 @@ builder:
       ru: "Важно создавать здания, которые генерируют энергию. Власть защищает город. Постройте arrow_trap для дальнейшей защиты вашего города."
       de: "Es ist wichtig, Gebäude zu schaffen, die Strom erzeugen. Macht schützt die Stadt. Baue eine arrow_trap, um deine Stadt weiter zu verteidigen."
   - type: build
-    region: hovel
-    rewards:
-      money: 400
-      items:
-      - ARROW*64
-      - ARROW*64
-      - REDSTONE*64
-      - OBSIDIAN*14
-    messages:
-      en: "Settlements are limited to 4 shacks. To maximize your housing, build a shack, then buy and place a hovel inside that shack."
-      es: "Los asentamientos están limitados a 4 chozas. Para maximizar su vivienda, construya una choza, luego compre y coloque una casucha dentro de esa choza."
-      fr: "Les colonies sont limitées à 4 cabanes. Pour maximiser votre logement, construisez une cabane, puis achetez et placez un taudis à l'intérieur de cette cabane."
-      pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
-      ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
-      de: "Siedlungen sind auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
-  - type: build
     region: arrow_factory
     rewards:
       items:
@@ -271,6 +255,22 @@ builder:
       pt_br: "Em seguida, construa uma arrow_factory para fornecer setas às suas defesas."
       ru: "Затем создайте arrow_factory, чтобы обеспечить стрелки для вашей защиты."
       de: "Als Nächstes erstellen Sie eine arrow_factory, um Pfeile für Ihre Abwehr bereitzustellen."
+  - type: build
+    region: hovel
+    rewards:
+      money: 400
+      items:
+      - ARROW*64
+      - ARROW*64
+      - REDSTONE*64
+      - OBSIDIAN*14
+    messages:
+      en: "Settlements are limited to 4 shacks. To maximize your housing, build a shack, then buy and place a hovel inside that shack."
+      es: "Los asentamientos están limitados a 4 chozas. Para maximizar su vivienda, construya una choza, luego compre y coloque una casucha dentro de esa choza."
+      fr: "Les colonies sont limitées à 4 cabanes. Pour maximiser votre logement, construisez une cabane, puis achetez et placez un taudis à l'intérieur de cette cabane."
+      pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
+      ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
+      de: "Siedlungen sind auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
 merchant:
   icon: DIAMOND*64
   names:
@@ -401,6 +401,8 @@ merchant:
       pt_br: "Coloque esses salmões em sua casa 1 para atualizá-los para uma casa 2."
       ru: "Поместите этого лосося в свой Дом 1, чтобы улучшить его до Дома 2."
       de: "Setzen Sie diese Lachse in Ihr Haus 1 ein, um ein Haus 2 zu erhalten."
+  #- type: build
+  #  region: trading
   # TODO market?
   # TODO town trade?
   # TODO continue up the housing track?
