@@ -62,7 +62,7 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (region.getLocation().equals(location)) {
+            if (Util.equivalentLocations(region.getLocation(), location)) {
                 removeRegionIfNotIndestructible(region, regionType, event);
                 return;
             }

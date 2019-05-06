@@ -30,11 +30,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.WorldImpl;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
@@ -63,6 +65,11 @@ public class RegionsTests {
         regionManager = new RegionManager();
         townManager = new TownManager();
         new ItemManager();
+    }
+
+    @After
+    public void onAfter() {
+        WorldImpl.debug = false;
     }
 
     @Test
@@ -484,7 +491,6 @@ public class RegionsTests {
     }
 
     @Test
-    @Ignore // TODO you need to fix this
     public void regionShouldBeDestroyedCenter() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();

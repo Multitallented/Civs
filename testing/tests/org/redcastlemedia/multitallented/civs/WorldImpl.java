@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class WorldImpl implements World {
     private final String name;
     public HashSet<Entity> nearbyEntities = new HashSet<>();
+    public static boolean debug = false;
 
     public WorldImpl(String name) {
         this.name = name;
@@ -44,7 +45,20 @@ public class WorldImpl implements World {
 
     @Override
     public Block getBlockAt(Location location) {
-        return blockMap.get((int) location.getX() +":"+ (int) location.getY()+":"+ (int) location.getZ());
+        double x = location.getX();
+        double z = location.getZ();
+        if (x < 0) {
+            x = Math.ceil(location.getX());
+        } else {
+            x = Math.floor(location.getX());
+        }
+        if (z < 0) {
+            z = Math.ceil(location.getZ());
+        } else {
+            z = Math.floor(location.getZ());
+        }
+        String retrievalString = (int) x +":"+ (int) Math.floor(location.getY())+":"+ (int) z;
+        return blockMap.get(retrievalString);
     }
 
     @Override

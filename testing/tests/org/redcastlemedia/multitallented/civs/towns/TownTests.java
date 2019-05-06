@@ -93,7 +93,6 @@ public class TownTests {
     }
 
     @Test
-    @Ignore // TODO you need to fix this
     public void townShouldDestroyWhenCriticalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();

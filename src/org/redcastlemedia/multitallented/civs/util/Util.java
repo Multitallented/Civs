@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,16 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class Util {
+
+    public static boolean equivalentLocations(Location location1, Location location2) {
+        if (location1 == null || location2 == null) {
+            return location1 == null && location2 == null;
+        }
+        boolean xEq = Math.abs(location1.getX() - location2.getX()) < 1;
+        boolean yEq = Math.abs(location1.getY() - location2.getY()) < 1;
+        boolean zEq = Math.abs(location1.getZ() - location2.getZ()) < 1;
+        return xEq && yEq && zEq;
+    }
 
     public static ArrayList<String> textWrap(String prefix, String input) {
         prefix = ChatColor.WHITE + prefix;
