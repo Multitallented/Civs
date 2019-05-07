@@ -5,6 +5,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 
 import com.google.common.collect.Multimap;
 
-public class ItemMetaImpl implements ItemMeta {
+public class ItemMetaImpl implements ItemMeta, Damageable {
 
     private String displayName = null;
     private List<String> lore = new ArrayList<>();
@@ -186,6 +187,21 @@ public class ItemMetaImpl implements ItemMeta {
     @Override
     public CustomItemTagContainer getCustomTagContainer() {
         return null;
+    }
+
+    @Override
+    public boolean hasDamage() {
+        return false;
+    }
+
+    @Override
+    public int getDamage() {
+        return 0;
+    }
+
+    @Override
+    public void setDamage(int i) {
+
     }
 
     @Override

@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -65,11 +66,6 @@ public class RegionsTests {
         regionManager = new RegionManager();
         townManager = new TownManager();
         new ItemManager();
-    }
-
-    @After
-    public void onAfter() {
-        WorldImpl.debug = false;
     }
 
     @Test
@@ -631,8 +627,10 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
         regionManager.addRegion(region);
-        region.runUpkeep();
         Chest chest = (Chest) location1.getBlock().getState();
+        chest.getBlockInventory().clear();
+        chest.getBlockInventory().setItem(0, new ItemStackImpl(Material.IRON_PICKAXE, 1));
+        assertTrue(region.runUpkeep());
         assertEquals(Material.GOLDEN_PICKAXE, chest.getBlockInventory().getContents()[0].getType());
         chest.getBlockInventory().setItem(0, TestUtil.mockItemStack(Material.IRON_PICKAXE, 1, null, new ArrayList<>()));
     }

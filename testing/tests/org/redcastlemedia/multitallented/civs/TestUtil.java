@@ -124,7 +124,7 @@ public class TestUtil {
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(server.getItemFactory()).thenReturn(itemFactory);
-        ItemMeta im = mock(ItemMeta.class);
+        ItemMeta im = new ItemMetaImpl();
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
 //        when(im.getDisplayName()).thenReturn("Civs Cobble");
 
@@ -306,34 +306,18 @@ public class TestUtil {
     }
 
     public static Block createBlock(Material mat, Location location) {
-        Block block = mock(Block.class);
-        BlockState state = mock(BlockState.class);
-        when(block.getState()).thenReturn(state);
-        when(block.getType()).thenReturn(mat);
-        when(block.getLocation()).thenReturn(location);
-        when(block.getX()).thenReturn((int) location.getX());
-        when(block.getY()).thenReturn((int) location.getY());
-        when(block.getZ()).thenReturn((int) location.getZ());
-        when(block.getRelative(any(BlockFace.class), anyInt())).thenReturn(block);
+        Block block = new BlockImpl(location);
+        block.setType(mat);
         return block;
     }
 
     public static Block createUniqueBlock(Material mat, String name, Location location, boolean containsPickaxe) {
-        Block block = mock(Block.class);
-        when(block.getType()).thenReturn(mat);
-        Chest chest = mock(Chest.class);
-        Inventory inventory1 = new InventoryImpl();
+        Block block = new BlockImpl(location);
+        block.setType(mat);
         if (containsPickaxe) {
-            inventory1.addItem(mockItemStack(Material.IRON_PICKAXE, 1, null, new ArrayList<>()));
+            ((Chest) block.getState()).getBlockInventory()
+                    .addItem(mockItemStack(Material.IRON_PICKAXE, 1, null, new ArrayList<>()));
         }
-        when(chest.getBlockInventory()).thenReturn(inventory1);
-        when(chest.getInventory()).thenReturn(inventory1);
-        when(block.getState()).thenReturn(chest);
-        when(block.getType()).thenReturn(mat);
-        when(block.getLocation()).thenReturn(location);
-        when(block.getX()).thenReturn((int) location.getX());
-        when(block.getY()).thenReturn((int) location.getY());
-        when(block.getZ()).thenReturn((int) location.getZ());
         return block;
     }
 

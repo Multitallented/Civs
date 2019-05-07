@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 public class WorldImpl implements World {
     private final String name;
     public HashSet<Entity> nearbyEntities = new HashSet<>();
-    public static boolean debug = false;
 
     public WorldImpl(String name) {
         this.name = name;

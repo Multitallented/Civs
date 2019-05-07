@@ -113,9 +113,9 @@ public class RegionEffectTests {
         effectMap.put("villager","");
         region.setEffects(effectMap);
         VillagerEffect villagerEffect = new VillagerEffect();
-        Block block = TestUtil.createBlock(Material.CHEST, townLocation);
-        doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
-        when(block.getWorld()).thenReturn(mock(World.class));
+//        Block block = TestUtil.createBlock(Material.CHEST, townLocation);
+//        doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
+//        when(block.getWorld()).thenReturn(mock(World.class));
         CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
 
         villagerEffect.regionCreatedHandler(region);
@@ -127,7 +127,6 @@ public class RegionEffectTests {
     }
 
     @Test
-    @Ignore // Ignored because of inventory.addItems() casting ItemMeta to Damageable
     public void warehouseShouldFindNeededItems() {
         RegionsTests.loadRegionTypeCobble3();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
