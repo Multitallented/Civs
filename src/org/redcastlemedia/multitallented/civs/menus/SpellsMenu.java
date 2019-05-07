@@ -53,8 +53,7 @@ public class SpellsMenu extends Menu {
     @Override @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
-        if (!(event.getInventory() instanceof Menu) ||
-                !((Menu) event.getInventory()).getMenuName().equals(MENU_NAME)) {
+        if (!event.getView().getTitle().equals(MENU_NAME)) {
             return;
         }
 

@@ -39,8 +39,7 @@ public class BlueprintsMenu extends Menu {
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
         Inventory inventory = event.getInventory();
-        if (Civs.getInstance() != null && (!(inventory instanceof Menu) ||
-                !((Menu) inventory).getMenuName().equals(MENU_NAME))) {
+        if (!event.getView().getTitle().equals(MENU_NAME)) {
             return;
         }
 

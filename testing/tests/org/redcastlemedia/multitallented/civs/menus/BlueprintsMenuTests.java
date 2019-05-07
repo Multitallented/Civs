@@ -53,6 +53,7 @@ public class BlueprintsMenuTests {
         InventoryView inventoryView = mock(InventoryView.class);
         when(inventoryView.getTopInventory()).thenReturn(inventory);
         when(inventoryView.getPlayer()).thenReturn(TestUtil.player);
+        when(inventoryView.getTitle()).thenReturn("CivsRegionStash");
 
         this.event = new InventoryCloseEvent(inventoryView);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
