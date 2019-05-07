@@ -453,7 +453,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
-            if (role == null || (role.contains("member") && location != region.getLocation())) {
+            if (role == null || (role.contains("member") && !Util.equivalentLocations(location, region.getLocation()))) {
                 return true;
             }
             return true;
@@ -543,7 +543,7 @@ public class ProtectionHandler implements Listener {
         if (role.contains("owner")) {
             return false;
         }
-        if (location == region.getLocation()) {
+        if (Util.equivalentLocations(location, region.getLocation())) {
             return true;
         }
         if (pRole == null || role.contains(pRole)) {

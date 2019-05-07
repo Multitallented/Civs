@@ -425,21 +425,12 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 ItemStack moveMe = itemsToMove.get(chest).get(i);
                 chest.getBlockInventory().removeItem(moveMe);
                 destinationChest.getBlockInventory().addItem(moveMe);
-//                CVItem item = CVItem.createFromItemStack(moveMe);
-//                ArrayList<CVItem> tempList = new ArrayList<>();
-//                tempList.add(item);
-//                List<List<CVItem>> temptemp = new ArrayList<>();
-//                temptemp.add(tempList);
-//                Util.removeItems(temptemp, chest.getBlockInventory());
-//                Util.addItems(temptemp, destinationInventory);
 
                 if (destinationChest.getBlockInventory().firstEmpty() < 0) {
-//                    chest.update();
                     break outerNew;
                 }
             }
         }
-//        destinationChest.update();
     }
 
     private List<List<CVItem>> getMissingItems(RegionType rt, Chest chest) {
