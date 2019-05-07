@@ -18,6 +18,9 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Region {
 
     private String type;
@@ -32,6 +35,10 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     private long lastTick = 0;
+
+    @Getter
+    @Setter
+    private double forSale = -1;
 
     public Region(String type,
                   HashMap<UUID, String> people,

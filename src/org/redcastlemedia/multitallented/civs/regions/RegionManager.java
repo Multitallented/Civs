@@ -210,6 +210,12 @@ public class RegionManager {
             regionConfig.set("yp-radius", region.getRadiusYP());
             regionConfig.set("zn-radius", region.getRadiusZN());
             regionConfig.set("zp-radius", region.getRadiusZP());
+            if (region.getForSale() != -1) {
+                regionConfig.set("sale", region.getForSale());
+            } else {
+                regionConfig.set("sale", null);
+            }
+
             for (UUID uuid : region.getPeople().keySet()) {
                 if ("ally".equals(region.getPeople().get(uuid))) {
                     continue;
@@ -252,8 +258,11 @@ public class RegionManager {
                     location,
                     radii,
                     (HashMap<String, String>) regionType.getEffects().clone(),
-                    exp
-            );
+                    exp);
+            double forSale = regionConfig.getDouble("sale", -1);
+            if (forSale != -1) {
+                region.setForSale(forSale);
+            }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
             return null;
