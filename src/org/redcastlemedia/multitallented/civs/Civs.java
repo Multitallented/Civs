@@ -141,6 +141,7 @@ public class Civs extends JavaPlugin {
         commandList.put("rename", new RenameCommand());
         commandList.put("bounty", new BountyCommand());
         commandList.put("reset", new ResetCommand());
+        commandList.put("sell", new SellRegionCommand());
     }
 
     private void initListeners() {

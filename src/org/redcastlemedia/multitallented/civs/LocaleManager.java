@@ -462,6 +462,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".click-for-req-regions", "Click here for a list of required regions"));
             currentLanguage.put("click-for-region-limits",
                     localeConfig.getString(langKey + ".click-for-region-limits", "Click here for a list of region limits"));
+            currentLanguage.put("region-sale-set",
+                    localeConfig.getString(langKey + ".region-sale-set", "$1 is now for sale for $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }
