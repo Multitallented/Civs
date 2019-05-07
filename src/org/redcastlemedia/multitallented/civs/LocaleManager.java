@@ -463,7 +463,13 @@ public class LocaleManager {
             currentLanguage.put("click-for-region-limits",
                     localeConfig.getString(langKey + ".click-for-region-limits", "Click here for a list of region limits"));
             currentLanguage.put("region-sale-set",
-                    localeConfig.getString(langKey + ".region-sale-set", "$1 is now for sale for $2"));
+                    localeConfig.getString(langKey + ".region-sale-set", "$1 is for sale for $2"));
+            currentLanguage.put("sell-region",
+                    localeConfig.getString(langKey + ".sell-region", "Sell Region"));
+            currentLanguage.put("cancel-sale",
+                    localeConfig.getString(langKey + ".cancel-sale", "Cancel Sale"));
+            currentLanguage.put("use-sell-command",
+                    localeConfig.getString(langKey + ".use-sell-command", "Type /cv sell priceGoesHere"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +84,16 @@ public class RegionActionMenu extends Menu {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, region));
             return;
+        }
+        if (event.getCurrentItem().getType() == Material.EMERALD_BLOCK) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "use-sell-command"));
+        }
+        if (event.getCurrentItem().getType() == Material.EMERALD_ORE) {
+            event.getWhoClicked().closeInventory();
+            ((Player) event.getWhoClicked()).performCommand("cv sell");
+            event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
@@ -196,6 +208,29 @@ public class RegionActionMenu extends Menu {
             CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
+
+            if (region.getPeople().keySet().size() == 1) {
+                //11 Set sale
+                CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
+                emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "sell-region"));
+                if (region.getForSale() > -1) {
+                    lore = new ArrayList<>();
+                    lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
+                        .replace("$1", region.getType())
+                        .replace("$2", NumberFormat.getNumberInstance().format(region.getForSale())));
+                    emeraldBlock.setLore(lore);
+                }
+                inventory.setItem(11, emeraldBlock.createItemStack());
+
+                if (region.getForSale() != -1) {
+                    //12 Cancel sale
+                    CVItem emeraldOre = CVItem.createCVItemFromString("EMERALD_ORE");
+                    emeraldOre.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "cancel-sale"));
+                    inventory.setItem(12, emeraldOre.createItemStack());
+                }
+            }
         }
 
 

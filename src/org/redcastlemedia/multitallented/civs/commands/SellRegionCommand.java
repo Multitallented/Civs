@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
