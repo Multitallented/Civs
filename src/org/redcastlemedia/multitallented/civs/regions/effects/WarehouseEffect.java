@@ -419,15 +419,12 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
         }
 
-        Inventory destinationInventory = destinationChest.getBlockInventory();
-
         //move items from warehouse to needed region
         outerNew: for (Chest chest : itemsToMove.keySet()) {
             for (Integer i : itemsToMove.get(chest).keySet()) {
                 ItemStack moveMe = itemsToMove.get(chest).get(i);
-                Civs.logger.info("Moving item " + moveMe.getType().name() + " from warehouse to " + destination.getType());
                 chest.getBlockInventory().removeItem(moveMe);
-                destinationInventory.addItem(moveMe);
+                destinationChest.getBlockInventory().addItem(moveMe);
 //                CVItem item = CVItem.createFromItemStack(moveMe);
 //                ArrayList<CVItem> tempList = new ArrayList<>();
 //                tempList.add(item);
@@ -436,19 +433,26 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 //                Util.removeItems(temptemp, chest.getBlockInventory());
 //                Util.addItems(temptemp, destinationInventory);
 
-                if (destinationInventory.firstEmpty() < 0) {
-                    chest.update();
+                if (destinationChest.getBlockInventory().firstEmpty() < 0) {
+//                    chest.update();
                     break outerNew;
                 }
             }
         }
-        destinationChest.update();
+//        destinationChest.update();
     }
 
     private List<List<CVItem>> getMissingItems(RegionType rt, Chest chest) {
         List<List<CVItem>> req = new ArrayList<>();
         for (RegionUpkeep regionUpkeep : rt.getUpkeeps()) {
             for (List<CVItem> list : regionUpkeep.getInputs()) {
+                ArrayList<CVItem> tempList = new ArrayList<>();
+                for (CVItem item : list) {
+                    tempList.add(item.clone());
+                }
+                req.add(tempList);
+            }
+            for (List<CVItem> list : regionUpkeep.getReagents()) {
                 ArrayList<CVItem> tempList = new ArrayList<>();
                 for (CVItem item : list) {
                     tempList.add(item.clone());
