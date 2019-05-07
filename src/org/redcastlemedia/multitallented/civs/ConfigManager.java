@@ -67,7 +67,7 @@ public class ConfigManager {
     boolean allowFoodHealInCombat;
     long townGracePeriod;
     boolean useClassesAndSpells;
-    Map<String, String> customItemDescriptions;
+    Map<String, List<String>> customItemDescriptions;
 
     @Getter
     boolean checkWaterSpread;
@@ -149,14 +149,14 @@ public class ConfigManager {
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
 
-    public ArrayList<String> getCustomItemDescription(String key) {
-        String returnDescription = customItemDescriptions.get(key.toLowerCase());
+    public List<String> getCustomItemDescription(String key) {
+        List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
         if (returnDescription == null) {
             ArrayList<String> returnLore = new ArrayList<>();
             returnLore.add(key);
             return returnLore;
         }
-        return Util.textWrap("", Util.parseColors(returnDescription));
+        return returnDescription;
     }
 
     public int getCreatureHealth(String type) {
@@ -274,13 +274,19 @@ public class ConfigManager {
         }
     }
 
-    private Map<String, String> processMap(ConfigurationSection section) {
-        HashMap<String, String> returnMap = new HashMap<>();
+    private Map<String, List<String>> processMap(ConfigurationSection section) {
+        HashMap<String, List<String>> returnMap = new HashMap<>();
         if (section == null) {
             return returnMap;
         }
         for (String key : section.getKeys(false)) {
-            returnMap.put(key, section.getString(key, key));
+            List<String> returnList = section.getStringList(key);
+            if (returnList.isEmpty()) {
+                returnList.add(key);
+            } else if (returnList.size() == 1) {
+                returnMap.put(key, Util.textWrap("", Util.parseColors(returnList.get(0))));
+            }
+            returnMap.put(key, returnList);
         }
         return returnMap;
     }

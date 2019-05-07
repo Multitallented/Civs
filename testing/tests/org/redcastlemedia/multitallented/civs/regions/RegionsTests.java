@@ -29,6 +29,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
@@ -750,8 +751,9 @@ public class RegionsTests {
                 TestUtil.player,
                 Action.RIGHT_CLICK_BLOCK,
                 new ItemStack(Material.AIR),
-                TestUtil.block,
-                BlockFace.NORTH);
+                TestUtil.blockUnique,
+                BlockFace.NORTH,
+                EquipmentSlot.HAND);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
         assertFalse(playerInteractEvent.isCancelled());
