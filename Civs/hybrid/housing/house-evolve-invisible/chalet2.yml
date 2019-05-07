@@ -37,6 +37,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:chalet3.36
+- buyable
 
 towns:
 - village

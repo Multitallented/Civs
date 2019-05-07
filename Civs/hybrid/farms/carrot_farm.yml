@@ -34,7 +34,6 @@ upkeep:
   0:
     reagents:
     - STONE_HOE
-    - CARROT*32
     output:
     - CARROT*16
 
