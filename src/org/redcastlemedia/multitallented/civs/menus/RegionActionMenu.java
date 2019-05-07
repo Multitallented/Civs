@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -87,14 +88,40 @@ public class RegionActionMenu extends Menu {
         }
         if (event.getCurrentItem().getType() == Material.EMERALD_BLOCK) {
             event.getWhoClicked().closeInventory();
+            clearHistory(civilian.getUuid());
             event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "use-sell-command"));
+            return;
         }
         if (event.getCurrentItem().getType() == Material.EMERALD_ORE) {
             event.getWhoClicked().closeInventory();
             ((Player) event.getWhoClicked()).performCommand("cv sell");
             event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
+            return;
         }
+
+        if (event.getCurrentItem().getType() == Material.EMERALD) {
+            event.getWhoClicked().closeInventory();
+            Player player = (Player) event.getWhoClicked();
+            if (Civs.econ != null && Civs.econ.has(player, region.getForSale())) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "region-bought").replace("$1", region.getType())
+                        .replace("$2", NumberFormat.getCurrencyInstance().format(region.getForSale())));
+
+                Civs.econ.withdrawPlayer(player, region.getForSale());
+                Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
+                region.getPeople().clear();
+                region.getPeople().put(civilian.getUuid(), "owner");
+                region.setForSale(-1);
+                RegionManager.getInstance().saveRegion(region);
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "not-enough-money").replace("$1", "" + region.getForSale()));
+            }
+            clearHistory(civilian.getUuid());
+            return;
+        }
+
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             event.getWhoClicked().closeInventory();
@@ -209,7 +236,7 @@ public class RegionActionMenu extends Menu {
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
 
-            if (region.getPeople().keySet().size() == 1) {
+            if (region.getPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
                 //11 Set sale
                 CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
                 emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -230,6 +257,15 @@ public class RegionActionMenu extends Menu {
                             "cancel-sale"));
                     inventory.setItem(12, emeraldOre.createItemStack());
                 }
+            }
+
+            if (!region.getPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1) {
+                //13 Buy region button
+                CVItem emerald = CVItem.createCVItemFromString("EMERALD");
+                emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "buy-region").replace("$1", region.getType())
+                        .replace("$2", NumberFormat.getCurrencyInstance().format(region.getForSale())));
+                inventory.setItem(13, emerald.createItemStack());
             }
         }
 

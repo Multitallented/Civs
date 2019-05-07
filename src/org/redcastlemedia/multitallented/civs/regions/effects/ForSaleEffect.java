@@ -5,7 +5,9 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 
-public class ForSaleListener implements Listener {
+public class ForSaleEffect implements Listener {
+
+    public static final String KEY = "buyable";
 
     @EventHandler
     public void onPlayerEnterRegionEvent(PlayerEnterRegionEvent event) {

@@ -470,6 +470,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".cancel-sale", "Cancel Sale"));
             currentLanguage.put("use-sell-command",
                     localeConfig.getString(langKey + ".use-sell-command", "Type /cv sell priceGoesHere"));
+            currentLanguage.put("buy-region",
+                    localeConfig.getString(langKey + ".buy-region", "Buy this $1 for $2"));
+            currentLanguage.put("region-bought",
+                    localeConfig.getString(langKey + ".region-bought", "You have bought this $1 for $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }
