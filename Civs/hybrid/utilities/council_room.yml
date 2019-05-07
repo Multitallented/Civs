@@ -18,7 +18,7 @@ build-reqs:
 - g:stairs*4
 - BOOKSHELF*8
 - g:sign*8
-build-radius: 5
+build-radius: 5 # 11x11x11
 effects:
 - block_break
 - block_build
