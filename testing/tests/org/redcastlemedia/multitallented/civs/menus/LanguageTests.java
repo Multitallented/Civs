@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs;
+package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -12,6 +12,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.SuccessException;
+import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -81,17 +84,15 @@ public class LanguageTests {
         when(itemStack.hasItemMeta()).thenReturn(true);
         when(event.getCurrentItem()).thenReturn(itemStack);
         Inventory inventory = mock(Inventory.class);
-        when(inventory.getTitle()).thenReturn("CivsLang");
         when(event.getClickedInventory()).thenReturn(inventory);
-        LocaleManager localeManager = LocaleManager.getInstance();
-        localeManager.languageMap.get("es").put("language-set", "blah");
+        TestUtil.setLanguageEntry("es", "language-set","blah");
         CivilianManager civilianManager = CivilianManager.getInstance();
         Player player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
         civilianManager.createDefaultCivilian(player);
 
         LanguageMenu languageMenu = new LanguageMenu();
-        languageMenu.onMenuInteract(event);
+        languageMenu.handleInteract(event);
         Civilian civilian = civilianManager.getCivilian(uuid);
         assertEquals("es", civilian.getLocale());
     }

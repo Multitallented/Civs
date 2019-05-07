@@ -81,7 +81,7 @@ public class RecipeMenuTests {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
         Inventory inventory = RecipeMenu.createMenuCVItem(regionType.getReqs(), TestUtil.player.getUniqueId(), regionType.createItemStack());
         assertEquals(Material.CHEST, regionType.getReqs().get(0).get(0).getMat());
-        assertEquals(Material.SIGN, regionType.getReqs().get(8).get(0).getMat());
+        assertEquals(Material.OAK_SIGN, regionType.getReqs().get(8).get(0).getMat());
         assertEquals(Material.QUARTZ_BLOCK, regionType.getReqs().get(5).get(0).getMat());
         assertEquals(Material.SPRUCE_PLANKS, regionType.getReqs().get(5).get(2).getMat());
         assertEquals(Material.BOOKSHELF, regionType.getReqs().get(7).get(0).getMat());
@@ -91,10 +91,10 @@ public class RecipeMenuTests {
 //                System.out.println(inventory.getItem(i).getType().name());
 //            }
 //        }
-        assertEquals(Material.SIGN, inventory.getItem(0).getType());
+        assertEquals(Material.OAK_SIGN, inventory.getItem(0).getType());
         assertEquals(Material.CHEST, inventory.getItem(9).getType());
         assertEquals(Material.BOOKSHELF, inventory.getItem(22).getType());
-        assertEquals(Material.SIGN, inventory.getItem(23).getType());
+        assertEquals(Material.OAK_SIGN, inventory.getItem(23).getType());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class RecipeMenuTests {
     public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "councilroom");
-        config.set("icon", "SIGN");
+        config.set("icon", "OAK_SIGN");
         config.set("type", "region");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*4");

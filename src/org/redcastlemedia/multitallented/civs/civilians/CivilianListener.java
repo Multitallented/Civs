@@ -335,7 +335,8 @@ public class CivilianListener implements Listener {
         }
         ItemStack dragged = event.getOldCursor();
         if (!CVItem.isCivsItem(dragged) ||
-                event.getInventory().getTitle().startsWith("Civ")) {
+                !(event.getInventory() instanceof Menu) ||
+                ((Menu) event.getInventory()).getMenuName().startsWith("Civ")) {
             return;
         }
 
@@ -368,7 +369,7 @@ public class CivilianListener implements Listener {
             return;
         }
 
-        if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
+        if (!CVItem.isCivsItem(stackInQuestion) || ((Menu) event.getInventory()).getMenuName().startsWith("Civ")) {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();

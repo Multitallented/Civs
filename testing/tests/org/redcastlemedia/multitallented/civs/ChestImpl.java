@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.loot.LootTable;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 
 public class ChestImpl implements Chest {
@@ -206,5 +207,10 @@ public class ChestImpl implements Chest {
     @Override
     public void removeMetadata(String s, Plugin plugin) {
 
+    }
+
+    @Override
+    public PersistentDataContainer getPersistentDataContainer() {
+        return null;
     }
 }

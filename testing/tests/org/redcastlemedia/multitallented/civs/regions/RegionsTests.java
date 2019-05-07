@@ -25,6 +25,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -754,7 +755,7 @@ public class RegionsTests {
                 BlockFace.NORTH);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
-        assertFalse(playerInteractEvent.isCancelled());
+        assertSame(playerInteractEvent.useInteractedBlock(), Event.Result.DENY);
     }
 
     @Test

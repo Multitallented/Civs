@@ -101,7 +101,7 @@ public class TestUtil {
         configManager.blackListWorlds = new ArrayList<>();
         configManager.blackListWorlds.add("Hub");
         configManager.itemGroups = new HashMap<>();
-        configManager.itemGroups.put("sign", "SIGN,WALL_SIGN");
+        configManager.itemGroups.put("sign", "OAK_SIGN,OAK_WALL_SIGN,BIRCH_SIGN,BIRCH_WALL_SIGN,SPRUCE_SIGN,SPRUCE_WALL_SIGN,DARK_OAK_SIGN,DARK_OAK_WALL_SIGN,ACACIA_SIGN,ACACIA_WALL_SIGN,JUNGLE_SIGN,JUNGLE_WALL_SIGN");
         configManager.itemGroups.put("wood", "OAK_PLANKS,SPRUCE_PLANKS,BIRCH_PLANKS,JUNGLE_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS");
         configManager.itemGroups.put("log", "OAK_LOG,SPRUCE_LOG,BIRCH_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG");
         configManager.itemGroups.put("fence", "NETHER_BRICK_FENCE,OAK_FENCE,BIRCH_FENCE,SPRUCE_FENCE,JUNGLE_FENCE,DARK_OAK_FENCE,ACACIA_FENCE,IRON_BARS");
@@ -164,7 +164,7 @@ public class TestUtil {
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
         block13 = createBlock(Material.CHEST, new Location(world, 301, 101, 1));
-        block14 = createBlock(Material.WALL_SIGN, new Location(world, -8197, 68, 3196));
+        block14 = createBlock(Material.OAK_WALL_SIGN, new Location(world, -8197, 68, 3196));
 
 
         world.putBlock(0,0,0,block);
@@ -215,7 +215,7 @@ public class TestUtil {
                 matList.add(Material.OAK_STAIRS);
             }
             for (int i = 0; i < 8; i++) {
-                matList.add(Material.SIGN);
+                matList.add(Material.OAK_SIGN);
             }
             matList.add(Material.OAK_DOOR);
             matList.add(Material.OAK_DOOR);
@@ -287,6 +287,10 @@ public class TestUtil {
 
     public static ItemStack createItemStack(Material mat) {
         return new ItemStackImpl(mat, 1);
+    }
+
+    public static void setLanguageEntry(String locale, String key, String entry) {
+        LocaleManager.getInstance().languageMap.get(locale).put(key, entry);
     }
 
     public static ItemStack createUniqueItemStack(Material mat, String name) {

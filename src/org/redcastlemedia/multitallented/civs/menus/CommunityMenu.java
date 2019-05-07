@@ -47,7 +47,7 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
             return;
         }
-        if (clickedStack.getType() == Material.SIGN) {
+        if (clickedStack.getType() == Material.OAK_SIGN) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, 0));
@@ -103,7 +103,7 @@ public class CommunityMenu extends Menu {
         //TODO make menu for alliances
 
         //4 PvP leaderboard
-        CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
+        CVItem cvItem4 = CVItem.createCVItemFromString("OAK_SIGN");
         cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
         inventory.setItem(4, cvItem4.createItemStack());
 
