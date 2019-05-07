@@ -75,6 +75,10 @@ public class Region {
     public void setPeople(UUID uuid, String role) {
         people.put(uuid, role);
     }
+
+    public HashMap<UUID, String> getRawPeople() {
+        return people;
+    }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

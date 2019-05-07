@@ -21,10 +21,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class RegionActionMenu extends Menu {
     public static final String MENU_NAME = "CivsRegion";
@@ -106,7 +103,7 @@ public class RegionActionMenu extends Menu {
             if (Civs.econ != null && Civs.econ.has(player, region.getForSale())) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "region-bought").replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance().format(region.getForSale())));
+                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
 
                 Civs.econ.withdrawPlayer(player, region.getForSale());
                 Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
@@ -236,7 +233,7 @@ public class RegionActionMenu extends Menu {
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
 
-            if (region.getPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
+            if (region.getRawPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
                 //11 Set sale
                 CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
                 emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -245,7 +242,7 @@ public class RegionActionMenu extends Menu {
                     lore = new ArrayList<>();
                     lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                         .replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getNumberInstance().format(region.getForSale())));
+                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
                     emeraldBlock.setLore(lore);
                 }
                 inventory.setItem(11, emeraldBlock.createItemStack());
@@ -264,7 +261,7 @@ public class RegionActionMenu extends Menu {
                 CVItem emerald = CVItem.createCVItemFromString("EMERALD");
                 emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "buy-region").replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance().format(region.getForSale())));
+                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
                 inventory.setItem(13, emerald.createItemStack());
             }
         }

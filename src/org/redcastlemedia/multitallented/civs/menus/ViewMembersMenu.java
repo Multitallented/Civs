@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -115,7 +116,7 @@ public class ViewMembersMenu extends Menu {
         ArrayList<String> lore;
         int i=9;
         for (UUID uuid : people.keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             if (player == null || (!allowAllies && people.get(uuid).equals("ally"))) {
                 continue;
             }

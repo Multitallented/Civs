@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -53,7 +54,7 @@ public class SellRegionCommand implements CivCommand {
         commandSender.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", region.getType())
-                .replace("$2", NumberFormat.getCurrencyInstance().format(salePrice)));
+                .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(salePrice)));
         return true;
     }
 
