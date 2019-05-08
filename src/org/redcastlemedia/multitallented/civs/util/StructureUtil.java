@@ -60,9 +60,9 @@ public final class StructureUtil {
         int maxX = (int) (location.getX() + radii[0] + 1);
         int minX = (int) (location.getX() - radii[2] - 1);
         int maxY = (int) (location.getY() + radii[4] + 1);
-        int minY = (int) (location.getY() + radii[5] - 1);
+        int minY = (int) (location.getY() - radii[5] - 1);
         int maxZ = (int) (location.getZ() + radii[1] + 1);
-        int minZ = (int) (location.getZ() + radii[3] - 1);
+        int minZ = (int) (location.getZ() - radii[3] - 1);
 
         BoundingBox boundingBox = new BoundingBox();
 
