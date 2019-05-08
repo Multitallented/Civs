@@ -65,8 +65,8 @@ public class SellRegionCommand implements CivCommand {
 
     private boolean permissionToSellRegion(Player player, Region region) {
         // Dont sell allow sale of a region that has multiple members
-        if (region == null || !region.getPeople().containsKey(player.getUniqueId())
-                || region.getPeople().keySet().size() != 1) {
+        if (region == null || !region.getRawPeople().containsKey(player.getUniqueId())
+                || region.getRawPeople().keySet().size() != 1) {
             return false;
         }
         return true;
