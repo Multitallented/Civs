@@ -31,10 +31,6 @@ public abstract class Menu implements Listener {
     private final static Map<UUID, List<String>> history = new HashMap<>();
     private final static Map<UUID, Map<String, Object>> currentMenuStorage = new HashMap<>();
 
-    public String getMenuName() {
-        return MENU_NAME;
-    }
-
     public Menu(String menuName) {
         this.MENU_NAME = menuName;
     }
@@ -58,9 +54,7 @@ public abstract class Menu implements Listener {
     @EventHandler
     public void onMenuInteract(InventoryClickEvent event) {
         if (event.getClickedInventory() == null ||
-                !(event.getClickedInventory() instanceof Menu) ||
-                ((Menu) event.getClickedInventory()).getMenuName() == null ||
-                !((Menu) event.getClickedInventory()).getMenuName().equals(MENU_NAME)) {
+                !event.getView().getTitle().equals(MENU_NAME)) {
             return;
         }
         handleInteract(event);
