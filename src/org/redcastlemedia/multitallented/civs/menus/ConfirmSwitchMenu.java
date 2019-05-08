@@ -30,13 +30,12 @@ public class ConfirmSwitchMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemManager itemManager = ItemManager.getInstance();
-        LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String className = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        ClassType classType = (ClassType) itemManager.getItemType(className);
+
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
+        ClassType classType = (ClassType) getData(civilian.getUuid(), "civItem");
+        clearData(civilian.getUuid());
+        String className = classType.getProcessedName();
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -81,6 +80,10 @@ public class ConfirmSwitchMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, CivItem civItem) {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("civItem", civItem);
+        setNewData(civilian.getUuid(), data);
 
         inventory.setItem(0, civItem.clone().createItemStack());
 

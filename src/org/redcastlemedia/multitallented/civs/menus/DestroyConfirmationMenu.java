@@ -25,9 +25,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class DestroyConfirmationMenu extends Menu {
     static String MENU_NAME = "CivDestroyConfirm";
@@ -54,13 +52,12 @@ public class DestroyConfirmationMenu extends Menu {
 
         Region region = null;
         Town town = null;
-        if (event.getInventory().getItem(0).getItemMeta().getDisplayName().startsWith("R:")) {
-            String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("R:", "");
-            region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
+        if (getData(civilian.getUuid(), "region") == null) {
+            region = (Region) getData(civilian.getUuid(), "region");
         } else {
-            String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("T:","");
-            town = TownManager.getInstance().getTown(townName);
+            town = (Town) getData(civilian.getUuid(), "town");
         }
+        clearData(civilian.getUuid());
 
 
         Player player = (Player) event.getWhoClicked();
@@ -109,8 +106,12 @@ public class DestroyConfirmationMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType regionType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         CVItem regionTypeIcon = regionType.clone();
-        regionTypeIcon.setDisplayName("T:" + town.getName());
+        regionTypeIcon.setDisplayName(town.getName());
         inventory.setItem(0, regionTypeIcon.createItemStack());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
 
         CVItem cvItem = CVItem.createCVItemFromString("EMERALD");
         cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
@@ -131,8 +132,11 @@ public class DestroyConfirmationMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         CVItem regionTypeIcon = regionType.clone();
-        regionTypeIcon.setDisplayName("R:" + region.getId());
         inventory.setItem(0, regionTypeIcon.createItemStack());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("region", region);
+        setNewData(civilian.getUuid(), data);
 
         CVItem cvItem = CVItem.createCVItemFromString("EMERALD");
         cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));

@@ -22,6 +22,8 @@ public class BuiltRegionMenu extends Menu {
         super(MENU_NAME);
     }
 
+    // TODO paginate this
+
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);

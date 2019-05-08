@@ -17,9 +17,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class ConfirmationMenu extends Menu {
     static String MENU_NAME = "CivConfirm";
@@ -31,13 +29,11 @@ public class ConfirmationMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String regionName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        CivItem civItem = itemManager.getItemType(regionName);
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
+        CivItem civItem = (CivItem) getData(civilian.getUuid(), "civItem");
+        clearData(civilian.getUuid());
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -91,6 +87,9 @@ public class ConfirmationMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, CivItem civItem) {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
+        Map<String, Object> data = new HashMap<>();
+        data.put("civItem", civItem);
+        setNewData(civilian.getUuid(), data);
 
         inventory.setItem(0, civItem.clone().createItemStack());
 

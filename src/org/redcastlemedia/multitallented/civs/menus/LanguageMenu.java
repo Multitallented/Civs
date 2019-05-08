@@ -43,7 +43,7 @@ public class LanguageMenu extends Menu {
                 localeManager.getTranslation(newLocale, "language-set").replace("$1", itemName));
     }
 
-    public static Inventory createMenu(String locale) {
+    public static Inventory createMenu() {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -53,9 +53,6 @@ public class LanguageMenu extends Menu {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(currentLang);
             CVItem cvItem = CVItem.createCVItemFromString(localeManager.getTranslation(currentLang, "icon"));
-            if (cvItem == null) {
-                cvItem = new CVItem(Material.GRASS, i+1);
-            }
             String name = localeManager.getTranslation(currentLang, "name");
             if (name == null) {
                 name = "Error";

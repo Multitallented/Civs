@@ -27,6 +27,8 @@ public class TutorialManager {
         loadTutorialFile();
     }
 
+    // TODO create end type for tutorial
+
     public static TutorialManager getInstance() {
         if (tutorialManager == null) {
             new TutorialManager();

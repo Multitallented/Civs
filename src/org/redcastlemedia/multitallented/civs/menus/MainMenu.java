@@ -40,7 +40,7 @@ public class MainMenu extends Menu {
         if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(LanguageMenu.createMenu());
             return;
         }
         if (Material.ENCHANTED_BOOK == clickedStack.getType()) {
