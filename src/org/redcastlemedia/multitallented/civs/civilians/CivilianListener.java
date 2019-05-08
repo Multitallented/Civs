@@ -107,6 +107,7 @@ public class CivilianListener implements Listener {
         CommonScheduler.lastTown.remove(uuid);
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
+        StructureUtil.removeBoundingBox(uuid);
     }
 
     @EventHandler(ignoreCancelled = true)

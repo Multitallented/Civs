@@ -67,22 +67,22 @@ public final class StructureUtil {
         BoundingBox boundingBox = new BoundingBox();
 
         for (int x = minX; x <= maxX; x++) {
-            setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations());
+            setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+            setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+            setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+            setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
         }
         for (int y = minY; y <= maxY; y++) {
-            setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations());
-            setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations());
+            setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+            setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+            setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+            setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
         }
         for (int z = minZ; z <= maxZ; z++) {
-            setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations());
-            setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations());
-            setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations());
-            setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations());
+            setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+            setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+            setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+            setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
         }
         boundingBoxes.put(player.getUniqueId(), boundingBox);
     }
@@ -105,7 +105,7 @@ public final class StructureUtil {
         boundingBoxes.remove(uuid);
     }
 
-    private static void setGlass(World world, int x, int y, int z, HashSet<Location> boundingBox) {
+    private static void setGlass(World world, int x, int y, int z, HashSet<Location> boundingBox, Material mat) {
         if (y < 1 || y >= world.getMaxHeight()) {
             return;
         }
@@ -115,7 +115,7 @@ public final class StructureUtil {
             return;
         }
         boundingBox.add(new Location(world, x, y, z));
-        block.setType(Material.GLASS);
+        block.setType(mat);
     }
 
     private static class BoundingBox {
