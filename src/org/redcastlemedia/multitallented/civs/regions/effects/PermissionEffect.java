@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -14,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.events.PlayerEnterTownEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerExitTownEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class PermissionEffect implements Listener {
@@ -22,54 +25,63 @@ public class PermissionEffect implements Listener {
 
     @EventHandler
     public void onPlayerEnterRegion(PlayerEnterRegionEvent event) {
-        if (Civs.perm == null) {
+        if (isInvalidRegion(event.getRegion(), event.getUuid())) {
             return;
         }
-        Region region = event.getRegion();
-        if (!region.getEffects().containsKey(KEY)) {
-            return;
-        }
-        String permission = region.getEffects().get(KEY);
+        String permission = event.getRegion().getEffects().get(KEY);
         addPermission(event.getUuid(), permission);
     }
 
     @EventHandler
     public void onPlayerExitRegion(PlayerExitRegionEvent event) {
-        if (Civs.perm == null) {
+        if (isInvalidRegion(event.getRegion(), event.getUuid())) {
             return;
         }
-        Region region = event.getRegion();
-        if (!region.getEffects().containsKey(KEY)) {
-            return;
-        }
-        String permission = region.getEffects().get(KEY);
+
+        String permission = event.getRegion().getEffects().get(KEY);
         removePermission(event.getUuid(), permission);
+    }
+
+    private boolean isInvalidRegion(Region region, UUID uuid) {
+        if (Civs.perm == null) {
+            return true;
+        }
+        if (!region.getEffects().containsKey(KEY) ||
+                !region.getRawPeople().containsKey(uuid)) {
+            return true;
+        }
+        return false;
     }
 
     @EventHandler
     public void onPlayerEnterTown(PlayerEnterTownEvent event) {
-        if (Civs.perm == null) {
+        if (isInvalidTownType(event.getTown(), event.getTownType(), event.getUuid())) {
             return;
         }
-        TownType townType = event.getTownType();
-        if (!townType.getEffects().containsKey(KEY)) {
-            return;
-        }
-        String permission = townType.getEffects().get(KEY);
+        String permission = event.getTownType().getEffects().get(KEY);
         addPermission(event.getUuid(), permission);
     }
 
     @EventHandler
     public void onPlayerExitTown(PlayerExitTownEvent event) {
-        if (Civs.perm == null) {
+        if (isInvalidTownType(event.getTown(), event.getTownType(), event.getUuid())) {
             return;
         }
-        TownType townType = event.getTownType();
-        if (!townType.getEffects().containsKey(KEY)) {
-            return;
-        }
-        String permission = townType.getEffects().get(KEY);
+
+        String permission = event.getTownType().getEffects().get(KEY);
         removePermission(event.getUuid(), permission);
+    }
+
+    private boolean isInvalidTownType(Town town, TownType townType, UUID uuid) {
+        if (Civs.perm == null) {
+            return false;
+        }
+        if (!townType.getEffects().containsKey(KEY) ||
+                !town.getPeople().containsKey(uuid) ||
+                town.getPeople().get(uuid).equals("ally")) {
+            return false;
+        }
+        return true;
     }
 
     private void addPermission(UUID uuid, String permission) {
@@ -78,6 +90,11 @@ public class PermissionEffect implements Listener {
             permissions = new HashSet<>();
         }
         permissions.add(permission);
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) {
+            return;
+        }
+        Civs.perm.playerAdd(player, permission);
         permissionMap.put(uuid, permissions);
     }
 
@@ -86,6 +103,12 @@ public class PermissionEffect implements Listener {
         if (permissions == null) {
             return;
         }
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) {
+            permissionMap.remove(uuid);
+            return;
+        }
+        Civs.perm.playerRemove(player, permission);
         if (permissions.size() < 2) {
             permissionMap.remove(uuid);
             return;
@@ -97,6 +120,14 @@ public class PermissionEffect implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (Civs.perm == null) {
             return;
+        }
+        Player player = event.getPlayer();
+        HashSet<String> permissions = permissionMap.get(player.getUniqueId());
+        if (permissions == null) {
+            return;
+        }
+        for (String permission : permissions) {
+            Civs.perm.playerRemove(player, permission);
         }
         permissionMap.remove(event.getPlayer().getUniqueId());
     }
