@@ -16,7 +16,9 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpellTypeInfoMenu extends Menu {
     static String MENU_NAME = "CivSpellInfo";
@@ -28,11 +30,9 @@ public class SpellTypeInfoMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
-        ItemManager itemManager = ItemManager.getInstance();
-        String spellName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        SpellType spellType = (SpellType) itemManager.getItemType(spellName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        SpellType spellType = (SpellType) getData(civilian.getUuid(), "spellType");
+        String spellName = spellType.getProcessedName();
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -51,14 +51,15 @@ public class SpellTypeInfoMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, SpellType spellType) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("spellType", spellType);
+        setNewData(civilian.getUuid(), data);
 
         //0 Icon
         CVItem cvItem = spellType.clone();
         List<String> lore = new ArrayList<>();
-//        lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
-//                ": " + (spellType.getBuildRadiusX() * 2 + 1) + "x" + (spellType.getBuildRadiusZ() * 2 + 1) + "x" + (spellType.getBuildRadiusY() * 2 + 1));
         lore.addAll(Util.textWrap("", Util.parseColors(spellType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());

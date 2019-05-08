@@ -24,9 +24,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TownActionMenu extends Menu {
     public static final String MENU_NAME = "CivsTown";
@@ -49,9 +47,8 @@ public class TownActionMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        TownManager townManager = TownManager.getInstance();
-        String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Town town = townManager.getTown(townName);
+        Town town = (Town) getData(civilian.getUuid(), "town");
+        String townName = town.getName();
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
@@ -142,6 +139,11 @@ public class TownActionMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
+
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());

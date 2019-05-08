@@ -13,11 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class LeaderboardMenu extends Menu {
     public static String MENU_NAME = "CivsLeaderboard";
@@ -34,10 +30,9 @@ public class LeaderboardMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        ItemStack itemStack = event.getInventory().getItem(2);
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
-        int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName().replace("Icon", ""));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        int page = (int) getData(civilian.getUuid(), "page");
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -59,7 +54,8 @@ public class LeaderboardMenu extends Menu {
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, page - 1));
             return;
         }
-        UUID uuid = UUID.fromString(event.getCurrentItem().getItemMeta().getLore().get(0));
+        int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(0));
+        UUID uuid = ((ArrayList<UUID>) getData(civilian.getUuid(), "uuidList")).get(index);
         if (event.getWhoClicked() instanceof Player) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -82,13 +78,8 @@ public class LeaderboardMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        //2 Icon
-        CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName("Icon" + page);
-        List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
-        cvItem.setLore(lore);
-        inventory.setItem(2, cvItem.createItemStack());
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
@@ -102,6 +93,7 @@ public class LeaderboardMenu extends Menu {
             inventory.setItem(8, cvItem1.createItemStack());
         }
 
+        ArrayList<UUID> uuidList = new ArrayList<>();
         int i=9;
         for (int k=startIndex; k<civilianList.size() && k<startIndex+36; k++) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(civilianList.get(k).getUuid());
@@ -109,13 +101,16 @@ public class LeaderboardMenu extends Menu {
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             ArrayList<String> lore1 = new ArrayList<>();
-            lore1.add(player.getUniqueId().toString());
+            lore1.add("" + i);
             isMeta.setLore(lore1);
+            uuidList.set(i, player.getUniqueId());
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;
         }
+        data.put("uuidList", uuidList);
+        setNewData(civilian.getUuid(), data);
 
         return inventory;
     }

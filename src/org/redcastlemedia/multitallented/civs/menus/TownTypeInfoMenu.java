@@ -30,9 +30,9 @@ public class TownTypeInfoMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
         ItemManager itemManager = ItemManager.getInstance();
-        String townName = event.getInventory().getItem(0)
+        String townTypeName = event.getInventory().getItem(0)
                 .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        TownType townType = (TownType) itemManager.getItemType(townName);
+        TownType townType = (TownType) itemManager.getItemType(townTypeName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -41,7 +41,7 @@ public class TownTypeInfoMenu extends Menu {
         }
 
         if (event.getCurrentItem().getType().equals(Material.OAK_PLANKS)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
             return;
@@ -59,19 +59,19 @@ public class TownTypeInfoMenu extends Menu {
             return;
         }*/
         if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.RED_WOOL)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getRegionLimits()));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ConfirmationMenu.createMenu(civilian, townType));
             return;

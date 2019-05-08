@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ViewMembersMenu extends Menu {
@@ -40,12 +41,15 @@ public class ViewMembersMenu extends Menu {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
-        RegionManager regionManager = RegionManager.getInstance();
-        String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Town town = TownManager.getInstance().getTown(locationString.toLowerCase());
+        String locationString;
+        Town town = null;
         Region region = null;
-        if (town == null) {
-            region = regionManager.getRegionAt(Region.idToLocation(locationString));
+        if (getData(civilian.getUuid(), "town") != null) {
+            town = (Town) getData(civilian.getUuid(), "town");
+            locationString = town.getName();
+        } else {
+            region = (Region) getData(civilian.getUuid(), "region");
+            locationString = region.getId();
         }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -78,11 +82,9 @@ public class ViewMembersMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, Town town) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        //0 Icon
-        CVItem cvItem = new CVItem(townType.getMat(), 1);
-        cvItem.setDisplayName(town.getType() + "@" + town.getName());
-        inventory.setItem(0, cvItem.createItemStack());
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
@@ -95,11 +97,9 @@ public class ViewMembersMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, Region region) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
 
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1);
-        cvItem.setDisplayName(region.getType() + "@" + region.getId());
-        inventory.setItem(0, cvItem.createItemStack());
+        Map<String, Object> data = new HashMap<>();
+        data.put("region", region);
+        setNewData(civilian.getUuid(), data);
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
@@ -126,7 +126,9 @@ public class ViewMembersMenu extends Menu {
             lore = new ArrayList<>();
             lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), people.get(uuid)));
             im.setLore(lore);
-            im.setOwningPlayer(player);
+            if (player.isOnline()) {
+                im.setOwningPlayer(player);
+            }
             playerItem.setItemMeta(im);
             inventory.setItem(i, playerItem);
             i++;
