@@ -107,8 +107,8 @@ public class RegionActionMenu extends Menu {
 
                 Civs.econ.withdrawPlayer(player, region.getForSale());
                 Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
-                region.getPeople().clear();
-                region.getPeople().put(civilian.getUuid(), "owner");
+                region.getRawPeople().clear();
+                region.getRawPeople().put(civilian.getUuid(), "owner");
                 region.setForSale(-1);
                 RegionManager.getInstance().saveRegion(region);
             } else {
