@@ -197,6 +197,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PermissionEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
 
         new HousingEffect();
     }
