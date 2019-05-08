@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 import java.util.HashMap;
@@ -31,6 +32,16 @@ public final class StructureUtil {
         for (UUID uuid : removeThese) {
             removeBoundingBox(uuid);
         }
+    }
+    public static void showGuideBoundingBox(Player player, Location location, Region region) {
+        int[] radii = new int[6];
+        radii[0] = region.getRadiusXP();
+        radii[1] = region.getRadiusZP();
+        radii[2] = region.getRadiusXN();
+        radii[3] = region.getRadiusZN();
+        radii[4] = region.getRadiusYP();
+        radii[5] = region.getRadiusYN();
+        showGuideBoundingBox(player, location, radii);
     }
 
     public static void showGuideBoundingBox(Player player, Location location, RegionType regionType) {

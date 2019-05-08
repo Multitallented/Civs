@@ -207,8 +207,7 @@ public class CivilianListener implements Listener {
             player.performCommand("cv");
             return;
         }
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType);
+        StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 

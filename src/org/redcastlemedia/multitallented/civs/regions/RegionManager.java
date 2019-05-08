@@ -511,10 +511,9 @@ public class RegionManager {
             }
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, false);
+        int[] radii = Region.hasRequiredBlocks(player, regionType.getName().toLowerCase(), location, false);
         if (radii.length == 0) {
             event.setCancelled(true);
-            StructureUtil.showGuideBoundingBox(player, location, regionType);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));

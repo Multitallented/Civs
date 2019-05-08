@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -414,6 +415,10 @@ public class Region {
     }
 
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
+        return hasRequiredBlocks(null, type, location, useCivItem);
+    }
+
+    public static int[] hasRequiredBlocks(Player player, String type, Location location, boolean useCivItem) {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
@@ -453,6 +458,9 @@ public class Region {
 
         if (radii.length == 0) {
             return radii;
+        }
+        if (!hasReqs && player != null) {
+            StructureUtil.showGuideBoundingBox(player, location, radii);
         }
         return hasReqs ? radii : new int[0];
     }
