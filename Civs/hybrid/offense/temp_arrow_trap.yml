@@ -3,7 +3,7 @@ name: Arrow_Trap
 icon: CHEST
 price: 500
 groups:
-- defense
+- offense
 - trap
 - arrowtrapgroup
 level: 1
