@@ -36,7 +36,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
-- evolve:dwelling2.24
+- buyable
 
 towns:
 - hamlet

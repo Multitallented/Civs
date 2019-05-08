@@ -4,11 +4,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 
@@ -65,6 +67,7 @@ public class ConfigManager {
     boolean allowFoodHealInCombat;
     long townGracePeriod;
     boolean useClassesAndSpells;
+    Map<String, List<String>> customItemDescriptions;
 
     @Getter
     boolean checkWaterSpread;
@@ -145,6 +148,16 @@ public class ConfigManager {
     public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
+
+    public List<String> getCustomItemDescription(String key) {
+        List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
+        if (returnDescription == null) {
+            ArrayList<String> returnLore = new ArrayList<>();
+            returnLore.add(key);
+            return returnLore;
+        }
+        return returnDescription;
+    }
 
     public int getCreatureHealth(String type) {
         if (type == null || creatureHealth == null) {
@@ -253,12 +266,31 @@ public class ConfigManager {
             useGuide = config.getBoolean("tutorial.use-guide", true);
             tutorialUrl = config.getString("tutorial.url");
             checkWaterSpread = config.getBoolean("check-water-spread", true);
+            customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
             e.printStackTrace();
         }
     }
+
+    private Map<String, List<String>> processMap(ConfigurationSection section) {
+        HashMap<String, List<String>> returnMap = new HashMap<>();
+        if (section == null) {
+            return returnMap;
+        }
+        for (String key : section.getKeys(false)) {
+            List<String> returnList = section.getStringList(key);
+            if (returnList.isEmpty()) {
+                returnList.add(key);
+            } else if (returnList.size() == 1) {
+                returnMap.put(key, Util.textWrap("", Util.parseColors(returnList.get(0))));
+            }
+            returnMap.put(key, returnList);
+        }
+        return returnMap;
+    }
+
     private void loadDefaults() {
         defaultLanguage = "en";
         allowCivItemDropping = false;
@@ -310,6 +342,7 @@ public class ConfigManager {
         useTutorial = true;
         useGuide = true;
         checkWaterSpread = true;
+        customItemDescriptions = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {

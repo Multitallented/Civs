@@ -42,6 +42,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
+- buyable
 
 period: 3600 #1 hour
 upkeep:

@@ -36,7 +36,6 @@ upkeep:
   0:
     reagents:
     - STONE_HOE
-    - POTATO*32
     output:
     - POTATO*20
     - POISONOUS_POTATO%50,POTATO%50

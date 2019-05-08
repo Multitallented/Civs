@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListe
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,6 +211,12 @@ public class RegionManager {
             regionConfig.set("yp-radius", region.getRadiusYP());
             regionConfig.set("zn-radius", region.getRadiusZN());
             regionConfig.set("zp-radius", region.getRadiusZP());
+            if (region.getForSale() != -1) {
+                regionConfig.set("sale", region.getForSale());
+            } else {
+                regionConfig.set("sale", null);
+            }
+
             for (UUID uuid : region.getPeople().keySet()) {
                 if ("ally".equals(region.getPeople().get(uuid))) {
                     continue;
@@ -252,8 +259,11 @@ public class RegionManager {
                     location,
                     radii,
                     (HashMap<String, String>) regionType.getEffects().clone(),
-                    exp
-            );
+                    exp);
+            double forSale = regionConfig.getDouble("sale", -1);
+            if (forSale != -1) {
+                region.setForSale(forSale);
+            }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
             return null;
@@ -501,7 +511,7 @@ public class RegionManager {
             }
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, false);
+        int[] radii = Region.hasRequiredBlocks(player, regionType.getName().toLowerCase(), location, false);
         if (radii.length == 0) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +

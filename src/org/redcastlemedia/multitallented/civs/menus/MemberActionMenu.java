@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -70,14 +72,14 @@ public class MemberActionMenu extends Menu {
         }
     }
 
-    private static void addItems(Inventory inventory, Civilian civilian, String role) {
+    private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
         ArrayList<String> lore;
 
         //9 set owner
-        if (!role.equals("owner")) {
+        if (!viewingSelf && !role.equals("owner")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -87,7 +89,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (!role.equals("member")) {
+        if (!viewingSelf && !role.equals("member")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
@@ -97,7 +99,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //11 set guest
-        if (!role.equals("guest")) {
+        if (!viewingSelf && !role.equals("guest")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();
@@ -112,7 +114,7 @@ public class MemberActionMenu extends Menu {
         inventory.setItem(12, cvItem1.createItemStack());
     }
 
-    public static Inventory createMenu(Civilian civilian, Town town, UUID uuid) {
+    public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -136,12 +138,12 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role);
+        addItems(inventory, civilian, role, viewingSelf);
 
         return inventory;
     }
 
-    public static Inventory createMenu(Civilian civilian, Region region, UUID uuid) {
+    public static Inventory createMenu(Civilian civilian, Region region, UUID uuid, boolean viewingSelf) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -165,7 +167,7 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role);
+        addItems(inventory, civilian, role, viewingSelf);
 
         return inventory;
     }

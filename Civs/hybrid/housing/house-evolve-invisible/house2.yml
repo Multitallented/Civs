@@ -37,6 +37,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
+- buyable
 
 towns:
 - hamlet

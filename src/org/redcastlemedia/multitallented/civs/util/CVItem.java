@@ -89,8 +89,7 @@ public class CVItem {
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(nameString);
+            List<String> lore = ConfigManager.getInstance().getCustomItemDescription(nameString);
             return new CVItem(mat, quantity, chance, nameString, lore);
         }
     }

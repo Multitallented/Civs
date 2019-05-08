@@ -14,9 +14,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Region {
 
@@ -32,6 +36,10 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     private long lastTick = 0;
+
+    @Getter
+    @Setter
+    private double forSale = -1;
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -67,6 +75,10 @@ public class Region {
     public void setType(String type) { this.type = type; }
     public void setPeople(UUID uuid, String role) {
         people.put(uuid, role);
+    }
+
+    public HashMap<UUID, String> getRawPeople() {
+        return people;
     }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
@@ -403,6 +415,10 @@ public class Region {
     }
 
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
+        return hasRequiredBlocks(null, type, location, useCivItem);
+    }
+
+    public static int[] hasRequiredBlocks(Player player, String type, Location location, boolean useCivItem) {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
@@ -442,6 +458,9 @@ public class Region {
 
         if (radii.length == 0) {
             return radii;
+        }
+        if (!hasReqs && player != null) {
+            StructureUtil.showGuideBoundingBox(player, location, radii);
         }
         return hasReqs ? radii : new int[0];
     }

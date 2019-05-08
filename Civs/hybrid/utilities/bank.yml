@@ -16,11 +16,11 @@ towns:
 - metropolis
 
 build-reqs:
+- g:roof*96
 - g:primary*180
 - g:secondary*50
 - g:window*12
 - g:door*6
-- g:roof*96
 - GOLD_BLOCK*4
 - g:fence*18
 - chest*12

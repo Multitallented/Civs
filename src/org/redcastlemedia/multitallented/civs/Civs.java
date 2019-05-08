@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.util.Calendar;
@@ -71,6 +72,7 @@ public class Civs extends JavaPlugin {
     @Override
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
+        StructureUtil.removeAllBoundingBoxes();
         getLogger().info(LogInfo.DISABLED);
     }
 
@@ -141,6 +143,7 @@ public class Civs extends JavaPlugin {
         commandList.put("rename", new RenameCommand());
         commandList.put("bounty", new BountyCommand());
         commandList.put("reset", new ResetCommand());
+        commandList.put("sell", new SellRegionCommand());
     }
 
     private void initListeners() {
@@ -192,6 +195,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
         Bukkit.getPluginManager().registerEvents(new StartTutorialMenu(), this);
         Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
 
         new HousingEffect();
     }

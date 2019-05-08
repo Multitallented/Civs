@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -55,20 +56,23 @@ public class ViewMembersMenu extends Menu {
         if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
 
             Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
-            if (player.getUniqueId().equals(civilian.getUuid())) {
-                return;
-            }
+            boolean viewSelf = player.getUniqueId().equals(civilian.getUuid());
 
             appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().closeInventory();
             if (town != null) {
-                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town, player.getUniqueId()));
+                if (viewSelf && town.getRawPeople().keySet().size() < 2) {
+                    return;
+                }
+                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town, player.getUniqueId(), viewSelf));
             } else {
-                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, region, player.getUniqueId()));
+                if (viewSelf && region.getPeople().keySet().size() < 2) {
+                    return;
+                }
+                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, region, player.getUniqueId(), viewSelf));
             }
             return;
         }
-
     }
 
     public static Inventory createMenu(Civilian civilian, Town town) {
@@ -112,7 +116,7 @@ public class ViewMembersMenu extends Menu {
         ArrayList<String> lore;
         int i=9;
         for (UUID uuid : people.keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             if (player == null || (!allowAllies && people.get(uuid).equals("ally"))) {
                 continue;
             }

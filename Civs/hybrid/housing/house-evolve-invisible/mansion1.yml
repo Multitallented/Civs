@@ -38,6 +38,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:mansion2.24
+- buyable
 
 towns:
 - village

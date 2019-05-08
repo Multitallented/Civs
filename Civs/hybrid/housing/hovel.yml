@@ -37,6 +37,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:hovel1.12
+- buyable
 
 towns:
 - settlement

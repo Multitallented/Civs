@@ -36,6 +36,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:dwelling1.12
+- buyable
 
 towns:
 - hamlet

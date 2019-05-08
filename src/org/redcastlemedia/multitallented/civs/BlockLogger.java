@@ -69,7 +69,7 @@ public class BlockLogger {
                     //Don't load the file. Overwrite it
                     for (Location location : finalBlocks.keySet()) {
                         CVItem cvItem = finalBlocks.get(location);
-                        String locationString = Region.locationToString(location);
+                        String locationString = Region.locationToString(location).replaceAll("\\.", "^");
                         config.set(locationString + ".mat", cvItem.getMat().toString());
                         config.set(locationString + ".name", cvItem.getDisplayName());
                         config.set(locationString + ".lore", cvItem.getLore());
@@ -110,7 +110,7 @@ public class BlockLogger {
                             config.getString(s + ".name"),
                             config.getStringList(s + ".lore")
                     );
-                    blocks.put(Region.idToLocation(s), cvItem);
+                    blocks.put(Region.idToLocation(s.replaceAll("\\^", ".")), cvItem);
                 } catch (Exception e) {
                     Civs.logger.severe("Unable to read line from block-data.yml");
                     e.printStackTrace();

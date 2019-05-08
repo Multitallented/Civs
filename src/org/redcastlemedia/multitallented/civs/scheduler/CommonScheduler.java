@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +34,7 @@ public class CommonScheduler implements Runnable {
     public void run() {
         try {
             depreciateKarma();
+            StructureUtil.cleanUpExpiredBoundingBoxes();
 
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
             int chunk = players.size() / MAX_TPS;

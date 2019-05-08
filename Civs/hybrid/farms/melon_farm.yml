@@ -34,7 +34,6 @@ upkeep:
   0:
     reagents:
       - IRON_HOE
-      - MELON_SLICE*64
     output:
       - MELON_SLICE*16
 
