@@ -36,44 +36,46 @@ public class PotionAreaEffect implements Listener {
     }
 
     private void applyPotion(String potionString, UUID uuid, String name, boolean isMember) {
-        String[] splitPotionString = potionString.split("\\.");
-        String potionTypeString = splitPotionString[0];
+        for (String currentPotionString : potionString.split(",")) {
+            String[] splitPotionString = currentPotionString.split("\\.");
+            String potionTypeString = splitPotionString[0];
 
-        boolean invert = potionTypeString.startsWith("^");
+            boolean invert = potionTypeString.startsWith("^");
 
-        if (invert) {
-            potionTypeString = potionTypeString.substring(1);
-        }
+            if (invert) {
+                potionTypeString = potionTypeString.substring(1);
+            }
 
-        if (invert == isMember) {
-            return;
-        }
+            if (invert == isMember) {
+                return;
+            }
 
-        PotionEffectType potionType;
-        int duration = 40;
-        int amplifier = 1;
-        try {
-            potionType = PotionEffectType.getByName(potionTypeString);
-            if (potionType == null) {
+            PotionEffectType potionType;
+            int duration = 40;
+            int amplifier = 1;
+            try {
+                potionType = PotionEffectType.getByName(potionTypeString);
+                if (potionType == null) {
+                    Civs.logger.severe("Invalid potion type for " + name);
+                    return;
+                }
+                if (splitPotionString.length > 1) {
+                    duration = Integer.parseInt(splitPotionString[1]);
+                }
+                if (splitPotionString.length > 2) {
+                    amplifier = Integer.parseInt(splitPotionString[2]);
+                }
+            } catch (Exception e) {
                 Civs.logger.severe("Invalid potion type for " + name);
                 return;
             }
-            if (splitPotionString.length > 1) {
-                duration = Integer.parseInt(splitPotionString[1]);
-            }
-            if (splitPotionString.length > 2) {
-                amplifier = Integer.parseInt(splitPotionString[2]);
-            }
-        } catch (Exception e) {
-            Civs.logger.severe("Invalid potion type for " + name);
-            return;
-        }
-        PotionEffect potionEffect = new PotionEffect(potionType, duration, amplifier);
+            PotionEffect potionEffect = new PotionEffect(potionType, duration, amplifier);
 
-        Player player = Bukkit.getPlayer(uuid);
-        if (player == null) {
-            return;
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                return;
+            }
+            player.addPotionEffect(potionEffect);
         }
-        player.addPotionEffect(potionEffect);
     }
 }
