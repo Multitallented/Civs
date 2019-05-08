@@ -21,7 +21,8 @@ public class PotionAreaEffect implements Listener {
             return;
         }
         String potionString = event.getRegion().getEffects().get(KEY);
-        applyPotion(potionString, event.getUuid(), event.getRegionType().getProcessedName());
+        boolean isMember = event.getRegion().getPeople().containsKey(event.getUuid());
+        applyPotion(potionString, event.getUuid(), event.getRegionType().getProcessedName(), isMember);
     }
 
     @EventHandler
@@ -30,12 +31,23 @@ public class PotionAreaEffect implements Listener {
             return;
         }
         String potionString = event.getTownType().getEffects().get(KEY);
-        applyPotion(potionString, event.getUuid(), event.getTownType().getProcessedName());
+        boolean isMember = event.getTown().getPeople().containsKey(event.getUuid());
+        applyPotion(potionString, event.getUuid(), event.getTownType().getProcessedName(), isMember);
     }
 
-    private void applyPotion(String potionString, UUID uuid, String name) {
+    private void applyPotion(String potionString, UUID uuid, String name, boolean isMember) {
         String[] splitPotionString = potionString.split("\\.");
         String potionTypeString = splitPotionString[0];
+
+        boolean invert = potionTypeString.startsWith("^");
+
+        if (invert) {
+            potionTypeString = potionTypeString.substring(1);
+        }
+
+        if (invert == isMember) {
+            return;
+        }
 
         PotionEffectType potionType;
         int duration = 40;
