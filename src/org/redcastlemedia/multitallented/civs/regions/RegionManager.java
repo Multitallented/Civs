@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListe
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -513,6 +514,7 @@ public class RegionManager {
         int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, false);
         if (radii.length == 0) {
             event.setCancelled(true);
+            StructureUtil.showGuideBoundingBox(player, location, regionType);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
                             .replace("$1", regionTypeName));

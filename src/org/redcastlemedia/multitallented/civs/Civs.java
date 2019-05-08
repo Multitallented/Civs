@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.util.Calendar;
@@ -71,6 +72,7 @@ public class Civs extends JavaPlugin {
     @Override
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
+        StructureUtil.removeAllBoundingBoxes();
         getLogger().info(LogInfo.DISABLED);
     }
 

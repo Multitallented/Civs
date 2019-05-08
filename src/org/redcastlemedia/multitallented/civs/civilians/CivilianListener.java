@@ -38,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -205,6 +206,8 @@ public class CivilianListener implements Listener {
             player.performCommand("cv");
             return;
         }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType);
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
