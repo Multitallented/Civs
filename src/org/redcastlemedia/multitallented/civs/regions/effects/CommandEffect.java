@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
@@ -20,7 +21,7 @@ public class CommandEffect implements Listener {
     public static final String ENTRY_KEY = "enter_command";
     public static final String EXIT_KEY = "exit_command";
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerEnterRegion(PlayerEnterRegionEvent event) {
         if (isInvalidRegion(event.getRegion(), event.getUuid(), ENTRY_KEY)) {
             return;
@@ -29,7 +30,7 @@ public class CommandEffect implements Listener {
         sendCommand(event.getUuid(), command);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerExitRegion(PlayerExitRegionEvent event) {
         if (isInvalidRegion(event.getRegion(), event.getUuid(), EXIT_KEY)) {
             return;
@@ -50,7 +51,7 @@ public class CommandEffect implements Listener {
         return false;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerEnterTown(PlayerEnterTownEvent event) {
         if (isInvalidTownType(event.getTown(), event.getTownType(), event.getUuid(), ENTRY_KEY)) {
             return;
@@ -59,7 +60,7 @@ public class CommandEffect implements Listener {
         sendCommand(event.getUuid(), command);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerExitTown(PlayerExitTownEvent event) {
         if (isInvalidTownType(event.getTown(), event.getTownType(), event.getUuid(), EXIT_KEY)) {
             return;
