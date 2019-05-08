@@ -255,15 +255,15 @@ public class RegionActionMenu extends Menu {
                     inventory.setItem(12, emeraldOre.createItemStack());
                 }
             }
+        }
 
-            if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1) {
-                //13 Buy region button
-                CVItem emerald = CVItem.createCVItemFromString("EMERALD");
-                emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "buy-region").replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
-                inventory.setItem(13, emerald.createItemStack());
-            }
+        if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1) {
+            //13 Buy region button
+            CVItem emerald = CVItem.createCVItemFromString("EMERALD");
+            emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "buy-region").replace("$1", region.getType())
+                    .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+            inventory.setItem(13, emerald.createItemStack());
         }
 
 
