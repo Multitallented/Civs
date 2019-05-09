@@ -26,7 +26,6 @@ build-reqs:
 - g:secondary*70
 - g:primary*300
 
-rebuild: basehovel
 build-radius: 5 #11x11x11
 effects:
 - block_break

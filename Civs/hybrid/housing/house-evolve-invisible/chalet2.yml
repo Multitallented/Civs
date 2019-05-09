@@ -26,7 +26,6 @@ build-reqs:
 - g:secondary*130
 - g:primary*400
 
-rebuild: basehouse
 build-radius: 8 #17x17x17
 effects:
 - block_break

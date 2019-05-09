@@ -39,6 +39,7 @@ limits:
 - alchemical_lab:1
 - power_capacitor:2
 - embassy:3
+- idolgroup:2
 
 critical-build-reqs:
 - town_center

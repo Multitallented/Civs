@@ -26,7 +26,6 @@ build-reqs:
 - g:secondary*55
 - g:primary*160
 
-rebuild: baseshack
 build-radius: 4 #9x9x9
 effects:
 - block_break
