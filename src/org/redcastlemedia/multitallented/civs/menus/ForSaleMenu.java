@@ -70,6 +70,12 @@ public class ForSaleMenu extends Menu {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem1 = regionType.clone();
             cvItem1.setDisplayName(region.getType() + "@" + region.getId());
+            Town town = TownManager.getInstance().getTownAt(region.getLocation());
+            if (town != null) {
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(town.getName());
+                cvItem1.setLore(lore);
+            }
             inventory.setItem(i, cvItem1.createItemStack());
             i++;
         }
