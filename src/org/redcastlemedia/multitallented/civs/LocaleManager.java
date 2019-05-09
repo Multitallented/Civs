@@ -474,6 +474,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".buy-region", "Buy this $1 for $2"));
             currentLanguage.put("region-bought",
                     localeConfig.getString(langKey + ".region-bought", "You have bought this $1 for $2"));
+            currentLanguage.put("guide-desc",
+                    localeConfig.getString(langKey + ".guide-desc", "Click here to see your next goal."));
             languageMap.put(langKey, currentLanguage);
         }
     }
