@@ -154,6 +154,7 @@ en:
   sell-region: "Sell Region"
   cancel-sale: "Cancel Sale"
   buy-region: "Buy this $1 for $2"
+  regions-for-sale: "Regions For Sale"
   use-sell-command: "Type /cv sell priceGoesHere"
   region-bought: "You have bought this $1 for $2"
 
