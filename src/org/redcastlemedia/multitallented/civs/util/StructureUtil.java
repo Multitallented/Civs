@@ -106,6 +106,10 @@ public final class StructureUtil {
     }
 
     public static void removeBoundingBox(UUID uuid) {
+        BoundingBox boundingBox = boundingBoxes.get(uuid);
+        if (boundingBox == null) {
+            return;
+        }
         HashSet<Location> locations = boundingBoxes.get(uuid).getLocations();
         if (locations == null) {
             return;
