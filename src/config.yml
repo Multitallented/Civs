@@ -60,6 +60,7 @@ folders:
   woodworks: OAK_LOG
   animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
+  trading: EMERALD_ORE
 custom-items:
   jade:
   - "Redeem 16 Jade at a Jade shop for $800"

@@ -74,14 +74,14 @@ public class PermissionEffect implements Listener {
 
     private boolean isInvalidTownType(Town town, TownType townType, UUID uuid) {
         if (Civs.perm == null) {
-            return false;
+            return true;
         }
         if (!townType.getEffects().containsKey(KEY) ||
                 !town.getPeople().containsKey(uuid) ||
                 town.getPeople().get(uuid).equals("ally")) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void addPermission(UUID uuid, String permission) {

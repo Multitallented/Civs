@@ -80,13 +80,13 @@ public class CommandEffect implements Listener {
 
     private boolean isInvalidTownType(Town town, TownType townType, UUID uuid, String key) {
         if (Civs.perm == null) {
-            return false;
+            return true;
         }
         if (!townType.getEffects().containsKey(key) ||
                 !town.getPeople().containsKey(uuid) ||
                 town.getPeople().get(uuid).equals("ally")) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
