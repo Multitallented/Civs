@@ -200,12 +200,20 @@ public class Region {
     }
 
     private static List<HashMap<Material, Integer>> cloneReqMap(List<List<CVItem>> reqMap) {
+        return cloneReqMap(reqMap, null);
+    }
+
+    private static List<HashMap<Material, Integer>> cloneReqMap(List<List<CVItem>> reqMap, CVItem missingItem) {
         List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         for (List<CVItem> currentList : reqMap) {
             HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
                 CVItem clone = currentItem.clone();
-                currentReqMap.put(clone.getMat(), clone.getQty());
+                if (missingItem != null && missingItem.equivalentCVItem(clone)) {
+                    currentReqMap.put(clone.getMat(), clone.getQty() + 1);
+                } else {
+                    currentReqMap.put(clone.getMat(), clone.getQty());
+                }
             }
             itemCheck.add(currentReqMap);
         }
@@ -512,24 +520,13 @@ public class Region {
     }
     public static List<HashMap<Material, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         CVItem missingItem = null;
         if (missingStack != null) {
             missingItem = CVItem.createFromItemStack(missingStack);
         }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
-        for (List<CVItem> currentList : regionType.getReqs()) {
-            HashMap<Material, Integer> currentReqMap = new HashMap<>();
-            for (CVItem currentItem : currentList) {
-                CVItem clone = currentItem.clone();
-                if (missingItem != null && missingItem.equivalentCVItem(clone)) {
-                    currentReqMap.put(clone.getMat(), clone.getQty() + 1);
-                } else {
-                    currentReqMap.put(clone.getMat(), clone.getQty());
-                }
-            }
-            itemCheck.add(currentReqMap);
-        }
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs(), missingItem);
+
         int[] radii = new int[6];
         for (int i = 0; i < 6; i++) {
             radii[i] = 0;

@@ -27,7 +27,8 @@ towns:
 - city
 - metropolis
 - outpost
-- base
+- keep
+- mining_colony
 
 effects:
 - block_break

@@ -17,6 +17,7 @@ en:
   tutorial-wiki: "Civs wiki"
   click-info: "Click for more info"
   guide: "Guide"
+  guide-desc: "Click here to see your next goal."
   choose-path: "Choose your path"
 
   #shop
@@ -153,8 +154,11 @@ en:
   sell-region: "Sell Region"
   cancel-sale: "Cancel Sale"
   buy-region: "Buy this $1 for $2"
+  regions-for-sale: "Regions For Sale"
   use-sell-command: "Type /cv sell priceGoesHere"
   region-bought: "You have bought this $1 for $2"
+  sort-by-level: "Sort Regions by Level"
+  level: "Level $1"
 
   #errors
   cant-place-town: "Type /cv town townNameHere"

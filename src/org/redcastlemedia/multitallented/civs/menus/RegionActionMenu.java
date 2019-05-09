@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -46,7 +45,6 @@ public class RegionActionMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        //TODO add functionality for clicking some other action items
 
         if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
                 event.getCurrentItem().getItemMeta().getDisplayName().equals(
@@ -98,8 +96,8 @@ public class RegionActionMenu extends Menu {
 
                 Civs.econ.withdrawPlayer(player, region.getForSale());
                 Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
-                region.getPeople().clear();
-                region.getPeople().put(civilian.getUuid(), "owner");
+                region.getRawPeople().clear();
+                region.getRawPeople().put(civilian.getUuid(), "owner");
                 region.setForSale(-1);
                 RegionManager.getInstance().saveRegion(region);
             } else {

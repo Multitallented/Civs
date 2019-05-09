@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
@@ -56,7 +57,7 @@ public final class StructureUtil {
     }
 
     public static void showGuideBoundingBox(Player player, Location location, int[] radii) {
-        if (location.getWorld() == null) {
+        if (location.getWorld() == null || Civs.getInstance() == null) {
             return;
         }
         if (boundingBoxes.containsKey(player.getUniqueId())) {

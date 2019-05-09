@@ -81,6 +81,9 @@ public class ConfigManager {
     @Getter
     String tutorialUrl;
 
+    @Getter
+    List<String> levelList;
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -267,6 +270,7 @@ public class ConfigManager {
             tutorialUrl = config.getString("tutorial.url");
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
+            levelList = config.getStringList("levels");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -343,6 +347,7 @@ public class ConfigManager {
         useGuide = true;
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
+        levelList = new ArrayList<>();
     }
 
     public static ConfigManager getInstance() {

@@ -474,6 +474,14 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".buy-region", "Buy this $1 for $2"));
             currentLanguage.put("region-bought",
                     localeConfig.getString(langKey + ".region-bought", "You have bought this $1 for $2"));
+            currentLanguage.put("guide-desc",
+                    localeConfig.getString(langKey + ".guide-desc", "Click here to see your next goal."));
+            currentLanguage.put("regions-for-sale",
+                    localeConfig.getString(langKey + ".regions-for-sale", "Regions For Sale"));
+            currentLanguage.put("sort-by-level",
+                    localeConfig.getString(langKey + ".sort-by-level", "Sort Regions by Level"));
+            currentLanguage.put("level",
+                    localeConfig.getString(langKey + ".level", "Level $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

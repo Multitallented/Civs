@@ -761,6 +761,17 @@ public class RegionsTests {
     }
 
     @Test
+    public void regionTypeReqMapShouldNeverMutate() {
+        RegionsTests.loadRegionTypeCobble2();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        List<List<CVItem>> reqMap = regionType.getReqs();
+        reqMap.get(0).get(0).setQty(2);
+        assertEquals(3, regionType.getReqs().get(0).get(0).getQty());
+        reqMap.get(0).add(CVItem.createCVItemFromString("OAK_LOG*5"));
+        assertEquals(1, regionType.getReqs().get(0).size());
+    }
+
+    @Test
     public void regionShouldBeFound() {
         loadRegionTypeCobble();
         Region region = createNewRegion("cobble");

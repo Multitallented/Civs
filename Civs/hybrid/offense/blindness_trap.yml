@@ -1,0 +1,23 @@
+type: region
+name: Blindness_Trap
+icon: STONE
+price: 200
+groups:
+- offense
+- trap
+level: 1
+
+build-radius: 6 # 13x13x13
+
+effects:
+- potion:^BLINDNESS,^SLOW.40.2,^WEAKNESS
+- temporary:1800 # 30 minutes
+
+
+description:
+  en: "Applies blindness, slow, and weakness to non-members. Destroys itself in 30 minutes."
+  es: "Se aplica ceguera, lentitud y debilidad a los no miembros. Se destruye en 30 minutos."
+  pt_br: "Aplica a cegueira, lentidão e fraqueza a não-membros. Destrói-se em 30 minutos."
+  de: "Wendet Blindheit, Langsamkeit und Schwäche für Nichtmitglieder an. Zerstört sich in 30 Minuten."
+  ru: "Применяет слепоту, медлительность и слабость к нечленам. Уничтожает себя через 30 минут."
+  fr: "Applique la cécité, la lenteur et la faiblesse aux non-membres. Se détruit en 30 minutes."

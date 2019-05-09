@@ -56,7 +56,8 @@ public class BuiltRegionMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         List<Region> regions = new ArrayList<>();
         for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (region.getPeople().containsKey(civilian.getUuid())) {
+            if (region.getPeople().containsKey(civilian.getUuid()) &&
+                    !region.getPeople().get(civilian.getUuid()).equals("ally")) {
                 regions.add(region);
             }
         }
