@@ -5,19 +5,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeaveConfirmationMenu extends Menu {
     static String MENU_NAME = "CivLeaveConfirm";
@@ -42,8 +39,7 @@ public class LeaveConfirmationMenu extends Menu {
             return;
         }
 
-        String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().replace("T:","");
-        Town town = town = TownManager.getInstance().getTown(townName);
+        Town town = (Town) getData(civilian.getUuid(), "town");
 
 
         Player player = (Player) event.getWhoClicked();
@@ -52,7 +48,7 @@ public class LeaveConfirmationMenu extends Menu {
             if (town != null) {
                 town.getPeople().remove(civilian.getUuid());
                 player.sendMessage(localeManager.getTranslation(civilian.getLocale(),
-                        "you-left-town").replace("$1", townName));
+                        "you-left-town").replace("$1", town.getName()));
             }
             player.closeInventory();
             return;
@@ -69,8 +65,12 @@ public class LeaveConfirmationMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType regionType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         CVItem regionTypeIcon = regionType.clone();
-        regionTypeIcon.setDisplayName("T:" + town.getName());
+        regionTypeIcon.setDisplayName(town.getName());
         inventory.setItem(0, regionTypeIcon.createItemStack());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
 
         CVItem cvItem = CVItem.createCVItemFromString("EMERALD");
         cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "leave-town"));

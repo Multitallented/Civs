@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -19,6 +20,8 @@ public abstract class CivItem extends CVItem {
     private boolean isPlaceable = false;
     private final HashMap<String, String> description;
     private final List<String> groups;
+    @Getter
+    private final int level;
 
     public ItemType getItemType() {
         return itemType;
@@ -71,7 +74,8 @@ public abstract class CivItem extends CVItem {
                    String permission,
                    HashMap<String, String> description,
                    List<String> groups,
-                   boolean isInShop) {
+                   boolean isInShop,
+                   int level) {
         super(material, 1, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
         this.itemType = itemType;
@@ -84,6 +88,7 @@ public abstract class CivItem extends CVItem {
         this.description = description;
         this.groups = groups;
         this.isInShop = isInShop;
+        this.level = level;
     }
 
     public enum ItemType {

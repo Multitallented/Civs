@@ -550,4 +550,14 @@ public class ItemManager {
         }
         CivilianManager.getInstance().saveCivilian(civilian);
     }
+
+    public HashSet<CivItem> getItemsByLevel(int level) {
+        HashSet<CivItem> itemSet = new HashSet<>();
+        for (CivItem civItem : this.itemTypes.values()) {
+            if (civItem.getLevel() == level) {
+                itemSet.add(civItem);
+            }
+        }
+        return itemSet;
+    }
 }

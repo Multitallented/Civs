@@ -44,6 +44,15 @@ public class ShopMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
+
+        String history = MENU_NAME;
+        if (itemName.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "sort-by-level"))) {
+            event.getWhoClicked().closeInventory();
+            appendHistory(civilian.getUuid(), history);
+            event.getWhoClicked().openInventory(ShopLevelMenu.createMenu(civilian));
+            return;
+        }
+
         ItemManager itemManager = ItemManager.getInstance();
         itemName = CivItem.processItemName(itemName);
         CivItem civItem = itemManager.getItemType(itemName);
@@ -51,7 +60,6 @@ public class ShopMenu extends Menu {
             Civs.logger.severe("Error! Unable to find item " + itemName);
             return;
         }
-        String history = MENU_NAME;
         if (event.getInventory().getItem(0) != null) {
             String parentName = CivItem.processItemName(event.getInventory().getItem(0).getItemMeta().getDisplayName());
             history += "," + parentName;
@@ -112,6 +120,11 @@ public class ShopMenu extends Menu {
         if (parent != null) {
             inventory.setItem(0, parent.createItemStack());
         }
+
+        CVItem cvItem = CVItem.createCVItemFromString("BOOKSHELF");
+        cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "sort-by-level"));
+        inventory.setItem(6, cvItem.createItemStack());
+
         inventory.setItem(8, getBackButton(civilian));
 
         int i=9;

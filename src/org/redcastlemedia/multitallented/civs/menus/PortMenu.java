@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -16,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.*;
@@ -37,10 +35,10 @@ public class PortMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        ItemStack itemStack = event.getInventory().getItem(2);
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
-        int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName().replace("Icon", ""));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+
+        int page = (int) getData(civilian.getUuid(), "page");
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -107,13 +105,11 @@ public class PortMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        //2 Icon
-        CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName("Icon" + page);
-        List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
-        cvItem.setLore(lore);
-        inventory.setItem(2, cvItem.createItemStack());
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        setNewData(civilian.getUuid(), data);
+
+        List<String> lore;
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));

@@ -29,16 +29,28 @@ public class RegionListMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getCurrentItem() == null) {
+            return;
+        }
+
         if (Menu.isBackButton(event.getCurrentItem(),
                 CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId()).getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        String regionTypeName = event.getCurrentItem().getItemMeta().getDisplayName()
+                .replace("Civs ", "").toLowerCase();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
+        event.getWhoClicked().closeInventory();
+        event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
     }
 
     public static Inventory createMenu(Civilian civilian, HashMap<String, Integer> regionTypeNames) {
         int index = 9;
 
+        // TODO paginate this?
 
         Inventory inv = Bukkit.createInventory(null, getInventorySize(regionTypeNames.size() + 9), MENU_NAME);
 

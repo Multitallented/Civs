@@ -20,6 +20,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class MemberActionMenu extends Menu {
@@ -37,7 +39,15 @@ public class MemberActionMenu extends Menu {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
-        String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
+        String locationString = "";
+        if (getData(civilian.getUuid(), "region") != null) {
+            Region region = (Region) getData(civilian.getUuid(), "region");
+            locationString = region.getId();
+        } else {
+            Town town = (Town) getData(civilian.getUuid(), "town");
+            locationString = town.getName();
+        }
+        UUID uuid = (UUID) getData(civilian.getUuid(), "uuid");
 
         Player player = Bukkit.getPlayer(event.getInventory().getItem(1).getItemMeta().getDisplayName());
         Player cPlayer = Bukkit.getPlayer(civilian.getUuid());
@@ -66,7 +76,7 @@ public class MemberActionMenu extends Menu {
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-            cPlayer.performCommand("cv removemember " + player.getName() + " " + locationString);
+            cPlayer.performCommand("cv removemember " + player.getName() + " " + locationString + " " + uuid);
             clickBackButton(cPlayer);
             return;
         }
@@ -118,12 +128,13 @@ public class MemberActionMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        //0 Icon
-        CVItem cvItem = new CVItem(townType.getMat(), 1);
-        cvItem.setDisplayName(town.getType() + "@" + town.getName());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        data.put("uuid", uuid);
+        setNewData(civilian.getUuid(), data);
+
         ArrayList<String> lore;
-        inventory.setItem(0, cvItem.createItemStack());
 
         //1 Player
         Player player = Bukkit.getPlayer(uuid);
@@ -147,12 +158,13 @@ public class MemberActionMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(region.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1);
-        cvItem.setDisplayName(region.getType() + "@" + region.getId());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("region", region);
+        data.put("uuid", uuid);
+        setNewData(civilian.getUuid(), data);
+
         ArrayList<String> lore;
-        inventory.setItem(0, cvItem.createItemStack());
 
         //1 Player
         Player player = Bukkit.getPlayer(uuid);

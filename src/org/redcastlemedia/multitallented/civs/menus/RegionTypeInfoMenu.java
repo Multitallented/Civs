@@ -16,9 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class RegionTypeInfoMenu extends Menu {
     static String MENU_NAME = "CivRegionInfo";
@@ -30,11 +28,9 @@ public class RegionTypeInfoMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
-        ItemManager itemManager = ItemManager.getInstance();
-        String regionName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        RegionType regionType = (RegionType) itemManager.getItemType(regionName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        RegionType regionType = (RegionType) getData(civilian.getUuid(), "regionType");
+        String regionName = regionType.getProcessedName();
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -93,8 +89,11 @@ public class RegionTypeInfoMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("regionType", regionType);
+        setNewData(civilian.getUuid(), data);
 
         //0 Icon
         CVItem cvItem = regionType.clone();

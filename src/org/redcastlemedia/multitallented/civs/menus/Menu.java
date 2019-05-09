@@ -29,13 +29,28 @@ public abstract class Menu implements Listener {
     private final String MENU_NAME;
     private volatile static HashMap<UUID, GUI> guis = new HashMap<>();
     private volatile static boolean running = false;
-    private static Map<UUID, List<String>> history = new HashMap<>();
+    private final static Map<UUID, List<String>> history = new HashMap<>();
+    private final static Map<UUID, Map<String, Object>> currentMenuStorage = new HashMap<>();
 
     public Menu(String menuName) {
         this.MENU_NAME = menuName;
     }
 
     abstract void handleInteract(InventoryClickEvent event);
+
+    static Object getData(UUID uuid, String key) {
+        Map<String, Object> data = currentMenuStorage.get(uuid);
+        if (data == null) {
+            return null;
+        }
+        return data.get(key);
+    }
+    static void setNewData(UUID uuid, Map<String, Object> data) {
+        currentMenuStorage.put(uuid, data);
+    }
+    static void clearData(UUID uuid) {
+        currentMenuStorage.remove(uuid);
+    }
 
     @EventHandler
     public void onMenuInteract(InventoryClickEvent event) {
@@ -85,6 +100,11 @@ public abstract class Menu implements Listener {
         if (lastHistory[0].equals(MainMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             humanEntity.openInventory(MainMenu.createMenu(civilian));
+            return;
+        }
+        if (lastHistory[0].equals(ShopLevelMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(ShopLevelMenu.createMenu(civilian));
             return;
         }
         if (lastHistory[0].equals(ShopMenu.MENU_NAME)) {
