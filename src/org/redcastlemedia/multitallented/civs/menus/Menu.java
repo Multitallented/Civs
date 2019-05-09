@@ -69,7 +69,6 @@ public abstract class Menu implements Listener {
                 size -= 9;
             }
         }
-        size += 9;
         return size;
     }
 
