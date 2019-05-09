@@ -482,6 +482,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".sort-by-level", "Sort Regions by Level"));
             currentLanguage.put("level",
                     localeConfig.getString(langKey + ".level", "Level $1"));
+            currentLanguage.put("effects",
+                    localeConfig.getString(langKey + ".effects", "Effects"));
             languageMap.put(langKey, currentLanguage);
         }
     }

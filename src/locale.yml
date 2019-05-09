@@ -62,6 +62,7 @@ en:
   friends: "Friends"
   confirm: "Confirm"
   reject: "Reject"
+  effects: "Effects"
 
   #region
   size: Size

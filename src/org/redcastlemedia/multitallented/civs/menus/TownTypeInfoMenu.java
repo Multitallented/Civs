@@ -128,6 +128,15 @@ public class TownTypeInfoMenu extends Menu {
             cvItem1.setLore(lore);
             inventory.setItem(3, cvItem1.createItemStack());
         }
+        //7 effects
+        {
+            CVItem cvItem1 = CVItem.createCVItemFromString("POTION");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "effects"));
+            lore = new ArrayList<>(townType.getEffects().keySet());
+            cvItem1.setLore(lore);
+            inventory.setItem(7, cvItem1.createItemStack());
+        }
 
         //8 back button
         inventory.setItem(8, getBackButton(civilian));

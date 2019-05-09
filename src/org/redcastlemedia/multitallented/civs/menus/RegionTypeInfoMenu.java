@@ -172,6 +172,16 @@ public class RegionTypeInfoMenu extends Menu {
         cvItem1.setLore(lore);
         inventory.setItem(6, cvItem1.createItemStack());
 
+        //7 effects
+        {
+            CVItem cvItem2 = CVItem.createCVItemFromString("POTION");
+            cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "effects"));
+            lore = new ArrayList<>(regionType.getEffects().keySet());
+            cvItem2.setLore(lore);
+            inventory.setItem(7, cvItem2.createItemStack());
+        }
+
         //8 back button
         inventory.setItem(8, getBackButton(civilian));
 
@@ -209,6 +219,7 @@ public class RegionTypeInfoMenu extends Menu {
                 inventory.setItem(11 + i * 9, cvItem4.createItemStack());
             }
 
+            //12 payout
             if (regionType.getUpkeeps().get(i).getPayout() > 0) {
                 CVItem cvItem4 = CVItem.createCVItemFromString("EMERALD_BLOCK");
                 cvItem4.setDisplayName("Payout" + i);
@@ -218,6 +229,7 @@ public class RegionTypeInfoMenu extends Menu {
                 cvItem4.setLore(lore);
                 inventory.setItem(12 + i * 9, cvItem4.createItemStack());
             }
+            //13 power input
             if (regionType.getUpkeeps().get(i).getPowerInput() > 0) {
                 CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_ORE");
                 cvItem4.setDisplayName("PowerInput" + i);
@@ -227,6 +239,7 @@ public class RegionTypeInfoMenu extends Menu {
                 cvItem4.setLore(lore);
                 inventory.setItem(13 + i * 9, cvItem4.createItemStack());
             }
+            //14 power output
             if (regionType.getUpkeeps().get(i).getPowerOutput() > 0) {
                 CVItem cvItem4 = CVItem.createCVItemFromString("REDSTONE_TORCH");
                 cvItem4.setDisplayName("PowerOutput" + i);
