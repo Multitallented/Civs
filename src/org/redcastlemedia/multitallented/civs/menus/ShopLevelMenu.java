@@ -61,7 +61,7 @@ public class ShopLevelMenu extends Menu {
         int level = Integer.parseInt(clickedStack.getItemMeta().getLore().get(0));
         event.getWhoClicked().closeInventory();
         HashMap<String, Integer> returnMap = new HashMap<>();
-        for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level)) {
+        for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level, true)) {
             returnMap.put(civItem.getProcessedName(), 1);
         }
         appendHistory(civilian.getUuid(), MENU_NAME);
