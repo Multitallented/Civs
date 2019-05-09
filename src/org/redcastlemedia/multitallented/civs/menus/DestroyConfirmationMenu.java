@@ -49,13 +49,11 @@ public class DestroyConfirmationMenu extends Menu {
 
         Region region = null;
         Town town = null;
-        if (getData(civilian.getUuid(), "region") == null) {
+        if (getData(civilian.getUuid(), "region") != null) {
             region = (Region) getData(civilian.getUuid(), "region");
         } else {
             town = (Town) getData(civilian.getUuid(), "town");
         }
-        clearData(civilian.getUuid());
-
 
         Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
