@@ -72,7 +72,8 @@ public class ItemManager {
                         0,
                         null,
                         currParentList,
-                        !file.getName().contains("invisible"));
+                        !file.getName().contains("invisible"),
+                        1);
                 itemTypes.put(folderName.toLowerCase(), folderType);
                 if (parentList != null) {
                     parentList.add(folderType);
@@ -127,7 +128,8 @@ public class ItemManager {
                 configuration.getStringList("groups"),
                 configuration.getInt("mana-per-second", 1),
                 configuration.getInt("max-mana", 100),
-                configuration.getBoolean("is-in-shop", true));
+                configuration.getBoolean("is-in-shop", true),
+                configuration.getInt("level", 1));
 
         itemTypes.put(name, civItem);
         return civItem;
@@ -155,7 +157,8 @@ public class ItemManager {
                 description,
                 config.getStringList("groups"),
                 config,
-                config.getBoolean("is-in-shop", true));
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1));
         itemTypes.put(name.toLowerCase(), spellType);
         return spellType;
     }
@@ -214,7 +217,8 @@ public class ItemManager {
                 config.getStringList("groups"),
                 config.getString("child"),
                 config.getInt("child-population", 0),
-                config.getBoolean("is-in-shop", true));
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -310,7 +314,8 @@ public class ItemManager {
                 config.getString("period", "false").equals("daily"),
                 config.getStringList("groups"),
                 config.getBoolean("is-in-shop", true),
-                config.getBoolean("rebuild-required", false));
+                config.getBoolean("rebuild-required", false),
+                config.getInt("level",1));
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

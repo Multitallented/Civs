@@ -59,7 +59,8 @@ public class RegionType extends CivItem {
                       boolean dailyPeriod,
                       List<String> groups,
                       boolean isInShop,
-                      boolean rebuildRequired) {
+                      boolean rebuildRequired,
+                      int level) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -71,7 +72,8 @@ public class RegionType extends CivItem {
                 permission,
                 description,
                 groups,
-                isInShop);
+                isInShop,
+                level);
         this.name = name;
         this.reqs = reqs;
         this.upkeeps = upkeeps;
