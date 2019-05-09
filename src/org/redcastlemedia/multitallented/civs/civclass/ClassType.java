@@ -21,7 +21,8 @@ public class ClassType extends CivItem {
                      List<String> groups,
                      int manaPerSecond,
                      int maxMana,
-                     boolean isInShop) {
+                     boolean isInShop,
+                     int level) {
         super(reqs,
                 false,
                 ItemType.CLASS,
@@ -34,7 +35,8 @@ public class ClassType extends CivItem {
                 permission,
                 description,
                 groups,
-                isInShop);
+                isInShop,
+                level);
         this.children = children;
         this.manaPerSecond = manaPerSecond;
         this.maxMana = maxMana;

@@ -16,7 +16,8 @@ public class FolderType extends CivItem {
                       double price,
                       String permission,
                       List<CivItem> children,
-                      boolean visible) {
+                      boolean visible,
+                      int level) {
         super(reqs,
                 false,
                 ItemType.FOLDER,
@@ -29,7 +30,8 @@ public class FolderType extends CivItem {
                 permission,
                 new HashMap<String, String>(),
                 new ArrayList<String>(),
-                true);
+                true,
+                level);
         this.children = children;
         this.visible = visible;
     }
