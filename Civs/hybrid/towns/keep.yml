@@ -5,7 +5,7 @@ max: 2
 price: 400
 group:
 - outpost
-level: 1
+level: 3
 
 pre-reqs:
 - outpost:population=1
