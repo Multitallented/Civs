@@ -101,9 +101,9 @@ public class LeaderboardMenu extends Menu {
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             ArrayList<String> lore1 = new ArrayList<>();
-            lore1.add("" + i);
+            lore1.add("" + (i-9));
             isMeta.setLore(lore1);
-            uuidList.set(i, player.getUniqueId());
+            uuidList.add(player.getUniqueId());
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);

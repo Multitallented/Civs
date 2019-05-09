@@ -123,7 +123,8 @@ public class TownListMenu extends Menu {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             CVItem cvItem1 = townType.clone();
             cvItem1.setDisplayName(town.getName());
-            //TODO add lore
+            ArrayList<String> lore = new ArrayList<>();
+            cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
             i++;
         }

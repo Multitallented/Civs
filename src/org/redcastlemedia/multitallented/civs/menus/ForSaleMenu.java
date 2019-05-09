@@ -70,10 +70,11 @@ public class ForSaleMenu extends Menu {
             cvItem1.setDisplayName(region.getType() + " $" + region.getForSale());
             Town town = TownManager.getInstance().getTownAt(region.getLocation());
             ArrayList<String> lore = new ArrayList<>();
-            lore.add("" + i);
+            lore.add("" + (i-9));
             if (town != null) {
                 lore.add(town.getName());
             }
+            regionList.add(region);
             cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
             i++;

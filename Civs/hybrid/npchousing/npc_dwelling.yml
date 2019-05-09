@@ -25,7 +25,7 @@ build-reqs:
 - g:secondary*70
 - g:primary*300
 
-rebuild: basehovel
+rebuild: basedwelling
 rebuild-required: true
 build-radius: 5 #11x11x11
 effects:

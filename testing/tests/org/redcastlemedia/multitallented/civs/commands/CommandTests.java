@@ -24,6 +24,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 
+import java.util.ArrayList;
+
 public class CommandTests {
 
     @BeforeClass
