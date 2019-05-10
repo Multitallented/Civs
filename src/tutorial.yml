@@ -142,24 +142,24 @@ warrior:
         - DIAMOND*3
       money: 1000
     messages:
-      en: "Now that you've raided a town, it's time go to war with one. Build a Command_Tent."
-      fr: "Maintenant que vous avez attaqué une ville, il est temps de partir en guerre contre une ville. Construire une Command_Tent."
-      es: "Ahora que has atacado un pueblo, es hora de ir a la guerra con uno. Construye un Command_Tent."
-      pt_br: "Agora que você invadiu uma cidade, é hora de entrar em guerra com uma. Construa um Command_Tent."
-      ru: "Теперь, когда вы совершили набег на город, пришло время сразиться с ним. Постройте Command_Tent."
-      de: "Nun, da Sie eine Stadt überfallen haben, ist es Zeit, mit einer zu kämpfen. Erstellen Sie ein Command_Tent."
+      en: "Now that you've raided a town, it's time go to war with one. Build a Command_Tent near an enemy town."
+      fr: "Maintenant que vous avez attaqué une ville, il est temps de partir en guerre contre une ville. Construisez une Command_Tent près d'une ville ennemie."
+      es: "Ahora que has atacado un pueblo, es hora de ir a la guerra con uno. Construye un Command_Tent cerca de una ciudad enemiga."
+      pt_br: "Agora que você invadiu uma cidade, é hora de entrar em guerra com uma. Construa um Command_Tent perto de uma cidade inimiga."
+      ru: "Теперь, когда вы совершили набег на город, пришло время сразиться с ним. Постройте Command_Tent возле вражеского города."
+      de: "Nun, da Sie eine Stadt überfallen haben, ist es Zeit, mit einer zu kämpfen. Baue ein Command_Tent in der Nähe einer feindlichen Stadt"
   - type: build
     region: siege_machine
     rewards:
       items:
       - TNT*64
     messages:
-      en: ""
-      fr: ""
-      es: ""
-      pt_br: ""
-      ru: ""
-      de: ""
+      en: "Now buy and build the Outpost on top of your Command_Tent. After that, buy and build the Siege_Machine."
+      fr: "Maintenant, achetez et construisez l’Avant-poste sur votre Command_Tent. Après cela, achetez et construisez Siege_Machine."
+      es: "Ahora compre y construya el Puesto Avanzado sobre su Command_Tent. Después de eso, compra y construye el Siege_Machine."
+      pt_br: "Agora compre e construa o Outpost no topo da sua Command_Tent. Depois disso, compre e construa o Siege_Machine."
+      ru: "Теперь купите и постройте форпост на вершине вашей Command_Tent. После этого купите и постройте Siege_Machine."
+      de: "Kaufen Sie jetzt den Outpost und bauen Sie ihn auf Ihrem Command_Tent. Danach kaufe und baue die Siege_Machine."
   - type: build
     region: castle
     rewards:
@@ -168,12 +168,12 @@ warrior:
       - TNT*64
       money: 750
     messages:
-      en: ""
-      fr: ""
-      es: ""
-      pt_br: ""
-      ru: ""
-      de: ""
+      en: "The Siege_Machine will slowly reduce the enemy town's power, which forces the town to attack you. Buy and build a Castle on top of your Command_Tent."
+      fr: "La Siege_Machine va lentement réduire le pouvoir de la ville ennemie, ce qui oblige la ville à vous attaquer. Achetez et construisez un château au-dessus de votre Command_Tent."
+      es: "Siege_Machine reducirá lentamente el poder de la ciudad enemiga, lo que obliga a la ciudad a atacarte. Compra y construye un castillo encima de tu Command_Tent."
+      pt_br: "O Siege_Machine irá lentamente reduzir o poder da cidade inimiga, o que força a cidade a atacar você. Compre e construa um castelo no topo da sua Command_Tent."
+      ru: "Siege_Machine будет постепенно уменьшать силу вражеского города, что заставит город атаковать вас Купите и постройте замок на вершине вашей Command_Tent."
+      de: "Die Siege_Machine verringert langsam die Macht der gegnerischen Stadt, was die Stadt dazu zwingt, Sie anzugreifen. Kaufe und baue ein Schloss auf deinem Command_Tent."
   - type: build
     region: memorial
     rewards:
@@ -181,22 +181,20 @@ warrior:
       - DIAMOND*6
       money: 1000
     messages:
-      en: ""
-      fr: ""
-      es: ""
-      pt_br: ""
-      ru: ""
-      de: ""
+      en: "Now that you've built the Castle, buy and build the Keep. After that, build a Memorial."
+      fr: "Maintenant que vous avez construit le château, achetez et construisez le donjon. Après cela, construisez un mémorial."
+      es: "Ahora que has construido el castillo, compra y construye la torre. Después de eso, construir un Memorial."
+      pt_br: "Agora que você construiu o Castelo, compre e construa o Keep. Depois disso, construa um Memorial."
+      ru: "Теперь, когда вы построили замок, купите и постройте крепость. После этого постройте Мемориал."
+      de: "Jetzt, da du das Schloss gebaut hast, kaufe und baue die Festung. Baue danach ein Denkmal."
   - type: end
     messages:
-      en: ""
-      fr: ""
-      es: ""
-      pt_br: ""
-      ru: ""
-      de: ""
-  #TODO add steps to build a keep and siege machine
-  #TODO eventually destroy a town?
+      en: "Congratulations! You are now wise in the ways of warfare. This concludes the warrior path."
+      fr: "Toutes nos félicitations! Vous êtes maintenant sage dans les voies de la guerre. Ceci conclut le chemin du guerrier."
+      es: "¡Felicidades! Ahora eres sabio en los caminos de la guerra. Esto concluye el camino del guerrero."
+      pt_br: "Parabéns! Agora você é sábio nos modos de guerra. Isso conclui o caminho do guerreiro."
+      ru: "Поздравляем! Вы теперь мудры в способах ведения войны. Это завершает путь воина."
+      de: "Herzliche Glückwünsche! Sie sind jetzt weise auf dem Weg der Kriegsführung. Dies schließt den Weg des Kriegers ab."
 builder:
   icon: DIAMOND_BLOCK
   names:
