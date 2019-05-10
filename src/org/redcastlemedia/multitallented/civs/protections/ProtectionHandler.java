@@ -444,7 +444,10 @@ public class ProtectionHandler implements Listener {
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
-        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//            return false;
+//        }
+        if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
         RegionManager regionManager = RegionManager.getInstance();
@@ -515,7 +518,10 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
-        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//            return false;
+//        }
+        if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
         RegionManager regionManager = RegionManager.getInstance();
