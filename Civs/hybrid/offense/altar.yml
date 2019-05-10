@@ -7,7 +7,7 @@ groups:
 level: 1
 
 build-reqs:
-- IRON_BLOCKk*3
+- IRON_BLOCK*3
 
 build-radius: 1
 

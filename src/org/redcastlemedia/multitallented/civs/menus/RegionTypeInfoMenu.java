@@ -47,7 +47,21 @@ public class RegionTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + regionName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(regionType.getReqs(), event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
+            List<List<CVItem>> reqs = regionType.getReqs();
+            for (int i=0; i<reqs.size(); i++) {
+                for (int j=0; j<reqs.get(i).size(); j++) {
+                    CVItem cvItem = reqs.get(i).get(j);
+                    if (cvItem.getGroup() != null) {
+                        ArrayList<String> lore = new ArrayList<>();
+                        lore.add("g:" + cvItem.getGroup());
+                        lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                                "click-for-item-group"));
+                        cvItem.setLore(lore);
+                        reqs.get(i).set(j, cvItem);
+                    }
+                }
+            }
+            event.getWhoClicked().openInventory(RecipeMenu.createMenuCVItem(reqs, event.getWhoClicked().getUniqueId(), event.getInventory().getItem(0)));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.CHEST)) {

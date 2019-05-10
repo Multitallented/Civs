@@ -505,6 +505,9 @@ public class Region {
                 for (int z=zMin; z<zMax; z++) {
 
                     Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
                     Material mat = currentBlock.getType();
                     boolean destroyIndex = false;
                     int i=0;

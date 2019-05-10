@@ -7,6 +7,14 @@ groups:
 - utility
 level: 5
 
+pre-reqs:
+- member=town:city:metropolis
+
+towns:
+- town
+- city
+- metropolis
+
 build-reqs:
 - CHEST*4
 - g:door*2
