@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -14,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -87,6 +89,8 @@ public class RegionTypeInfoMenu extends Menu {
         return createMenu(civilian, regionType, true);
     }
     public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType);
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();

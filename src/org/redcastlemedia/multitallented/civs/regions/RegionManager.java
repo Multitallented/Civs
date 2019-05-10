@@ -495,7 +495,7 @@ public class RegionManager {
                     if (exclusiveSet.contains(region.getType().toLowerCase())) {
                         player.sendMessage(Civs.getPrefix() +
                                 localeManager.getTranslation(civilian.getLocale(), "exclusive")
-                                .replace("$1", regionTypeName).replace("$2", region.getType()));
+                                        .replace("$1", regionTypeName).replace("$2", region.getType()));
                         event.setCancelled(true);
                         return false;
                     }
@@ -511,20 +511,23 @@ public class RegionManager {
             }
         }
 
-        int[] radii = Region.hasRequiredBlocks(player, regionType.getName().toLowerCase(), location, false);
+        int radii[] = Region.hasRequiredBlocksOnCenter(regionType, location);
         if (radii.length == 0) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
-                            .replace("$1", regionTypeName));
-            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
-            if (missingBlocks != null) {
-//                for (String message : generateMissingReqsMessage(missingBlocks)) {
-//                    player.sendMessage(message);
-//                }
-                player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+            radii = Region.hasRequiredBlocks(player, regionType.getName().toLowerCase(), location, false);
+            if (radii.length == 0) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
+                                .replace("$1", regionTypeName));
+                List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
+                if (missingBlocks != null) {
+                    //                for (String message : generateMissingReqsMessage(missingBlocks)) {
+                    //                    player.sendMessage(message);
+                    //                }
+                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                }
+                return false;
             }
-            return false;
         }
 
         HashMap<UUID, String> people;

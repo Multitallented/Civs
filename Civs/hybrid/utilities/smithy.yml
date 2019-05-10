@@ -18,11 +18,11 @@ towns:
 - metropolis
 
 build-reqs:
-- g:primary*160
-- g:secondary*30
 - g:window*4
 - g:door*1
 - g:roof*50
+- g:primary*160
+- g:secondary*30
 
 build-radius: 4
 

@@ -59,6 +59,7 @@ public class Region {
         this.effects = effects;
         this.exp = exp;
     }
+
     public double getExp() {
         return exp;
     }
@@ -472,6 +473,74 @@ public class Region {
         }
         return hasReqs ? radii : new int[0];
     }
+
+    public static int[] hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
+        if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
+                regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
+            return new int[0];
+        }
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
+        World currentWorld = location.getWorld();
+        if (currentWorld == null) {
+            return new int[0];
+        }
+
+        int[] radii = new int[6];
+        for (int i=0; i< 6; i++) {
+            radii[i]=regionType.getBuildRadiusX();
+        }
+
+        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX());
+        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX());
+        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY());
+        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY());
+        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusX());
+        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusX());
+
+        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
+        yMin = yMin < 0 ? 0 : yMin;
+
+        outer: for (int x=xMin; x<xMax;x++) {
+            for (int y=yMin; y<yMax; y++) {
+                for (int z=zMin; z<zMax; z++) {
+
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    Material mat = currentBlock.getType();
+                    boolean destroyIndex = false;
+                    int i=0;
+                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(mat)) {
+                            if (tempMap.get(mat) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                for (Material currentMat : tempMap.keySet()) {
+                                    tempMap.put(currentMat, tempMap.get(mat) - 1);
+                                }
+                            }
+                            break outer1;
+                        }
+                        i++;
+                    }
+                    if (destroyIndex) {
+                        if (itemCheck.size() < 2) {
+                            itemCheck.remove(i);
+                            if (itemCheck.isEmpty()) {
+                                break outer;
+                            }
+                        } else {
+                            itemCheck.remove(i);
+                        }
+                    }
+                }
+            }
+        }
+        if (!itemCheck.isEmpty()) {
+            return new int[0];
+        } else {
+            return radii;
+        }
+    }
+
     public static int[] radiusCheck(int[] radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();

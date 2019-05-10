@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -65,6 +66,13 @@ public class Util {
         lore.add(outString);
         return lore;
     }
+
+    public static ItemStack createStarterBook(String locale) {
+        CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
+        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, "starter-book"));
+        return cvItem.createItemStack();
+    }
+
     public static List<String> parseColors(List<String> inputString) {
         for (int i=0; i<inputString.size(); i++) {
             inputString.set(i, parseColors(inputString.get(i)));

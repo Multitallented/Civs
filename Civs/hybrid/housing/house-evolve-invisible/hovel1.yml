@@ -22,9 +22,9 @@ build-reqs:
 - g:sign*1
 - FURNACE
 - CRAFTING_TABLE
-- g:roof*80
-- g:secondary*55
-- g:primary*160
+- g:roof*60
+- g:secondary*26
+- g:primary*100
 
 build-radius: 4 #9x9x9
 effects:

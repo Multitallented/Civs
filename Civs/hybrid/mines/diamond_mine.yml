@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-name: DIAMOND_Mine
+name: Diamond_Mine
 max: 1
 price: 2000
 groups:

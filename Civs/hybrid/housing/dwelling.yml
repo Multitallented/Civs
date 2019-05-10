@@ -21,9 +21,9 @@ build-reqs:
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*110
-- g:secondary*70
-- g:primary*300
+- g:roof*100
+- g:secondary*60
+- g:primary*200
 
 rebuild: basehovel
 build-radius: 5 #11x11x11

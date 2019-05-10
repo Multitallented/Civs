@@ -48,6 +48,13 @@ public class TownCommand implements CivCommand {
                     "specify-town-name"));
             return true;
         }
+        String name = Util.getValidFileName(args[1]);
+
+        if (TownManager.getInstance().townNameExists(name)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "specify-town-name"));
+            return true;
+        }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
@@ -122,7 +129,6 @@ public class TownCommand implements CivCommand {
         HashMap<UUID, String> people = new HashMap<>();
         people.put(player.getUniqueId(), "owner");
         Location newTownLocation = player.getLocation();
-        String name = Util.getValidFileName(args[1]);
         List<Location> childLocations = new ArrayList<>();
         int villagerCount = 0;
         if (townType.getChild() != null) {
