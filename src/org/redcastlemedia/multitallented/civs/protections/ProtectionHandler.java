@@ -444,6 +444,9 @@ public class ProtectionHandler implements Listener {
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
+        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+            return false;
+        }
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -512,6 +515,9 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
+        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+            return false;
+        }
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
