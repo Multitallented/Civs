@@ -11,10 +11,10 @@ pre-reqs:
 - outpost:population=1
 
 build-reqs:
-- command_tent:1
+- castle:1
 
 critical-build-reqs:
-- command_tent
+- basecenter
 
 limits:
 - arrowtrapgroup:3

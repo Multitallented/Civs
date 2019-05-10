@@ -14,7 +14,7 @@ build-reqs:
 - command_tent:1
 
 critical-build-reqs:
-- command_tent
+- basecenter
 
 limits:
 - arrowtrapgroup:1

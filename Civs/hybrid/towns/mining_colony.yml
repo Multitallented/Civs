@@ -23,8 +23,8 @@ effects:
 - deny_mob_spawn
 - potion:FAST_DIGGING
 
-power: 12
-max-power: 12
+power: 48
+max-power: 48
 
 description:
   en: "Prevents monsters from spawning and gives fast digging buff."

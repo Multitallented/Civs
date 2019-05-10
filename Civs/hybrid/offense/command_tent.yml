@@ -5,6 +5,7 @@ max: 2
 price: 200
 groups:
 - offense
+- basecenter
 level: 1
 
 build-reqs:
