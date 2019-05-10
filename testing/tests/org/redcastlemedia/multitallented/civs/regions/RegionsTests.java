@@ -757,7 +757,7 @@ public class RegionsTests {
                 EquipmentSlot.HAND);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
-        assertSame(playerInteractEvent.useInteractedBlock(), Event.Result.DENY);
+        assertSame(Event.Result.ALLOW, playerInteractEvent.useInteractedBlock());
     }
 
     @Test
