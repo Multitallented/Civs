@@ -7,12 +7,12 @@ groups:
 level: 1
 
 build-reqs:
-- g:primary*90
-- g:secondary*25
 - g:window*4
 - g:door*1
 - g:roof*40
 - g:wool*9
+- g:primary*90
+- g:secondary*25
 
 build-radius: 4
 

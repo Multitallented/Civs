@@ -41,6 +41,7 @@ limits:
 - power_capacitor:4
 - embassy:4
 - diamond_mine:1
+- idolgroup:4
 
 critical-build-reqs:
 - town_center

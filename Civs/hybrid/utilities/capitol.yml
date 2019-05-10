@@ -20,11 +20,11 @@ build-reqs:
 - g:door*3
 - g:window*32
 - g:roof*180
-- g:secondary*140
-- g:primary*400
 - g:stairs*8
 - BOOKSHELF*14
 - g:sign*10
+- g:secondary*140
+- g:primary*400
 build-radius: 8 # 17x17x17
 effects:
 - block_break

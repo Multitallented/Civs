@@ -61,7 +61,14 @@ public class ShopLevelMenu extends Menu {
         int level = Integer.parseInt(clickedStack.getItemMeta().getLore().get(0));
         event.getWhoClicked().closeInventory();
         HashMap<String, Integer> returnMap = new HashMap<>();
-        for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level, true)) {
+        for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level)) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
+                    !civItem.getInShop()) {
+                continue;
+            }
+            if (civilian.isAtMax(civItem)) {
+                continue;
+            }
             returnMap.put(civItem.getProcessedName(), 1);
         }
         appendHistory(civilian.getUuid(), MENU_NAME);

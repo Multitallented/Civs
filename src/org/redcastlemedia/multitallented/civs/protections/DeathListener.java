@@ -31,6 +31,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 
@@ -134,6 +135,9 @@ public class DeathListener implements Listener {
             return;
         }
 
+        if (ConfigManager.getInstance().getUseStarterBook()) {
+            player.getInventory().addItem(Util.createStarterBook(civilian.getLocale()));
+        }
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);
         CivilianManager.getInstance().saveCivilian(civilian);

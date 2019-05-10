@@ -1,0 +1,77 @@
+type: region
+icon: CHEST
+name: Manor2
+is-in-shop: false
+max: 2
+price: 4000
+groups:
+- housing
+- allmanor
+- basemanor
+- allhousing
+level: 5
+
+pre-reqs:
+- member=town:city:metropolis
+
+build-reqs:
+- CHEST*8
+- g:door*1
+- g:window*16
+- g:bed*1
+- g:sign*1
+- FURNACE*2
+- CRAFTING_TABLE
+- g:roof*210
+- g:secondary*160
+- g:primary*500
+
+build-radius: 12 #25x25x25
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- housing:1
+- evolve:manor3.24
+- buyable
+
+towns:
+- town
+- city
+- metropolis
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input: #2.11
+    - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
+    payout: 20.8 # $500 / day
+  2:
+    input:
+    - PUMPKIN_PIE*1 # 24 stacks / day
+    payout: 16.4 # $393 / day
+    exp: 1
+  3:
+    input:
+    - COOKED_BEEF*4,BEEF*24 # 576 or 9 stacks / day
+    payout: 4.2 # $100.8 / day
+  4:
+    input:
+    - COOKIE*18 # 432 or 6.75 stacks / day
+    - MILK_BUCKET # 24 stacks / day
+    output:
+    - BUCKET
+    payout: 28.6 # $686 / day
+
+description:
+  en: "7th level of house. Earns $1679 per day."
+  es: "7er nivel de la casa. Gana $ 1679 por día."
+  de: "7. Ebene des Hauses. Verdient $ 1679 pro Tag."
+  pt_br: "7º nível de casa. Ganhe $ 1679 por dia."
+  fr: "7ème niveau de la maison. Gagne 1679 $ par jour."
+  ru: "7-й уровень дома. Зарабатывает $ 1679 в день."

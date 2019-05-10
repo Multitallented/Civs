@@ -54,9 +54,10 @@ public class TownActionMenu extends Menu {
             return;
         }
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+        if (townOwner != null && event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
-                        "town-ally"))) {
+                        "town-ally").replace("$1", town.getName()))) {
+
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
             town.getAllyInvites().add(townOwner.getName());
@@ -75,7 +76,9 @@ public class TownActionMenu extends Menu {
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
-                        "town-unally")) && townOwner != null) {
+                        "town-unally").replace("$1", town.getName())) &&
+                townOwner != null) {
+
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
             townOwner.getAllies().remove(townName);

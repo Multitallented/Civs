@@ -31,6 +31,7 @@ en:
 
   #items
   items: Items
+  click-for-item-group: "Click to see all items in this group"
 
   #classes
   classes: Classes
@@ -62,6 +63,7 @@ en:
   friends: "Friends"
   confirm: "Confirm"
   reject: "Reject"
+  effects: "Effects"
 
   #region
   size: Size

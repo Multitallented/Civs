@@ -8,13 +8,13 @@ groups:
 level: 1
 
 build-reqs:
-- g:primary*90
-- g:secondary*12
 - IRON_BARS*2
 - g:door*1
 - CHEST*2
 - FURNACE*2
 - COAL_ORE*4
+- g:primary*90
+- g:secondary*12
 
 build-radius: 4
 

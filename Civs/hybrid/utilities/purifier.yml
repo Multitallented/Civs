@@ -10,11 +10,11 @@ build-reqs:
 - CHEST*2
 - g:door*1
 - g:roof*49
-- g:secondary*30
-- g:primary*60
 - g:window*4
 - FURNACE
 - CRAFTING_TABLE
+- g:secondary*30
+- g:primary*60
 
 build-radius: 3
 effects:

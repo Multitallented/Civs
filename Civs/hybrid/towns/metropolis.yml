@@ -35,6 +35,7 @@ limits:
 - obsidian_mine:1
 - ender_pearl_farm:1
 - blaze_sifter:1
+- idolgroup:6
 
 critical-build-reqs:
 - town_center
@@ -51,6 +52,7 @@ effects:
 - deny_mob_spawn
 - block_explosion
 - control_override
+- potion:SATURATION
 - anticamp:2.1500 #2 damage for 25 minutes
 
 power: 6500

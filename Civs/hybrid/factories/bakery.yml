@@ -12,11 +12,11 @@ pre-reqs:
 
 build-reqs:
 - CHEST*2
-- g:primary*90
-- g:secondary*20
 - g:window*4
 - g:door*1
 - g:roof*60
+- g:primary*90
+- g:secondary*20
 
 build-radius: 4 #9x9x9
 

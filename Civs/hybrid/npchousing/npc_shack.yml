@@ -15,14 +15,14 @@ pre-reqs:
 build-reqs:
 - CHEST*2
 - g:door*1
-- g:roof*49
-- g:secondary*40
-- g:primary*90
 - g:window*4
 - g:bed*1
 - g:sign*1
 - FURNACE
 - CRAFTING_TABLE
+- g:roof*38
+- g:secondary*16
+- g:primary*60
 
 towns:
 - settlement

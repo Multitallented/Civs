@@ -75,7 +75,7 @@ public class RenameCommand implements CivCommand {
         RenameTownEvent renameTownEvent = new RenameTownEvent(oldTownName, newTownName, town);
         Bukkit.getPluginManager().callEvent(renameTownEvent);
 
-        TownManager.getInstance().removeTown(town, false);
+        TownManager.getInstance().removeTown(town, false, false);
         town.setName(newTownName);
         TownManager.getInstance().addTown(town);
         TownManager.getInstance().saveTown(town);

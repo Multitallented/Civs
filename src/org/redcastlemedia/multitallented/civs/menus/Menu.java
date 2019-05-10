@@ -67,7 +67,6 @@ public abstract class Menu implements Listener {
                 size -= 9;
             }
         }
-        size += 9;
         return size;
     }
 
@@ -310,7 +309,7 @@ public abstract class Menu implements Listener {
             ict.start();
         }
     }
-    private synchronized static HashMap<UUID, GUI> getGuis() {
+    synchronized static HashMap<UUID, GUI> getGuis() {
         return guis;
     }
 
@@ -349,7 +348,7 @@ public abstract class Menu implements Listener {
         }
     }
 
-    private static class GUI {
+    static class GUI {
         private final UUID uuid;
         private final Inventory inventory;
         private ArrayList<GUIItemSet> cycleItems;
@@ -390,6 +389,13 @@ public abstract class Menu implements Listener {
                 }
                 CVItem nextItem = guiItemSet.getItems().get(pos);
                 ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+                if (nextItem.getGroup() != null) {
+                    ItemMeta itemMeta = is.getItemMeta();
+                    ArrayList<String> lore = new ArrayList<>();
+                    lore.add("g:" + nextItem.getGroup());
+                    itemMeta.setLore(lore);
+                    is.setItemMeta(itemMeta);
+                }
                 inventory.setItem(guiItemSet.getIndex(), is);
                 guiItemSet.setPosition(pos);
             }

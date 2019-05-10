@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
@@ -19,9 +20,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class UtilTests {
@@ -66,6 +65,18 @@ public class UtilTests {
     public void itemGroupShouldReturnProperCVItems() {
         List<CVItem> cvItems = CVItem.createListFromString("g:glass*12");
         assertEquals(12, cvItems.get(0).getQty());
+    }
+
+    @Test
+    public void equivalentRegions() {
+        World world = Bukkit.getWorld("world");
+        Location location = new Location(world, 0, 0, 0);
+        Location location2 = new Location(world, 0.4, 0.5, -0.2);
+        assertTrue(Util.equivalentLocations(location, location2));
+        Location location3 = new Location(world, 1, 1, 1);
+        assertFalse(Util.equivalentLocations(location, location3));
+        Location location4 = new Location(world, 5, 3, -8);
+        assertFalse(Util.equivalentLocations(location, location4));
     }
 
     @Test
