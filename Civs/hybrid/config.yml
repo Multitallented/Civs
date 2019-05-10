@@ -1,5 +1,11 @@
 black-list-worlds:
-- Hub
+- Resource
+- Midgard_nether
+- Midgard_the_end
+- world_nether
+- world_the_end
+- MedievalSpawn_nether
+- MedievalSpawn_the_end
 default-language: en
 allow-civ-item-sharing: false
 #put glowstone rings above towns
