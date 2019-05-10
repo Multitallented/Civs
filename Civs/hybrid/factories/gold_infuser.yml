@@ -43,6 +43,12 @@ upkeep:
     - GOLD_INGOT
     output:
     - GOLDEN_CARROT*9
+  1:
+    input:
+    - APPLE*2
+    - GOLD_INGOT
+    output:
+    - GOLDEN_APPLE*2
 
 description:
   en: "Automated crafting of golden carrots"
