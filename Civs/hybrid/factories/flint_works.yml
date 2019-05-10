@@ -10,12 +10,12 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:primary*110
-- g:secondary*20
 - g:window*2
 - g:door*1
 - g:roof*40
 - GRAVEL*6
+- g:primary*110
+- g:secondary*20
 
 towns:
 - settlement

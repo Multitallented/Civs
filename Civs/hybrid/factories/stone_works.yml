@@ -10,12 +10,12 @@ pre-reqs:
 - cobble_quarry:built=1
 
 build-reqs:
-- g:primary*80
-- g:secondary*20
 - g:window*2
 - g:door*1
 - FURNACE*2
 - g:roof*30
+- g:primary*80
+- g:secondary*20
 
 build-radius: 3
 
