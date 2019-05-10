@@ -6,13 +6,12 @@ price: 200
 groups:
 - shop
 - oreshop
-level: 3
+level: 5
 
 pre-reqs:
-- member=village:town:city:metropolis
+- member=town:city:metropolis
 
 towns:
-- village
 - town
 - city
 - metropolis
