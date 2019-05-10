@@ -3,7 +3,8 @@ icon: CHEST
 name: Dirt_Quarry
 price: 25
 groups:
-- factory
+- raw
+- quarry
 level: 2
 
 pre-reqs:
