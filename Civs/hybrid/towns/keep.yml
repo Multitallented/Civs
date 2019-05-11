@@ -11,10 +11,10 @@ pre-reqs:
 - outpost:population=1
 
 build-reqs:
-- command_tent:1
+- castle:1
 
 critical-build-reqs:
-- command_tent
+- basecenter
 
 limits:
 - arrowtrapgroup:3
@@ -31,7 +31,7 @@ effects:
 - deny_mob_spawn
 - control_override
 - power_shield
-- potion:HEALTH_BOOST,DAMAGE_RESISTANCE
+- potion:HEALTH_BOOST.80,DAMAGE_RESISTANCE.80
 
 power: 1028
 max-power: 1028

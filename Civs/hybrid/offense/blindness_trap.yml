@@ -10,7 +10,7 @@ level: 1
 build-radius: 6 # 13x13x13
 
 effects:
-- potion:^BLINDNESS,^SLOW.40.2,^WEAKNESS
+- potion:^BLINDNESS.80,^SLOW.40.2,^WEAKNESS.80
 - temporary:1800 # 30 minutes
 
 

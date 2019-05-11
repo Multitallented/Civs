@@ -64,7 +64,7 @@ public class TownListMenu extends Menu {
             return;
         }
         String townName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Town town = TownManager.getInstance().getTown(townName.toLowerCase());
+        Town town = TownManager.getInstance().getTown(townName);
         if (town != null) {
             if (uuid == null) {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page);

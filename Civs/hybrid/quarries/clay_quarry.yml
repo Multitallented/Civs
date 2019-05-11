@@ -3,7 +3,8 @@ icon: CHEST
 name: Clay_Quarry
 price: 100
 groups:
-- factory
+- raw
+- quarry
 level: 2
 
 pre-reqs:

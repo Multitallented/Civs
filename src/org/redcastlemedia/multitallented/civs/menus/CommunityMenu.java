@@ -65,13 +65,13 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
+        if (clickedStack.getType() == Material.RED_BED) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, null));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "your-towns"))) {
+        if (clickedStack.getType() == Material.CHEST) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, civilian.getUuid()));

@@ -111,6 +111,12 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             return true;
         } else {
+            if (Civs.econ != null &&
+                    region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).equals("owner")) {
+                double salvage = regionType.getPrice() / 2;
+                Civs.econ.depositPlayer(event.getPlayer(), salvage);
+            }
             RegionManager.getInstance().removeRegion(region, true, true);
             return false;
         }
