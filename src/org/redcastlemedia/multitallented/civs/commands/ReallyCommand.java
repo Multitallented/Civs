@@ -5,9 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.towns.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -29,15 +30,8 @@ public class ReallyCommand implements CivCommand {
         }
 
 
-        Alliance alliance = null;
-        outer: for (Town town : TownManager.getInstance().getTowns()) {
-            for (Alliance ally : town.getAllies()) {
-                if (ally.getName().equalsIgnoreCase(args[1])) {
-                    alliance = ally;
-                    break outer;
-                }
-            }
-        }
+        Alliance alliance = AllianceManager.getInstance().getAlliance(args[1]);
+
         if (alliance == null) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
@@ -83,15 +77,7 @@ public class ReallyCommand implements CivCommand {
             return true;
         }
         String validName = Util.getValidFileName(args[2]);
-        for (String townName : alliance.getMembers()) {
-            Town town = TownManager.getInstance().getTown(townName);
-            for (Alliance ally : town.getAllies()) {
-                if (ally.getName().equalsIgnoreCase(args[1])) {
-                    ally.setName(validName);
-                }
-            }
-            TownManager.getInstance().saveTown(town);
-        }
+        AllianceManager.getInstance().renameAlliance(args[1], validName);
 
         if (isPlayer) {
             commandSender.sendMessage("alliance " + args[1] + " has been renamed to " + validName);

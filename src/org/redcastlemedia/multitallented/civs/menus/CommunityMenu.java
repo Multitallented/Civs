@@ -89,7 +89,6 @@ public class CommunityMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        //TODO populate items here
 
         //0 Players
         CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");

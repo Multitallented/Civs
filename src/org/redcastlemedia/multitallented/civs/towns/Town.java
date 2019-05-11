@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
@@ -24,7 +26,6 @@ public class Town {
     private String name;
     private HashMap<UUID, String> people;
     private int housing;
-    private HashSet<Alliance> allies;
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
@@ -42,7 +43,6 @@ public class Town {
         this.maxPower = maxPower;
         this.housing = housing;
         this.villagers = villagers;
-        this.allies = new HashSet<>();
         this.lastDisable = lastDisable;
     }
 
@@ -87,6 +87,7 @@ public class Town {
         people.put(uuid, role);
     }
     public HashMap<UUID, String> getPeople() {
+        HashSet<Alliance> allies = AllianceManager.getInstance().getAlliances(this);
         if (allies.isEmpty()) {
             return people;
         }
@@ -106,7 +107,6 @@ public class Town {
         }
         return newPeople;
     }
-    public HashSet<Alliance> getAllies() { return allies; }
     public int getMaxPower() {
         return maxPower;
     }
@@ -119,7 +119,6 @@ public class Town {
     protected void setPower(int power) {
         this.power = power;
     }
-    public void setAllies(HashSet<Alliance> allies) { this.allies = allies; }
 
     public int countPeopleWithRole(String role) {
         if (role == null) {

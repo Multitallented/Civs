@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.towns.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -25,8 +27,16 @@ public class AllianceListMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, int page) {
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 
-        ArrayList<Alliance> alliances = TownManager.getInstance().getAlliances();
-
+        ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllAlliances();
+        Comparator<Alliance> comparator = new Comparator<Alliance>() {
+            @Override
+            public int compare(Alliance o1, Alliance o2) {
+                int o1Size = o1.getMembers().size();
+                int o2Size = o2.getMembers().size();
+                return Integer.compare(o1Size, o2Size);
+            }
+        };
+        alliances.sort(comparator);
 
         int startIndex = Util.createPageButtons(inventory, page, civilian, alliances.size());
 
