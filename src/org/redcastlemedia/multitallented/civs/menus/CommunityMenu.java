@@ -53,19 +53,25 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, 0));
             return;
         }
+        if (clickedStack.getType() == Material.EMERALD) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(ForSaleMenu.createMenu(civilian, 0));
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "towns"))) {
+        if (clickedStack.getType() == Material.RED_BED) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, null));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "your-towns"))) {
+        if (clickedStack.getType() == Material.CHEST) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, civilian.getUuid()));
@@ -111,6 +117,11 @@ public class CommunityMenu extends Menu {
         CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
         cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
         inventory.setItem(5, cvItem5.createItemStack());
+
+        //6 Regions for sale
+        CVItem cvItem6 = CVItem.createCVItemFromString("EMERALD");
+        cvItem6.setDisplayName(localeManager.getTranslation(locale, "regions-for-sale"));
+        inventory.setItem(6, cvItem6.createItemStack());
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

@@ -21,9 +21,9 @@ build-reqs:
 - g:door*2
 - g:window*8
 - g:roof*100
+- g:stairs*4
 - g:secondary*70
 - g:primary*250
-- g:stairs*4
 
 build-radius: 6
 effects:

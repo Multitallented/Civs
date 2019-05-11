@@ -15,12 +15,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ListAllPlayersMenu extends Menu {
     public static String MENU_NAME = "CivsPlayers";
@@ -36,30 +31,20 @@ public class ListAllPlayersMenu extends Menu {
                 || event.getCurrentItem().getType() == Material.AIR || !event.getCurrentItem().hasItemMeta()) {
             return;
         }
-        ItemStack itemStack = event.getInventory().getItem(2);
-        String cUuidString = itemStack.getItemMeta().getLore().get(0).replaceAll("§", "");
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(cUuidString));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
 
-        int page = Integer.parseInt(itemStack.getItemMeta().getLore().get(1));
-        String id = null;
-        List<Player> blackList = new ArrayList<>();
-        if (itemStack.getItemMeta().getLore().size() > 2) {
-            id = itemStack.getItemMeta().getLore().get(2);
+        int page = (int) getData(civilian.getUuid(), "page");
+        String id = (String) getData(civilian.getUuid(), "id");
+        List<Player> blackList = (List<Player>) getData(civilian.getUuid(), "blackList");
+        if (blackList == null) {
+            blackList = new ArrayList<>();
         }
-        if (itemStack.getItemMeta().getLore().size() > 3) {
-            for (String s : itemStack.getItemMeta().getLore().get(3).split(",")) {
-                Player player = Bukkit.getPlayer(s);
-                if (player != null) {
-                    blackList.add(player);
-                }
-            }
-        }
-        String name = itemStack.getItemMeta().getDisplayName();
+        String name = (String) getData(civilian.getUuid(), "name");
 
         if (event.getCurrentItem().getType() == Material.EMERALD) {
             event.getWhoClicked().closeInventory();
@@ -81,8 +66,8 @@ public class ListAllPlayersMenu extends Menu {
                     appendHistory(civilian.getUuid(), MENU_NAME + "," + id);
                 }
                 event.getWhoClicked().closeInventory();
-                String uuidString = event.getCurrentItem().getItemMeta().getLore().get(0).replaceAll("§", "");
-                UUID uuid = UUID.fromString(uuidString);
+                int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(0));
+                UUID uuid = ((ArrayList<UUID>) getData(civilian.getUuid(), "uuidList")).get(index);
                 event.getWhoClicked().openInventory(PlayerProfileMenu.createMenu(civilian, uuid));
             } else {
                 event.getWhoClicked().closeInventory();
@@ -109,23 +94,12 @@ public class ListAllPlayersMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        //2 Icon
-        CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName("Friend List");
-        List<String> lore = new ArrayList<>();
-        String uuidString1 = civilian.getUuid().toString();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char c : uuidString1.toCharArray()) {
-            stringBuilder.append(ChatColor.COLOR_CHAR);
-            stringBuilder.append(c);
-        }
-        lore.add(stringBuilder.toString());
-        lore.add(page + "");
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("name", "Friend List");
         if (id != null) {
-            lore.add(id.toString());
+            data.put("id", id);
         }
-        cvItem.setLore(lore);
-        inventory.setItem(2, cvItem.createItemStack());
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
@@ -151,25 +125,23 @@ public class ListAllPlayersMenu extends Menu {
                 return player1.getName().compareTo(player2.getName());
             }
         });
+        ArrayList<UUID> uuidList = new ArrayList<>();
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
             OfflinePlayer player = players.get(k);
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             ArrayList<String> lore1 = new ArrayList<>();
-            String uuidString = player.getUniqueId().toString();
-            StringBuilder hiddenUUID = new StringBuilder();
-            for (char c : uuidString.toCharArray()) {
-                hiddenUUID.append(ChatColor.COLOR_CHAR);
-                hiddenUUID.append(c);
-            }
-            lore1.add(hiddenUUID.toString());
+            lore1.add("" + (i-9));
+            uuidList.add(player.getUniqueId());
             isMeta.setLore(lore1);
             isMeta.setOwningPlayer(player);
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;
         }
+        data.put("uuidList", uuidList);
+        setNewData(civilian.getUuid(), data);
 
         return inventory;
     }
@@ -187,32 +159,13 @@ public class ListAllPlayersMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        //2 Icon
-        CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName(name == null ? "Player List" : name);
-        List<String> lore = new ArrayList<>();
-        String uuidString1 = civilian.getUuid().toString();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char c : uuidString1.toCharArray()) {
-            stringBuilder.append(ChatColor.COLOR_CHAR);
-            stringBuilder.append(c);
-        }
-        lore.add(stringBuilder.toString());
-        lore.add(page + "");
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("blackList", blackList);
+        data.put("name", "Player List");
         if (id != null) {
-            lore.add(id);
+            data.put("id", id);
         }
-        if (blackList != null) {
-            StringBuilder blackListString = new StringBuilder();
-            for (Player b : blackList) {
-                blackListString.append(b.getName());
-                blackListString.append(",");
-            }
-            blackListString.substring(blackListString.length() - 1);
-            lore.add(blackListString.toString());
-        }
-        cvItem.setLore(lore);
-        inventory.setItem(2, cvItem.createItemStack());
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
@@ -237,17 +190,13 @@ public class ListAllPlayersMenu extends Menu {
                 return player1.getName().compareTo(player2.getName());
             }
         });
+        ArrayList<UUID> uuidList = new ArrayList<>();
         for (int k=startIndex; k<players.size() && k<startIndex+36; k++) {
             Player player = players.get(k);
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             ArrayList<String> lore2 = new ArrayList<>();
-            String uuidString = player.getUniqueId().toString();
-            StringBuilder hiddenUUID = new StringBuilder();
-            for (char c : uuidString.toCharArray()) {
-                hiddenUUID.append(ChatColor.COLOR_CHAR);
-                hiddenUUID.append(c);
-            }
-            lore2.add(hiddenUUID.toString());
+            uuidList.add(player.getUniqueId());
+            lore2.add("" + (i-9));
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             isMeta.setOwningPlayer(player);
@@ -256,6 +205,8 @@ public class ListAllPlayersMenu extends Menu {
             inventory.setItem(i, is);
             i++;
         }
+        data.put("uuidList", uuidList);
+        setNewData(civilian.getUuid(), data);
 
         return inventory;
     }

@@ -14,9 +14,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Region {
 
@@ -32,6 +36,10 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     private long lastTick = 0;
+
+    @Getter
+    @Setter
+    private double forSale = -1;
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -51,6 +59,7 @@ public class Region {
         this.effects = effects;
         this.exp = exp;
     }
+
     public double getExp() {
         return exp;
     }
@@ -67,6 +76,10 @@ public class Region {
     public void setType(String type) { this.type = type; }
     public void setPeople(UUID uuid, String role) {
         people.put(uuid, role);
+    }
+
+    public HashMap<UUID, String> getRawPeople() {
+        return people;
     }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
@@ -188,12 +201,20 @@ public class Region {
     }
 
     private static List<HashMap<Material, Integer>> cloneReqMap(List<List<CVItem>> reqMap) {
+        return cloneReqMap(reqMap, null);
+    }
+
+    private static List<HashMap<Material, Integer>> cloneReqMap(List<List<CVItem>> reqMap, CVItem missingItem) {
         List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         for (List<CVItem> currentList : reqMap) {
             HashMap<Material, Integer> currentReqMap = new HashMap<>();
             for (CVItem currentItem : currentList) {
                 CVItem clone = currentItem.clone();
-                currentReqMap.put(clone.getMat(), clone.getQty());
+                if (missingItem != null && missingItem.equivalentCVItem(clone)) {
+                    currentReqMap.put(clone.getMat(), clone.getQty() + 1);
+                } else {
+                    currentReqMap.put(clone.getMat(), clone.getQty());
+                }
             }
             itemCheck.add(currentReqMap);
         }
@@ -403,6 +424,10 @@ public class Region {
     }
 
     public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
+        return hasRequiredBlocks(null, type, location, useCivItem);
+    }
+
+    public static int[] hasRequiredBlocks(Player player, String type, Location location, boolean useCivItem) {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
@@ -443,8 +468,82 @@ public class Region {
         if (radii.length == 0) {
             return radii;
         }
+        if (!hasReqs && player != null) {
+            StructureUtil.showGuideBoundingBox(player, location, radii);
+        }
         return hasReqs ? radii : new int[0];
     }
+
+    public static int[] hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
+        if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
+                regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
+            return new int[0];
+        }
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
+        World currentWorld = location.getWorld();
+        if (currentWorld == null) {
+            return new int[0];
+        }
+
+        int[] radii = new int[6];
+        for (int i=0; i< 6; i++) {
+            radii[i]=regionType.getBuildRadiusX();
+        }
+
+        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX());
+        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX());
+        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY());
+        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY());
+        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusX());
+        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusX());
+
+        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
+        yMin = yMin < 0 ? 0 : yMin;
+
+        outer: for (int x=xMin; x<xMax;x++) {
+            for (int y=yMin; y<yMax; y++) {
+                for (int z=zMin; z<zMax; z++) {
+
+                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    if (currentBlock == null) {
+                        continue;
+                    }
+                    Material mat = currentBlock.getType();
+                    boolean destroyIndex = false;
+                    int i=0;
+                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                        if (tempMap.containsKey(mat)) {
+                            if (tempMap.get(mat) < 2) {
+                                destroyIndex = true;
+                            } else {
+                                for (Material currentMat : tempMap.keySet()) {
+                                    tempMap.put(currentMat, tempMap.get(mat) - 1);
+                                }
+                            }
+                            break outer1;
+                        }
+                        i++;
+                    }
+                    if (destroyIndex) {
+                        if (itemCheck.size() < 2) {
+                            itemCheck.remove(i);
+                            if (itemCheck.isEmpty()) {
+                                break outer;
+                            }
+                        } else {
+                            itemCheck.remove(i);
+                        }
+                    }
+                }
+            }
+        }
+        if (!itemCheck.isEmpty()) {
+            return new int[0];
+        } else {
+            return radii;
+        }
+    }
+
     public static int[] radiusCheck(int[] radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();
@@ -493,24 +592,13 @@ public class Region {
     }
     public static List<HashMap<Material, Integer>> hasRequiredBlocks(String type, Location location, ItemStack missingStack) {
         ItemManager itemManager = ItemManager.getInstance();
-        List<HashMap<Material, Integer>> itemCheck = new ArrayList<>();
         CVItem missingItem = null;
         if (missingStack != null) {
             missingItem = CVItem.createFromItemStack(missingStack);
         }
         RegionType regionType = (RegionType) itemManager.getItemType(type);
-        for (List<CVItem> currentList : regionType.getReqs()) {
-            HashMap<Material, Integer> currentReqMap = new HashMap<>();
-            for (CVItem currentItem : currentList) {
-                CVItem clone = currentItem.clone();
-                if (missingItem != null && missingItem.equivalentCVItem(clone)) {
-                    currentReqMap.put(clone.getMat(), clone.getQty() + 1);
-                } else {
-                    currentReqMap.put(clone.getMat(), clone.getQty());
-                }
-            }
-            itemCheck.add(currentReqMap);
-        }
+        List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs(), missingItem);
+
         int[] radii = new int[6];
         for (int i = 0; i < 6; i++) {
             radii[i] = 0;

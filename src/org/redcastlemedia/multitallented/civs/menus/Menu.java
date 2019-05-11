@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
@@ -28,13 +29,28 @@ public abstract class Menu implements Listener {
     private final String MENU_NAME;
     private volatile static HashMap<UUID, GUI> guis = new HashMap<>();
     private volatile static boolean running = false;
-    private static Map<UUID, List<String>> history = new HashMap<>();
+    private final static Map<UUID, List<String>> history = new HashMap<>();
+    private final static Map<UUID, Map<String, Object>> currentMenuStorage = new HashMap<>();
 
     public Menu(String menuName) {
         this.MENU_NAME = menuName;
     }
 
     abstract void handleInteract(InventoryClickEvent event);
+
+    static Object getData(UUID uuid, String key) {
+        Map<String, Object> data = currentMenuStorage.get(uuid);
+        if (data == null) {
+            return null;
+        }
+        return data.get(key);
+    }
+    static void setNewData(UUID uuid, Map<String, Object> data) {
+        currentMenuStorage.put(uuid, data);
+    }
+    static void clearData(UUID uuid) {
+        currentMenuStorage.remove(uuid);
+    }
 
     @EventHandler
     public void onMenuInteract(InventoryClickEvent event) {
@@ -52,7 +68,6 @@ public abstract class Menu implements Listener {
                 size -= 9;
             }
         }
-        size += 9;
         return size;
     }
 
@@ -83,6 +98,11 @@ public abstract class Menu implements Listener {
         if (lastHistory[0].equals(MainMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             humanEntity.openInventory(MainMenu.createMenu(civilian));
+            return;
+        }
+        if (lastHistory[0].equals(ShopLevelMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(ShopLevelMenu.createMenu(civilian));
             return;
         }
         if (lastHistory[0].equals(ShopMenu.MENU_NAME)) {
@@ -290,7 +310,7 @@ public abstract class Menu implements Listener {
             ict.start();
         }
     }
-    private synchronized static HashMap<UUID, GUI> getGuis() {
+    synchronized static HashMap<UUID, GUI> getGuis() {
         return guis;
     }
 
@@ -301,6 +321,7 @@ public abstract class Menu implements Listener {
             return;
         }
         clearCycleItems(he.getUniqueId());
+        clearData(he.getUniqueId());
 //        history.remove(he.getUniqueId());
     }
 
@@ -328,7 +349,7 @@ public abstract class Menu implements Listener {
         }
     }
 
-    private static class GUI {
+    static class GUI {
         private final UUID uuid;
         private final Inventory inventory;
         private ArrayList<GUIItemSet> cycleItems;
@@ -369,6 +390,13 @@ public abstract class Menu implements Listener {
                 }
                 CVItem nextItem = guiItemSet.getItems().get(pos);
                 ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+                if (nextItem.getGroup() != null) {
+                    ItemMeta itemMeta = is.getItemMeta();
+                    ArrayList<String> lore = new ArrayList<>();
+                    lore.add("g:" + nextItem.getGroup());
+                    itemMeta.setLore(lore);
+                    is.setItemMeta(itemMeta);
+                }
                 inventory.setItem(guiItemSet.getIndex(), is);
                 guiItemSet.setPosition(pos);
             }

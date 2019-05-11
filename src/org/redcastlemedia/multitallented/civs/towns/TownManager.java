@@ -54,7 +54,7 @@ public class TownManager {
 
     public List<Town> getTowns() { return sortedTowns; }
     public Town getTown(String name) {
-        return towns.get(name.toLowerCase());
+        return towns.get(name);
     }
 
     public Town getTownAt(Location location) {
@@ -209,7 +209,7 @@ public class TownManager {
         addTown(town);
     }
     public void addTown(Town town) {
-        towns.put(town.getName().toLowerCase(), town);
+        towns.put(town.getName(), town);
         sortedTowns.add(town);
         if (sortedTowns.size() > 1) {
             Collections.sort(sortedTowns, new Comparator<Town>() {
@@ -242,7 +242,7 @@ public class TownManager {
                         "town-destroyed").replace("$1", town.getName()));
             }
         }
-        towns.remove(town.getName().toLowerCase());
+        towns.remove(town.getName());
         sortedTowns.remove(town);
         if (Civs.getInstance() == null) {
             return;
@@ -250,7 +250,7 @@ public class TownManager {
         if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
-        removeTownFile(town.getName().toLowerCase());
+        removeTownFile(town.getName());
     }
 
     public void setTownPower(Town town, int power) {
@@ -371,7 +371,7 @@ public class TownManager {
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
-        File townFile = new File(townFolder, town.getName().toLowerCase() + ".yml");
+        File townFile = new File(townFolder, town.getName() + ".yml");
         try {
             if (!townFile.exists()) {
                 townFile.createNewFile();
@@ -395,6 +395,8 @@ public class TownManager {
             config.set("population", town.getPopulation());
             config.set("villagers", town.getVillagers());
             config.set("last-disable", town.getLastDisable());
+            config.set("power", town.getPower());
+            config.set("max-power", town.getMaxPower());
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
@@ -411,7 +413,7 @@ public class TownManager {
             config.save(townFile);
         } catch (Exception e) {
             e.printStackTrace();
-            Civs.logger.severe("Unable to save town " + town.getName().toLowerCase() + ".yml");
+            Civs.logger.severe("Unable to save town " + town.getName() + ".yml");
         }
     }
 
@@ -442,5 +444,14 @@ public class TownManager {
             return town;
         }
         return null;
+    }
+
+    public boolean townNameExists(String name) {
+        for (String townName : towns.keySet()) {
+            if (name.toLowerCase().equalsIgnoreCase(townName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

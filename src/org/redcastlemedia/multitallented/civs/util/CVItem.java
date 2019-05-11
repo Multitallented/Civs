@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -20,6 +22,9 @@ public class CVItem {
     private int qty;
     private final double chance;
     private String displayName = null;
+    @Getter
+    @Setter
+    private String group = null;
     private List<String> lore = new ArrayList<>();
 
     public CVItem(Material mat, int qty, int chance, String displayName, List<String> lore) {
@@ -89,8 +94,7 @@ public class CVItem {
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(nameString);
+            List<String> lore = ConfigManager.getInstance().getCustomItemDescription(nameString);
             return new CVItem(mat, quantity, chance, nameString, lore);
         }
     }
@@ -129,18 +133,18 @@ public class CVItem {
         return new CVItem(is.getType(),is.getAmount());
     }
     public static List<CVItem> createListFromString(String input) {
+        String groupName = null;
         group: if (input.contains("g:")) {
-            String key = null;
             String itemGroup = null;
             String params = null;
             for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
                 if (input.matches("g:" + currKey + "\\*.*")) {
-                    key = currKey;
-                    itemGroup = ConfigManager.getInstance().getItemGroups().get(key);
+                    groupName = currKey;
+                    itemGroup = ConfigManager.getInstance().getItemGroups().get(groupName);
                     params = input.replaceAll("g:" + currKey + "(?=\\*)", "");
                 }
             }
-            if (key == null || itemGroup == null || params == null) {
+            if (groupName == null || itemGroup == null || params == null) {
                 break group;
             }
             StringBuilder stringBuilder = new StringBuilder();
@@ -154,7 +158,11 @@ public class CVItem {
         }
         List<CVItem> reqs = new ArrayList<>();
         for (String req : input.split(",")) {
-            reqs.add(createCVItemFromString(req));
+            CVItem cvItem = createCVItemFromString(req);
+            if (groupName != null) {
+                cvItem.setGroup(groupName);
+            }
+            reqs.add(cvItem);
         }
         return reqs;
     }
@@ -242,6 +250,8 @@ public class CVItem {
 
     @Override
     public CVItem clone() {
-        return new CVItem(mat, qty, (int) chance, displayName, lore);
+        CVItem cvItem = new CVItem(mat, qty, (int) chance, displayName, new ArrayList<>(lore));
+        cvItem.setGroup(group);
+        return cvItem;
     }
 }

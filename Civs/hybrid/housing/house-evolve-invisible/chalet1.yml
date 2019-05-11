@@ -26,7 +26,6 @@ build-reqs:
 - g:secondary*130
 - g:primary*400
 
-rebuild: basehouse
 build-radius: 8 #17x17x17
 effects:
 - block_break
@@ -37,6 +36,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:chalet2.48
+- buyable
 
 towns:
 - village

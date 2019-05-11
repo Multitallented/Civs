@@ -1,0 +1,41 @@
+type: region
+name: Statue
+icon: GOLD_BLOCK
+price: 600
+groups:
+- defense
+- idolgroup
+level: 5
+
+build-reqs:
+- GOLD_BLOCK*3
+
+build-radius: 2 # 5x5x5
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- potion:DAMAGE_RESISTANCE.4800
+
+pre-reqs:
+- member=town:city:metropolis
+
+towns:
+- town
+- city
+- metropolis
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+
+description:
+  en: "Applies damage resistance to members. Creates 192 power per day."
+  es: "Aplica resistencia a los daños a los miembros. Crea 192 de energía por día."
+  pt_br: "Aplica resistência a danos aos membros. Cria 192 de energia por dia."
+  de: "Wendet Schaden gegen Mitglieder an. Erzeugt 192 Energie pro Tag."
+  ru: "Применяет сопротивление урону к членам. Создает 192 силы в день."
+  fr: "Applique la résistance aux dommages aux membres. Crée 192 points de puissance par jour."

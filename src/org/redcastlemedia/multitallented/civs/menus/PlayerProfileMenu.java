@@ -1,10 +1,8 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -14,14 +12,11 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerProfileMenu extends Menu {
@@ -44,8 +39,7 @@ public class PlayerProfileMenu extends Menu {
             return;
         }
 
-        String cUuidString = event.getInventory().getItem(0).getItemMeta().getLore().get(0).replaceAll("§", "");
-        UUID uuid = UUID.fromString(cUuidString);
+        UUID uuid = (UUID) getData(civilian.getUuid(), "uuid");
         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Civilian cPlayer = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
@@ -99,25 +93,19 @@ public class PlayerProfileMenu extends Menu {
         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Civilian currCivilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("uuid", uuid);
+        setNewData(civilian.getUuid(), data);
+
         //0 Icon
         ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta isMeta = (SkullMeta) is.getItemMeta();
         isMeta.setDisplayName(player.getName());
-        ArrayList<String> lore = new ArrayList<>();
-
-        String uuidString1 = player.getUniqueId().toString();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char c : uuidString1.toCharArray()) {
-            stringBuilder.append(ChatColor.COLOR_CHAR);
-            stringBuilder.append(c);
-        }
-        lore.add(stringBuilder.toString());
-
-        isMeta.setLore(lore);
         isMeta.setOwningPlayer(player);
         is.setItemMeta(isMeta);
         inventory.setItem(0, is);
 
+        ArrayList<String> lore;
         //1 Friends
         {
             CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");

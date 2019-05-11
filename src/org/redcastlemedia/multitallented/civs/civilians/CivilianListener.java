@@ -38,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -106,6 +107,7 @@ public class CivilianListener implements Listener {
         CommonScheduler.lastTown.remove(uuid);
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
+        StructureUtil.removeBoundingBox(uuid);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -178,6 +180,10 @@ public class CivilianListener implements Listener {
                 !event.getItem().hasItemMeta()) {
             return;
         }
+        if (ConfigManager.getInstance().getBlackListWorlds()
+                .contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
         Player player = event.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -205,6 +211,7 @@ public class CivilianListener implements Listener {
             player.performCommand("cv");
             return;
         }
+        StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 

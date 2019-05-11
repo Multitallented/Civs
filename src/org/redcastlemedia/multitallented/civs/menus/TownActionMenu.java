@@ -2,10 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -16,17 +13,13 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TownActionMenu extends Menu {
     public static final String MENU_NAME = "CivsTown";
@@ -49,9 +42,8 @@ public class TownActionMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        TownManager townManager = TownManager.getInstance();
-        String townName = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Town town = townManager.getTown(townName);
+        Town town = (Town) getData(civilian.getUuid(), "town");
+        String townName = town.getName();
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
@@ -62,9 +54,10 @@ public class TownActionMenu extends Menu {
             return;
         }
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+        if (townOwner != null && event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
-                        "town-ally"))) {
+                        "town-ally").replace("$1", town.getName()))) {
+
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
             town.getAllyInvites().add(townOwner.getName());
@@ -83,7 +76,9 @@ public class TownActionMenu extends Menu {
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
-                        "town-unally")) && townOwner != null) {
+                        "town-unally").replace("$1", town.getName())) &&
+                townOwner != null) {
+
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
             townOwner.getAllies().remove(townName);
@@ -142,6 +137,11 @@ public class TownActionMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
+
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());

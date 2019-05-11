@@ -26,8 +26,6 @@ build-reqs:
 - g:secondary*110
 - g:primary*350
 
-rebuild: basedwelling
-rebuild-required: true
 build-radius: 6 #13x13x13
 effects:
 - block_break
@@ -37,6 +35,7 @@ effects:
 - door_use
 - chest_use
 - housing:1
+- buyable
 
 towns:
 - hamlet

@@ -1,0 +1,50 @@
+type: region
+icon: CHEST
+name: Obsidian_Mine
+max: 1
+price: 500
+groups:
+- mine
+level: 6
+
+pre-reqs:
+- member=city:metropolis
+
+towns:
+- city
+- metropolis
+
+build-reqs:
+- OBSIDIAN*4
+- IRON_BARS*2
+- g:door*1
+- CHEST*2
+- FURNACE*2
+- g:primary*90
+- g:secondary*12
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+- conveyor:OBSIDIAN
+
+period: 3600 # 1 hour
+upkeep:
+  0:
+    reagents:
+    - DIAMOND_PICKAXE
+    output:
+    - OBSIDIAN*4
+
+description:
+  en: "Creates obsidian slowly"
+  es: "Crea obsidiana lentamente."
+  de: "Erzeugt langsam Obsidian"
+  fr: "Crée l'obsidienne lentement"
+  ru: "Медленно создает обсидиан"
+  pt_br: "Cria obsidiana lentamente"

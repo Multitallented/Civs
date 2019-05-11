@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -86,31 +87,18 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
-                    region.getLocation(),
-                    new ItemStack(event.getBlock().getType(), 1));
-            if (missingBlocks != null && !missingBlocks.isEmpty()) {
-                event.setCancelled(true);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "broke-own-region").replace("$1", region.getType()));
-                StringBuilder missingReqs = new StringBuilder();
-                for (HashMap<Material, Integer> map : missingBlocks) {
-                    for (Material mat : map.keySet()) {
-                        CVItem key = new CVItem(mat, map.get(mat));
-                        missingReqs.append(key.getMat().toString());
-                        missingReqs.append("*");
-                        missingReqs.append(key.getQty());
-                        missingReqs.append(" or ");
-                    }
-                    missingReqs.substring(missingReqs.length() - 4);
-                    missingReqs.append("and ");
+            int[] radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
+            if (radii.length == 0) {
+                List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+                        region.getLocation(),
+                        new ItemStack(event.getBlock().getType(), 1));
+                if (missingBlocks != null && !missingBlocks.isEmpty()) {
+                    event.setCancelled(true);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "broke-own-region").replace("$1", region.getType()));
+                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                    return;
                 }
-                missingReqs.substring(missingReqs.length() - 6);
-                List<String> missingList = Util.textWrap(ChatColor.RED + "", missingReqs.toString());
-                for (String s : missingList) {
-                    player.sendMessage(s);
-                }
-                return;
             }
         }
     }
@@ -123,6 +111,12 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             return true;
         } else {
+            if (Civs.econ != null &&
+                    region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).equals("owner")) {
+                double salvage = regionType.getPrice() / 2;
+                Civs.econ.depositPlayer(event.getPlayer(), salvage);
+            }
             RegionManager.getInstance().removeRegion(region, true, true);
             return false;
         }
@@ -313,7 +307,9 @@ public class ProtectionHandler implements Listener {
             RegionManager regionManager = RegionManager.getInstance();
             Set<Region> tempArray = new HashSet<>();
             for (Region region : regionManager.getContainingRegions(location, 5)) {
-                if (Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
+                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
                     tempArray.add(region);
                 }
             }
@@ -451,6 +447,12 @@ public class ProtectionHandler implements Listener {
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//            return false;
+//        }
+        if (player != null && player.getGameMode() == GameMode.CREATIVE) {
+            return false;
+        }
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -519,6 +521,12 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//            return false;
+//        }
+        if (player != null && player.getGameMode() == GameMode.CREATIVE) {
+            return false;
+        }
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);

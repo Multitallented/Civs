@@ -1,7 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -13,15 +13,14 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class RegionActionMenu extends Menu {
     public static final String MENU_NAME = "CivsRegion";
@@ -40,27 +39,17 @@ public class RegionActionMenu extends Menu {
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        RegionManager regionManager = RegionManager.getInstance();
-        String locationString = event.getInventory().getItem(0).getItemMeta().getDisplayName().split("@")[1];
-        Location location = Region.idToLocation(locationString);
-
-        Region region = regionManager.getRegionAt(location);
-
-        if (region == null) {
-            Civs.logger.severe("Unable to find region at " + locationString);
-            return;
-        }
+        Region region = (Region) getData(civilian.getUuid(), "region");
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        //TODO add functionality for clicking some other action items
 
         if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
                 event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, region));
             return;
@@ -69,7 +58,7 @@ public class RegionActionMenu extends Menu {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
                         "region-type"))) {
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
             return;
@@ -79,10 +68,46 @@ public class RegionActionMenu extends Menu {
                 localeManager.getTranslation(civilian.getLocale(),
                         "destroy"))) {
             event.getWhoClicked().closeInventory();
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
             event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, region));
             return;
         }
+        if (event.getCurrentItem().getType() == Material.EMERALD_BLOCK) {
+            event.getWhoClicked().closeInventory();
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "use-sell-command"));
+            return;
+        }
+        if (event.getCurrentItem().getType() == Material.EMERALD_ORE) {
+            event.getWhoClicked().closeInventory();
+            ((Player) event.getWhoClicked()).performCommand("cv sell");
+            event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
+            return;
+        }
+
+        if (event.getCurrentItem().getType() == Material.EMERALD) {
+            event.getWhoClicked().closeInventory();
+            Player player = (Player) event.getWhoClicked();
+            if (Civs.econ != null && Civs.econ.has(player, region.getForSale())) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "region-bought").replace("$1", region.getType())
+                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+
+                Civs.econ.withdrawPlayer(player, region.getForSale());
+                Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
+                region.getRawPeople().clear();
+                region.getRawPeople().put(civilian.getUuid(), "owner");
+                region.setForSale(-1);
+                RegionManager.getInstance().saveRegion(region);
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "not-enough-money").replace("$1", "" + region.getForSale()));
+            }
+            clearHistory(civilian.getUuid());
+            return;
+        }
+
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             event.getWhoClicked().closeInventory();
@@ -117,12 +142,12 @@ public class RegionActionMenu extends Menu {
             }
             return inventory;
         }
-        //0 Icon
-        CVItem cvItem = new CVItem(regionType.getMat(), 1);
-        cvItem.setDisplayName(region.getType() + "@" + region.getId());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("region", region);
+        setNewData(civilian.getUuid(), data);
+
         ArrayList<String> lore;
-        //TODO set lore
-        inventory.setItem(0, cvItem.createItemStack());
 
         //1 Region Type button
         {
@@ -196,6 +221,38 @@ public class RegionActionMenu extends Menu {
             CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
+
+            if (region.getRawPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
+                //11 Set sale
+                CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
+                emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "sell-region"));
+                if (region.getForSale() > -1) {
+                    lore = new ArrayList<>();
+                    lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
+                        .replace("$1", region.getType())
+                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                    emeraldBlock.setLore(lore);
+                }
+                inventory.setItem(11, emeraldBlock.createItemStack());
+
+                if (region.getForSale() != -1) {
+                    //12 Cancel sale
+                    CVItem emeraldOre = CVItem.createCVItemFromString("EMERALD_ORE");
+                    emeraldOre.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "cancel-sale"));
+                    inventory.setItem(12, emeraldOre.createItemStack());
+                }
+            }
+        }
+
+        if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1) {
+            //13 Buy region button
+            CVItem emerald = CVItem.createCVItemFromString("EMERALD");
+            emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "buy-region").replace("$1", region.getType())
+                    .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+            inventory.setItem(13, emerald.createItemStack());
         }
 
 

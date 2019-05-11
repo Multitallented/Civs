@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,15 +12,13 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 public class ConfirmationMenu extends Menu {
     static String MENU_NAME = "CivConfirm";
@@ -30,14 +29,14 @@ public class ConfirmationMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getCurrentItem() == null) {
+            return;
+        }
 
-        ItemManager itemManager = ItemManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String regionName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        CivItem civItem = itemManager.getItemType(regionName);
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
+        CivItem civItem = (CivItem) getData(civilian.getUuid(), "civItem");
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -67,8 +66,21 @@ public class ConfirmationMenu extends Menu {
                             .replace("$1", civItem.getDisplayName())
                             .replace("$2", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             event.getWhoClicked().closeInventory();
+            CVItem purchasedItem = civItem.clone();
+            boolean isTown = civItem.getItemType() == CivItem.ItemType.TOWN;
+            boolean isRegion = civItem.getItemType() == CivItem.ItemType.REGION;
+            List<String> lore = new ArrayList<>();
+            lore.add(civilian.getUuid().toString());
+            lore.add(purchasedItem.getDisplayName());
+            if (isTown) {
+                lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
+                        .replace("$1", civItem.getProcessedName())));
+            } else if (isRegion) {
+                lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            }
+            purchasedItem.setLore(lore);
             if (event.getWhoClicked().getInventory().firstEmpty() != -1) {
-                event.getWhoClicked().getInventory().addItem(civItem.createItemStack());
+                event.getWhoClicked().getInventory().addItem(purchasedItem.createItemStack());
             } else {
                 if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
                     civilian.getStashItems().put(civItem.getProcessedName(),
@@ -91,6 +103,10 @@ public class ConfirmationMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, CivItem civItem) {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("civItem", civItem);
+        setNewData(civilian.getUuid(), data);
 
         inventory.setItem(0, civItem.clone().createItemStack());
 

@@ -71,7 +71,8 @@ public class TownType extends CivItem {
                     List<String> groups,
                     String child,
                     int childPopulation,
-                    boolean isInShop) {
+                    boolean isInShop,
+                    int level) {
         super(civReqs,
                 false,
                 ItemType.TOWN,
@@ -84,7 +85,8 @@ public class TownType extends CivItem {
                 permission,
                 description,
                 groups,
-                isInShop);
+                isInShop,
+                level);
         this.reqs = reqs;
         this.regionLimits = regionLimits;
         this.effects = effects;

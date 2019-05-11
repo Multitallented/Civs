@@ -8,12 +8,12 @@ groups:
 level: 1
 
 build-reqs:
-- g:primary*110
-- g:secondary*12
 - TNT*2
 - g:door*1
 - CHEST*2
 - FURNACE*2
+- g:primary*110
+- g:secondary*12
 
 build-radius: 4
 

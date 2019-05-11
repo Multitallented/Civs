@@ -145,7 +145,7 @@ public class ClassManager {
                     new ArrayList<String>(),
                     new HashMap<String, String>(),
                     new ArrayList<String>(),
-                    5, 100, true);
+                    5, 100, true, 1);
         }
         return new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
     }

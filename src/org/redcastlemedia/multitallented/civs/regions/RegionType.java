@@ -1,10 +1,13 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
+
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +59,8 @@ public class RegionType extends CivItem {
                       boolean dailyPeriod,
                       List<String> groups,
                       boolean isInShop,
-                      boolean rebuildRequired) {
+                      boolean rebuildRequired,
+                      int level) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -68,7 +72,8 @@ public class RegionType extends CivItem {
                 permission,
                 description,
                 groups,
-                isInShop);
+                isInShop,
+                level);
         this.name = name;
         this.reqs = reqs;
         this.upkeeps = upkeeps;
@@ -89,7 +94,7 @@ public class RegionType extends CivItem {
         return name;
     }
     public List<List<CVItem>> getReqs() {
-        return reqs;
+        return cloneReqMap(reqs);
     }
     public HashMap<String, String> getEffects() {
         return effects;
@@ -118,5 +123,18 @@ public class RegionType extends CivItem {
     public HashSet<String> getTowns() { return towns; }
     public Set<Biome> getBiomes() {
         return biomes;
+    }
+
+    static List<List<CVItem>> cloneReqMap(List<List<CVItem>> reqMap) {
+        List<List<CVItem>> itemCheck = new ArrayList<>();
+        for (List<CVItem> currentList : reqMap) {
+            List<CVItem> currentReqMap = new ArrayList<>();
+            for (CVItem currentItem : currentList) {
+                CVItem clone = currentItem.clone();
+                currentReqMap.add(clone);
+            }
+            itemCheck.add(currentReqMap);
+        }
+        return itemCheck;
     }
 }

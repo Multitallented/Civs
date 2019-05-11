@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -48,6 +49,9 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         Location l = region.getLocation();
 
         //Check if the region has the shoot arrow effect and return arrow velocity
+        if (regionType.getEffects().get(KEY) == null) {
+            return;
+        }
         String[] effectSplit = regionType.getEffects().get(KEY).split("\\.");
         long period = Long.parseLong(effectSplit[0]) * 1000;
         if (period < 1) {
@@ -210,18 +214,35 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         //Find target Super-region
         Sign sign = (Sign) b.getState();
         String townName = sign.getLine(0);
-        Town town = TownManager.getInstance().getTown(townName);
+        Town town = null;
+        for (Town cTown : TownManager.getInstance().getTowns()) {
+            if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
+                town = cTown;
+                break;
+            }
+        }
         if (town == null) {
             sign.setLine(0, "invalid target");
             sign.update();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(), "raid-sign"));
             return false;
+        } else {
+            sign.setLine(0, town.getName());
+            sign.update();
+        }
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        double rawRadius = townType.getBuildRadius();
+        if (town.getLocation().distance(l) - rawRadius >  150) {
+            sign.setLine(2, "out of");
+            sign.setLine(3, "range");
+            sign.update();
+            return false;
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "siege-built").replace("$1", p.getDisplayName())
+                    civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", regionType.getName()).replace("$3", town.getName()));
         }
         return true;

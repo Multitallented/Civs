@@ -1,27 +1,28 @@
 type: town
 icon: TNT
 name: Keep
-max: 1
+max: 2
 price: 400
 group:
 - outpost
-level: 1
+level: 3
 
 pre-reqs:
 - outpost:population=1
 
 build-reqs:
-- command_tent:1
+- castle:1
 
 critical-build-reqs:
-- command_tent
+- basecenter
 
 limits:
-- arrowtrapgroup:2
+- arrowtrapgroup:3
 - siegemachinegroup:4
+- powercapacitorgroup:6
 
 child: outpost
-build-radius: 36 #28x28x28
+build-radius: 36 # 73x73x73
 effects:
 - block_break
 - block_build
@@ -30,10 +31,15 @@ effects:
 - deny_mob_spawn
 - control_override
 - power_shield
+- potion:HEALTH_BOOST.80,DAMAGE_RESISTANCE.80
 
-power: 512
-max-power: 512
+power: 1028
+max-power: 1028
 
 description:
   en: "The second level of a siege base."
   es: "El segundo nivel de una base de asedio."
+  fr: "Le deuxième niveau d'une base de siège."
+  pt_br: "O segundo nível de uma base de cerco."
+  ru: "Второй уровень осадной базы."
+  de: "Die zweite Ebene einer Belagerungsbasis."

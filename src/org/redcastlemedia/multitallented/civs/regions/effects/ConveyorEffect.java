@@ -77,7 +77,9 @@ public class ConveyorEffect implements Listener {
                     for (int z = (int) (z0 - radius); z < z0 + radius; z++) {
                         Block b = l.getWorld().getBlockAt(x, y, z);
                         if (b.getType() == Material.POWERED_RAIL) {
-                            cachePoints.put(r, b.getRelative(BlockFace.UP).getLocation());
+                            Location location = b.getRelative(BlockFace.UP).getLocation();
+                            location = Region.idToLocation(Region.blockLocationToString(location));
+                            cachePoints.put(r, location);
                             break outer;
                         }
                     }

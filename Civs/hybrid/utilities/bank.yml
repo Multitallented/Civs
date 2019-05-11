@@ -16,14 +16,14 @@ towns:
 - metropolis
 
 build-reqs:
-- g:primary*180
-- g:secondary*50
+- g:roof*96
 - g:window*12
 - g:door*6
-- g:roof*96
 - GOLD_BLOCK*4
 - g:fence*18
 - chest*12
+- g:primary*180
+- g:secondary*50
 build-radius: 5
 
 effects:

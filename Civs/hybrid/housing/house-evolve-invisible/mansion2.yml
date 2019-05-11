@@ -26,8 +26,6 @@ build-reqs:
 - g:secondary*130
 - g:primary*400
 
-rebuild: basechalet
-rebuild-required: true
 build-radius: 10 #21x21x21
 effects:
 - block_break
@@ -38,6 +36,7 @@ effects:
 - chest_use
 - housing:1
 - evolve:mansion3.24
+- buyable
 
 towns:
 - village
@@ -51,14 +50,17 @@ upkeep:
     power-input: 1
   1:
     input: #2.11
-    - BREAD*5  # 120 or 1.87 stacks / day
-    - COOKED_BEEF*4,BEEF*24 # 576 or 9 stacks / day
-    payout: 51 # $303.84 / day
+      - BREAD*5  # 120 or 1.87 stacks / day
+    payout: 8.4 # $203.84 / day
   2:
     input:
     - CARROT*12   # 228 or 3.65 stacks / day
     payout: 18.2 # $432 / day
   3:
+    input:
+      - COOKED_BEEF*4,BEEF*24 # 576 or 9 stacks / day
+    payout: 4.2 # $100.8 / day
+  4:
     input:
     - COOKIE*24 # 576 or 9 stacks / day
     payout: 18.4 # $432 / day

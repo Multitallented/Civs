@@ -35,7 +35,7 @@ public class InviteTownCommand implements CivCommand {
         String townName = strings[2];
 
         TownManager townManager = TownManager.getInstance();
-        Town town = townManager.getTown(townName.toLowerCase());
+        Town town = townManager.getTown(townName);
         if (town == null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "town-not-exist").replace("$1", townName));

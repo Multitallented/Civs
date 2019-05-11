@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListe
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,6 +211,12 @@ public class RegionManager {
             regionConfig.set("yp-radius", region.getRadiusYP());
             regionConfig.set("zn-radius", region.getRadiusZN());
             regionConfig.set("zp-radius", region.getRadiusZP());
+            if (region.getForSale() != -1) {
+                regionConfig.set("sale", region.getForSale());
+            } else {
+                regionConfig.set("sale", null);
+            }
+
             for (UUID uuid : region.getPeople().keySet()) {
                 if ("ally".equals(region.getPeople().get(uuid))) {
                     continue;
@@ -252,8 +259,11 @@ public class RegionManager {
                     location,
                     radii,
                     (HashMap<String, String>) regionType.getEffects().clone(),
-                    exp
-            );
+                    exp);
+            double forSale = regionConfig.getDouble("sale", -1);
+            if (forSale != -1) {
+                region.setForSale(forSale);
+            }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
             return null;
@@ -485,7 +495,7 @@ public class RegionManager {
                     if (exclusiveSet.contains(region.getType().toLowerCase())) {
                         player.sendMessage(Civs.getPrefix() +
                                 localeManager.getTranslation(civilian.getLocale(), "exclusive")
-                                .replace("$1", regionTypeName).replace("$2", region.getType()));
+                                        .replace("$1", regionTypeName).replace("$2", region.getType()));
                         event.setCancelled(true);
                         return false;
                     }
@@ -501,20 +511,23 @@ public class RegionManager {
             }
         }
 
-        int[] radii = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, false);
+        int radii[] = Region.hasRequiredBlocksOnCenter(regionType, location);
         if (radii.length == 0) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
-                            .replace("$1", regionTypeName));
-            List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
-            if (missingBlocks != null) {
-//                for (String message : generateMissingReqsMessage(missingBlocks)) {
-//                    player.sendMessage(message);
-//                }
-                player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+            radii = Region.hasRequiredBlocks(player, regionType.getName().toLowerCase(), location, false);
+            if (radii.length == 0) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
+                                .replace("$1", regionTypeName));
+                List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
+                if (missingBlocks != null) {
+                    //                for (String message : generateMissingReqsMessage(missingBlocks)) {
+                    //                    player.sendMessage(message);
+                    //                }
+                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                }
+                return false;
             }
-            return false;
         }
 
         HashMap<UUID, String> people;

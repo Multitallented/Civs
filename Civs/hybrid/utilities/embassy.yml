@@ -1,0 +1,50 @@
+type: region
+icon: SIGN
+name: Embassy
+price: 500
+max: 1
+groups:
+- utility
+level: 5
+
+pre-reqs:
+- member=town:city:metropolis
+
+towns:
+- town
+- city
+- metropolis
+
+build-reqs:
+- CHEST*4
+- g:door*2
+- g:window*16
+- g:roof*121
+- g:stairs*4
+- g:sign*8
+- g:secondary*60
+- g:primary*250
+build-radius: 5 # 11x11x11
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- port
+- deny_damage
+- cant_override
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+
+description:
+  en: "Produces 192 power per day. Also acts as a home port."
+  es: "Produce 192 potencia por día. También actúa como un puerto de origen."
+  de: "Produziert 192 Kraft pro Tag. Funktioniert auch als Heimathafen."
+  ru: "Производит 192 энергии в день. Также выступает в качестве домашнего порта."
+  pt_br: "Produz 192 de energia por dia. Também atua como um porto de origem."
+  fr: "Produit 192 puissance par jour. Agit également comme port d'attache."

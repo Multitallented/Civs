@@ -135,8 +135,66 @@ warrior:
       pt_br: "Uma vez que seu raid_porter estiver ativo, fique em cima dele para se teletransportar para a cidade."
       ru: "Когда ваш raid_porter активен, встаньте на него сверху, чтобы телепортироваться в город."
       de: "Sobald Ihr raid_porter aktiv ist, stellen Sie sich darauf, um in die Stadt zu teleportieren."
-  #TODO add steps to build a keep and siege machine
-  #TODO eventually destroy a town?
+  - type: build
+    region: command_tent
+    rewards:
+      items:
+        - DIAMOND*3
+      money: 1000
+    messages:
+      en: "Now that you've raided a town, it's time go to war with one. Build a Command_Tent near an enemy town."
+      fr: "Maintenant que vous avez attaqué une ville, il est temps de partir en guerre contre une ville. Construisez une Command_Tent près d'une ville ennemie."
+      es: "Ahora que has atacado un pueblo, es hora de ir a la guerra con uno. Construye un Command_Tent cerca de una ciudad enemiga."
+      pt_br: "Agora que você invadiu uma cidade, é hora de entrar em guerra com uma. Construa um Command_Tent perto de uma cidade inimiga."
+      ru: "Теперь, когда вы совершили набег на город, пришло время сразиться с ним. Постройте Command_Tent возле вражеского города."
+      de: "Nun, da Sie eine Stadt überfallen haben, ist es Zeit, mit einer zu kämpfen. Baue ein Command_Tent in der Nähe einer feindlichen Stadt"
+  - type: build
+    region: siege_machine
+    rewards:
+      items:
+      - TNT*64
+    messages:
+      en: "Now buy and build the Outpost on top of your Command_Tent. After that, buy and build the Siege_Machine."
+      fr: "Maintenant, achetez et construisez l’Avant-poste sur votre Command_Tent. Après cela, achetez et construisez Siege_Machine."
+      es: "Ahora compre y construya el Puesto Avanzado sobre su Command_Tent. Después de eso, compra y construye el Siege_Machine."
+      pt_br: "Agora compre e construa o Outpost no topo da sua Command_Tent. Depois disso, compre e construa o Siege_Machine."
+      ru: "Теперь купите и постройте форпост на вершине вашей Command_Tent. После этого купите и постройте Siege_Machine."
+      de: "Kaufen Sie jetzt den Outpost und bauen Sie ihn auf Ihrem Command_Tent. Danach kaufe und baue die Siege_Machine."
+  - type: build
+    region: castle
+    rewards:
+      items:
+      - TNT*64
+      - TNT*64
+      money: 750
+    messages:
+      en: "The Siege_Machine will slowly reduce the enemy town's power, which forces the town to attack you. Buy and build a Castle on top of your Command_Tent."
+      fr: "La Siege_Machine va lentement réduire le pouvoir de la ville ennemie, ce qui oblige la ville à vous attaquer. Achetez et construisez un château au-dessus de votre Command_Tent."
+      es: "Siege_Machine reducirá lentamente el poder de la ciudad enemiga, lo que obliga a la ciudad a atacarte. Compra y construye un castillo encima de tu Command_Tent."
+      pt_br: "O Siege_Machine irá lentamente reduzir o poder da cidade inimiga, o que força a cidade a atacar você. Compre e construa um castelo no topo da sua Command_Tent."
+      ru: "Siege_Machine будет постепенно уменьшать силу вражеского города, что заставит город атаковать вас Купите и постройте замок на вершине вашей Command_Tent."
+      de: "Die Siege_Machine verringert langsam die Macht der gegnerischen Stadt, was die Stadt dazu zwingt, Sie anzugreifen. Kaufe und baue ein Schloss auf deinem Command_Tent."
+  - type: build
+    region: memorial
+    rewards:
+      items:
+      - DIAMOND*6
+      money: 1000
+    messages:
+      en: "Now that you've built the Castle, buy and build the Keep. After that, build a Memorial."
+      fr: "Maintenant que vous avez construit le château, achetez et construisez le donjon. Après cela, construisez un mémorial."
+      es: "Ahora que has construido el castillo, compra y construye la torre. Después de eso, construir un Memorial."
+      pt_br: "Agora que você construiu o Castelo, compre e construa o Keep. Depois disso, construa um Memorial."
+      ru: "Теперь, когда вы построили замок, купите и постройте крепость. После этого постройте Мемориал."
+      de: "Jetzt, da du das Schloss gebaut hast, kaufe und baue die Festung. Baue danach ein Denkmal."
+  - type: end
+    messages:
+      en: "Congratulations! You are now wise in the ways of warfare. This concludes the warrior path."
+      fr: "Toutes nos félicitations! Vous êtes maintenant sage dans les voies de la guerre. Ceci conclut le chemin du guerrier."
+      es: "¡Felicidades! Ahora eres sabio en los caminos de la guerra. Esto concluye el camino del guerrero."
+      pt_br: "Parabéns! Agora você é sábio nos modos de guerra. Isso conclui o caminho do guerreiro."
+      ru: "Поздравляем! Вы теперь мудры в способах ведения войны. Это завершает путь воина."
+      de: "Herzliche Glückwünsche! Sie sind jetzt weise auf dem Weg der Kriegsführung. Dies schließt den Weg des Kriegers ab."
 builder:
   icon: DIAMOND_BLOCK
   names:
@@ -270,7 +328,66 @@ builder:
       fr: "Les colonies sont limitées à 4 cabanes. Pour maximiser votre logement, construisez une cabane, puis achetez et placez un taudis à l'intérieur de cette cabane."
       pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
       ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
-      de: "Siedlungen sind auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
+      de: "Siedlungen sin auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
+  - type: build
+    region: catapult
+    rewards:
+      items:
+      - TNT*16
+    messages:
+      en: "Next, build a catapult. Catapults are precise TNT cannons that you can use to destroy attacker's siege structures."
+      fr: "Ensuite, construisez une catapulte. Les catapultes sont des canons TNT précis que vous pouvez utiliser pour détruire les structures de siège de l'attaquant."
+      es: "A continuación, construir una catapulta. Las catapultas son cañones TNT precisos que puedes usar para destruir las estructuras de asedio del atacante."
+      pt_br: "Em seguida, construa uma catapulta. Catapultas são canhões de TNT precisos que você pode usar para destruir as estruturas de cerco do atacante."
+      ru: "Далее строим катапульту. Катапульты - это точные пушки TNT, которые вы можете использовать для разрушения осадных структур атакующего."
+      de: "Baue als nächstes ein Katapult. Katapulte sind präzise TNT-Kanonen, mit denen Sie die Belagerungsstrukturen des Angreifers zerstören können."
+  - type: build
+    region: dwelling
+    rewards:
+      money: 500
+      items:
+      - DIAMOND*3
+    messages:
+      en: "Go ahead and upgrade your town to a Hamlet. Once you've done that, build a Dwelling. With each now town level you get a stand alone level of housing."
+      fr: "Allez-y et transformez votre ville en hameau. Une fois que vous avez fait cela, construisez un logement. Avec chaque niveau de ville maintenant, vous obtenez un niveau de logement autonome."
+      es: "Avanza y actualiza tu ciudad a una aldea. Una vez que hayas hecho eso, construye una vivienda. Con cada nivel de ciudad ahora obtienes un nivel de vivienda independiente."
+      pt_br: "Vá em frente e atualize sua cidade para um Hamlet. Uma vez feito isso, construa uma morada. A cada nível da cidade, você obtém um nível de moradia autônomo."
+      ru: "Идите вперед и улучшите свой город до Гамлета. Как только вы это сделаете, постройте жилище. С каждым теперь уровнем города вы получаете отдельный уровень жилья."
+      de: "Machen Sie Ihre Stadt zu einem Hamlet. Wenn Sie das getan haben, bauen Sie eine Wohnung. Mit jeder jetzt städtischen Ebene erhalten Sie eine eigenständige Wohnebene."
+  - type: build
+    region: stables
+    rewards:
+      items:
+      - APPLE*64
+    messages:
+      en: "Now upgrade your town again to the village. Once you've done that, build the Stables."
+      fr: "Améliorez à nouveau votre ville pour rejoindre le village. Une fois que vous avez fait cela, construisez les écuries."
+      es: "Ahora actualiza tu ciudad de nuevo al pueblo. Una vez que hayas hecho eso, construye los establos."
+      pt_br: "Agora atualize sua cidade novamente para a aldeia. Depois disso, construa os Estábulos."
+      ru: "Теперь обновите свой город снова до деревни. Как только вы это сделаете, постройте конюшни."
+      de: "Rüste deine Stadt jetzt erneut zum Dorf auf. Sobald Sie das getan haben, bauen Sie die Ställe."
+  - type: build
+    region: town_hall
+    rewards:
+      items:
+      - DIAMOND*3
+      money: 1000
+    messages:
+      en: "Before you can upgrade your village, you'll need to upgrade your Council_Room. Buy and place the Town_Hall inside your Council_Room."
+      fr: "Avant de pouvoir améliorer votre village, vous devez mettre à niveau votre Council_Room. Achetez et placez le Town_Hall dans votre Council_Room."
+      es: "Antes de que puedas mejorar tu aldea, deberás actualizar tu Council_Room. Compre y coloque el Town_Hall dentro de su Council_Room."
+      pt_br: "Antes de poder atualizar sua vila, você precisará atualizar seu Council_Room. Compre e coloque a Town_Hall dentro do seu Council_Room."
+      ru: "Прежде чем вы сможете обновить свою деревню, вам нужно обновить ваш Council_Room. Купите и разместите Town_Hall внутри вашего Council_Room."
+      de: "Bevor Sie Ihr Dorf verbessern können, müssen Sie Ihren Council_Room aktualisieren. Kaufen und platzieren Sie die Town_Hall in Ihrem Council_Room."
+  - type: end
+    messages:
+      en: "Congratulations! You're quite the accomplished architect. This concludes the builder path."
+      fr: "Toutes nos félicitations! Vous êtes un architecte accompli. Ceci conclut le chemin du générateur."
+      es: "¡Felicidades! Eres bastante el arquitecto consumado. Esto concluye el camino del constructor."
+      pt_br: "Parabéns! Você é um arquiteto talentoso. Isso conclui o caminho do construtor."
+      ru: "Поздравляем! Вы довольно опытный архитектор. Это завершает путь строителя."
+      de: "Herzliche Glückwünsche! Sie sind durchaus der versierte Architekt. Damit ist der Builder-Pfad abgeschlossen."
+
 merchant:
   icon: DIAMOND*64
   names:
@@ -401,8 +518,39 @@ merchant:
       pt_br: "Coloque esses salmões em sua casa 1 para atualizá-los para uma casa 2."
       ru: "Поместите этого лосося в свой Дом 1, чтобы улучшить его до Дома 2."
       de: "Setzen Sie diese Lachse in Ihr Haus 1 ein, um ein Haus 2 zu erhalten."
-  #- type: build
-  #  region: trading
-  # TODO market?
-  # TODO town trade?
-  # TODO continue up the housing track?
+  - type: build
+    region: iron_shop
+    rewards:
+      items:
+      - IRON_INGOT*64
+      - IRON_INGOT*64
+      - IRON_INGOT*64
+      money: 100
+    messages:
+      en: "Now build an iron_shop to further increase your income."
+      fr: "Construisez maintenant un Iron_shop pour augmenter vos revenus."
+      es: "Ahora construye una ferretería para aumentar aún más tus ingresos."
+      pt_br: "Agora construa uma loja de ferro para aumentar ainda mais sua renda."
+      ru: "Теперь создайте iron_shop, чтобы увеличить свой доход."
+      de: "Bauen Sie jetzt einen iron_shop auf, um Ihr Einkommen weiter zu steigern."
+  - type: build
+    region: jade_shop
+    rewards:
+      items:
+      - DIAMOND*3
+      money: 700
+    messages:
+      en: "Each player may only have 3 shops. The most lucrative shop is a trading shop. Build the Jade_Shop. Destroy one of your other shops if have 3 already."
+      fr: "Chaque joueur ne peut avoir que 3 magasins. Le magasin le plus lucratif est un magasin de commerce. Construisez le Jade_Shop. Détruisez un de vos autres magasins si vous en avez déjà 3."
+      es: "Cada jugador solo puede tener 3 tiendas. La tienda más lucrativa es una tienda de comercio. Construye el Jade_Shop. Destruye una de tus otras tiendas si ya tienes 3."
+      pt_br: "Cada jogador pode ter apenas 3 lojas. A loja mais lucrativa é uma loja de trading. Construa o Jade_Shop. Destrua uma de suas outras lojas se já tiver 3."
+      ru: "У каждого игрока может быть только 3 магазина. Самый прибыльный магазин - это торговый магазин. Постройте Jade_Shop. Уничтожьте один из ваших других магазинов, если уже есть 3."
+      de: "Jeder Spieler darf nur 3 Geschäfte haben. Der lukrativste Laden ist ein Handelsshop. Baue den Jade_Shop. Zerstöre einen deiner anderen Shops, wenn du bereits 3 hast."
+  - type: end
+    messages:
+      en: "Congratulations! You can now sell items you buy from another town's Jade_Mine. This concludes the path of the merchant."
+      fr: "Toutes nos félicitations! Vous pouvez maintenant vendre des objets que vous achetez de Jade_Mine d'une autre ville. Ceci conclut le chemin du marchand."
+      es: "¡Felicidades! Ahora puedes vender artículos que compres en Jade_Mine de otra ciudad. Esto concluye el camino del comerciante."
+      pt_br: "Parabéns! Agora você pode vender itens comprados no Jade_Mine de outra cidade. Isso conclui o caminho do comerciante."
+      ru: "Поздравляем! Теперь вы можете продавать предметы, которые вы покупаете в Jade_Mine другого города. Это завершает путь торговца."
+      de: "Herzliche Glückwünsche! Sie können jetzt Gegenstände verkaufen, die Sie von Jade_Mine einer anderen Stadt kaufen. Dies schließt den Weg des Händlers ab."

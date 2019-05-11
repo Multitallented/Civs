@@ -30,6 +30,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
@@ -751,11 +752,23 @@ public class RegionsTests {
                 TestUtil.player,
                 Action.RIGHT_CLICK_BLOCK,
                 new ItemStack(Material.AIR),
-                TestUtil.block,
-                BlockFace.NORTH);
+                TestUtil.blockUnique,
+                BlockFace.NORTH,
+                EquipmentSlot.HAND);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
-        assertSame(playerInteractEvent.useInteractedBlock(), Event.Result.DENY);
+        assertSame(Event.Result.ALLOW, playerInteractEvent.useInteractedBlock());
+    }
+
+    @Test
+    public void regionTypeReqMapShouldNeverMutate() {
+        RegionsTests.loadRegionTypeCobble2();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        List<List<CVItem>> reqMap = regionType.getReqs();
+        reqMap.get(0).get(0).setQty(2);
+        assertEquals(3, regionType.getReqs().get(0).get(0).getQty());
+        reqMap.get(0).add(CVItem.createCVItemFromString("OAK_LOG*5"));
+        assertEquals(1, regionType.getReqs().get(0).size());
     }
 
     @Test

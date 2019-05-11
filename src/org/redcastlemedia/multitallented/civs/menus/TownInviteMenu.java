@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -14,10 +13,9 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Map;
 
 public class TownInviteMenu extends Menu {
     public static String MENU_NAME = "CivsTownInvites";
@@ -34,12 +32,10 @@ public class TownInviteMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        ItemStack itemStack = event.getInventory().getItem(2);
         String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(UUID.fromString(itemStack.getItemMeta().getLore().get(0)));
-        int page = Integer.parseInt(itemStack.getItemMeta().getDisplayName().replace("Icon", ""));
-        String yourTownName = null;
-        yourTownName = itemStack.getItemMeta().getLore().get(1);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        int page = (int) getData(civilian.getUuid(), "page");
+        String yourTownName = (String) getData(civilian.getUuid(), "townName");
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -62,7 +58,7 @@ public class TownInviteMenu extends Menu {
             return;
         }
         String townName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Town town = TownManager.getInstance().getTown(townName.toLowerCase());
+        Town town = TownManager.getInstance().getTown(townName);
         if (town != null) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + yourTownName);
             event.getWhoClicked().closeInventory();
@@ -86,16 +82,10 @@ public class TownInviteMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        //2 Icon
-        CVItem cvItem = CVItem.createCVItemFromString("STONE");
-        cvItem.setDisplayName("Icon" + page);
-        List<String> lore = new ArrayList<>();
-        lore.add(civilian.getUuid().toString());
-        if (townName != null) {
-            lore.add(townName);
-        }
-        cvItem.setLore(lore);
-        inventory.setItem(2, cvItem.createItemStack());
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("townName", townName);
+        setNewData(civilian.getUuid(), data);
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));

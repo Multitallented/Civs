@@ -1,0 +1,49 @@
+type: region
+icon: CHEST
+name: Gold_Shop
+max: 1
+price: 200
+groups:
+- shop
+- oreshop
+level: 5
+
+pre-reqs:
+- member=town:city:metropolis
+
+towns:
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:fence*14
+- CHEST*1
+- GOLD_BLOCK*1
+- g:wool*25
+
+build-radius: 2
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - GOLD_INGOT*12 # 288 / day
+    payout: 28          # $576 / day
+
+description:
+  en: "Sells 288 gold to the server for $672 per day."
+  es: "Vende 288 de oro al servidor por $ 672 por día."
+  pt_br: "Vende 288 de ouro para o servidor por $ 672 por dia."
+  ru: "Продает 288 золотых серверу за $ 672 доллара в день."
+  de: "Verkauft 288 Gold an den Server für 672 $ pro Tag."
+  fr: "Vend 288 pièces d’or au serveur pour 672 $ par jour."

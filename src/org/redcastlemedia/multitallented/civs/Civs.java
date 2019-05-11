@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -25,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.io.File;
 import java.util.Calendar;
@@ -71,6 +73,7 @@ public class Civs extends JavaPlugin {
     @Override
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
+        StructureUtil.removeAllBoundingBoxes();
         getLogger().info(LogInfo.DISABLED);
     }
 
@@ -80,6 +83,10 @@ public class Civs extends JavaPlugin {
         if (args.length < 1) {
             args = new String[1];
             args[0] = "menu";
+        }
+        if (commandSender instanceof Player && ConfigManager.getInstance().getBlackListWorlds()
+                .contains(((Player) commandSender).getWorld().getName())) {
+            return true;
         }
         CivCommand civCommand = commandList.get(args[0]);
         if (civCommand == null) {
@@ -141,6 +148,7 @@ public class Civs extends JavaPlugin {
         commandList.put("rename", new RenameCommand());
         commandList.put("bounty", new BountyCommand());
         commandList.put("reset", new ResetCommand());
+        commandList.put("sell", new SellRegionCommand());
     }
 
     private void initListeners() {
@@ -192,6 +200,11 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
         Bukkit.getPluginManager().registerEvents(new StartTutorialMenu(), this);
         Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new PermissionEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
 
         new HousingEffect();
     }

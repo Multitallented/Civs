@@ -39,7 +39,11 @@ public class BlueprintsMenu extends Menu {
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
         Inventory inventory = event.getInventory();
-        if (!event.getView().getTitle().equals(MENU_NAME)) {
+        try {
+            if (!event.getView().getTitle().equals(MENU_NAME)) {
+                return;
+            }
+        } catch (IllegalStateException stateException) {
             return;
         }
 

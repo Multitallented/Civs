@@ -7,12 +7,12 @@ groups:
 level: 1
 
 build-reqs:
-- g:primary*70
-- g:secondary*12
 - g:window*2
 - g:door*1
 - g:roof*30
 - SNOW_BLOCK*9
+- g:primary*70
+- g:secondary*12
 
 build-radius: 3
 

@@ -15,6 +15,8 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.ArrayList;
+
 public class MainMenu extends Menu {
     static final String MENU_NAME = "CivsMain";
     public MainMenu() {
@@ -40,7 +42,7 @@ public class MainMenu extends Menu {
         if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(LanguageMenu.createMenu());
             return;
         }
         if (Material.ENCHANTED_BOOK == clickedStack.getType()) {
@@ -106,6 +108,11 @@ public class MainMenu extends Menu {
         if (ConfigManager.getInstance().isUseGuide()) {
             CVItem cvItem4 = new CVItem(Material.ENCHANTED_BOOK, 1, 100,
                     localeManager.getTranslation(locale, "guide"));
+            if (civilian.getTutorialIndex() != -1) {
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "guide-desc"));
+                cvItem4.setLore(lore);
+            }
             inventory.setItem(i, cvItem4.createItemStack());
         }
         i++;

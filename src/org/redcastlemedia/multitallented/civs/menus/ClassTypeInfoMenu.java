@@ -8,16 +8,17 @@ import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
-import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ClassTypeInfoMenu extends Menu {
     static String MENU_NAME = "CivClassInfo";
@@ -30,10 +31,11 @@ public class ClassTypeInfoMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
         ItemManager itemManager = ItemManager.getInstance();
-        String className = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        UUID uuid = event.getWhoClicked().getUniqueId();
+        String className = (String) getData(uuid, "className");
+        clearData(uuid);
         ClassType classType = (ClassType) itemManager.getItemType(className);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -77,7 +79,9 @@ public class ClassTypeInfoMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, ClassType classType) {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
-        ItemManager itemManager = ItemManager.getInstance();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("className", classType.getProcessedName());
+        setNewData(civilian.getUuid(), data);
         LocaleManager localeManager = LocaleManager.getInstance();
 
         //0 Icon

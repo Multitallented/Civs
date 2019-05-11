@@ -6,13 +6,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class RecipeMenu extends Menu {
 
@@ -25,9 +24,31 @@ public class RecipeMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
-        if (Menu.isBackButton(event.getCurrentItem(),
-                CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId()).getLocale())) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
+            return;
+        }
+        if (event.getCurrentItem() != null &&
+                event.getCurrentItem().hasItemMeta() &&
+                event.getCurrentItem().getItemMeta().getLore() != null &&
+                event.getCurrentItem().getItemMeta().getLore().size() > 0 &&
+                event.getCurrentItem().getItemMeta().getLore().get(0).startsWith("g:")) {
+            String groupName = event.getCurrentItem().getItemMeta().getLore().get(0);
+            groupName = groupName.replace("g:", "");
+            List<HashMap<Material, Integer>> newRecipe = new ArrayList<>();
+
+            String groupString = ConfigManager.getInstance().getItemGroups().get(groupName);
+            int amount = event.getCurrentItem().getAmount();
+            for (String matString : groupString.split(",")) {
+                HashMap<Material, Integer> tempMap = new HashMap<>();
+                tempMap.put(Material.valueOf(matString), amount);
+                newRecipe.add(tempMap);
+            }
+
+            event.getWhoClicked().closeInventory();
+            ItemStack icon = event.getClickedInventory().getItem(0);
+            event.getWhoClicked().openInventory(RecipeMenu.createMenu(newRecipe, civilian.getUuid(), icon));
             return;
         }
     }
@@ -173,6 +194,13 @@ public class RecipeMenu extends Menu {
             CVItem nextItem = proxyInv.get(pIndex);
             ItemStack is;
             is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+            if (nextItem.getGroup() != null) {
+                ItemMeta itemMeta = is.getItemMeta();
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add("g:" + nextItem.getGroup());
+                itemMeta.setLore(lore);
+                is.setItemMeta(itemMeta);
+            }
             inv.setItem(pIndex + 9, is);
         }
 

@@ -22,7 +22,7 @@ effects:
 - block_build
 - block_fire
 - door_use
-- potion:HEAL
+- potion:HEAL.80
 - temporary:1800 # 30 minutes
 
 description:

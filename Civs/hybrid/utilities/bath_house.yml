@@ -12,10 +12,10 @@ pre-reqs:
 
 build-reqs:
 - WATER*150
-- g:primary*230
-- g:secondary*40
 - g:fencegate*2
 - FURNACE*14
+- g:primary*230
+- g:secondary*40
 
 build-radius: 7
 towns:
