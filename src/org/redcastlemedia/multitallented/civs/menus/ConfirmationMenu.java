@@ -29,12 +29,14 @@ public class ConfirmationMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getCurrentItem() == null) {
+            return;
+        }
 
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
         CivItem civItem = (CivItem) getData(civilian.getUuid(), "civItem");
-        clearData(civilian.getUuid());
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -101,6 +103,7 @@ public class ConfirmationMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, CivItem civItem) {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
+
         Map<String, Object> data = new HashMap<>();
         data.put("civItem", civItem);
         setNewData(civilian.getUuid(), data);
