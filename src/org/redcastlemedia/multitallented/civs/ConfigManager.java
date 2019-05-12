@@ -84,6 +84,9 @@ public class ConfigManager {
     @Getter
     List<String> levelList;
 
+    @Getter
+    boolean allowTeleportInCombat;
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -263,6 +266,7 @@ public class ConfigManager {
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
             destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
             allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
+            allowTeleportInCombat = config.getBoolean("allow-teleporting-during-combat", false);
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
             useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
@@ -341,6 +345,7 @@ public class ConfigManager {
         combatLogPenalty = 80;
         destroyTownsAtZero = false;
         allowFoodHealInCombat = true;
+        allowTeleportInCombat = false;
         townGracePeriod = 43200; //12 hours
         useClassesAndSpells = false;
         useTutorial = true;

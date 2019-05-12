@@ -32,6 +32,8 @@ death-grace-period-seconds: 60
 combat-tag-duration: 60
 #should food heal in combat?
 allow-food-heal-in-combat: true
+#should players be able to teleport while in combat?
+allow-teleporting-during-combat: false
 #use the class and spell system from Civs
 use-classes-and-spells: false
 points:
