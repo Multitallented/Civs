@@ -516,7 +516,7 @@ public class RegionsTests {
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(regionManager.getRegionAt(location1));
-        assertTrue(event.isCancelled());
+        assertFalse(event.isCancelled());
     }
 
     @Test

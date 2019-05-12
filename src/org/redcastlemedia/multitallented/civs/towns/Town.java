@@ -235,6 +235,9 @@ public class Town {
     }
 
     public void destroyRing(boolean destroyAll, boolean useGravel) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         removeOuterRing(useGravel);
 
         if (!destroyAll) {
