@@ -119,6 +119,15 @@ public abstract class Menu implements Listener {
             humanEntity.openInventory(RegionTypeInfoMenu.createMenu(civilian, (RegionType) itemManager.getItemType(lastHistory[1])));
             return;
         }
+        if (lastHistory[0].equals(AllianceListMenu.MENU_NAME)) {
+            int page = 0;
+            if (lastHistory.length > 1) {
+                page = Integer.parseInt(lastHistory[1]);
+            }
+            humanEntity.closeInventory();
+            humanEntity.openInventory(AllianceListMenu.createMenu(civilian, page));
+            return;
+        }
         if (lastHistory[0].equals(ClassTypeInfoMenu.MENU_NAME)) {
             humanEntity.closeInventory();
             humanEntity.openInventory(ClassTypeInfoMenu.createMenu(civilian, (ClassType) itemManager.getItemType(lastHistory[1])));

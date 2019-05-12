@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
@@ -24,7 +26,6 @@ public class Town {
     private String name;
     private HashMap<UUID, String> people;
     private int housing;
-    private HashSet<String> allies;
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
@@ -42,7 +43,6 @@ public class Town {
         this.maxPower = maxPower;
         this.housing = housing;
         this.villagers = villagers;
-        this.allies = new HashSet<>();
         this.lastDisable = lastDisable;
     }
 
@@ -87,21 +87,26 @@ public class Town {
         people.put(uuid, role);
     }
     public HashMap<UUID, String> getPeople() {
+        HashSet<Alliance> allies = AllianceManager.getInstance().getAlliances(this);
         if (allies.isEmpty()) {
             return people;
         }
         HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
-        for (String name : allies) {
-            Town town = TownManager.getInstance().getTown(name);
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                if (!newPeople.containsKey(uuid)) {
-                    newPeople.put(uuid, "ally");
+        for (Alliance alliance : allies) {
+            for (String townName : alliance.getMembers()) {
+                if (townName.equals(name)) {
+                    continue;
+                }
+                Town town = TownManager.getInstance().getTown(townName);
+                for (UUID uuid : town.getRawPeople().keySet()) {
+                    if (!newPeople.containsKey(uuid)) {
+                        newPeople.put(uuid, "ally");
+                    }
                 }
             }
         }
         return newPeople;
     }
-    public HashSet<String> getAllies() { return allies; }
     public int getMaxPower() {
         return maxPower;
     }
@@ -114,7 +119,6 @@ public class Town {
     protected void setPower(int power) {
         this.power = power;
     }
-    public void setAllies(HashSet<String> allies) { this.allies = allies; }
 
     public int countPeopleWithRole(String role) {
         if (role == null) {
@@ -231,6 +235,9 @@ public class Town {
     }
 
     public void destroyRing(boolean destroyAll, boolean useGravel) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         removeOuterRing(useGravel);
 
         if (!destroyAll) {

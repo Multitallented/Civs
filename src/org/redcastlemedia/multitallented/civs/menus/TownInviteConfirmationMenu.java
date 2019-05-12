@@ -7,9 +7,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -46,10 +48,7 @@ public class TownInviteConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            myTown.getAllies().add(town.getName());
-            town.getAllies().add(myTown.getName());
-            TownManager.getInstance().saveTown(town);
-            TownManager.getInstance().saveTown(myTown);
+            AllianceManager.getInstance().allyTheseTowns(myTown, town);
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                 Civilian civilian1 = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
                 cPlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian1.getLocale(),

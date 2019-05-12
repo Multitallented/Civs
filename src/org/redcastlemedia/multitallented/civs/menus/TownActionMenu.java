@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -81,14 +82,16 @@ public class TownActionMenu extends Menu {
 
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            townOwner.getAllies().remove(townName);
-            town.getAllies().remove(townOwner.getName());
-            TownManager.getInstance().saveTown(town);
-            TownManager.getInstance().saveTown(townOwner);
-            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
-                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
-                        "town-ally-removed").replace("$1", townOwner.getName())
-                        .replace("$1", townName));
+            for (Town myTown : TownManager.getInstance().getTowns()) {
+                if (myTown.getPeople().containsKey(civilian.getUuid()) &&
+                        myTown.getPeople().get(civilian.getUuid()).equals("owner")) {
+                    AllianceManager.getInstance().unAlly(myTown, town);
+                    for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                        cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
+                                "town-ally-removed").replace("$1", myTown.getName())
+                                .replace("$1", townName));
+                    }
+                }
             }
             return;
         }
@@ -184,7 +187,7 @@ public class TownActionMenu extends Menu {
 
         //3 Ally / Remove ally
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (townOwner != null && townOwner != town && !townOwner.getAllies().contains(town.getName())) {
+        if (townOwner != null && townOwner != town && !AllianceManager.getInstance().isAllied(townOwner, town)) {
             CVItem cvItem6 = CVItem.createCVItemFromString("IRON_SWORD");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-ally").replace("$1", town.getName()));

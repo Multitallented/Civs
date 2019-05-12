@@ -247,6 +247,14 @@ public class ProtectionHandler implements Listener {
         shouldBlockAction(event.getEntity().getLocation(), null, "block_break");
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityLight(BlockIgniteEvent event) {
+        boolean shouldDeny = shouldBlockAction(event.getIgnitingBlock().getLocation(), "block_fire");
+        if (!event.isCancelled() && shouldDeny) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
@@ -473,6 +481,11 @@ public class ProtectionHandler implements Listener {
             if (!townType.getEffects().keySet().contains(type)) {
                 return false;
             }
+            boolean hasPower = town.getPower() > 0;
+            boolean hasGrace = hasPower || TownManager.getInstance().hasGrace(town, true);
+            if (!hasGrace) {
+                return false;
+            }
             if (player == null) {
                 return true;
             }
@@ -535,6 +548,12 @@ public class ProtectionHandler implements Listener {
             if (!townType.getEffects().containsKey(type)) {
                 break outer;
             }
+            boolean hasPower = town.getPower() > 0;
+            boolean hasGrace = hasPower || TownManager.getInstance().hasGrace(town, true);
+            if (!hasGrace) {
+                break outer;
+            }
+
             if (player == null) {
                 return true;
             }

@@ -11,8 +11,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-
 public class CommunityMenu extends Menu {
     public static final String MENU_NAME = "CivsCommunity";
     public CommunityMenu() {
@@ -59,6 +57,12 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(ForSaleMenu.createMenu(civilian, 0));
             return;
         }
+        if (clickedStack.getType() == Material.IRON_SWORD) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(AllianceListMenu.createMenu(civilian, 0));
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -85,7 +89,6 @@ public class CommunityMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-        //TODO populate items here
 
         //0 Players
         CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
@@ -106,7 +109,6 @@ public class CommunityMenu extends Menu {
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
         cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
         inventory.setItem(3, cvItem1.createItemStack());
-        //TODO make menu for alliances
 
         //4 PvP leaderboard
         CVItem cvItem4 = CVItem.createCVItemFromString("OAK_SIGN");

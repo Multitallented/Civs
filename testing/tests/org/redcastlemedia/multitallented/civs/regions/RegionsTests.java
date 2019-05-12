@@ -32,14 +32,13 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.WorldImpl;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
@@ -47,6 +46,7 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -517,7 +517,7 @@ public class RegionsTests {
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(regionManager.getRegionAt(location1));
-        assertTrue(event.isCancelled());
+        assertFalse(event.isCancelled());
     }
 
     @Test
@@ -806,8 +806,7 @@ public class RegionsTests {
         town1.getPeople().put(uuid1, "member");
         townManager.addTown(town1);
         if (allied) {
-            town.getAllies().add("townname1");
-            town1.getAllies().add("townname");
+            AllianceManager.getInstance().allyTheseTowns(town, town1);
         }
         return region;
     }

@@ -161,6 +161,12 @@ en:
   region-bought: "You have bought this $1 for $2"
   sort-by-level: "Sort Regions by Level"
   level: "Level $1"
+  rename-alliance: "Rename Alliance"
+  rename-alliance-desc: "Type /cv really $1 newAllianceNameHere"
+  alliance-renamed: "$1 has been renamed to $2"
+  invalid-name: "Invalid name"
+  last-renamed-by: "Last renamed by: $1"
+  leave-alliance: "Leave alliance"
 
   #errors
   cant-place-town: "Type /cv town townNameHere"
@@ -176,7 +182,7 @@ en:
   specify-town-name: "Please specify a town name"
   specify-player-region: "Please specify a player and region"
   town-not-exist: "$1 is not a town"
-  no-permission-invite: "You don't have permission to invite people to $1"
+  no-`-invite: "You don't have permission to invite people to $1"
   player-not-online: "$1 is not online"
   invite-player: "$1 would like to invite you to join $2 $3. To join, type /cv accept"
   already-member: "$1 is already a member of $2"

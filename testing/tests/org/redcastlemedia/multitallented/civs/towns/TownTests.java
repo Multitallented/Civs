@@ -183,6 +183,41 @@ public class TownTests {
         assertEquals(1, TownManager.getInstance().getTowns().size());
     }
 
+    @Test
+    public void townShouldDowngrade() {
+        loadTownTypeHamlet();
+        loadTownTypeTribe2();
+        Town town = loadTown("test", "tribe", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        assertEquals("hamlet", town.getType());
+    }
+
+    @Test
+    public void townShouldHaveGrace() {
+        loadTownTypeHamlet();
+        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        assertTrue(TownManager.getInstance().hasGrace(town, false));
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertTrue(blockBreakEvent.isCancelled());
+    }
+
+    @Test
+    public void townShouldNotProtectWithoutGrace() {
+        loadTownTypeHamlet();
+        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
+        assertFalse(TownManager.getInstance().hasGrace(town, true));
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertFalse(blockBreakEvent.isCancelled());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
@@ -201,6 +236,7 @@ public class TownTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("block_break");
         config.set("effects", effects);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }

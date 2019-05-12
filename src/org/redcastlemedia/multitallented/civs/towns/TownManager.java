@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -277,7 +278,7 @@ public class TownManager {
     }
 
     private void devolveTown(Town town, TownType townType) {
-        if (townType.getChild() != null) {
+        if (townType.getChild() == null) {
             return;
         }
         town.destroyRing(false, true);
@@ -319,7 +320,14 @@ public class TownManager {
             }
             return true;
         }
-        return grace != 0;
+        if (grace != 0) {
+            return true;
+        } else if (town.getPower() > town.getMaxPower() / 4) {
+            town.setLastDisable(-1);
+            TownManager.getInstance().saveTown(town);
+            return true;
+        }
+        return false;
     }
 
     public long getRemainingGracePeriod(Town town) {

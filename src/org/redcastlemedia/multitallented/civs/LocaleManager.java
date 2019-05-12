@@ -486,6 +486,18 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".effects", "Effects"));
             currentLanguage.put("click-for-item-group",
                     localeConfig.getString(langKey + ".click-for-item-group", "Click to see all items in this group"));
+            currentLanguage.put("rename-alliance",
+                    localeConfig.getString(langKey + ".rename-alliance", "Rename Alliance"));
+            currentLanguage.put("rename-alliance-desc",
+                    localeConfig.getString(langKey + ".rename-alliance-desc", "Type /cv really $1 newAllianceNameHere"));
+            currentLanguage.put("alliance-renamed",
+                    localeConfig.getString(langKey + ".alliance-renamed", "$1 has been renamed to $2"));
+            currentLanguage.put("invalid-name",
+                    localeConfig.getString(langKey + ".invalid-name", "Invalid name"));
+            currentLanguage.put("last-renamed-by",
+                    localeConfig.getString(langKey + ".last-renamed-by", "Last renamed by: $1"));
+            currentLanguage.put("leave-alliance",
+                    localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
             languageMap.put(langKey, currentLanguage);
         }
     }

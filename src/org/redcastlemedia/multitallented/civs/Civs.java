@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
@@ -60,6 +61,8 @@ public class Civs extends JavaPlugin {
         regionManager.loadAllRegions();
         TownManager townManager = new TownManager();
         townManager.loadAllTowns();
+        AllianceManager allianceManager = new AllianceManager();
+        allianceManager.loadAllAlliances();
         new CivilianManager();
 
         initCommands();
@@ -149,6 +152,7 @@ public class Civs extends JavaPlugin {
         commandList.put("bounty", new BountyCommand());
         commandList.put("reset", new ResetCommand());
         commandList.put("sell", new SellRegionCommand());
+        commandList.put("really", new ReallyCommand());
     }
 
     private void initListeners() {
@@ -205,6 +209,8 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
 
         new HousingEffect();
     }
