@@ -149,6 +149,7 @@ public class Civs extends JavaPlugin {
         commandList.put("bounty", new BountyCommand());
         commandList.put("reset", new ResetCommand());
         commandList.put("sell", new SellRegionCommand());
+        commandList.put("really", new ReallyCommand());
     }
 
     private void initListeners() {
@@ -205,6 +206,8 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
 
         new HousingEffect();
     }

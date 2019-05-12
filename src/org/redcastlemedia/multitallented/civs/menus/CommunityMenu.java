@@ -11,8 +11,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-
 public class CommunityMenu extends Menu {
     public static final String MENU_NAME = "CivsCommunity";
     public CommunityMenu() {
@@ -62,7 +60,7 @@ public class CommunityMenu extends Menu {
         if (clickedStack.getType() == Material.IRON_SWORD) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(AllianceMenu.createMenu(civilian, 0));
+            event.getWhoClicked().openInventory(AllianceListMenu.createMenu(civilian, 0));
             return;
         }
         if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
