@@ -320,7 +320,14 @@ public class TownManager {
             }
             return true;
         }
-        return grace != 0;
+        if (grace != 0) {
+            return true;
+        } else if (town.getPower() > town.getMaxPower() / 4) {
+            town.setLastDisable(-1);
+            TownManager.getInstance().saveTown(town);
+            return true;
+        }
+        return false;
     }
 
     public long getRemainingGracePeriod(Town town) {

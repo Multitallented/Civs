@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class AllianceManager implements Listener {
     }
 
     public boolean renameAlliance(String oldName, String newName) {
+        if (alliances.get(newName) != null) {
+            return false;
+        }
         Alliance alliance = alliances.get(oldName);
         File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
         File allianceFile = new File(allianceFolder, oldName + ".yml");
@@ -70,6 +74,18 @@ public class AllianceManager implements Listener {
         alliance.setName(newName);
         alliances.put(newName, alliance);
         saveAlliance(alliance);
+        return true;
+    }
+
+    public boolean removeAlliance(Alliance alliance) {
+        if (Civs.getInstance() != null) {
+            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+            File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
+            if (!allianceFile.delete()) {
+                return false;
+            }
+        }
+        alliances.remove(alliance.getName());
         return true;
     }
 
@@ -116,13 +132,101 @@ public class AllianceManager implements Listener {
     }
 
     public void allyTheseTowns(Town town1, Town town2) {
-        for (Alliance alliance : getAlliances(town1)) {
+        HashSet<Alliance> saveThese = new HashSet<>();
+        HashSet<Alliance> removeThese = new HashSet<>();
 
+        Alliance mergeAlliance = null;
+        outer: for (Alliance alliance : getAlliances(town2)) {
+            if (alliance.getMembers().contains(town1.getName())) {
+                return;
+            }
+
+            for (String townName : alliance.getMembers()) {
+                if (!townName.equals(town2.getName()) &&
+                        !isAllied(town1, TownManager.getInstance().getTown(townName))) {
+                    continue outer;
+                }
+            }
+            alliance.getMembers().add(town1.getName());
+            mergeAlliance = alliance;
+            saveThese.add(alliance);
+        }
+        if (mergeAlliance == null) {
+            Alliance alliance = new Alliance();
+            alliance.getMembers().add(town1.getName());
+            alliance.getMembers().add(town2.getName());
+            alliance.setName(town1.getName() + "-" + town2.getName());
+            alliances.put(alliance.getName(), alliance);
+            saveAlliance(alliance);
+        } else {
+            outer: for (Alliance alliance : alliances.values()) {
+                if (alliance.equals(mergeAlliance)) {
+                    continue;
+                }
+                for (String townName : alliance.getMembers()) {
+                    if (!mergeAlliance.getMembers().contains(townName)) {
+                        continue outer;
+                    }
+                }
+                removeThese.add(alliance);
+            }
+        }
+
+        for (Alliance alliance : removeThese) {
+            removeAlliance(alliance);
+        }
+
+        for (Alliance alliance : saveThese) {
+            saveAlliance(alliance);
         }
     }
 
     public void unAlly(Town town1, Town town2) {
+        HashSet<Alliance> saveThese = new HashSet<>();
+        HashSet<Alliance> removeThese = new HashSet<>();
 
+        int i=0;
+        for (Alliance alliance : alliances.values()) {
+            boolean inAlliance = alliance.getMembers().contains(town1.getName()) &&
+                    alliance.getMembers().contains(town2.getName());
+            if (inAlliance) {
+                removeThese.add(alliance);
+            }
+            if (alliance.getMembers().size() > 2) {
+                Alliance alliance1 = new Alliance();
+                alliance1.setName(alliance.getName() + i);
+                alliance1.getMembers().add(town1.getName());
+                i++;
+
+                Alliance alliance2 = new Alliance();
+                alliance2.setName(alliance.getName() + i);
+                alliance2.getMembers().add(town2.getName());
+                i++;
+                for (String townName : alliance.getMembers()) {
+                    if (townName.equals(town1.getName()) ||
+                            townName.equals(town2.getName())) {
+                        continue;
+                    }
+                    alliance1.getMembers().add(townName);
+                    alliance2.getMembers().add(townName);
+                }
+                if (!alliances.containsKey(alliance1.getName())) {
+                    saveThese.add(alliance1);
+                }
+                if (!alliances.containsKey(alliance2.getName())) {
+                    saveThese.add(alliance2);
+                }
+            }
+        }
+
+        for (Alliance alliance : removeThese) {
+            removeAlliance(alliance);
+        }
+
+        for (Alliance alliance : saveThese) {
+            alliances.put(alliance.getName(), alliance);
+            saveAlliance(alliance);
+        }
     }
 
     @EventHandler

@@ -12,4 +12,8 @@ public class Alliance {
     private String name;
     private HashSet<String> members;
     private UUID lastRenamedBy;
+
+    public Alliance() {
+        members = new HashSet<>();
+    }
 }
