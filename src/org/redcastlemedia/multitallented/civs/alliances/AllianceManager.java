@@ -38,8 +38,12 @@ public class AllianceManager implements Listener {
             allianceFolder.mkdir();
             return;
         }
-        for (File allianceFile : allianceFolder.listFiles()) {
-            loadAlliance(allianceFile);
+        try {
+            for (File allianceFile : allianceFolder.listFiles()) {
+                loadAlliance(allianceFile);
+            }
+        } catch (NullPointerException npe) {
+            // dont care
         }
     }
 
