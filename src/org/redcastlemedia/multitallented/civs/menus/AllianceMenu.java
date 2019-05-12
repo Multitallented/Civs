@@ -93,6 +93,7 @@ public class AllianceMenu extends Menu {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "rename-alliance-desc")
                     .replace("$1", alliance.getName()));
+            cvItem.setLore(lore);
             inventory.setItem(2, cvItem.createItemStack());
         }
         //3 Last Rename
