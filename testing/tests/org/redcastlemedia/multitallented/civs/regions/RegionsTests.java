@@ -46,6 +46,7 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
+import org.redcastlemedia.multitallented.civs.towns.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -805,8 +806,12 @@ public class RegionsTests {
         town1.getPeople().put(uuid1, "member");
         townManager.addTown(town1);
         if (allied) {
-            town.getAllies().add("townname1");
-            town1.getAllies().add("townname");
+            Alliance alliance = new Alliance();
+            alliance.getMembers().add("townname1");
+            alliance.getMembers().add("townname");
+            alliance.setName("townname1-townname");
+            town.getAllies().add(alliance);
+            town1.getAllies().add(alliance);
         }
         return region;
     }

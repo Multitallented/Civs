@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -46,8 +47,12 @@ public class TownInviteConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            myTown.getAllies().add(town.getName());
-            town.getAllies().add(myTown.getName());
+            Alliance alliance = new Alliance();
+            alliance.setName(myTown.getName() + "-" + town.getName());
+            alliance.getMembers().add(town.getName());
+            alliance.getMembers().add(myTown.getName());
+            myTown.getAllies().add(alliance);
+            town.getAllies().add(alliance);
             TownManager.getInstance().saveTown(town);
             TownManager.getInstance().saveTown(myTown);
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {

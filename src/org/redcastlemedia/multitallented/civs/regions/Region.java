@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -94,12 +95,14 @@ public class Region {
             }
         }
 
-        for (String name : town.getAllies()) {
-            Town currentTown = townManager.getTown(name);
-            if (currentTown != null) {
-                for (UUID uuid : currentTown.getPeople().keySet()) {
-                    if (!newPeople.containsKey(uuid)) {
-                        newPeople.put(uuid, "ally");
+        for (Alliance alliance : town.getAllies()) {
+            for (String name : alliance.getMembers()) {
+                Town currentTown = townManager.getTown(name);
+                if (currentTown != null) {
+                    for (UUID uuid : currentTown.getPeople().keySet()) {
+                        if (!newPeople.containsKey(uuid)) {
+                            newPeople.put(uuid, "ally");
+                        }
                     }
                 }
             }
