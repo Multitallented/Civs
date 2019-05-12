@@ -204,6 +204,20 @@ public class TownTests {
         assertTrue(blockBreakEvent.isCancelled());
     }
 
+    @Test
+    public void townShouldNotProtectWithoutGrace() {
+        loadTownTypeHamlet();
+        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
+        assertFalse(TownManager.getInstance().hasGrace(town, true));
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertFalse(blockBreakEvent.isCancelled());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
