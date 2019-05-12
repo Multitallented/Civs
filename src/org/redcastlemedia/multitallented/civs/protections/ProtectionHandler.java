@@ -250,6 +250,14 @@ public class ProtectionHandler implements Listener {
         shouldBlockAction(event.getEntity().getLocation(), null, "block_break");
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityLight(BlockIgniteEvent event) {
+        boolean shouldDeny = shouldBlockAction(event.getIgnitingBlock().getLocation(), "block_fire");
+        if (!event.isCancelled() && shouldDeny) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
