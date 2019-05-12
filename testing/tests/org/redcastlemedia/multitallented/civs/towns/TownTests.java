@@ -218,6 +218,38 @@ public class TownTests {
         assertFalse(blockBreakEvent.isCancelled());
     }
 
+    @Test
+    public void townShouldProtectWithoutGraceButWithPower() {
+        loadTownTypeHamlet();
+        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
+        TownManager.getInstance().hasGrace(town, true);
+        TownManager.getInstance().setTownPower(town, 500);
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertTrue(blockBreakEvent.isCancelled());
+    }
+
+    @Test
+    public void townShouldNotProtectWithoutGraceAndTinyPower() {
+        loadTownTypeHamlet();
+        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
+        TownManager.getInstance().hasGrace(town, true);
+        TownManager.getInstance().setTownPower(town, 1);
+        TownManager.getInstance().hasGrace(town, true);
+        TownManager.getInstance().setTownPower(town, 0);
+
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        assertFalse(blockBreakEvent.isCancelled());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
@@ -238,6 +270,8 @@ public class TownTests {
         effects.add("deny_mob_spawn");
         effects.add("block_break");
         config.set("effects", effects);
+        config.set("power", 500);
+        config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }
 
