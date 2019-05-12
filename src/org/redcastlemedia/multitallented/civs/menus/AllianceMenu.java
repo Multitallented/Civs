@@ -71,7 +71,7 @@ public class AllianceMenu extends Menu {
 
         //0 Icon
         {
-            CVItem cvItem = CVItem.createCVItemFromString("GOLD_SWORD");
+            CVItem cvItem = CVItem.createCVItemFromString("GOLDEN_SWORD");
             cvItem.setDisplayName(alliance.getName());
             inventory.setItem(0, cvItem.createItemStack());
         }

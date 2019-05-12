@@ -52,7 +52,7 @@ public class AllianceListMenu extends Menu {
         HashMap<String, Alliance> allianceMap = new HashMap<>();
         for (int k=startIndex; k<alliances.size() && k<startIndex+36; k++) {
             Alliance alliance = alliances.get(k);
-            CVItem cvItem = CVItem.createCVItemFromString("GOLD_SWORD");
+            CVItem cvItem = CVItem.createCVItemFromString("GOLDEN_SWORD");
             cvItem.setDisplayName(alliance.getName());
 
             ArrayList<String> lore1 = new ArrayList<>();
