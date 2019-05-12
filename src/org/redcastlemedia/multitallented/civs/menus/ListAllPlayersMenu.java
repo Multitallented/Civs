@@ -196,7 +196,7 @@ public class ListAllPlayersMenu extends Menu {
             ItemStack is = new ItemStack(Material.PLAYER_HEAD, 1);
             ArrayList<String> lore2 = new ArrayList<>();
             uuidList.add(player.getUniqueId());
-            lore2.add("" + i);
+            lore2.add("" + (i-9));
             SkullMeta isMeta = (SkullMeta) is.getItemMeta();
             isMeta.setDisplayName(player.getName());
             isMeta.setOwningPlayer(player);

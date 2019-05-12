@@ -180,6 +180,10 @@ public class CivilianListener implements Listener {
                 !event.getItem().hasItemMeta()) {
             return;
         }
+        if (ConfigManager.getInstance().getBlackListWorlds()
+                .contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
         Player player = event.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

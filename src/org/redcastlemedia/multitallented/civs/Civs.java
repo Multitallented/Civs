@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -82,6 +83,10 @@ public class Civs extends JavaPlugin {
         if (args.length < 1) {
             args = new String[1];
             args[0] = "menu";
+        }
+        if (commandSender instanceof Player && ConfigManager.getInstance().getBlackListWorlds()
+                .contains(((Player) commandSender).getWorld().getName())) {
+            return true;
         }
         CivCommand civCommand = commandList.get(args[0]);
         if (civCommand == null) {

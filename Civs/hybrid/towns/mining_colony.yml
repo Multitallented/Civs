@@ -21,7 +21,7 @@ build-radius-y: 500
 effects:
 - block_explosion
 - deny_mob_spawn
-- potion:FAST_DIGGING
+- potion:FAST_DIGGING.80
 
 power: 48
 max-power: 48

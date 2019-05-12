@@ -58,7 +58,7 @@ public class TownInviteMenu extends Menu {
             return;
         }
         String townName = event.getCurrentItem().getItemMeta().getDisplayName();
-        Town town = TownManager.getInstance().getTown(townName.toLowerCase());
+        Town town = TownManager.getInstance().getTown(townName);
         if (town != null) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + yourTownName);
             event.getWhoClicked().closeInventory();
