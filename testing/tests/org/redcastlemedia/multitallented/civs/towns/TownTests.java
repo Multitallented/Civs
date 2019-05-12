@@ -185,7 +185,11 @@ public class TownTests {
 
     @Test
     public void townShouldDowngrade() {
-        //TODO finish this test
+        loadTownTypeHamlet();
+        loadTownTypeTribe2();
+        Town town = loadTown("test", "tribe", TestUtil.block.getLocation());
+        TownManager.getInstance().setTownPower(town, 0);
+        assertEquals("hamlet", town.getType());
     }
 
     @Test

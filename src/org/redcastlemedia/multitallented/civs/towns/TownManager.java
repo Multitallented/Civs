@@ -278,7 +278,7 @@ public class TownManager {
     }
 
     private void devolveTown(Town town, TownType townType) {
-        if (townType.getChild() != null) {
+        if (townType.getChild() == null) {
             return;
         }
         town.destroyRing(false, true);

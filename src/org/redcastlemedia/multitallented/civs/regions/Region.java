@@ -6,6 +6,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.TutorialManager;
@@ -95,7 +96,7 @@ public class Region {
             }
         }
 
-        for (Alliance alliance : town.getAllies()) {
+        for (Alliance alliance : AllianceManager.getInstance().getAlliances(town)) {
             for (String name : alliance.getMembers()) {
                 Town currentTown = townManager.getTown(name);
                 if (currentTown != null) {

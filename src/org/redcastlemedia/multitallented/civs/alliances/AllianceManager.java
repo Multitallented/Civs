@@ -121,6 +121,10 @@ public class AllianceManager implements Listener {
         }
     }
 
+    public void unAlly(Town town1, Town town2) {
+
+    }
+
     @EventHandler
     public void onTownRename(RenameTownEvent event) {
         HashSet<Alliance> saveThese = new HashSet<>();

@@ -37,6 +37,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
@@ -804,12 +805,7 @@ public class RegionsTests {
         town1.getPeople().put(uuid1, "member");
         townManager.addTown(town1);
         if (allied) {
-            Alliance alliance = new Alliance();
-            alliance.getMembers().add("townname1");
-            alliance.getMembers().add("townname");
-            alliance.setName("townname1-townname");
-            town.getAllies().add(alliance);
-            town1.getAllies().add(alliance);
+            AllianceManager.getInstance().allyTheseTowns(town, town1);
         }
         return region;
     }
