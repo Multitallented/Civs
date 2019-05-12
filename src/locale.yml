@@ -164,6 +164,7 @@ en:
   rename-alliance: "Rename Alliance"
   rename-alliance-desc: "Type /cv really $1 newAllianceNameHere"
   alliance-renamed: "$1 has been renamed to $2"
+  invalid-name: "Invalid name"
 
   #errors
   cant-place-town: "Type /cv town townNameHere"

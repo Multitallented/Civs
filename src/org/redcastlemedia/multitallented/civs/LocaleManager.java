@@ -492,6 +492,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".rename-alliance-desc", "Type /cv really $1 newAllianceNameHere"));
             currentLanguage.put("alliance-renamed",
                     localeConfig.getString(langKey + ".alliance-renamed", "$1 has been renamed to $2"));
+            currentLanguage.put("invalid-name",
+                    localeConfig.getString(langKey + ".invalid-name", "Invalid name"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -15,8 +15,16 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 public class ReallyCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        boolean isPlayer = (commandSender instanceof Player);
         if (args.length < 3) {
-            // TODO send message
+            if (isPlayer) {
+                Player player = (Player) commandSender;
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "invalid-name"));
+            } else {
+                commandSender.sendMessage("invalid alliance name");
+            }
             return true;
         }
 
@@ -31,7 +39,14 @@ public class ReallyCommand implements CivCommand {
             }
         }
         if (alliance == null) {
-            // TODO send error message
+            if (isPlayer) {
+                Player player = (Player) commandSender;
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "invalid-target"));
+            } else {
+                commandSender.sendMessage("invalid alliance target");
+            }
             return true;
         }
 
@@ -57,7 +72,14 @@ public class ReallyCommand implements CivCommand {
         }
 
         if (Util.validateFileName(args[2])) {
-            // TODO send error message
+            if (isPlayer) {
+                Player player = (Player) commandSender;
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "invalid-name"));
+            } else {
+                commandSender.sendMessage("invalid alliance name");
+            }
             return true;
         }
         String validName = Util.getValidFileName(args[2]);
@@ -71,7 +93,7 @@ public class ReallyCommand implements CivCommand {
             TownManager.getInstance().saveTown(town);
         }
 
-        if (commandSender instanceof Player) {
+        if (isPlayer) {
             commandSender.sendMessage("alliance " + args[1] + " has been renamed to " + validName);
         } else {
             Player player = (Player) commandSender;
