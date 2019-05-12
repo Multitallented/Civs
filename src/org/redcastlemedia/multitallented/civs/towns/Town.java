@@ -24,7 +24,7 @@ public class Town {
     private String name;
     private HashMap<UUID, String> people;
     private int housing;
-    private HashSet<String> allies;
+    private HashSet<Alliance> allies;
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
@@ -91,17 +91,22 @@ public class Town {
             return people;
         }
         HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
-        for (String name : allies) {
-            Town town = TownManager.getInstance().getTown(name);
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                if (!newPeople.containsKey(uuid)) {
-                    newPeople.put(uuid, "ally");
+        for (Alliance alliance : allies) {
+            for (String townName : alliance.getMembers()) {
+                if (townName.equals(name)) {
+                    continue;
+                }
+                Town town = TownManager.getInstance().getTown(townName);
+                for (UUID uuid : town.getRawPeople().keySet()) {
+                    if (!newPeople.containsKey(uuid)) {
+                        newPeople.put(uuid, "ally");
+                    }
                 }
             }
         }
         return newPeople;
     }
-    public HashSet<String> getAllies() { return allies; }
+    public HashSet<Alliance> getAllies() { return allies; }
     public int getMaxPower() {
         return maxPower;
     }
@@ -114,7 +119,7 @@ public class Town {
     protected void setPower(int power) {
         this.power = power;
     }
-    public void setAllies(HashSet<String> allies) { this.allies = allies; }
+    public void setAllies(HashSet<Alliance> allies) { this.allies = allies; }
 
     public int countPeopleWithRole(String role) {
         if (role == null) {

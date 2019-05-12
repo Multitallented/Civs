@@ -59,6 +59,12 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(ForSaleMenu.createMenu(civilian, 0));
             return;
         }
+        if (clickedStack.getType() == Material.IRON_SWORD) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(AllianceMenu.createMenu(civilian, 0));
+            return;
+        }
         if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -106,7 +112,6 @@ public class CommunityMenu extends Menu {
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
         cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
         inventory.setItem(3, cvItem1.createItemStack());
-        //TODO make menu for alliances
 
         //4 PvP leaderboard
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");

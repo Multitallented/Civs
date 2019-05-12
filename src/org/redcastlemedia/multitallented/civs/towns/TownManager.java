@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.towns;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -206,6 +207,16 @@ public class TownManager {
             }
             town.setChildLocations(locationList);
         }
+        if (config.isSet("allies")) {
+            HashSet<Alliance> alliances = new HashSet<>();
+            for (String key : config.getConfigurationSection("allies").getKeys(false)) {
+                Alliance alliance = new Alliance();
+                alliance.setName(config.getString("allies." + key + ".name", ""));
+                alliance.setMembers(new HashSet<>(config.getStringList("allies" + key + ".members")));
+                alliances.add(alliance);
+            }
+            town.setAllies(alliances);
+        }
         addTown(town);
     }
     public void addTown(Town town) {
@@ -398,6 +409,15 @@ public class TownManager {
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
 
+            if (!town.getAllies().isEmpty()) {
+                int i=0;
+                for (Alliance alliance : town.getAllies()) {
+                    config.set("allies." + i + ".name", alliance.getName());
+                    config.set("allies." + i + ".members", new ArrayList<>(alliance.getMembers()));
+                    i++;
+                }
+            }
+
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
                     if (town.getBounties().get(i).getIssuer() != null) {
@@ -453,5 +473,13 @@ public class TownManager {
             }
         }
         return false;
+    }
+
+    public ArrayList<Alliance> getAlliances() {
+        HashSet<Alliance> alliances = new HashSet<>();
+        for (Town town : getTowns()) {
+            alliances.addAll(town.getAllies());
+        }
+        return new ArrayList<>(alliances);
     }
 }

@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -84,15 +85,12 @@ public class ListAllPlayersMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, int page, UUID id) {
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
-
-        //0 Prev button
-        if (page > 0) {
-            CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
-                    "prev-button"));
-            inventory.setItem(0, cvItem.createItemStack());
+        List<OfflinePlayer> players = new ArrayList<>();
+        Civilian cCivilian = CivilianManager.getInstance().getCivilian(id);
+        for (UUID uuid : cCivilian.getFriends()) {
+            players.add(Bukkit.getOfflinePlayer(uuid));
         }
+        int startIndex = Util.createPageButtons(inventory, page, civilian, players.size());
 
         Map<String, Object> data = new HashMap<>();
         data.put("page", page);
@@ -103,20 +101,6 @@ public class ListAllPlayersMenu extends Menu {
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
-
-        List<OfflinePlayer> players = new ArrayList<>();
-        Civilian cCivilian = CivilianManager.getInstance().getCivilian(id);
-        for (UUID uuid : cCivilian.getFriends()) {
-            players.add(Bukkit.getOfflinePlayer(uuid));
-        }
-        int startIndex = page * 36;
-        //8 Next button
-        if (startIndex + 36 < players.size()) {
-            CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
-                    "next-button"));
-            inventory.setItem(8, cvItem1.createItemStack());
-        }
 
         int i=9;
         Collections.sort(players, new Comparator<OfflinePlayer>() {

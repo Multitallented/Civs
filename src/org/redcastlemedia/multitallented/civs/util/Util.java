@@ -1,10 +1,12 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -19,7 +21,9 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -140,6 +144,29 @@ public class Util {
     public static String getNumberFormat(double number, String locale) {
         return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
     }
+
+    public static int createPageButtons(Inventory inventory, int page, Civilian civilian, int totalSize) {
+        LocaleManager localeManager = LocaleManager.getInstance();
+
+        //0 Prev button
+        if (page > 0) {
+            CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "prev-button"));
+            inventory.setItem(0, cvItem.createItemStack());
+        }
+
+        int startIndex = page * 36;
+        //8 Next button
+        if (startIndex + 36 < totalSize) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "next-button"));
+            inventory.setItem(8, cvItem1.createItemStack());
+        }
+        return startIndex;
+    }
+
     public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
         if (req.isEmpty()) {
             return true;
