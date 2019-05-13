@@ -188,6 +188,7 @@ public class TownManager {
         int housing = config.getInt("housing", 0);
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
+        GovernmentType governmentType = GovernmentType.valueOf(config.getString("gov-type", "DICTATORSHIP"));
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
@@ -197,6 +198,7 @@ public class TownManager {
                 housing,
                 villagers,
                 lastDisable);
+        town.setGovernmentType(governmentType);
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
@@ -398,6 +400,7 @@ public class TownManager {
             config.set("last-disable", town.getLastDisable());
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
+            config.set("gov-type", town.getGovernmentType());
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {

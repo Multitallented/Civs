@@ -9,11 +9,14 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SetOwnerCommand implements CivCommand {
@@ -83,6 +86,31 @@ public class SetOwnerCommand implements CivCommand {
             }
             return true;
         }
+        if (town != null) {
+            boolean hasPermission = civilian == null || town.getGovernmentType() == GovernmentType.ANARCHY ||
+                    (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                            town.getRawPeople().get(civilian.getUuid()).equals("owner"));
+
+            boolean oligarchyOverride = !hasPermission && Civs.econ != null && town.getGovernmentType() == GovernmentType.OLIGARCHY;
+
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (oligarchyOverride && !Civs.econ.has(player, townType.getPrice())) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "not-enough-money").replace("$1", "" + townType.getPrice()));
+                return true;
+            }
+            if (!hasPermission && !oligarchyOverride) {
+                if (player != null) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                            "no-permission"));
+                }
+                return true;
+            }
+            if (oligarchyOverride) {
+                Civs.econ.withdrawPlayer(player, townType.getPrice());
+            }
+        }
+
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
         String name = town == null ? region.getType() : town.getName();

@@ -33,6 +33,10 @@ public class Town {
     private final int Y_LEVEL = 80;
     private int villagers;
 
+    @Getter
+    @Setter
+    private GovernmentType governmentType;
+
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
         this.name = name;
@@ -44,6 +48,7 @@ public class Town {
         this.housing = housing;
         this.villagers = villagers;
         this.lastDisable = lastDisable;
+        governmentType = GovernmentType.DICTATORSHIP;
     }
 
     public long getLastDisable() {
