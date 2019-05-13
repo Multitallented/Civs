@@ -47,6 +47,8 @@ public class SpawnEffect implements Listener {
             return;
         }
 
-        location.getWorld().spawnEntity(location.add(0.5,1,0.5), entityType);
+        Location spawnLocation = new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ());
+
+        location.getWorld().spawnEntity(spawnLocation, entityType);
     }
 }
