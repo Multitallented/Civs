@@ -617,7 +617,7 @@ public class RegionManager {
                     returnRegions.add(region);
                     continue;
                 }
-                if (location.getX() > region.getLocation().getX() - region.getRadiusXN() - modifierX) {
+                if (location.getX() > region.getLocation().getX() - region.getRadiusXN() + modifierX) {
                     break;
                 }
             } else {
