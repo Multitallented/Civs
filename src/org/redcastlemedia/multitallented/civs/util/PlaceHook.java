@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -24,6 +26,7 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String POINTS = "points";
     private static final String HIGHEST_BOUNTY = "highestbounty";
     private static final String MANA = "mana";
+    private static final String NATION = "nation";
 
     @Override
     public boolean canRegister() {
@@ -88,9 +91,28 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(bounty.getIssuer());
             return offlinePlayer.getName() + " $" + bounty.getAmount();
+        } else if (NATION.equals(identifier)) {
+            String nation = getNation(civilian);
+            if (nation == null) {
+                return getReplacement(civilian);
+            }
+            return nation;
         } else {
             return "";
         }
+    }
+
+    private String getNation(Civilian civilian) {
+        for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
+            for (String townName : alliance.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                        !town.getRawPeople().get(civilian.getUuid()).equals("ally")) {
+                    return alliance.getName();
+                }
+            }
+        }
+        return null;
     }
 
     private String getReplacement(Civilian civilian) {
