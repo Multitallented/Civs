@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -250,6 +251,20 @@ public class AllianceManager implements Listener {
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
         }
+    }
+
+    public ArrayList<Alliance> getAllSortedAlliances() {
+        ArrayList<Alliance> returnList = getAllAlliances();
+        Comparator<Alliance> comparator = new Comparator<Alliance>() {
+            @Override
+            public int compare(Alliance o1, Alliance o2) {
+                int o1Size = o1.getMembers().size();
+                int o2Size = o2.getMembers().size();
+                return Integer.compare(o1Size, o2Size);
+            }
+        };
+        returnList.sort(comparator);
+        return returnList;
     }
 
     public ArrayList<Alliance> getAllAlliances() {

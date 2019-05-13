@@ -2,8 +2,11 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.redcastlemedia.multitallented.civs.Civs;
 
-public class LogInfo
-{
+public final class LogInfo {
+    private LogInfo() {
+
+    }
+
     public static String NAME = Civs.getInstance().getDescription().getName();
     public static String DESC = "A powerful town plugin for RPG/RTS themed servers.\n| Allows you to build towns\n| " +
             "with defenses, farms mines and more.\n|\n| Formerly HeroStronghold / Townships.";

@@ -89,7 +89,7 @@ public class TownActionMenu extends Menu {
                     for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                         cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
                                 "town-ally-removed").replace("$1", myTown.getName())
-                                .replace("$1", townName));
+                                .replace("$2", townName));
                     }
                 }
             }

@@ -648,12 +648,21 @@ public class Region {
         return hasUpkeepItems(false);
     }
     public boolean hasUpkeepItems(boolean ignoreReagents) {
+        boolean zeroZ = location.getZ() > -0.01 && location.getZ() < 1;
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
         }
         Block block = location.getBlock();
+        if (zeroZ) {
+            System.out.println("region location: " + locationToString(location));
+            System.out.println("block location: " + block.getLocation().toString());
+            System.out.println("isChest: " + (block.getState() instanceof Chest));
+        }
         if (!(block.getState() instanceof Chest)) {
+            if (zeroZ) {
+                System.out.println("needs reagents or input: " + (needsReagentsOrInput()));
+            }
             return needsReagentsOrInput();
         }
         Chest chest = (Chest) block.getState();
@@ -666,8 +675,14 @@ public class Region {
                         continue;
                     }
                 }
+                if (zeroZ) {
+                    System.out.println("end true");
+                }
                 return true;
             }
+        }
+        if (zeroZ) {
+            System.out.println("end false");
         }
         return false;
     }

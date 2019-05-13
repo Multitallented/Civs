@@ -27,16 +27,8 @@ public class AllianceListMenu extends Menu {
     public static Inventory createMenu(Civilian civilian, int page) {
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 
-        ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllAlliances();
-        Comparator<Alliance> comparator = new Comparator<Alliance>() {
-            @Override
-            public int compare(Alliance o1, Alliance o2) {
-                int o1Size = o1.getMembers().size();
-                int o2Size = o2.getMembers().size();
-                return Integer.compare(o1Size, o2Size);
-            }
-        };
-        alliances.sort(comparator);
+        ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllSortedAlliances();
+
 
         int startIndex = Util.createPageButtons(inventory, page, civilian, alliances.size());
 
