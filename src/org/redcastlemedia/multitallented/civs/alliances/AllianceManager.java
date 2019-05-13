@@ -96,6 +96,9 @@ public class AllianceManager implements Listener {
     private void saveAlliance(Alliance alliance) {
         try {
             File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+            if (!allianceFolder.exists()) {
+                allianceFolder.mkdir();
+            }
             File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
             if (!allianceFile.exists()) {
                 allianceFile.createNewFile();
@@ -107,6 +110,7 @@ public class AllianceManager implements Listener {
             }
             config.save(allianceFile);
         } catch (Exception e) {
+            e.printStackTrace();
             Civs.logger.severe("Unable to save alliance " + alliance.getName());
         }
     }

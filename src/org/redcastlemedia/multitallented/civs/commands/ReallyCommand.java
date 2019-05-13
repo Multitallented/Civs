@@ -65,7 +65,7 @@ public class ReallyCommand implements CivCommand {
             return true;
         }
 
-        if (Util.validateFileName(args[2])) {
+        if (!Util.validateFileName(args[2])) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
