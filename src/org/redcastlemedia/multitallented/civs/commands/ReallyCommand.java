@@ -77,10 +77,13 @@ public class ReallyCommand implements CivCommand {
             return true;
         }
         String validName = Util.getValidFileName(args[2]);
+        if (isPlayer) {
+            alliance.setLastRenamedBy(((Player) commandSender).getUniqueId());
+        }
         AllianceManager.getInstance().renameAlliance(args[1], validName);
 
-        if (isPlayer) {
-            commandSender.sendMessage("alliance " + args[1] + " has been renamed to " + validName);
+        if (!isPlayer) {
+            commandSender.sendMessage(Civs.getPrefix() + "Alliance " + args[1] + " has been renamed to " + validName);
         } else {
             Player player = (Player) commandSender;
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
