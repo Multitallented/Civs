@@ -114,6 +114,13 @@ public class RegionsTests {
     }
 
     @Test
+    public void convertStringToLocationAndBackShouldBeTheSameZero() {
+        Location location = new Location(Bukkit.getWorld("world"), -809.9937, 65, 0);
+        Location location2 = Region.idToLocation(Region.blockLocationToString(location));
+        assertEquals(0.5, location2.getZ(), 0.1);
+    }
+
+    @Test
     public void convertStringToLocationAndBackShouldEqualOriginalString() {
         String locationString = "d2460330-f815-4339-9b11-cf10755ccef9~-960.5~72.5~933.5";
         Location location = Region.idToLocation(locationString);
