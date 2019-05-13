@@ -45,6 +45,7 @@ public class StartTutorialMenu extends Menu {
             event.getWhoClicked().closeInventory();
 
             civilian.setTutorialIndex(0);
+            civilian.setTutorialProgress(0);
             civilian.setAskForTutorial(false);
             CivilianManager.getInstance().saveCivilian(civilian);
             TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
