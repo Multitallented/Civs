@@ -40,6 +40,7 @@ public class StartTutorialMenu extends Menu {
             civilian.setAskForTutorial(false);
             CivilianManager.getInstance().saveCivilian(civilian);
             TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
+            event.getWhoClicked().openInventory(MainMenu.createMenu(civilian));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {

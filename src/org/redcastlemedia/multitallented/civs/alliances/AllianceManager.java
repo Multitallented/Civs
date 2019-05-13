@@ -95,6 +95,9 @@ public class AllianceManager implements Listener {
     }
 
     private void saveAlliance(Alliance alliance) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         try {
             File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
             if (!allianceFolder.exists()) {

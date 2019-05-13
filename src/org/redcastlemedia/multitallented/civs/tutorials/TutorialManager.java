@@ -74,10 +74,16 @@ public class TutorialManager {
                     tutorialStep.setTimes(times == null ? 1 : times);
                     LinkedHashMap<?,?> rewards = (LinkedHashMap<?,?>) map.get("rewards");
                     if (rewards != null) {
-                        Double money = (Double) rewards.get("money");
-                        if (money != null) {
-                            tutorialStep.setRewardMoney(money);
+                        if (rewards.get("money") != null) {
+                            if (rewards.get("money") instanceof Double) {
+                                Double money = (Double) rewards.get("money");
+                                tutorialStep.setRewardMoney(money);
+                            } else if (rewards.get("money") instanceof Integer) {
+                                Integer money = (Integer) rewards.get("money");
+                                tutorialStep.setRewardMoney(money);
+                            }
                         }
+
                         List<String> itemList = (List<String>) rewards.get("items");
                         if (itemList != null) {
                             for (String itemString : itemList) {
