@@ -34,7 +34,7 @@ public class AllianceManager implements Listener {
 
     public void loadAllAlliances() {
         File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
-        if (allianceFolder.exists()) {
+        if (!allianceFolder.exists()) {
             allianceFolder.mkdir();
             return;
         }
