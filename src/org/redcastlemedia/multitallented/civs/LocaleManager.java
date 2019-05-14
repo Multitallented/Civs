@@ -498,6 +498,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".last-renamed-by", "Last renamed by: $1"));
             currentLanguage.put("leave-alliance",
                     localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
+            currentLanguage.put("anarchy",
+                    localeConfig.getString(langKey + ".anarchy", "Anarchy"));
+            currentLanguage.put("dictatorship",
+                    localeConfig.getString(langKey + ".dictatorship", "Dictatorship"));
             languageMap.put(langKey, currentLanguage);
         }
     }

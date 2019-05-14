@@ -29,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -478,5 +479,20 @@ public final class Util {
         }
 
         return c;
+    }
+
+    public static CVItem getGovermentTypeIcon(Civilian civilian, GovernmentType governmentType) {
+        CVItem cvItem;
+        switch (governmentType) {
+            case ANARCHY:
+                cvItem = CVItem.createCVItemFromString("LAVA_BUCKET");
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "anarchy"));
+            case DICTATORSHIP:
+            default:
+                cvItem = CVItem.createCVItemFromString("DIAMOND_SWORD");
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "dictatorship"));
+                break;
+        }
+        return cvItem;
     }
 }

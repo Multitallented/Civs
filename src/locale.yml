@@ -20,6 +20,10 @@ en:
   guide-desc: "Click here to see your next goal."
   choose-path: "Choose your path"
 
+  #government
+  dictatorship: "Dictatorship"
+  anarchy: "Anarchy"
+
   #shop
   shop: Shop
   buy-item: For Sale

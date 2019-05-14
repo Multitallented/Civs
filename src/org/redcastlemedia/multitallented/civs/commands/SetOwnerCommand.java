@@ -87,6 +87,15 @@ public class SetOwnerCommand implements CivCommand {
             return true;
         }
         if (town != null) {
+            if (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM) {
+                if (player != null) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                            "no-permission"));
+                }
+                return true;
+            }
+
             boolean hasPermission = civilian == null || town.getGovernmentType() == GovernmentType.ANARCHY ||
                     (town.getRawPeople().containsKey(civilian.getUuid()) &&
                             town.getRawPeople().get(civilian.getUuid()).equals("owner"));

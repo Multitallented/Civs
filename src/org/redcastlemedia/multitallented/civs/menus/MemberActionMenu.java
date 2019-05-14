@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -83,6 +84,10 @@ public class MemberActionMenu extends Menu {
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
+        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP);
+    }
+
+    private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf, GovernmentType governmentType) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -149,7 +154,7 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role, viewingSelf);
+        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType());
 
         return inventory;
     }

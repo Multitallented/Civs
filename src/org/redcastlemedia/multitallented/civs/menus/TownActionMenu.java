@@ -280,6 +280,11 @@ public class TownActionMenu extends Menu {
             inventory.setItem(12, cvItem3.createItemStack());
         }
 
+        //13 Goverment Type
+        {
+            CVItem govType = Util.getGovermentTypeIcon(town.getGovernmentType());
+        }
+
 
         return inventory;
     }
