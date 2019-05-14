@@ -502,6 +502,32 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".anarchy", "Anarchy"));
             currentLanguage.put("dictatorship",
                     localeConfig.getString(langKey + ".dictatorship", "Dictatorship"));
+            currentLanguage.put("democracy",
+                    localeConfig.getString(langKey + ".democracy", "Democracy"));
+            currentLanguage.put("oligarchy",
+                    localeConfig.getString(langKey + ".oligarchy", "Oligarchy"));
+            currentLanguage.put("cooperative",
+                    localeConfig.getString(langKey + ".cooperative", "Cooperative"));
+            currentLanguage.put("libertarian",
+                    localeConfig.getString(langKey + ".libertarian", "Libertarian"));
+            currentLanguage.put("socialism",
+                    localeConfig.getString(langKey + ".socialism", "Socialism"));
+            currentLanguage.put("democratic-socialism",
+                    localeConfig.getString(langKey + ".democratic-socialism", "Democratic Socialism"));
+            currentLanguage.put("kraterocracy",
+                    localeConfig.getString(langKey + ".kraterocracy", "kraterocracy"));
+            currentLanguage.put("meritocracy",
+                    localeConfig.getString(langKey + ".meritocracy", "Meritocracy"));
+            currentLanguage.put("cybersynacy",
+                    localeConfig.getString(langKey + ".cybersynacy", "Cybersynacy"));
+            currentLanguage.put("tribalism",
+                    localeConfig.getString(langKey + ".tribalism", "Tribalism"));
+            currentLanguage.put("feudalism",
+                    localeConfig.getString(langKey + ".feudalism", "Feudalism"));
+            currentLanguage.put("colonialism",
+                    localeConfig.getString(langKey + ".colonialism", "Colonialism"));
+            currentLanguage.put("capitalism",
+                    localeConfig.getString(langKey + ".capitalism", "Capitalism"));
             languageMap.put(langKey, currentLanguage);
         }
     }

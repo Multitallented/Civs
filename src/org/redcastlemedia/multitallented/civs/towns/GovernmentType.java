@@ -7,7 +7,7 @@ public enum GovernmentType {
     COMMUNISM, // all payouts distributed among town, member overrides
     COOPERATIVE, // all payouts are distributed
     ANARCHY, // everyone is an owner
-    LIBERTARIAN, // no overrides, all owners, indestructible
+    LIBERTARIAN, // no overrides, no owners, indestructible, anyone can join
     SOCIALISM, // Farms, factories, mines, quarries are public
     DEMOCRATIC_SOCIALISM, // socialism + democracy
     KRATEROCRACY, // Rule by the strong

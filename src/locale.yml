@@ -23,6 +23,19 @@ en:
   #government
   dictatorship: "Dictatorship"
   anarchy: "Anarchy"
+  democracy: "Democracy"
+  oligarchy: "Oligarchy"
+  cooperative: "Cooperative"
+  libertarian: "Libertarian"
+  socialism: "Socialism"
+  democratic-socialism: "Democratic Socialism"
+  kraterocracy: "Kraterocracy"
+  meritocracy: "Meritocracy"
+  cybersynacy: "Cybersynacy"
+  tribalism: "Tribalism"
+  feudalism: "Feudalism"
+  colonialism: "Colonialism"
+  capitalism: "Capitalism"
 
   #shop
   shop: Shop
