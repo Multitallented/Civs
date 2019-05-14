@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -112,9 +115,13 @@ public class SetOwnerCommand implements CivCommand {
             }
 
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (oligarchyOverride && !Civs.econ.has(player, townType.getPrice())) {
+
+            double price = townType.getPrice() * 2;
+
+            if (oligarchyOverride && !Civs.econ.has(player, price)) {
+                String priceString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(price);
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "not-enough-money").replace("$1", "" + townType.getPrice()));
+                        "not-enough-money").replace("$1", priceString));
                 return true;
             }
             if (!hasPermission && !oligarchyOverride && !colonialOverride) {
