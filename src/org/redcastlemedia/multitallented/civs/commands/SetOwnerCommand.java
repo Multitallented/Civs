@@ -102,13 +102,22 @@ public class SetOwnerCommand implements CivCommand {
 
             boolean oligarchyOverride = !hasPermission && Civs.econ != null && town.getGovernmentType() == GovernmentType.OLIGARCHY;
 
+            boolean colonialOverride = town.getColonialTown() != null;
+            if (colonialOverride) {
+                Town colonialTown = TownManager.getInstance().getTown(town.getColonialTown());
+                if (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
+                        !colonialTown.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                    colonialOverride = false;
+                }
+            }
+
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (oligarchyOverride && !Civs.econ.has(player, townType.getPrice())) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "not-enough-money").replace("$1", "" + townType.getPrice()));
                 return true;
             }
-            if (!hasPermission && !oligarchyOverride) {
+            if (!hasPermission && !oligarchyOverride && !colonialOverride) {
                 if (player != null) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                             "no-permission"));
