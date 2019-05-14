@@ -28,8 +28,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
-import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -295,6 +294,7 @@ public class CivilianListener implements Listener {
         blockLogger.putBlock(event.getBlock().getLocation(), cvItem);
     }
 
+    // for hoppers and the like
     @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
@@ -341,6 +341,11 @@ public class CivilianListener implements Listener {
             return;
         }
         ItemStack dragged = event.getOldCursor();
+
+        if (checkMoveNormalItems(event)) {
+            return;
+        }
+
         if (!CVItem.isCivsItem(dragged) ||
                 event.getInventory().getTitle().startsWith("Civ")) {
             return;
@@ -359,6 +364,19 @@ public class CivilianListener implements Listener {
         }
     }
 
+    private boolean checkMoveNormalItems(InventoryDragEvent event) {
+        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+            return false;
+        }
+        if (CVItem.isCivsItem(event.getOldCursor())) {
+            return false;
+        }
+        event.setCancelled(true);
+        return true;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
@@ -375,6 +393,10 @@ public class CivilianListener implements Listener {
             return;
         }
 
+        if (checkMoveNormalItems(event, stackInQuestion)) {
+            return;
+        }
+
         if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
         }
@@ -383,5 +405,18 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
         humanEntity.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+    }
+
+    private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {
+        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+            return false;
+        }
+        if (CVItem.isCivsItem(stackInQuestion)) {
+            return false;
+        }
+        event.setCancelled(true);
+        return true;
     }
 }
