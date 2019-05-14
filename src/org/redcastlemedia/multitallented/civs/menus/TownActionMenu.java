@@ -282,7 +282,7 @@ public class TownActionMenu extends Menu {
 
         //13 Goverment Type
         {
-            CVItem govType = Util.getGovermentTypeIcon(town.getGovernmentType());
+            CVItem govType = Util.getGovermentTypeIcon(civilian, town.getGovernmentType());
         }
 
 
