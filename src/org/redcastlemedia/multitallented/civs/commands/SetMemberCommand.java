@@ -115,6 +115,7 @@ public class SetMemberCommand implements CivCommand {
 
             if (oligarchyOverride) {
                 Civs.econ.withdrawPlayer(player, price);
+                Civs.econ.depositPlayer(invitee, price);
             }
         }
 

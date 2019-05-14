@@ -1,7 +1,9 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
 import java.text.NumberFormat;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -133,7 +135,17 @@ public class SetOwnerCommand implements CivCommand {
             }
             if (oligarchyOverride) {
                 Civs.econ.withdrawPlayer(player, townType.getPrice());
-                // TODO distribute to owners
+                HashSet<UUID> uuids = new HashSet<>();
+                for (UUID uuid : town.getRawPeople().keySet()) {
+                    if (town.getRawPeople().get(uuid).equals("owner")) {
+                        uuids.add(uuid);
+                    }
+                }
+                if (!uuids.isEmpty()) {
+                    for (UUID uuid : uuids) {
+                        Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(uuid), price / (double) uuids.size());
+                    }
+                }
             }
         }
 
