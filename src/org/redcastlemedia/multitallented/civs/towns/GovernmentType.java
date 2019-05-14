@@ -16,5 +16,6 @@ public enum GovernmentType {
     TRIBALISM, // unable to join other towns
     FEUDALISM, // only owner can build regions
     COLONIALISM, // ownership override by linked town
-    CAPITALISM // pay to get more votes
+    CAPITALISM, // pay to get more votes
+    LIBERTARIAN_SOCIALISM
 }

@@ -500,34 +500,72 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
             currentLanguage.put("anarchy",
                     localeConfig.getString(langKey + ".anarchy", "Anarchy"));
+            currentLanguage.put("anarchy-desc",
+                    localeConfig.getString(langKey + ".anarchy-desc", "Anyone can manage town and region membership. No taxes. No alliances."));
             currentLanguage.put("dictatorship",
                     localeConfig.getString(langKey + ".dictatorship", "Dictatorship"));
+            currentLanguage.put("dictatorship-desc",
+                    localeConfig.getString(langKey + ".dictatorship-desc", "Town owners manage alliances, can override region and town membership and set taxes."));
             currentLanguage.put("democracy",
                     localeConfig.getString(langKey + ".democracy", "Democracy"));
+            currentLanguage.put("democracy-desc",
+                    localeConfig.getString(langKey + ".democracy-desc", "Town owners manage alliances, set taxes, and town membership. Voting sets new town ownership periodically."));
             currentLanguage.put("oligarchy",
                     localeConfig.getString(langKey + ".oligarchy", "Oligarchy"));
+            currentLanguage.put("oligarchy-desc",
+                    localeConfig.getString(langKey + ".oligarchy-desc", "Dictatorship + Town Ownership can be bought into and bought out."));
             currentLanguage.put("cooperative",
                     localeConfig.getString(langKey + ".cooperative", "Cooperative"));
+            currentLanguage.put("cooperative-desc",
+                    localeConfig.getString(langKey + ".cooperative-desc", "Democracy + All region income is distributed evenly among town members and taxes. Town bank can be used by anyone to build upgrades and utilities."));
             currentLanguage.put("libertarian",
                     localeConfig.getString(langKey + ".libertarian", "Libertarian"));
+            currentLanguage.put("libertarian-desc",
+                    localeConfig.getString(langKey + ".libertarian-desc", "No town ownership."));
             currentLanguage.put("socialism",
                     localeConfig.getString(langKey + ".socialism", "Socialism"));
+            currentLanguage.put("socialism-desc",
+                    localeConfig.getString(langKey + ".socialism-desc", "Dictatorship + All utilities, farms, mines, factories, and quarries are publicly owned. All region income is distributed evenly among town members and taxes."));
             currentLanguage.put("democratic-socialism",
                     localeConfig.getString(langKey + ".democratic-socialism", "Democratic Socialism"));
+            currentLanguage.put("democratic-socialism-desc",
+                    localeConfig.getString(langKey + ".democratic-socialism-desc", "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."));
             currentLanguage.put("kraterocracy",
-                    localeConfig.getString(langKey + ".kraterocracy", "kraterocracy"));
+                    localeConfig.getString(langKey + ".kraterocracy", "Kraterocracy"));
+            currentLanguage.put("kraterocracy-desc",
+                    localeConfig.getString(langKey + ".kraterocracy-desc", "Dictatorship + Whoever has the most kill points becomes a town owner."));
             currentLanguage.put("meritocracy",
                     localeConfig.getString(langKey + ".meritocracy", "Meritocracy"));
+            currentLanguage.put("meritocracy-desc",
+                    localeConfig.getString(langKey + ".meritocracy-desc", "Dictatorship + Whoever contributes the most power and money becomes an owner."));
             currentLanguage.put("cybersynacy",
                     localeConfig.getString(langKey + ".cybersynacy", "Cybersynacy"));
+            currentLanguage.put("cybersynacy-desc",
+                    localeConfig.getString(langKey + ".cybersynacy-desc", "No human town ownership. Alliances, taxes, recruitment and utilities are handled by an AI."));
             currentLanguage.put("tribalism",
                     localeConfig.getString(langKey + ".tribalism", "Tribalism"));
+            currentLanguage.put("tribalism-desc",
+                    localeConfig.getString(langKey + ".tribalism-desc", "Dictatorship + Members can't join non-allied towns."));
             currentLanguage.put("feudalism",
                     localeConfig.getString(langKey + ".feudalism", "Feudalism"));
+            currentLanguage.put("feudalism-desc",
+                    localeConfig.getString(langKey + ".feudalism-desc", "Dictatorship + Town members can't build regions in town."));
             currentLanguage.put("colonialism",
                     localeConfig.getString(langKey + ".colonialism", "Colonialism"));
+            currentLanguage.put("colonialism-desc",
+                    localeConfig.getString(langKey + ".colonialism-desc", "No town ownership. A parent town overrides town ownership."));
             currentLanguage.put("capitalism",
                     localeConfig.getString(langKey + ".capitalism", "Capitalism"));
+            currentLanguage.put("capitalism-desc",
+                    localeConfig.getString(langKey + ".capitalism-desc", "Democracy + Town members can buy extra votes."));
+            currentLanguage.put("communism",
+                    localeConfig.getString(langKey + ".communism", "Communism"));
+            currentLanguage.put("communism-desc",
+                    localeConfig.getString(langKey + ".communism-desc", "Everyone is an owner of everything. All region income is distributed evenly."));
+            currentLanguage.put("libertarian-socialism",
+                    localeConfig.getString(langKey + ".libertarian-socialism", "Libertarian Socialism"));
+            currentLanguage.put("libertarian-socialism-desc",
+                    localeConfig.getString(langKey + ".libertarian-socialism-desc", "Libertarian + Socialism"));
             languageMap.put(langKey, currentLanguage);
         }
     }
