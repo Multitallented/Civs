@@ -51,6 +51,8 @@ public class ViewMembersMenu extends Menu {
             return;
         }
 
+        boolean oligarchyBuy = getData(civilian.getUuid(), "oligarchy-buy") != null;
+
         if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
 
             Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
@@ -62,7 +64,8 @@ public class ViewMembersMenu extends Menu {
                 if (viewSelf && town.getRawPeople().keySet().size() < 2) {
                     return;
                 }
-                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town, player.getUniqueId(), viewSelf));
+                event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town,
+                        player.getUniqueId(), viewSelf, !oligarchyBuy));
             } else {
                 if (viewSelf && region.getPeople().keySet().size() < 2) {
                     return;
@@ -73,11 +76,14 @@ public class ViewMembersMenu extends Menu {
         }
     }
 
-    public static Inventory createMenu(Civilian civilian, Town town) {
+    public static Inventory createMenu(Civilian civilian, Town town, boolean oligarchyBuy) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
         Map<String, Object> data = new HashMap<>();
         data.put("town", town);
+        if (oligarchyBuy) {
+            data.put("oligarchy-buy", true);
+        }
         setNewData(civilian.getUuid(), data);
 
         //8 Back Button

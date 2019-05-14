@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,10 +85,11 @@ public class MemberActionMenu extends Menu {
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
-        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP);
+        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true);
     }
 
-    private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf, GovernmentType governmentType) {
+    private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf,
+                                 GovernmentType governmentType, double price, boolean isOwner) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -99,6 +101,12 @@ public class MemberActionMenu extends Menu {
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "owner-description"));
+            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+                String priceString = NumberFormat.getCurrencyInstance().format(price);
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                        .replace("$1", priceString));
+            }
+
             cvItem1.setLore(lore);
             inventory.setItem(9, cvItem1.createItemStack());
         }
@@ -109,6 +117,11 @@ public class MemberActionMenu extends Menu {
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "member-description"));
+            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+                String priceString = NumberFormat.getCurrencyInstance().format(price);
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                        .replace("$1", priceString));
+            }
             cvItem1.setLore(lore);
             inventory.setItem(10, cvItem1.createItemStack());
         }
@@ -119,6 +132,11 @@ public class MemberActionMenu extends Menu {
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "guest-description"));
+            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+                String priceString = NumberFormat.getCurrencyInstance().format(price);
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                        .replace("$1", priceString));
+            }
             cvItem1.setLore(lore);
             inventory.setItem(11, cvItem1.createItemStack());
         }
@@ -126,10 +144,17 @@ public class MemberActionMenu extends Menu {
         //12 remove member
         CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
         cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "remove-member"));
+        if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+            lore = new ArrayList<>();
+            String priceString = NumberFormat.getCurrencyInstance().format(price);
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                    .replace("$1", priceString));
+            cvItem1.setLore(lore);
+        }
         inventory.setItem(12, cvItem1.createItemStack());
     }
 
-    public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf) {
+    public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf, boolean isOwner) {
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(town.getPeople().size()) + 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -154,7 +179,10 @@ public class MemberActionMenu extends Menu {
         playerItem.setItemMeta(im);
         inventory.setItem(1, playerItem);
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        double price = 2* townType.getPrice();
+
+        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner);
 
         return inventory;
     }

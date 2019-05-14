@@ -109,11 +109,12 @@ public class TownActionMenu extends Menu {
             return;
         }
 
+        boolean oligarchyBuy = getData(civilian.getUuid(), "oligarchy-buy") != null;
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "view-members"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, town));
+            event.getWhoClicked().openInventory(ViewMembersMenu.createMenu(civilian, town, oligarchyBuy));
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
@@ -184,7 +185,6 @@ public class TownActionMenu extends Menu {
         if (colonialOverride) {
             data.put("colonial-override", true);
         }
-        setNewData(civilian.getUuid(), data);
 
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
@@ -297,7 +297,7 @@ public class TownActionMenu extends Menu {
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
-        //9 People
+
         boolean govTypeDisable = town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
                 town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 town.getGovernmentType() == GovernmentType.CYBERSYNACY ||
@@ -313,6 +313,13 @@ public class TownActionMenu extends Menu {
         boolean govTypeOwnerOverride = town.getGovernmentType() == GovernmentType.ANARCHY ||
                 town.getGovernmentType() == GovernmentType.OLIGARCHY;
 
+
+        if (!isOwner && town.getGovernmentType() == GovernmentType.OLIGARCHY) {
+            data.put("oligarchy-buy", true);
+        }
+        setNewData(civilian.getUuid(), data);
+
+        //9 People
         if (!govTypeDisable && (isOwner || govTypeOwnerOverride || colonialOverride)) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
