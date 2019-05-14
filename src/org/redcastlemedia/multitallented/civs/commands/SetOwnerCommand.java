@@ -133,6 +133,7 @@ public class SetOwnerCommand implements CivCommand {
             }
             if (oligarchyOverride) {
                 Civs.econ.withdrawPlayer(player, townType.getPrice());
+                // TODO distribute to owners
             }
         }
 
