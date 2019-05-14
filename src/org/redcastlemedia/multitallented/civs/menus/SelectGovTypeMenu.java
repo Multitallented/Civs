@@ -78,6 +78,28 @@ public class SelectGovTypeMenu extends Menu {
         }
 
         // TODO any other changes that need to be made
+
+        if (governmentType == GovernmentType.COMMUNISM) {
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(uuid).equals("owner")) {
+                    town.setPeople(uuid, "owner");
+                }
+            }
+        }
+
+        if (governmentType == GovernmentType.LIBERTARIAN ||
+                governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                governmentType == GovernmentType.CYBERSYNACY) {
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(uuid).equals("owner")) {
+                    town.setPeople(uuid, "member");
+                }
+            }
+        }
+
+        town.setColonialTown(null);
+        // TODO set colonial town
+
         town.setGovernmentType(governmentType);
         TownManager.getInstance().saveTown(town);
 
