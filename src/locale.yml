@@ -35,8 +35,8 @@ en:
   libertarian-desc: "No town ownership."
   socialism: "Socialism"
   socialism-desc: "Dictatorship + All utilities, farms, mines, factories, and quarries are publicly owned. All region income is distributed evenly among town members and taxes."
-  democratic-socialism: "Democratic Socialism"
-  democratic-socialism-desc: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
+  democratic_socialism: "Democratic Socialism"
+  democratic_socialism-desc: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
   kraterocracy: "Kraterocracy"
   kraterocracy-desc: "Dictatorship + Whoever has the most kill points becomes a town owner."
   meritocracy: "Meritocracy"
@@ -53,8 +53,8 @@ en:
   capitalism-desc: "Democracy + Town members can buy extra votes."
   communism: "Communism"
   communism-desc: "Everyone is an owner of everything. All region income is distributed evenly."
-  libertarian-socialism: "Libertarian Socialism"
-  libertarian-socialism-desc: "Libertarian + Socialism"
+  libertarian_socialism: "Libertarian Socialism"
+  libertarian_socialism-desc: "Libertarian + Socialism"
 
   #shop
   shop: Shop

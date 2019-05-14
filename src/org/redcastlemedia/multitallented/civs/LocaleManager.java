@@ -526,10 +526,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".socialism", "Socialism"));
             currentLanguage.put("socialism-desc",
                     localeConfig.getString(langKey + ".socialism-desc", "Dictatorship + All utilities, farms, mines, factories, and quarries are publicly owned. All region income is distributed evenly among town members and taxes."));
-            currentLanguage.put("democratic-socialism",
-                    localeConfig.getString(langKey + ".democratic-socialism", "Democratic Socialism"));
-            currentLanguage.put("democratic-socialism-desc",
-                    localeConfig.getString(langKey + ".democratic-socialism-desc", "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."));
+            currentLanguage.put("democratic_socialism",
+                    localeConfig.getString(langKey + ".democratic_socialism", "Democratic Socialism"));
+            currentLanguage.put("democratic_socialism-desc",
+                    localeConfig.getString(langKey + ".democratic_socialism", "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."));
             currentLanguage.put("kraterocracy",
                     localeConfig.getString(langKey + ".kraterocracy", "Kraterocracy"));
             currentLanguage.put("kraterocracy-desc",
@@ -562,10 +562,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".communism", "Communism"));
             currentLanguage.put("communism-desc",
                     localeConfig.getString(langKey + ".communism-desc", "Everyone is an owner of everything. All region income is distributed evenly."));
-            currentLanguage.put("libertarian-socialism",
-                    localeConfig.getString(langKey + ".libertarian-socialism", "Libertarian Socialism"));
-            currentLanguage.put("libertarian-socialism-desc",
-                    localeConfig.getString(langKey + ".libertarian-socialism-desc", "Libertarian + Socialism"));
+            currentLanguage.put("libertarian_socialism",
+                    localeConfig.getString(langKey + ".libertarian_socialism", "Libertarian Socialism"));
+            currentLanguage.put("libertarian_socialism-desc",
+                    localeConfig.getString(langKey + ".libertarian_socialism-desc", "Libertarian + Socialism"));
             languageMap.put(langKey, currentLanguage);
         }
     }

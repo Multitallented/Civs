@@ -47,6 +47,8 @@ public class TownActionMenu extends Menu {
         }
         Town town = (Town) getData(civilian.getUuid(), "town");
         String townName = town.getName();
+        boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).equals("owner");
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
@@ -135,13 +137,27 @@ public class TownActionMenu extends Menu {
             return;
         }
 
+        int ownerCount = 0;
+        for (String role : town.getRawPeople().values()) {
+            if (role.equals("owner")) {
+                ownerCount++;
+            }
+        }
+        boolean govTypeDisable = town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                town.getGovernmentType() == GovernmentType.CYBERSYNACY;
+
         boolean colonialOverride = getData(civilian.getUuid(), "colonial-override") != null;
-        // TODO ownership check + colonial override
+
         if (ConfigManager.getInstance().isAllowChangingOfGovType() &&
+                (!govTypeDisable && ((isOwner && ownerCount < 2) || colonialOverride)) &&
                 event.getCurrentItem().getItemMeta().getLore() != null &&
                 !event.getCurrentItem().getItemMeta().getLore().isEmpty() &&
-                event.getCurrentItem().getItemMeta().getLore().get(0).equals("Gov Type")) {
-            // TODO open the choose goverment type menu
+                event.getCurrentItem().getItemMeta().getLore().get(0).startsWith("Gov Type:")) {
+
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(SelectGovTypeMenu.createMenu(civilian, town));
         }
 
     }
@@ -199,12 +215,11 @@ public class TownActionMenu extends Menu {
         //TODO power consumption / generation
         inventory.setItem(1, cvItem1.createItemStack());
 
-        //2 Location/Nation?
-        //TODO nation display here
+        //2 Location
         if (town.getPeople().containsKey(civilian.getUuid())) {
             CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
             cvItem2.setDisplayName(town.getName());
-            lore.clear();
+            lore = new ArrayList<>();
             lore.add(Region.locationToString(town.getLocation()));
             cvItem2.setLore(lore);
             inventory.setItem(2, cvItem2.createItemStack());
@@ -216,11 +231,17 @@ public class TownActionMenu extends Menu {
             CVItem cvItem6 = CVItem.createCVItemFromString("IRON_SWORD");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-ally").replace("$1", town.getName()));
+            lore = new ArrayList<>();
+            lore.add(townOwner.getName());
+            cvItem6.setLore(lore);
             inventory.setItem(3, cvItem6.createItemStack());
         } else if (townOwner != null && townOwner != town) {
             CVItem cvItem6 = CVItem.createCVItemFromString("CREEPER_HEAD");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-unally").replace("$1", town.getName()));
+            lore = new ArrayList<>();
+            lore.add(townOwner.getName());
+            cvItem6.setLore(lore);
             inventory.setItem(3, cvItem6.createItemStack());
         }
 

@@ -484,7 +484,7 @@ public final class Util {
     public static CVItem getGovermentTypeIcon(Civilian civilian, GovernmentType governmentType) {
         CVItem cvItem;
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Gov Type");
+        lore.add("Gov Type: " + governmentType.name());
         switch (governmentType) {
             case ANARCHY:
                 cvItem = CVItem.createCVItemFromString("NETHERRACK");
@@ -519,7 +519,7 @@ public final class Util {
                         .getTranslation(civilian.getLocale(), "libertarian-desc")));
             case LIBERTARIAN_SOCIALISM:
                 cvItem = CVItem.createCVItemFromString("ORANGE_GLAZED_TERRACOTTA");
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "libertarian-socialism"));
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "libertarian_socialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "libertarian-socialism-desc")));
             case SOCIALISM:
@@ -529,7 +529,7 @@ public final class Util {
                         .getTranslation(civilian.getLocale(), "socialism-desc")));
             case DEMOCRATIC_SOCIALISM:
                 cvItem = CVItem.createCVItemFromString("CYAN_STAINED_GLASS");
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "democratic-socialism"));
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "democratic_socialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "democratic-socialism-desc")));
             case KRATEROCRACY:
