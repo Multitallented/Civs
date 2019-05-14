@@ -389,7 +389,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF) {
+                mat == Material.BOOKSHELF ||
+                mat == Material.SHULKER_BOX) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
