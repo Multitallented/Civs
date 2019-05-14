@@ -113,3 +113,24 @@ tutorial:
   use-tutorial: true
   use-guide: true
   url: "https://youtu.be/pa_rfrpUAS8"
+
+allow-changing-gov-type: false
+default-gov-type: "DICTATORSHIP"
+allowed-gov-types:
+  - "DICTATORSHIP"
+  - "OLIGARCHY"
+  - "DEMOCRACY"
+  - "COMMUNISM"
+  - "COOPERATIVE"
+  - "ANARCHY"
+  - "LIBERTARIAN"
+  - "LIBERTARIAN_SOCIALISM"
+  - "SOCIALISM"
+  - "DEMOCRATIC_SOCIALISM"
+  - "KRATEROCRACY"
+  - "MERITOCRACY"
+  - "CYBERSYNACY"
+  - "TRIBALISM"
+  - "FEUDALISM"
+  - "COLONIALISM"
+  - "CAPITALISM"

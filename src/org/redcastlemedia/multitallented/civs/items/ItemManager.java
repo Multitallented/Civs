@@ -219,6 +219,7 @@ public class ItemManager {
                 config.getInt("child-population", 0),
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
+        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType().name()));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }

@@ -21,6 +21,9 @@ public class TownType extends CivItem {
     private final int maxPower;
     private final String child;
     @Getter
+    @Setter
+    private String defaultGovType;
+    @Getter
     private final int childPopulation;
     @Getter
     private final HashMap<String, Integer> regionLimits;

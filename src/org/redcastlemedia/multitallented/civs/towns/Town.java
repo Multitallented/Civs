@@ -37,6 +37,10 @@ public class Town {
     @Setter
     private GovernmentType governmentType;
 
+    @Getter
+    @Setter
+    private String colonialTown;
+
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
         this.name = name;
@@ -48,7 +52,8 @@ public class Town {
         this.housing = housing;
         this.villagers = villagers;
         this.lastDisable = lastDisable;
-        governmentType = GovernmentType.DICTATORSHIP;
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
+        governmentType = GovernmentType.valueOf(townType.getDefaultGovType());
     }
 
     public long getLastDisable() {

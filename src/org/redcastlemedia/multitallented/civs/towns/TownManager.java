@@ -202,6 +202,9 @@ public class TownManager {
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
+        if (config.isSet("colonial-town")) {
+            town.setColonialTown(config.getString("colonial-town"));
+        }
         if (config.isSet("child-locations")) {
             List<Location> locationList = new ArrayList<>();
             for (String locationString : config.getStringList("child-locations")) {
@@ -211,6 +214,19 @@ public class TownManager {
         }
         addTown(town);
     }
+
+    public Set<Town> getOwnedTowns(Civilian civilian) {
+        HashSet<Town> townSet = new HashSet();
+        for (Town town : towns.values()) {
+            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
+                    !town.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                continue;
+            }
+            townSet.add(town);
+        }
+        return townSet;
+    }
+
     public void addTown(Town town) {
         towns.put(town.getName(), town);
         sortedTowns.add(town);
@@ -411,6 +427,11 @@ public class TownManager {
                 }
             } else {
                 config.set("bounties", null);
+            }
+            if (town.getColonialTown() == null) {
+                config.set("colonial-town", null);
+            } else {
+                config.set("colonial-town", town.getColonialTown());
             }
 
             //TODO save all town properties

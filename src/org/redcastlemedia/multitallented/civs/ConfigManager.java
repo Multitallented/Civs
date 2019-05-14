@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -86,6 +87,15 @@ public class ConfigManager {
 
     @Getter
     boolean allowTeleportInCombat;
+
+    @Getter
+    GovernmentType defaultGovernmentType;
+
+    @Getter
+    List<String> allowedGovTypes;
+
+    @Getter
+    boolean allowChangingOfGovType;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -275,6 +285,14 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
+            if (defaultGovTypeString != null) {
+                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+            } else {
+                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+            }
+            allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
+            allowedGovTypes = config.getStringList("allowed-gov-types");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -353,6 +371,10 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
+        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        allowedGovTypes = new ArrayList<>();
+        allowedGovTypes.add("DICTATORSHIP");
+        allowChangingOfGovType = false;
     }
 
     public static ConfigManager getInstance() {
