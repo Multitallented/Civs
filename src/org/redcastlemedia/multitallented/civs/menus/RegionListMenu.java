@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -12,11 +13,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class RegionListMenu extends Menu {
 
@@ -39,7 +36,25 @@ public class RegionListMenu extends Menu {
             return;
         }
 
+        LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        HashMap<String, Integer> regionTypeNames = (HashMap<String, Integer>) getData(civilian.getUuid(), "regionTypeNames");
+        int page = (int) getData(civilian.getUuid(), "page");
+        if (event.getCurrentItem().getType() == Material.EMERALD &&
+                localeManager.getTranslation(civilian.getLocale(), "next-button")
+                        .equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, regionTypeNames, page + 1));
+            return;
+        }
+        if (event.getCurrentItem().getType() == Material.REDSTONE &&
+                localeManager.getTranslation(civilian.getLocale(), "prev-button")
+                        .equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, regionTypeNames, page - 1));
+            return;
+        }
+
         String regionTypeName = event.getCurrentItem().getItemMeta().getDisplayName()
                 .replace("Civs ", "").toLowerCase();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
@@ -47,14 +62,34 @@ public class RegionListMenu extends Menu {
         event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
     }
 
-    public static Inventory createMenu(Civilian civilian, HashMap<String, Integer> regionTypeNames) {
+    public static Inventory createMenu(Civilian civilian, HashMap<String, Integer> regionTypeNames, int page) {
         int index = 9;
 
-        // TODO paginate this?
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
 
-        Inventory inv = Bukkit.createInventory(null, getInventorySize(regionTypeNames.size() + 9), MENU_NAME);
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("regionTypeNames", regionTypeNames);
+        setNewData(civilian.getUuid(), data);
 
-        inv.setItem(8, getBackButton(civilian));
+        LocaleManager localeManager = LocaleManager.getInstance();
+        //0 Prev button
+        if (page > 0) {
+            CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "prev-button"));
+            inventory.setItem(0, cvItem.createItemStack());
+        }
+        int startIndex = page * 36;
+        //8 Next button
+        if (startIndex + 36 < regionTypeNames.size()) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "next-button"));
+            inventory.setItem(8, cvItem1.createItemStack());
+        }
+
+        inventory.setItem(8, getBackButton(civilian));
 
         for (String regionTypeName : regionTypeNames.keySet()) {
             CVItem civItem = ItemManager.getInstance().getItemType(regionTypeName);
@@ -63,10 +98,10 @@ public class RegionListMenu extends Menu {
             }
             ItemStack is = civItem.createItemStack();
             is.setAmount(regionTypeNames.get(regionTypeName));
-            inv.setItem(index, is);
+            inventory.setItem(index, is);
             index++;
         }
 
-        return inv;
+        return inventory;
     }
 }

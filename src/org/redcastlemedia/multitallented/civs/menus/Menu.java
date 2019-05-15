@@ -68,7 +68,7 @@ public abstract class Menu implements Listener {
                 size -= 9;
             }
         }
-        return size;
+        return size > 54 ? 54 : size;
     }
 
     static ItemStack getBackButton(Civilian civilian) {

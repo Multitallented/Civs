@@ -40,7 +40,7 @@ public class TownTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.OAK_PLANKS)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs(), 0));
             return;
         }
         /*if (event.getCurrentItem().getType().equals(Material.CHEST)) {
@@ -58,13 +58,13 @@ public class TownTypeInfoMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.IRON_PICKAXE)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs()));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getReqs(), 0));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.RED_WOOL)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getRegionLimits()));
+            event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, townType.getRegionLimits(), 0));
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
