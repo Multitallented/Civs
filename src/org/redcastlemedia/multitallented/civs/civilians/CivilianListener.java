@@ -323,7 +323,7 @@ public class CivilianListener implements Listener {
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
         if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
-            DynmapUtil.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
+            DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
             return;
         }
 
@@ -337,7 +337,7 @@ public class CivilianListener implements Listener {
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
         if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
-            DynmapUtil.dynmapCommonAPI = null;
+            DynmapHook.dynmapCommonAPI = null;
         }
     }
 
