@@ -20,8 +20,8 @@ build-reqs:
 - CHEST*50
 - g:door*2
 - g:window*8
-- g:roof*100
 - g:stairs*4
+  - g:roof*100
 - g:secondary*70
 - g:primary*250
 
