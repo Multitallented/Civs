@@ -180,7 +180,9 @@ public class TownActionMenu extends Menu {
             CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
             cvItem2.setDisplayName(town.getName());
             lore.clear();
-            lore.add(Region.locationToString(town.getLocation()));
+            lore.add(town.getLocation().getWorld().getName() + " " +
+                    town.getLocation().getX() + "x " + town.getLocation().getY() + "y " +
+                    town.getLocation().getZ() + "z");
             cvItem2.setLore(lore);
             inventory.setItem(2, cvItem2.createItemStack());
         }
