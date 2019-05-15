@@ -119,7 +119,7 @@ public class TownCommand implements CivCommand {
             if (!checkList.isEmpty()) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "missing-region-requirements").replace("$1", townType.getDisplayName()));
-                player.openInventory(RegionListMenu.createMenu(civilian, checkList));
+                player.openInventory(RegionListMenu.createMenu(civilian, checkList, 0));
                 return true;
             }
         }
