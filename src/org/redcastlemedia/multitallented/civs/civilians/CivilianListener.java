@@ -67,14 +67,9 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         outer: if (configManager.getUseStarterBook()) {
-            CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
-
-            ItemStack stack = cvItem.createItemStack();
+            ItemStack stack = Util.createStarterBook(civilian.getLocale());
             for (ItemStack is : player.getInventory()) {
-                if (is == null || is.getType() != Material.WRITTEN_BOOK || !is.hasItemMeta()
-                        || !is.getItemMeta().getDisplayName().equals(
-                                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"))) {
+                if (is == null || Util.isStarterBook(is)) {
                     continue;
                 }
                 break outer;
