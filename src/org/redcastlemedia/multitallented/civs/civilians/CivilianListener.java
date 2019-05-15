@@ -136,6 +136,15 @@ public class CivilianListener implements Listener {
                 item.getItemStack().getItemMeta().getDisplayName() != null &&
                 item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
             item.remove();
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            String itemName = item.getItemStack().getItemMeta().getDisplayName()
+                    .replace("Civs ", "").toLowerCase();
+            if (civilian.getStashItems().containsKey(itemName)) {
+                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+            } else {
+                civilian.getStashItems().put(itemName, 1);
+            }
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
 
