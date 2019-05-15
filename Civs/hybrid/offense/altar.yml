@@ -16,6 +16,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
+- chest_use
 
 period: 3600 #1 hour
 upkeep:

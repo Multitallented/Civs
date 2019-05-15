@@ -72,6 +72,6 @@ public class ShopLevelMenu extends Menu {
             returnMap.put(civItem.getProcessedName(), 1);
         }
         appendHistory(civilian.getUuid(), MENU_NAME);
-        event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, returnMap));
+        event.getWhoClicked().openInventory(RegionListMenu.createMenu(civilian, returnMap, 0));
     }
 }

@@ -66,14 +66,9 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         outer: if (configManager.getUseStarterBook()) {
-            CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
-
-            ItemStack stack = cvItem.createItemStack();
+            ItemStack stack = Util.createStarterBook(civilian.getLocale());
             for (ItemStack is : player.getInventory()) {
-                if (is == null || is.getType() != Material.WRITTEN_BOOK || !is.hasItemMeta()
-                        || !is.getItemMeta().getDisplayName().equals(
-                                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"))) {
+                if (is == null || Util.isStarterBook(is)) {
                     continue;
                 }
                 break outer;
@@ -140,6 +135,15 @@ public class CivilianListener implements Listener {
                 item.getItemStack().getItemMeta().getDisplayName() != null &&
                 item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
             item.remove();
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            String itemName = item.getItemStack().getItemMeta().getDisplayName()
+                    .replace("Civs ", "").toLowerCase();
+            if (civilian.getStashItems().containsKey(itemName)) {
+                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+            } else {
+                civilian.getStashItems().put(itemName, 1);
+            }
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
 
@@ -185,7 +189,10 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book").equals(event.getItem().getItemMeta().getDisplayName())) {
+        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName()) &&
+                !localeManager.getTranslation("en", "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName())) {
             return;
         }
         event.setCancelled(true);
