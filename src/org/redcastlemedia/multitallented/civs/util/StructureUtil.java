@@ -116,6 +116,11 @@ public final class StructureUtil {
         }
         for (Location location : locations) {
             Block block = location.getBlock();
+            if (block.getType() != Material.RED_STAINED_GLASS &&
+                    block.getType() != Material.LIME_STAINED_GLASS &&
+                    block.getType() != Material.BLUE_STAINED_GLASS) {
+                continue;
+            }
             block.setType(Material.AIR);
         }
         boundingBoxes.remove(uuid);
