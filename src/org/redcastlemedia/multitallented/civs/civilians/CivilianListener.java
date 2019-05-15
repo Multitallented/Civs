@@ -186,7 +186,10 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book").equals(event.getItem().getItemMeta().getDisplayName())) {
+        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName()) &&
+                !localeManager.getTranslation("en", "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName())) {
             return;
         }
         event.setCancelled(true);
