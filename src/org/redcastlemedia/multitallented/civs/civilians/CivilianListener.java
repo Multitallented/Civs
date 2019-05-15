@@ -28,8 +28,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
-import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.*;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -68,14 +67,9 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         outer: if (configManager.getUseStarterBook()) {
-            CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"));
-
-            ItemStack stack = cvItem.createItemStack();
+            ItemStack stack = Util.createStarterBook(civilian.getLocale());
             for (ItemStack is : player.getInventory()) {
-                if (is == null || is.getType() != Material.WRITTEN_BOOK || !is.hasItemMeta()
-                        || !is.getItemMeta().getDisplayName().equals(
-                                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "starter-book"))) {
+                if (is == null || Util.isStarterBook(is)) {
                     continue;
                 }
                 break outer;
@@ -142,6 +136,15 @@ public class CivilianListener implements Listener {
                 item.getItemStack().getItemMeta().getDisplayName() != null &&
                 item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
             item.remove();
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            String itemName = item.getItemStack().getItemMeta().getDisplayName()
+                    .replace("Civs ", "").toLowerCase();
+            if (civilian.getStashItems().containsKey(itemName)) {
+                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+            } else {
+                civilian.getStashItems().put(itemName, 1);
+            }
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
 
@@ -187,7 +190,10 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book").equals(event.getItem().getItemMeta().getDisplayName())) {
+        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName()) &&
+                !localeManager.getTranslation("en", "starter-book")
+                .equals(event.getItem().getItemMeta().getDisplayName())) {
             return;
         }
         event.setCancelled(true);
@@ -295,6 +301,7 @@ public class CivilianListener implements Listener {
         blockLogger.putBlock(event.getBlock().getLocation(), cvItem);
     }
 
+    // for hoppers and the like
     @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveEvent(InventoryMoveItemEvent event) {
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
@@ -341,6 +348,11 @@ public class CivilianListener implements Listener {
             return;
         }
         ItemStack dragged = event.getOldCursor();
+
+        if (checkMoveNormalItems(event)) {
+            return;
+        }
+
         if (!CVItem.isCivsItem(dragged) ||
                 event.getView().getTitle().startsWith("Civ")) {
             return;
@@ -359,6 +371,19 @@ public class CivilianListener implements Listener {
         }
     }
 
+    private boolean checkMoveNormalItems(InventoryDragEvent event) {
+        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+            return false;
+        }
+        if (CVItem.isCivsItem(event.getOldCursor())) {
+            return false;
+        }
+        event.setCancelled(true);
+        return true;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
@@ -375,6 +400,10 @@ public class CivilianListener implements Listener {
             return;
         }
 
+        if (checkMoveNormalItems(event, stackInQuestion)) {
+            return;
+        }
+
         if (!CVItem.isCivsItem(stackInQuestion) || event.getView().getTitle().startsWith("Civ")) {
             return;
         }
@@ -383,5 +412,18 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
         humanEntity.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+    }
+
+    private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {
+        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
+                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+            return false;
+        }
+        if (CVItem.isCivsItem(stackInQuestion)) {
+            return false;
+        }
+        event.setCancelled(true);
+        return true;
     }
 }

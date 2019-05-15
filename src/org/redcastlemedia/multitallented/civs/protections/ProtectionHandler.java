@@ -6,6 +6,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -163,6 +164,17 @@ public class ProtectionHandler implements Listener {
         boolean shouldTakeActionFrom = shouldBlockAction(event.getBlock(), null, "block_liquid");
         boolean shouldTakeActionTo = shouldBlockAction(event.getToBlock(), null, "block_liquid");
         boolean setCancelled = event.isCancelled() || (!shouldTakeActionFrom && shouldTakeActionTo);
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEndermanPickup(EntityChangeBlockEvent event) {
+        if (event.getEntityType() != EntityType.ENDERMAN) {
+            return;
+        }
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), "block_break");
         if (setCancelled) {
             event.setCancelled(true);
         }

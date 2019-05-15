@@ -78,7 +78,24 @@ public final class Util {
     public static ItemStack createStarterBook(String locale) {
         CVItem cvItem = CVItem.createCVItemFromString("WRITTEN_BOOK");
         cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, "starter-book"));
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("starter-book");
+        cvItem.setLore(lore);
         return cvItem.createItemStack();
+    }
+
+    public static boolean isStarterBook(ItemStack itemStack) {
+        if (itemStack.getType() != Material.WRITTEN_BOOK) {
+            return false;
+        }
+        if (!itemStack.hasItemMeta()) {
+            return false;
+        }
+        if (itemStack.getItemMeta().getLore() == null ||
+                itemStack.getItemMeta().getLore().isEmpty()) {
+            return false;
+        }
+        return itemStack.getItemMeta().getLore().get(0).equals("starter-book");
     }
 
     public static List<String> parseColors(List<String> inputString) {

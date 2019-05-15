@@ -1,3 +1,4 @@
+
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
@@ -170,7 +171,7 @@ public class RegionActionMenu extends Menu {
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
             int nextUpkeep = region.getSecondsTillNextTick();
-            if (nextUpkeep < 64 && nextUpkeep > 0) {
+            if (nextUpkeep < 65 && nextUpkeep > 1) {
                 cvItem1.setQty(nextUpkeep);
             }
             lore.add(localeManager.getTranslation(civilian.getLocale(), "cooldown")

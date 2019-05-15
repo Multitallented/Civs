@@ -76,6 +76,14 @@ public class RegionsTests {
     }
 
     @Test
+    public void secondsUntilNextTickShouldWork() {
+        loadRegionTypeCobble();
+        Region region = createNewRegion("cobble");
+        region.lastTick = System.currentTimeMillis();
+        assertTrue(region.getSecondsTillNextTick() > 0);
+    }
+
+    @Test
     public void itemManagerShouldLoadRegionTypesFromConfig() {
         loadRegionTypeCobble();
         assertNotNull(ItemManager.getInstance().getItemType("cobble"));

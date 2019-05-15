@@ -18,7 +18,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.*;
 
 public class ClassMenu extends Menu {
-    private static final String MENU_NAME = "CivsClassStash";
+    public static final String MENU_NAME = "CivsClassStash";
     public ClassMenu() {
         super(MENU_NAME);
     }
