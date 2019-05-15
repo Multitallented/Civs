@@ -19,9 +19,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -35,10 +37,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
-import org.redcastlemedia.multitallented.civs.util.Util;
+import org.redcastlemedia.multitallented.civs.util.*;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -316,11 +315,22 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
+        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
+            DynmapUtil.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
+            return;
+        }
+
         if (!"PlaceholderAPI".equals(event.getPlugin().getName())) {
             return;
         }
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+        }
+    }
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
+            DynmapUtil.dynmapCommonAPI = null;
         }
     }
 

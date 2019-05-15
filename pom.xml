@@ -30,6 +30,10 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>dynmap</id>
+            <url>http://repo.mikeprimm.com/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -59,6 +63,12 @@
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dynmap</groupId>
+            <artifactId>dynmap-api</artifactId>
+            <version>2.0</version>
             <scope>provided</scope>
         </dependency>
 
