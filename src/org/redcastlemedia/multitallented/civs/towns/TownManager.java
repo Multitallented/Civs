@@ -12,6 +12,8 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -242,6 +244,10 @@ public class TownManager {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civ.getLocale(),
                         "town-destroyed").replace("$1", town.getName()));
             }
+        } else {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            TownDestroyedEvent townDestroyedEvent = new TownDestroyedEvent(town, townType);
+            Bukkit.getPluginManager().callEvent(townDestroyedEvent);
         }
         towns.remove(town.getName());
         sortedTowns.remove(town);
@@ -281,6 +287,8 @@ public class TownManager {
         if (townType.getChild() == null) {
             return;
         }
+        TownDevolveEvent townDevolveEvent = new TownDevolveEvent(town, townType);
+        Bukkit.getPluginManager().callEvent(townDevolveEvent);
         town.destroyRing(false, true);
         TownType childTownType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
         town.setType(childTownType.getProcessedName());

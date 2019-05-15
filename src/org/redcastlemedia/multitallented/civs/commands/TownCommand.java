@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,8 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
@@ -130,6 +133,7 @@ public class TownCommand implements CivCommand {
         people.put(player.getUniqueId(), "owner");
         Location newTownLocation = player.getLocation();
         List<Location> childLocations = new ArrayList<>();
+        TownType childTownType = null;
         int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
@@ -143,6 +147,7 @@ public class TownCommand implements CivCommand {
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
+            childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
             // Don't destroy the ring on upgrade
 //            if (ConfigManager.getInstance().getTownRings()) {
@@ -163,6 +168,15 @@ public class TownCommand implements CivCommand {
         townManager.addTown(town);
         townManager.saveTown(town);
         player.getInventory().remove(itemStack);
+
+        if (childTownType != null) {
+            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(town, childTownType, townType);
+            Bukkit.getPluginManager().callEvent(townEvolveEvent);
+        } else {
+            TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, townType);
+            Bukkit.getPluginManager().callEvent(townCreatedEvent);
+        }
+
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                 "town-created").replace("$1", town.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
