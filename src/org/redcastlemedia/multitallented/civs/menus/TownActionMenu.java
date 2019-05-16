@@ -48,7 +48,7 @@ public class TownActionMenu extends Menu {
         Town town = (Town) getData(civilian.getUuid(), "town");
         String townName = town.getName();
         boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
-                town.getRawPeople().get(civilian.getUuid()).equals("owner");
+                town.getRawPeople().get(civilian.getUuid()).contains("owner");
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
@@ -70,7 +70,7 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "town-ally-request-sent").replace("$1", townName));
             for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).equals("owner")) {
+                if (town.getRawPeople().get(uuid).contains("owner")) {
                     Player pSend = Bukkit.getPlayer(uuid);
                     if (pSend.isOnline()) {
                         pSend.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
@@ -89,7 +89,7 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().closeInventory();
             for (Town myTown : TownManager.getInstance().getTowns()) {
                 if (myTown.getPeople().containsKey(civilian.getUuid()) &&
-                        myTown.getPeople().get(civilian.getUuid()).equals("owner")) {
+                        myTown.getPeople().get(civilian.getUuid()).contains("owner")) {
                     AllianceManager.getInstance().unAlly(myTown, town);
                     for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                         cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
@@ -140,7 +140,7 @@ public class TownActionMenu extends Menu {
 
         int ownerCount = 0;
         for (String role : town.getRawPeople().values()) {
-            if (role.equals("owner")) {
+            if (role.contains("owner")) {
                 ownerCount++;
             }
         }
@@ -279,7 +279,7 @@ public class TownActionMenu extends Menu {
 
         //6 Destroy
         if ((town.getPeople().containsKey(civilian.getUuid()) &&
-                town.getPeople().get(civilian.getUuid()).equals("owner")) ||
+                town.getPeople().get(civilian.getUuid()).contains("owner")) ||
                 (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
@@ -308,7 +308,7 @@ public class TownActionMenu extends Menu {
                 town.getGovernmentType() == GovernmentType.ANARCHY;
 
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
-                town.getPeople().get(civilian.getUuid()).equals("owner");
+                town.getPeople().get(civilian.getUuid()).contains("owner");
 
         boolean govTypeOwnerOverride = town.getGovernmentType() == GovernmentType.ANARCHY ||
                 town.getGovernmentType() == GovernmentType.OLIGARCHY;

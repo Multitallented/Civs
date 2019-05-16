@@ -81,7 +81,7 @@ public class SelectGovTypeMenu extends Menu {
 
         if (governmentType == GovernmentType.COMMUNISM) {
             for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).equals("owner")) {
+                if (town.getRawPeople().get(uuid).contains("owner")) {
                     town.setPeople(uuid, "owner");
                 }
             }
@@ -91,7 +91,7 @@ public class SelectGovTypeMenu extends Menu {
                 governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 governmentType == GovernmentType.CYBERSYNACY) {
             for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).equals("owner")) {
+                if (town.getRawPeople().get(uuid).contains("owner")) {
                     town.setPeople(uuid, "member");
                 }
             }

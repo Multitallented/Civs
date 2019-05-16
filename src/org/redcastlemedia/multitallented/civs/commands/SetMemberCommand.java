@@ -1,26 +1,18 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SetMemberCommand implements CivCommand {
@@ -66,7 +58,8 @@ public class SetMemberCommand implements CivCommand {
             }
             return true;
         }
-        if (!Util.hasOverride(region, civilian, town) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+        if (!Util.hasOverride(region, civilian, town) && player != null &&
+                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;
@@ -83,39 +76,9 @@ public class SetMemberCommand implements CivCommand {
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
-        if (town != null) {
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-
-            boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
-                    town.getRawPeople().get(civilian.getUuid()).equals("owner");
-
-            boolean inviteeIsOwner = town.getRawPeople().containsKey(inviteCiv.getUuid()) &&
-                    !town.getRawPeople().get(inviteCiv.getUuid()).equals("owner");
-
-            double price = townType.getPrice() * 2;
-            boolean oligarchyOverride = player != null && !isOwner && inviteeIsOwner &&
-                    town.getGovernmentType() == GovernmentType.OLIGARCHY;
-
-            boolean hasMoney = Civs.econ != null && Civs.econ.has(player, price);
-
-            if (oligarchyOverride && !hasMoney) {
-                String moneyString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(price);
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "not-enough-money").replace("$1", moneyString));
+        if (town != null && civilian != null) {
+            if (OwnershipUtil.shouldDenyOwnershipOverSomeone(town, civilian, inviteCiv, player)) {
                 return true;
-            }
-
-            if (inviteeIsOwner && !oligarchyOverride && !isOwner) {
-                if (player != null) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                            "no-permission"));
-                }
-                return true;
-            }
-
-            if (oligarchyOverride) {
-                Civs.econ.withdrawPlayer(player, price);
-                Civs.econ.depositPlayer(invitee, price);
             }
         }
 

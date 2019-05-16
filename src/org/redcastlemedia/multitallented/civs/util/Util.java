@@ -378,7 +378,7 @@ public final class Util {
             override = !regionType.getEffects().containsKey("cant_override") &&
                     townType.getEffects().containsKey("control_override") &&
                     town.getPeople().get(civilian.getUuid()) != null &&
-                    town.getPeople().get(civilian.getUuid()).equals("owner");
+                    town.getPeople().get(civilian.getUuid()).contains("owner");
         }
         return override;
     }

@@ -96,7 +96,7 @@ public class MemberActionMenu extends Menu {
         ArrayList<String> lore;
 
         //9 set owner
-        if (!viewingSelf && !role.equals("owner")) {
+        if (!viewingSelf && !role.contains("owner")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -112,7 +112,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (!viewingSelf && !role.equals("member")) {
+        if (!viewingSelf && !role.contains("member")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();

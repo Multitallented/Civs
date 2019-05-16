@@ -219,7 +219,7 @@ public class TownManager {
         HashSet<Town> townSet = new HashSet();
         for (Town town : towns.values()) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
                 continue;
             }
             townSet.add(town);
@@ -463,7 +463,7 @@ public class TownManager {
     public Town isOwnerOfATown(Civilian civilian) {
         for (Town town : sortedTowns) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
                 continue;
             }
             return town;

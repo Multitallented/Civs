@@ -28,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -116,7 +117,7 @@ public class ProtectionHandler implements Listener {
         } else {
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
-                    region.getRawPeople().get(event.getPlayer().getUniqueId()).equals("owner")) {
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains("owner")) {
                 double salvage = regionType.getPrice() / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
@@ -454,6 +455,7 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
+        Town town = TownManager.getInstance().getTownAt(location);
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -463,12 +465,16 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
+            if (town != null) {
+                if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+                    role = "owner";
+                }
+            }
             if (role == null || (role.contains("member") && !Util.equivalentLocations(location, region.getLocation()))) {
                 return true;
             }
             return true;
         }
-        Town town = TownManager.getInstance().getTownAt(location);
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (!townType.getEffects().keySet().contains(type)) {

@@ -87,8 +87,8 @@ public class PortMenu extends Menu {
             }
             //Don't show private ports
             if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).equals("member") &&
-                    !region.getPeople().get(civilian.getUuid()).equals("owner")) {
+                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
                 continue;
             }
             returnSet.add(region);

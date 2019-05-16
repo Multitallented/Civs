@@ -212,7 +212,7 @@ public class RegionActionMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
         //9 People
         if (Util.hasOverride(region, civilian, town) || (region.getPeople().get(civilian.getUuid()) != null &&
-                region.getPeople().get(civilian.getUuid()).equals("owner"))) {
+                region.getPeople().get(civilian.getUuid()).contains("owner"))) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());

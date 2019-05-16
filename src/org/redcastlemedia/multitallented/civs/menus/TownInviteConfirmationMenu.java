@@ -64,7 +64,7 @@ public class TownInviteConfirmationMenu extends Menu {
             event.getWhoClicked().sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "town-ally-request-denied").replace("$1", townName));
             for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).equals("owner")) {
+                if (town.getRawPeople().get(uuid).contains("owner")) {
                     Player pSend = Bukkit.getPlayer(uuid);
                     if (pSend.isOnline()) {
                         pSend.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),

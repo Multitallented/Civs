@@ -67,7 +67,8 @@ public class SetOwnerCommand implements CivCommand {
             }
             return true;
         }
-        if (region != null && Util.hasOverride(region, civilian) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+        if (region != null && Util.hasOverride(region, civilian) && player != null &&
+                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;
@@ -103,7 +104,7 @@ public class SetOwnerCommand implements CivCommand {
 
             boolean hasPermission = civilian == null || town.getGovernmentType() == GovernmentType.ANARCHY ||
                     (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                            town.getRawPeople().get(civilian.getUuid()).equals("owner"));
+                            town.getRawPeople().get(civilian.getUuid()).contains("owner"));
 
             boolean oligarchyOverride = !hasPermission && Civs.econ != null && town.getGovernmentType() == GovernmentType.OLIGARCHY;
 
@@ -111,7 +112,7 @@ public class SetOwnerCommand implements CivCommand {
             if (colonialOverride) {
                 Town colonialTown = TownManager.getInstance().getTown(town.getColonialTown());
                 if (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
-                        !colonialTown.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                        !colonialTown.getRawPeople().get(civilian.getUuid()).contains("owner")) {
                     colonialOverride = false;
                 }
             }
@@ -137,7 +138,7 @@ public class SetOwnerCommand implements CivCommand {
                 Civs.econ.withdrawPlayer(player, townType.getPrice());
                 HashSet<UUID> uuids = new HashSet<>();
                 for (UUID uuid : town.getRawPeople().keySet()) {
-                    if (town.getRawPeople().get(uuid).equals("owner")) {
+                    if (town.getRawPeople().get(uuid).contains("owner")) {
                         uuids.add(uuid);
                     }
                 }

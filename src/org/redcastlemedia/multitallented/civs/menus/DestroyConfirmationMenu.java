@@ -60,7 +60,7 @@ public class DestroyConfirmationMenu extends Menu {
             clearHistory(civilian.getUuid());
             if (region != null) {
                 if ((!region.getPeople().containsKey(civilian.getUuid()) ||
-                        !region.getPeople().get(civilian.getUuid()).equals("owner")) &&
+                        !region.getPeople().get(civilian.getUuid()).contains("owner")) &&
                         (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
                     clearHistory(civilian.getUuid());
                     event.getWhoClicked().closeInventory();
@@ -77,7 +77,7 @@ public class DestroyConfirmationMenu extends Menu {
                 CivilianListener.getInstance().onCivilianBlockBreak(blockBreakEvent);
             } else if (town != null) {
                 if ((!town.getPeople().containsKey(civilian.getUuid()) ||
-                        !town.getPeople().get(civilian.getUuid()).equals("owner")) &&
+                        !town.getPeople().get(civilian.getUuid()).contains("owner")) &&
                         (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
                     clearHistory(civilian.getUuid());
                     event.getWhoClicked().closeInventory();

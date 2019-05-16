@@ -4,16 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SetGuestCommand implements CivCommand {
@@ -59,7 +58,8 @@ public class SetGuestCommand implements CivCommand {
             }
             return true;
         }
-        if (region != null && !Util.hasOverride(region, civilian) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+        if (region != null && !Util.hasOverride(region, civilian) && player != null &&
+                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;
@@ -75,6 +75,12 @@ public class SetGuestCommand implements CivCommand {
             return true;
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
+
+        if (town != null && civilian != null) {
+            if (OwnershipUtil.shouldDenyOwnershipOverSomeone(town, civilian, inviteCiv, player)) {
+                return true;
+            }
+        }
 
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {

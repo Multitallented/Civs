@@ -324,8 +324,8 @@ public class DeathListener implements Listener {
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             for (Town town : TownManager.getInstance().getTowns()) {
                 if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
-                        (!town.getPeople().get(dyingCiv.getUuid()).equals("member") &&
-                        !town.getPeople().get(dyingCiv.getUuid()).equals("owner"))) {
+                        (!town.getPeople().get(dyingCiv.getUuid()).contains("member") &&
+                        !town.getPeople().get(dyingCiv.getUuid()).contains("owner"))) {
                     continue;
                 }
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
