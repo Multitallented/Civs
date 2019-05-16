@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -754,20 +755,35 @@ public class Region {
             boolean hasMoney = false;
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
-                payout = payout / getOwners().size();
-                for (UUID uuid : getOwners()) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                    if (player == null) {
-                        continue;
+                Town town = TownManager.getInstance().getTownAt(location);
+                if (town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
+                    double size = (double) town.getRawPeople().size();
+                    double coopCut = payout * 0.1;
+                    if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+                        payout = payout / size;
+                    } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
+                        payout = (payout - coopCut) / size;
                     }
-                    if (payout == 0) {
-                        hasMoney = true;
-                    } else if (payout > 0) {
-                        Civs.econ.depositPlayer(player, payout);
-                        hasMoney = true;
-                    } else if (Civs.econ.has(player, payout)) {
-                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                        hasMoney = true;
+                    for (UUID uuid : town.getRawPeople().keySet()) {
+
+                    }
+                } else {
+                    payout = payout / (double) getOwners().size();
+                    for (UUID uuid : getOwners()) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                        if (player == null) {
+                            continue;
+                        }
+                        if (payout == 0) {
+                            hasMoney = true;
+                        } else if (payout > 0) {
+                            Civs.econ.depositPlayer(player, payout);
+                            hasMoney = true;
+                        } else if (Civs.econ.has(player, payout)) {
+                            Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                            hasMoney = true;
+                        }
                     }
                 }
             } else {

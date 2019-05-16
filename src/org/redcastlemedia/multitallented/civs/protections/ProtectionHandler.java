@@ -575,7 +575,8 @@ public class ProtectionHandler implements Listener {
             return true;
         }
         if (town != null) {
-            if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+            if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    town.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = "owner";
             } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
                     town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
