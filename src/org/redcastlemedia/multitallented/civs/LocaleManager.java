@@ -568,6 +568,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".libertarian_socialism-desc", "Libertarian + Socialism"));
             currentLanguage.put("new-owner-town",
                     localeConfig.getString(langKey + ".new-owner-town", "$1 has replaced $2 as an owner of $3"));
+            currentLanguage.put("town-bank-desc",
+                    localeConfig.getString(langKey + ".town-bank-desc", "Withdraw using /cv withdraw $1 amount"));
+            currentLanguage.put("town-bank-balance",
+                    localeConfig.getString(langKey + ".town-bank-balance", "Bank balance $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

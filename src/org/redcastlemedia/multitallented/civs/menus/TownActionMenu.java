@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class TownActionMenu extends Menu {
@@ -354,6 +355,21 @@ public class TownActionMenu extends Menu {
         {
             CVItem govType = Util.getGovermentTypeIcon(civilian, town.getGovernmentType());
             inventory.setItem(13, govType.createItemStack());
+        }
+
+        //14 Bank
+        // TODO hide the bank for people who can't withdraw
+        if (town.getBankAccount() > 0) {
+            String bankString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                    .format(town.getBankAccount());
+            CVItem cvItem2 = CVItem.createCVItemFromString("EMERALD_BLOCK");
+            cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                    "town-bank-balance").replace("$1", bankString));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "town-bank-desc")
+                    .replace("$1", town.getName()));
+            cvItem2.setLore(lore);
+            inventory.setItem(14, cvItem2.createItemStack());
         }
 
 

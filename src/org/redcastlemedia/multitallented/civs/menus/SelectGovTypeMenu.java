@@ -1,10 +1,5 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,6 +13,10 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class SelectGovTypeMenu extends Menu {
     public static final String MENU_NAME = "CivsSelectGovType";
@@ -98,7 +97,7 @@ public class SelectGovTypeMenu extends Menu {
         }
 
         town.setColonialTown(null);
-        // TODO set colonial town
+        // TODO set colonial town?
 
         town.setGovernmentType(governmentType);
         TownManager.getInstance().saveTown(town);
