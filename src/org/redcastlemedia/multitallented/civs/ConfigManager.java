@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -68,6 +69,8 @@ public class ConfigManager {
     long townGracePeriod;
     boolean useClassesAndSpells;
     Map<String, List<String>> customItemDescriptions;
+    @Getter
+    Material townRingMat;
 
     @Getter
     boolean checkWaterSpread;
@@ -262,6 +265,12 @@ public class ConfigManager {
             combatTagDuration = config.getInt("combat-tag-duration", 60);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             townRings = config.getBoolean("town-rings", true);
+            try {
+                townRingMat = Material.valueOf(config.getString("town-ring-material", "GLOWSTONE"));
+            } catch (Exception e) {
+                townRingMat = Material.GLOWSTONE;
+                Civs.logger.severe("Unable to read town-ring-material");
+            }
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
             destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
