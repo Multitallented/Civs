@@ -90,6 +90,9 @@ public class ConfigManager {
     @Getter
     boolean allowTeleportInCombat;
 
+    @Getter
+    boolean useParticleBoundingBoxes;
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -284,6 +287,7 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -311,6 +315,7 @@ public class ConfigManager {
     private void loadDefaults() {
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        useParticleBoundingBoxes = false;
         explosionOverride = false;
         useStarterBook = true;
         priceMultiplier = 1;

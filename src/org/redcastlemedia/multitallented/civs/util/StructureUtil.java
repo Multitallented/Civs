@@ -1,8 +1,6 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -125,6 +123,12 @@ public final class StructureUtil {
             block.setType(Material.AIR);
         }
         boundingBoxes.remove(uuid);
+    }
+
+    private static void spawnParticle(World world, int x, int y, int z, HashSet<Location> boundingBox, Color color) {
+        Location location = new Location(world, x, y, z);
+        world.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
+                new Particle.DustOptions(color, 1), true);
     }
 
     private static void setGlass(World world, int x, int y, int z, HashSet<Location> boundingBox, Material mat) {
