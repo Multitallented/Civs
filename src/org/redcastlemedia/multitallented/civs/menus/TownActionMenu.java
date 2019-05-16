@@ -358,8 +358,7 @@ public class TownActionMenu extends Menu {
         }
 
         //14 Bank
-        // TODO hide the bank for people who can't withdraw
-        if (town.getBankAccount() > 0) {
+        if (town.getBankAccount() > 0 && (isOwner || colonialOverride)) {
             String bankString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
                     .format(town.getBankAccount());
             CVItem cvItem2 = CVItem.createCVItemFromString("EMERALD_BLOCK");

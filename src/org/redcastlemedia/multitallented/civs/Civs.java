@@ -153,6 +153,7 @@ public class Civs extends JavaPlugin {
         commandList.put("reset", new ResetCommand());
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
+        commandList.put("withdraw", new WithdrawBankCommand());
     }
 
     private void initListeners() {
