@@ -756,7 +756,7 @@ public class Region {
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
                 Town town = TownManager.getInstance().getTownAt(location);
-                if (town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                         town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                     double size = (double) town.getRawPeople().size();
                     double coopCut = payout * 0.1;
@@ -764,9 +764,12 @@ public class Region {
                         payout = payout / size;
                     } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
                         payout = (payout - coopCut) / size;
+                        town.setBankAccount(town.getBankAccount() + coopCut);
                     }
                     for (UUID uuid : town.getRawPeople().keySet()) {
-
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                        Civs.econ.depositPlayer(offlinePlayer, payout);
+                        hasMoney = true;
                     }
                 } else {
                     payout = payout / (double) getOwners().size();

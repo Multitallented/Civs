@@ -35,6 +35,14 @@ public class Town {
 
     @Getter
     @Setter
+    private double bankAccount;
+
+    @Getter
+    @Setter
+    private double taxes;
+
+    @Getter
+    @Setter
     private GovernmentType governmentType;
 
     @Getter

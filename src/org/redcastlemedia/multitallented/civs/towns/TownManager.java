@@ -202,6 +202,8 @@ public class TownManager {
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
+        town.setBankAccount(config.getDouble("bank", 0));
+        town.setTaxes(config.getDouble("taxes", 0));
         if (config.isSet("colonial-town")) {
             town.setColonialTown(config.getString("colonial-town"));
         }
@@ -417,6 +419,8 @@ public class TownManager {
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
             config.set("gov-type", town.getGovernmentType());
+            config.set("taxes", town.getTaxes());
+            config.set("bank", town.getBankAccount());
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {

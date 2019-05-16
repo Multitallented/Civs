@@ -4,8 +4,8 @@ public enum GovernmentType {
     OLIGARCHY, // done
     DEMOCRACY, // voting, taxes
     DICTATORSHIP, // done
-    COMMUNISM, // /ownership overrides, distribution payout
-    COOPERATIVE, // voting, distribution payout, bank
+    COMMUNISM, // done
+    COOPERATIVE, // voting, /distribution payout, bank
     ANARCHY, // done
     LIBERTARIAN, // done
     SOCIALISM, // done
