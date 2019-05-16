@@ -349,9 +349,9 @@ public class CivilianListener implements Listener {
         }
         ItemStack dragged = event.getOldCursor();
 
-        if (checkMoveNormalItems(event)) {
-            return;
-        }
+//        if (checkMoveNormalItems(event)) {
+//            return;
+//        }
 
         if (!CVItem.isCivsItem(dragged) ||
                 event.getView().getTitle().startsWith("Civ")) {
@@ -400,9 +400,9 @@ public class CivilianListener implements Listener {
             return;
         }
 
-        if (checkMoveNormalItems(event, stackInQuestion)) {
-            return;
-        }
+//        if (checkMoveNormalItems(event, stackInQuestion)) {
+//            return;
+//        }
 
         if (!CVItem.isCivsItem(stackInQuestion) || event.getView().getTitle().startsWith("Civ")) {
             return;
