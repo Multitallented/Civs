@@ -111,6 +111,7 @@ public class SelectGovTypeMenu extends Menu {
             town.setBankAccount(0);
         }
 
+        town.setTaxes(0);
         town.setColonialTown(null);
         // TODO set colonial town?
 

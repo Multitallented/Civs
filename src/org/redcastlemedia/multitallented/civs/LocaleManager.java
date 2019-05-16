@@ -578,6 +578,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-tax", "Town taxes: $1"));
             currentLanguage.put("town-tax-desc",
                     localeConfig.getString(langKey + ".town-tax-desc", "Set tax using /cv tax $1 amount"));
+            currentLanguage.put("town-tax-set",
+                    localeConfig.getString(langKey + ".town-tax-set", "$1 tax set to $2"));
+            currentLanguage.put("tax-too-high",
+                    localeConfig.getString(langKey + ".tax-too-high", "You can't set taxes higher than $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

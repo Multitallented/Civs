@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
@@ -171,15 +172,7 @@ public class TownActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
-        boolean colonialOverride = town.getGovernmentType() == GovernmentType.COLONIALISM &&
-                town.getColonialTown() != null;
-        colonial: if (colonialOverride) {
-            for (Town cTown : TownManager.getInstance().getOwnedTowns(civilian)) {
-                cTown.getName().equalsIgnoreCase(town.getColonialTown());
-                break colonial;
-            }
-            colonialOverride = false;
-        }
+        boolean colonialOverride = OwnershipUtil.hasColonialOverride(town, civilian);
 
         Map<String, Object> data = new HashMap<>();
         data.put("town", town);

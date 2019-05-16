@@ -99,6 +99,8 @@ public class ConfigManager {
 
     @Getter
     boolean allowChangingOfGovType;
+    @Getter
+    double maxTax;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -302,6 +304,7 @@ public class ConfigManager {
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             allowedGovTypes = config.getStringList("allowed-gov-types");
+            maxTax = config.getDouble("max-town-tax", 50);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -329,6 +332,7 @@ public class ConfigManager {
     private void loadDefaults() {
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;
         priceMultiplier = 1;

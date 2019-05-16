@@ -154,6 +154,7 @@ public class Civs extends JavaPlugin {
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
         commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("tax", new TaxCommand());
     }
 
     private void initListeners() {

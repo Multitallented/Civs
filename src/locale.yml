@@ -62,6 +62,8 @@ en:
   widthdrawn-money: "You've withdrawn $$1 from $2's bank"
   town-tax: "Town taxes: $1"
   town-tax-desc: "Set tax using /cv tax $1 amount"
+  town-tax-set: "$1 tax set to $2"
+  tax-too-high: "You can't set taxes higher than $1"
 
   #shop
   shop: Shop

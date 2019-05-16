@@ -18,6 +18,7 @@ town-grace-period: 43200 #12 hours
 #before reducing power
 explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
+max-town-tax: 50.0
 use-starter-book: true
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices

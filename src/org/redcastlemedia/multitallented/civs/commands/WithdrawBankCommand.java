@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 
 public class WithdrawBankCommand implements CivCommand {
     @Override
@@ -23,33 +24,12 @@ public class WithdrawBankCommand implements CivCommand {
         //1 townName
         //2 amount
 
-        double amount = 0;
-        try {
-            amount = Double.parseDouble(args[2]);
-        } catch (Exception e) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
-            return true;
-        }
+        double amount = OwnershipUtil.invalidAmountOrTown(player, args, civilian);
         if (amount < 1) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
             return true;
         }
 
-        // TODO possibly make this case insensitive?
         Town town = TownManager.getInstance().getTown(args[1]);
-        if (town == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
-            return true;
-        }
-        if (amount > town.getBankAccount()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "not-enough-money").replace("$1", args[2]));
-            return true;
-        }
-
         town.setBankAccount(town.getBankAccount() - amount);
         TownManager.getInstance().saveTown(town);
         Civs.econ.depositPlayer(player, amount);
