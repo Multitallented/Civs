@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class BlueprintsMenu extends Menu {
-    private static final String MENU_NAME = "CivsRegionStash";
+    public static final String MENU_NAME = "CivsRegionStash";
     public BlueprintsMenu() {
         super(MENU_NAME);
     }

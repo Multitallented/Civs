@@ -60,7 +60,7 @@ public class ListAllPlayersMenu extends Menu {
 
         String playerName = event.getCurrentItem().getItemMeta().getDisplayName();
         if (event.getWhoClicked() instanceof Player) {
-            if (name.equals("Player List") || name.equals("Friend List")) {
+            if (name == null || name.equals("Player List") || name.equals("Friend List")) {
                 if (id == null) {
                     appendHistory(civilian.getUuid(), MENU_NAME);
                 } else {
@@ -146,7 +146,9 @@ public class ListAllPlayersMenu extends Menu {
         Map<String, Object> data = new HashMap<>();
         data.put("page", page);
         data.put("blackList", blackList);
-        data.put("name", "Player List");
+        if (name != null) {
+            data.put("name", name);
+        }
         if (id != null) {
             data.put("id", id);
         }

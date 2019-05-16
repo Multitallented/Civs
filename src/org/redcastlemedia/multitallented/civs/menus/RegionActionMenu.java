@@ -1,3 +1,4 @@
+
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
@@ -149,6 +150,14 @@ public class RegionActionMenu extends Menu {
 
         ArrayList<String> lore;
 
+        //0 Icon
+        {
+            CVItem cvItem = regionType.clone();
+            lore = new ArrayList<>(Util.textWrap("", regionType.getDescription(civilian.getLocale())));
+            cvItem.setLore(lore);
+            inventory.setItem(0, cvItem.createItemStack());
+        }
+
         //1 Region Type button
         {
             CVItem cvItemType = regionType.clone();
@@ -170,7 +179,7 @@ public class RegionActionMenu extends Menu {
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
             int nextUpkeep = region.getSecondsTillNextTick();
-            if (nextUpkeep < 64 && nextUpkeep > 0) {
+            if (nextUpkeep < 65 && nextUpkeep > 1) {
                 cvItem1.setQty(nextUpkeep);
             }
             lore.add(localeManager.getTranslation(civilian.getLocale(), "cooldown")

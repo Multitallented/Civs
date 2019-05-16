@@ -145,15 +145,20 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        final Player player = event.getPlayer();
+        final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Location respawnLocation = civilian.getRespawnPoint();
         if (respawnLocation == null) {
             return;
         }
 
         if (ConfigManager.getInstance().getUseStarterBook()) {
-            player.getInventory().addItem(Util.createStarterBook(civilian.getLocale()));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.getInventory().addItem(Util.createStarterBook(civilian.getLocale()));
+                }
+            }, 5L);
         }
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);

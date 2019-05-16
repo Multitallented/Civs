@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -173,6 +174,17 @@ public class ProtectionHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onEndermanPickup(EntityChangeBlockEvent event) {
+        if (event.getEntityType() != EntityType.ENDERMAN) {
+            return;
+        }
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), "block_break");
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
         if (event.getIgnitingBlock() == null) {
             return;
@@ -253,7 +265,15 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityLight(BlockIgniteEvent event) {
-        boolean shouldDeny = shouldBlockAction(event.getIgnitingBlock().getLocation(), "block_fire");
+        Location location = null;
+        if (event.getIgnitingBlock() != null) {
+            location = event.getIgnitingBlock().getLocation();
+        } else if (event.getIgnitingEntity() != null) {
+            location = event.getIgnitingEntity().getLocation();
+        } else {
+            return;
+        }
+        boolean shouldDeny = shouldBlockAction(location, "block_fire");
         if (!event.isCancelled() && shouldDeny) {
             event.setCancelled(true);
         }
@@ -390,7 +410,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF) {
+                mat == Material.BOOKSHELF ||
+                mat == Material.SHULKER_BOX) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
             if (event.isCancelled() && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

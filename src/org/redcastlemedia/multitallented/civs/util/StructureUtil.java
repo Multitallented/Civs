@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -116,6 +117,11 @@ public final class StructureUtil {
         }
         for (Location location : locations) {
             Block block = location.getBlock();
+            if (block.getType() != Material.RED_STAINED_GLASS &&
+                    block.getType() != Material.LIME_STAINED_GLASS &&
+                    block.getType() != Material.BLUE_STAINED_GLASS) {
+                continue;
+            }
             block.setType(Material.AIR);
         }
         boundingBoxes.remove(uuid);
@@ -127,7 +133,8 @@ public final class StructureUtil {
         }
 
         Block block = world.getBlockAt(x, y, z);
-        if (block.getType() != Material.AIR) {
+        if (block.getType() != Material.AIR ||
+                block.getRelative(BlockFace.DOWN).getType() == Material.GRASS_PATH) {
             return;
         }
         boundingBox.add(new Location(world, x, y, z));

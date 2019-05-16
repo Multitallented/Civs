@@ -22,7 +22,7 @@ import java.util.Map;
 public class TutorialManager {
     private static TutorialManager tutorialManager = null;
 
-    private HashMap<String, TutorialPath> tutorials = new HashMap<>();
+    HashMap<String, TutorialPath> tutorials = new HashMap<>();
 
     public TutorialManager() {
         tutorialManager = this;
@@ -251,8 +251,9 @@ public class TutorialManager {
             return returnList;
         }
         for (String pathKey : pathsList) {
-            CVItem cvItem = path.getIcon();
-            String name = path.getNames().get(civilian.getLocale());
+            TutorialPath newPath = tutorials.get(pathKey);
+            CVItem cvItem = newPath.getIcon();
+            String name = newPath.getNames().get(civilian.getLocale());
             if ("".equals(name)) {
                 name = path.getNames().get("en");
             }

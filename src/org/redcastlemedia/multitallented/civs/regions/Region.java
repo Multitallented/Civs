@@ -38,7 +38,7 @@ public class Region {
     private final int radiusYN;
     private double exp;
     public HashMap<String, String> effects;
-    private long lastTick = 0;
+    long lastTick = 0;
 
     @Getter
     @Setter
@@ -145,7 +145,7 @@ public class Region {
     public int getSecondsTillNextTick() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         long difference = new Date().getTime() - lastTick;
-        int remainingCooldown = (int) ((regionType.getPeriod() - difference) / 1000);
+        int remainingCooldown = (int) ((regionType.getPeriod()*1000 - difference) / 1000);
         return remainingCooldown < 0 ? 0 : remainingCooldown;
     }
 
@@ -473,9 +473,9 @@ public class Region {
         if (radii.length == 0) {
             return radii;
         }
-        if (!hasReqs && player != null) {
-            StructureUtil.showGuideBoundingBox(player, location, radii);
-        }
+//        if (!hasReqs && player != null) {
+//            StructureUtil.showGuideBoundingBox(player, location, radii);
+//        }
         return hasReqs ? radii : new int[0];
     }
 
