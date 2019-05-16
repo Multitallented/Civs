@@ -586,6 +586,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-assist-price", "Your town bank paid $1 to thank you for the construction of your $2"));
             currentLanguage.put("colony-town-set",
                     localeConfig.getString(langKey + ".colony-town-set", "You've set $1 as a colony of $2"));
+            currentLanguage.put("cant-build-feudal",
+                    localeConfig.getString(langKey + ".cant-build-feudal", "You can't build a region in a feudal town unless you own that town."));
             languageMap.put(langKey, currentLanguage);
         }
     }

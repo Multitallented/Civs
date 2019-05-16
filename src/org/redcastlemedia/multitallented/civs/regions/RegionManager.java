@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
@@ -424,6 +425,15 @@ public class RegionManager {
 
 
         Town town = TownManager.getInstance().getTownAt(location);
+        if (town.getGovernmentType() == GovernmentType.FEUDALISM) {
+            boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
+                    town.getRawPeople().get(player.getUniqueId()).contains("owner");
+            if (!isOwner) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                return false;
+            }
+        }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {
             if (town == null) {

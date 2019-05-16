@@ -14,7 +14,7 @@ public enum GovernmentType {
     MERITOCRACY, // function determines merit
     CYBERSYNACY, // ai, /bank
     TRIBALISM, // town invite check
-    FEUDALISM, // region creation
+    FEUDALISM, // done
     COLONIALISM, // done
     CAPITALISM, // voting
     LIBERTARIAN_SOCIALISM // done
