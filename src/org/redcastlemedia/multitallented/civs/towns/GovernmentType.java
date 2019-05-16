@@ -13,7 +13,7 @@ public enum GovernmentType {
     KRATEROCRACY, // done
     MERITOCRACY, // function determines merit
     CYBERSYNACY, // ai, /bank
-    TRIBALISM, // town invite check
+    TRIBALISM, // done
     FEUDALISM, // done
     COLONIALISM, // done
     CAPITALISM, // voting

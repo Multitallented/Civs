@@ -588,6 +588,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".colony-town-set", "You've set $1 as a colony of $2"));
             currentLanguage.put("cant-build-feudal",
                     localeConfig.getString(langKey + ".cant-build-feudal", "You can't build a region in a feudal town unless you own that town."));
+            currentLanguage.put("tribalism-no-invite",
+                    localeConfig.getString(langKey + ".tribalism-no-invite", "Your tribalism town forbids you to invite $1 of non-allied town $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

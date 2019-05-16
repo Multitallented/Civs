@@ -67,6 +67,7 @@ en:
   town-assist-price: "Your town bank paid $1 to thank you for the construction of your $2"
   colony-town-set: "You've set $1 as a colony of $2"
   cant-build-feudal: "You can't build a region in a feudal town unless you own that town."
+  tribalism-no-invite: "Your tribalism town forbids you to invite $1 of non-allied town $2"
 
   #shop
   shop: Shop
