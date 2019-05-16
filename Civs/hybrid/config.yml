@@ -18,8 +18,8 @@ town-grace-period: 43200 #12 hours
 explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 use-starter-book: true
-price-multiplier: 1 #multiplier for prices before adding base price
-price-base: 0 #added to all item prices
+price-multiplier: 1.0 #multiplier for prices before adding base price
+price-base: 0.0 #added to all item prices
 exp-modifier: 0.2
 jail-time-seconds: 300
 #cooldown before spawning a new villager in seconds
