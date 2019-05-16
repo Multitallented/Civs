@@ -56,6 +56,8 @@ en:
   libertarian_socialism: "Libertarian Socialism"
   libertarian_socialism-desc: "Libertarian + Socialism"
 
+  new-owner-town: "$1 has replaced $2 as an owner of $3"
+
   #shop
   shop: Shop
   buy-item: For Sale

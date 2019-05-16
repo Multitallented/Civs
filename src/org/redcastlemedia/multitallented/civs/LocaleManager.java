@@ -566,6 +566,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".libertarian_socialism", "Libertarian Socialism"));
             currentLanguage.put("libertarian_socialism-desc",
                     localeConfig.getString(langKey + ".libertarian_socialism-desc", "Libertarian + Socialism"));
+            currentLanguage.put("new-owner-town",
+                    localeConfig.getString(langKey + ".new-owner-town", "$1 has replaced $2 as an owner of $3"));
             languageMap.put(langKey, currentLanguage);
         }
     }

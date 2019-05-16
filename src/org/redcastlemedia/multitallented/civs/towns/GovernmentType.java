@@ -10,7 +10,7 @@ public enum GovernmentType {
     LIBERTARIAN, // done
     SOCIALISM, // done
     DEMOCRATIC_SOCIALISM, // voting, /ownership overrides, taxes
-    KRATEROCRACY, // periodic ownership
+    KRATEROCRACY, // done
     MERITOCRACY, // function determines merit
     CYBERSYNACY, // ai, bank
     TRIBALISM, // town invite check
