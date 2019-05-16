@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DestroyConfirmationMenu extends Menu {
     static String MENU_NAME = "CivDestroyConfirm";
@@ -59,13 +60,7 @@ public class DestroyConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             if (region != null) {
-                if ((!region.getPeople().containsKey(civilian.getUuid()) ||
-                        !region.getPeople().get(civilian.getUuid()).equals("owner")) &&
-                        (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
-                    clearHistory(civilian.getUuid());
-                    event.getWhoClicked().closeInventory();
-                    event.getWhoClicked().sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(civilian.getLocale(), "no-permission"));
+                if (doesntHavePermission(civilian, region.getPeople(), player)) {
                     return;
                 }
                 if (Civs.econ != null) {
@@ -76,13 +71,7 @@ public class DestroyConfirmationMenu extends Menu {
                 BlockBreakEvent blockBreakEvent = new BlockBreakEvent(region.getLocation().getBlock(), player);
                 CivilianListener.getInstance().onCivilianBlockBreak(blockBreakEvent);
             } else if (town != null) {
-                if ((!town.getPeople().containsKey(civilian.getUuid()) ||
-                        !town.getPeople().get(civilian.getUuid()).equals("owner")) &&
-                        (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
-                    clearHistory(civilian.getUuid());
-                    event.getWhoClicked().closeInventory();
-                    event.getWhoClicked().sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(civilian.getLocale(), "no-permission"));
+                if (doesntHavePermission(civilian, town.getPeople(), player)) {
                     return;
                 }
                 TownManager.getInstance().removeTown(town, true);
@@ -98,6 +87,20 @@ public class DestroyConfirmationMenu extends Menu {
             event.getWhoClicked().closeInventory();
             return;
         }
+    }
+
+    private boolean doesntHavePermission(Civilian civilian, HashMap<UUID, String> people, Player player) {
+        LocaleManager localeManager = LocaleManager.getInstance();
+        if ((!people.containsKey(civilian.getUuid()) ||
+                !people.get(civilian.getUuid()).contains("owner")) &&
+                (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
+            clearHistory(civilian.getUuid());
+            player.closeInventory();
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "no-permission"));
+            return true;
+        }
+        return false;
     }
 
     public static Inventory createMenu(Civilian civilian, Town town) {
