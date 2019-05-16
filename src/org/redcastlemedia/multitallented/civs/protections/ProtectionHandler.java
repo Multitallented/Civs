@@ -583,7 +583,6 @@ public class ProtectionHandler implements Listener {
             }
         }
         Region region = regionManager.getRegionAt(location);
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         if (region == null ||
                 !region.getEffects().containsKey(type)) {
             return false;
@@ -596,6 +595,7 @@ public class ProtectionHandler implements Listener {
             return true;
         }
         if (town != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                     town.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = "owner";

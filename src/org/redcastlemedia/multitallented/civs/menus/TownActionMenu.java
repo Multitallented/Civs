@@ -353,7 +353,7 @@ public class TownActionMenu extends Menu {
         }
 
         //14 Bank
-        if (town.getBankAccount() > 0) {
+        {
             String bankString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
                     .format(town.getBankAccount());
             CVItem cvItem2 = CVItem.createCVItemFromString("EMERALD_BLOCK");

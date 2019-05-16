@@ -10,6 +10,9 @@ import lombok.Getter;
 
 public class RegionCreatedEvent extends Event {
     private static final HandlerList hList = new HandlerList();
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     @Getter
     private final RegionType regionType;
     @Getter

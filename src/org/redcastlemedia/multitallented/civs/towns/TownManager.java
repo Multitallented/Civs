@@ -426,7 +426,7 @@ public class TownManager {
             config.set("last-disable", town.getLastDisable());
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
-            config.set("gov-type", town.getGovernmentType());
+            config.set("gov-type", town.getGovernmentType().name());
             config.set("taxes", town.getTaxes());
             config.set("bank", town.getBankAccount());
 

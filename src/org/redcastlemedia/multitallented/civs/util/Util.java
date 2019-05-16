@@ -514,76 +514,91 @@ public final class Util {
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "democracy"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "democracy-desc")));
+                break;
             case OLIGARCHY:
                 cvItem = CVItem.createCVItemFromString("LIME_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "oligarchy"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "oligarchy-desc")));
+                break;
             case COMMUNISM:
                 cvItem = CVItem.createCVItemFromString("RED_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "communism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "communism-desc")));
+                break;
             case COOPERATIVE:
                 cvItem = CVItem.createCVItemFromString("RED_STAINED_GLASS");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "cooperative"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "cooperative-desc")));
+                break;
             case LIBERTARIAN:
                 cvItem = CVItem.createCVItemFromString("YELLOW_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "libertarian"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "libertarian-desc")));
+                break;
             case LIBERTARIAN_SOCIALISM:
                 cvItem = CVItem.createCVItemFromString("ORANGE_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "libertarian_socialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "libertarian-socialism-desc")));
+                        .getTranslation(civilian.getLocale(), "libertarian_socialism-desc")));
+                break;
             case SOCIALISM:
                 cvItem = CVItem.createCVItemFromString("CYAN_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "socialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "socialism-desc")));
+                break;
             case DEMOCRATIC_SOCIALISM:
                 cvItem = CVItem.createCVItemFromString("CYAN_STAINED_GLASS");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "democratic_socialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "democratic-socialism-desc")));
+                        .getTranslation(civilian.getLocale(), "democratic_socialism-desc")));
+                break;
             case KRATEROCRACY:
                 cvItem = CVItem.createCVItemFromString("BLACK_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "kraterocracy"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "kraterocracy-desc")));
+                break;
             case MERITOCRACY:
                 cvItem = CVItem.createCVItemFromString("PURPLE_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "meritocracy"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "meritocracy-desc")));
+                break;
             case CYBERSYNACY:
                 cvItem = CVItem.createCVItemFromString("LIGHT_BLUE_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "cybersynacy"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "cybersynacy-desc")));
+                break;
             case TRIBALISM:
                 cvItem = CVItem.createCVItemFromString("GRASS_BLOCK");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tribalism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "tribalism-desc")));
+                break;
             case FEUDALISM:
                 cvItem = CVItem.createCVItemFromString("LIGHT_GRAY_CONCRETE");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "feudalism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "feudalism-desc")));
+                break;
             case COLONIALISM:
                 cvItem = CVItem.createCVItemFromString("GRAY_GLAZED_TERRACOTTA");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "colonialism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "colonialism-desc")));
+                break;
             case CAPITALISM:
                 cvItem = CVItem.createCVItemFromString("LIME_STAINED_GLASS");
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "capitalism"));
                 lore.addAll(Util.textWrap("", LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "capitalism-desc")));
+                break;
             case DICTATORSHIP:
             default:
                 cvItem = CVItem.createCVItemFromString("GLOWSTONE");

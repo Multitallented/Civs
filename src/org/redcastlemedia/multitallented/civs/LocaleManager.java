@@ -529,7 +529,7 @@ public class LocaleManager {
             currentLanguage.put("democratic_socialism",
                     localeConfig.getString(langKey + ".democratic_socialism", "Democratic Socialism"));
             currentLanguage.put("democratic_socialism-desc",
-                    localeConfig.getString(langKey + ".democratic_socialism", "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."));
+                    localeConfig.getString(langKey + ".democratic_socialism-desc", "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."));
             currentLanguage.put("kraterocracy",
                     localeConfig.getString(langKey + ".kraterocracy", "Kraterocracy"));
             currentLanguage.put("kraterocracy-desc",
