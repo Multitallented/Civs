@@ -360,15 +360,25 @@ public class TownActionMenu extends Menu {
         }
 
         //14 Bank
-        if (town.getBankAccount() > 0 && (isOwner || colonialOverride)) {
+        if (town.getBankAccount() > 0) {
             String bankString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
                     .format(town.getBankAccount());
             CVItem cvItem2 = CVItem.createCVItemFromString("EMERALD_BLOCK");
             cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-bank-balance").replace("$1", bankString));
             lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "town-bank-desc")
-                    .replace("$1", town.getName()));
+            if (town.getTaxes() > 0) {
+                String taxString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                        .format(town.getTaxes());
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax")
+                        .replace("$1", taxString));
+            }
+            if (isOwner || colonialOverride) {
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax-desc")
+                        .replace("$1", town.getName()));
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "town-bank-desc")
+                        .replace("$1", town.getName()));
+            }
             cvItem2.setLore(lore);
             inventory.setItem(14, cvItem2.createItemStack());
         }
