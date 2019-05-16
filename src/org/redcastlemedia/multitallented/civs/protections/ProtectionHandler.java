@@ -562,6 +562,7 @@ public class ProtectionHandler implements Listener {
             }
         }
         Region region = regionManager.getRegionAt(location);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         if (region == null ||
                 !region.getEffects().containsKey(type)) {
             return false;
@@ -572,6 +573,19 @@ public class ProtectionHandler implements Listener {
         String role = region.getPeople().get(player.getUniqueId());
         if (role == null) {
             return true;
+        }
+        if (town != null) {
+            if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+                role = "owner";
+            } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+                    (regionType.getGroups().contains("mine") ||
+                    regionType.getGroups().contains("quarry") ||
+                    regionType.getGroups().contains("farm") ||
+                    regionType.getGroups().contains("factory"))) {
+                role = "owner";
+            }
         }
         if (role.contains("owner")) {
             return false;

@@ -4,12 +4,12 @@ public enum GovernmentType {
     OLIGARCHY, // done
     DEMOCRACY, // voting
     DICTATORSHIP, // done
-    COMMUNISM, // ownership overrides, distribution payout
+    COMMUNISM, // /ownership overrides, distribution payout
     COOPERATIVE, // voting, distribution payout
     ANARCHY, // done
     LIBERTARIAN, // done
-    SOCIALISM, // ownership overrides
-    DEMOCRATIC_SOCIALISM, // voting, ownership overrides
+    SOCIALISM, // done
+    DEMOCRATIC_SOCIALISM, // voting, /ownership overrides
     KRATEROCRACY, // periodic ownership
     MERITOCRACY, // function determines merit
     CYBERSYNACY, // ai
@@ -17,5 +17,5 @@ public enum GovernmentType {
     FEUDALISM, // region creation
     COLONIALISM, // set colonial town
     CAPITALISM, // voting
-    LIBERTARIAN_SOCIALISM // ownership overrides
+    LIBERTARIAN_SOCIALISM // done
 }
