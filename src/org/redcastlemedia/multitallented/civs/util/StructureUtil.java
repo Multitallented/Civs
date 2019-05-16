@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -132,7 +133,8 @@ public final class StructureUtil {
         }
 
         Block block = world.getBlockAt(x, y, z);
-        if (block.getType() != Material.AIR) {
+        if (block.getType() != Material.AIR ||
+                block.getRelative(BlockFace.DOWN).getType() == Material.GRASS_PATH) {
             return;
         }
         boundingBox.add(new Location(world, x, y, z));
