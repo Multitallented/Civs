@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -80,20 +81,18 @@ public class SelectGovTypeMenu extends Menu {
         // TODO any other changes that need to be made
 
         if (governmentType == GovernmentType.COMMUNISM) {
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).contains("owner")) {
-                    town.setPeople(uuid, "owner");
-                }
+            HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
+            for (UUID uuid : setThesePeople) {
+                town.setPeople(uuid, "owner");
             }
         }
 
         if (governmentType == GovernmentType.LIBERTARIAN ||
                 governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 governmentType == GovernmentType.CYBERSYNACY) {
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).contains("owner")) {
-                    town.setPeople(uuid, "member");
-                }
+            HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
+            for (UUID uuid : setThesePeople) {
+                town.setPeople(uuid, "member");
             }
         }
         if (town.getBankAccount() > 0 && Civs.econ != null &&
@@ -113,7 +112,13 @@ public class SelectGovTypeMenu extends Menu {
 
         town.setTaxes(0);
         town.setColonialTown(null);
-        // TODO set colonial town?
+        Town owningTown = TownManager.getInstance().isOwnerOfATown(civilian);
+        if (owningTown != town) {
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player != null) {
+                player.performCommand("cv colony " + town.getName() + " " + owningTown.getName());
+            }
+        }
 
         town.setGovernmentType(governmentType);
         TownManager.getInstance().saveTown(town);

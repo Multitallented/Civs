@@ -15,7 +15,7 @@ public enum GovernmentType {
     CYBERSYNACY, // ai, /bank
     TRIBALISM, // town invite check
     FEUDALISM, // region creation
-    COLONIALISM, // set colonial town
+    COLONIALISM, // done
     CAPITALISM, // voting
     LIBERTARIAN_SOCIALISM // done
 }
