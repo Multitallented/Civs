@@ -261,7 +261,15 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityLight(BlockIgniteEvent event) {
-        boolean shouldDeny = shouldBlockAction(event.getIgnitingBlock().getLocation(), "block_fire");
+        Location location = null;
+        if (event.getIgnitingBlock() != null) {
+            location = event.getIgnitingBlock().getLocation();
+        } else if (event.getIgnitingEntity() != null) {
+            location = event.getIgnitingEntity().getLocation();
+        } else {
+            return;
+        }
+        boolean shouldDeny = shouldBlockAction(location, "block_fire");
         if (!event.isCancelled() && shouldDeny) {
             event.setCancelled(true);
         }
