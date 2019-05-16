@@ -337,11 +337,11 @@ public class RegionManager {
             return false;
         }
         return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
-                rLocation.getX() + 1 +region.getRadiusXP() >= location.getX() &&
+                rLocation.getX() + region.getRadiusXP() >= location.getX() &&
                 rLocation.getY() - region.getRadiusYN() <= location.getY() &&
-                rLocation.getY() + 1 + region.getRadiusYP() >= location.getY() &&
+                rLocation.getY() + region.getRadiusYP() >= location.getY() &&
                 rLocation.getZ() - region.getRadiusZN() <= location.getZ() &&
-                rLocation.getZ() + 1 + region.getRadiusZP() >= location.getZ();
+                rLocation.getZ() + region.getRadiusZP() >= location.getZ();
     }
 
     boolean detectNewRegion(BlockPlaceEvent event) {
