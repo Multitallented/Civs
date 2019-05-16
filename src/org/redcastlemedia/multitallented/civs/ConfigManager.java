@@ -90,6 +90,9 @@ public class ConfigManager {
     @Getter
     boolean allowTeleportInCombat;
 
+    @Getter
+    boolean disableUpkeepInUnloadedChunks;
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -284,6 +287,7 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            disableUpkeepInUnloadedChunks = config.getBoolean("disable-upkeep-in-unloaded-chunks", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -309,6 +313,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        disableUpkeepInUnloadedChunks = true;
         defaultLanguage = "en";
         allowCivItemDropping = false;
         explosionOverride = false;

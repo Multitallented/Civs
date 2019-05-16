@@ -6,6 +6,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -648,6 +649,10 @@ public class Region {
         return hasUpkeepItems(false);
     }
     public boolean hasUpkeepItems(boolean ignoreReagents) {
+        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
+                !getLocation().getChunk().isLoaded()) {
+            return false;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
@@ -676,6 +681,11 @@ public class Region {
     }
 
     public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
+        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
+                !getLocation().getChunk().isLoaded()) {
+            return false;
+        }
+
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().size() <= upkeepIndex) {
             return false;
@@ -719,19 +729,25 @@ public class Region {
             return false;
         }
 
-        Block block = getLocation().getBlock();
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
-        Chest chest = null;
-        if (block.getState() instanceof Chest) {
-            chest = (Chest) block.getState();
-        }
 
         boolean hadUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
+            boolean disableItemChecksInUnloadedChunks = ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks();
+            if (needsItems && disableItemChecksInUnloadedChunks &&
+                    !getLocation().getChunk().isLoaded()) {
+                continue;
+            }
+            Block block = getLocation().getBlock();
+
+            Chest chest = null;
+            if (needsItems && block.getState() instanceof Chest) {
+                chest = (Chest) block.getState();
+            }
             if (needsItems && chest == null) {
                 continue;
             }
