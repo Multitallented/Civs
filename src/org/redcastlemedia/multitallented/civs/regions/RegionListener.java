@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,9 +16,15 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class RegionListener implements Listener {
@@ -76,5 +86,29 @@ public class RegionListener implements Listener {
         RegionType regionType = (RegionType) civItem;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
+    }
+
+    @EventHandler
+    public void onRegionCreatedEvent(RegionCreatedEvent event) {
+        Town town = TownManager.getInstance().getTownAt(event.getRegion().getLocation());
+        if (town == null || Civs.econ == null || town.getGovernmentType() != GovernmentType.COOPERATIVE ||
+                !event.getRegionType().getGroups().contains("utility")) {
+            return;
+        }
+        double price = event.getRegionType().getPrice();
+        price = Math.min(price, town.getBankAccount());
+        Player player = Bukkit.getPlayer(event.getRegion().getRawPeople().keySet().iterator().next());
+        if (player == null) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Civs.econ.depositPlayer(player, price);
+        town.setBankAccount(town.getBankAccount() - price);
+        TownManager.getInstance().saveTown(town);
+        String priceString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                .format(price);
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                "town-assist-price").replace("$1", priceString)
+                .replace("$2", event.getRegion().getType()));
     }
 }

@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -554,7 +555,10 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        addRegion(new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0));
+        Region region = new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0);
+        RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType);
+        Bukkit.getPluginManager().callEvent(regionCreatedEvent);
+        addRegion(region);
 
         return true;
     }

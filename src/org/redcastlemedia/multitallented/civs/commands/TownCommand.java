@@ -1,8 +1,10 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -166,16 +169,29 @@ public class TownCommand implements CivCommand {
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         town.setChildLocations(childLocations);
         townManager.addTown(town);
-        townManager.saveTown(town);
         player.getInventory().remove(itemStack);
 
         if (childTownType != null) {
             TownEvolveEvent townEvolveEvent = new TownEvolveEvent(town, childTownType, townType);
             Bukkit.getPluginManager().callEvent(townEvolveEvent);
+
+            if (town.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null) {
+                double price = townType.getPrice();
+                price = Math.min(price, town.getBankAccount());
+                Civs.econ.depositPlayer(player, price);
+                town.setBankAccount(town.getBankAccount() - price);
+                String priceString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                        .format(price);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "town-assist-price").replace("$1", priceString)
+                        .replace("$2", townType.getDisplayName()));
+            }
+
         } else {
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, townType);
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
+        townManager.saveTown(town);
 
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                 "town-created").replace("$1", town.getName()));
