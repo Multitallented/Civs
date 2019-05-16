@@ -472,9 +472,9 @@ public class Region {
         if (radii.length == 0) {
             return radii;
         }
-        if (!hasReqs && player != null) {
-            StructureUtil.showGuideBoundingBox(player, location, radii);
-        }
+//        if (!hasReqs && player != null) {
+//            StructureUtil.showGuideBoundingBox(player, location, radii);
+//        }
         return hasReqs ? radii : new int[0];
     }
 

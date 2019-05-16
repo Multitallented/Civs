@@ -19,8 +19,8 @@ build-reqs:
 - CHEST*16
 - g:door*3
 - g:window*32
-- g:roof*180
 - g:stairs*8
+- g:roof*160
 - BOOKSHELF*14
 - g:sign*10
 - g:secondary*140
