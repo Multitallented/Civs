@@ -150,6 +150,14 @@ public class RegionActionMenu extends Menu {
 
         ArrayList<String> lore;
 
+        //0 Icon
+        {
+            CVItem cvItem = regionType.clone();
+            lore = new ArrayList<>(Util.textWrap("", regionType.getDescription(civilian.getLocale())));
+            cvItem.setLore(lore);
+            inventory.setItem(0, cvItem.createItemStack());
+        }
+
         //1 Region Type button
         {
             CVItem cvItemType = regionType.clone();
