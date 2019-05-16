@@ -57,8 +57,9 @@ en:
   libertarian_socialism-desc: "Libertarian + Socialism"
 
   new-owner-town: "$1 has replaced $2 as an owner of $3"
-  town-bank-balance: "Bank balance $1"
+  town-bank-balance: "Bank balance $$1"
   town-bank-desc: "Withdraw using /cv withdraw $1 amount"
+  widthdrawn-money: "You've withdrawn $$1 from $2's bank"
 
   #shop
   shop: Shop

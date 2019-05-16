@@ -571,7 +571,9 @@ public class LocaleManager {
             currentLanguage.put("town-bank-desc",
                     localeConfig.getString(langKey + ".town-bank-desc", "Withdraw using /cv withdraw $1 amount"));
             currentLanguage.put("town-bank-balance",
-                    localeConfig.getString(langKey + ".town-bank-balance", "Bank balance $1"));
+                    localeConfig.getString(langKey + ".town-bank-balance", "Bank balance $$1"));
+            currentLanguage.put("withdrawn-money",
+                    localeConfig.getString(langKey + ".withdrawn-money", "You've withdrawn $$1 from $2's bank"));
             languageMap.put(langKey, currentLanguage);
         }
     }
