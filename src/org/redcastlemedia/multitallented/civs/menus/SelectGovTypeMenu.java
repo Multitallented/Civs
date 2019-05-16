@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -94,6 +95,20 @@ public class SelectGovTypeMenu extends Menu {
                     town.setPeople(uuid, "member");
                 }
             }
+        }
+        if (town.getBankAccount() > 0 && Civs.econ != null &&
+                (governmentType == GovernmentType.COMMUNISM ||
+                governmentType == GovernmentType.ANARCHY ||
+                governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                governmentType == GovernmentType.LIBERTARIAN)) {
+            double size = town.getRawPeople().size();
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                if (offlinePlayer != null) {
+                    Civs.econ.depositPlayer(offlinePlayer, town.getBankAccount() / size);
+                }
+            }
+            town.setBankAccount(0);
         }
 
         town.setColonialTown(null);
