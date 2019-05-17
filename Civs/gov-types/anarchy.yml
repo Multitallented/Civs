@@ -6,4 +6,28 @@
 # no taxes
 # no bank
 
-buffs: {}
+enabled: true
+name:
+  en: "Anarchy"
+description:
+  en: "Anyone can manage town and region membership. No taxes. No alliances."
+buffs:
+  cooldown:
+    percent: 10
+    groups:
+      - farms
+      - quarries
+  payout:
+    percent: 10
+    groups:
+      - housing
+  power:
+    percent: 10
+  max-power:
+    percent: 10
+  cost:
+    percent: 10
+    groups:
+      - defense
+    regions:
+      - barracks
