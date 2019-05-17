@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -91,6 +92,11 @@ public class ConveyorEffect implements Listener {
             loc = cachePoints.get(r);
         }
 
+        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
+                !l.getChunk().isLoaded()) {
+            return;
+        }
+
         Chest chest = null;
         try {
             chest = (Chest) l.getBlock().getState();
@@ -157,6 +163,9 @@ public class ConveyorEffect implements Listener {
                 return;
             }
             if (!sm.getLocation().getChunk().isLoaded()) {
+                if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks()) {
+                    return;
+                }
                 try {
                     Chest returnChest = (Chest) r.getLocation().getBlock().getState();
                     returnChest.getInventory().addItem(new ItemStack(Material.CHEST_MINECART, 1));

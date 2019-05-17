@@ -36,6 +36,10 @@ public class ArrowTurret implements Listener {
         if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs()) {
             return;
         }
+        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
+                !event.getRegion().getLocation().getChunk().isLoaded()) {
+            return;
+        }
         Region region = event.getRegion();
         if (!region.getEffects().containsKey(ArrowTurret.KEY)) {
             return;

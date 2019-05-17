@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -154,6 +155,11 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         Chest rChest        = null;
         ArrayList<Chest> availableItems = new ArrayList<>();
 
+
+        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
+                !l.getChunk().isLoaded()) {
+            return;
+        }
 
         if (rt == null) {
             return;
