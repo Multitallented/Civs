@@ -1,0 +1,7 @@
+##### BUILT IN #####
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+# all farms, mines, factories, and quarries are public
+
+buffs: {}

@@ -1,0 +1,8 @@
+##### BUILT IN #####
+# no town owners
+# no taxes
+# no bank
+# anyone can join the town
+# all farms, mines, factories, and quarries are public
+
+buffs: {}

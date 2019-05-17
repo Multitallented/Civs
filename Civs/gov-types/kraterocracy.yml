@@ -1,0 +1,7 @@
+##### BUILT IN #####
+# killing a town owner sets them as a member, and you as an owner
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+
+buffs: {}

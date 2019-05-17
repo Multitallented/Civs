@@ -1,0 +1,9 @@
+##### BUILT IN #####
+# all members can be owners.
+# all members can remove people from the town
+# town destroy option in menu blocked
+# town owners can override region ownership
+# no taxes
+# no bank
+
+buffs: {}

@@ -39,6 +39,7 @@ public class TaxCommand implements CivCommand {
         if (town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
                 town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 town.getGovernmentType() == GovernmentType.ANARCHY ||
+                town.getGovernmentType() == GovernmentType.COOPERATIVE ||
                 town.getGovernmentType() == GovernmentType.COMMUNISM) {
 
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),

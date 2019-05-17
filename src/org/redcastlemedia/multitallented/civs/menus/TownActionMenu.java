@@ -275,7 +275,9 @@ public class TownActionMenu extends Menu {
 
         //6 Destroy
         if ((town.getPeople().containsKey(civilian.getUuid()) &&
-                town.getPeople().get(civilian.getUuid()).contains("owner")) ||
+                town.getPeople().get(civilian.getUuid()).contains("owner") &&
+                town.getGovernmentType() != GovernmentType.ANARCHY &&
+                town.getGovernmentType() != GovernmentType.COMMUNISM) ||
                 (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));

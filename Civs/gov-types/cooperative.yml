@@ -1,0 +1,9 @@
+##### BUILT IN #####
+# once a week, town owners are set to members
+# votes during the week set the winner as a town owner
+# no taxes
+# town owner can withdraw from the bank
+# town bank money automatically paid to people who build utilites and town upgrades
+# all region payouts are distributed evenly among town members after 10% goes to the bank
+
+buffs: {}

@@ -1,0 +1,10 @@
+##### BUILT IN #####
+# no human town owners
+# AI will invite players to the town
+# AI will set taxes
+# AI will give money from the bank to fund region creation
+# AI will propose alliances with other towns
+# AI will override region ownership
+# AI will fund town members to attack other towns
+
+buffs: {}

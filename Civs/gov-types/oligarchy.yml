@@ -1,0 +1,8 @@
+##### BUILT IN #####
+# town members can buy town ownership for themselves
+# town members can pay to remove/demote anyone
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+
+buffs: {}
