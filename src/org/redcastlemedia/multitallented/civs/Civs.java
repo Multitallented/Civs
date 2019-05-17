@@ -190,7 +190,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
-        Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
+//        Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
         Bukkit.getPluginManager().registerEvents(new ConveyorEffect(), this);
         Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), this);
         Bukkit.getPluginManager().registerEvents(new EvolveEffect(), this);
@@ -198,7 +198,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SiegeEffect(), this);
         Bukkit.getPluginManager().registerEvents(new IntruderEffect(), this);
         Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new SpawnEffect(), this);
+//        Bukkit.getPluginManager().registerEvents(new SpawnEffect(), this);
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), this);
         Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
