@@ -68,7 +68,7 @@ public class Civs extends JavaPlugin {
         initCommands();
         initListeners();
 
-        initScheduler();
+//        initScheduler();
         civs = this;
         fancyPrintLog();
     }
