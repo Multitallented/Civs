@@ -215,8 +215,8 @@ public class TownActionMenu extends Menu {
             cvItem2.setDisplayName(town.getName());
             lore = new ArrayList<>();
             lore.add(town.getLocation().getWorld().getName() + " " +
-                    town.getLocation().getX() + "x " + town.getLocation().getY() + "y " +
-                    town.getLocation().getZ() + "z");
+                    (int) town.getLocation().getX() + "x " + (int) town.getLocation().getY() + "y " +
+                    (int) town.getLocation().getZ() + "z");
             cvItem2.setLore(lore);
             inventory.setItem(2, cvItem2.createItemStack());
         }
