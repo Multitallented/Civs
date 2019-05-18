@@ -23,22 +23,19 @@ description:
   ru: "Любой может управлять городским и районным членством. Нет налогов. Нет альянсов."
   de: "Jeder kann die Mitgliedschaft in einer Stadt oder Region verwalten. Keine Steuern. Keine Allianzen."
 buffs:
-  cooldown:
-    percent: 10
-    groups:
-      - farms
-      - quarries
-  payout:
-    percent: 10
-    groups:
-      - housing
-  power:
-    percent: 10
-  max_power:
-    percent: 10
   cost:
-    percent: 10
+    percent: 30
     groups:
+      - utility
+      - defense
+      - allhousing
+      - offense
+  cooldown:
+    percent: 15
+    groups:
+      - utility
       - defense
     regions:
-      - barracks
+      - inn
+  max_power:
+    percent: 15
