@@ -528,6 +528,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".capitalism-voting-cost", "Extra votes cost $1"));
             currentLanguage.put("voted",
                     localeConfig.getString(langKey + ".voted", "You have cast your vote for $1"));
+            currentLanguage.put("gov-type-change",
+                    localeConfig.getString(langKey + ".gov-type-change", "Changed from $1 to $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

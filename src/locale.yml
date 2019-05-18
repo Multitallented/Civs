@@ -35,6 +35,7 @@ en:
   vote-member: "Vote to be next owner"
   capitalism-voting-cost: "Extra votes cost $1"
   voted: "You have cast your vote for $1"
+  gov-type-change: "Changed from $1 to $2"
 
   #shop
   shop: Shop

@@ -2,16 +2,20 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import lombok.Getter;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-@Getter
 public class Government {
+    @Getter
     private final GovernmentType governmentType;
+    @Getter
     private final HashMap<String, String> names;
+    @Getter
     private final HashMap<String, String> descriptions;
+    @Getter
     private final HashSet<GovTypeBuff> buffs;
     private final CVItem icon;
 
@@ -31,7 +35,7 @@ public class Government {
         cvItem.setDisplayName(names.get(locale));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + governmentType.name());
-        lore.add(descriptions.get(locale));
+        lore.addAll(Util.textWrap("", descriptions.get(locale)));
         cvItem.setLore(lore);
         return cvItem;
     }

@@ -216,6 +216,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
 
         new HousingEffect();
     }

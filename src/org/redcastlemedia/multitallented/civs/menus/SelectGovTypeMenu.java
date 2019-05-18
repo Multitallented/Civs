@@ -6,12 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,7 +31,7 @@ public class SelectGovTypeMenu extends Menu {
         int i=9;
         for (GovernmentType governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
             Government government = GovernmentManager.getInstance().getGovernment(governmentType);
-            inventory.setItem(i, government.getIcon().createItemStack());
+            inventory.setItem(i, government.getIcon(civilian.getLocale()).createItemStack());
             i++;
         }
         Map<String, Object> data = new HashMap<>();
@@ -68,12 +66,13 @@ public class SelectGovTypeMenu extends Menu {
                 continue;
             }
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
-            String oldGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    town.getGovernmentType().name().toLowerCase());
-            String newGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    governmentType.name().toLowerCase());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    "gov-type-change").replace("$1", oldGovName).replace("$2", newGovName));
+            String oldGovName = GovernmentManager.getInstance().getGovernment(town.getGovernmentType())
+                    .getNames().get(civilian1.getLocale());
+            String newGovName = GovernmentManager.getInstance().getGovernment(governmentType)
+                    .getNames().get(civilian1.getLocale());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslation(civilian1.getLocale(), "gov-type-change")
+                    .replace("$1", oldGovName).replace("$2", newGovName));
         }
 
         // TODO any other changes that need to be made
