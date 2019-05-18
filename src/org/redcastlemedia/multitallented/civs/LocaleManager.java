@@ -498,6 +498,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".last-renamed-by", "Last renamed by: $1"));
             currentLanguage.put("leave-alliance",
                     localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
+            currentLanguage.put("hunting-players",
+                    localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
             languageMap.put(langKey, currentLanguage);
         }
     }
