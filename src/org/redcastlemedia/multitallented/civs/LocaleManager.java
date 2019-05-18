@@ -532,6 +532,16 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".gov-type-change", "Changed from $1 to $2"));
             currentLanguage.put("cost-buff",
                     localeConfig.getString(langKey + ".cost-buff", "You have been refunded $1 for buildings a $2 in a $3 town."));
+            currentLanguage.put("cooldown-buff-desc",
+                    localeConfig.getString(langKey + ".cooldown-buff-desc", "$1% cooldown reduction for all $2"));
+            currentLanguage.put("payout-buff-desc",
+                    localeConfig.getString(langKey + ".payout-buff-desc", "$1% region payout increase for all $2"));
+            currentLanguage.put("power-buff-desc",
+                    localeConfig.getString(langKey + ".power-buff-desc", "$1% daily power increase"));
+            currentLanguage.put("max_power-buff-desc",
+                    localeConfig.getString(langKey + ".max_power-buff-desc", "$1% max-power increase"));
+            currentLanguage.put("cost-buff-desc",
+                    localeConfig.getString(langKey + ".cost-buff-desc", "$1% cost refund on all $2"));
             languageMap.put(langKey, currentLanguage);
         }
     }

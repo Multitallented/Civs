@@ -38,6 +38,12 @@ en:
   gov-type-change: "Changed from $1 to $2"
   cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
 
+  cooldown-buff-desc: "$1% cooldown reduction for all $2"
+  payout-buff-desc: "$1% region payout increase for all $2"
+  power-buff-desc: "$1% daily power increase"
+  max_power-buff-desc: "$1% max-power increase"
+  cost-buff-desc: "$1% cost refund on all $2"
+
   #shop
   shop: Shop
   buy-item: For Sale
