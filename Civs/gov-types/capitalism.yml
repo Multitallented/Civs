@@ -7,7 +7,7 @@
 # town owners can withdraw from the bank
 
 icon: "LIME_STAINED_GLASS"
-enabled: false
+enabled: true
 name:
   en: "Capitalism"
 description:

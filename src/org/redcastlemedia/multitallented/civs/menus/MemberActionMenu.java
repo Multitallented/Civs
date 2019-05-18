@@ -90,7 +90,7 @@ public class MemberActionMenu extends Menu {
             if (town != null) {
                 double price = ConfigManager.getInstance().getCapitalismVotingCost();
                 if (town.getVotes().containsKey(civilian.getUuid())) {
-                    if (Civs.econ != null && Civs.econ.has(cPlayer, price)) {
+                    if (Civs.econ == null || !Civs.econ.has(cPlayer, price)) {
                         cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                                 civilian.getLocale(), "not-enough-money")
                                 .replace("$1", price + ""));

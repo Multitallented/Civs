@@ -7,7 +7,7 @@
 # all farms, mines, factories, and quarries are public
 
 icon: "CYAN_STAINED_GLASS"
-enabled: false
+enabled: true
 name:
   en: "Democratic Socialism"
 description:

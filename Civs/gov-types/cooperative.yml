@@ -7,7 +7,7 @@
 # all region payouts are distributed evenly among town members after 10% goes to the bank
 
 icon: "RED_STAINED_GLASS"
-enabled: false
+enabled: true
 name:
   en: "Cooperative"
 description:

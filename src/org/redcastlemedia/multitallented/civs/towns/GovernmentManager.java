@@ -49,6 +49,9 @@ public class GovernmentManager {
         FileConfiguration config = new YamlConfiguration();
         try {
             config.load(govTypeFile);
+            if (!config.getBoolean("enabled", false)) {
+                return;
+            }
             String govTypeString = govTypeFile.getName().replace(".yml", "");
             GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
             CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));

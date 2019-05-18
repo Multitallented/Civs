@@ -6,7 +6,7 @@
 # town owners can withdraw from the bank
 
 icon: "WHITE_STAINED_GLASS"
-enabled: false
+enabled: true
 name:
   en: "Democracy"
 description:
