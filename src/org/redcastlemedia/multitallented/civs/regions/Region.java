@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
@@ -642,7 +643,13 @@ public class Region {
             return false;
         }
 
+        Town town = TownManager.getInstance().getTownAt(location);
         long period = regionType.getPeriod();
+        if (town != null && town.getGovernmentType() != null) {
+            period = regionType.getPeriod(GovernmentManager.getInstance()
+                    .getGovernment(town.getGovernmentType()));
+        }
+
         return lastTick + period * 1000 < new Date().getTime();
     }
     public boolean hasUpkeepItems() {

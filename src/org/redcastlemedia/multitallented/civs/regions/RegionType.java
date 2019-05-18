@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
@@ -116,7 +118,18 @@ public class RegionType extends CivItem {
     }
     public String getRebuild() { return rebuild; }
     public List<RegionUpkeep> getUpkeeps() { return upkeeps; }
-    public long getPeriod() { return period; }
+    public long getPeriod() {
+        return period;
+    }
+    public long getPeriod(Government government) {
+        for (GovTypeBuff buff : government.getBuffs()) {
+            if (buff.getBuffType() != GovTypeBuff.BuffType.COOLDOWN) {
+                continue;
+            }
+            return period * (int) ((1 - (double) buff.getAmount() / 100));
+        }
+        return period;
+    }
     public boolean isDailyPeriod() {
         return dailyPeriod;
     }
