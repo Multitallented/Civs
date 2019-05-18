@@ -31,6 +31,7 @@ public class DailyScheduler implements Runnable {
     }
 
     private void doVotes() {
+        HashSet<Town> saveTheseTowns = new HashSet<>();
         for (Town town : TownManager.getInstance().getTowns()) {
             if (town.getVotes().isEmpty()) {
                 continue;
@@ -71,7 +72,11 @@ public class DailyScheduler implements Runnable {
                     town.setPeople(uuid, "member");
                 }
                 town.setPeople(mostVotes, "owner");
+                saveTheseTowns.add(town);
             }
+        }
+        for (Town town : saveTheseTowns) {
+            TownManager.getInstance().saveTown(town);
         }
     }
 
