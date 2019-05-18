@@ -22,4 +22,9 @@ description:
   pt_br: "Democracia + os membros da cidade podem comprar votos extras."
   ru: "Члены Демократии + Город могут купить дополнительные голоса."
   de: "Demokratie + Stadt-Mitglieder können zusätzliche Stimmen kaufen."
-buffs: {}
+buffs:
+  payout:
+    percent: 10
+    groups:
+      - shop
+      - housing

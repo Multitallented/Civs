@@ -10,6 +10,26 @@ icon: "RED_GLAZED_TERRACOTTA"
 enabled: true
 name:
   en: "Communism"
+  de: "Kommunismus"
+  ru: "Коммунизм"
+  pt_br: "Comunismo"
+  fr: "Communisme"
+  es: "Comunismo"
 description:
   en: "Everyone is an owner of everything. All region income is distributed evenly."
-buffs: {}
+  es: "Todo el mundo es dueño de todo. Todos los ingresos de la región se distribuyen uniformemente."
+  fr: "Tout le monde est propriétaire de tout. Tous les revenus de la région sont répartis de manière égale."
+  pt_br: "Todo mundo é dono de tudo. Toda a renda da região é distribuída uniformemente."
+  ru: "Каждый является владельцем всего. Весь доход региона распределяется равномерно."
+  de: "Jeder ist Eigentümer von allem. Das gesamte Einkommen der Region ist gleichmäßig verteilt."
+buffs:
+  cooldown:
+    percent: 10
+    groups:
+      - factory
+      - mine
+      - quarry
+  cost:
+    percent: 20
+    groups:
+      - housing
