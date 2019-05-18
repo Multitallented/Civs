@@ -6,4 +6,10 @@
 # town bank money automatically paid to people who build utilites and town upgrades
 # all region payouts are distributed evenly among town members after 10% goes to the bank
 
+icon: "RED_STAINED_GLASS"
+enabled: false
+name:
+  en: "Cooperative"
+description:
+  en: "Democracy + All region income is distributed evenly among town members and taxes."
 buffs: {}

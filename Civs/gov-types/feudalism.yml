@@ -4,4 +4,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "LIGHT_GRAY_CONCRETE"
+enabled: true
+name:
+  en: "Feudalism"
+description:
+  en: "Dictatorship + Town members can't build regions in town."
 buffs: {}

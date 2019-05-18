@@ -5,4 +5,10 @@
 # anyone can join the town
 # all farms, mines, factories, and quarries are public
 
+icon: "ORANGE_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Libertarian Socialism"
+description:
+  en: "Libertarian + Socialism"
 buffs: {}

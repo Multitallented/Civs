@@ -3,4 +3,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "GLOWSTONE"
+enabled: true
+name:
+  en: "Dictatorship"
+description:
+  en: "Town owners manage alliances, can override region and town membership and set taxes."
 buffs: {}

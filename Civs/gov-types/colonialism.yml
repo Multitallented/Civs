@@ -4,4 +4,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "GRAY_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Colonialism"
+description:
+  en: "No town ownership. A parent town overrides town ownership."
 buffs: {}

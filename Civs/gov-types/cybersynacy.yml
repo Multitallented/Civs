@@ -7,4 +7,10 @@
 # AI will override region ownership
 # AI will fund town members to attack other towns
 
+icon: "LIGHT_BLUE_GLAZED_TERRACOTTA"
+enabled: false
+name:
+  en: "Cybersynacy"
+description:
+  en: "No human town ownership. Alliances, taxes, recruitment and utilities are handled by an AI."
 buffs: {}

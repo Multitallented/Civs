@@ -4,4 +4,10 @@
 # no bank
 # anyone can join the town
 
+icon: "YELLOW_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Libertarian"
+description:
+  en: "No town ownership."
 buffs: {}

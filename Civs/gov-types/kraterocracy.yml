@@ -4,4 +4,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "BLACK_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Kraterocracy"
+description:
+  en: "Dictatorship + Whoever has the most kill points becomes a town owner."
 buffs: {}

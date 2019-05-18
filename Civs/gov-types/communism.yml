@@ -6,4 +6,10 @@
 # no bank
 # all region payouts are distributed evenly among town members
 
+icon: "RED_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Communism"
+description:
+  en: "Everyone is an owner of everything. All region income is distributed evenly."
 buffs: {}

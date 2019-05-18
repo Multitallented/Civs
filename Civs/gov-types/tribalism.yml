@@ -4,4 +4,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "GRASS_BLOCK"
+enabled: true
+name:
+  en: "Tribalism"
+description:
+  en: "Dictatorship + Members can't join non-allied towns."
 buffs: {}

@@ -5,4 +5,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "LIME_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Oligarchy"
+description:
+  en: "Dictatorship + Town Ownership can be bought into and bought out."
 buffs: {}

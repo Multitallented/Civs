@@ -4,4 +4,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "PURPLE_GLAZED_TERRACOTTA"
+enabled: false
+name:
+  en: "Meritocracy"
+description:
+  en: "Dictatorship + Whoever contributes the most power and money becomes an owner."
 buffs: {}

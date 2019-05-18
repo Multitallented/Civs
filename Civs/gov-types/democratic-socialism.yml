@@ -6,4 +6,10 @@
 # town owners can withdraw from the bank
 # all farms, mines, factories, and quarries are public
 
+icon: "CYAN_STAINED_GLASS"
+enabled: false
+name:
+  en: "Democratic Socialism"
+description:
+  en: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
 buffs: {}

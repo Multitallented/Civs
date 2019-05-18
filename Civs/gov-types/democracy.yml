@@ -5,4 +5,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "WHITE_STAINED_GLASS"
+enabled: false
+name:
+  en: "Democracy"
+description:
+  en: "Town owners manage alliances, set taxes, and town membership. Voting sets new town ownership periodically."
 buffs: {}

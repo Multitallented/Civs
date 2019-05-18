@@ -6,4 +6,10 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
+icon: "LIME_STAINED_GLASS"
+enabled: false
+name:
+  en: "Capitalism"
+description:
+  en: "Democracy + Town members can buy extra votes."
 buffs: {}
