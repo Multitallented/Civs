@@ -98,6 +98,8 @@ public class ConfigManager {
     boolean allowChangingOfGovType;
     @Getter
     double maxTax;
+    @Getter
+    int daysBetweenVotes;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -301,6 +303,7 @@ public class ConfigManager {
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             maxTax = config.getDouble("max-town-tax", 50);
+            daysBetweenVotes = config.getInt("days-between-elections", 7);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -326,6 +329,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
         maxTax = 50;

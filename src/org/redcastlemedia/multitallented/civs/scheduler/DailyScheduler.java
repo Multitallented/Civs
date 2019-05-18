@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -40,6 +41,10 @@ public class DailyScheduler implements Runnable {
                     town.getGovernmentType() != GovernmentType.DEMOCRATIC_SOCIALISM &&
                     town.getGovernmentType() != GovernmentType.COOPERATIVE &&
                     town.getGovernmentType() != GovernmentType.CAPITALISM) {
+                continue;
+            }
+            long daysBetweenVotes = ConfigManager.getInstance().getDaysBetweenVotes() * 86400000;
+            if (town.getLastVote() > System.currentTimeMillis() - daysBetweenVotes) {
                 continue;
             }
             HashMap<UUID, Integer> voteTally = new HashMap<>();
