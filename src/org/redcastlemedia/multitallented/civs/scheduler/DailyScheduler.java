@@ -12,9 +12,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class DailyScheduler implements Runnable {
 
@@ -29,6 +33,30 @@ public class DailyScheduler implements Runnable {
 
         doTaxes();
         doVotes();
+        addDailyPower();
+    }
+
+    private void addDailyPower() {
+        HashMap<Town, Integer> addPower = new HashMap<>();
+
+        for (Town town : TownManager.getInstance().getTowns()) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government != null) {
+                for (GovTypeBuff buff : government.getBuffs()) {
+                    if (buff.getBuffType() == GovTypeBuff.BuffType.POWER) {
+                        addPower.put(town, (int) (townType.getPower() * (1 + (double) buff.getAmount() / 100)));
+                        break;
+                    }
+                }
+            }
+            if (!addPower.containsKey(town)) {
+                addPower.put(town, townType.getPower());
+            }
+        }
+        for (Town town : addPower.keySet()) {
+            TownManager.getInstance().setTownPower(town, town.getPower() + addPower.get(town));
+        }
     }
 
     private void doVotes() {
