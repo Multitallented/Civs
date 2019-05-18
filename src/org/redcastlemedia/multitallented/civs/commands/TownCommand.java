@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
+import org.redcastlemedia.multitallented.civs.menus.SelectGovTypeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -197,6 +198,9 @@ public class TownCommand implements CivCommand {
                 "town-created").replace("$1", town.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
             town.createRing();
+        }
+        if (ConfigManager.getInstance().isAllowChangingOfGovType() && childTownType == null) {
+            player.openInventory(SelectGovTypeMenu.createMenu(civilian, town));
         }
         return true;
     }
