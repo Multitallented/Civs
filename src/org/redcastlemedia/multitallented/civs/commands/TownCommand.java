@@ -29,6 +29,9 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -138,6 +141,7 @@ public class TownCommand implements CivCommand {
         Location newTownLocation = player.getLocation();
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;
+        GovernmentType governmentType = null;
         int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
@@ -151,6 +155,7 @@ public class TownCommand implements CivCommand {
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
+            governmentType = intersectTown.getGovernmentType();
             childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
             // Don't destroy the ring on upgrade
@@ -161,7 +166,6 @@ public class TownCommand implements CivCommand {
         }
 
         int housingCount = getHousingCount(newTownLocation, townType);
-
         Town town = new Town(name,
                 townType.getProcessedName(),
                 newTownLocation,
@@ -169,6 +173,21 @@ public class TownCommand implements CivCommand {
                 townType.getPower(),
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         town.setChildLocations(childLocations);
+        if (governmentType != null) {
+            town.setGovernmentType(governmentType);
+        } else {
+            town.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government != null) {
+            for (GovTypeBuff buff : government.getBuffs()) {
+                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
+                    continue;
+                }
+                town.setMaxPower(town.getMaxPower() * (1 + buff.getAmount() / 100));
+                break;
+            }
+        }
         townManager.addTown(town);
         player.getInventory().remove(itemStack);
 
