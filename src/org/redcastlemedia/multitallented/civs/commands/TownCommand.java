@@ -190,6 +190,7 @@ public class TownCommand implements CivCommand {
 
         } else {
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, townType);
+            town.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
         townManager.saveTown(town);

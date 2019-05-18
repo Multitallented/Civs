@@ -107,6 +107,13 @@ public class SelectGovTypeMenu extends Menu {
             town.setBankAccount(0);
         }
 
+        if (governmentType == GovernmentType.COOPERATIVE ||
+                governmentType == GovernmentType.CAPITALISM ||
+                governmentType == GovernmentType.DEMOCRACY ||
+                governmentType == GovernmentType.DEMOCRATIC_SOCIALISM) {
+            town.setLastVote(System.currentTimeMillis());
+        }
+
         town.setTaxes(0);
         town.setColonialTown(null);
         Town owningTown = TownManager.getInstance().isOwnerOfATown(civilian);

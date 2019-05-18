@@ -307,7 +307,11 @@ public class TownActionMenu extends Menu {
                 town.getPeople().get(civilian.getUuid()).contains("owner");
 
         boolean govTypeOwnerOverride = town.getGovernmentType() == GovernmentType.ANARCHY ||
-                town.getGovernmentType() == GovernmentType.OLIGARCHY;
+                town.getGovernmentType() == GovernmentType.OLIGARCHY ||
+                town.getGovernmentType() == GovernmentType.COOPERATIVE ||
+                town.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                town.getGovernmentType() == GovernmentType.CAPITALISM;
 
 
         if (!isOwner && town.getGovernmentType() == GovernmentType.OLIGARCHY) {

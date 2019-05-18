@@ -130,8 +130,13 @@ public class MemberActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         ArrayList<String> lore;
 
+        boolean isVoteOnly = !isOwner && (governmentType == GovernmentType.CAPITALISM ||
+                governmentType == GovernmentType.COOPERATIVE ||
+                governmentType == GovernmentType.DEMOCRACY ||
+                governmentType == GovernmentType.DEMOCRATIC_SOCIALISM);
+
         //9 set owner
-        if (!viewingSelf && !role.contains("owner")) {
+        if (!viewingSelf && !isVoteOnly && !role.contains("owner")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -147,7 +152,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (!viewingSelf && !role.contains("member")) {
+        if (!viewingSelf && !isVoteOnly && !role.contains("member")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
@@ -162,7 +167,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //11 set guest
-        if (!viewingSelf && !role.equals("guest")) {
+        if (!viewingSelf && !isVoteOnly && !role.equals("guest")) {
             CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();
@@ -177,16 +182,18 @@ public class MemberActionMenu extends Menu {
         }
 
         //12 remove member
-        CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
-        cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "remove-member"));
-        if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
-            lore = new ArrayList<>();
-            String priceString = NumberFormat.getCurrencyInstance().format(price);
-            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
-                    .replace("$1", priceString));
-            cvItem1.setLore(lore);
+        if (!isVoteOnly) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "remove-member"));
+            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+                lore = new ArrayList<>();
+                String priceString = NumberFormat.getCurrencyInstance().format(price);
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                        .replace("$1", priceString));
+                cvItem1.setLore(lore);
+            }
+            inventory.setItem(12, cvItem1.createItemStack());
         }
-        inventory.setItem(12, cvItem1.createItemStack());
 
         //13 vote
         if ((governmentType == GovernmentType.DEMOCRACY ||
@@ -221,7 +228,7 @@ public class MemberActionMenu extends Menu {
         ArrayList<String> lore;
 
         //1 Player
-        Player player = Bukkit.getPlayer(uuid);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         String role = town.getPeople().get(uuid);
         ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta im = (SkullMeta) playerItem.getItemMeta();
@@ -257,7 +264,7 @@ public class MemberActionMenu extends Menu {
         ArrayList<String> lore;
 
         //1 Player
-        Player player = Bukkit.getPlayer(uuid);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         String role = region.getPeople().get(uuid);
         ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta im = (SkullMeta) playerItem.getItemMeta();

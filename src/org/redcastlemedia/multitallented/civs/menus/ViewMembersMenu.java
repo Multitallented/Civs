@@ -53,9 +53,12 @@ public class ViewMembersMenu extends Menu {
 
         boolean oligarchyBuy = getData(civilian.getUuid(), "oligarchy-buy") != null;
 
+        ArrayList<UUID> uuidList = (ArrayList<UUID>) getData(civilian.getUuid(), "uuidList");
+
         if (event.getCurrentItem().getType() == Material.PLAYER_HEAD) {
 
-            Player player = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName());
+            int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(0));
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuidList.get(index));
             boolean viewSelf = player.getUniqueId().equals(civilian.getUuid());
 
             appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
@@ -84,12 +87,19 @@ public class ViewMembersMenu extends Menu {
         if (oligarchyBuy) {
             data.put("oligarchy-buy", true);
         }
+        ArrayList<UUID> uuidList = new ArrayList<>();
+        for (UUID uuid : town.getPeople().keySet()) {
+            if (!town.getPeople().get(uuid).contains("ally")) {
+                uuidList.add(uuid);
+            }
+        }
+        data.put("uuidList", uuidList);
         setNewData(civilian.getUuid(), data);
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
-        setInventoryItems(inventory, town.getPeople(), civilian, true);
+        setInventoryItems(inventory, town.getPeople(), civilian, false);
 
         return inventory;
     }
@@ -99,6 +109,13 @@ public class ViewMembersMenu extends Menu {
 
         Map<String, Object> data = new HashMap<>();
         data.put("region", region);
+        ArrayList<UUID> uuidList = new ArrayList<>();
+        for (UUID uuid : region.getPeople().keySet()) {
+            if (!region.getPeople().get(uuid).contains("ally")) {
+                uuidList.add(uuid);
+            }
+        }
+        data.put("uuidList", uuidList);
         setNewData(civilian.getUuid(), data);
 
         //8 Back Button
@@ -117,13 +134,14 @@ public class ViewMembersMenu extends Menu {
         int i=9;
         for (UUID uuid : people.keySet()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-            if (player == null || (!allowAllies && people.get(uuid).equals("ally"))) {
+            if (player == null || (!allowAllies && people.get(uuid).contains("ally"))) {
                 continue;
             }
             ItemStack playerItem = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta im = (SkullMeta) playerItem.getItemMeta();
             im.setDisplayName(player.getName());
             lore = new ArrayList<>();
+            lore.add("" + (i-9));
             lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), people.get(uuid)));
             im.setLore(lore);
             if (player.isOnline()) {
