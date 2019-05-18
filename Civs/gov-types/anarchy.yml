@@ -6,6 +6,7 @@
 # no taxes
 # no bank
 
+icon: "NETHERRACK"
 enabled: true
 name:
   en: "Anarchy"

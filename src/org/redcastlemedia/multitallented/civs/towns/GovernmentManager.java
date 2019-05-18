@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
 import java.util.HashMap;
@@ -50,11 +51,12 @@ public class GovernmentManager {
             config.load(govTypeFile);
             String govTypeString = govTypeFile.getName().replace(".yml", "");
             GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
+            CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
 
             Government government = new Government(governmentType,
                     getTranslations(config.getConfigurationSection("name")),
                     getTranslations(config.getConfigurationSection("description")),
-                    getBuffs(config.getConfigurationSection("buffs")));
+                    getBuffs(config.getConfigurationSection("buffs")), cvItem);
             governments.put(governmentType, government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());

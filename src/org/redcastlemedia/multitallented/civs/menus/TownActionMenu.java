@@ -15,10 +15,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -350,8 +347,11 @@ public class TownActionMenu extends Menu {
 
         //13 Goverment Type
         {
-            CVItem govType = Util.getGovermentTypeIcon(civilian, town.getGovernmentType());
-            inventory.setItem(13, govType.createItemStack());
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government != null) {
+                CVItem govType = government.getIcon(civilian.getLocale());
+                inventory.setItem(13, govType.createItemStack());
+            }
         }
 
         //14 Bank

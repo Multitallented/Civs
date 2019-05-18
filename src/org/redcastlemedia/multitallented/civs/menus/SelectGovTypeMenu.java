@@ -10,10 +10,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -35,7 +32,8 @@ public class SelectGovTypeMenu extends Menu {
 
         int i=9;
         for (GovernmentType governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
-            inventory.setItem(i, Util.getGovermentTypeIcon(civilian, governmentType).createItemStack());
+            Government government = GovernmentManager.getInstance().getGovernment(governmentType);
+            inventory.setItem(i, government.getIcon().createItemStack());
             i++;
         }
         Map<String, Object> data = new HashMap<>();
