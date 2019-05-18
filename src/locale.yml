@@ -36,6 +36,7 @@ en:
   capitalism-voting-cost: "Extra votes cost $1"
   voted: "You have cast your vote for $1"
   gov-type-change: "Changed from $1 to $2"
+  cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
 
   #shop
   shop: Shop

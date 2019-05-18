@@ -21,6 +21,9 @@ import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -91,7 +94,11 @@ public class RegionListener implements Listener {
     @EventHandler
     public void onRegionCreatedEvent(RegionCreatedEvent event) {
         Town town = TownManager.getInstance().getTownAt(event.getRegion().getLocation());
-        if (town == null || Civs.econ == null || town.getGovernmentType() != GovernmentType.COOPERATIVE ||
+        if (town == null || Civs.econ == null) {
+            return;
+        }
+        applyCostBuff(event, town);
+        if (town.getGovernmentType() != GovernmentType.COOPERATIVE ||
                 !event.getRegionType().getGroups().contains("utility")) {
             return;
         }
@@ -110,5 +117,46 @@ public class RegionListener implements Listener {
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "town-assist-price").replace("$1", priceString)
                 .replace("$2", event.getRegion().getType()));
+    }
+
+    private void applyCostBuff(RegionCreatedEvent event, Town town) {
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government == null) {
+            return;
+        }
+        GovTypeBuff buff = null;
+        for (GovTypeBuff cBuff : government.getBuffs()) {
+            if (cBuff.getBuffType() != GovTypeBuff.BuffType.COST) {
+                continue;
+            }
+            buff = cBuff;
+        }
+        if (buff == null) {
+            return;
+        }
+        boolean applies = false;
+        if (buff.getRegions().contains(event.getRegion().getType())) {
+            applies = true;
+        } else {
+            for (String groupName : buff.getGroups()) {
+                if (event.getRegionType().getGroups().contains(groupName)) {
+                    applies = true;
+                    break;
+                }
+            }
+        }
+        if (!applies) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        double amount = event.getRegionType().getPrice() * (double) buff.getAmount() / 100;
+        String amountString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                .format(amount);
+        Civs.econ.depositPlayer(event.getPlayer(), amount);
+        event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                civilian.getLocale(), "cost-buff"
+        ).replace("$1", amountString)
+                .replace("$2", event.getRegionType().getDisplayName())
+                .replace("$3", government.getNames().get(civilian.getLocale())));
     }
 }

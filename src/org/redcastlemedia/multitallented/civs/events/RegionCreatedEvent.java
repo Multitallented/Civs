@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.events;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -17,10 +18,13 @@ public class RegionCreatedEvent extends Event {
     private final RegionType regionType;
     @Getter
     private final Region region;
+    @Getter
+    private final Player player;
 
-    public RegionCreatedEvent(Region region, RegionType regionType) {
+    public RegionCreatedEvent(Region region, RegionType regionType, Player player) {
         this.region = region;
         this.regionType = regionType;
+        this.player = player;
     }
 
     @Override
