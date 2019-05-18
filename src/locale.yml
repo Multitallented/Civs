@@ -600,6 +600,7 @@ zh:
   buy-region: "用$2 购买 $1"
   use-sell-command: "输入 /cv sell 价格"
   region-bought: "你成功地用$2购买了 $1"
+  hunting-players: "警告！ 有人在你所在地区打猎"
 
   #错误
   cant-place-town: "输入 /cv town 城镇名 "
