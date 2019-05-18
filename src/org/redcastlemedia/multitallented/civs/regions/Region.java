@@ -9,6 +9,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -763,6 +765,18 @@ public class Region {
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
                 Town town = TownManager.getInstance().getTownAt(location);
+                if (town != null && town.getGovernmentType() != null) {
+                    Government government = GovernmentManager.getInstance()
+                            .getGovernment(town.getGovernmentType());
+                    for (GovTypeBuff buff : government.getBuffs()) {
+                        if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
+                            continue;
+                        }
+                        payout = payout * (1 + (double) buff.getAmount());
+                        break;
+                    }
+                }
+
                 if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                         town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                     double size = (double) town.getRawPeople().size();
