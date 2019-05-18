@@ -6,7 +6,7 @@
 # town destroy button disabled in menu
 
 icon: "GRAY_GLAZED_TERRACOTTA"
-enabled: true
+enabled: false
 name:
   en: "Colonialism"
 description:

@@ -30,6 +30,10 @@ buffs:
       - defense
       - allhousing
       - offense
+  payout:
+    percent: 25
+    groups:
+      - shops
   cooldown:
     percent: 15
     groups:
@@ -37,5 +41,3 @@ buffs:
       - defense
     regions:
       - inn
-  max_power:
-    percent: 15

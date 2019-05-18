@@ -487,7 +487,8 @@ public class ProtectionHandler implements Listener {
             }
             String role = region.getPeople().get(player.getUniqueId());
             if (town != null) {
-                if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+                if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        town.getGovernmentType() == GovernmentType.ANARCHY) {
                     role = "owner";
                 }
             }

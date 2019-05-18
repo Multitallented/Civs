@@ -10,6 +10,25 @@ icon: "RED_STAINED_GLASS"
 enabled: true
 name:
   en: "Cooperative"
+  de: "Genossenschaft"
+  ru: "кооперативный"
+  pt_br: "Cooperativo"
+  fr: "Coopératif"
+  es: "Cooperativo"
 description:
   en: "Democracy + All region income is distributed evenly among town members and taxes."
-buffs: {}
+  es: "Democracia + Todos los ingresos de la región se distribuyen de manera uniforme entre los miembros de la ciudad y los impuestos."
+  fr: "Démocratie + Tous les revenus de la région sont répartis également entre les membres de la ville et les impôts."
+  pt_br: "Democracia + A renda de toda a região é distribuída igualmente entre os membros da cidade e os impostos."
+  ru: "Демократия + Весь доход региона распределяется равномерно между городскими жителями и налогами."
+  de: "Demokratie + Das gesamte Einkommen der Region verteilt sich gleichmäßig auf die Gemeindemitglieder und die Steuern."
+buffs:
+  cost:
+    percent: 20
+    groups:
+      - housing
+  payout:
+    percent: 15
+    groups:
+      - housing
+      - shop
