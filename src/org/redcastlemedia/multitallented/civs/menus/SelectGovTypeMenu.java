@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -33,8 +34,7 @@ public class SelectGovTypeMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
 
         int i=9;
-        for (String govTypeString : ConfigManager.getInstance().getAllowedGovTypes()) {
-            GovernmentType governmentType = GovernmentType.valueOf(govTypeString);
+        for (GovernmentType governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
             inventory.setItem(i, Util.getGovermentTypeIcon(civilian, governmentType).createItemStack());
             i++;
         }

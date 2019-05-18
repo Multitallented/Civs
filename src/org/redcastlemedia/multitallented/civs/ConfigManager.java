@@ -95,9 +95,6 @@ public class ConfigManager {
     GovernmentType defaultGovernmentType;
 
     @Getter
-    List<String> allowedGovTypes;
-
-    @Getter
     boolean allowChangingOfGovType;
     @Getter
     double maxTax;
@@ -303,7 +300,6 @@ public class ConfigManager {
                 defaultGovernmentType = GovernmentType.DICTATORSHIP;
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
-            allowedGovTypes = config.getStringList("allowed-gov-types");
             maxTax = config.getDouble("max-town-tax", 50);
 
         } catch (Exception e) {
@@ -385,8 +381,6 @@ public class ConfigManager {
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP;
-        allowedGovTypes = new ArrayList<>();
-        allowedGovTypes.add("DICTATORSHIP");
         allowChangingOfGovType = false;
     }
 

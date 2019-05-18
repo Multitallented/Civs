@@ -425,7 +425,7 @@ public class RegionManager {
 
 
         Town town = TownManager.getInstance().getTownAt(location);
-        if (town.getGovernmentType() == GovernmentType.FEUDALISM) {
+        if (town != null && town.getGovernmentType() == GovernmentType.FEUDALISM) {
             boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
                     town.getRawPeople().get(player.getUniqueId()).contains("owner");
             if (!isOwner) {

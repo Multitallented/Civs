@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -56,6 +57,7 @@ public class Civs extends JavaPlugin {
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new ItemManager();
         new TutorialManager();
+        new GovernmentManager();
         new BlockLogger();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();

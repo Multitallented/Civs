@@ -23,7 +23,7 @@ buffs:
       - housing
   power:
     percent: 10
-  max-power:
+  max_power:
     percent: 10
   cost:
     percent: 10
