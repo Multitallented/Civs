@@ -51,6 +51,14 @@ public class Town {
     @Setter
     private String colonialTown;
 
+    @Getter
+    @Setter
+    private long lastVote = 0;
+
+    @Getter
+    @Setter
+    private HashMap<UUID, HashMap<UUID, Integer>> votes = new HashMap<>();
+
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
         this.name = name;

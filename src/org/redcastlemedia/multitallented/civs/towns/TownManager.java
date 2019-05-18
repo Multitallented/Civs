@@ -201,6 +201,22 @@ public class TownManager {
                 villagers,
                 lastDisable);
         town.setGovernmentType(governmentType);
+        if (config.isSet("last-vote")) {
+            town.setLastVote(config.getLong("last-vote", 0));
+        }
+        if (config.isSet("votes")) {
+            HashMap<UUID, HashMap<UUID, Integer>> votes = new HashMap<>();
+            for (String cUuidString : config.getConfigurationSection("votes").getKeys(false)) {
+                UUID cUuid = UUID.fromString(cUuidString);
+                HashMap<UUID, Integer> theseVotes = new HashMap<>();
+                for (String uuidString : config.getConfigurationSection("votes." + cUuidString).getKeys(false)) {
+                    UUID uuid = UUID.fromString(uuidString);
+                    theseVotes.put(uuid, config.getInt("votes." + cUuidString + "." + uuidString, 0));
+                }
+                votes.put(cUuid, theseVotes);
+            }
+            town.setVotes(votes);
+        }
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
         }
@@ -429,6 +445,15 @@ public class TownManager {
             config.set("gov-type", town.getGovernmentType().name());
             config.set("taxes", town.getTaxes());
             config.set("bank", town.getBankAccount());
+            config.set("last-vote", town.getLastVote());
+            if (!town.getVotes().isEmpty()) {
+                for (UUID uuid : town.getVotes().keySet()) {
+                    for (UUID cUuid : town.getVotes().get(uuid).keySet()) {
+                        config.set("votes." + uuid.toString() + "." + cUuid.toString(),
+                                town.getVotes().get(uuid).get(cUuid));
+                    }
+                }
+            }
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
