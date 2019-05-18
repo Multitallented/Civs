@@ -3,11 +3,14 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -17,14 +20,12 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MemberActionMenu extends Menu {
     public static final String MENU_NAME = "CivsMemAct";
@@ -51,7 +52,7 @@ public class MemberActionMenu extends Menu {
         }
         UUID uuid = (UUID) getData(civilian.getUuid(), "uuid");
 
-        Player player = Bukkit.getPlayer(event.getInventory().getItem(1).getItemMeta().getDisplayName());
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
         Player cPlayer = Bukkit.getPlayer(civilian.getUuid());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -82,14 +83,48 @@ public class MemberActionMenu extends Menu {
             clickBackButton(cPlayer);
             return;
         }
+        if (event.getCurrentItem().getType().equals(Material.JUKEBOX)) {
+            clearHistory(civilian.getUuid());
+            cPlayer.closeInventory();
+            Town town = TownManager.getInstance().getTown(locationString);
+            if (town != null) {
+                double price = ConfigManager.getInstance().getCapitalismVotingCost();
+                if (town.getVotes().containsKey(civilian.getUuid())) {
+                    if (Civs.econ != null && Civs.econ.has(cPlayer, price)) {
+                        cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                                civilian.getLocale(), "not-enough-money")
+                                .replace("$1", price + ""));
+                        return;
+                    }
+
+                    Civs.econ.withdrawPlayer(cPlayer, price);
+
+                    if (town.getVotes().get(civilian.getUuid()).containsKey(uuid)) {
+                        town.getVotes().get(civilian.getUuid()).put(uuid,
+                                town.getVotes().get(civilian.getUuid()).get(uuid) + 1);
+                    } else {
+                        town.getVotes().get(civilian.getUuid()).put(uuid, 1);
+                    }
+                } else {
+                    HashMap<UUID, Integer> vote = new HashMap<>();
+                    vote.put(uuid, 1);
+                    town.getVotes().put(civilian.getUuid(), vote);
+                }
+                cPlayer.openInventory(TownActionMenu.createMenu(civilian, town));
+                cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "voted").replace("$1", player.getName()));
+                TownManager.getInstance().saveTown(town);
+                return;
+            }
+        }
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
-        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true);
+        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true, true);
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf,
-                                 GovernmentType governmentType, double price, boolean isOwner) {
+                                 GovernmentType governmentType, double price, boolean isOwner, boolean alreadyVoted) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -152,6 +187,25 @@ public class MemberActionMenu extends Menu {
             cvItem1.setLore(lore);
         }
         inventory.setItem(12, cvItem1.createItemStack());
+
+        //13 vote
+        if ((governmentType == GovernmentType.DEMOCRACY ||
+                governmentType == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                governmentType == GovernmentType.CAPITALISM ||
+                governmentType == GovernmentType.COOPERATIVE) &&
+                (governmentType == GovernmentType.CAPITALISM || !alreadyVoted)) {
+            CVItem cvItem = CVItem.createCVItemFromString("JUKEBOX");
+            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "vote-member"));
+            if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
+                lore = new ArrayList<>();
+                String votingCost = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
+                        .format(ConfigManager.getInstance().getCapitalismVotingCost());
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "capitalism-voting-cost")
+                        .replace("$1", votingCost));
+                cvItem.setLore(lore);
+            }
+            inventory.setItem(13, cvItem.createItemStack());
+        }
     }
 
     public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf, boolean isOwner) {
@@ -182,7 +236,10 @@ public class MemberActionMenu extends Menu {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         double price = 2* townType.getPrice();
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner);
+        boolean alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
+                !town.getVotes().get(civilian.getUuid()).isEmpty();
+
+        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted);
 
         return inventory;
     }

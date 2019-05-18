@@ -522,6 +522,12 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".cant-build-feudal", "You can't build a region in a feudal town unless you own that town."));
             currentLanguage.put("tribalism-no-invite",
                     localeConfig.getString(langKey + ".tribalism-no-invite", "Your tribalism town forbids you to invite $1 of non-allied town $2"));
+            currentLanguage.put("vote-member",
+                    localeConfig.getString(langKey + ".vote-member", "Vote to be next owner"));
+            currentLanguage.put("capitalism-voting-cost",
+                    localeConfig.getString(langKey + ".capitalism-voting-cost", "Extra votes cost $1"));
+            currentLanguage.put("voted",
+                    localeConfig.getString(langKey + ".voted", "You have cast your vote for $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

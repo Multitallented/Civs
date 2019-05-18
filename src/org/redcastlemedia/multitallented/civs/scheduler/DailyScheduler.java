@@ -77,8 +77,9 @@ public class DailyScheduler implements Runnable {
                     town.setPeople(uuid, "member");
                 }
                 town.setPeople(mostVotes, "owner");
-                saveTheseTowns.add(town);
             }
+            town.setVotes(new HashMap<>());
+            saveTheseTowns.add(town);
         }
         for (Town town : saveTheseTowns) {
             TownManager.getInstance().saveTown(town);

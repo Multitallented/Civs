@@ -1,21 +1,21 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
 public enum GovernmentType {
-    OLIGARCHY, // done
+    OLIGARCHY,
     DEMOCRACY, // voting, /taxes
-    DICTATORSHIP, // done
-    COMMUNISM, // done
+    DICTATORSHIP,
+    COMMUNISM,
     COOPERATIVE, // voting, /distribution payout, bank
-    ANARCHY, // done
-    LIBERTARIAN, // done
-    SOCIALISM, // done
+    ANARCHY,
+    LIBERTARIAN,
+    SOCIALISM,
     DEMOCRATIC_SOCIALISM, // voting, /ownership overrides, /taxes
-    KRATEROCRACY, // done
+    KRATEROCRACY,
     MERITOCRACY, // function determines merit
     CYBERSYNACY, // ai, /bank
-    TRIBALISM, // done
-    FEUDALISM, // done
-    COLONIALISM, // done
+    TRIBALISM,
+    FEUDALISM,
+    COLONIALISM,
     CAPITALISM, // voting
-    LIBERTARIAN_SOCIALISM // done
+    LIBERTARIAN_SOCIALISM
 }
