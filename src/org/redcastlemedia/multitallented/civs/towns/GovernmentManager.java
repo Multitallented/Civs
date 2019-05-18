@@ -79,8 +79,8 @@ public class GovernmentManager {
 
         for (String key : section.getKeys(false)) {
             GovTypeBuff.BuffType buffType = GovTypeBuff.BuffType.valueOf(key.toUpperCase());
-            List<String> groups = section.getStringList("groups");
-            List<String> regions = section.getStringList("regions");
+            List<String> groups = section.getStringList(key + ".groups");
+            List<String> regions = section.getStringList(key + ".regions");
             HashSet<String> groupSet;
             if (groups.isEmpty()) {
                 groupSet = new HashSet<>();
@@ -95,7 +95,7 @@ public class GovernmentManager {
             }
 
             GovTypeBuff govTypeBuff = new GovTypeBuff(buffType,
-                    section.getInt("percent", 10),
+                    section.getInt(key + ".percent", 10),
                     groupSet,
                     regionSet);
             buffs.add(govTypeBuff);

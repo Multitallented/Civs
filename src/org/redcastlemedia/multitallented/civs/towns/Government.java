@@ -55,7 +55,7 @@ public class Government {
         return lore;
     }
 
-    private String getApplyString(GovTypeBuff buff) {
+    String getApplyString(GovTypeBuff buff) {
         if (buff.getBuffType() == GovTypeBuff.BuffType.COST ||
                 buff.getBuffType() == GovTypeBuff.BuffType.PAYOUT ||
                 buff.getBuffType() == GovTypeBuff.BuffType.COOLDOWN) {
@@ -64,9 +64,12 @@ public class Government {
                 stringBuilder.append(groupName);
                 stringBuilder.append(", ");
             }
-            for (String regionName : buff.getGroups()) {
+            for (String regionName : buff.getRegions()) {
                 stringBuilder.append(regionName);
                 stringBuilder.append(", ");
+            }
+            if (stringBuilder.length() < 1) {
+                return "";
             }
             return stringBuilder.substring(0, stringBuilder.length() - 2);
         } else {
