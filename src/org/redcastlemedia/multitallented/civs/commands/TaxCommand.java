@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class TaxCommand implements CivCommand {
     @Override
@@ -55,8 +56,7 @@ public class TaxCommand implements CivCommand {
 
         town.setTaxes(amount);
         TownManager.getInstance().saveTown(town);
-        String taxString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                .format(amount);
+        String taxString = Util.getNumberFormat(amount, civilian.getLocale());
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "town-tax-set").replace("$1", town.getName())
                 .replace("$2", taxString));

@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SellRegionCommand implements CivCommand {
     @Override
@@ -54,7 +55,7 @@ public class SellRegionCommand implements CivCommand {
         commandSender.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", region.getType())
-                .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(salePrice)));
+                .replace("$2", Util.getNumberFormat(salePrice, civilian.getLocale())));
         return true;
     }
 

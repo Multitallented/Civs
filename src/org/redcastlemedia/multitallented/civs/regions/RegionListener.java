@@ -121,8 +121,7 @@ public class RegionListener implements Listener {
         Civs.econ.depositPlayer(player, price);
         town.setBankAccount(town.getBankAccount() - price);
         TownManager.getInstance().saveTown(town);
-        String priceString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                .format(price);
+        String priceString = Util.getNumberFormat(price, civilian.getLocale());
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "town-assist-price").replace("$1", priceString)
                 .replace("$2", event.getRegion().getType()));
@@ -159,8 +158,7 @@ public class RegionListener implements Listener {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         double amount = event.getRegionType().getPrice() * (double) buff.getAmount() / 100;
-        String amountString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                .format(amount);
+        String amountString = Util.getNumberFormat(amount, civilian.getLocale());
         Civs.econ.depositPlayer(event.getPlayer(), amount);
         event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                 civilian.getLocale(), "cost-buff"

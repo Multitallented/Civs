@@ -362,15 +362,13 @@ public class TownActionMenu extends Menu {
 
         //14 Bank
         {
-            String bankString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                    .format(town.getBankAccount());
+            String bankString = Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
             CVItem cvItem2 = CVItem.createCVItemFromString("EMERALD_BLOCK");
             cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-bank-balance").replace("$1", bankString));
             lore = new ArrayList<>();
             if (town.getTaxes() > 0) {
-                String taxString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                        .format(town.getTaxes());
+                String taxString = Util.getNumberFormat(town.getTaxes(), civilian.getLocale());
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax")
                         .replace("$1", taxString));
             }

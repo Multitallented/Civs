@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
 import java.util.*;
@@ -209,8 +210,7 @@ public class MemberActionMenu extends Menu {
             cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "vote-member"));
             if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                 lore = new ArrayList<>();
-                String votingCost = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale()))
-                        .format(ConfigManager.getInstance().getCapitalismVotingCost());
+                String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "capitalism-voting-cost")
                         .replace("$1", votingCost));
                 cvItem.setLore(lore);

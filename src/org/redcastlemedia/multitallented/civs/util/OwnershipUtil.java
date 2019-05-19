@@ -38,7 +38,7 @@ public final class OwnershipUtil {
         boolean hasMoney = Civs.econ != null && Civs.econ.has(player, price);
 
         if (oligarchyOverride && !hasMoney) {
-            String moneyString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(price);
+            String moneyString = Util.getNumberFormat(price, civilian.getLocale());
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "not-enough-money").replace("$1", moneyString));
             return false;

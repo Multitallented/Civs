@@ -122,7 +122,7 @@ public class SetOwnerCommand implements CivCommand {
             double price = townType.getPrice() * 2;
 
             if (oligarchyOverride && !Civs.econ.has(player, price)) {
-                String priceString = NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(price);
+                String priceString = Util.getNumberFormat(price, civilian.getLocale());
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "not-enough-money").replace("$1", priceString));
                 return true;

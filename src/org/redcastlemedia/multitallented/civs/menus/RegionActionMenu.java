@@ -93,7 +93,7 @@ public class RegionActionMenu extends Menu {
             if (Civs.econ != null && Civs.econ.has(player, region.getForSale())) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "region-bought").replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                        .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
 
                 Civs.econ.withdrawPlayer(player, region.getForSale());
                 Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
@@ -240,7 +240,7 @@ public class RegionActionMenu extends Menu {
                     lore = new ArrayList<>();
                     lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                         .replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                        .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
                     emeraldBlock.setLore(lore);
                 }
                 inventory.setItem(11, emeraldBlock.createItemStack());
@@ -260,7 +260,7 @@ public class RegionActionMenu extends Menu {
             CVItem emerald = CVItem.createCVItemFromString("EMERALD");
             emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "buy-region").replace("$1", region.getType())
-                    .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
             inventory.setItem(13, emerald.createItemStack());
         }
 
