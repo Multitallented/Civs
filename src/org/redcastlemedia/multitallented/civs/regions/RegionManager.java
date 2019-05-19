@@ -431,6 +431,7 @@ public class RegionManager {
             if (!isOwner) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                event.setCancelled(true);
                 return false;
             }
         }
