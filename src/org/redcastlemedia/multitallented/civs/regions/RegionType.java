@@ -126,7 +126,7 @@ public class RegionType extends CivItem {
             if (buff.getBuffType() != GovTypeBuff.BuffType.COOLDOWN) {
                 continue;
             }
-            return period * (int) ((1 - (double) buff.getAmount() / 100));
+            return (int) (period * (1 - (double) buff.getAmount() / 100));
         }
         return period;
     }

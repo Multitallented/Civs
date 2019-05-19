@@ -10,11 +10,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -46,9 +42,7 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickThread;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class RegionsTests {
@@ -67,6 +61,21 @@ public class RegionsTests {
         regionManager = new RegionManager();
         townManager = new TownManager();
         new ItemManager();
+    }
+
+    @Test
+    public void getPeriodShouldTakeBuffsIntoAccount() {
+        loadRegionTypeCobble();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        HashSet<String> regions = new HashSet<>();
+        regions.add("cobble");
+        GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COOLDOWN,
+                10, new HashSet<>(), regions);
+        HashSet<GovTypeBuff> buffs = new HashSet<>();
+        buffs.add(buff);
+        Government government = new Government(GovernmentType.ANARCHY, null, null,
+                buffs, null);
+        assertEquals(90, regionType.getPeriod(government));
     }
 
     @Test
