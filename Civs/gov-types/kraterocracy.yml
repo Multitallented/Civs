@@ -21,6 +21,8 @@ description:
   fr: "Dictature + Lorsqu'un membre de la ville tue un propriétaire, les deux personnes changent de place."
   es: "Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos cambian de lugar."
 buffs:
+  max_power:
+    percent: 10
   power:
     percent: 25
   cooldown:
