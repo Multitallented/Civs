@@ -61,7 +61,7 @@ public class ViewMembersMenu extends Menu {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuidList.get(index));
             boolean viewSelf = player.getUniqueId().equals(civilian.getUuid());
 
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
+//            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().closeInventory();
             if (town != null) {
                 if (viewSelf && town.getRawPeople().keySet().size() < 2) {

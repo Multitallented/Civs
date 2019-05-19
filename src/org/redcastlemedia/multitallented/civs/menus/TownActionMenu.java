@@ -125,6 +125,7 @@ public class TownActionMenu extends Menu {
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
             List<Player> people = new ArrayList<>();
             for (UUID uuid : town.getPeople().keySet()) {
