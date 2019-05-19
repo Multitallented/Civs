@@ -30,6 +30,10 @@ public class SelectGovTypeMenu extends Menu {
 
         int i=9;
         for (GovernmentType governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
+            if (governmentType == GovernmentType.COLONIALISM &&
+                    TownManager.getInstance().getOwnedTowns(civilian).size() < 2) {
+                continue;
+            }
             Government government = GovernmentManager.getInstance().getGovernment(governmentType);
             inventory.setItem(i, government.getIcon(civilian.getLocale()).createItemStack());
             i++;
@@ -116,8 +120,15 @@ public class SelectGovTypeMenu extends Menu {
 
         town.setTaxes(0);
         town.setColonialTown(null);
-        Town owningTown = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (owningTown != town) {
+        Town owningTown = null;
+        for (Town cTown : TownManager.getInstance().getOwnedTowns(civilian)) {
+            if (cTown.equals(town) || cTown.getGovernmentType() == GovernmentType.COLONIALISM) {
+                continue;
+            }
+            owningTown = cTown;
+            break;
+        }
+        if (owningTown != null) {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             if (player != null) {
                 player.performCommand("cv colony " + town.getName() + " " + owningTown.getName());
