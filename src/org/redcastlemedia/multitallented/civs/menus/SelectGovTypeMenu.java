@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,6 +81,10 @@ public class SelectGovTypeMenu extends Menu {
         }
 
         // TODO any other changes that need to be made
+
+        if (governmentType == GovernmentType.MERITOCRACY) {
+            Util.promoteWhoeverHasMostMerit(town, false);
+        }
 
         if (governmentType == GovernmentType.COMMUNISM) {
             HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());

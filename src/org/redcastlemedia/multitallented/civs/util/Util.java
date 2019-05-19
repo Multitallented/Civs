@@ -40,6 +40,36 @@ public final class Util {
 
     }
 
+    public static void promoteWhoeverHasMostMerit(Town town, boolean save) {
+        UUID lowestOwner = null;
+        int lowestOwnerScore = 99999999;
+        UUID highestMember = null;
+        int highestMemberScore = 0;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            String role = town.getRawPeople().get(uuid);
+            if (role.contains("member")) {
+                int score = Util.calculateMerit(uuid, town);
+                if (score > highestMemberScore) {
+                    highestMember = uuid;
+                    highestMemberScore = score;
+                }
+            } else if (role.contains("owner")) {
+                int score = Util.calculateMerit(uuid, town);
+                if (score < lowestOwnerScore) {
+                    lowestOwnerScore = score;
+                    lowestOwner = uuid;
+                }
+            }
+        }
+        if (lowestOwner != null && highestMember != null && lowestOwnerScore < highestMemberScore) {
+            town.setPeople(lowestOwner, "member");
+            town.setPeople(highestMember, "owner");
+            if (save) {
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+    }
+
     public static void checkMerit(Town town, Player player) {
         if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
             return;
