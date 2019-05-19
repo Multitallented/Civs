@@ -123,6 +123,7 @@ public class SelectGovTypeMenu extends Menu {
             town.setLastVote(System.currentTimeMillis());
         }
 
+        town.getVotes().clear();
         town.setTaxes(0);
         town.setColonialTown(null);
         Town owningTown = null;
