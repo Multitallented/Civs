@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
@@ -54,6 +55,9 @@ public class GovernmentManager {
             }
             String govTypeString = govTypeFile.getName().replace(".yml", "");
             GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
+            if (governmentType == GovernmentType.CYBERSYNACY) {
+                new AIManager();
+            }
             CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
 
             Government government = new Government(governmentType,

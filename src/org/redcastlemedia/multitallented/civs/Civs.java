@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.civs.ai.AIListener;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -218,6 +219,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
+//        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
     }
