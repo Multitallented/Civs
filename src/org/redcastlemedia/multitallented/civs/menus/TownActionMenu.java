@@ -150,15 +150,20 @@ public class TownActionMenu extends Menu {
 
         boolean colonialOverride = getData(civilian.getUuid(), "colonial-override") != null;
 
-        if (ConfigManager.getInstance().isAllowChangingOfGovType() &&
-                (!govTypeDisable && ((isOwner && ownerCount < 2) || colonialOverride)) &&
-                event.getCurrentItem().getItemMeta().getLore() != null &&
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() ||
+                (Civs.perm != null && Civs.perm.has(player, "civs.admin")));
+
+        if (event.getCurrentItem().getItemMeta().getLore() != null &&
                 !event.getCurrentItem().getItemMeta().getLore().isEmpty() &&
                 event.getCurrentItem().getItemMeta().getLore().get(0).startsWith("Gov Type:")) {
 
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
-            event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(SelectGovTypeMenu.createMenu(civilian, town));
+            if (isAdmin || (ConfigManager.getInstance().isAllowChangingOfGovType() &&
+                    (!govTypeDisable && ((isOwner && ownerCount < 2) || colonialOverride)))) {
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(SelectGovTypeMenu.createMenu(civilian, town));
+            }
         }
 
     }
