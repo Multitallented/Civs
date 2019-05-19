@@ -446,6 +446,10 @@ public class DeathListener implements Listener {
         CivilianManager.getInstance().saveCivilian(damagerCiv);
 
         for (Town town : TownManager.getInstance().getOwnedTowns(dyingCiv)) {
+            if (town.getGovernmentType() == GovernmentType.MERITOCRACY) {
+                Util.checkMerit(town, damager);
+                continue;
+            }
             if (town.getGovernmentType() != GovernmentType.KRATEROCRACY) {
                 continue;
             }
@@ -454,6 +458,7 @@ public class DeathListener implements Listener {
                 town.getRawPeople().put(dyingCiv.getUuid(), "member");
                 town.getRawPeople().put(damagerCiv.getUuid(), "owner");
                 TownManager.getInstance().saveTown(town);
+                Util.spawnRandomFirework(damager);
                 for (UUID uuid : town.getRawPeople().keySet()) {
                     Player townPlayer = Bukkit.getPlayer(uuid);
                     if (townPlayer == null || !townPlayer.isOnline()) {

@@ -37,6 +37,7 @@ en:
   voted: "You have cast your vote for $1"
   gov-type-change: "Changed from $1 to $2"
   cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
+  merit-new-owner: "Congratulations! You have surpased $1. You are the new town owner!"
 
   cooldown-buff-desc: "$1% cooldown reduction for all $2"
   payout-buff-desc: "$1% region payout increase for all $2"

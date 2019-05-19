@@ -542,6 +542,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".max_power-buff-desc", "$1% max-power increase"));
             currentLanguage.put("cost-buff-desc",
                     localeConfig.getString(langKey + ".cost-buff-desc", "$1% cost refund on all $2"));
+            currentLanguage.put("merit-new-owner",
+                    localeConfig.getString(langKey + ".merit-new-owner", "Congratulations! You have surpased $1. You are the new town owner!"));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -1,9 +1,12 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +32,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class RegionListener implements Listener {
 
@@ -94,7 +98,12 @@ public class RegionListener implements Listener {
     @EventHandler
     public void onRegionCreatedEvent(RegionCreatedEvent event) {
         Town town = TownManager.getInstance().getTownAt(event.getRegion().getLocation());
-        if (town == null || Civs.econ == null) {
+
+        if (town == null) {
+            return;
+        }
+        Util.checkMerit(town, event.getPlayer());
+        if (Civs.econ == null) {
             return;
         }
         applyCostBuff(event, town);

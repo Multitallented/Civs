@@ -8,11 +8,13 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -26,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -35,6 +38,56 @@ public final class Util {
 
     private Util() {
 
+    }
+
+    public static void checkMerit(Town town, Player player) {
+        if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        int score = Util.calculateMerit(player.getUniqueId(), town);
+        UUID demoteMe = null;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            if (town.getRawPeople().get(uuid).contains("owner")) {
+                if (Util.calculateMerit(uuid, town) < score) {
+                    demoteMe = uuid;
+                    break;
+                }
+            }
+        }
+        if (demoteMe != null) {
+            town.setPeople(demoteMe, "member");
+            town.setPeople(player.getUniqueId(), "owner");
+            TownManager.getInstance().saveTown(town);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
+            String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "merit-new-owner"
+            ).replace("$1", name));
+            spawnRandomFirework(player);
+        }
+    }
+
+    public static int calculateMerit(UUID uuid, Town forTown) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        int basePoints = (int) (civilian.getPoints() - (double) civilian.getDeaths() / 4);
+
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.equals(forTown) || !town.getRawPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            int townPoints = 0;
+            for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+                if (region.getRawPeople().containsKey(civilian.getUuid()) &&
+                        region.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                    RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                    townPoints += 4 * regionType.getLevel();
+                }
+            }
+            return basePoints + townPoints;
+        }
+
+        return 0;
     }
 
     public static boolean equivalentLocations(Location location1, Location location2) {
