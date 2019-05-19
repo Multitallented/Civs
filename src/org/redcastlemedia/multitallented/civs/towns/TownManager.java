@@ -453,6 +453,8 @@ public class TownManager {
                                 town.getVotes().get(uuid).get(cUuid));
                     }
                 }
+            } else {
+                config.set("votes", null);
             }
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {

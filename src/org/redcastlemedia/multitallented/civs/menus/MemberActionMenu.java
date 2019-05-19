@@ -130,6 +130,10 @@ public class MemberActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         ArrayList<String> lore;
 
+        if (governmentType == GovernmentType.ANARCHY) {
+            viewingSelf = false;
+        }
+
         boolean isVoteOnly = !isOwner && (governmentType == GovernmentType.CAPITALISM ||
                 governmentType == GovernmentType.COOPERATIVE ||
                 governmentType == GovernmentType.DEMOCRACY ||
