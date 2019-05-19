@@ -23,4 +23,4 @@ description:
   de: "Stadtbesitzer verwalten Allianzen, legen Steuern und die Mitgliedschaft in der Stadt fest. Abstimmungen legen in regelmäßigen Abständen neue Städteeigentümer fest."
 buffs:
   max_power:
-    percent: 15
+    percent: 25

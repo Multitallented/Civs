@@ -8,6 +8,26 @@ icon: "LIGHT_GRAY_CONCRETE"
 enabled: true
 name:
   en: "Feudalism"
+  de: "Feudalismus"
+  ru: "феодализм"
+  pt_br: "Feudalismo"
+  fr: "Féodalisme"
+  es: "Feudalismo"
 description:
   en: "Dictatorship + Town members can't build regions in town."
-buffs: {}
+  es: "Dictadura + Los miembros de la ciudad no pueden construir regiones en la ciudad."
+  fr: "Dictature + Les membres de la ville ne peuvent pas construire de régions en ville."
+  pt_br: "Ditadura + Os membros da cidade não podem construir regiões na cidade."
+  ru: "Диктатура + Городские жители не могут строить регионы в городе."
+  de: "Mitglieder von Diktatur + Stadt können keine Regionen in der Stadt errichten."
+buffs:
+  power:
+    percent: 10
+  cost:
+    percent: 20
+    groups:
+      - allhousing
+      - utility
+      - mine
+      - quarry
+      - factory

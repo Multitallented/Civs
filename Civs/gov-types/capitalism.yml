@@ -28,3 +28,5 @@ buffs:
     groups:
       - shop
       - housing
+  max_power:
+    percent: 10

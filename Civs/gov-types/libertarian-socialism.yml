@@ -9,6 +9,30 @@ icon: "ORANGE_GLAZED_TERRACOTTA"
 enabled: true
 name:
   en: "Libertarian Socialism"
+  de: "Libertärer Sozialismus"
+  ru: "Либертарианский социализм"
+  pt_br: "Socialismo Libertário"
+  fr: "Socialisme libertaire"
+  es: "Socialismo libertario"
 description:
   en: "Libertarian + Socialism"
-buffs: {}
+  es: "Libertario + socialismo"
+  fr: "Libertaire + socialisme"
+  pt_br: "Libertário + Socialismo"
+  ru: "Либертарианец + социализм"
+  de: "Libertärer + Sozialismus"
+buffs:
+  cooldown:
+    percent: 10
+    groups:
+      - factory
+      - mine
+      - quarry
+  payout:
+    percent: 10
+    groups:
+      - housing
+  cost:
+    percent: 10
+    groups:
+      - housing

@@ -8,6 +8,24 @@ icon: "YELLOW_GLAZED_TERRACOTTA"
 enabled: true
 name:
   en: "Libertarian"
+  de: "Libertär"
+  ru: "вольный"
+  pt_br: "Libertário"
+  fr: "Libertaire"
+  es: "Libertario"
 description:
   en: "No town ownership."
-buffs: {}
+  es: "No propiedad de la ciudad."
+  fr: "Aucune propriété de la ville."
+  pt_br: "Nenhuma propriedade da cidade."
+  ru: "Нет городской собственности."
+  de: "Kein Stadteigentum."
+buffs:
+  payout:
+    percent: 15
+    groups:
+      - housing
+  cost:
+    percent: 25
+    groups:
+      - housing

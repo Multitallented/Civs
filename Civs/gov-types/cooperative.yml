@@ -23,12 +23,10 @@ description:
   ru: "Демократия + Весь доход региона распределяется равномерно между городскими жителями и налогами."
   de: "Demokratie + Das gesamte Einkommen der Region verteilt sich gleichmäßig auf die Gemeindemitglieder und die Steuern."
 buffs:
-  cost:
-    percent: 20
-    groups:
-      - housing
   payout:
     percent: 15
     groups:
       - housing
       - shop
+  max_power:
+    percent: 10

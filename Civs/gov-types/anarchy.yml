@@ -24,7 +24,7 @@ description:
   de: "Jeder kann die Mitgliedschaft in einer Stadt oder Region verwalten. Keine Steuern. Keine Allianzen."
 buffs:
   cost:
-    percent: 30
+    percent: 35
     groups:
       - utility
       - defense

@@ -10,6 +10,24 @@ icon: "CYAN_STAINED_GLASS"
 enabled: true
 name:
   en: "Democratic Socialism"
+  de: "Demokratischer Sozialismus"
+  ru: "Демократический социализм"
+  pt_br: "Socialismo Democrático"
+  fr: "Socialisme démocratique"
+  es: "Socialismo democratico"
 description:
   en: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
-buffs: {}
+  es: "Democracia + Todas las empresas de servicios públicos, granjas, minas, fábricas y canteras son de propiedad pública."
+  fr: "Démocratie + Tous les services publics, exploitations agricoles, mines, usines et carrières appartiennent à l'État."
+  pt_br: "Democracia + Todos os serviços públicos, fazendas, minas, fábricas e pedreiras são de propriedade pública."
+  ru: "Демократия + Все коммунальные услуги, фермы, шахты, фабрики и карьеры находятся в государственной собственности."
+  de: "Demokratie + Alle Versorgungsunternehmen, Farmen, Minen, Fabriken und Steinbrüche befinden sich in öffentlichem Besitz."
+buffs:
+  max_power:
+    percent: 15
+  cooldown:
+    percent: 10
+    groups:
+      - factory
+      - mine
+      - quarry
