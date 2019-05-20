@@ -13,8 +13,8 @@ build-reqs:
 - CHEST*2
 - FURNACE*2
 - PRISMARINE_BRICKS*4
-- g:primary*110
-- g:secondary*12
+- g:primary*55
+- g:secondary*6
 
 build-radius: 4
 

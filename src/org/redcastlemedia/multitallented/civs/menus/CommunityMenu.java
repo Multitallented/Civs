@@ -9,6 +9,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class CommunityMenu extends Menu {
@@ -86,44 +90,89 @@ public class CommunityMenu extends Menu {
 
     public static Inventory createMenu(Civilian civilian) {
         String locale = civilian.getLocale();
-        Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
 
         //0 Players
+        int i=0;
         CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
         cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
-        inventory.setItem(0, cvItem.createItemStack());
+        inventory.setItem(i, cvItem.createItemStack());
 
         //1 Towns
+        i++;
         CVItem cvItem3 = CVItem.createCVItemFromString("RED_BED");
         cvItem3.setDisplayName(localeManager.getTranslation(locale, "towns"));
-        inventory.setItem(1, cvItem3.createItemStack());
+        inventory.setItem(i, cvItem3.createItemStack());
 
+        boolean isInATown = false;
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                isInATown = true;
+                break;
+            }
+        }
         //2 Your towns
-        CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
-        cvItem2.setDisplayName(localeManager.getTranslation(locale, "your-towns"));
-        inventory.setItem(2, cvItem2.createItemStack());
+        if (isInATown) {
+            i++;
+            CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
+            cvItem2.setDisplayName(localeManager.getTranslation(locale, "your-towns"));
+            inventory.setItem(i, cvItem2.createItemStack());
+        }
 
         //3 Alliances
+        i++;
         CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
         cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
-        inventory.setItem(3, cvItem1.createItemStack());
+        inventory.setItem(i, cvItem1.createItemStack());
 
         //4 PvP leaderboard
+        i++;
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
         cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
-        inventory.setItem(4, cvItem4.createItemStack());
+        inventory.setItem(i, cvItem4.createItemStack());
+
+        boolean hasPort = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (!region.getEffects().containsKey("port")) {
+                continue;
+            }
+            if (!region.getPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            //Don't show private ports
+            if (region.getEffects().get("port") != null &&
+                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+                continue;
+            }
+            hasPort = true;
+            break;
+        }
 
         //5 Ports
-        CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
-        cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
-        inventory.setItem(5, cvItem5.createItemStack());
+        if (hasPort) {
+            i++;
+            CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
+            cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
+            inventory.setItem(i, cvItem5.createItemStack());
+        }
 
+        boolean hasRegionsForSale = false;
+        for (Region r : RegionManager.getInstance().getAllRegions()) {
+            if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
+                hasRegionsForSale = true;
+                break;
+            }
+        }
         //6 Regions for sale
-        CVItem cvItem6 = CVItem.createCVItemFromString("EMERALD");
-        cvItem6.setDisplayName(localeManager.getTranslation(locale, "regions-for-sale"));
-        inventory.setItem(6, cvItem6.createItemStack());
+        if (hasRegionsForSale) {
+            i++;
+            CVItem cvItem6 = CVItem.createCVItemFromString("EMERALD");
+            cvItem6.setDisplayName(localeManager.getTranslation(locale, "regions-for-sale"));
+            inventory.setItem(i, cvItem6.createItemStack());
+        }
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

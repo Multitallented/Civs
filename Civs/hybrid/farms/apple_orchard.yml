@@ -10,8 +10,8 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*32
+- g:fencegate*1
+- g:fence*16
 - OAK_LOG*4
 - OAK_LEAVES*12
 

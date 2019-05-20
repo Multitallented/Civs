@@ -192,6 +192,7 @@ en:
   invalid-name: "Invalid name"
   last-renamed-by: "Last renamed by: $1"
   leave-alliance: "Leave alliance"
+  hunting-players: "Caution! Someone is hunting players in your area."
 
   #errors
   cant-place-town: "Type /cv town townNameHere"

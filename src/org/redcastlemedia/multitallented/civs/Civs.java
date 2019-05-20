@@ -218,6 +218,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 

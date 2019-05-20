@@ -16,14 +16,14 @@ pre-reqs:
 build-reqs:
 - CHEST*8
 - g:door*1
-- g:window*16
+- g:window*8
 - g:bed*1
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*250
-- g:secondary*200
-- g:primary*600
+- g:roof*125
+- g:secondary*100
+- g:primary*300
 
 rebuild: basevilla
 build-radius: 17 # 35x35x35

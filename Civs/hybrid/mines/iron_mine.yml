@@ -11,13 +11,13 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:primary*90
-- g:secondary*12
 - IRON_BARS*2
 - g:door*1
 - CHEST*2
 - FURNACE*2
 - IRON_ORE*4
+- g:primary*45
+- g:secondary*6
 
 towns:
 - settlement

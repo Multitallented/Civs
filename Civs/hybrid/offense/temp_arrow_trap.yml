@@ -9,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- g:fence*5
+- g:fence*4
 - REDSTONE_WIRE*4
 - DISPENSER*1
 

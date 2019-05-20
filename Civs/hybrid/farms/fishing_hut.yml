@@ -11,9 +11,9 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:fence*18
-- WATER*50
-- g:primary*50
+- g:fence*9
+- WATER*25
+- g:primary*25
 
 towns:
 - hamlet

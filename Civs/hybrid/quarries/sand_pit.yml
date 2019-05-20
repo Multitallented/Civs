@@ -8,7 +8,7 @@ groups:
 level: 1
 
 build-reqs:
-- SAND*48
+- SAND*24
 - FURNACE*2
 - CHEST*2
 

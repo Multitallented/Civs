@@ -11,10 +11,10 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*32
+- g:fencegate*1
+- g:fence*16
 - WATER*1
-- POTATOES*48
+- POTATOES*24
 
 towns:
 - settlement

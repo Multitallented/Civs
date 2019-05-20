@@ -8,7 +8,7 @@ groups:
 level: 1
 
 build-reqs:
-- g:fence*12
+- g:fence*6
 - CHEST
 - g:wool*20
 - DANDELION*2,POPPY*2,BLUE_ORCHID*2,ALLIUM*2,AZURE_BLUET*2,RED_TULIP*2,ORANGE_TULIP*2,WHITE_TULIP*2,PINK_TULIP*2,OXEYE_DAISY*2

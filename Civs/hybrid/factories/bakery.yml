@@ -14,9 +14,9 @@ build-reqs:
 - CHEST*2
 - g:window*4
 - g:door*1
-- g:roof*60
-- g:primary*90
-- g:secondary*20
+- g:roof*30
+- g:primary*45
+- g:secondary*10
 
 build-radius: 4 #9x9x9
 

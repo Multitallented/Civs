@@ -17,8 +17,8 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*46
+- g:fencegate*1
+- g:fence*24
 - WATER*1
 - CHEST*2
 - HAY_BLOCK*4

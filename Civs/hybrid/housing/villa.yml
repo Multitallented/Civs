@@ -16,14 +16,14 @@ pre-reqs:
 build-reqs:
 - CHEST*8
 - g:door*1
-- g:window*16
+- g:window*8
 - g:bed*1
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*210
-- g:secondary*160
-- g:primary*500
+- g:roof*105
+- g:secondary*80
+- g:primary*250
 
 rebuild: basemansion
 build-radius: 14 #29x29x29

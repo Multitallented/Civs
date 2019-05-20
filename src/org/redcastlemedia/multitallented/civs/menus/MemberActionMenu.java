@@ -131,6 +131,9 @@ public class MemberActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         ArrayList<String> lore;
 
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin")));
+
         if (governmentType == GovernmentType.ANARCHY) {
             viewingSelf = false;
         }
@@ -141,7 +144,7 @@ public class MemberActionMenu extends Menu {
                 governmentType == GovernmentType.DEMOCRATIC_SOCIALISM);
 
         //9 set owner
-        if (!viewingSelf && !isVoteOnly && !role.contains("owner")) {
+        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("owner"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -157,7 +160,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (!viewingSelf && !isVoteOnly && !role.contains("member")) {
+        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("member"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
@@ -172,7 +175,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //11 set guest
-        if (!viewingSelf && !isVoteOnly && !role.equals("guest")) {
+        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("guest"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();

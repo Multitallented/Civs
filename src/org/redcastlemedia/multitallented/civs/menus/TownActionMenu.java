@@ -16,6 +16,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -326,7 +329,8 @@ public class TownActionMenu extends Menu {
         setNewData(civilian.getUuid(), data);
 
         //9 People
-        if (!govTypeDisable && (isOwner || govTypeOwnerOverride || colonialOverride)) {
+        boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        if (isAdmin || (!govTypeDisable && (isOwner || govTypeOwnerOverride || colonialOverride))) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());

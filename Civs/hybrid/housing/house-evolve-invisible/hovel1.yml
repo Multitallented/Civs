@@ -15,16 +15,16 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- CHEST*2
-- g:door*1
-- g:window*8
-- g:bed*1
-- g:sign*1
-- FURNACE
-- CRAFTING_TABLE
-- g:roof*60
-- g:secondary*26
-- g:primary*100
+  - CHEST*2
+  - g:door*1
+  - g:window*4
+  - g:bed*1
+  - g:sign*1
+  - FURNACE
+  - CRAFTING_TABLE
+  - g:roof*30
+  - g:secondary*13
+  - g:primary*50
 
 build-radius: 4 #9x9x9
 effects:

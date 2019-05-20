@@ -11,10 +11,10 @@ pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*30
-- JUNGLE_LOG*8
-- COCOA*32
+- g:fencegate*1
+- g:fence*15
+- JUNGLE_LOG*6
+- COCOA*16
 
 towns:
 - village
