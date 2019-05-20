@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -88,8 +89,11 @@ public class MemberActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         ArrayList<String> lore;
 
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin")));
+
         //9 set owner
-        if (!viewingSelf && !role.equals("owner")) {
+        if (isAdmin || (!viewingSelf && !role.equals("owner"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -99,7 +103,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (!viewingSelf && !role.equals("member")) {
+        if (isAdmin || (!viewingSelf && !role.equals("member"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
@@ -109,7 +113,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //11 set guest
-        if (!viewingSelf && !role.equals("guest")) {
+        if (isAdmin || (!viewingSelf && !role.equals("guest"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();

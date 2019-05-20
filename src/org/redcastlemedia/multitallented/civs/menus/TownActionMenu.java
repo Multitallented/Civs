@@ -13,7 +13,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -254,7 +253,8 @@ public class TownActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         //9 People
-        if (town.getPeople().get(civilian.getUuid()) != null && town.getPeople().get(civilian.getUuid()).equals("owner")) {
+        boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        if (isAdmin || (town.getPeople().get(civilian.getUuid()) != null && town.getPeople().get(civilian.getUuid()).equals("owner"))) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
