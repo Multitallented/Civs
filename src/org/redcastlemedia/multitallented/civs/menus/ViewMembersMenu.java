@@ -35,15 +35,12 @@ public class ViewMembersMenu extends Menu {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
-        String locationString;
         Town town = null;
         Region region = null;
         if (getData(civilian.getUuid(), "town") != null) {
             town = (Town) getData(civilian.getUuid(), "town");
-            locationString = town.getName();
         } else {
             region = (Region) getData(civilian.getUuid(), "region");
-            locationString = region.getId();
         }
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -61,12 +58,8 @@ public class ViewMembersMenu extends Menu {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuidList.get(index));
             boolean viewSelf = player.getUniqueId().equals(civilian.getUuid());
 
-//            appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
             event.getWhoClicked().closeInventory();
             if (town != null) {
-                if (viewSelf && town.getRawPeople().keySet().size() < 2) {
-                    return;
-                }
                 event.getWhoClicked().openInventory(MemberActionMenu.createMenu(civilian, town,
                         player.getUniqueId(), viewSelf, !oligarchyBuy));
             } else {

@@ -378,8 +378,12 @@ public class TownActionMenu extends Menu {
                         .replace("$1", taxString));
             }
             if (isOwner || colonialOverride) {
-                lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax-desc")
-                        .replace("$1", town.getName()));
+                if (town.getGovernmentType() != GovernmentType.COOPERATIVE &&
+                        town.getGovernmentType() != GovernmentType.COMMUNISM &&
+                        town.getGovernmentType() != GovernmentType.ANARCHY) {
+                    lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax-desc")
+                            .replace("$1", town.getName()));
+                }
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "town-bank-desc")
                         .replace("$1", town.getName()));
             }
