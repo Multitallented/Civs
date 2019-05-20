@@ -9,10 +9,10 @@ level: 1
 build-reqs:
 - g:window*2
 - g:door*1
-- g:roof*30
+- g:roof*15
 - SNOW_BLOCK*9
-- g:primary*70
-- g:secondary*12
+- g:primary*35
+- g:secondary*6
 
 build-radius: 3
 

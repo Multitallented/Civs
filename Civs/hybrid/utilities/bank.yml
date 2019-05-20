@@ -17,13 +17,13 @@ towns:
 
 build-reqs:
 - g:roof*96
-- g:window*12
+- g:window*6
 - g:door*6
 - GOLD_BLOCK*4
-- g:fence*18
+- g:fence*9
 - chest*12
-- g:primary*180
-- g:secondary*50
+- g:primary*90
+- g:secondary*25
 build-radius: 5
 
 effects:

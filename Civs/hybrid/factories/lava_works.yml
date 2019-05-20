@@ -13,9 +13,9 @@ build-reqs:
 - LAVA*6
 - g:window*2
 - g:door*1
-- g:roof*40
-- g:primary*110
-- g:secondary*20
+- g:roof*20
+- g:primary*55
+- g:secondary*10
 
 towns:
 - city

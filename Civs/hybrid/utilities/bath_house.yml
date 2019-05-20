@@ -11,11 +11,11 @@ pre-reqs:
 - member=metropolis
 
 build-reqs:
-- WATER*150
-- g:fencegate*2
-- FURNACE*14
-- g:primary*230
-- g:secondary*40
+- WATER*75
+- g:fencegate*1
+- FURNACE*7
+- g:primary*115
+- g:secondary*30
 
 build-radius: 7
 towns:

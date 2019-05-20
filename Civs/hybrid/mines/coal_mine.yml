@@ -13,8 +13,8 @@ build-reqs:
 - CHEST*2
 - FURNACE*2
 - COAL_ORE*4
-- g:primary*90
-- g:secondary*12
+- g:primary*45
+- g:secondary*6
 
 build-radius: 4
 

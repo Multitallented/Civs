@@ -13,12 +13,12 @@ pre-reqs:
 build-reqs:
 - CHEST*2
 - g:door*1
-- GLOWSTONE*4
-- g:secondary*45
-- g:primary*140
-- g:roof*60
-- g:glass*8
-- g:window*8
+- GLOWSTONE*2
+- g:secondary*22
+- g:primary*70
+- g:roof*30
+- g:glass*4
+- g:window*4
 
 build-radius: 4 #9x15x9
 build-radius-y: 7

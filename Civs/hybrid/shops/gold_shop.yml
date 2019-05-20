@@ -17,7 +17,7 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - GOLD_BLOCK*1
 - g:wool*25

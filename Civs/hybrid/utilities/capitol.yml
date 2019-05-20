@@ -18,13 +18,13 @@ towns:
 build-reqs:
 - CHEST*16
 - g:door*3
-- g:window*32
+- g:window*16
 - g:stairs*8
-- g:roof*160
+- g:roof*80
 - BOOKSHELF*14
 - g:sign*10
-- g:secondary*140
-- g:primary*400
+- g:secondary*70
+- g:primary*200
 build-radius: 8 # 17x17x17
 effects:
 - block_break

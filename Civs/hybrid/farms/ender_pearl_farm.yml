@@ -17,10 +17,8 @@ towns:
 build-reqs:
 - END_STONE*9,END_STONE_BRICKS*9
 - g:log*4
-- g:wood*20
-- IRON_BARS*8
-- g:fence*19
-- g:fencegate*1
+- g:wood*10
+- IRON_BARS*10
 
 build-radius: 3
 effects:

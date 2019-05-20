@@ -9,11 +9,11 @@ level: 1
 
 build-reqs:
 - g:log*4
-- g:wood*20
-- IRON_BARS*8
-- g:fence*19
+- g:wood*10
+- IRON_BARS*4
+- g:fence*9
 - g:fencegate*1
-- HAY_BLOCK*9
+- HAY_BLOCK*8
 
 build-radius: 3
 effects:

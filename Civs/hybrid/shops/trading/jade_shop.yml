@@ -20,7 +20,7 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*2
 - g:wool*20
 

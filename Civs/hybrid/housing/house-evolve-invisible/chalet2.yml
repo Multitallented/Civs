@@ -15,16 +15,16 @@ pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-- CHEST*8
-- g:door*1
-- g:window*16
-- g:bed*1
-- g:sign*1
-- FURNACE*2
-- CRAFTING_TABLE
-- g:roof*170
-- g:secondary*130
-- g:primary*400
+  - CHEST*8
+  - g:door*1
+  - g:window*8
+  - g:bed*1
+  - g:sign*1
+  - FURNACE*2
+  - CRAFTING_TABLE
+  - g:roof*85
+  - g:secondary*65
+  - g:primary*200
 
 build-radius: 8 #17x17x17
 effects:

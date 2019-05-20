@@ -11,7 +11,7 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- CLAY*48
+- CLAY*24
 - FURNACE*2
 - CHEST*2
 

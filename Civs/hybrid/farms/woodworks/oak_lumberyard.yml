@@ -11,9 +11,9 @@ level: 1
 
 build-reqs:
 - OAK_LOG*8
-- OAK_LEAVES*32
-- g:fence*28
-- g:fencegate*2
+- OAK_LEAVES*16
+- g:fence*14
+- g:fencegate*1
 - CHEST*2
 
 build-radius: 4

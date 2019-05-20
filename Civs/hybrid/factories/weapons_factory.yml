@@ -19,11 +19,11 @@ towns:
 build-reqs:
 - g:window*8
 - g:door*1
-- g:roof*40
+- g:roof*20
 - TNT*6
 - FURNACE*2
-- g:primary*90
-- g:secondary*25
+- g:primary*45
+- g:secondary*12
 
 build-radius: 4 # 9x9x9
 
