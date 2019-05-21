@@ -1,21 +1,14 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.text.NumberFormat;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -23,6 +16,9 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashSet;
+import java.util.UUID;
 
 public class SetOwnerCommand implements CivCommand {
 
@@ -33,9 +29,13 @@ public class SetOwnerCommand implements CivCommand {
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
+        boolean isAdmin = false;
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        } else {
+            isAdmin = true;
         }
         if (strings.length < 3) {
             if (player != null) {
@@ -83,7 +83,7 @@ public class SetOwnerCommand implements CivCommand {
             }
             return true;
         }
-        if (region != RegionManager.getInstance().getRegionAt(invitee.getLocation())) {
+        if (region != null && region != RegionManager.getInstance().getRegionAt(invitee.getLocation())) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "stand-in-region").replace("$1", playerName));
@@ -93,8 +93,9 @@ public class SetOwnerCommand implements CivCommand {
             return true;
         }
         if (town != null) {
-            if (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
-                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM) {
+            // TODO isAdmin
+            if (!isAdmin && (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
                 if (player != null) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                             "no-permission"));
@@ -127,7 +128,7 @@ public class SetOwnerCommand implements CivCommand {
                         "not-enough-money").replace("$1", priceString));
                 return true;
             }
-            if (!hasPermission && !oligarchyOverride && !colonialOverride) {
+            if (!isAdmin && !hasPermission && !oligarchyOverride && !colonialOverride) {
                 if (player != null) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                             "no-permission"));
@@ -135,7 +136,7 @@ public class SetOwnerCommand implements CivCommand {
                 return true;
             }
             if (oligarchyOverride) {
-                Civs.econ.withdrawPlayer(player, townType.getPrice());
+                Civs.econ.withdrawPlayer(player, price);
                 HashSet<UUID> uuids = new HashSet<>();
                 for (UUID uuid : town.getRawPeople().keySet()) {
                     if (town.getRawPeople().get(uuid).contains("owner")) {

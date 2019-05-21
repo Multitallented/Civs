@@ -19,8 +19,12 @@ public class RemoveMemberCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
+        boolean isAdmin = false;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        } else {
+            isAdmin = true;
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
@@ -58,7 +62,7 @@ public class RemoveMemberCommand implements CivCommand {
             }
             return true;
         }
-        if (!playerName.equalsIgnoreCase(player.getDisplayName().toLowerCase()) && region != null &&
+        if (!isAdmin && !playerName.equalsIgnoreCase(player.getDisplayName().toLowerCase()) && region != null &&
                 !Util.hasOverride(region, civilian, town) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
@@ -77,7 +81,7 @@ public class RemoveMemberCommand implements CivCommand {
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
-        if (town != null && civilian != null) {
+        if (!isAdmin && town != null && civilian != null) {
             if (OwnershipUtil.shouldDenyOwnershipOverSomeone(town, civilian, inviteCiv, player)) {
                 return true;
             }

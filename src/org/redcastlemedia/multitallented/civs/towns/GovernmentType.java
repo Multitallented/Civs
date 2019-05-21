@@ -11,8 +11,8 @@ public enum GovernmentType {
     SOCIALISM,
     DEMOCRATIC_SOCIALISM,
     KRATEROCRACY,
-    MERITOCRACY, // function determines merit
-    CYBERSYNACY, // ai, /bank
+    MERITOCRACY,
+    CYBERSYNACY, // ai
     TRIBALISM,
     FEUDALISM,
     COLONIALISM,

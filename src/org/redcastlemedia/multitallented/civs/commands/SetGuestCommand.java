@@ -19,8 +19,12 @@ public class SetGuestCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
+        boolean isAdmin = false;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        } else {
+            isAdmin = true;
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
@@ -58,7 +62,7 @@ public class SetGuestCommand implements CivCommand {
             }
             return true;
         }
-        if (region != null && !Util.hasOverride(region, civilian) && player != null &&
+        if (region != null && !isAdmin && !Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
@@ -76,7 +80,7 @@ public class SetGuestCommand implements CivCommand {
         }
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
-        if (town != null && civilian != null) {
+        if (!isAdmin && town != null && civilian != null) {
             if (OwnershipUtil.shouldDenyOwnershipOverSomeone(town, civilian, inviteCiv, player)) {
                 return true;
             }

@@ -143,8 +143,12 @@ public class MemberActionMenu extends Menu {
                 governmentType == GovernmentType.DEMOCRACY ||
                 governmentType == GovernmentType.DEMOCRATIC_SOCIALISM);
 
+        boolean cantAddOwners = governmentType == GovernmentType.LIBERTARIAN ||
+                governmentType == GovernmentType.LIBERTARIAN_SOCIALISM;
+
         //9 set owner
-        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("owner"))) {
+        if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY) &&
+                !isVoteOnly && !role.contains("owner") && !cantAddOwners)) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));
             lore = new ArrayList<>();
@@ -160,46 +164,46 @@ public class MemberActionMenu extends Menu {
         }
 
         //10 set member
-        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("member"))) {
+        if (isAdmin || (!viewingSelf && isOwner && !role.contains("member"))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("IRON_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-member"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "member-description"));
-            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
-                String priceString = NumberFormat.getCurrencyInstance().format(price);
-                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
-                        .replace("$1", priceString));
-            }
+//            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+//                String priceString = NumberFormat.getCurrencyInstance().format(price);
+//                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+//                        .replace("$1", priceString));
+//            }
             cvItem1.setLore(lore);
             inventory.setItem(10, cvItem1.createItemStack());
         }
 
         //11 set guest
-        if (isAdmin || (!viewingSelf && !isVoteOnly && !role.contains("guest"))) {
+        if (isAdmin || (isOwner && !viewingSelf && !role.contains("guest") && !cantAddOwners)) {
             CVItem cvItem1 = CVItem.createCVItemFromString("DIORITE");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-guest"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "guest-description"));
-            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
-                String priceString = NumberFormat.getCurrencyInstance().format(price);
-                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
-                        .replace("$1", priceString));
-            }
+//            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+//                String priceString = NumberFormat.getCurrencyInstance().format(price);
+//                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+//                        .replace("$1", priceString));
+//            }
             cvItem1.setLore(lore);
             inventory.setItem(11, cvItem1.createItemStack());
         }
 
         //12 remove member
-        if (!isVoteOnly) {
+        if (viewingSelf || isOwner) {
             CVItem cvItem1 = CVItem.createCVItemFromString("REDSTONE_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "remove-member"));
-            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
-                lore = new ArrayList<>();
-                String priceString = NumberFormat.getCurrencyInstance().format(price);
-                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
-                        .replace("$1", priceString));
-                cvItem1.setLore(lore);
-            }
+//            if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
+//                lore = new ArrayList<>();
+//                String priceString = NumberFormat.getCurrencyInstance().format(price);
+//                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+//                        .replace("$1", priceString));
+//                cvItem1.setLore(lore);
+//            }
             inventory.setItem(12, cvItem1.createItemStack());
         }
 
