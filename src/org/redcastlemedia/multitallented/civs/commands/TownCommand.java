@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
@@ -81,6 +84,20 @@ public class TownCommand implements CivCommand {
             return true;
         }
         TownType townType = (TownType) civItem;
+
+        for (Chunk chunk : AllianceManager.getInstance().getContainingChunks(player.getLocation(),
+                townType.getBuildRadius(), townType.getBuildRadius(),
+                townType.getBuildRadius(), townType.getBuildRadius())) {
+            ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
+            if (chunkClaim != null &&
+                    !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), chunkClaim.getAlliance())) {
+
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "cant-build-in-nation"
+                ).replace("$1", chunkClaim.getAlliance().getName()));
+                return true;
+            }
+        }
 
         TownManager townManager = TownManager.getInstance();
         List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType);
