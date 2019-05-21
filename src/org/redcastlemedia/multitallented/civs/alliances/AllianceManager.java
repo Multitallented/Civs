@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.alliances;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -59,6 +60,17 @@ public class AllianceManager implements Listener {
             if (uuidString != null) {
                 alliance.setLastRenamedBy(UUID.fromString(uuidString));
             }
+            if (config.getConfigurationSection("claims") != null) {
+                HashMap<UUID, HashSet<ChunkClaim>> claims = new HashMap<>();
+                for (String worldUUID : config.getConfigurationSection("claims").getKeys(false)) {
+                    HashSet<ChunkClaim> chunkSet = new HashSet<>();
+                    for (String chunkString : config.getStringList("claims." + worldUUID)) {
+                        chunkSet.add(ChunkClaim.fromString(chunkString, alliance));
+                    }
+                    claims.put(UUID.fromString(worldUUID), chunkSet);
+                }
+                alliance.setNationClaims(claims);
+            }
             alliances.put(alliance.getName(), alliance);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load alliance " + allianceFile.getName());
@@ -108,6 +120,18 @@ public class AllianceManager implements Listener {
                 allianceFile.createNewFile();
             }
             FileConfiguration config = new YamlConfiguration();
+
+            if (alliance.getNationClaims().isEmpty()) {
+                config.set("claims", null);
+            } else {
+                for (UUID uuid : alliance.getNationClaims().keySet()) {
+                    ArrayList<String> claimList = new ArrayList<>();
+                    for (ChunkClaim chunk : alliance.getNationClaims().get(uuid)) {
+                        claimList.add(chunk.toString());
+                    }
+                    config.set("claims." + uuid.toString(), claimList);
+                }
+            }
             config.set("members", new ArrayList<String>(alliance.getMembers()));
             if (alliance.getLastRenamedBy() != null) {
                 config.set("last-rename", alliance.getLastRenamedBy().toString());
