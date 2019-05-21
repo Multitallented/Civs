@@ -74,7 +74,7 @@ public class TownActionMenu extends Menu {
             for (UUID uuid : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(uuid).contains("owner")) {
                     Player pSend = Bukkit.getPlayer(uuid);
-                    if (pSend.isOnline()) {
+                    if (pSend != null && pSend.isOnline()) {
                         pSend.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                                 "town-ally-request-sent").replace("$1", townName));
                     }
