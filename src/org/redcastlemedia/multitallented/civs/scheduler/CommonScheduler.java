@@ -124,7 +124,8 @@ public class CommonScheduler implements Runnable {
 
     private void stayInClaim(ChunkClaim claim, Player player) {
         final long CAPTURE_TIME = 0;
-        if (claim.getLastEnter() + CAPTURE_TIME > System.currentTimeMillis()) {
+        if (claim.getLastEnter() != -1 &&
+                claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
             // TODO neutralize? capture?
         }
     }

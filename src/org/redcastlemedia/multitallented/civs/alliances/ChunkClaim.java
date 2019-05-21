@@ -13,22 +13,22 @@ import lombok.Setter;
 @Setter
 public class ChunkClaim {
     private final int x;
-    private final int y;
+    private final int z;
     private final World world;
     private Alliance alliance;
     private int hp;
     private long lastEnter;
 
-    public ChunkClaim(int x, int y, World world, Alliance alliance) {
+    public ChunkClaim(int x, int z, World world, Alliance alliance) {
         this.x = x;
-        this.y = y;
+        this.z = z;
         this.world = world;
         this.alliance = alliance;
     }
 
     @Override
     public String toString() {
-        return world.getUID() + " " + x + " " + y;
+        return world.getUID() + " " + x + " " + z;
     }
     public static ChunkClaim fromString(String claimString, Alliance alliance) {
         String[] splitString = claimString.split(" ");
@@ -52,6 +52,6 @@ public class ChunkClaim {
         return null;
     }
     public Chunk getChunk() {
-        return world.getChunkAt(x, y);
+        return world.getChunkAt(x, z);
     }
 }

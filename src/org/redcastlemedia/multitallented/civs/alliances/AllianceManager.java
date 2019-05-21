@@ -91,7 +91,7 @@ public class AllianceManager implements Listener {
                     HashMap<String, ChunkClaim> chunkMap = new HashMap<>();
                     for (String chunkString : config.getStringList("claims." + worldUUID)) {
                         ChunkClaim chunkClaim = ChunkClaim.fromString(chunkString, alliance);
-                        chunkMap.put(chunkClaim.getX() + "," + chunkClaim.getY(), chunkClaim);
+                        chunkMap.put(chunkClaim.getX() + "," + chunkClaim.getZ(), chunkClaim);
                     }
                     claims.put(UUID.fromString(worldUUID), chunkMap);
                 }
@@ -236,6 +236,7 @@ public class AllianceManager implements Listener {
             alliance.getMembers().add(town1.getName());
             alliance.getMembers().add(town2.getName());
             alliance.setName(town1.getName() + "-" + town2.getName());
+            // TODO fill claims
             alliances.put(alliance.getName(), alliance);
             saveAlliance(alliance);
         } else {
@@ -250,6 +251,8 @@ public class AllianceManager implements Listener {
                 }
                 removeThese.add(alliance);
             }
+            mergeClaims(mergeAlliance, removeThese);
+            // TODO auto fill claims
         }
 
         for (Alliance alliance : removeThese) {
@@ -258,6 +261,21 @@ public class AllianceManager implements Listener {
 
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
+        }
+    }
+
+    private void mergeClaims(Alliance rootAlliance, HashSet<Alliance> merges) {
+        for (Alliance merge : merges) {
+            for (UUID uuid : merge.getNationClaims().keySet()) {
+                if (!rootAlliance.getNationClaims().containsKey(uuid)) {
+                    rootAlliance.getNationClaims().put(uuid, new HashMap<>());
+                }
+                for (ChunkClaim claim : merge.getNationClaims().get(uuid).values()) {
+                    claim.setAlliance(rootAlliance);
+                    String claimId = claim.getX() + "," + claim.getZ();
+                    rootAlliance.getNationClaims().get(uuid).put(claimId, claim);
+                }
+            }
         }
     }
 
