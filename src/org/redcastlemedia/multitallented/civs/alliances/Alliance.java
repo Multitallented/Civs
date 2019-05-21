@@ -13,6 +13,7 @@ public class Alliance {
     private String name;
     private HashSet<String> members;
     private UUID lastRenamedBy;
+    private HashSet<String> effects = new HashSet<>();
     private HashMap<UUID, HashSet<ChunkClaim>> nationClaims = new HashMap<>();
 
     public Alliance() {

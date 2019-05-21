@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.alliances;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -49,6 +50,27 @@ public class AllianceManager implements Listener {
         }
     }
 
+    public ChunkClaim getClaimAt(Location location) {
+        for (Alliance alliance : alliances.values()) {
+            for (ChunkClaim chunkClaim : alliance.getNationClaims().get(location.getWorld().getUID())) {
+                if (location.getChunk().equals(chunkClaim.getChunk())) {
+                    return chunkClaim;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isInAlliance(UUID uuid, Alliance alliance) {
+        for (String townName : alliance.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town.getPeople().containsKey(uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void loadAlliance(File allianceFile) {
         try {
             FileConfiguration config = new YamlConfiguration();
@@ -71,6 +93,12 @@ public class AllianceManager implements Listener {
                 }
                 alliance.setNationClaims(claims);
             }
+
+            // TODO configure this maybe?
+            alliance.getEffects().add("block_break");
+            alliance.getEffects().add("block_build");
+            alliance.getEffects().add("block_explosion");
+
             alliances.put(alliance.getName(), alliance);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load alliance " + allianceFile.getName());

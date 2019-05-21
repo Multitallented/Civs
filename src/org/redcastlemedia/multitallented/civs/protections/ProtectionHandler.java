@@ -22,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -476,6 +478,14 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
+
+        // TODO Does not take mod into account
+        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        if (player != null && claim != null && claim.getAlliance().getEffects().contains(type) &&
+                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance())) {
+            return true;
+        }
+
         Town town = TownManager.getInstance().getTownAt(location);
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
@@ -532,6 +542,11 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, String type) {
+        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        if (claim != null && claim.getAlliance().getEffects().contains(type)) {
+            return true;
+        }
+
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
@@ -561,6 +576,12 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
+        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        if (player != null && claim != null && claim.getAlliance().getEffects().contains(type) &&
+                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance())) {
+            return true;
+        }
+
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
