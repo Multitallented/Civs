@@ -77,7 +77,8 @@ public class SelectGovTypeMenu extends Menu {
                     .getNames().get(civilian1.getLocale());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian1.getLocale(), "gov-type-change")
-                    .replace("$1", oldGovName).replace("$2", newGovName));
+                    .replace("$1", town.getName())
+                    .replace("$2", oldGovName).replace("$3", newGovName));
         }
 
         // TODO any other changes that need to be made

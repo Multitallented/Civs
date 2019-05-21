@@ -147,7 +147,7 @@ public class MemberActionMenu extends Menu {
                 governmentType == GovernmentType.LIBERTARIAN_SOCIALISM;
 
         //9 set owner
-        if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY) &&
+        if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
                 !isVoteOnly && !role.contains("owner") && !cantAddOwners)) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_BLOCK");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-owner"));

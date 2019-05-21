@@ -122,7 +122,7 @@ tutorial:
   use-guide: true
   url: "https://youtu.be/pa_rfrpUAS8"
 
-allow-changing-gov-type: false
+allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?
 days-between-elections: 7

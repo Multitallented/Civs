@@ -122,6 +122,9 @@ public class RegionType extends CivItem {
         return period;
     }
     public long getPeriod(Government government) {
+        if (government == null) {
+            return period;
+        }
         for (GovTypeBuff buff : government.getBuffs()) {
             if (buff.getBuffType() != GovTypeBuff.BuffType.COOLDOWN) {
                 continue;

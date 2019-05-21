@@ -285,7 +285,7 @@ public class TownTests {
         effects.add("deny_mob_spawn");
         effects.add("block_break");
         config.set("effects", effects);
-        config.set("power", 500);
+        config.set("power", 0);
         config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }

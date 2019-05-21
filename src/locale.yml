@@ -35,7 +35,7 @@ en:
   vote-member: "Vote to be next owner"
   capitalism-voting-cost: "Extra votes cost $1"
   voted: "You have cast your vote for $1"
-  gov-type-change: "Changed from $1 to $2"
+  gov-type-change: "$1 changed from $2 to $3"
   cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
   merit-new-owner: "Congratulations! You have surpased $1. You are the new town owner!"
 

@@ -217,10 +217,10 @@ public class RegionManager {
                 regionConfig.set("sale", null);
             }
 
-            for (UUID uuid : region.getPeople().keySet()) {
-                if ("ally".equals(region.getPeople().get(uuid))) {
-                    continue;
-                }
+            for (UUID uuid : region.getRawPeople().keySet()) {
+//                if ("ally".equals(region.getPeople().get(uuid))) {
+//                    continue;
+//                }
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
             }
             regionConfig.set("type", region.getType());

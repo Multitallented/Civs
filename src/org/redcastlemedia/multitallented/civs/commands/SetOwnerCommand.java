@@ -67,7 +67,7 @@ public class SetOwnerCommand implements CivCommand {
             }
             return true;
         }
-        if (region != null && Util.hasOverride(region, civilian) && player != null &&
+        if (region != null && !Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
@@ -93,7 +93,6 @@ public class SetOwnerCommand implements CivCommand {
             return true;
         }
         if (town != null) {
-            // TODO isAdmin
             if (!isAdmin && (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
                     town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
                 if (player != null) {
