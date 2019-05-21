@@ -51,11 +51,14 @@ public class AllianceManager implements Listener {
     }
 
     public ChunkClaim getClaimAt(Location location) {
+        Chunk chunk = location.getChunk();
+        String chunkKey = chunk.getX() + "," + chunk.getZ();
         for (Alliance alliance : alliances.values()) {
-            for (ChunkClaim chunkClaim : alliance.getNationClaims().get(location.getWorld().getUID())) {
-                if (location.getChunk().equals(chunkClaim.getChunk())) {
-                    return chunkClaim;
-                }
+
+            if (alliance.getNationClaims().get(location.getWorld().getUID())
+                    .containsKey(chunkKey)) {
+                return alliance.getNationClaims().get(location.getWorld().getUID())
+                        .get(chunkKey);
             }
         }
         return null;
@@ -83,13 +86,14 @@ public class AllianceManager implements Listener {
                 alliance.setLastRenamedBy(UUID.fromString(uuidString));
             }
             if (config.getConfigurationSection("claims") != null) {
-                HashMap<UUID, HashSet<ChunkClaim>> claims = new HashMap<>();
+                HashMap<UUID, HashMap<String, ChunkClaim>> claims = new HashMap<>();
                 for (String worldUUID : config.getConfigurationSection("claims").getKeys(false)) {
-                    HashSet<ChunkClaim> chunkSet = new HashSet<>();
+                    HashMap<String, ChunkClaim> chunkMap = new HashMap<>();
                     for (String chunkString : config.getStringList("claims." + worldUUID)) {
-                        chunkSet.add(ChunkClaim.fromString(chunkString, alliance));
+                        ChunkClaim chunkClaim = ChunkClaim.fromString(chunkString, alliance);
+                        chunkMap.put(chunkClaim.getX() + "," + chunkClaim.getY(), chunkClaim);
                     }
-                    claims.put(UUID.fromString(worldUUID), chunkSet);
+                    claims.put(UUID.fromString(worldUUID), chunkMap);
                 }
                 alliance.setNationClaims(claims);
             }
@@ -154,7 +158,7 @@ public class AllianceManager implements Listener {
             } else {
                 for (UUID uuid : alliance.getNationClaims().keySet()) {
                     ArrayList<String> claimList = new ArrayList<>();
-                    for (ChunkClaim chunk : alliance.getNationClaims().get(uuid)) {
+                    for (ChunkClaim chunk : alliance.getNationClaims().get(uuid).values()) {
                         claimList.add(chunk.toString());
                     }
                     config.set("claims." + uuid.toString(), claimList);

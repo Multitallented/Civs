@@ -17,6 +17,7 @@ public class ChunkClaim {
     private final World world;
     private Alliance alliance;
     private int hp;
+    private long lastEnter;
 
     public ChunkClaim(int x, int y, World world, Alliance alliance) {
         this.x = x;

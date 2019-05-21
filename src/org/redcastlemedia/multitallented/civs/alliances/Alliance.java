@@ -14,7 +14,7 @@ public class Alliance {
     private HashSet<String> members;
     private UUID lastRenamedBy;
     private HashSet<String> effects = new HashSet<>();
-    private HashMap<UUID, HashSet<ChunkClaim>> nationClaims = new HashMap<>();
+    private HashMap<UUID, HashMap<String, ChunkClaim>> nationClaims = new HashMap<>();
 
     public Alliance() {
         members = new HashSet<>();

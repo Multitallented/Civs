@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -27,6 +30,7 @@ public class CommonScheduler implements Runnable {
     private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
+    public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
 
@@ -44,6 +48,7 @@ public class CommonScheduler implements Runnable {
                     playerInRegion(player);
                     playerInTown(player);
                     incrementMana(player);
+                    playerInChunk(player);
                 } catch (Exception e) {
 
                 }
@@ -97,6 +102,65 @@ public class CommonScheduler implements Runnable {
             civilian.setMana(newMana);
         }
     }
+
+    private void playerInChunk(Player player) {
+        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(player.getLocation());
+        ChunkClaim lastClaim = lastClaims.get(player.getUniqueId());
+        if (claim == null) {
+            if (lastClaim != null) {
+                exitClaim(lastClaim, null, player);
+            }
+            return;
+        }
+        if (lastClaim == null) {
+            enterClaim(null, claim, player);
+        } else if (!lastClaim.equals(claim)) {
+            exitClaim(lastClaim, claim, player);
+            enterClaim(lastClaim, claim, player);
+        } else {
+            stayInClaim(claim, player);
+        }
+    }
+
+    private void stayInClaim(ChunkClaim claim, Player player) {
+        final long CAPTURE_TIME = 0;
+        if (claim.getLastEnter() + CAPTURE_TIME > System.currentTimeMillis()) {
+            // TODO neutralize? capture?
+        }
+    }
+
+    private void exitClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
+        lastClaim.setLastEnter(-1);
+        if (claim != null && !claim.getAlliance().equals(lastClaim.getAlliance())) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "exit-town"
+            ).replace("$1", lastClaim.getAlliance().getName()));
+        }
+        if (claim == null) {
+            lastClaims.remove(player.getUniqueId());
+        } else {
+            lastClaims.put(player.getUniqueId(), claim);
+        }
+    }
+
+    private void enterClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
+        boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance());
+        if (claim.getLastEnter() == -1 &&
+                !isInAlliance) {
+            claim.setLastEnter(System.currentTimeMillis());
+        } else if (isInAlliance) {
+            claim.setLastEnter(-1);
+        }
+        if (lastClaim != null && !lastClaim.getAlliance().equals(claim.getAlliance())) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "enter-town"
+            ).replace("$1", claim.getAlliance().getName()));
+        }
+        lastClaims.put(player.getUniqueId(), claim);
+    }
+
     void playerInTown(Player player) {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(player.getLocation());
