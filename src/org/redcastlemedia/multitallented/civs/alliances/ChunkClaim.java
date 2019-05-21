@@ -16,7 +16,6 @@ public class ChunkClaim {
     private final int z;
     private final World world;
     private Alliance alliance;
-    private int hp;
     private long lastEnter;
 
     public ChunkClaim(int x, int z, World world, Alliance alliance) {
@@ -54,4 +53,5 @@ public class ChunkClaim {
     public Chunk getChunk() {
         return world.getChunkAt(x, z);
     }
+    public String getId() { return x + "," + z; }
 }

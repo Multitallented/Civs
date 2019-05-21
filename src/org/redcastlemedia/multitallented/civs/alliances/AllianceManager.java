@@ -138,7 +138,7 @@ public class AllianceManager implements Listener {
         return true;
     }
 
-    private void saveAlliance(Alliance alliance) {
+    public void saveAlliance(Alliance alliance) {
         if (Civs.getInstance() == null) {
             return;
         }

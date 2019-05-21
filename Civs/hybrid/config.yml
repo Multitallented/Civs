@@ -122,6 +122,8 @@ tutorial:
   use-guide: true
   url: "https://youtu.be/pa_rfrpUAS8"
 
+# how long should invaders sit in an uncontested alliance claim (16x16) before neutralizing it
+alliance-claim-capture-seconds: 180
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?

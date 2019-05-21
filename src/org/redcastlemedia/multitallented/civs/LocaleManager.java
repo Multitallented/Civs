@@ -548,6 +548,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
             currentLanguage.put("cant-build-in-nation",
                     localeConfig.getString(langKey + ".cant-build-in-nation", "You can't build inside $1 claimed land."));
+            currentLanguage.put("neutralized-claim",
+                    localeConfig.getString(langKey + ".neutralized-claim", "$1's protections on this land have been removed."));
             languageMap.put(langKey, currentLanguage);
         }
     }

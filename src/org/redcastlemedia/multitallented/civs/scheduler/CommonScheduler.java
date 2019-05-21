@@ -123,10 +123,23 @@ public class CommonScheduler implements Runnable {
     }
 
     private void stayInClaim(ChunkClaim claim, Player player) {
-        final long CAPTURE_TIME = 0;
+        final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         if (claim.getLastEnter() != -1 &&
                 claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
-            // TODO neutralize? capture?
+            boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance());
+            if (!isInAlliance && TownManager.getInstance().getTownAt(player.getLocation()) == null) {
+
+                Alliance alliance = claim.getAlliance();
+                alliance.getNationClaims().get(player.getLocation().getWorld().getUID()).remove(claim.getId());
+                AllianceManager.getInstance().saveAlliance(alliance);
+
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "neutralized-claim"
+                ).replace("$1", claim.getAlliance().getName()));
+            } else {
+                claim.setLastEnter(-1);
+            }
         }
     }
 
