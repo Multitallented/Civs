@@ -40,6 +40,17 @@ public class ChunkClaim {
         int y = Integer.parseInt(splitString[2]);
         return new ChunkClaim(x, y, world, alliance);
     }
+    public static ChunkClaim fromChunk(Chunk chunk) {
+        for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
+            if (alliance.getNationClaims().containsKey(chunk.getWorld().getUID()) &&
+                    alliance.getNationClaims().get(chunk.getWorld().getUID())
+                            .containsKey(chunk.getX() + "," + chunk.getZ())) {
+                return alliance.getNationClaims().get(chunk.getWorld().getUID())
+                        .get(chunk.getX() + "," + chunk.getZ());
+            }
+        }
+        return null;
+    }
     public Chunk getChunk() {
         return world.getChunkAt(x, y);
     }

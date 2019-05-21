@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
@@ -351,6 +354,10 @@ public class RegionManager {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
+        if (location == null) {
+            event.setCancelled(true);
+            return false;
+        }
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
         regionTypeName = regionTypeName.replace("Civs ", "");
 
@@ -536,6 +543,20 @@ public class RegionManager {
                     //                }
                     player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
                 }
+                return false;
+            }
+        }
+
+        for (Chunk chunk : AllianceManager.getInstance().getContainingChunks(location,
+                radii[0], radii[2], radii[1], radii[3])) {
+            ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
+            if (chunkClaim != null &&
+                    !AllianceManager.getInstance().isInAlliance(civilian.getUuid(), chunkClaim.getAlliance())) {
+
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "cant-build-in-nation"
+                ).replace("$1", chunkClaim.getAlliance().getName()));
+                event.setCancelled(true);
                 return false;
             }
         }

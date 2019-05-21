@@ -546,6 +546,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".merit-new-owner", "Congratulations! You have surpased $1. You are the new town owner!"));
             currentLanguage.put("hunting-players",
                     localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
+            currentLanguage.put("cant-build-in-nation",
+                    localeConfig.getString(langKey + ".cant-build-in-nation", "You can't build inside $1 claimed land."));
             languageMap.put(langKey, currentLanguage);
         }
     }
