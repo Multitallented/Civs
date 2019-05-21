@@ -546,6 +546,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".merit-new-owner", "Congratulations! You have surpased $1. You are the new town owner!"));
             currentLanguage.put("hunting-players",
                     localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
+            currentLanguage.put("item-locked",
+                    localeConfig.getString(langKey + ".item-locked", "You have not yet unlocked this item."));
+            currentLanguage.put("max-qty",
+                    localeConfig.getString(langKey + ".max-qty", "$1 has too many $2 and can't own more"));
             languageMap.put(langKey, currentLanguage);
         }
     }

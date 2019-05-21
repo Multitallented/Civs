@@ -424,7 +424,7 @@ public class ItemManager {
         return returnList;
     }
 
-    boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
+    public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
         if (civItem.getCivReqs().isEmpty()) {
             return true;
         }
@@ -442,11 +442,8 @@ public class ItemManager {
                     }
                 //member=settlement:town:...
                 } else if (req.startsWith("member=")) {
-                    Set<String> townTypes = new HashSet<>();
                     String[] townTypeStrings = req.replace("member=", "").split(":");
-                    for (int i = 0; i < townTypeStrings.length; i++) {
-                        townTypes.add(townTypeStrings[i]);
-                    }
+                    Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (townTypes.contains(town.getType()) &&
                                 town.getPeople().containsKey(civilian.getUuid())) {
@@ -483,7 +480,7 @@ public class ItemManager {
                     }
                 }
                 String[] reqParams = splitReq[1].split("=");
-                //settlement:built=1
+                //shack:built=1
                 if (reqParams[0].equals("built") && reqItem.getItemType().equals(CivItem.ItemType.REGION)) {
                     if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
                         continue outer;

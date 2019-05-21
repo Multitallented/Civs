@@ -127,14 +127,20 @@ public class RegionTypeInfoMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Price
-        String itemName = regionType.getProcessedName();
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
         boolean isAtMax = civilian.isAtMax(regionType);
         boolean isInShop = regionType.getInShop();
+        boolean hasItemUnlocked = ItemManager.getInstance().hasItemUnlocked(civilian, regionType);
         if (showPrice && hasShopPerms && !isAtMax && isInShop) {
-            CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
-            priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
+            CVItem priceItem;
             lore = new ArrayList<>();
+            if (hasItemUnlocked) {
+                priceItem = CVItem.createCVItemFromString("EMERALD");
+            } else {
+                priceItem = CVItem.createCVItemFromString("IRON_BARS");
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "item-locked"));
+            }
+            priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());

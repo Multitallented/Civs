@@ -38,6 +38,7 @@ en:
   gov-type-change: "$1 changed from $2 to $3"
   cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
   merit-new-owner: "Congratulations! You have surpased $1. You are the new town owner!"
+  item-locked: "You have not yet unlocked this item."
 
   cooldown-buff-desc: "$1% cooldown reduction for all $2"
   payout-buff-desc: "$1% region payout increase for all $2"
@@ -53,6 +54,7 @@ en:
   cancel: Cancel
   item-bought: "Congrats! You just bought $1 for $2"
   max-item: "You cant buy more than $2 $1"
+  max-qty: "$1 has too many $2 and can't own more"
 
   #items
   items: Items

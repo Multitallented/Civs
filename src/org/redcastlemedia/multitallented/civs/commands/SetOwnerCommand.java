@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -152,6 +153,18 @@ public class SetOwnerCommand implements CivCommand {
 
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
+        if (region != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (inviteCiv.isAtMax(regionType)) {
+                if (player != null) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
+                            civilian.getLocale(), "max-qty")
+                            .replace("$1", invitee.getDisplayName())
+                            .replace("$2", regionType.getDisplayName()));
+                }
+                return true;
+            }
+        }
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
