@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -66,8 +63,14 @@ public class SellRegionCommand implements CivCommand {
 
     private boolean permissionToSellRegion(Player player, Region region) {
         // Dont sell allow sale of a region that has multiple members
-        if (region == null || !region.getRawPeople().containsKey(player.getUniqueId())
-                || region.getRawPeople().keySet().size() != 1) {
+        int count = 0;
+        for (String role : region.getRawPeople().values()) {
+            if (role.contains("member") || role.contains("owner")) {
+                count++;
+            }
+        }
+        if (!region.getRawPeople().containsKey(player.getUniqueId())
+                || count != 1) {
             return false;
         }
         return true;

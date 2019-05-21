@@ -132,6 +132,9 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().closeInventory();
             List<Player> people = new ArrayList<>();
             for (UUID uuid : town.getPeople().keySet()) {
+                if (town.getPeople().get(uuid).contains("ally")) {
+                    continue;
+                }
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     people.add(player);
