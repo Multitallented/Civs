@@ -114,7 +114,7 @@ public class RegionTypeInfoMenu extends Menu {
         setNewData(civilian.getUuid(), data);
 
         //0 Icon
-        CVItem cvItem = regionType.clone();
+        CVItem cvItem = regionType.getShopIcon().clone();
         List<String> lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
                 ": " + (regionType.getBuildRadiusX() * 2 + 1) + "x" + (regionType.getBuildRadiusZ() * 2 + 1) + "x" + (regionType.getBuildRadiusY() * 2 + 1));
