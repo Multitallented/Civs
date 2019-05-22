@@ -231,7 +231,13 @@ public class RegionActionMenu extends Menu {
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
 
-            if (region.getRawPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
+            int personCount = 0;
+            for (String role : region.getRawPeople().values()) {
+                if (role.contains("owner") || role.contains("member")) {
+                    personCount++;
+                }
+            }
+            if (personCount == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
                 //11 Set sale
                 CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
                 emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
