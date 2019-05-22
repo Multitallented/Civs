@@ -4,14 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -123,6 +127,12 @@ public class TownListMenu extends Menu {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             CVItem cvItem1 = townType.clone();
+            if (ConfigManager.getInstance().isAllowChangingOfGovType()) {
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+                if (government != null) {
+                    cvItem1.setMat(government.getIcon(civilian.getLocale()).getMat());
+                }
+            }
             cvItem1.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             cvItem1.setLore(lore);
