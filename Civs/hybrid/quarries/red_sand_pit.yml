@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: RED_SAND
 name: Red_Sand_Pit
 price: 80
 groups:

@@ -137,7 +137,7 @@ public class ShopMenu extends Menu {
                 }
             }
             if (civItem.getItemType() != CivItem.ItemType.FOLDER && civilian.isAtMax(civItem)) {
-                CVItem item = CVItem.createCVItemFromString("OBSIDIAN");
+                CVItem item = CVItem.createCVItemFromString("BARRIER");
                 item.setDisplayName(civItem.getDisplayName());
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
                         "max-item").replace("$1", civItem.getProcessedName())
@@ -147,7 +147,7 @@ public class ShopMenu extends Menu {
                 i++;
                 continue;
             }
-            CVItem civItem1 = civItem.clone();
+            CVItem civItem1 = civItem.getShopIcon().clone();
             if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
                 civItem1.getLore().clear();
                 civItem1.getLore().add(civilian.getUuid().toString());

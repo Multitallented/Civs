@@ -2,7 +2,7 @@ type: town
 icon: GLOWSTONE
 name: Village
 max: 1
-price: 4000
+price: 3000
 groups:
 - superregion
 level: 3

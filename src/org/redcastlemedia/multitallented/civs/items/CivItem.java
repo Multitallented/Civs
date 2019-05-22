@@ -21,6 +21,8 @@ public abstract class CivItem extends CVItem {
     private final HashMap<String, String> description;
     private final List<String> groups;
     @Getter
+    private final CVItem shopIcon;
+    @Getter
     private final int level;
 
     public ItemType getItemType() {
@@ -67,6 +69,7 @@ public abstract class CivItem extends CVItem {
                    ItemType itemType,
                    String name,
                    Material material,
+                   CVItem shopIcon,
                    int qty,
                    int min,
                    int max,
@@ -78,6 +81,7 @@ public abstract class CivItem extends CVItem {
                    int level) {
         super(material, 1, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
+        this.shopIcon = shopIcon;
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;

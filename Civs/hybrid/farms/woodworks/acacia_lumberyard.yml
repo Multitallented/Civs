@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ACACIA_LOG
 name: Acacia_Lumberyard
 max: 2
 price: 100

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: IRON_INGOT
 name: Iron_Shop
 max: 1
 price: 100

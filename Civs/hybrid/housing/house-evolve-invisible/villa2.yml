@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: CYAN_BED
 name: Villa2
 is-in-shop: false
 max: 2

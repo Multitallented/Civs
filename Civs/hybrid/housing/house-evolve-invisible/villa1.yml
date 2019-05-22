@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: CYAN_BED
 name: Villa1
 max: 2
 price: 8000

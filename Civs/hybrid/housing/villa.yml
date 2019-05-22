@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: CYAN_BED
 name: Villa
 max: 2
 price: 8000
@@ -25,7 +26,7 @@ build-reqs:
 - g:secondary*80
 - g:primary*250
 
-rebuild: basemansion
+rebuild: basemanor
 build-radius: 14 #29x29x29
 effects:
 - block_break

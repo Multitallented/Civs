@@ -106,11 +106,11 @@ public class ItemManager {
             return;
         }
     }
-    public CivItem loadClassType(FileConfiguration configuration) throws NullPointerException {
+    public CivItem loadClassType(FileConfiguration config) throws NullPointerException {
         //TODO load classestype properly
-        CVItem icon = CVItem.createCVItemFromString(configuration.getString("icon", "CHEST"));
-        String name = configuration.getString("name");
-        ConfigurationSection configurationSection = configuration.getConfigurationSection("description");
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+        String name = config.getString("name");
+        ConfigurationSection configurationSection = config.getConfigurationSection("description");
         HashMap<String, String> description = new HashMap<>();
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
@@ -118,18 +118,19 @@ public class ItemManager {
             }
         }
         ClassType civItem = new ClassType(
-                configuration.getStringList("reqs"),
+                config.getStringList("reqs"),
                 name,
                 icon,
-                configuration.getDouble("price", 0),
-                configuration.getString("permission"),
-                configuration.getStringList("children"),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                config.getDouble("price", 0),
+                config.getString("permission"),
+                config.getStringList("children"),
                 description,
-                configuration.getStringList("groups"),
-                configuration.getInt("mana-per-second", 1),
-                configuration.getInt("max-mana", 100),
-                configuration.getBoolean("is-in-shop", true),
-                configuration.getInt("level", 1));
+                config.getStringList("groups"),
+                config.getInt("mana-per-second", 1),
+                config.getInt("max-mana", 100),
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1));
 
         itemTypes.put(name, civItem);
         return civItem;
@@ -149,6 +150,7 @@ public class ItemManager {
                 config.getStringList("reqs"),
                 name,
                 icon.getMat(),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
                 config.getInt("max", -1),
@@ -199,6 +201,7 @@ public class ItemManager {
         TownType townType = new TownType(
                 name,
                 icon,
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min",0),
@@ -293,6 +296,7 @@ public class ItemManager {
         RegionType regionType = new RegionType(
                 name,
                 icon,
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),

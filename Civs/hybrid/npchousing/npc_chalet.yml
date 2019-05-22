@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: MAGENTA_BED
 name: NPC_Chalet
 max: 2
 price: 1400

@@ -1,5 +1,6 @@
 type: region
 icon: OBSIDIAN
+shop-icon: PLAYER_HEAD
 name: Hunting_Lodge
 price: 400
 max: 1

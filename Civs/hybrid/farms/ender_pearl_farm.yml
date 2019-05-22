@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ENDER_PEARL
 name: Ender_Pearl_Farm
 max: 1
 price: 1000

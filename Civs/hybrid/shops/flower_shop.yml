@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: AZURE_BLUET
 name: Flower_Shop
 max: 1
 price: 10

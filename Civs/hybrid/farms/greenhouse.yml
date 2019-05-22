@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: BLUE_ORCHID
 name: Greenhouse
 price: 20
 groups:

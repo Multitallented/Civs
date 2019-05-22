@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: PINK_BED
 name: NPC_House
 max: 2
 price: 800

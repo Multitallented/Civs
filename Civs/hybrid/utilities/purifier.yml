@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ROTTEN_FLESH
 name: Purifier
 price: 5
 groups:

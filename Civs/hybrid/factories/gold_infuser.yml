@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: GOLD_NUGGET
 name: Gold_Infuser
 price: 200
 groups:

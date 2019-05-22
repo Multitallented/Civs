@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: MULE_SPAWN_EGG
 name: Mule_Farm
 max: 1
 price: 1500

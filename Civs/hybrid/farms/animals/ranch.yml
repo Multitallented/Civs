@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: COW_SPAWN_EGG
 name: Ranch
 max: 1
 price: 10

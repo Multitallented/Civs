@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PRISMARINE_SHARD
 name: Marine_Mine
 max: 1
 price: 150

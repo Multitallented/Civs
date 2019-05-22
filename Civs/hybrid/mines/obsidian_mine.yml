@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: OBSIDIAN
 name: Obsidian_Mine
 max: 1
 price: 500

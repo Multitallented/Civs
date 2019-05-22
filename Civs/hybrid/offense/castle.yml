@@ -1,5 +1,6 @@
 type: region
 icon: TNT
+shop-icon: STONE_BRICKS
 name: Castle
 max: 2
 price: 300

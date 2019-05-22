@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SUGAR_CANE
 name: Sugar_Cane_Farm
 max: 1
 price: 250

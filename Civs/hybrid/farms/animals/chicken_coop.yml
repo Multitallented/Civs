@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: CHICKEN_SPAWN_EGG
 name: Chicken_Coop
 max: 1
 price: 10

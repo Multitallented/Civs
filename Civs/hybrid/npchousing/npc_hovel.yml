@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: BROWN_BED
 name: NPC_Hovel
 max: 2
 price: 200

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ARROW
 name: Arrow_Factory
 price: 100
 groups:

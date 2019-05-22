@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ICE
 name: Ice_Maker
 price: 20
 groups:

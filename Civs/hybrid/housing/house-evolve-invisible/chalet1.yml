@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: MAGENTA_BED
 name: Chalet1
 max: 2
 price: 1400

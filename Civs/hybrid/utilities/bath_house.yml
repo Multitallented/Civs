@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: WATER_BUCKET
 name: Bath_House
 max: 1
 price: 700

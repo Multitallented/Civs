@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PURPLE_BED
 name: Mansion
 max: 2
 price: 2000

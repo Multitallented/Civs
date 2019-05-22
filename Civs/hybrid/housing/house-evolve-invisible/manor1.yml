@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LIGHT_BLUE_BED
 name: Manor1
 is-in-shop: false
 max: 2

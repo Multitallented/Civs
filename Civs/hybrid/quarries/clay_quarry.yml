@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: CLAY_BALL
 name: Clay_Quarry
 price: 100
 groups:

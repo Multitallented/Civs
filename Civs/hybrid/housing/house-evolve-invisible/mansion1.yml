@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PURPLE_BED
 name: Mansion1
 is-in-shop: false
 max: 2

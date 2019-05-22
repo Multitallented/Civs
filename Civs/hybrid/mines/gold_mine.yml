@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: GOLD_ORE
 name: Gold_Mine
 max: 1
 price: 350

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LAVA_BUCKET
 name: Lava_Works
 price: 600
 groups:

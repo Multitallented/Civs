@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIRT
 name: Dirt_Quarry
 price: 25
 groups:

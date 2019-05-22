@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: YELLOW_BED
 name: NPC_Shack
 price: 100
 groups:

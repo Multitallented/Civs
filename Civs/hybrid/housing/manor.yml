@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LIGHT_BLUE_BED
 name: Manor
 max: 2
 price: 4000

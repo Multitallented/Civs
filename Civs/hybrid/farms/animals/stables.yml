@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: HORSE_SPAWN_EGG
 name: Stables
 max: 1
 price: 1500

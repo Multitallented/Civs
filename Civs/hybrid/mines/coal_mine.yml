@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: COAL_ORE
 name: Coal_Mine
 max: 1
 price: 150

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: Catapult
 price: 150
 groups:

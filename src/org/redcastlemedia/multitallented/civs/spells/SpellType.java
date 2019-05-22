@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SpellType extends CivItem {
     public SpellType(List<String> reqs,
                      String name,
                      Material material,
+                     CVItem shopIcon,
                      int qty,
                      int min,
                      int max,
@@ -36,6 +38,7 @@ public class SpellType extends CivItem {
                 ItemType.SPELL,
                 name,
                 material,
+                shopIcon,
                 qty,
                 min,
                 max,
