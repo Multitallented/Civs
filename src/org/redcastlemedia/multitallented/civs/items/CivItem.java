@@ -81,7 +81,10 @@ public abstract class CivItem extends CVItem {
                    int level) {
         super(material, 1, 100, "Civs " + name);
         this.isPlaceable = isPlaceable;
-        this.shopIcon = shopIcon;
+        this.shopIcon = new CVItem(shopIcon.getMat(),
+                shopIcon.getQty(),
+                (int) shopIcon.getChance(),
+                "Civs " + name);
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;
