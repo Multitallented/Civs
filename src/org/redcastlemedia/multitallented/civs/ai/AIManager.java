@@ -7,10 +7,15 @@ import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+
+import lombok.Getter;
 
 public class AIManager {
     private HashMap<String, AI> ais = new HashMap<>();
+    @Getter
+    private HashMap<Player, AI> chatHandler = new HashMap<>();
 
     private static AIManager instance = null;
     public static AIManager getInstance() {

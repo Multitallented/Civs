@@ -550,6 +550,10 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".item-locked", "You have not yet unlocked this item."));
             currentLanguage.put("max-qty",
                     localeConfig.getString(langKey + ".max-qty", "$1 has too many $2 and can't own more"));
+            currentLanguage.put("ai-invite",
+                    localeConfig.getString(langKey + ".ai-invite", "Hey, @$1 would you like to join my town?"));
+            currentLanguage.put("ai-help",
+                    localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -40,6 +40,9 @@ en:
   merit-new-owner: "Congratulations! You have surpased $1. You are the new town owner!"
   item-locked: "You have not yet unlocked this item."
 
+  ai-invite: "Hey, @$1 would you like to join my town?"
+  ai-help: "$1 can give you a tour of the place."
+
   cooldown-buff-desc: "$1% cooldown reduction for all $2"
   payout-buff-desc: "$1% region payout increase for all $2"
   power-buff-desc: "$1% daily power increase"
