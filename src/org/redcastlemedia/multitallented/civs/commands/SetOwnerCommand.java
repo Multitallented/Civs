@@ -51,7 +51,7 @@ public class SetOwnerCommand implements CivCommand {
         //0 invite
         //1 player
         //2 regionname
-        String playerName = strings[1];
+        UUID inviteUUID = UUID.fromString(strings[1]);
         String locationString = strings[2];
 
         Town town = TownManager.getInstance().getTown(locationString);
@@ -74,22 +74,22 @@ public class SetOwnerCommand implements CivCommand {
                     "no-permission"));
             return true;
         }
-        Player invitee = Bukkit.getPlayer(playerName);
+        Player invitee = Bukkit.getPlayer(inviteUUID);
         if (invitee == null) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "player-not-online").replace("$1", playerName));
+                        "player-not-online").replace("$1", "Unknown"));
             } else {
-                commandSender.sendMessage(Civs.getPrefix() + "Player " + playerName + " is not online");
+                commandSender.sendMessage(Civs.getPrefix() + "Player unknown is not online");
             }
             return true;
         }
         if (region != null && region != RegionManager.getInstance().getRegionAt(invitee.getLocation())) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "stand-in-region").replace("$1", playerName));
+                        "stand-in-region").replace("$1", invitee.getName()));
             } else {
-                commandSender.sendMessage(Civs.getPrefix() + "Please have " + playerName + " stand in the region");
+                commandSender.sendMessage(Civs.getPrefix() + "Please have " + invitee.getName() + " stand in the region");
             }
             return true;
         }
@@ -112,8 +112,8 @@ public class SetOwnerCommand implements CivCommand {
             boolean colonialOverride = town.getColonialTown() != null;
             if (colonialOverride) {
                 Town colonialTown = TownManager.getInstance().getTown(town.getColonialTown());
-                if (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
-                        !colonialTown.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                if (civilian != null && (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
+                        !colonialTown.getRawPeople().get(civilian.getUuid()).contains("owner"))) {
                     colonialOverride = false;
                 }
             }
@@ -170,12 +170,12 @@ public class SetOwnerCommand implements CivCommand {
             invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
                     "add-owner-region").replace("$1", name));
         }
-        if (player != null) {
+        if (player != null && civilian != null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "owner-added-region").replace("$1", playerName)
+                    "owner-added-region").replace("$1", invitee.getDisplayName())
                     .replace("$2", name));
         } else {
-            commandSender.sendMessage(Civs.getPrefix() + playerName + " is now an owner of your " + name);
+            commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is now an owner of your " + name);
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("owner")) {
