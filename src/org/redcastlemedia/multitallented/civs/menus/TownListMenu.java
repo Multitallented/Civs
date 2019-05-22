@@ -127,16 +127,25 @@ public class TownListMenu extends Menu {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             CVItem cvItem1 = townType.clone();
-            if (ConfigManager.getInstance().isAllowChangingOfGovType()) {
-                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-                if (government != null) {
-                    cvItem1.setMat(government.getIcon(civilian.getLocale()).getMat());
-                }
+            CVItem cycleItem = null;
+            boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (govTypesAllowed && government != null) {
+                cycleItem = new CVItem(government.getIcon(civilian.getLocale()).getMat(), 1);
             }
             cvItem1.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
+
+            if (govTypesAllowed && government != null) {
+                ArrayList<CVItem> cycleList = new ArrayList<>();
+                cycleItem.setDisplayName(town.getName());
+                cycleItem.setLore(lore);
+                cycleList.add(cvItem1);
+                cycleList.add(cycleItem);
+                Menu.addCycleItems(uuid, inventory, i, cycleList);
+            }
             i++;
         }
 
