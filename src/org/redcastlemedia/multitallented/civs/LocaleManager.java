@@ -233,9 +233,9 @@ public class LocaleManager {
             currentLanguage.put("leaderboard",
                     localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
             currentLanguage.put("enter-town",
-                    localeConfig.getString(langKey + ".enter-town", "You have entered $1"));
+                    localeConfig.getString(langKey + ".enter-town", "You have entered $1 ($2)"));
             currentLanguage.put("exit-town",
-                    localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
+                    localeConfig.getString(langKey + ".exit-town", "You have exited $1 ($2)"));
             currentLanguage.put("town-created",
                     localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
             currentLanguage.put("town-destroyed",
