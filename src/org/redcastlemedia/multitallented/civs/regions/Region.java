@@ -156,16 +156,10 @@ public class Region {
         return locationToString(location);
     }
     public static String blockLocationToString(Location location) {
-        double x = location.getX();
-        double z = location.getZ();
-        if (x < 0 && Math.ceil(x) == x) {
-            x = x + 1;
-        }
-        if (z < 0 && Math.ceil(z) == z) {
-            z = z + 1;
-        }
-        Location location1 = new Location(location.getWorld(), x, location.getY(), z);
-        return locationToString(location1);
+//        double x = location.getX();
+//        double z = location.getZ();
+//        Location location1 = new Location(location.getWorld(), x, location.getY(), z);
+        return locationToString(location);
     }
     public static String locationToString(Location location) {
         if (location == null || location.getWorld() == null) {
@@ -174,19 +168,11 @@ public class Region {
         StringBuilder builder = new StringBuilder();
         builder.append(location.getWorld().getUID().toString());
         builder.append("~");
-        if (location.getX() >= 0) {
-            builder.append(Math.floor(location.getX()) + 0.5);
-        } else {
-            builder.append(Math.ceil(location.getX()) - 0.5);
-        }
+        builder.append(Math.floor(location.getX()) + 0.5);
         builder.append("~");
         builder.append(Math.floor(location.getY()) + 0.5);
         builder.append("~");
-        if (location.getZ() >= 0) {
-            builder.append(Math.floor(location.getZ()) + 0.5);
-        } else {
-            builder.append(Math.ceil(location.getZ()) - 0.5);
-        }
+        builder.append(Math.floor(location.getZ()) + 0.5);
 
         return builder.toString();
     }

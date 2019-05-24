@@ -138,6 +138,13 @@ public class RegionsTests {
     }
 
     @Test
+    public void convertStringToLocationAndBackShouldBeTheSameZero2() {
+        Location location = new Location(Bukkit.getWorld("world"), -1, 65, 0);
+        Location location2 = Region.idToLocation(Region.blockLocationToString(location));
+        assertEquals(-0.5, location2.getX(), 0.1);
+    }
+
+    @Test
     public void convertStringToLocationAndBackShouldEqualOriginalString() {
         String locationString = "d2460330-f815-4339-9b11-cf10755ccef9~-960.5~72.5~933.5";
         Location location = Region.idToLocation(locationString);
@@ -222,7 +229,7 @@ public class RegionsTests {
         when(event2.getItemInHand()).thenReturn(cobbleStack);
         BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
         when(event1.getPlayer()).thenReturn(TestUtil.player);
-        Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
+        Location regionLocation = new Location(Bukkit.getWorld("world"), -1 , 0, 0);
         Block chestBlock = TestUtil.createUniqueBlock(Material.CHEST, "Civs cobble", regionLocation, false);
         when(event1.getBlockPlaced()).thenReturn(chestBlock);
         List<String> lore = new ArrayList<>();
@@ -235,7 +242,12 @@ public class RegionsTests {
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);
         regionListener.onBlockPlace(event1);
-        assertEquals("cobble", regionManager.getRegionAt(regionLocation).getType());
+        Region region = regionManager.getRegionAt(regionLocation);
+        assertEquals("cobble", region.getType());
+        assertEquals(5, region.getRadiusXP());
+        assertEquals(5, region.getRadiusXN());
+        assertEquals(-0.5, region.getLocation().getX(), 0.1);
+        assertEquals(0.5, region.getLocation().getZ(), 0.1);
     }
 
     @Test
