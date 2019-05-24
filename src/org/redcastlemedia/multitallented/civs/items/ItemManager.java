@@ -470,10 +470,6 @@ public class ItemManager {
                     continue;
                 }
                 String[] splitReq = req.split(":");
-                CivItem reqItem = itemManager.getItemType(splitReq[0]);
-                if (reqItem == null) {
-                    continue;
-                }
                 //house:???
                 if (splitReq.length < 2) {
                     if (civilian.getCountStashItems(splitReq[0]) > 0 ||
@@ -485,7 +481,7 @@ public class ItemManager {
                 }
                 String[] reqParams = splitReq[1].split("=");
                 //shack:built=1
-                if (reqParams[0].equals("built") && reqItem.getItemType().equals(CivItem.ItemType.REGION)) {
+                if (reqParams[0].equals("built")) {
                     if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
@@ -493,7 +489,8 @@ public class ItemManager {
                     }
                 //bash:level=4
                 } else if (reqParams[0].equals("level")) {
-                    if (civilian.getExp().get(reqItem) == null) {
+                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                    if (reqItem == null || civilian.getExp().get(reqItem) == null) {
                         continue;
                     }
                     int level = civilian.getLevel(reqItem);

@@ -312,7 +312,7 @@ public class Region {
     }
 
     private static int[] addItemCheck(int[] radii, Location location, World currentWorld,
-                                     int xMin, int xMax, int yMin, int yMax, int zMin, int zMax,
+                                     double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
                                      List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
         HashMap<Material, Integer> maxCheck = new HashMap<>();
@@ -326,11 +326,12 @@ public class Region {
             }
         }
         List<Block> blocksFound = new ArrayList<>();
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<xMax;x++) {
+            for (double y=yMin; y<yMax; y++) {
+                for (double z=zMin; z<zMax; z++) {
 
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    Location location1 = new Location(currentWorld, x, y, z);
+                    Block currentBlock = location1.getBlock();
                     if (currentBlock == null) {
                         continue;
                     }
@@ -451,12 +452,12 @@ public class Region {
 
         World currentWorld = location.getWorld();
         int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
-        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
+        double xMax = location.getX() + biggestXZRadius * 1.5;
+        double xMin = location.getX() - biggestXZRadius * 1.5;
+        double yMax = location.getY() + regionType.getBuildRadiusY() * 1.5;
+        double yMin = location.getY() - regionType.getBuildRadiusY() * 1.5;
+        double zMax = location.getZ() + biggestXZRadius * 1.5;
+        double zMin = location.getZ() - biggestXZRadius * 1.5;
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
@@ -498,22 +499,23 @@ public class Region {
             radii[i]=regionType.getBuildRadiusX();
         }
 
-        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX());
-        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX());
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY());
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY());
-        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusX());
-        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusX());
+        double xMax = location.getX() + regionType.getBuildRadiusX();
+        double xMin = location.getX() - regionType.getBuildRadiusX();
+        double yMax = location.getY() + regionType.getBuildRadiusY();
+        double yMin = location.getY() - regionType.getBuildRadiusY();
+        double zMax = location.getZ() + regionType.getBuildRadiusX();
+        double zMin = location.getZ() - regionType.getBuildRadiusX();
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
 
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<xMax;x++) {
+            for (double y=yMin; y<yMax; y++) {
+                for (double z=zMin; z<zMax; z++) {
 
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null) {
+                    Location location1 = new Location(currentWorld, x, y, z);
+                    Block currentBlock = location1.getBlock();
+                    if (currentBlock.getType() == Material.AIR) {
                         continue;
                     }
                     Material mat = currentBlock.getType();
@@ -533,13 +535,9 @@ public class Region {
                         i++;
                     }
                     if (destroyIndex) {
-                        if (itemCheck.size() < 2) {
-                            itemCheck.remove(i);
-                            if (itemCheck.isEmpty()) {
-                                break outer;
-                            }
-                        } else {
-                            itemCheck.remove(i);
+                        itemCheck.remove(i);
+                        if (itemCheck.isEmpty()) {
+                            break outer;
                         }
                     }
                 }
@@ -618,12 +616,12 @@ public class Region {
 
         World currentWorld = location.getWorld();
         int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
-        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
+        double xMax = location.getX() + biggestXZRadius * 1.5;
+        double xMin = location.getX() - biggestXZRadius * 1.5;
+        double yMax = location.getY() + regionType.getBuildRadiusY() * 1.5;
+        double yMin = location.getY() - regionType.getBuildRadiusY() * 1.5;
+        double zMax = location.getZ() + biggestXZRadius * 1.5;
+        double zMin = location.getZ() - biggestXZRadius * 1.5;
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;

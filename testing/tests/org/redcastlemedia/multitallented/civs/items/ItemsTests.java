@@ -39,6 +39,16 @@ public class ItemsTests {
     }
 
     @Test
+    public void playerShouldHaveGroupUnlocked() {
+        loadRegionTypeShack();
+        loadRegionTypeNPCShack();
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        CivItem npcShack = ItemManager.getInstance().getItemType("npc_shack");
+        assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, npcShack));
+    }
+
+    @Test
     public void newPlayerShouldRecieveAShelterItem() {
         loadRegionTypeShelter();
         CivilianTests.skipLoadingFiles();
@@ -211,9 +221,24 @@ public class ItemsTests {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "Shack");
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("baseshack");
+        config.set("groups", groups);
         config.set("icon", "CHEST");
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("member=hamlet");
+        config.set("pre-reqs", preReqs);
+        config.set("build-radius", 7);
+        itemManager.loadRegionType(config);
+    }
+
+    private void loadRegionTypeNPCShack() {
+        ItemManager itemManager = ItemManager.getInstance();
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "NPC_Shack");
+        config.set("icon", "CHEST");
+        ArrayList<String> preReqs = new ArrayList<>();
+        preReqs.add("baseshack:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
         itemManager.loadRegionType(config);

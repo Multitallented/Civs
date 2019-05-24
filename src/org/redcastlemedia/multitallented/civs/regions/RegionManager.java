@@ -574,10 +574,10 @@ public class RegionManager {
         return true;
     }
 
-    void adjustRadii(int[] radii, Location location, int x, int y, int z) {
-        int currentRelativeX = x - (int) location.getX();
-        int currentRelativeY = y - (int) location.getY();
-        int currentRelativeZ = z - (int) location.getZ();
+    void adjustRadii(int[] radii, Location location, double x, double y, double z) {
+        int currentRelativeX = (int) Math.round(x - location.getX());
+        int currentRelativeY = (int) Math.round(y - location.getY());
+        int currentRelativeZ = (int) Math.round(z - location.getZ());
         if (currentRelativeX < 0) {
             currentRelativeX = Math.abs(currentRelativeX);
             radii[2] = radii[2] > currentRelativeX ? radii[2] : currentRelativeX;

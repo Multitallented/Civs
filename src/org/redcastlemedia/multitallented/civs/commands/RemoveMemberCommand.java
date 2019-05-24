@@ -97,7 +97,7 @@ public class RemoveMemberCommand implements CivCommand {
             commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is no longer a member of your " + name);
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null) {
-            region.getPeople().remove(invitee.getUniqueId());
+            region.getRawPeople().remove(invitee.getUniqueId());
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null) {
             town.getPeople().remove(invitee.getUniqueId());

@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class Civilian {
 
@@ -306,8 +307,10 @@ public class Civilian {
     public int getCountRegions(String name) {
         int count = 0;
         for (Region region : RegionManager.getInstance().getAllRegions()) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (region.getOwners().contains(uuid) && (name == null ||
-                    region.getType().equalsIgnoreCase(name))) {
+                    region.getType().equalsIgnoreCase(name) ||
+                    regionType.getGroups().contains(name))) {
                 count++;
             }
         }
@@ -316,13 +319,14 @@ public class Civilian {
 
     public int getCountNonStashItems(String name) {
         int count = 0;
-        String itemName = "Civs " + name;
         for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
-            if (is == null || !is.hasItemMeta()) {
+            if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            String displayName = is.getItemMeta().getDisplayName();
-            if (displayName == null || !displayName.toLowerCase().equals(itemName)) {
+            CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
+                    .replace("Civs ", "").toLowerCase());
+            if (!civItem.getProcessedName().equalsIgnoreCase(name) &&
+                    !civItem.getGroups().contains(name)) {
                 continue;
             }
             count += is.getAmount();

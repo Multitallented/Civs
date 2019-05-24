@@ -12,7 +12,7 @@ level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
-- hovel:built=1
+- basehovel:built=1
 
 build-reqs:
 - CHEST*2
