@@ -1,29 +1,40 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -764,17 +775,22 @@ public class Region {
                 if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                         town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                     double size = (double) town.getRawPeople().size();
-                    double coopCut = payout * 0.1;
                     if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
                         payout = payout / size;
+                        for (UUID uuid : town.getRawPeople().keySet()) {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                            Civs.econ.depositPlayer(offlinePlayer, payout);
+                            hasMoney = true;
+                        }
                     } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                        payout = (payout - coopCut) / size;
+                        double coopCut = payout * 0.1;
                         town.setBankAccount(town.getBankAccount() + coopCut);
-                    }
-                    for (UUID uuid : town.getRawPeople().keySet()) {
-                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                        Civs.econ.depositPlayer(offlinePlayer, payout);
-                        hasMoney = true;
+                        HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                        for (UUID uuid : payouts.keySet()) {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                            Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
+                            hasMoney = true;
+                        }
                     }
                 } else {
                     payout = payout / (double) getOwners().size();
