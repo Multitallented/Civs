@@ -35,7 +35,6 @@ public class DestroyConfirmationMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
 
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
@@ -68,8 +67,7 @@ public class DestroyConfirmationMenu extends Menu {
                     Civs.econ.depositPlayer(player, regionType.getPrice() / 2);
                 }
                 RegionManager.getInstance().removeRegion(region, true, true);
-                BlockBreakEvent blockBreakEvent = new BlockBreakEvent(region.getLocation().getBlock(), player);
-                CivilianListener.getInstance().onCivilianBlockBreak(blockBreakEvent);
+                CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), player);
             } else if (town != null) {
                 if (doesntHavePermission(civilian, town.getPeople(), player)) {
                     return;

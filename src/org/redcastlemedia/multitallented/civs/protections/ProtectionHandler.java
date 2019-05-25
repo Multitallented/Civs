@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
@@ -123,6 +124,7 @@ public class ProtectionHandler implements Listener {
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;
         }
     }
@@ -347,6 +349,7 @@ public class ProtectionHandler implements Listener {
             }
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
+                CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
             }
         }
     }

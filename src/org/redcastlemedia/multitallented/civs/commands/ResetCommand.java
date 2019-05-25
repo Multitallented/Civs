@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -62,6 +63,7 @@ public class ResetCommand implements CivCommand {
         }
         for (Region region : regionsToDestroy) {
             RegionManager.getInstance().removeRegion(region, false, true);
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
         }
         CivilianManager.getInstance().deleteCivilian(civilian);
 
