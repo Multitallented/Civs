@@ -22,7 +22,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 

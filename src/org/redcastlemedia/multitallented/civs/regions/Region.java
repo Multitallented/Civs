@@ -260,9 +260,9 @@ public class Region {
                 }
             }
         }
-        for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        for (int x=xMin; x<=xMax;x++) {
+            for (int y=yMin; y<=yMax; y++) {
+                for (int z=zMin; z<=zMax; z++) {
 
                     Block currentBlock = currentWorld.getBlockAt(x,y,z);
                     if (currentBlock == null) {
@@ -323,9 +323,9 @@ public class Region {
             }
         }
         List<Block> blocksFound = new ArrayList<>();
-        outer: for (double x=xMin; x<xMax;x++) {
-            for (double y=yMin; y<yMax; y++) {
-                for (double z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<=xMax;x++) {
+            for (double y=yMin; y<=yMax; y++) {
+                for (double z=zMin; z<=zMax; z++) {
 
                     Location location1 = new Location(currentWorld, x, y, z);
                     Block currentBlock = location1.getBlock();
@@ -506,9 +506,9 @@ public class Region {
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
 
-        outer: for (double x=xMin; x<xMax;x++) {
-            for (double y=yMin; y<yMax; y++) {
-                for (double z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<=xMax;x++) {
+            for (double y=yMin; y<=yMax; y++) {
+                for (double z=zMin; z<=zMax; z++) {
 
                     Location location1 = new Location(currentWorld, x, y, z);
                     Block currentBlock = location1.getBlock();

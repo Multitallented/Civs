@@ -66,15 +66,18 @@ public class CivilianListener implements Listener {
         ConfigManager configManager = ConfigManager.getInstance();
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        outer: if (configManager.getUseStarterBook()) {
-            ItemStack stack = Util.createStarterBook(civilian.getLocale());
+        if (configManager.getUseStarterBook()) {
+            boolean hasStarterBook = false;
             for (ItemStack is : player.getInventory()) {
-                if (is == null || Util.isStarterBook(is)) {
-                    continue;
+                if (is != null && Util.isStarterBook(is)) {
+                    hasStarterBook = true;
+                    break;
                 }
-                break outer;
             }
-            player.getInventory().addItem(stack);
+            if (!hasStarterBook) {
+                ItemStack stack = Util.createStarterBook(civilian.getLocale());
+                player.getInventory().addItem(stack);
+            }
         }
     }
 

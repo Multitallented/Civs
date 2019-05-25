@@ -492,7 +492,9 @@ public class ProtectionHandler implements Listener {
                     role = "owner";
                 }
             }
-            if (role == null || (role.contains("member") && !Util.equivalentLocations(location, region.getLocation()))) {
+            if (role == null || (role.contains("member") &&
+                    !Util.equivalentLocations(location, region.getLocation()) &&
+                    type.equals("block_break"))) {
                 return true;
             }
             return true;
@@ -613,7 +615,8 @@ public class ProtectionHandler implements Listener {
         if (role.contains("owner")) {
             return false;
         }
-        if (Util.equivalentLocations(location, region.getLocation())) {
+        if (Util.equivalentLocations(location, region.getLocation()) &&
+                type.equals("block_break")) {
             return true;
         }
         if (pRole == null || role.contains(pRole)) {
