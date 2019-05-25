@@ -228,7 +228,7 @@ public class Civilian {
         return level;
     }
 
-    public boolean isAtMax(CivItem civItem) {
+    public String isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
         int rebuildBonus = 0;
         if (CivItem.ItemType.REGION == civItem.getItemType() && null != ((RegionType) civItem).getRebuild()) {
@@ -237,20 +237,20 @@ public class Civilian {
         boolean atMax = civItem.getCivMax() != -1 &&
                 civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
-            return true;
+            return civItem.getProcessedName();
         }
         ConfigManager configManager = ConfigManager.getInstance();
         if (civItem.getGroups() == null ||
                 civItem.getGroups().isEmpty()) {
-            return false;
+            return null;
         }
         for (String group : civItem.getGroups()) {
             if (configManager.getGroups().get(group) != null &&
                     configManager.getGroups().get(group) + rebuildBonus <= getCountGroup(group)) {
-                return true;
+                return group;
             }
         }
-        return false;
+        return null;
     }
 
     public int getCountStashItems(String name) {

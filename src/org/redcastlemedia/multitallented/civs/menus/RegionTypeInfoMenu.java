@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -128,12 +129,12 @@ public class RegionTypeInfoMenu extends Menu {
 
         //1 Price
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
-        boolean isAtMax = civilian.isAtMax(regionType);
+        String maxLimit = civilian.isAtMax(regionType);
         boolean isInShop = regionType.getInShop();
+        lore = new ArrayList<>();
         boolean hasItemUnlocked = ItemManager.getInstance().hasItemUnlocked(civilian, regionType);
-        if (showPrice && hasShopPerms && !isAtMax && isInShop) {
+        if (showPrice && hasShopPerms && maxLimit == null && isInShop) {
             CVItem priceItem;
-            lore = new ArrayList<>();
             if (hasItemUnlocked) {
                 priceItem = CVItem.createCVItemFromString("EMERALD");
             } else {
@@ -144,6 +145,15 @@ public class RegionTypeInfoMenu extends Menu {
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());
+        } else if (showPrice && hasShopPerms && isInShop) {
+            CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
+            priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
+            int max = maxLimit.equals(regionType.getProcessedName()) ? regionType.getCivMax() :
+                    ConfigManager.getInstance().getGroups().get(maxLimit);
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "max-item")
+                    .replace("$1", maxLimit)
+                    .replace("$2", "" + max));
+
         }
 
         //2 Rebuild

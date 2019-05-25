@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -136,12 +137,15 @@ public class ShopMenu extends Menu {
                     continue;
                 }
             }
-            if (civItem.getItemType() != CivItem.ItemType.FOLDER && civilian.isAtMax(civItem)) {
+            String maxLimit = civilian.isAtMax(civItem);
+            if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
                 CVItem item = CVItem.createCVItemFromString("BARRIER");
                 item.setDisplayName(civItem.getDisplayName());
+                int limit = maxLimit.equals(civItem.getProcessedName()) ? civItem.getCivMax() :
+                        ConfigManager.getInstance().getGroups().get(maxLimit);
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
-                        "max-item").replace("$1", civItem.getProcessedName())
-                            .replace("$2", civItem.getCivMax() + ""));
+                        "max-item").replace("$1", maxLimit)
+                            .replace("$2", limit + ""));
                 item.getLore().addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
                 inventory.setItem(i, item.createItemStack());
                 i++;
