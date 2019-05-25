@@ -262,7 +262,7 @@ public class RegionActionMenu extends Menu {
         }
 
         if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1 &&
-                !civilian.isAtMax(regionType)) {
+                civilian.isAtMax(regionType) == null) {
             //13 Buy region button
             CVItem emerald = CVItem.createCVItemFromString("EMERALD");
             emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),

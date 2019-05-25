@@ -8,7 +8,7 @@ groups:
 level: 3
 
 pre-reqs:
-- settlement:population=5
+- settlement:population=1
 
 build-reqs:
 - council_room:1

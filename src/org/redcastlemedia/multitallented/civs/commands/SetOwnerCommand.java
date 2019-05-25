@@ -155,12 +155,13 @@ public class SetOwnerCommand implements CivCommand {
 
         if (region != null) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (inviteCiv.isAtMax(regionType)) {
+            String maxLimit = inviteCiv.isAtMax(regionType);
+            if (maxLimit != null) {
                 if (player != null) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
                             civilian.getLocale(), "max-qty")
                             .replace("$1", invitee.getDisplayName())
-                            .replace("$2", regionType.getDisplayName()));
+                            .replace("$2", maxLimit));
                 }
                 return true;
             }
