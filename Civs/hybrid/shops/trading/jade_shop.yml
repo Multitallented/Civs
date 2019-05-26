@@ -5,7 +5,6 @@ name: Jade_Shop
 max: 1
 price: 500
 groups:
-- shop
 - tradeshop
 - trading
 level: 3

@@ -8,7 +8,7 @@ groups:
 level: 3
 
 pre-reqs:
-- member=village:town:city:metropolis
+- member=hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
@@ -24,6 +24,7 @@ build-radius: 4 #9x15x9
 build-radius-y: 7
 
 towns:
+- hamlet
 - village
 - town
 - city

@@ -8,7 +8,7 @@ groups:
 level: 6
 
 pre-reqs:
-- town:population=30
+- town:population=20
 
 build-reqs:
 - city_hall:1

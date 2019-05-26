@@ -340,7 +340,7 @@ public class TownActionMenu extends Menu {
         }
 
         //10 Add person
-        if (govTypeOpenToAnyone || isOwner || colonialOverride) {
+        if (govTypeOpenToAnyone || isOwner || colonialOverride || isAdmin) {
             CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
