@@ -654,10 +654,6 @@ public class Region {
         return hasUpkeepItems(false);
     }
     public boolean hasUpkeepItems(boolean ignoreReagents) {
-        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
-                !getLocation().getChunk().isLoaded()) {
-            return false;
-        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
@@ -686,11 +682,6 @@ public class Region {
     }
 
     public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
-        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
-                !getLocation().getChunk().isLoaded()) {
-            return false;
-        }
-
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().size() <= upkeepIndex) {
             return false;
@@ -742,11 +733,6 @@ public class Region {
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
-            boolean disableItemChecksInUnloadedChunks = ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks();
-            if (needsItems && disableItemChecksInUnloadedChunks &&
-                    !getLocation().getChunk().isLoaded()) {
-                continue;
-            }
             Block block = getLocation().getBlock();
 
             Chest chest = null;

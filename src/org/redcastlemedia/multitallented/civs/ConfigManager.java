@@ -92,9 +92,6 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
-    boolean disableUpkeepInUnloadedChunks;
-
-    @Getter
     GovernmentType defaultGovernmentType;
 
     @Getter
@@ -300,7 +297,6 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
-            disableUpkeepInUnloadedChunks = config.getBoolean("disable-upkeep-in-unloaded-chunks", true);
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
                 defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
@@ -338,7 +334,6 @@ public class ConfigManager {
     private void loadDefaults() {
         capitalismVotingCost = 200;
         daysBetweenVotes = 7;
-        disableUpkeepInUnloadedChunks = true;
         defaultLanguage = "en";
         allowCivItemDropping = false;
         maxTax = 50;
