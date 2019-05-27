@@ -63,7 +63,8 @@ public class DeathListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!civilian.isInCombat()) {
-            boolean setCancelled = event.isCancelled() || ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
+            boolean setCancelled = event.isCancelled() ||
+                    ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
             if (setCancelled) {
                 event.setCancelled(true);
                 return;

@@ -176,7 +176,6 @@ public class Civilian {
         if (lastDamage < 0) {
             return false;
         }
-        int combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
         Player player = Bukkit.getPlayer(uuid);
         if (player == null || player.isDead()) {
             lastDamager = null;
@@ -189,6 +188,8 @@ public class Civilian {
             lastDamage = -1;
             return false;
         }
+        int combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
+        combatTagDuration *= 1000;
         if (lastDamage + combatTagDuration < System.currentTimeMillis()) {
             lastDamager = null;
             lastDamage = -1;
