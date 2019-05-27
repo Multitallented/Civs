@@ -10,6 +10,9 @@ import lombok.Getter;
 @Getter
 public class TownDestroyedEvent extends Event {
     private static final HandlerList hList = new HandlerList();
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
     private final TownType townType;
     private final Town town;
 

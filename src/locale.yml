@@ -20,6 +20,35 @@ en:
   guide-desc: "Click here to see your next goal."
   choose-path: "Choose your path"
 
+  new-owner-town: "$1 has replaced $2 as an owner of $3"
+  town-bank-balance: "Bank balance $1"
+  town-bank-desc: "Withdraw using /cv withdraw $1 amount"
+  widthdrawn-money: "You've withdrawn $$1 from $2's bank"
+  town-tax: "Town taxes: $1"
+  town-tax-desc: "Set tax using /cv tax $1 amount"
+  town-tax-set: "$1 tax set to $2"
+  tax-too-high: "You can't set taxes higher than $1"
+  town-assist-price: "Your town bank paid $1 to thank you for the construction of your $2"
+  colony-town-set: "You've set $1 as a colony of $2"
+  cant-build-feudal: "You can't build a region in a feudal town unless you own that town."
+  tribalism-no-invite: "Your tribalism town forbids you to invite $1 of non-allied town $2"
+  vote-member: "Vote to be next owner"
+  capitalism-voting-cost: "Extra votes cost $1"
+  voted: "You have cast your vote for $1"
+  gov-type-change: "$1 changed from $2 to $3"
+  cost-buff: "You have been refunded $1 for buildings a $2 in a $3 town."
+  merit-new-owner: "Congratulations! You have surpased $1. You are the new town owner!"
+  item-locked: "You have not yet unlocked this item."
+
+  ai-invite: "Hey, @$1 would you like to join my town?"
+  ai-help: "$1 can give you a tour of the place."
+
+  cooldown-buff-desc: "$1% cooldown reduction for all $2"
+  payout-buff-desc: "$1% region payout increase for all $2"
+  power-buff-desc: "$1% daily power increase"
+  max_power-buff-desc: "$1% max-power increase"
+  cost-buff-desc: "$1% cost refund on all $2"
+
   #shop
   shop: Shop
   buy-item: For Sale
@@ -28,6 +57,7 @@ en:
   cancel: Cancel
   item-bought: "Congrats! You just bought $1 for $2"
   max-item: "You cant buy more than $2 $1"
+  max-qty: "$1 has too many $2 and can't own more"
 
   #items
   items: Items
@@ -124,8 +154,8 @@ en:
   click-for-region-limits: "Click here for a list of region limits"
   click-for-req-regions: "Click here for a list of required regions"
   town-instructions: "Create a $1, by using /cv town MyTownName"
-  town-enter: "You have entered $1"
-  town-exit: "You have exited $1"
+  town-enter: "You have entered $1 ($2)"
+  town-exit: "You have exited $1 ($2)"
   new-town-member: "$1 has joined $2"
   must-be-built-on-top: "A $1 must be built on top of a $2"
   town-power: "Power: $1/$2"
@@ -167,6 +197,7 @@ en:
   invalid-name: "Invalid name"
   last-renamed-by: "Last renamed by: $1"
   leave-alliance: "Leave alliance"
+  hunting-players: "Caution! Someone is hunting players in your area."
 
   #errors
   cant-place-town: "Type /cv town townNameHere"
@@ -348,8 +379,8 @@ pt_br:
   stand-in-region: "Por favor, faça com que $1 esteja na região"
   create: Criar
   town-instructions: "Para criar $1, use /cv town NomeDaVila"
-  town-enter: "Você entrou em $1"
-  town-exit: "Você saiu de $1"
+  town-enter: "Você entrou em $1 ($2)"
+  town-exit: "Você saiu de $1 ($2)"
   new-town-member: "$1 se juntou a $2"
   must-be-built-on-top: "Uma $1 precisa ser construída em cima de uma $2"
   town-power: "Poder: $1/$2"

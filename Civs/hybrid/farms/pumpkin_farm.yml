@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PUMPKIN
 name: Pumpkin_Farm
 max: 1
 price: 300
@@ -11,10 +12,10 @@ pre-reqs:
 - member=town:city:metropolis
 
 build-reqs:
-- g:fencegate*4
-- g:fence*38
-- WATER*2
-- PUMPKIN*20
+- g:fencegate*1
+- g:fence*16
+- WATER*1
+- PUMPKIN*10
 
 towns:
 - town

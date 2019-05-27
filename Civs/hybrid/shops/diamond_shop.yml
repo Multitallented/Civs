@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIAMOND
 name: Diamond_Shop
 max: 1
 price: 400
@@ -15,7 +16,7 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - DIAMOND_BLOCK*1
 - g:wool*25

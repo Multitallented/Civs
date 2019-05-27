@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LAPIS_ORE
 name: Lapis_Mine
 max: 1
 price: 300
@@ -16,8 +17,8 @@ build-reqs:
 - CHEST*2
 - FURNACE*2
 - LAPIS_ORE*3
-- g:primary*90
-- g:secondary*12
+- g:primary*45
+- g:secondary*6
 
 towns:
 - hamlet
@@ -31,7 +32,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:LAPIS_LAZULI

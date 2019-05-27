@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -37,6 +38,7 @@ public class RegionTickThread implements Runnable {
         }
         for (Region region : destroyThese) {
             RegionManager.getInstance().removeRegion(region, true, true);
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
         }
     }
 }

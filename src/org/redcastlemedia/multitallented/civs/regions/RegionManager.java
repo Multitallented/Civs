@@ -14,8 +14,11 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
@@ -215,10 +218,10 @@ public class RegionManager {
                 regionConfig.set("sale", null);
             }
 
-            for (UUID uuid : region.getPeople().keySet()) {
-                if ("ally".equals(region.getPeople().get(uuid))) {
-                    continue;
-                }
+            for (UUID uuid : region.getRawPeople().keySet()) {
+//                if ("ally".equals(region.getPeople().get(uuid))) {
+//                    continue;
+//                }
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
             }
             regionConfig.set("type", region.getType());
@@ -423,6 +426,16 @@ public class RegionManager {
 
 
         Town town = TownManager.getInstance().getTownAt(location);
+        if (town != null && town.getGovernmentType() == GovernmentType.FEUDALISM) {
+            boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
+                    town.getRawPeople().get(player.getUniqueId()).contains("owner");
+            if (!isOwner) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                event.setCancelled(true);
+                return false;
+            }
+        }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {
             if (town == null) {
@@ -554,15 +567,18 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        addRegion(new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0));
+        Region region = new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0);
+        addRegion(region);
+        RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
+        Bukkit.getPluginManager().callEvent(regionCreatedEvent);
 
         return true;
     }
 
-    void adjustRadii(int[] radii, Location location, int x, int y, int z) {
-        int currentRelativeX = x - (int) location.getX();
-        int currentRelativeY = y - (int) location.getY();
-        int currentRelativeZ = z - (int) location.getZ();
+    void adjustRadii(int[] radii, Location location, double x, double y, double z) {
+        int currentRelativeX = (int) Math.round(x - location.getX());
+        int currentRelativeY = (int) Math.round(y - location.getY());
+        int currentRelativeZ = (int) Math.round(z - location.getZ());
         if (currentRelativeX < 0) {
             currentRelativeX = Math.abs(currentRelativeX);
             radii[2] = radii[2] > currentRelativeX ? radii[2] : currentRelativeX;

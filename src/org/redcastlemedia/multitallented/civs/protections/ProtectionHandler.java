@@ -20,12 +20,14 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -114,11 +116,12 @@ public class ProtectionHandler implements Listener {
         } else {
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
-                    region.getRawPeople().get(event.getPlayer().getUniqueId()).equals("owner")) {
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains("owner")) {
                 double salvage = regionType.getPrice() / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;
         }
     }
@@ -343,6 +346,7 @@ public class ProtectionHandler implements Listener {
             }
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
+                CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
             }
         }
     }
@@ -482,6 +486,7 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
+        Town town = TownManager.getInstance().getTownAt(location);
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
             if (!region.effects.keySet().contains(type)) {
@@ -491,12 +496,19 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
-            if (role == null || (role.contains("member") && !Util.equivalentLocations(location, region.getLocation()))) {
+            if (town != null) {
+                if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        town.getGovernmentType() == GovernmentType.ANARCHY) {
+                    role = "owner";
+                }
+            }
+            if (role == null || (role.contains("member") &&
+                    !Util.equivalentLocations(location, region.getLocation()) &&
+                    type.equals("block_break"))) {
                 return true;
             }
             return true;
         }
-        Town town = TownManager.getInstance().getTownAt(location);
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (!townType.getEffects().keySet().contains(type)) {
@@ -595,10 +607,26 @@ public class ProtectionHandler implements Listener {
         if (role == null) {
             return true;
         }
+        if (town != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    town.getGovernmentType() == GovernmentType.ANARCHY) {
+                role = "owner";
+            } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+                    (regionType.getGroups().contains("mine") ||
+                    regionType.getGroups().contains("quarry") ||
+                    regionType.getGroups().contains("farm") ||
+                    regionType.getGroups().contains("factory"))) {
+                role = "owner";
+            }
+        }
         if (role.contains("owner")) {
             return false;
         }
-        if (Util.equivalentLocations(location, region.getLocation())) {
+        if (Util.equivalentLocations(location, region.getLocation()) &&
+                type.equals("block_break")) {
             return true;
         }
         if (pRole == null || role.contains(pRole)) {

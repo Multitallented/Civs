@@ -160,7 +160,11 @@ public abstract class Menu implements Listener {
             humanEntity.closeInventory();
             if (lastHistory.length > 1) {
                 Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(lastHistory[1]));
-                humanEntity.openInventory(ViewMembersMenu.createMenu(civilian, region));
+                if (region == null) {
+                    clearHistory(humanEntity.getUniqueId());
+                } else {
+                    humanEntity.openInventory(ViewMembersMenu.createMenu(civilian, region));
+                }
             } else {
                 clearHistory(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(

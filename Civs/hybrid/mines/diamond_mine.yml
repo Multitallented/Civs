@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIAMOND_ORE
 name: Diamond_Mine
 max: 1
 price: 2000
@@ -19,15 +20,14 @@ build-reqs:
 - g:door*1
 - CHEST*2
 - FURNACE*2
-- g:primary*90
-- g:secondary*12
+- g:primary*45
+- g:secondary*6
 
 build-radius: 4
 
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:DIAMOND

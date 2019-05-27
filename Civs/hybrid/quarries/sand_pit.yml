@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SAND
 name: Sand_Pit
 price: 80
 groups:
@@ -8,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- SAND*48
+- SAND*24
 - FURNACE*2
 - CHEST*2
 

@@ -58,7 +58,8 @@ public class AddMemberCommand implements CivCommand {
             }
             return true;
         }
-        if (!Util.hasOverride(region, civilian) && player != null && !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+        if (!Util.hasOverride(region, civilian) && player != null &&
+                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;

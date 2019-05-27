@@ -8,7 +8,7 @@ groups:
 level: 4
 
 pre-reqs:
-- hamlet:population=10
+- hamlet:population=5
 
 build-reqs:
 - council_room:1

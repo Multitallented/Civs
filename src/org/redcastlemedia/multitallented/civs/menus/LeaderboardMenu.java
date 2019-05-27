@@ -104,7 +104,9 @@ public class LeaderboardMenu extends Menu {
             lore1.add("" + (i-9));
             isMeta.setLore(lore1);
             uuidList.add(player.getUniqueId());
-            isMeta.setOwningPlayer(player);
+            if (player.isOnline()) {
+                isMeta.setOwningPlayer(player);
+            }
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;

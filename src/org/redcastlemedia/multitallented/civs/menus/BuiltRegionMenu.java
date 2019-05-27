@@ -11,10 +11,14 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BuiltRegionMenu extends Menu {
     public static final String MENU_NAME = "CivsBuilt";
@@ -42,10 +46,10 @@ public class BuiltRegionMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName() == null) {
             return;
         }
-        String name = event.getCurrentItem().getItemMeta().getLore().get(0).replaceAll("§", "");
-        Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(name));
+        int index = Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(0));
+        Region region = ((ArrayList<Region>) getData(civilian.getUuid(), "regionList")).get(index);
         if (region == null) {
-            Civs.logger.severe("Unable to find region at " + name);
+            Civs.logger.severe("Unable to find region");
             return;
         }
         appendHistory(civilian.getUuid(), MENU_NAME);
@@ -56,33 +60,35 @@ public class BuiltRegionMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         List<Region> regions = new ArrayList<>();
         for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (region.getPeople().containsKey(civilian.getUuid()) &&
-                    !region.getPeople().get(civilian.getUuid()).equals("ally")) {
+            if (region.getRawPeople().containsKey(civilian.getUuid())) {
                 regions.add(region);
             }
         }
         Inventory inventory = Bukkit.createInventory(null, getInventorySize(regions.size()) + 9, MENU_NAME);
 
+        ArrayList<Region> regionList = new ArrayList<>();
         int i=9;
         for (Region region : regions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem cvItem = new CVItem(regionType.getMat(), 1);
+            CVItem cvItem = regionType.getShopIcon().clone();
             cvItem.setDisplayName(region.getType() + "@" + region.getLocation().getWorld().getName() + ":" +
                     (int) region.getLocation().getX() + "x, " +
                     (int) region.getLocation().getY() + "y, " +
                     (int) region.getLocation().getZ() + "z");
             List<String> lore = new ArrayList<>();
-            String id = region.getId();
-            StringBuilder stringBuilder = new StringBuilder();
-            for (char c : id.toCharArray()) {
-                stringBuilder.append(ChatColor.COLOR_CHAR);
-                stringBuilder.append(c);
+            regionList.add(region);
+            Town town = TownManager.getInstance().getTownAt(region.getLocation());
+            lore.add("" + (i - 9));
+            if (town != null) {
+                lore.add(town.getName());
             }
-            lore.add(stringBuilder.toString());
             cvItem.setLore(lore);
             inventory.setItem(i, cvItem.createItemStack());
             i++;
         }
+        Map<String, Object> data = new HashMap<>();
+        data.put("regionList", regionList);
+        setNewData(civilian.getUuid(), data);
 
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));

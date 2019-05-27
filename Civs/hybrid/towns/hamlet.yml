@@ -2,13 +2,13 @@ type: town
 icon: GLOWSTONE
 name: Village
 max: 1
-price: 4000
+price: 3000
 groups:
 - superregion
 level: 3
 
 pre-reqs:
-- settlement:population=5
+- settlement:population=1
 
 build-reqs:
 - council_room:1

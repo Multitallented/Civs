@@ -66,15 +66,18 @@ public class CivilianListener implements Listener {
         ConfigManager configManager = ConfigManager.getInstance();
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        outer: if (configManager.getUseStarterBook()) {
-            ItemStack stack = Util.createStarterBook(civilian.getLocale());
+        if (configManager.getUseStarterBook()) {
+            boolean hasStarterBook = false;
             for (ItemStack is : player.getInventory()) {
-                if (is == null || Util.isStarterBook(is)) {
-                    continue;
+                if (is != null && Util.isStarterBook(is)) {
+                    hasStarterBook = true;
+                    break;
                 }
-                break outer;
             }
-            player.getInventory().addItem(stack);
+            if (!hasStarterBook) {
+                ItemStack stack = Util.createStarterBook(civilian.getLocale());
+                player.getInventory().addItem(stack);
+            }
         }
     }
 
@@ -223,40 +226,44 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
+        boolean shouldCancel = shouldCancelBlockBreak(event.getBlock(), event.getPlayer());
+        if (shouldCancel) {
+            event.setCancelled(true);
+        }
+    }
+
+    public boolean shouldCancelBlockBreak(Block block, Player player) {
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(location);
         if (cvItem == null) {
-            return;
+            return false;
         }
         UUID uuid = null;
         if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
             uuid = UUID.fromString(cvItem.getLore().get(0));
         }
-        blockLogger.removeBlock(event.getBlock().getLocation());
-        Region region = RegionManager.getInstance()
-                .getRegionById(Region.blockLocationToString(event.getBlock().getLocation()));
-        if (region != null) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
-            if (cancelled) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            }
-        }
+        blockLogger.removeBlock(block.getLocation());
+//        Region region = RegionManager.getInstance()
+//                .getRegionById(Region.blockLocationToString(block.getLocation()));
+//        if (region != null) {
+//            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+//            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
+//            if (cancelled) {
+//                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+//                player.sendMessage(Civs.getPrefix() +
+//                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+//            }
+//        }
         cvItem.setQty(1);
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
-                uuid == null || cvItem.getMat() != event.getBlock().getType() ||
-                !uuid.equals(event.getPlayer().getUniqueId())) {
-            event.setCancelled(true);
-            event.getBlock().setType(Material.AIR);
+        if (player != null && (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
+                uuid == null || cvItem.getMat() != block.getType() ||
+                !uuid.equals(player.getUniqueId()))) {
+            block.setType(Material.AIR);
         } else {
-            event.setCancelled(true);
-            event.getBlock().setType(Material.AIR);
+            block.setType(Material.AIR);
             ItemStack itemStack = cvItem.createItemStack();
-            Player player = event.getPlayer();
-            int firstEmptyIndex = player.getInventory().firstEmpty();
+            int firstEmptyIndex = player == null ? -1 : player.getInventory().firstEmpty();
             if (firstEmptyIndex > -1) {
                 player.getInventory().setItem(firstEmptyIndex, itemStack);
             } else {
@@ -272,6 +279,7 @@ public class CivilianListener implements Listener {
             }
 //            location.getWorld().dropItemNaturally(location, itemStack);
         }
+        return true;
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)

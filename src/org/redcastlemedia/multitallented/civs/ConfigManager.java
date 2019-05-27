@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -92,6 +93,18 @@ public class ConfigManager {
 
     @Getter
     boolean disableUpkeepInUnloadedChunks;
+
+    @Getter
+    GovernmentType defaultGovernmentType;
+
+    @Getter
+    boolean allowChangingOfGovType;
+    @Getter
+    double maxTax;
+    @Getter
+    int daysBetweenVotes;
+    @Getter
+    double capitalismVotingCost;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -288,6 +301,16 @@ public class ConfigManager {
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
             disableUpkeepInUnloadedChunks = config.getBoolean("disable-upkeep-in-unloaded-chunks", true);
+            String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
+            if (defaultGovTypeString != null) {
+                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+            } else {
+                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+            }
+            allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
+            maxTax = config.getDouble("max-town-tax", 50);
+            daysBetweenVotes = config.getInt("days-between-elections", 7);
+            capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -313,9 +336,12 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        capitalismVotingCost = 200;
+        daysBetweenVotes = 7;
         disableUpkeepInUnloadedChunks = true;
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;
         priceMultiplier = 1;
@@ -367,6 +393,8 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
+        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        allowChangingOfGovType = false;
     }
 
     public static ConfigManager getInstance() {
