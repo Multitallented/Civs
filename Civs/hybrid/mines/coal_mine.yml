@@ -3,7 +3,7 @@ icon: CHEST
 shop-icon: COAL_ORE
 name: Coal_Mine
 max: 1
-price: 150
+price: 100
 groups:
 - mine
 level: 1
@@ -26,7 +26,7 @@ effects:
 - block_fire
 - conveyor:COAL
 
-period: 3600 #1 hour
+period: 600 #10 minutes
 upkeep:
   0:
     input:
