@@ -554,6 +554,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".ai-invite", "Hey, @$1 would you like to join my town?"));
             currentLanguage.put("ai-help",
                     localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
+            currentLanguage.put("town-tax-gov-type",
+                    localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
             languageMap.put(langKey, currentLanguage);
         }
     }

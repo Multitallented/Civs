@@ -26,6 +26,7 @@ en:
   widthdrawn-money: "You've withdrawn $$1 from $2's bank"
   town-tax: "Town taxes: $1"
   town-tax-desc: "Set tax using /cv tax $1 amount"
+  town-tax-gov-type: "$1 can't set taxes"
   town-tax-set: "$1 tax set to $2"
   tax-too-high: "You can't set taxes higher than $1"
   town-assist-price: "Your town bank paid $1 to thank you for the construction of your $2"
