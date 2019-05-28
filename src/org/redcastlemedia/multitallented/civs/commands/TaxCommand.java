@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,6 +8,8 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -43,8 +42,15 @@ public class TaxCommand implements CivCommand {
                 town.getGovernmentType() == GovernmentType.COOPERATIVE ||
                 town.getGovernmentType() == GovernmentType.COMMUNISM) {
 
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "no-permission"));
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government != null) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "town-tax-gov-type").replace("$1", government.getNames().get(civilian.getLocale())));
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "no-permission"));
+            }
+
             return true;
         }
 

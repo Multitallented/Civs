@@ -98,7 +98,8 @@ public final class OwnershipUtil {
                     "invalid-target"));
             return 0;
         }
-        if (amount > town.getBankAccount()) {
+        boolean isTax = "tax".equals(args[0]);
+        if (!isTax && amount > town.getBankAccount()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "not-enough-money").replace("$1", args[2]));
             return 0;
