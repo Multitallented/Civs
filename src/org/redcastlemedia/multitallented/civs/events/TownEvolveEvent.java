@@ -10,6 +10,9 @@ import lombok.Getter;
 @Getter
 public class TownEvolveEvent extends Event {
     private static final HandlerList hList = new HandlerList();
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
 
     private final Town town;
     private final TownType oldTownType;

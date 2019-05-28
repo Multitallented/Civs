@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: ENDER_PEARL
 name: Ender_Pearl_Farm
 max: 1
 price: 1000
@@ -17,10 +18,8 @@ towns:
 build-reqs:
 - END_STONE*9,END_STONE_BRICKS*9
 - g:log*4
-- g:wood*20
-- IRON_BARS*8
-- g:fence*19
-- g:fencegate*1
+- g:wood*10
+- IRON_BARS*10
 
 build-radius: 3
 effects:

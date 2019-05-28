@@ -18,6 +18,7 @@ town-grace-period: 43200 #12 hours
 #before reducing power
 explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
+max-town-tax: 50.0
 use-starter-book: true
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
@@ -100,7 +101,7 @@ item-groups:
 groups:
   shop: 3
   quarry: 12
-  housing: 2
+  housing: 3
   superregion: 1
 
 #region port configs
@@ -120,3 +121,8 @@ tutorial:
   use-tutorial: true
   use-guide: true
   url: "https://youtu.be/pa_rfrpUAS8"
+
+allow-changing-gov-type: true
+default-gov-type: "DICTATORSHIP"
+# for governments that use voting, for how long should a player be elected?
+days-between-elections: 7

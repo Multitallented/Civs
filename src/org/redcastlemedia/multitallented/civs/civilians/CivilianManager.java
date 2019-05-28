@@ -66,6 +66,7 @@ public class CivilianManager {
         } catch (NullPointerException npe) {
 
         }
+        listNeedsToBeSorted = true;
         sortCivilians();
     }
 
@@ -92,7 +93,8 @@ public class CivilianManager {
         if (!listNeedsToBeSorted) {
             return;
         }
-        Collections.sort(sortedCivilians, new Comparator<Civilian>() {
+        listNeedsToBeSorted = false;
+        sortedCivilians.sort(new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {
                 if (o1.getPoints() == o2.getPoints()) {

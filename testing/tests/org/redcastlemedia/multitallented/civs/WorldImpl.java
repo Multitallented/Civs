@@ -44,20 +44,11 @@ public class WorldImpl implements World {
 
     @Override
     public Block getBlockAt(Location location) {
-        double x = location.getX();
-        double z = location.getZ();
-        if (x < 0) {
-            x = Math.ceil(location.getX());
-        } else {
-            x = Math.floor(location.getX());
-        }
-        if (z < 0) {
-            z = Math.ceil(location.getZ());
-        } else {
-            z = Math.floor(location.getZ());
-        }
+        double x = Math.floor(location.getX());
+        double z = Math.floor(location.getZ());
         String retrievalString = (int) x +":"+ (int) Math.floor(location.getY())+":"+ (int) z;
-        return blockMap.get(retrievalString);
+        Block block = blockMap.get(retrievalString);
+        return block == null ? TestUtil.createBlock(Material.AIR, location) : block;
     }
 
     @Override

@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -42,6 +43,20 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
+    }
+
+    @Test
+    public void governmentShouldGetProperBuffString() {
+        HashSet<String> groups = new HashSet<>();
+        groups.add("mine");
+        HashSet<String> regions = new HashSet<>();
+        regions.add("inn");
+
+        GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
+                groups, regions);
+        Government government = new Government(GovernmentType.CAPITALISM,
+                null, null, null, null);
+        assertEquals("mine, inn", government.getApplyString(buff));
     }
 
     @Test
@@ -270,7 +285,7 @@ public class TownTests {
         effects.add("deny_mob_spawn");
         effects.add("block_break");
         config.set("effects", effects);
-        config.set("power", 500);
+        config.set("power", 0);
         config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }

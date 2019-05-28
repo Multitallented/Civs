@@ -93,7 +93,7 @@ public class RegionActionMenu extends Menu {
             if (Civs.econ != null && Civs.econ.has(player, region.getForSale())) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "region-bought").replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                        .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
 
                 Civs.econ.withdrawPlayer(player, region.getForSale());
                 Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(region.getPeople().keySet().iterator().next()), region.getForSale());
@@ -152,7 +152,7 @@ public class RegionActionMenu extends Menu {
 
         //0 Icon
         {
-            CVItem cvItem = regionType.clone();
+            CVItem cvItem = regionType.getShopIcon().clone();
             lore = new ArrayList<>(Util.textWrap("", regionType.getDescription(civilian.getLocale())));
             cvItem.setLore(lore);
             inventory.setItem(0, cvItem.createItemStack());
@@ -160,7 +160,7 @@ public class RegionActionMenu extends Menu {
 
         //1 Region Type button
         {
-            CVItem cvItemType = regionType.clone();
+            CVItem cvItemType = regionType.getShopIcon().clone();
             cvItemType.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "region-type"));
             lore = new ArrayList<>();
@@ -221,7 +221,7 @@ public class RegionActionMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
         //9 People
         if (Util.hasOverride(region, civilian, town) || (region.getPeople().get(civilian.getUuid()) != null &&
-                region.getPeople().get(civilian.getUuid()).equals("owner"))) {
+                region.getPeople().get(civilian.getUuid()).contains("owner"))) {
             CVItem skull = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "view-members"));
             inventory.setItem(9, skull.createItemStack());
@@ -231,7 +231,13 @@ public class RegionActionMenu extends Menu {
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());
 
-            if (region.getRawPeople().keySet().size() == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
+            int personCount = 0;
+            for (String role : region.getRawPeople().values()) {
+                if (role.contains("owner") || role.contains("member")) {
+                    personCount++;
+                }
+            }
+            if (personCount == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY)) {
                 //11 Set sale
                 CVItem emeraldBlock = CVItem.createCVItemFromString("EMERALD_BLOCK");
                 emeraldBlock.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -240,7 +246,7 @@ public class RegionActionMenu extends Menu {
                     lore = new ArrayList<>();
                     lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                         .replace("$1", region.getType())
-                        .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                        .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
                     emeraldBlock.setLore(lore);
                 }
                 inventory.setItem(11, emeraldBlock.createItemStack());
@@ -255,12 +261,13 @@ public class RegionActionMenu extends Menu {
             }
         }
 
-        if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1) {
+        if (!region.getRawPeople().containsKey(civilian.getUuid()) && region.getForSale() != -1 &&
+                civilian.isAtMax(regionType) == null) {
             //13 Buy region button
             CVItem emerald = CVItem.createCVItemFromString("EMERALD");
             emerald.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "buy-region").replace("$1", region.getType())
-                    .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale())));
+                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
             inventory.setItem(13, emerald.createItemStack());
         }
 

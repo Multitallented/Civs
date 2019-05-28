@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: OAK_PLANKS
 name: Shelter
 min: 1
 max: 1

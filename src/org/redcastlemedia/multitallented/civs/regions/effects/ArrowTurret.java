@@ -31,35 +31,31 @@ public class ArrowTurret implements Listener {
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
 
     //Shoot arrows at mobs
-//    @EventHandler
-//    public void onRegionTickEvent(RegionTickEvent event) {
-//        if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs()) {
-//            return;
-//        }
-//        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
-//                !event.getRegion().getLocation().getChunk().isLoaded()) {
-//            return;
-//        }
-//        Region region = event.getRegion();
-//        if (!region.getEffects().containsKey(ArrowTurret.KEY)) {
-//            return;
-//        }
-//        RegionType regionType = event.getRegionType();
-//        Location location = region.getLocation();
-//
-//        for (Entity e : location.getWorld().getNearbyEntities(location, regionType.getEffectRadius(),
-//                regionType.getEffectRadius(), regionType.getEffectRadius())) {
-//            if ((!(e instanceof Monster) && !(e instanceof Phantom))) {
-//                continue;
-//            }
-//            LivingEntity monster = (LivingEntity) e;
-//            if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
-//                continue;
-//            }
-//            ArrowTurret.shootArrow(region, monster, region.getEffects().get(ArrowTurret.KEY), false);
-//            break;
-//        }
-//    }
+    @EventHandler
+    public void onRegionTickEvent(RegionTickEvent event) {
+        if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs()) {
+            return;
+        }
+        Region region = event.getRegion();
+        if (!region.getEffects().containsKey(ArrowTurret.KEY)) {
+            return;
+        }
+        RegionType regionType = event.getRegionType();
+        Location location = region.getLocation();
+
+        for (Entity e : location.getWorld().getNearbyEntities(location, regionType.getEffectRadius(),
+                regionType.getEffectRadius(), regionType.getEffectRadius())) {
+            if ((!(e instanceof Monster) && !(e instanceof Phantom))) {
+                continue;
+            }
+            LivingEntity monster = (LivingEntity) e;
+            if (monster.getLocation().distance(location) > regionType.getEffectRadius()) {
+                continue;
+            }
+            ArrowTurret.shootArrow(region, monster, region.getEffects().get(ArrowTurret.KEY), false);
+            break;
+        }
+    }
 
     public static void shootArrow(Region r, UUID uuid, String vars, boolean runUpkeep) {
         shootArrow(r, Bukkit.getPlayer(uuid), vars, runUpkeep);

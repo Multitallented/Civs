@@ -92,13 +92,15 @@ public class RegionListMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
 
         for (String regionTypeName : regionTypeNames.keySet()) {
-            CVItem civItem = ItemManager.getInstance().getItemType(regionTypeName);
+            CivItem civItem = ItemManager.getInstance().getItemType(regionTypeName);
             if (civItem == null) {
-                civItem = new CVItem(Material.CHEST, 1, 0, regionTypeName);
+                CVItem cvItem = new CVItem(Material.CHEST, regionTypeNames.get(regionTypeName), 0, regionTypeName);
+                inventory.setItem(index, cvItem.createItemStack());
+            } else {
+                ItemStack is = civItem.getShopIcon().clone().createItemStack();
+                is.setAmount(regionTypeNames.get(regionTypeName));
+                inventory.setItem(index, is);
             }
-            ItemStack is = civItem.createItemStack();
-            is.setAmount(regionTypeNames.get(regionTypeName));
-            inventory.setItem(index, is);
             index++;
         }
 

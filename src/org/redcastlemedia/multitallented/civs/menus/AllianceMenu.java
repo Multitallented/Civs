@@ -80,7 +80,7 @@ public class AllianceMenu extends Menu {
         for (String townName : alliance.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
             if (town.getPeople().containsKey(civilian.getUuid()) &&
-                    town.getPeople().get(civilian.getUuid()).equals("owner")) {
+                    town.getPeople().get(civilian.getUuid()).contains("owner")) {
                 isOwnerOfTown = true;
                 break;
             }

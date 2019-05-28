@@ -92,11 +92,6 @@ public class ConveyorEffect implements Listener {
             loc = cachePoints.get(r);
         }
 
-        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
-                !l.getChunk().isLoaded()) {
-            return;
-        }
-
         Chest chest = null;
         try {
             chest = (Chest) l.getBlock().getState();
@@ -163,9 +158,6 @@ public class ConveyorEffect implements Listener {
                 return;
             }
             if (!sm.getLocation().getChunk().isLoaded()) {
-                if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks()) {
-                    return;
-                }
                 try {
                     Chest returnChest = (Chest) r.getLocation().getBlock().getState();
                     returnChest.getInventory().addItem(new ItemStack(Material.CHEST_MINECART, 1));

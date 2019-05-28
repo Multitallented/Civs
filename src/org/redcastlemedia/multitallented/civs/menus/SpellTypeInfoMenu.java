@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -64,14 +65,22 @@ public class SpellTypeInfoMenu extends Menu {
         //1 Price
         String itemName = spellType.getProcessedName();
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
-        boolean isAtMax = civilian.isAtMax(spellType);
-        if (hasShopPerms && !isAtMax) {
+        String maxLimit = civilian.isAtMax(spellType);
+        lore = new ArrayList<>();
+        if (hasShopPerms && maxLimit == null) {
             CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
-            lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + spellType.getPrice());
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());
+        } else if (hasShopPerms) {
+            CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
+            priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
+            int max = maxLimit.equals(spellType.getProcessedName()) ? spellType.getCivMax() :
+                    ConfigManager.getInstance().getGroups().get(maxLimit);
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "max-item")
+                    .replace("$1", maxLimit)
+                    .replace("$2", "" + max));
         }
 
 

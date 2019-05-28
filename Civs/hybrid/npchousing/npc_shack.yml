@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: YELLOW_BED
 name: NPC_Shack
 price: 100
 groups:
@@ -10,7 +11,7 @@ level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
-- shack:built=1
+- baseshack:built=1
 
 build-reqs:
 - CHEST*2
@@ -20,9 +21,9 @@ build-reqs:
 - g:sign*1
 - FURNACE
 - CRAFTING_TABLE
-- g:roof*38
-- g:secondary*16
-- g:primary*60
+- g:roof*16
+- g:secondary*8
+- g:primary*30
 
 towns:
 - settlement

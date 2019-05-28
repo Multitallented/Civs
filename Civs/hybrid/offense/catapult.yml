@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: Catapult
 price: 150
 groups:
@@ -8,7 +9,7 @@ level: 1
 
 build-reqs:
 - OBSIDIAN*16
-- IRON_BARS*16
+- IRON_BARS*8
 - REDSTONE_BLOCK*2
 - TNT*4
 

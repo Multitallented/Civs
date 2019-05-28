@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: IRON_PICKAXE
 name: Iron_Works
 price: 150
 groups:
@@ -13,10 +14,10 @@ build-reqs:
 - g:window*2
 - g:door*1
 - FURNACE*2
-- g:roof*30
+- g:roof*15
 - IRON_BLOCK*2
-- g:primary*80
-- g:secondary*20
+- g:primary*40
+- g:secondary*10
 
 build-radius: 3
 

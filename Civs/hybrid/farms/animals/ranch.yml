@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: COW_SPAWN_EGG
 name: Ranch
 max: 1
 price: 10
@@ -8,8 +9,8 @@ groups:
 level: 1
 
 build-reqs:
-- g:fencegate*2
-- g:fence*32
+- g:fencegate*1
+- g:fence*16
 - WATER*1
 - CHEST*2
 - HAY_BLOCK*2

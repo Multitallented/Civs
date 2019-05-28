@@ -1,0 +1,34 @@
+##### BUILT IN #####
+# can't invite players who are members of non-allied towns
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+
+icon: "GRASS_BLOCK"
+enabled: true
+name:
+  en: "Tribalism"
+  fr: "Tribalisme"
+  ru: "Трайбализм"
+  de: "Tribalismus"
+  pt_br: "Tribalismo"
+  es: "Tribalismo"
+description:
+  en: "Dictatorship + Members can't join non-allied towns."
+  es: "Dictadura + Los miembros no pueden unirse a las ciudades no aliadas."
+  pt_br: "Ditadura + Os membros não podem participar de cidades não aliadas."
+  de: "Diktatur + Mitglieder können nicht verbündeten Städten nicht beitreten."
+  ru: "диктатура + Члены не могут присоединиться к не союзным городам."
+  fr: "Dictature + Les membres ne peuvent pas rejoindre des villes non alliées."
+buffs:
+  max_power:
+    percent: 10
+  power:
+    percent: 10
+  cooldown:
+    percent: 10
+    groups:
+      - utility
+      - defense
+    regions:
+      - inn

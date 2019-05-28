@@ -1,0 +1,38 @@
+##### BUILT IN #####
+# whoever has the most kill-points and most valuable buildings in town is the town owner
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+
+icon: "PURPLE_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Meritocracy"
+  fr: "Méritocratie"
+  es: "Meritocracia"
+  ru: "высокоинтеллектуальные люди"
+  de: "Meritokratie"
+  pt_br: "Meritocracia"
+description:
+  en: "Dictatorship + Whoever has the best buildings and most kill points becomes the town owner."
+  es: "Dictadura + Quien tenga los mejores edificios y la mayoría de los puntos de muerte se convierte en el dueño de la ciudad."
+  pt_br: "Ditadura + Quem quer que tenha os melhores prédios e a maioria dos pontos de morte se torna o dono da cidade."
+  de: "Diktatur + Wer die besten Gebäude und die meisten Abschusspunkte hat, wird Stadtbesitzer."
+  ru: "диктатура + Кто бы ни имел лучшие здания и большинство очков убийства, становится владельцем города."
+  fr: "Dictature + Quiconque a les meilleurs bâtiments et la plupart des points de destruction devient le propriétaire de la ville."
+buffs:
+  max_power:
+    percent: 15
+  power:
+    percent: 5
+  cooldown:
+    percent: 15
+    groups:
+      - farm
+      - mine
+      - quarry
+      - factory
+      - utility
+      - defense
+    regions:
+      - inn

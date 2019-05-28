@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -36,10 +37,13 @@ public class ForSaleEffect implements Listener {
     public static void sendTitleForSale(Region region, RegionType regionType, Player player) {
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.isAtMax(regionType) != null) {
+            return;
+        }
         String title = Civs.NAME;
         String subTitle = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", regionType.getName())
-                .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(region.getForSale()));
+                .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()));
         player.sendTitle(title, subTitle, 5, 40, 5);
     }
 }

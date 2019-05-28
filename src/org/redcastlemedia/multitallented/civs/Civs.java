@@ -9,9 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.civs.ai.AIListener;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -56,6 +58,7 @@ public class Civs extends JavaPlugin {
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new ItemManager();
         new TutorialManager();
+        new GovernmentManager();
         new BlockLogger();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();
@@ -153,6 +156,10 @@ public class Civs extends JavaPlugin {
         commandList.put("reset", new ResetCommand());
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
+        commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("tax", new TaxCommand());
+        commandList.put("colony", new ColonyCommand());
+        commandList.put("newday", new DayCommand());
     }
 
     private void initListeners() {
@@ -188,29 +195,32 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerProfileMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
-//        Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
-//        Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
-//        Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new ConveyorEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
+        Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
+        Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new ConveyorEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), this);
         Bukkit.getPluginManager().registerEvents(new EvolveEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new AntiCampEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiCampEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SiegeEffect(), this);
         Bukkit.getPluginManager().registerEvents(new IntruderEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new SpawnEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnEffect(), this);
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), this);
-//        Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
         Bukkit.getPluginManager().registerEvents(new StartTutorialMenu(), this);
         Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
-//        Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PermissionEffect(), this);
         Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
+//        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
     }

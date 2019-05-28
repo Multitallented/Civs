@@ -18,16 +18,16 @@ towns:
 
 build-radius: 7 #15x15x15
 build-reqs:
-- IRON_BARS*24
+- IRON_BARS*12
 - g:door*7
 - g:sign*6
 - g:bed*6
 - CHEST*6
 - FURNACE*6
 - CRAFTING_TABLE*6
-- g:roof*150
-- g:primary*500
-- g:secondary*90
+- g:roof*75
+- g:primary*250
+- g:secondary*45
 
 effects:
 - block_break

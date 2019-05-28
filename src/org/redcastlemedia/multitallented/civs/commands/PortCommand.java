@@ -101,8 +101,8 @@ public class PortCommand implements CivCommand {
                 boolean privatePort = r.getEffects().get("port") != null &&
                         !r.getEffects().get("port").equals("");
                 if (!r.getPeople().containsKey(player.getUniqueId()) || (privatePort &&
-                        !r.getPeople().get(player.getUniqueId()).equals("member") &&
-                        !r.getPeople().get(player.getUniqueId()).equals("owner"))) {
+                        !r.getPeople().get(player.getUniqueId()).contains("member") &&
+                        !r.getPeople().get(player.getUniqueId()).contains("owner"))) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                             "not-member-port"));
                     return true;

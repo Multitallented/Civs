@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: AZURE_BLUET
 name: Flower_Shop
 max: 1
 price: 10
@@ -8,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- g:fence*12
+- g:fence*6
 - CHEST
 - g:wool*20
 - DANDELION*2,POPPY*2,BLUE_ORCHID*2,ALLIUM*2,AZURE_BLUET*2,RED_TULIP*2,ORANGE_TULIP*2,WHITE_TULIP*2,PINK_TULIP*2,OXEYE_DAISY*2
@@ -30,6 +31,11 @@ upkeep:
     input:
     - DANDELION*2,POPPY*2,BLUE_ORCHID*2,ALLIUM*2,AZURE_BLUET*2,RED_TULIP*2,ORANGE_TULIP*2,WHITE_TULIP*2,PINK_TULIP*2,OXEYE_DAISY*2
     payout: 2 #$288 per day
+  2:
+    input:
+      - DEAD_BUSH*2,FERN*2,LARGE_FERN*2,GRASS*2,TALL_GRASS*2
+      - LILAC*2,ROSE_BUSH*2,PEONY*2,SUNFLOWER*2
+    payout: 1 #144 per day
 
 description:
   en: "Sells flowers to the server for $288 per day"

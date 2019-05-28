@@ -4,14 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -123,10 +127,25 @@ public class TownListMenu extends Menu {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             CVItem cvItem1 = townType.clone();
+//            CVItem cycleItem = null;
+//            boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();
+//            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+//            if (govTypesAllowed && government != null) {
+//                cycleItem = new CVItem(government.getIcon(civilian.getLocale()).getMat(), 1);
+//            }
             cvItem1.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
+
+//            if (govTypesAllowed && government != null) {
+//                ArrayList<CVItem> cycleList = new ArrayList<>();
+//                cycleItem.setDisplayName(town.getName());
+//                cycleItem.setLore(lore);
+//                cycleList.add(cvItem1);
+//                cycleList.add(cycleItem);
+//                Menu.addCycleItems(uuid, inventory, i, cycleList);
+//            }
             i++;
         }
 

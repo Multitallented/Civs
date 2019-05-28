@@ -156,11 +156,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         ArrayList<Chest> availableItems = new ArrayList<>();
 
 
-        if (ConfigManager.getInstance().isDisableUpkeepInUnloadedChunks() &&
-                !l.getChunk().isLoaded()) {
-            return;
-        }
-
         if (rt == null) {
             return;
         }

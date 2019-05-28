@@ -119,7 +119,9 @@ public class ListAllPlayersMenu extends Menu {
             lore1.add("" + (i-9));
             uuidList.add(player.getUniqueId());
             isMeta.setLore(lore1);
-            isMeta.setOwningPlayer(player);
+            if (player.isOnline()) {
+                isMeta.setOwningPlayer(player);
+            }
             is.setItemMeta(isMeta);
             inventory.setItem(i, is);
             i++;

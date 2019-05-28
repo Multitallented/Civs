@@ -65,7 +65,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
         }
         Region region = RegionManager.getInstance().getRegionAt(id);
         if (region == null || !region.getPeople().containsKey(player.getUniqueId())
-                || !region.getPeople().get(player.getUniqueId()).equals("owner")) {
+                || !region.getPeople().get(player.getUniqueId()).contains("owner")) {
             player.sendMessage(Civs.getPrefix() + "You must be an owner to use this."); //TODO localize
             return;
         }

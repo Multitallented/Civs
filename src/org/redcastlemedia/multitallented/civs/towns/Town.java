@@ -35,6 +35,30 @@ public class Town {
     private final int Y_LEVEL = 80;
     private int villagers;
 
+    @Getter
+    @Setter
+    private double bankAccount;
+
+    @Getter
+    @Setter
+    private double taxes;
+
+    @Getter
+    @Setter
+    private GovernmentType governmentType;
+
+    @Getter
+    @Setter
+    private String colonialTown;
+
+    @Getter
+    @Setter
+    private long lastVote = 0;
+
+    @Getter
+    @Setter
+    private HashMap<UUID, HashMap<UUID, Integer>> votes = new HashMap<>();
+
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
         this.name = name;
@@ -46,6 +70,8 @@ public class Town {
         this.housing = housing;
         this.villagers = villagers;
         this.lastDisable = lastDisable;
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
+        governmentType = GovernmentType.valueOf(townType.getDefaultGovType());
     }
 
     public long getLastDisable() {
@@ -93,7 +119,7 @@ public class Town {
         if (allies.isEmpty()) {
             return people;
         }
-        HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
+        HashMap<UUID, String> newPeople = new HashMap<>(people);
         for (Alliance alliance : allies) {
             for (String townName : alliance.getMembers()) {
                 if (townName.equals(name)) {
@@ -164,7 +190,13 @@ public class Town {
     }
 
     public int getPopulation() {
-        return people.size() + getVillagers();
+        int memberCount = 0;
+        for (String role : people.values()) {
+            if (!role.contains("ally")) {
+                memberCount++;
+            }
+        }
+        return memberCount + getVillagers();
     }
     private int x = 0;
     private int z = 0;
