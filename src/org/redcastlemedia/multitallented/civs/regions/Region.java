@@ -56,6 +56,10 @@ public class Region {
 
     @Getter
     @Setter
+    private long lastActive = 0;
+
+    @Getter
+    @Setter
     private double forSale = -1;
 
     public Region(String type,

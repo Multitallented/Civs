@@ -230,6 +230,11 @@ public class RegionManager {
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
+            if (region.getLastActive() > 0) {
+                regionConfig.set("last-active", region.getLastActive());
+            } else {
+                regionConfig.set("last-active", null);
+            }
             regionConfig.save(regionFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
@@ -268,6 +273,10 @@ public class RegionManager {
             double forSale = regionConfig.getDouble("sale", -1);
             if (forSale != -1) {
                 region.setForSale(forSale);
+            }
+            long lastActive = regionConfig.getLong("last-active", -1);
+            if (lastActive > -1) {
+                region.setLastActive(lastActive);
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());

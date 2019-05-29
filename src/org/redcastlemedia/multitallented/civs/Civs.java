@@ -220,6 +220,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
         Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
@@ -256,7 +257,8 @@ public class Civs extends JavaPlugin {
     public static Permission getPerm() {
         return perm;
     }
-    public static String getPrefix() { return ConfigManager.getInstance().civsChatPrefix + " ";
+    public static String getPrefix() {
+        return ConfigManager.getInstance().civsChatPrefix + " ";
     }
     public static synchronized Civs getInstance() {
         return civs;
