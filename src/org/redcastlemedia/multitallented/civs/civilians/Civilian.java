@@ -281,7 +281,7 @@ public class Civilian {
             if (displayName == null) {
                 continue;
             }
-            displayName = displayName.replace("Civs ", "").toLowerCase();
+            displayName = displayName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
             CivItem item = itemManager.getItemType(displayName);
             if (item == null) {
                 continue;
@@ -325,7 +325,7 @@ public class Civilian {
                 continue;
             }
             CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
-                    .replace("Civs ", "").toLowerCase());
+                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
             if (!civItem.getProcessedName().equalsIgnoreCase(name) &&
                     !civItem.getGroups().contains(name)) {
                 continue;

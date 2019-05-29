@@ -117,6 +117,8 @@ tutorial:
   url: "https://youtu.be/pa_rfrpUAS8"
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
+civs-chat-prefix: "@{GREEN}[Civs]"
+civs-item-prefix: "Civs"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"

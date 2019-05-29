@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -353,7 +354,7 @@ public class RegionManager {
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
-        regionTypeName = regionTypeName.replace("Civs ", "");
+        regionTypeName = regionTypeName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "");
 
         RegionType regionType;
         try {

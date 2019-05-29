@@ -29,7 +29,7 @@ public class TownTypeInfoMenu extends Menu {
         event.setCancelled(true);
         ItemManager itemManager = ItemManager.getInstance();
         String townTypeName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+                .getItemMeta().getDisplayName().replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         TownType townType = (TownType) itemManager.getItemType(townTypeName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 

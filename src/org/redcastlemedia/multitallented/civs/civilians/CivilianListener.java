@@ -137,11 +137,11 @@ public class CivilianListener implements Listener {
         if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
                 item.getItemStack().getItemMeta() != null &&
                 item.getItemStack().getItemMeta().getDisplayName() != null &&
-                item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
+                item.getItemStack().getItemMeta().getDisplayName().contains(ConfigManager.getInstance().getCivsItemPrefix())) {
             item.remove();
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             String itemName = item.getItemStack().getItemMeta().getDisplayName()
-                    .replace("Civs ", "").toLowerCase();
+                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
             if (civilian.getStashItems().containsKey(itemName)) {
                 civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
             } else {
@@ -157,7 +157,8 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        String itemTypeName = is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
@@ -170,7 +171,8 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        String itemTypeName = is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
@@ -289,7 +291,8 @@ public class CivilianListener implements Listener {
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);

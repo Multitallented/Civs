@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -56,7 +57,7 @@ public class RegionListMenu extends Menu {
         }
 
         String regionTypeName = event.getCurrentItem().getItemMeta().getDisplayName()
-                .replace("Civs ", "").toLowerCase();
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
         event.getWhoClicked().closeInventory();
         event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));

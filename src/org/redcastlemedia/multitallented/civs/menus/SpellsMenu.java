@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -74,7 +75,8 @@ public class SpellsMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName()
+                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
             civItem.setQty(is.getAmount());
             if (stashItems.containsKey(civItem.getProcessedName())) {
                 stashItems.put(civItem.getProcessedName(),
