@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -243,7 +244,7 @@ public class CivilianListener implements Listener {
         }
         UUID uuid = null;
         if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
-            uuid = UUID.fromString(cvItem.getLore().get(0));
+            uuid = UUID.fromString(ChatColor.stripColor(cvItem.getLore().get(0)));
         }
         blockLogger.removeBlock(block.getLocation());
 //        Region region = RegionManager.getInstance()

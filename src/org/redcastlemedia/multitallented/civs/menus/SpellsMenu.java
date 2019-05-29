@@ -33,8 +33,7 @@ public class SpellsMenu extends Menu {
         if (iconStack == null || !iconStack.hasItemMeta()) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance()
-                .getCivilian(UUID.fromString(iconStack.getItemMeta().getLore().get(0)));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
 
         if (clickedStack.getItemMeta().getDisplayName().equals(
