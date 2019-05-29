@@ -102,6 +102,10 @@ public class ConfigManager {
     int daysBetweenVotes;
     @Getter
     double capitalismVotingCost;
+    @Getter
+    String topGuideSpacer;
+    @Getter
+    String bottomGuideSpacer;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -307,6 +311,8 @@ public class ConfigManager {
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
+            topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
+            topGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
