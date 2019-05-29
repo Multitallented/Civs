@@ -34,6 +34,13 @@ public class TownManager {
         townManager = this;
     }
 
+    public void reload() {
+        towns.clear();
+        sortedTowns.clear();
+        invites.clear();
+        loadAllTowns();
+    }
+
     public void loadAllTowns() {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {

@@ -160,6 +160,7 @@ public class Civs extends JavaPlugin {
         commandList.put("tax", new TaxCommand());
         commandList.put("colony", new ColonyCommand());
         commandList.put("newday", new DayCommand());
+        commandList.put("reload", new ReloadCommand());
     }
 
     private void initListeners() {

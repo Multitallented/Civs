@@ -37,6 +37,12 @@ public class CivilianManager {
         loadAllCivilians();
     }
 
+    public void reload() {
+        civilians.clear();
+        sortedCivilians.clear();
+        loadAllCivilians();
+    }
+
     protected CivilianManager(boolean load) {
         civilianManager = this;
     }

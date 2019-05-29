@@ -31,10 +31,14 @@ public class CommonScheduler implements Runnable {
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
+    public static boolean run = true;
 
     @Override
     public void run() {
         try {
+            if (!run) {
+                return;
+            }
             depreciateKarma();
             StructureUtil.cleanUpExpiredBoundingBoxes();
 
