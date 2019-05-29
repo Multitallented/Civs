@@ -167,7 +167,10 @@ public class RegionManager {
     }
 
     private void removeRegion(Region region) {
-        regions.get(region.getLocation().getWorld().getUID()).remove(region);
+        for (UUID uuid : regions.keySet()) {
+            regions.get(uuid).remove(region);
+        }
+//        regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();
         if (civs == null) {
