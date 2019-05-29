@@ -94,6 +94,9 @@ public class MainMenu extends Menu {
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
         }
+        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+            return TutorialChoosePathMenu.createMenu(civilian);
+        }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         String locale = civilian.getLocale();

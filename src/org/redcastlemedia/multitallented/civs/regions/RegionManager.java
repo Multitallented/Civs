@@ -46,6 +46,10 @@ public class RegionManager {
         regionManager = this;
     }
 
+    public void reload() {
+        loadAllRegions();
+    }
+
     public void addRegionCreatedListener(String key, RegionCreatedListener listener) {
         regionCreatedListenerHashMap.put(key, listener);
     }
@@ -75,6 +79,7 @@ public class RegionManager {
     }
     public void loadAllRegions() {
         regions.clear();
+        regionLocations.clear();
         Civs civs = Civs.getInstance();
         File regionFolder = new File(civs.getDataFolder(), "regions");
         if (!regionFolder.exists()) {
