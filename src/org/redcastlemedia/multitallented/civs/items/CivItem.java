@@ -49,7 +49,7 @@ public abstract class CivItem extends CVItem {
         return processItemName(getDisplayName());
     }
     public static String processItemName(String input) {
-        return input.replace("Civs ", "").toLowerCase();
+        return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
     }
     public String getDescription(String locale) {
         String localizedDescription = description.get(locale);
@@ -79,12 +79,12 @@ public abstract class CivItem extends CVItem {
                    List<String> groups,
                    boolean isInShop,
                    int level) {
-        super(material, 1, 100, "Civs " + name);
+        super(material, 1, 100, ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.isPlaceable = isPlaceable;
         this.shopIcon = new CVItem(shopIcon.getMat(),
                 shopIcon.getQty(),
                 (int) shopIcon.getChance(),
-                "Civs " + name);
+                ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;

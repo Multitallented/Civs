@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -166,7 +167,10 @@ public class RegionManager {
     }
 
     private void removeRegion(Region region) {
-        regions.get(region.getLocation().getWorld().getUID()).remove(region);
+        for (UUID uuid : regions.keySet()) {
+            regions.get(uuid).remove(region);
+        }
+//        regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();
         if (civs == null) {
@@ -226,6 +230,11 @@ public class RegionManager {
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
+            if (region.getLastActive() > 0) {
+                regionConfig.set("last-active", region.getLastActive());
+            } else {
+                regionConfig.set("last-active", null);
+            }
             regionConfig.save(regionFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
@@ -264,6 +273,10 @@ public class RegionManager {
             double forSale = regionConfig.getDouble("sale", -1);
             if (forSale != -1) {
                 region.setForSale(forSale);
+            }
+            long lastActive = regionConfig.getLong("last-active", -1);
+            if (lastActive > -1) {
+                region.setLastActive(lastActive);
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
@@ -353,7 +366,7 @@ public class RegionManager {
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
-        regionTypeName = regionTypeName.replace("Civs ", "");
+        regionTypeName = regionTypeName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "");
 
         RegionType regionType;
         try {
