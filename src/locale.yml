@@ -541,7 +541,7 @@ zh:
   #region
   size: 大小
   range: 范围
-  build-reqs-title: 建筑Reqs
+  build-reqs-title: 建筑要求
   population: 人口
   population-req: "需要 $1 with $2 人口"
   biomes: 生物群系

@@ -15,6 +15,7 @@ default:
       pt_br: "Primeiro, abra seu livro, vá para plantas, pegue seu abrigo e coloque-o."
       ru: "Сначала откройте свою книгу, зайдите в чертежи, найдите укрытие и разместите его."
       de: "Öffnen Sie zuerst Ihr Buch, gehen Sie zu den Bauplänen, nehmen Sie Ihre Unterkunft und platzieren Sie es."
+      zh: "首先，打开你的书，去蓝图，躲避你，然后放置它。"
   - type: upkeep
     region: shelter
     rewards:
@@ -26,6 +27,7 @@ default:
       pt_br: "Em seguida, reúna 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no baú do abrigo."
       ru: "Затем соберите 4 хлебов, 32 моркови, 32 стейка или 32 картофеля. Положите их в сундук с укрытием."
       de: "Als nächstes sammeln Sie 4 Brot, 32 Karotten, 32 Steak oder 32 Kartoffeln. Legen Sie sie in die Schutzkiste."
+      zh: "接下来，收集4个面包，32个胡萝卜，32个牛排或32个土豆。 把它们放在避难所里。"
   - type: buy
     region: coal_shop
     rewards:
@@ -41,6 +43,7 @@ default:
       pt_br: "O abrigo paga por comida, mas a loja de carvão paga mais. Abra seu livro, vá até a loja e compre a loja de carvão."
       ru: "Приют платит вам за еду, а угольный магазин платит больше. Откройте свою книгу, идите в магазин и купите угольный магазин."
       de: "Das Tierheim zahlt Sie für Nahrung, aber der Kohlenladen zahlt mehr. Öffne dein Buch, gehe in den Laden und kaufe den Kohlenladen."
+      zh: "避难所支付你的食物，但煤炭商店支付更多。 打开书，去商店，买煤炭店。"
   - type: build
     region: coal_shop
     rewards:
@@ -55,6 +58,7 @@ default:
       pt_br: "Coloque 25 lã, 14 cercas e 2 baús. Em seguida, coloque a loja de carvão."
       ru: "Поместите 25 шерсти, 14 заборов и 2 сундука. Затем разместите угольный цех."
       de: "Platziere 25 Wolle, 14 Zäune und 2 Truhen. Dann legen Sie den Kohlenladen."
+      zh: "放置25个羊毛，14个围栏和2个箱子。 然后放煤炭店。"
   - type: choose
     paths:
     - warrior
@@ -70,6 +74,7 @@ warrior:
     pt_br: "Guerreiro"
     ru: "воин"
     de: "Krieger"
+    zh: "战士"
   steps:
   - type: buy
     region: altar
@@ -85,6 +90,7 @@ warrior:
       pt_br: "Primeiro, compre o altar. Você pode usar este altar para obter equipamentos de diamante."
       ru: "Сначала купите алтарь. Вы можете использовать этот алтарь, чтобы получить алмазное снаряжение."
       de: "Zuerst den Altar kaufen. Sie können diesen Altar verwenden, um ein Diamantenzahnrad zu erhalten."
+      zh: "首先，买祭坛。 你可以用这个祭坛来获得钻石装备。"
   - type: upkeep
     region: altar
     rewards:
@@ -97,6 +103,7 @@ warrior:
       pt_br: "Agora, coloque uma espada de ferro no baú do altar. Se você tiver $300, receberá seu equipamento."
       ru: "Теперь поместите железный меч в сундук алтаря. Если у вас есть 300 долларов, вы получите свое снаряжение."
       de: "Stecke jetzt ein Eisenschwert in die Altarbrust. Wenn Sie 300 € haben, erhalten Sie Ihre Ausrüstung."
+      zh: "现在，在祭坛胸前放一把铁剑。 如果你有300美元，那么你将收到你的装备。"
   - type: kill
     kill-type: player
     rewards:
@@ -112,6 +119,7 @@ warrior:
       pt_br: "Aqui está uma maçã dourada encantada. Agora você tem tudo que precisa. Seu próximo objetivo é matar alguém."
       ru: "Вот заколдованное золотое яблоко. Теперь у вас есть все, что вам нужно. Ваша следующая цель - убить кого-то."
       de: "Hier ist ein verzauberter goldener Apfel. Jetzt hast du alles was du brauchst. Dein nächstes Ziel ist es, jemanden zu töten."
+      zh: "这是一个迷人的金苹果。 现在你拥有了所需的一切。 你的下一个目标是杀死某人。"
   - type: build
     region: raid_porter
     rewards:
@@ -123,6 +131,7 @@ warrior:
       pt_br: "Parabéns! Você é agora um guerreiro comum. Agora, para se tornar um atacante. Compre e construa um raid_porter perto de uma cidade."
       ru: "Поздравляем! Теперь ты обычный воин. Теперь стать рейдером. Купить и построить raid_porter близко к городу."
       de: "Glückwunsch! Du bist jetzt ein gewöhnlicher Krieger. Nun, um ein Raider zu werden. Kaufe und baue einen raid_porter in der Nähe einer Stadt."
+      zh: "恭喜！ 你现在是一个普通的战士。 现在成为一名袭击者。 购买并建立一个靠近城镇的raid_porter。"
   - type: upkeep
     region: raid_porter
     rewards:
@@ -135,6 +144,7 @@ warrior:
       pt_br: "Uma vez que seu raid_porter estiver ativo, fique em cima dele para se teletransportar para a cidade."
       ru: "Когда ваш raid_porter активен, встаньте на него сверху, чтобы телепортироваться в город."
       de: "Sobald Ihr raid_porter aktiv ist, stellen Sie sich darauf, um in die Stadt zu teleportieren."
+      zh: "一旦你的raid_porter处于活动状态，站在它上面即可传送到城镇。"
   - type: build
     region: command_tent
     rewards:
@@ -148,6 +158,7 @@ warrior:
       pt_br: "Agora que você invadiu uma cidade, é hora de entrar em guerra com uma. Construa um Command_Tent perto de uma cidade inimiga."
       ru: "Теперь, когда вы совершили набег на город, пришло время сразиться с ним. Постройте Command_Tent возле вражеского города."
       de: "Nun, da Sie eine Stadt überfallen haben, ist es Zeit, mit einer zu kämpfen. Baue ein Command_Tent in der Nähe einer feindlichen Stadt"
+      zh: "现在你已经袭击了一个城镇，现在是时候与一个人开战了。 在敌人城镇附近建立一个Command_Tent。"
   - type: build
     region: siege_machine
     rewards:
@@ -160,6 +171,7 @@ warrior:
       pt_br: "Agora compre e construa o Outpost no topo da sua Command_Tent. Depois disso, compre e construa o Siege_Machine."
       ru: "Теперь купите и постройте форпост на вершине вашей Command_Tent. После этого купите и постройте Siege_Machine."
       de: "Kaufen Sie jetzt den Outpost und bauen Sie ihn auf Ihrem Command_Tent. Danach kaufe und baue die Siege_Machine."
+      zh: "现在在Command_Tent上购买并构建Outpost。 之后，购买并构建Siege_Machine。"
   - type: build
     region: castle
     rewards:
@@ -174,6 +186,7 @@ warrior:
       pt_br: "O Siege_Machine irá lentamente reduzir o poder da cidade inimiga, o que força a cidade a atacar você. Compre e construa um castelo no topo da sua Command_Tent."
       ru: "Siege_Machine будет постепенно уменьшать силу вражеского города, что заставит город атаковать вас Купите и постройте замок на вершине вашей Command_Tent."
       de: "Die Siege_Machine verringert langsam die Macht der gegnerischen Stadt, was die Stadt dazu zwingt, Sie anzugreifen. Kaufe und baue ein Schloss auf deinem Command_Tent."
+      zh: "Siege_Machine将慢慢减少敌人城镇的力量，迫使城镇攻击你。 在Command_Tent之上购买并构建一个Castle。"
   - type: build
     region: memorial
     rewards:
@@ -187,6 +200,7 @@ warrior:
       pt_br: "Agora que você construiu o Castelo, compre e construa o Keep. Depois disso, construa um Memorial."
       ru: "Теперь, когда вы построили замок, купите и постройте крепость. После этого постройте Мемориал."
       de: "Jetzt, da du das Schloss gebaut hast, kaufe und baue die Festung. Baue danach ein Denkmal."
+      zh: "现在您已经建造了城堡，购买并建造了Keep。 之后，建立一个纪念馆。"
   - type: end
     messages:
       en: "Congratulations! You are now wise in the ways of warfare. This concludes the warrior path."
@@ -195,6 +209,7 @@ warrior:
       pt_br: "Parabéns! Agora você é sábio nos modos de guerra. Isso conclui o caminho do guerreiro."
       ru: "Поздравляем! Вы теперь мудры в способах ведения войны. Это завершает путь воина."
       de: "Herzliche Glückwünsche! Sie sind jetzt weise auf dem Weg der Kriegsführung. Dies schließt den Weg des Kriegers ab."
+      zh: "恭喜！ 你现在在战争方面是明智的。 这就结束了战士的道路。"
 builder:
   icon: DIAMOND_BLOCK
   names:
@@ -204,6 +219,7 @@ builder:
     pt_br: "Construtor"
     ru: "строитель"
     de: "Baumeister"
+    zh: "建设者"
   steps:
   - type: buy
     region: council_room
@@ -219,6 +235,7 @@ builder:
       pt_br: "Comece comprando o council_room. Este é o coração de uma cidade. Cria energia, protege contra PVP e fornece 2 alojamentos."
       ru: "Начните с покупки совета. Это сердце города. Он создает энергию, защищает от PVP и обеспечивает 2 корпуса."
       de: "Beginnen Sie mit dem Kauf des council_room. Dies ist das Herz einer Stadt. Es erzeugt Strom, schützt vor PVP und bietet 2 Gehäuse."
+      zh: "首先购买council_room。 这是一个小镇的心脏。 它可以产生动力，防止PVP，并提供2个外壳。"
   - type: build
     region: council_room
     rewards:
@@ -230,6 +247,7 @@ builder:
       pt_br: "Agora construa o council_room."
       ru: "Теперь постройте комнату совета."
       de: "Baue jetzt den council_room."
+      zh: "现在建立理事会。"
   - type: buy
     region: settlement
     rewards:
@@ -244,6 +262,7 @@ builder:
       pt_br: "Agora que você construiu o coração da cidade, reivindique sua terra. Compre o assentamento."
       ru: "Теперь, когда вы построили сердце города, заберите свою землю. Купить поселок."
       de: "Nachdem Sie das Herz der Stadt gebaut haben, fordern Sie Ihr Land heraus. Kaufen Sie die Siedlung."
+      zh: "现在你已经建立了城镇的中心，占领你的土地。 购买结算。"
   - type: build
     region: shack
     rewards:
@@ -257,6 +276,7 @@ builder:
       pt_br: "Parabéns! Crie sua reivindicação com /cv town nome_da_cidade_vai_aqui. Quando você fez isso, compre e construa um Shack."
       ru: "Поздравляем! Создайте заявку с помощью /cv town название_города_здесь. Когда вы это сделаете, купите и постройте Shack."
       de: "Herzliche Glückwünsche! Erstellen Sie Ihren Anspruch mit /cv town ortsname_geht_hier. Wenn du das getan hast, kaufe und baue eine Shack."
+      zh: "恭喜！ 使用/ cv town 城镇的名字就在这里 创建您的声明。 当你完成了购买和建造一个小屋。"
   - type: build
     region: npc_shack
     rewards:
@@ -272,6 +292,7 @@ builder:
       pt_br: "Uma Shack fornece alojamento. A moradia é necessária para convidar pessoas para sua cidade. Agora compre e coloque um NPCShack dentro do seu Shack."
       ru: "Хижина предоставляет жилье. Жилье требуется для приглашения людей в ваш город. Теперь купите и поместите NPCShack в вашу хижину."
       de: "Eine Shack bietet Unterkunft. Wohnraum ist erforderlich, um Menschen in Ihre Stadt einzuladen. Kaufen Sie jetzt einen NPCShack und platzieren Sie ihn in Ihrer Shack."
+      zh: "小屋提供住房。 住房需要邀请人们到您的城镇。 现在购买并在你的小屋内放置一个NPCShack。"
   - type: build
     region: church
     rewards:
@@ -283,6 +304,7 @@ builder:
       pt_br: "Os aldeões contam como população. Se eles morrem, a cidade perde o poder. Os aldeões também reaparecem. Agora construa uma igreja."
       ru: "Сельские жители считаются населением. Если они умрут, город потеряет власть. Жители деревни тоже возрождаются. Теперь постройте церковь."
       de: "Dorfbewohner zählen als Bevölkerung. Wenn sie sterben, verliert die Stadt an Macht. Dorfbewohner respawnen ebenfalls. Bauen Sie jetzt eine Kirche."
+      zh: "村民算作人口。 如果他们死了，镇就会失去权力。 村民也重生了。 现在建一座教堂。"
   - type: build
     region: arrow_trap
     rewards:
@@ -297,6 +319,7 @@ builder:
       pt_br: "É importante criar edifícios que gerem energia. O poder protege a cidade. Construa uma arrow_trap para defender ainda mais a sua cidade."
       ru: "Важно создавать здания, которые генерируют энергию. Власть защищает город. Постройте arrow_trap для дальнейшей защиты вашего города."
       de: "Es ist wichtig, Gebäude zu schaffen, die Strom erzeugen. Macht schützt die Stadt. Baue eine arrow_trap, um deine Stadt weiter zu verteidigen."
+      zh: "创造发电的建筑物非常重要。 电力保护城镇。 建立一个arrow_trap来进一步保卫你的城镇。"
   - type: build
     region: arrow_factory
     rewards:
@@ -313,6 +336,7 @@ builder:
       pt_br: "Em seguida, construa uma arrow_factory para fornecer setas às suas defesas."
       ru: "Затем создайте arrow_factory, чтобы обеспечить стрелки для вашей защиты."
       de: "Als Nächstes erstellen Sie eine arrow_factory, um Pfeile für Ihre Abwehr bereitzustellen."
+      zh: "接下来，构建一个arrow_factory，为您的防御提供箭头。"
   - type: build
     region: hovel
     rewards:
@@ -329,6 +353,7 @@ builder:
       pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
       ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
       de: "Siedlungen sin auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
+      zh: "定居点仅限4个棚屋。 为了最大化你的住房，建造一个小屋，然后购买并在小屋内放置一个小屋。"
   - type: build
     region: catapult
     rewards:
@@ -341,6 +366,7 @@ builder:
       pt_br: "Em seguida, construa uma catapulta. Catapultas são canhões de TNT precisos que você pode usar para destruir as estruturas de cerco do atacante."
       ru: "Далее строим катапульту. Катапульты - это точные пушки TNT, которые вы можете использовать для разрушения осадных структур атакующего."
       de: "Baue als nächstes ein Katapult. Katapulte sind präzise TNT-Kanonen, mit denen Sie die Belagerungsstrukturen des Angreifers zerstören können."
+      zh: "接下来，构建一个弹射器。 弹射器是精确的TNT加农炮，你可以用它来摧毁攻击者的攻城结构。"
   - type: build
     region: dwelling
     rewards:
@@ -354,6 +380,7 @@ builder:
       pt_br: "Vá em frente e atualize sua cidade para um Hamlet. Uma vez feito isso, construa uma morada. A cada nível da cidade, você obtém um nível de moradia autônomo."
       ru: "Идите вперед и улучшите свой город до Гамлета. Как только вы это сделаете, постройте жилище. С каждым теперь уровнем города вы получаете отдельный уровень жилья."
       de: "Machen Sie Ihre Stadt zu einem Hamlet. Wenn Sie das getan haben, bauen Sie eine Wohnung. Mit jeder jetzt städtischen Ebene erhalten Sie eine eigenständige Wohnebene."
+      zh: "继续前进，将您的城镇升级为哈姆雷特。 一旦你完成了，建立一个住宅。 现在每个城镇都有一个独立的住房水平。"
   - type: build
     region: stables
     rewards:
@@ -366,6 +393,7 @@ builder:
       pt_br: "Agora atualize sua cidade novamente para a aldeia. Depois disso, construa os Estábulos."
       ru: "Теперь обновите свой город снова до деревни. Как только вы это сделаете, постройте конюшни."
       de: "Rüste deine Stadt jetzt erneut zum Dorf auf. Sobald Sie das getan haben, bauen Sie die Ställe."
+      zh: "现在再次升级你的城镇到村庄。 完成后，构建马厩。"
   - type: build
     region: town_hall
     rewards:
@@ -379,6 +407,7 @@ builder:
       pt_br: "Antes de poder atualizar sua vila, você precisará atualizar seu Council_Room. Compre e coloque a Town_Hall dentro do seu Council_Room."
       ru: "Прежде чем вы сможете обновить свою деревню, вам нужно обновить ваш Council_Room. Купите и разместите Town_Hall внутри вашего Council_Room."
       de: "Bevor Sie Ihr Dorf verbessern können, müssen Sie Ihren Council_Room aktualisieren. Kaufen und platzieren Sie die Town_Hall in Ihrem Council_Room."
+      zh: "在升级您的村庄之前，您需要升级您的Council_Room。 购买Town_Hall并将其放置在Council_Room内。"
   - type: end
     messages:
       en: "Congratulations! You're quite the accomplished architect. This concludes the builder path."
@@ -387,6 +416,7 @@ builder:
       pt_br: "Parabéns! Você é um arquiteto talentoso. Isso conclui o caminho do construtor."
       ru: "Поздравляем! Вы довольно опытный архитектор. Это завершает путь строителя."
       de: "Herzliche Glückwünsche! Sie sind durchaus der versierte Architekt. Damit ist der Builder-Pfad abgeschlossen."
+      zh: "恭喜！ 你是一位非常有成就的建筑师。 这样就构建了构建器路径。"
 
 merchant:
   icon: DIAMOND*64
@@ -397,6 +427,7 @@ merchant:
     pt_br: "Comerciante"
     ru: "коммерсант"
     de: "Händler"
+    zh: "商人"
   steps:
   - type: upkeep
     region: shack
@@ -409,6 +440,7 @@ merchant:
       pt_br: "Junte-se a uma cidade. Então, compre um barraco de alguém naquela cidade. Uma vez que você o tenha definido como dono do Shack, coloque um pouco de pão no baú do Shack."
       ru: "Присоединяйся к городу. Тогда купите хижину у кого-то в этом городе. Как только они установят вас как владельца Шака, положите немного хлеба в сундук Шака"
       de: "Trete einer Stadt bei. Dann kaufen Sie eine Hütte von jemandem in dieser Stadt. Sobald Sie Sie als Besitzer der Hütte eingestellt haben, legen Sie etwas Brot in die Hütte-Truhe."
+      zh: "加入一个小镇。 然后，从该镇的某个人那里买一个小屋。 一旦他们让你成为小屋的主人，就把一些面包放在小屋里。"
   - type: buy
     region: hovel
     rewards:
@@ -426,6 +458,7 @@ merchant:
       pt_br: "Casas podem ser atualizadas para lhe dar mais dinheiro. Compre o Hovel da loja."
       ru: "Дома могут быть улучшены, чтобы дать вам больше денег. Купите Лавку в магазине."
       de: "Häuser können aufgewertet werden, um mehr Geld zu erhalten. Kaufen Sie die Hovel im Shop."
+      zh: "房屋可以升级，为您提供更多的钱。 从商店购买Hovel。"
   - type: build
     region: hovel
     rewards:
@@ -440,6 +473,7 @@ merchant:
       pt_br: "Acrescente ao seu Shack para torná-lo uma região 9x9x9, depois coloque o baú do Hovel dentro."
       ru: "Добавьте к своей хижине, чтобы сделать ее 9х9х9 областью, затем поместите сундук Хоувела внутрь."
       de: "Fügen Sie Ihrem Shack eine 9x9x9-gebiet, hinzu und platzieren Sie die Hovel-Truhe darin."
+      zh: "添加到您的小屋，使其成为一个9x9x9区域，然后将Hovel胸部放入其中。"
   - type: upkeep
     region: hovel1
     rewards:
@@ -455,6 +489,7 @@ merchant:
       pt_br: "Coloque 384 batatas no peito do Hovel. Em 24 horas, o seu Hovel venderá todos eles e fará o upgrade para um Hovel1."
       ru: "Поместите 384 картофеля в сундук Ховеля. Через 24 часов ваш Ховел продаст их всех и перейдет на Ховела1."
       de: "Legen Sie 384 Kartoffeln in Ihre Hovel-Truhe. In 24 Stunden verkauft Ihre Hovel alle und baut ein Upgrade auf eine Hovel1 auf."
+      zh: "将384个土豆放入你的Hovel胸部。 在24小时内，您的Hovel将出售所有这些并升级到Hovel1。"
   - type: build
     region: apple_orchard
     rewards:
@@ -466,6 +501,7 @@ merchant:
       pt_br: "Compre e construa um pomar de maçãs. Construa uma pista de minecart de dentro do seu pomar para dentro do seu Hovel1. Coloque um trilho em uma inclinação dentro do apple_orchard."
       ru: "Купить и построить яблоневый сад. Постройте гусеничную дорожку изнутри вашего яблоневого сада внутрь вашего Ховела1 Поместите силовой рельс на уклон внутри яблоневого сада."
       de: "Kaufe und baue einen Apfelgarten. Baue eine Minecart-Spur von deinem Apfelgarten bis zu deinem Hovel1. Platzieren Sie eine angetriebene Schiene auf einer Steigung im Apfel_orchard."
+      zh: "购买并建造一个苹果园。 从您的苹果园内部到您的Hovel1内部建造一辆矿车轨道。 将动力导轨放在apple_orchard内的斜面上。"
   - type: build
     region: dwelling
     rewards:
@@ -479,6 +515,7 @@ merchant:
       pt_br: "Hora de atualizar novamente. Compre e coloque uma residência dentro do seu Hovel1."
       ru: "Время обновить снова. Купите и разместите жилище в своем Hovel1."
       de: "Zeit zum erneuten Upgrade. Kaufen und platzieren Sie eine Wohnung in Ihrem Hovel1."
+      zh: "是时候再次升级了。 购买并在您的Hovel1内放置住宅。"
   - type: build
     region: house
     rewards:
@@ -494,6 +531,7 @@ merchant:
       pt_br: "As moradias dão muito dinheiro, mas uma casa lhe dá mais. Compre e atualize sua residência para uma casa."
       ru: "Жилища дают вам много денег, а дом - больше. Купите и обновите свое жилище до дома."
       de: "Wohnungen geben Ihnen viel Geld, aber ein Haus gibt Ihnen mehr. Kaufen Sie Ihre Wohnung und bauen Sie sie in ein Haus auf."
+      zh: "住宅给你很多钱，但房子给你更多。 购买并升级您的住宅到房子。"
   - type: upkeep
     region: house1
     rewards:
@@ -507,6 +545,7 @@ merchant:
       pt_br: "Coloque este pão em sua casa para atualizá-lo para uma casa1."
       ru: "Поместите этот хлеб в свой Дом, чтобы улучшить его до Дома1."
       de: "Legen Sie dieses Brot in Ihr Haus, um es zu einem Haus1 zu verbessern."
+      zh: "把这个面包放在你的房子里把它升级到House1。"
   - type: upkeep
     region: house2
     rewards:
@@ -518,6 +557,7 @@ merchant:
       pt_br: "Coloque esses salmões em sua casa 1 para atualizá-los para uma casa 2."
       ru: "Поместите этого лосося в свой Дом 1, чтобы улучшить его до Дома 2."
       de: "Setzen Sie diese Lachse in Ihr Haus 1 ein, um ein Haus 2 zu erhalten."
+      zh: "将这些鲑鱼放入你的房子1，升级到2号房子。"
   - type: build
     region: iron_shop
     rewards:
@@ -533,6 +573,7 @@ merchant:
       pt_br: "Agora construa uma loja de ferro para aumentar ainda mais sua renda."
       ru: "Теперь создайте iron_shop, чтобы увеличить свой доход."
       de: "Bauen Sie jetzt einen iron_shop auf, um Ihr Einkommen weiter zu steigern."
+      zh: "现在建立一个iron_shop来进一步增加你的收入。"
   - type: build
     region: jade_shop
     rewards:
@@ -546,6 +587,7 @@ merchant:
       pt_br: "Cada jogador pode ter apenas 3 lojas. A loja mais lucrativa é uma loja de trading. Construa o Jade_Shop. Destrua uma de suas outras lojas se já tiver 3."
       ru: "У каждого игрока может быть только 3 магазина. Самый прибыльный магазин - это торговый магазин. Постройте Jade_Shop. Уничтожьте один из ваших других магазинов, если уже есть 3."
       de: "Jeder Spieler darf nur 3 Geschäfte haben. Der lukrativste Laden ist ein Handelsshop. Baue den Jade_Shop. Zerstöre einen deiner anderen Shops, wenn du bereits 3 hast."
+      zh: "每位玩家可能只有3家商店。 最赚钱的商店是贸易商店。 建立Jade_Shop。 如果已经有3个商店，请销毁你的其他商店。"
   - type: end
     messages:
       en: "Congratulations! You can now sell items you buy from another town's Jade_Mine. This concludes the path of the merchant."
@@ -554,3 +596,4 @@ merchant:
       pt_br: "Parabéns! Agora você pode vender itens comprados no Jade_Mine de outra cidade. Isso conclui o caminho do comerciante."
       ru: "Поздравляем! Теперь вы можете продавать предметы, которые вы покупаете в Jade_Mine другого города. Это завершает путь торговца."
       de: "Herzliche Glückwünsche! Sie können jetzt Gegenstände verkaufen, die Sie von Jade_Mine einer anderen Stadt kaufen. Dies schließt den Weg des Händlers ab."
+      zh: "恭喜！ 您现在可以从另一个城镇的Jade_Mine出售您购买的商品。 这就结束了商人的道路。"
