@@ -21,8 +21,8 @@ import java.util.*;
 
 public class ConveyorEffect implements Listener {
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
-    private HashMap<Region, Location> cachePoints = new HashMap<>();
-    private HashMap<Region, Region> cacheRegions = new HashMap<>();
+    private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
+    private HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
     public static String KEY = "conveyor";
 
     @EventHandler
@@ -36,7 +36,7 @@ public class ConveyorEffect implements Listener {
         if (regions.isEmpty()) {
             return;
         }
-        cacheRegions.remove(regions.get(0));
+        cacheSpawnPoints.remove(regions.get(0));
     }
 
     @EventHandler
@@ -59,14 +59,14 @@ public class ConveyorEffect implements Listener {
 
         //Check if has reagents
         if (!r.hasUpkeepItems()) {
-            cachePoints.remove(r);
-            cacheRegions.remove(r);
+            cacheSpawnPoints.remove(r);
+            cacheDestinationRegions.remove(r);
             return;
         }
 
         Location loc = null;
-        if (cachePoints.containsKey(r)) {
-            loc = cachePoints.get(r);
+        if (cacheSpawnPoints.containsKey(r)) {
+            loc = cacheSpawnPoints.get(r);
         } else {
             double radius = rt.getBuildRadius();
             double x0 = l.getX();
@@ -79,7 +79,7 @@ public class ConveyorEffect implements Listener {
                         if (b.getType() == Material.POWERED_RAIL) {
                             Location location = b.getRelative(BlockFace.UP).getLocation();
                             location = Region.idToLocation(Region.blockLocationToString(location));
-                            cachePoints.put(r, location);
+                            cacheSpawnPoints.put(r, location);
                             break outer;
                         }
                     }
@@ -88,7 +88,7 @@ public class ConveyorEffect implements Listener {
             if (loc == null) {
                 return;
             }
-            loc = cachePoints.get(r);
+            loc = cacheSpawnPoints.get(r);
         }
 
         Chest chest = null;
@@ -102,6 +102,11 @@ public class ConveyorEffect implements Listener {
         if (!cInv.contains(Material.CHEST_MINECART) || !cInv.contains(conveyor)) {
             return;
         }
+
+        if (isDestinationChestFull(r)) {
+            return;
+        }
+
         for (ItemStack is : cInv.getContents()) {
             if (is != null && is.getType() == conveyor) {
                 iss.add(is);
@@ -113,8 +118,8 @@ public class ConveyorEffect implements Listener {
 
         //If chunk not loaded try using region cache to move directly
         if (!loc.getChunk().isLoaded()) {
-            if (cacheRegions.containsKey(r)) {
-                Chest tempChest = (Chest) cacheRegions.get(r).getLocation().getBlock().getState();
+            if (cacheDestinationRegions.containsKey(r)) {
+                Chest tempChest = (Chest) cacheDestinationRegions.get(r).getLocation().getBlock().getState();
                 if (tempChest.getInventory().firstEmpty() < 0) {
                     return;
                 }
@@ -145,6 +150,19 @@ public class ConveyorEffect implements Listener {
             }
             carts.put(r, cart);
         }
+    }
+
+    private boolean isDestinationChestFull(Region region) {
+        if (!cacheDestinationRegions.containsKey(region)) {
+            return false;
+        }
+        Region destinationRegion = cacheDestinationRegions.get(region);
+        Block destinationBlock = destinationRegion.getLocation().getBlock();
+        if (!(destinationBlock.getState() instanceof Chest)) {
+            return true;
+        }
+        Chest chest = (Chest) destinationBlock.getState();
+        return chest.getBlockInventory().firstEmpty() < 0;
     }
 
     private void handleExistingCarts(Region r) {
@@ -180,7 +198,11 @@ public class ConveyorEffect implements Listener {
                 Inventory originInv = null;
                 try {
                     originInv = ((Chest) carts.get(sm).getLocation().getBlock().getState()).getInventory();
-                    originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
+                    if (originInv.firstEmpty() > -1) {
+                        originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
+                    } else {
+                        originInv.setItem(originInv.getSize() -1, new ItemStack(Material.CHEST_MINECART, 1));
+                    }
                 } catch (Exception e) {
 
                 }
@@ -217,8 +239,8 @@ public class ConveyorEffect implements Listener {
 
                 }
                 removeMe.add(r);
-                if (!cacheRegions.containsKey(r)) {
-                    cacheRegions.put(r, region);
+                if (!cacheDestinationRegions.containsKey(r)) {
+                    cacheDestinationRegions.put(r, region);
                 }
             }
         }
