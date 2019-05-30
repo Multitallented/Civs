@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DARK_OAK_LOG
 name: Dark_Oak_Lumberyard
 max: 2
 price: 100
@@ -11,9 +12,9 @@ level: 1
 
 build-reqs:
 - DARK_OAK_LOG*8
-- DARK_OAK_LEAVES*32
-- g:fence*28
-- g:fencegate*2
+- DARK_OAK_LEAVES*16
+- g:fence*14
+- g:fencegate*1
 - CHEST*2
 
 build-radius: 4

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: INK_SAC
 name: Dye_Works
 price: 20
 groups:
@@ -9,10 +10,10 @@ level: 1
 build-reqs:
 - g:window*4
 - g:door*1
-- g:roof*40
-- g:wool*9
-- g:primary*90
-- g:secondary*25
+- g:roof*20
+- g:wool*6
+- g:primary*45
+- g:secondary*12
 
 build-radius: 4
 

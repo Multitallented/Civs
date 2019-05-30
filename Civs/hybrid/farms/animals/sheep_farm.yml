@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SHEEP_SPAWN_EGG
 name: Sheep_Farm
 max: 1
 price: 10
@@ -9,8 +10,8 @@ level: 1
 
 build-reqs:
 - g:log*4
-- g:wood*20
-- g:fence*19
+- g:wood*10
+- g:fence*9
 - g:fencegate*1
 - WHITE_WOOL*6
 

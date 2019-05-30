@@ -233,9 +233,9 @@ public class LocaleManager {
             currentLanguage.put("leaderboard",
                     localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
             currentLanguage.put("enter-town",
-                    localeConfig.getString(langKey + ".enter-town", "You have entered $1"));
+                    localeConfig.getString(langKey + ".enter-town", "You have entered $1 ($2)"));
             currentLanguage.put("exit-town",
-                    localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
+                    localeConfig.getString(langKey + ".exit-town", "You have exited $1 ($2)"));
             currentLanguage.put("town-created",
                     localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
             currentLanguage.put("town-destroyed",
@@ -498,8 +498,64 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".last-renamed-by", "Last renamed by: $1"));
             currentLanguage.put("leave-alliance",
                     localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
+            currentLanguage.put("new-owner-town",
+                    localeConfig.getString(langKey + ".new-owner-town", "$1 has replaced $2 as an owner of $3"));
+            currentLanguage.put("town-bank-desc",
+                    localeConfig.getString(langKey + ".town-bank-desc", "Withdraw using /cv withdraw $1 amount"));
+            currentLanguage.put("town-bank-balance",
+                    localeConfig.getString(langKey + ".town-bank-balance", "Bank balance $$1"));
+            currentLanguage.put("withdrawn-money",
+                    localeConfig.getString(langKey + ".withdrawn-money", "You've withdrawn $$1 from $2's bank"));
+            currentLanguage.put("town-tax",
+                    localeConfig.getString(langKey + ".town-tax", "Town taxes: $1"));
+            currentLanguage.put("town-tax-desc",
+                    localeConfig.getString(langKey + ".town-tax-desc", "Set tax using /cv tax $1 amount"));
+            currentLanguage.put("town-tax-set",
+                    localeConfig.getString(langKey + ".town-tax-set", "$1 tax set to $2"));
+            currentLanguage.put("tax-too-high",
+                    localeConfig.getString(langKey + ".tax-too-high", "You can't set taxes higher than $1"));
+            currentLanguage.put("town-assist-price",
+                    localeConfig.getString(langKey + ".town-assist-price", "Your town bank paid $1 to thank you for the construction of your $2"));
+            currentLanguage.put("colony-town-set",
+                    localeConfig.getString(langKey + ".colony-town-set", "You've set $1 as a colony of $2"));
+            currentLanguage.put("cant-build-feudal",
+                    localeConfig.getString(langKey + ".cant-build-feudal", "You can't build a region in a feudal town unless you own that town."));
+            currentLanguage.put("tribalism-no-invite",
+                    localeConfig.getString(langKey + ".tribalism-no-invite", "Your tribalism town forbids you to invite $1 of non-allied town $2"));
+            currentLanguage.put("vote-member",
+                    localeConfig.getString(langKey + ".vote-member", "Vote to be next owner"));
+            currentLanguage.put("capitalism-voting-cost",
+                    localeConfig.getString(langKey + ".capitalism-voting-cost", "Extra votes cost $1"));
+            currentLanguage.put("voted",
+                    localeConfig.getString(langKey + ".voted", "You have cast your vote for $1"));
+            currentLanguage.put("gov-type-change",
+                    localeConfig.getString(langKey + ".gov-type-change", "$1 changed from $2 to $3"));
+            currentLanguage.put("cost-buff",
+                    localeConfig.getString(langKey + ".cost-buff", "You have been refunded $1 for buildings a $2 in a $3 town."));
+            currentLanguage.put("cooldown-buff-desc",
+                    localeConfig.getString(langKey + ".cooldown-buff-desc", "$1% cooldown reduction for all $2"));
+            currentLanguage.put("payout-buff-desc",
+                    localeConfig.getString(langKey + ".payout-buff-desc", "$1% region payout increase for all $2"));
+            currentLanguage.put("power-buff-desc",
+                    localeConfig.getString(langKey + ".power-buff-desc", "$1% daily power increase"));
+            currentLanguage.put("max_power-buff-desc",
+                    localeConfig.getString(langKey + ".max_power-buff-desc", "$1% max-power increase"));
+            currentLanguage.put("cost-buff-desc",
+                    localeConfig.getString(langKey + ".cost-buff-desc", "$1% cost refund on all $2"));
+            currentLanguage.put("merit-new-owner",
+                    localeConfig.getString(langKey + ".merit-new-owner", "Congratulations! You have surpased $1. You are the new town owner!"));
             currentLanguage.put("hunting-players",
                     localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
+            currentLanguage.put("item-locked",
+                    localeConfig.getString(langKey + ".item-locked", "You have not yet unlocked this item."));
+            currentLanguage.put("max-qty",
+                    localeConfig.getString(langKey + ".max-qty", "$1 has too many $2 and can't own more"));
+            currentLanguage.put("ai-invite",
+                    localeConfig.getString(langKey + ".ai-invite", "Hey, @$1 would you like to join my town?"));
+            currentLanguage.put("ai-help",
+                    localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
+            currentLanguage.put("town-tax-gov-type",
+                    localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
             languageMap.put(langKey, currentLanguage);
         }
     }

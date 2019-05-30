@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: FLINT
 name: Flint_Works
 price: 20
 groups:
@@ -12,10 +13,10 @@ pre-reqs:
 build-reqs:
 - g:window*2
 - g:door*1
-- g:roof*40
+- g:roof*20
 - GRAVEL*6
-- g:primary*110
-- g:secondary*20
+- g:primary*55
+- g:secondary*10
 
 towns:
 - settlement

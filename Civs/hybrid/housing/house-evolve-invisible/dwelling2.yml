@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: GREEN_BED
 name: Dwelling2
 max: 2
 price: 400
@@ -15,16 +16,16 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- CHEST*4
-- g:door*1
-- g:window*12
-- g:bed*1
-- g:sign*1
-- FURNACE*2
-- CRAFTING_TABLE
-- g:roof*100
-- g:secondary*60
-- g:primary*200
+  - CHEST*4
+  - g:door*1
+  - g:window*6
+  - g:bed*1
+  - g:sign*1
+  - FURNACE*2
+  - CRAFTING_TABLE
+  - g:roof*50
+  - g:secondary*30
+  - g:primary*100
 
 build-radius: 5 #11x11x11
 effects:

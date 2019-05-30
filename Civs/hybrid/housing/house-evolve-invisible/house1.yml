@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PINK_BED
 name: House1
 max: 2
 is-in-shop: false
@@ -15,16 +16,16 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- CHEST*4
-- g:door*1
-- g:window*12
-- g:bed*1
-- g:sign*1
-- FURNACE*2
-- CRAFTING_TABLE
-- g:roof*150
-- g:secondary*110
-- g:primary*350
+  - CHEST*4
+  - g:door*1
+  - g:window*6
+  - g:bed*1
+  - g:sign*1
+  - FURNACE*2
+  - CRAFTING_TABLE
+  - g:roof*75
+  - g:secondary*55
+  - g:primary*175
 
 build-radius: 6 #13x13x13
 effects:

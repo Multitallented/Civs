@@ -34,6 +34,13 @@ public class TownManager {
         townManager = this;
     }
 
+    public void reload() {
+        towns.clear();
+        sortedTowns.clear();
+        invites.clear();
+        loadAllTowns();
+    }
+
     public void loadAllTowns() {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {
@@ -190,6 +197,7 @@ public class TownManager {
         int housing = config.getInt("housing", 0);
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
+        GovernmentType governmentType = GovernmentType.valueOf(config.getString("gov-type", "DICTATORSHIP"));
         Town town = new Town(name,
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
@@ -199,8 +207,30 @@ public class TownManager {
                 housing,
                 villagers,
                 lastDisable);
+        town.setGovernmentType(governmentType);
+        if (config.isSet("last-vote")) {
+            town.setLastVote(config.getLong("last-vote", 0));
+        }
+        if (config.isSet("votes")) {
+            HashMap<UUID, HashMap<UUID, Integer>> votes = new HashMap<>();
+            for (String cUuidString : config.getConfigurationSection("votes").getKeys(false)) {
+                UUID cUuid = UUID.fromString(cUuidString);
+                HashMap<UUID, Integer> theseVotes = new HashMap<>();
+                for (String uuidString : config.getConfigurationSection("votes." + cUuidString).getKeys(false)) {
+                    UUID uuid = UUID.fromString(uuidString);
+                    theseVotes.put(uuid, config.getInt("votes." + cUuidString + "." + uuidString, 0));
+                }
+                votes.put(cUuid, theseVotes);
+            }
+            town.setVotes(votes);
+        }
         if (config.isSet("bounties")) {
             town.setBounties(Util.readBountyList(config));
+        }
+        town.setBankAccount(config.getDouble("bank", 0));
+        town.setTaxes(config.getDouble("taxes", 0));
+        if (config.isSet("colonial-town")) {
+            town.setColonialTown(config.getString("colonial-town"));
         }
         if (config.isSet("child-locations")) {
             List<Location> locationList = new ArrayList<>();
@@ -211,6 +241,19 @@ public class TownManager {
         }
         addTown(town);
     }
+
+    public Set<Town> getOwnedTowns(Civilian civilian) {
+        HashSet<Town> townSet = new HashSet();
+        for (Town town : towns.values()) {
+            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
+                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                continue;
+            }
+            townSet.add(town);
+        }
+        return townSet;
+    }
+
     public void addTown(Town town) {
         towns.put(town.getName(), town);
         sortedTowns.add(town);
@@ -392,7 +435,10 @@ public class TownManager {
             config.set("name", town.getName());
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
-            for (UUID key : town.getPeople().keySet()) {
+            for (UUID key : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(key).contains("ally")) {
+                    continue;
+                }
                 config.set("people." + key, town.getPeople().get(key));
             }
             List<String> locationList = new ArrayList<>();
@@ -406,6 +452,20 @@ public class TownManager {
             config.set("last-disable", town.getLastDisable());
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
+            config.set("gov-type", town.getGovernmentType().name());
+            config.set("taxes", town.getTaxes());
+            config.set("bank", town.getBankAccount());
+            config.set("last-vote", town.getLastVote());
+            if (!town.getVotes().isEmpty()) {
+                for (UUID uuid : town.getVotes().keySet()) {
+                    for (UUID cUuid : town.getVotes().get(uuid).keySet()) {
+                        config.set("votes." + uuid.toString() + "." + cUuid.toString(),
+                                town.getVotes().get(uuid).get(cUuid));
+                    }
+                }
+            } else {
+                config.set("votes", null);
+            }
 
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
@@ -416,6 +476,11 @@ public class TownManager {
                 }
             } else {
                 config.set("bounties", null);
+            }
+            if (town.getColonialTown() == null) {
+                config.set("colonial-town", null);
+            } else {
+                config.set("colonial-town", town.getColonialTown());
             }
 
             //TODO save all town properties
@@ -447,7 +512,7 @@ public class TownManager {
     public Town isOwnerOfATown(Civilian civilian) {
         for (Town town : sortedTowns) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).equals("owner")) {
+                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
                 continue;
             }
             return town;

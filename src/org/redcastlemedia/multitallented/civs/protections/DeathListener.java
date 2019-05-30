@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -35,6 +36,7 @@ import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class DeathListener implements Listener {
 
@@ -61,7 +63,8 @@ public class DeathListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!civilian.isInCombat()) {
-            boolean setCancelled = event.isCancelled() || ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
+            boolean setCancelled = event.isCancelled() ||
+                    ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
             if (setCancelled) {
                 event.setCancelled(true);
                 return;
@@ -185,6 +188,7 @@ public class DeathListener implements Listener {
         if (event.getEntity() == null) {
             return;
         }
+        CivilianManager.getInstance().setListNeedsToBeSorted(true);
         final Player player = event.getEntity();
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         dyingCiv.setLastDamager(null);
@@ -329,8 +333,8 @@ public class DeathListener implements Listener {
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             for (Town town : TownManager.getInstance().getTowns()) {
                 if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
-                        (!town.getPeople().get(dyingCiv.getUuid()).equals("member") &&
-                        !town.getPeople().get(dyingCiv.getUuid()).equals("owner"))) {
+                        (!town.getPeople().get(dyingCiv.getUuid()).contains("member") &&
+                        !town.getPeople().get(dyingCiv.getUuid()).contains("owner"))) {
                     continue;
                 }
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
@@ -390,7 +394,6 @@ public class DeathListener implements Listener {
         points += healthBonus;
         dyingCiv.setPoints(dyingCiv.getPoints() + ConfigManager.getInstance().getPointsPerDeath());
         damagerCiv.setPoints(damagerCiv.getPoints() + points);
-        CivilianManager.getInstance().setListNeedsToBeSorted(true);
 
         //Karma
         double karmaEcon = Math.max(0, -ConfigManager.getInstance().getMoneyPerKarma() * ((double) (dyingCiv.getKarma() - damagerCiv.getKarma())));
@@ -442,6 +445,35 @@ public class DeathListener implements Listener {
         //save
         CivilianManager.getInstance().saveCivilian(dyingCiv);
         CivilianManager.getInstance().saveCivilian(damagerCiv);
+
+        for (Town town : TownManager.getInstance().getOwnedTowns(dyingCiv)) {
+            if (town.getGovernmentType() == GovernmentType.MERITOCRACY) {
+                Util.checkMerit(town, damager);
+                continue;
+            }
+            if (town.getGovernmentType() != GovernmentType.KRATEROCRACY) {
+                continue;
+            }
+            if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&
+                    !town.getRawPeople().get(damagerCiv.getUuid()).contains("owner")) {
+                town.getRawPeople().put(dyingCiv.getUuid(), "member");
+                town.getRawPeople().put(damagerCiv.getUuid(), "owner");
+                TownManager.getInstance().saveTown(town);
+                Util.spawnRandomFirework(damager);
+                for (UUID uuid : town.getRawPeople().keySet()) {
+                    Player townPlayer = Bukkit.getPlayer(uuid);
+                    if (townPlayer == null || !townPlayer.isOnline()) {
+                        continue;
+                    }
+                    Civilian townCiv = CivilianManager.getInstance().getCivilian(uuid);
+                    townPlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
+                            townCiv.getLocale(), "new-owner-town")
+                            .replace("$1", damager.getDisplayName())
+                            .replace("$2", player.getDisplayName())
+                            .replace("$3", town.getName()));
+                }
+            }
+        }
 
         //display points
         if (karma != 0) {

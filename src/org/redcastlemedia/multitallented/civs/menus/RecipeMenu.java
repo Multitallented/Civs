@@ -201,7 +201,9 @@ public class RecipeMenu extends Menu {
                 itemMeta.setLore(lore);
                 is.setItemMeta(itemMeta);
             }
-            inv.setItem(pIndex + 9, is);
+            if (pIndex < 55) {
+                inv.setItem(pIndex + 9, is);
+            }
         }
 
         for (Integer cycleIndex : cycleItems.keySet()) {

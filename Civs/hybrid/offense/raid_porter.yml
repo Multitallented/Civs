@@ -12,7 +12,7 @@ build-reqs:
 - TNT*5
 - SIGN*1
 - OBSIDIAN*10
-- IRON_BARS*24
+- IRON_BARS*12
 - REDSTONE_WIRE*4
 
 build-radius: 3 #7x7x7

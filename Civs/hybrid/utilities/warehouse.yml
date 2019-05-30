@@ -17,13 +17,13 @@ towns:
 - metropolis
 
 build-reqs:
-- CHEST*50
+- CHEST*25
 - g:door*2
 - g:window*8
 - g:stairs*4
-  - g:roof*100
-- g:secondary*70
-- g:primary*250
+- g:roof*50
+- g:secondary*35
+- g:primary*125
 
 build-radius: 6
 effects:

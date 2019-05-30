@@ -12,6 +12,9 @@ public class TownCreatedEvent extends Event {
     private final Town town;
     private final TownType townType;
     private static final HandlerList hList = new HandlerList();
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
 
     public TownCreatedEvent(Town town, TownType townType) {
         this.town = town;

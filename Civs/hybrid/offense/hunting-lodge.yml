@@ -1,5 +1,6 @@
 type: region
 icon: OBSIDIAN
+shop-icon: PLAYER_HEAD
 name: Hunting_Lodge
 price: 400
 max: 1
@@ -11,10 +12,10 @@ build-reqs:
 - g:sign*1
 - CHEST*2
 - g:door*1
-- g:window*8
-- g:roof*50
-- g:secondary*24
-- g:primary*90
+- g:window*4
+- g:roof*25
+- g:secondary*12
+- g:primary*45
 
 build-radius: 4
 

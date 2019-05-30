@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -33,8 +34,7 @@ public class ClassMenu extends Menu {
         if (iconStack == null || !iconStack.hasItemMeta()) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance()
-                .getCivilian(UUID.fromString(iconStack.getItemMeta().getLore().get(0)));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
 
         if (clickedStack.getItemMeta().getDisplayName().equals(
@@ -75,7 +75,7 @@ public class ClassMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+            String itemTypeName = is.getItemMeta().getDisplayName().replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
             CivItem civItem = itemManager.getItemType(itemTypeName);
             civItem.setQty(is.getAmount());
             if (stashItems.containsKey(itemTypeName)) {

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -114,7 +115,7 @@ public class RegionTypeInfoMenu extends Menu {
         setNewData(civilian.getUuid(), data);
 
         //0 Icon
-        CVItem cvItem = regionType.clone();
+        CVItem cvItem = regionType.getShopIcon().clone();
         List<String> lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
                 ": " + (regionType.getBuildRadiusX() * 2 + 1) + "x" + (regionType.getBuildRadiusZ() * 2 + 1) + "x" + (regionType.getBuildRadiusY() * 2 + 1));
@@ -127,17 +128,32 @@ public class RegionTypeInfoMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Price
-        String itemName = regionType.getProcessedName();
         boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
-        boolean isAtMax = civilian.isAtMax(regionType);
+        String maxLimit = civilian.isAtMax(regionType);
         boolean isInShop = regionType.getInShop();
-        if (showPrice && hasShopPerms && !isAtMax && isInShop) {
-            CVItem priceItem = CVItem.createCVItemFromString("EMERALD");
+        lore = new ArrayList<>();
+        boolean hasItemUnlocked = ItemManager.getInstance().hasItemUnlocked(civilian, regionType);
+        if (showPrice && hasShopPerms && maxLimit == null && isInShop) {
+            CVItem priceItem;
+            if (hasItemUnlocked) {
+                priceItem = CVItem.createCVItemFromString("EMERALD");
+            } else {
+                priceItem = CVItem.createCVItemFromString("IRON_BARS");
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "item-locked"));
+            }
             priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
-            lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
             priceItem.setLore(lore);
             inventory.setItem(1, priceItem.createItemStack());
+        } else if (showPrice && hasShopPerms && isInShop) {
+            CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
+            priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
+            int max = maxLimit.equals(regionType.getProcessedName()) ? regionType.getCivMax() :
+                    ConfigManager.getInstance().getGroups().get(maxLimit);
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "max-item")
+                    .replace("$1", maxLimit)
+                    .replace("$2", "" + max));
+
         }
 
         //2 Rebuild

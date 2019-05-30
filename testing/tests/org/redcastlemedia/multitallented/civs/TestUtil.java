@@ -134,14 +134,14 @@ public class TestUtil {
         UUID uuid = new UUID(1,2);
         player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(uuid);
-        when(player.getLocation()).thenReturn(new Location(world, 0,0,0));
+        when(player.getLocation()).thenReturn(new Location(world, 0.5,0.5,0.5));
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player.getServer()).thenReturn(server);
         when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid2 = new UUID(1,3);
         player2 = mock(Player.class);
         when(player2.getUniqueId()).thenReturn(uuid2);
-        when(player2.getLocation()).thenReturn(new Location(world, -8197,69,3196));
+        when(player2.getLocation()).thenReturn(new Location(world, -8197.5,69.5,3196.5));
         when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player2.getServer()).thenReturn(server);
         when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);

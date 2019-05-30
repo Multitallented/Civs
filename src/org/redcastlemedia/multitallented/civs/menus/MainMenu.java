@@ -12,8 +12,11 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 
@@ -91,6 +94,9 @@ public class MainMenu extends Menu {
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
         }
+        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+            return TutorialChoosePathMenu.createMenu(civilian);
+        }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         String locale = civilian.getLocale();
@@ -138,16 +144,27 @@ public class MainMenu extends Menu {
         }
 
         //4 Blueprints
-        i++;
-        CVItem cvItemBlue = CVItem.createCVItemFromString("MAP");
-        cvItemBlue.setDisplayName(localeManager.getTranslation(locale, "blueprints"));
-        inventory.setItem(i, cvItemBlue.createItemStack());
+        if (!civilian.getStashItems().isEmpty()) {
+            i++;
+            CVItem cvItemBlue = CVItem.createCVItemFromString("MAP");
+            cvItemBlue.setDisplayName(localeManager.getTranslation(locale, "blueprints"));
+            inventory.setItem(i, cvItemBlue.createItemStack());
+        }
 
+        boolean showBuiltRegions = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getRawPeople().containsKey(civilian.getUuid())) {
+                showBuiltRegions = true;
+                break;
+            }
+        }
         //5 Regions
-        i++;
-        CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
-        cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
-        inventory.setItem(i, cvItemRegion.createItemStack());
+        if (showBuiltRegions) {
+            i++;
+            CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
+            cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
+            inventory.setItem(i, cvItemRegion.createItemStack());
+        }
 
 //        //4 Items
 //        CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
@@ -163,11 +180,11 @@ public class MainMenu extends Menu {
 
     private void printTutorial(HumanEntity player, Civilian civilian) {
         String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
-        player.sendMessage("-----------------" + Civs.NAME + "-----------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
         TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
         player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
         player.sendMessage(tutorialUrl);
-        player.sendMessage("--------------------------------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getBottomGuideSpacer()));
     }
 
 }

@@ -1,5 +1,6 @@
 type: region
 name: Arrow_Trap
+shop-icon: ARROW
 icon: CHEST
 price: 500
 groups:
@@ -12,7 +13,7 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis:outpost:base
 
 build-reqs:
-- g:fence*5
+- g:fence*4
 - REDSTONE_WIRE*4
 - DISPENSER*1
 

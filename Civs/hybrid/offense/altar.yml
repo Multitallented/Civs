@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIAMOND_CHESTPLATE
 name: Altar
 price: 100
 max: 1

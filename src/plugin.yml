@@ -4,12 +4,11 @@ description: Allows you to create structures and towns.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
 load: POSTWORLD
-version: 1.1.1
+version: 1.2.1
 api-version: 1.13
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
-- My_Worlds
 - MultiverseCore
 commands:
    cv:

@@ -8,7 +8,7 @@ groups:
 level: 5
 
 pre-reqs:
-- village:population=20
+- village:population=10
 
 build-reqs:
 - town_hall:1

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: Siege_Machine3
 is-in-shop: false
 groups:
@@ -11,7 +12,7 @@ build-reqs:
 - TNT*5
 - SIGN*1,WALL_SIGN*1
 - OBSIDIAN*9
-- g:fence*24
+- g:fence*12
 
 build-radius: 3 #7x7x7
 effects:
