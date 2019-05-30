@@ -321,7 +321,7 @@ public class ConfigManager {
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
-            topGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
+            bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             if ("".equals(civsItemPrefix)) {
