@@ -214,6 +214,11 @@ public class ConfigManager {
         loadFile(configFile);
     }
 
+    public void reload() {
+        File config = new File(Civs.getInstance().getDataFolder(), "config.yml");
+        loadFile(config);
+    }
+
     private void loadFile(File configFile) {
         FileConfiguration config = new YamlConfiguration();
         try {
@@ -321,7 +326,7 @@ public class ConfigManager {
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
-            topGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
+            bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             if ("".equals(civsItemPrefix)) {

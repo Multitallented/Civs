@@ -186,6 +186,9 @@ public final class Util {
         return inputString;
     }
     public static String parseColors(String input) {
+        if (input == null) {
+            return null;
+        }
         String returnInput = new String(input);
         returnInput = returnInput.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");
         returnInput = returnInput.replaceAll("@\\{BLACK\\}", ChatColor.BLACK + "");
