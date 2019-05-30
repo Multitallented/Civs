@@ -15,6 +15,7 @@ name:
   pt_br: "Socialismo Democrático"
   fr: "Socialisme démocratique"
   es: "Socialismo democratico"
+  zh: "民主社会主义"
 description:
   en: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
   es: "Democracia + Todas las empresas de servicios públicos, granjas, minas, fábricas y canteras son de propiedad pública."
@@ -22,6 +23,7 @@ description:
   pt_br: "Democracia + Todos os serviços públicos, fazendas, minas, fábricas e pedreiras são de propriedade pública."
   ru: "Демократия + Все коммунальные услуги, фермы, шахты, фабрики и карьеры находятся в государственной собственности."
   de: "Demokratie + Alle Versorgungsunternehmen, Farmen, Minen, Fabriken und Steinbrüche befinden sich in öffentlichem Besitz."
+  zh: "民主+所有公用事业，农场，矿山，工厂和采石场都是公有的。"
 buffs:
   max_power:
     percent: 15

@@ -14,6 +14,7 @@ name:
   ru: "колониализм"
   de: "Kolonialismus"
   pt_br: "Colonialismo"
+  zh: "殖民主义"
 description:
   en: "No town ownership. A parent town overrides town ownership."
   es: "No propiedad de la ciudad. Una ciudad matriz anula la propiedad de la ciudad."
@@ -21,6 +22,7 @@ description:
   de: "Kein Stadteigentum. Eine übergeordnete Stadt überschreibt den Besitz der Stadt."
   ru: "Нет городской собственности. Родительский город имеет приоритет над городской собственностью."
   fr: "Aucune propriété de la ville. Une ville mère prime la propriété de la ville."
+  zh: "没有城镇所有权。 父母城镇压倒了城镇所有权。"
 buffs:
   max_power:
     percent: 25

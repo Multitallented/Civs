@@ -13,6 +13,7 @@ name:
   pt_br: "Libertário"
   fr: "Libertaire"
   es: "Libertario"
+  zh: "自由意志"
 description:
   en: "No town ownership."
   es: "No propiedad de la ciudad."
@@ -20,6 +21,7 @@ description:
   pt_br: "Nenhuma propriedade da cidade."
   ru: "Нет городской собственности."
   de: "Kein Stadteigentum."
+  zh: "没有城镇所有权。"
 buffs:
   payout:
     percent: 15

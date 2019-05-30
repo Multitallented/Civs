@@ -13,6 +13,7 @@ name:
   pt_br: "Kraterocracia"
   ru: "Kraterocracy"
   de: "Kraterokratie"
+  zh: "可能是对的"
 description:
   en: "Dictatorship + When a town member kills an owner, the two switch places."
   de: "Diktatur + Wenn ein Stadtmitglied einen Besitzer tötet, tauschen die beiden Orte."
@@ -20,6 +21,7 @@ description:
   pt_br: "Ditadura + Quando um membro da cidade mata um dono, os dois trocam de lugar."
   fr: "Dictature + Lorsqu'un membre de la ville tue un propriétaire, les deux personnes changent de place."
   es: "Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos cambian de lugar."
+  zh: "独裁政权+当一个城镇成员杀死一个所有者时，两个交换位置。"
 buffs:
   max_power:
     percent: 10

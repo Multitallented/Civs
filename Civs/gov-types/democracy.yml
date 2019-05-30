@@ -14,6 +14,7 @@ name:
   pt_br: "Democracia"
   fr: "Démocratie"
   es: "Democracia"
+  zh: "民主"
 description:
   en: "Town owners manage alliances, set taxes, and town membership. Voting sets new town ownership periodically."
   es: "Los propietarios de las ciudades administran alianzas, establecen impuestos y son miembros de la ciudad. La votación establece la propiedad de la ciudad nueva periódicamente."
@@ -21,6 +22,7 @@ description:
   pt_br: "Os proprietários da cidade gerenciam alianças, estabelecem impostos e são membros da cidade. A votação define a posse da nova cidade periodicamente."
   ru: "Владельцы города управляют альянсами, устанавливают налоги и членство в городе. Голосование периодически устанавливает право собственности нового города."
   de: "Stadtbesitzer verwalten Allianzen, legen Steuern und die Mitgliedschaft in der Stadt fest. Abstimmungen legen in regelmäßigen Abständen neue Städteeigentümer fest."
+  zh: "城镇所有者管理联盟，设定税收和城镇会员资格。 投票定期设置新城镇所有权。"
 buffs:
   max_power:
     percent: 25

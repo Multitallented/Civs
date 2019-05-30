@@ -14,6 +14,7 @@ name:
   pt_br: "Socialismo Libertário"
   fr: "Socialisme libertaire"
   es: "Socialismo libertario"
+  zh: "自由主义社会主义"
 description:
   en: "Libertarian + Socialism"
   es: "Libertario + socialismo"
@@ -21,6 +22,7 @@ description:
   pt_br: "Libertário + Socialismo"
   ru: "Либертарианец + социализм"
   de: "Libertärer + Sozialismus"
+  zh: "自由主义+社会主义"
 buffs:
   cooldown:
     percent: 10

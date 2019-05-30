@@ -13,6 +13,7 @@ name:
   de: "Tribalismus"
   pt_br: "Tribalismo"
   es: "Tribalismo"
+  zh: "部落"
 description:
   en: "Dictatorship + Members can't join non-allied towns."
   es: "Dictadura + Los miembros no pueden unirse a las ciudades no aliadas."
@@ -20,6 +21,7 @@ description:
   de: "Diktatur + Mitglieder können nicht verbündeten Städten nicht beitreten."
   ru: "диктатура + Члены не могут присоединиться к не союзным городам."
   fr: "Dictature + Les membres ne peuvent pas rejoindre des villes non alliées."
+  zh: "独裁政权+会员不能加入非联盟城镇。"
 buffs:
   max_power:
     percent: 10

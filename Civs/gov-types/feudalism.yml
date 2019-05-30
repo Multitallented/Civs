@@ -13,6 +13,7 @@ name:
   pt_br: "Feudalismo"
   fr: "Féodalisme"
   es: "Feudalismo"
+  zh: "封建"
 description:
   en: "Dictatorship + Town members can't build regions in town."
   es: "Dictadura + Los miembros de la ciudad no pueden construir regiones en la ciudad."
@@ -20,6 +21,7 @@ description:
   pt_br: "Ditadura + Os membros da cidade não podem construir regiões na cidade."
   ru: "Диктатура + Городские жители не могут строить регионы в городе."
   de: "Mitglieder von Diktatur + Stadt können keine Regionen in der Stadt errichten."
+  zh: "独裁政权+城镇成员不能在城镇建立地区。"
 buffs:
   power:
     percent: 10

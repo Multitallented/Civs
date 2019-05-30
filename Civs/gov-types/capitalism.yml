@@ -15,6 +15,7 @@ name:
   pt_br: "Capitalismo"
   es: "Capitalismo"
   fr: "Capitalisme"
+  zh: "资本主义"
 description:
   en: "Democracy + Town members can buy extra votes."
   fr: "Les membres de Démocratie + Ville peuvent acheter des votes supplémentaires."
@@ -22,6 +23,7 @@ description:
   pt_br: "Democracia + os membros da cidade podem comprar votos extras."
   ru: "Члены Демократии + Город могут купить дополнительные голоса."
   de: "Demokratie + Stadt-Mitglieder können zusätzliche Stimmen kaufen."
+  zh: "民主+城镇成员可以购买额外的选票。"
 buffs:
   payout:
     percent: 10
