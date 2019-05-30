@@ -103,7 +103,7 @@ public class ConveyorEffect implements Listener {
             return;
         }
 
-        if (destinationChestFull(r)) {
+        if (isDestinationChestFull(r)) {
             return;
         }
 
@@ -152,7 +152,7 @@ public class ConveyorEffect implements Listener {
         }
     }
 
-    private boolean destinationChestFull(Region region) {
+    private boolean isDestinationChestFull(Region region) {
         if (!cacheDestinationRegions.containsKey(region)) {
             return false;
         }
@@ -198,7 +198,11 @@ public class ConveyorEffect implements Listener {
                 Inventory originInv = null;
                 try {
                     originInv = ((Chest) carts.get(sm).getLocation().getBlock().getState()).getInventory();
-                    originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
+                    if (originInv.firstEmpty() > -1) {
+                        originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
+                    } else {
+                        originInv.setItem(originInv.getSize() -1, new ItemStack(Material.CHEST_MINECART, 1));
+                    }
                 } catch (Exception e) {
 
                 }
