@@ -492,6 +492,271 @@ de:
   starter-book: "Menü für Civs"
   cant-place-town: "Tippst /cv town ortsname_geht_hier"
   no-region-type-found: "Keine Regionstyp für $1 gefunden"
+  next-button: Weiter
+  prev-button: Zurück
+  #Sprachmenü
+  language-menu: Sprache auswählen
+  language-set: "Ihre Sprache wurde auf $1 gesetzt"
+  back-button: Zurück
+
+  #Tutorial
+  start-tutorial: "Erfolge auf"
+  start-tutorial-desc: "Erhalte geld und gegenstände, um erfolge zu erzielen"
+  skip: "Erfolge aus"
+  tutorial-click: "Bitte beachten Sie den Civs-Leitfaden"
+  tutorial-wiki: "Civs wiki"
+  click-info: "Klick für mehr infos"
+  guide: "Anleitung"
+  guide-desc: "Klicken sie hier, um Ihr nächstes ziel zu sehen."
+  choose-path: "Wähle deinen pfad"
+
+  new-owner-town: "$1 hat $2 als besitzer von $3 ersetzt"
+  town-bank-balance: "Bankguthaben $1"
+  town-bank-desc: "Mit /cv $1 betrag abheben"
+  widthdrawn-money: "Sie haben $$1 von der kasse von $2 abgehoben"
+  town-tax: "Ortstaxe: $1"
+  town-tax-desc: "Steuer mit /cv tax $1 betrag festlegen"
+  town-tax-gov-type: "$1 kann keine steuern setzen"
+  town-tax-set: "$1 Steuer auf $2"
+  tax-too-high: "Sie können keine steuern höher als $1 festlegen"
+  town-assist-price: "Ihre stadtbank hat $1 bezahlt, um ihnen für den bau ihrer $2 zu danken."
+  colony-town-set: "Du hast $1 als kolonie von $2 gesetzt"
+  cant-build-feudal: "Man kann keine bereich in einer feudalen Stadt bauen, wenn man diese Stadt nicht besitzt."
+  tribalism-no-invite: "Ihre Tribalism-Stadt verbietet ihnen, $1 der nicht verbündeten stadt $2 einzuladen."
+  vote-member: "Abstimmung Inhaber"
+  capitalism-voting-cost: "Extra-Stimmen kosten $1"
+  voted: "Sie haben Ihre Stimme für $1 abgegeben"
+  gov-type-change: "$1 wurde von $2 auf $3 geändert"
+  cost-buff: "Für Gebäude mit einem Wert von $2 in einer Stadt mit einem Wert von $3  wurde ihnen $1 erstattet."
+  merit-new-owner: "Herzlichen glückwunsch! Sie haben $1 überschritten. Sie sind der neue stadtbesitzer!"
+  item-locked: "Du hast diesen gegenstand noch nicht freigeschaltet."
+
+  ai-invite: "Hey @$1 möchtest du dich meiner Stadt anschließen?"
+  ai-help: "$1 kann Ihnen einen Rundgang durch den Ort geben"
+
+  cooldown-buff-desc: "$1% abklingzeitreduzierung für alle $2"
+  payout-buff-desc: "Auszahlungserhöhung von $1% für alle $2"
+  power-buff-desc: "$1% tägliche leistungssteigerung"
+  max_power-buff-desc: "$1% maximale leistungssteigerung"
+  cost-buff-desc: "$1% kostenrückerstattung auf alle $2"
+
+  #Geschäft
+  shop: Laden
+  buy-item: Zum Verkauf
+  price: Preis
+  buy: "Kaufen $1"
+  cancel: Abbrechen
+  item-bought: "Herzlichen Glückwunsch! Sie haben gerade $1 für $2 gekauft."
+  max-item: "Sie können nicht mehr als $2 $1 kaufen"
+  max-qty: "$1 hat zu viele $2 und kann nicht mehr besitzen"
+
+  #Artikel
+  items: Artikel
+  click-for-item-group: "Hier klicken, um alle artikel in dieser gruppe zu sehen"
+
+  #Klassen
+  classes: Klassen
+
+  #Zauber
+  spells: Zauber
+
+  #Blaupausen
+  blueprints: Blaupausen
+
+  #Regionen
+  regions: Regionen
+
+  #Gemeinschaft
+  community: Gemeinschaft
+  players: Spieler
+  towns: Städte
+  your-towns: Deine Städte
+  wars: Kriege
+  alliances: Allianzen
+  leaderboard: Bestenliste
+  ports: Häfen
+  money: "Geld: $$1"
+  points: "Punkte: $1"
+  killstreak: "Tötungsstreifen: $1"
+  highest-killstreak: "Höchste Tötungsstreifen: $1"
+  kills: "Siege: $1"
+  deaths: "Todesfälle: $1"
+  friends: "Freunde"
+  confirm: "Bestätigen"
+  reject: "Ablehnen"
+  effects: "Effekte"
+
+  #region
+  size: Größe
+  range: Reichweite
+  build-reqs-title: Gebäudeanforderungen
+  population: Bevölkerung
+  population-req: "Benötigt $1 bei $2 Bevölkerungszahl"
+  biomes: Biomes
+  devolve-town: "$1 hat keinen Strom mehr und wurde auf $2 herabgestuft!"
+  pop-desc: "$1 Bevölkerung / $2 Wohnen / $3 Dorfbewohner"
+  build-reqs: "Alle blöcke, die du platzieren musst, um einen $1 zu bauen"
+  reagents-title: Reagenzien
+  reagents: "Alle Gegenstände, die du in der $1 benötigst"
+  upkeep: "Alle Gegenstände, die von den $1 verbraucht werden"
+  output: "Alle von $1 erstellten Elemente"
+  payout: "Diese bereich verdient $$1"
+  power-input: "Diese bereich verbraucht $1 an leistung"
+  power-output: "Diese bereich erzeugt $1 strom"
+  too-close-region: "Dein $1 würde einem $2 zu nahe kommen"
+  too-close-town: "Ihr $1 wäre zu nahe an einer anderen stadt"
+  town-created: "$1 wurde erstellt!"
+  town-destroyed: "$1 wurde zerstört!"
+  region-built: "Sie haben erfolgreich einen $1 gebaut"
+  region-type: "BereichTyp"
+  destroy: "Zerstören"
+  region-in-town: "Ihre bereich ist in $1"
+  town-req-desc: "Ihre bereich muss gebaut sein in:"
+  view-members: "Mitglieder anzeigen"
+  add-member: "Mitglied hinzufügen"
+  operation: "Bedienung"
+  region-working: "Ihre bereich läuft rund"
+  region-not-working: "Ihre bereich fehlt etwas"
+  owner: Eigentümer
+  member: Mitglied
+  guest: Gast
+  recruiter: Personalvermittler
+  set-owner: Setzen Eigentümer
+  set-member: Setzen Mitglied
+  set-guest: Setzen Gast
+  remove-member: Mitglied entfernen
+  leave-town: Stadt verlassen
+  you-left-town: "Sie haben $1 verlassen"
+  add-member-region: "Du wurdest mitglied von $1"
+  member-added-region: "$1 ist jetzt Mitglied von $2"
+  owner-description: "Eigentümer können in der Region alles machen"
+  guest-description: "Gäste können in der bereich türen und knöpfe benutzen"
+  member-description: "Mitglieder können die Region bauen und nutzen"
+  remove-member-region: "Sie sind kein mitglied von $1 mehr"
+  member-removed-region: "$1 ist kein mitglied von $2 mehr"
+  add-owner-region: "Du wurdest zum besitzer von $1 gemacht"
+  owner-added-region: "$1 ist jetzt eigentümer ihrer $2"
+  add-guest-region: "Du wurdest zu einem gast von $1 gemacht"
+  guest-added-region: "$1 ist jetzt ein gast ihrer $2"
+  invite-owner-region: "Sie wurden Mitglied von $1"
+  owner-invited-region: "$1 wurde zu ihren $2 hinzugefügt"
+  stand-in-region: "Bitte haben sie einen stehen von $1 in der bereich"
+  create: Erstellen
+  click-for-region-limits: "Klicken sie hier, um eine liste der bereichgrenzen anzuzeigen"
+  click-for-req-regions: "Klicken sie hier für eine liste der erforderlichen bereich"
+  town-instructions: "Erstelle eine $1, mit /cv town Mein_Stadt_Name"
+  town-enter: "Sie haben $1 ($2) eingegeben"
+  town-exit: "Sie haben $1 ($2) beendet"
+  new-town-member: "$1 ist $2 beigetreten"
+  must-be-built-on-top: "Ein $1 muss auf einem $2 gebaut werden"
+  town-power: "Macht: $1/$2"
+  port-warmup: "Du wirst in $1s teleportiert"
+  teleported: "Du wurdest teleportiert!"
+  location-set: "$1 standort setzen"
+  rename-town: "Stadt umbenennen"
+  rename-desc: "Benutze /cv rename Alt_Name Neu_Name"
+  town-renamed: "Ihre stadt wurde von $1 auf $2 umbenannt."
+  bounty-set: "Ein kopfgeld wurde auf $1 für $2 gesetzt"
+  bounty-bonus: "Sie haben ein kopfgeld von $1 gesammelt"
+  add-friend: "Freund hinzufügen"
+  remove-friend: "Freund entfernen"
+  friend-added: "$1 wurde zu deiner freundesliste hinzugefügt"
+  friend-removed: "$1 wurde von Ihrer Freundesliste entfernt."
+  bounty: "Setze ein kopfgeld /cv bounty $1 Betrag"
+  town-ally: "Setze $1 als verbündete"
+  town-unally: "Setze $1 als feinde"
+  town-ally-invites: "Sie haben stadt-verbündete lädt ein"
+  town-ally-request-sent: "Eine allianz wurde für $1 vorgeschlagen"
+  town-ally-request-accepted: "Allianz wurde zwischen $1 und $2 gebildet"
+  town-ally-request-denied: "Allianzanfrage mit 1 $ wurde abgelehnt"
+  town-ally-removed: "Allianz zwischen $1 und $2 hat sich aufgelöst"
+  region-evolved: "Ihr $1 hat sich zu einem $2 entwickelt"
+  anti-camp-active: "Das anti-zelten von $1 wurde aktiviert"
+  anti-camp-expired: "Das anti-zelten von $1 ist abgelaufend"
+  region-sale-set: "$1 steht für $2 zum verkauf"
+  sell-region: "Verkaufsbereich"
+  cancel-sale: "Verkauf stornieren"
+  buy-region: "Kaufen Sie dieses $1 für $2"
+  regions-for-sale: "Verkaufsbereich"
+  use-sell-command: "Typ /cv sell preis_geht_hier"
+  region-bought: "Sie haben dieses $1 für $2 gekauft"
+  sort-by-level: "Bereich nach ebene sortieren"
+  level: "Etage $1"
+  rename-alliance: "Allianz umbenennen"
+  rename-alliance-desc: "Typ /cv really $1 Neuer_Allianzname_Hier"
+  alliance-renamed: "$1 wurde in $2 umbenannt"
+  invalid-name: "Ungültiger name"
+  last-renamed-by: "Zuletzt umbenannt von: $1"
+  leave-alliance: "Allianz verlassen"
+  hunting-players: "Achtung! Jemand jagt Spieler in Ihrer Nähe."
+
+  #Fehler
+  building-too-big: "Du baust zu groß, um $1 zu sein"
+  no-required-blocks: "Sie haben nicht die erforderlichen blöcke platziert, um ein $1 zu machen"
+  cant-build-on-region: "Sie können nicht $1 auf $2 aufbauen"
+  rebuild-required: "Sie müssen diese $1 auf eine $2 aufbauen"
+  prevent-civs-item-share: "Civ artikel dürfen nicht geteilt werden"
+  region-protected: "Diese bereich ist geschützt"
+  region-destroyed: "Bereich $1 wurde zerstört!"
+  specify-player-town: "Bitte einen spieler und eine stadt angeben"
+  specify-town-name: "Bitte geben sie einen ortsnamen an"
+  specify-player-region: "Bitte einen spieler und eine bereich angeben"
+  town-not-exist: "$1 ist keine stadt"
+  no-permission-invite: "Sie haben keine Berechtigung, Personen zu $​​1 einzuladen"
+  player-not-online: "$1 ist nicht online"
+  invite-player: "$1 möchte sie einladen, $2 $3 beizutreten. Geben sie zum beitreten /cv accept"
+  already-member: "$1 ist bereits mitglied von $2"
+  broke-own-region: "In ihrem $1 fehlen blöcke"
+  no-permission: "Erlaubnis verweigert"
+  class-changed: "Ihre Klasse hat sich in $1 geändert"
+  not-enough-money: "Du hast nicht $$1"
+  not-allowed-place: "$1 kann nicht platziert werden"
+  hold-town: "Bitte einen stadtgegenstand halten"
+  no-commands-in-jail: "Sie können keine befehle im gefängnis für weitere $1 verwenden"
+  mana-use-exp: "Du kannst das nur benutzen, wenn du volles mana hast."
+  building-requires-2space: "Dieses gebäude benötigt 2 leerzeichen über der zentralen truhe"
+  missing-blocks-build: "Sie müssen diese fehlenden blöcke platzieren, um ein $1 zu bauen"
+  in-combat: "Das kann man im Kampf nicht machen"
+  cooldown: "Das ist abklingzeit für $1s"
+  need-more-health: "Dafür brauchst du $1 mehr gesundheit."
+  need-more-stamina: "Dafür brauchst du $1 mehr ausdauer."
+  need-more-mana: "Dafür brauchst du $1 mehr mana"
+  port-not-found: "Kein port gefunden"
+  region-missing-upkeep-items: "Bereich hat keine benötigten artikel"
+  raid-target-lost: "Es gibt keine stadt mit dem namen $1 innerhalb von $2 blöcken"
+  searching-for-target: "Suche nach Überfall-Teleportieren-Ziel..."
+  raid-target-blocked: "Raid teleport destination blocked."
+  raid-porter-warning: "WARNUNG! $1 hat ein $2 zielen auf für $3 erstellt."
+  raid-remote: "Du hast einen Gegenstand erhalten, um diese $1 zu kontrollieren"
+  raid-sign: "Du brauchst ein schild über der truhe mit dem namen der zielstadt"
+  invalid-target: "Ungültiges ziel"
+  raid-target-inside-region: "Du kannst keinen ort innerhalb einer bereich festlegen"
+  req-build-inside-town: "Dieser $1 muss innerhalb von $2 gebaut werden"
+  missing-region-requirements: "In Ihrem $ 1 fehlen erforderliche bereich"
+  friendly-fire: "Du kannst niemandem auf deiner freundesliste schaden zufügen"
+  limits: "Grenzen"
+  region-limit-reached: "Ein $1 kann nur $2 $3 haben"
+  region-in-biome: "Sie können nicht ein $1 in einem $2 bauen"
+  not-enough-housing: "Man muss mehr wohnraum bauen, bevor man leute einlädt"
+  not-member-port: "Sie sind kein mitglied dieses ports"
+  cant-repair-item: "Das artikel kann hier nicht repariert werden."
+  more-repair-items: "Sie benötigen mehr als $1, um diesen gegenstand zu reparieren"
+  hold-repair-item: "Sie müssen den gegenstand halten, den sie reparieren möchten"
+  player-not-found: "Spieler $1 nicht gefunden"
+
+  #tod
+  repeat-kill: "$1 wurde zu früh getötet. Es wurden keine punkte vergeben."
+  kill-streak: "$1 ist auf einem tötungsstreifen von  $2"
+  kill-joy: "$1 hat $2s tötungsstreifen von $3 beendet"
+  death: "Du hast $1 punkte fürs sterben verloren"
+  kill: "Töten: $1"
+  low-health: "Gesundheitsschwacher prämie: $1"
+  killstreak-points: "tötungsstreifen prämie: $1"
+  killjoy-points: "Spielverderber prämie: $1"
+  total-points: "Gesamtpunktzahl: $1"
+  karma: "Karma: $1"
+  karma-gained: "Karma: +$1, $2 geld gewonnen"
+  karma-lost: "Karma: -$1, $2 geld verloren"
 ru:
   name: русский
   icon: RED_WOOL
