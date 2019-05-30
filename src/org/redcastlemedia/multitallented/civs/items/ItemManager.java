@@ -39,6 +39,11 @@ public class ItemManager {
         return itemManager;
     }
 
+    public void reload() {
+        itemTypes.clear();
+        loadAllItemTypes();
+    }
+
     private void loadAllItemTypes() {
         Civs civs = Civs.getInstance();
         if (civs == null) {

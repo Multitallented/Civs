@@ -37,6 +37,11 @@ public class TutorialManager {
         return tutorialManager;
     }
 
+    public void reload() {
+        tutorials.clear();
+        loadTutorialFile();
+    }
+
     private void loadTutorialFile() {
         if (Civs.getInstance() == null) {
             return;
