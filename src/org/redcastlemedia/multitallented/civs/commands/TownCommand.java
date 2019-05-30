@@ -83,7 +83,7 @@ public class TownCommand implements CivCommand {
             return true;
         }
         CivItem civItem = itemManager.getItemType(itemStack.getItemMeta().getDisplayName()
-                .replace("Civs ", "").toLowerCase());
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
 
         if (civItem == null || !(civItem instanceof TownType)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),

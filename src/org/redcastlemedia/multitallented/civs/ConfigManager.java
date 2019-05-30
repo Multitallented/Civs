@@ -102,6 +102,12 @@ public class ConfigManager {
     int daysBetweenVotes;
     @Getter
     double capitalismVotingCost;
+    @Getter
+    String topGuideSpacer;
+    @Getter
+    String bottomGuideSpacer;
+    String civsChatPrefix;
+    String civsItemPrefix;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -170,6 +176,13 @@ public class ConfigManager {
     public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
+
+    public String getCivsChatPrefix() {
+        return Util.parseColors(civsChatPrefix);
+    }
+    public String getCivsItemPrefix() {
+        return Util.parseColors(civsItemPrefix + " ");
+    }
 
     public List<String> getCustomItemDescription(String key) {
         List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
@@ -307,6 +320,13 @@ public class ConfigManager {
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
+            topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
+            topGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            if ("".equals(civsItemPrefix)) {
+                civsItemPrefix = "Civs";
+            }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");

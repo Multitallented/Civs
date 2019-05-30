@@ -18,7 +18,7 @@ effects:
 - block_explosion
 - deny_damage
 - port:private
-- active #TODO make this
+- active:120960
 
 period: 1800 # 30 minutes
 upkeep:

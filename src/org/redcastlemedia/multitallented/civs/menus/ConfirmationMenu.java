@@ -70,7 +70,7 @@ public class ConfirmationMenu extends Menu {
             boolean isTown = civItem.getItemType() == CivItem.ItemType.TOWN;
             boolean isRegion = civItem.getItemType() == CivItem.ItemType.REGION;
             List<String> lore = new ArrayList<>();
-            lore.add(civilian.getUuid().toString());
+            lore.add(ChatColor.BLACK + civilian.getUuid().toString());
             lore.add(purchasedItem.getDisplayName());
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
