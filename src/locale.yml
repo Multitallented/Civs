@@ -697,11 +697,58 @@ zh:
   kill: "击杀: $1"
   low-health: "残血奖励: $1"
   killstreak-points: "连杀奖励: $1"
-  killjoy-points: "Killjoy奖励: $1"
+  killjoy-points: "派对破坏者奖励: $1"
   total-points: "共有点数: $1"
   karma: "业: $1"
   karma-gained: "业: +$1,获得 $2 "
   karma-lost: "业: -$1,失去 $2 "
+
+  new-owner-town: "$1 已将 $2 替换为 $3 的所有者"
+  town-bank-balance: "银行存款余额 $1"
+  town-bank-desc: "退出运用 /cv withdraw $1 量"
+  widthdrawn-money: "你已经退出了 $$1 从 $2's 储蓄银行"
+  town-tax: "城镇税: $1"
+  town-tax-desc: "设定税 /cv tax $1 量"
+  town-tax-gov-type: "$1 不能设税"
+  town-tax-set: "$1 税收设定为 $2"
+  tax-too-high: "你不能设置高于税收 $1"
+  town-assist-price: "您的城镇银行支付了 $1，感谢您构建 $2"
+  colony-town-set: "您已将 $1 设置为 $2 的殖民地"
+  cant-build-feudal: "除非你拥有那个城镇，否则你不能在封建城镇建立一个地区。"
+  tribalism-no-invite: "你的部落镇禁止你邀请非联盟城镇 $2 的 $1"
+  vote-member: "投票成为下一个所有者"
+  capitalism-voting-cost: "额外投票成本 $1"
+  voted: "你投了 $1 的投票"
+  gov-type-change: "$1 从 $2 更改为 $3"
+  cost-buff: "您已在 $3 城镇的建筑物a $2 退还 $1 。"
+  merit-new-owner: "恭喜！ 你已超过 $1。 你是新城镇老板！"
+  item-locked: "你还没有解锁这个项目。"
+
+  ai-invite: "嘿，@$1 你想加入我的小镇吗？"
+  ai-help: "$1 可以让你参观这个地方。"
+
+  cooldown-buff-desc: "所有$2的冷却时间减少$1％"
+  payout-buff-desc: "所有$2的$1％地区支付增加"
+  power-buff-desc: "每日功率增加$1％"
+  max_power-buff-desc: "最大功率增加$1％"
+  cost-buff-desc: "所有$2均可享受$1％的费用退款"
+
+  max-qty: "$1有太多$2并且不能拥有更多"
+
+  #items
+  click-for-item-group: "单击以查看该组中的所有项目"
+
+  effects: "的影响"
+
+  #region
+  sort-by-level: "按级别排序区域"
+  level: "阶段 $1"
+  rename-alliance: "重命名联盟"
+  rename-alliance-desc: "打字 /cv really $1 这里有新的联盟名称"
+  alliance-renamed: "$1已重命名为$2"
+  invalid-name: "名称无效"
+  last-renamed-by: "最后重命名为：$1"
+  leave-alliance: "离开联盟"
 es:
   name: Español
   icon: YELLOW_WOOL
