@@ -130,6 +130,10 @@ civs-item-prefix: "Civs"
 alliance-claim-capture-seconds: 180
 # The material needed to capture new alliance claims
 claim-material: REDSTONE*64
+claim-effects:
+  - "block_break"
+  - "block_build"
+
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?

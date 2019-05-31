@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -103,10 +104,7 @@ public class AllianceManager implements Listener {
                 alliance.setNationClaims(claims);
             }
 
-            // TODO configure this maybe?
-            alliance.getEffects().add("block_break");
-            alliance.getEffects().add("block_build");
-            alliance.getEffects().add("block_explosion");
+            alliance.getEffects().addAll(ConfigManager.getInstance().getAllianceClaimEffects());
 
             alliances.put(alliance.getName(), alliance);
         } catch (Exception e) {

@@ -112,6 +112,8 @@ public class ConfigManager {
     String bottomGuideSpacer;
     String civsChatPrefix;
     String civsItemPrefix;
+    @Getter
+    List<String> allianceClaimEffects;
 
     public ConfigManager() {
         loadDefaults();
@@ -339,11 +341,22 @@ public class ConfigManager {
                 civsItemPrefix = "Civs";
             }
             claimMaterial = config.getString("claim-material", "REDSTONE*64");
+            allianceClaimEffects = config.getStringList("claim-effects");
+            if (allianceClaimEffects.isEmpty()) {
+                allianceClaimEffects = getDefaultAllianceEffects();
+            }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
             e.printStackTrace();
         }
+    }
+
+    private List<String> getDefaultAllianceEffects() {
+        List<String> returnList = new ArrayList<>();
+        returnList.add("block_break");
+        returnList.add("block_build");
+        return returnList;
     }
 
     private Map<String, List<String>> processMap(ConfigurationSection section) {
