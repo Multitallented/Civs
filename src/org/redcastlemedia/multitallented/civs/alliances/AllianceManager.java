@@ -10,8 +10,10 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -304,7 +306,42 @@ public class AllianceManager implements Listener {
         }
 
         int claimsAvailable = numberOfClaims - autoFilledClaims;
-        // TODO add claims to each town until each town has enough claims to buffer their radius
+        int i=0;
+        for (;;) {
+            int fullTowns = 0;
+            for (String townName : alliance.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+
+                int chunkRadius = (int) (Math.ceil((double) townType.getBuildRadius() / 16) + 2);
+                if (i > chunkRadius * 8 + 1) {
+                    fullTowns++;
+                    continue;
+                }
+
+                Chunk chunk = getSurroundTownClaim(i, town.getLocation());
+                ChunkClaim claim = ChunkClaim.fromChunk(chunk);
+                if (claim == null) {
+                    claim = new ChunkClaim(chunk.getX(), chunk.getZ(), town.getLocation().getWorld(), alliance);
+                    if (!alliance.getNationClaims().containsKey(town.getLocation().getWorld().getUID())) {
+                        alliance.getNationClaims().put(town.getLocation().getWorld().getUID(), new HashMap<>());
+                    }
+                    alliance.getNationClaims().get(town.getLocation().getWorld().getUID())
+                            .put(claim.getId(), claim);
+                    claimsAvailable--;
+
+                    if (claimsAvailable < 1) {
+                        return;
+                    }
+                }
+
+            }
+            if (fullTowns >= alliance.getMembers().size()) {
+                break;
+            }
+            i++;
+        }
+
         // TODO connect towns if they are in the same world
         // TODO spiral outwards from connected towns
     }
