@@ -132,6 +132,10 @@ public class CommonScheduler implements Runnable {
     }
 
     private void stayInClaim(ChunkClaim claim, Player player) {
+        if (claim.getAlliance() == null) {
+            claimNeutralChunk(claim, player);
+            return;
+        }
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         if (claim.getLastEnter() != -1 &&
                 claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
@@ -167,43 +171,47 @@ public class CommonScheduler implements Runnable {
         }
     }
 
+    private void claimNeutralChunk(ChunkClaim claim, Player player) {
+        claim.setLastEnter(-1);
+        ItemStack claimItemStack = CVItem.createCVItemFromString(ConfigManager.getInstance().getClaimMaterial()).createItemStack();
+        if (!player.getInventory().contains(claimItemStack)) {
+            return;
+        }
+        HashSet<Alliance> alliances = AllianceManager.getInstance().getAlliances(player.getUniqueId());
+        Alliance saveAlliance = null;
+        for (Alliance alliance : alliances) {
+            if (!alliance.getNationClaims().containsKey(claim.getWorld().getUID())) {
+                continue;
+            }
+            String northKey = (claim.getX() + 1) + "," + claim.getZ();
+            String westKey = claim.getX() + "," + (claim.getZ() + 1);
+            String southKey = (claim.getX() - 1) + "," + claim.getZ();
+            String eastKey = claim.getX() + "," + (claim.getZ() - 1);
+            if (alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(northKey) ||
+                    alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(westKey) ||
+                    alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(southKey) ||
+                    alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(eastKey)) {
+
+                saveAlliance = alliance;
+            }
+        }
+        if (saveAlliance != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "alliance-chunk-claimed"
+            ).replace("$1", saveAlliance.getName()));
+
+            claim.setAlliance(saveAlliance);
+            player.getInventory().removeItem(claimItemStack);
+            saveAlliance.getNationClaims().get(claim.getWorld().getUID()).put(claim.getId(), claim);
+            AllianceManager.getInstance().saveAlliance(saveAlliance);
+        }
+    }
+
     private void enterClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaims.put(player.getUniqueId(), claim);
         if (claim.getAlliance() == null) {
-            claim.setLastEnter(-1);
-            ItemStack claimItemStack = CVItem.createCVItemFromString(ConfigManager.getInstance().getClaimMaterial()).createItemStack();
-            if (!player.getInventory().contains(claimItemStack)) {
-                return;
-            }
-            HashSet<Alliance> alliances = AllianceManager.getInstance().getAlliances(player.getUniqueId());
-            Alliance saveAlliance = null;
-            for (Alliance alliance : alliances) {
-                if (!alliance.getNationClaims().containsKey(claim.getWorld().getUID())) {
-                    continue;
-                }
-                String northKey = (claim.getX() + 1) + "," + claim.getZ();
-                String westKey = claim.getX() + "," + (claim.getZ() + 1);
-                String southKey = (claim.getX() - 1) + "," + claim.getZ();
-                String eastKey = claim.getX() + "," + (claim.getZ() - 1);
-                if (alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(northKey) ||
-                        alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(westKey) ||
-                        alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(southKey) ||
-                        alliance.getNationClaims().get(claim.getWorld().getUID()).containsKey(eastKey)) {
-
-                    saveAlliance = alliance;
-                }
-            }
-            if (saveAlliance != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "alliance-chunk-claimed"
-                ).replace("$1", saveAlliance.getName()));
-
-                claim.setAlliance(saveAlliance);
-                player.getInventory().removeItem(claimItemStack);
-                saveAlliance.getNationClaims().get(claim.getWorld().getUID()).put(claim.getId(), claim);
-                AllianceManager.getInstance().saveAlliance(saveAlliance);
-            }
+            claimNeutralChunk(claim, player);
             return;
         }
         boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance());
