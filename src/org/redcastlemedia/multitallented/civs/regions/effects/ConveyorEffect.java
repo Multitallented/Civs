@@ -232,7 +232,8 @@ public class ConveyorEffect implements Listener {
                 }
                 try {
                     Chest chest = (Chest) r.getLocation().getBlock().getState();
-                    if (chest.getBlockInventory().firstEmpty() > -1) {
+                    if (chest.getBlockInventory().firstEmpty() > -1 ||
+                            chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() -2) {
                         chest.getBlockInventory().addItem(new ItemStack(Material.CHEST_MINECART));
                     } else {
                         chest.getBlockInventory().setItem(chest.getBlockInventory().getSize() -1,
