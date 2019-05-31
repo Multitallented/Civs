@@ -285,21 +285,26 @@ public class AllianceManager implements Listener {
         }
     }
 
-    int getMaxAllianceClaims(Alliance alliance) {
+    public int getMaxAllianceClaims(Alliance alliance) {
         int numberOfClaims = 0;
         for (String townName : alliance.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
             numberOfClaims += town.getPower();
         }
-        return numberOfClaims / ConfigManager.getInstance().getPowerPerAllianceClaim();
+        return (int) ((double) numberOfClaims / ConfigManager.getInstance().getPowerPerAllianceClaim());
     }
 
-    private void fillClaims(Alliance alliance) {
-        int numberOfClaims = getMaxAllianceClaims(alliance);
+    public int getNumberOfClaims(Alliance alliance) {
         int autoFilledClaims = 0;
         for (UUID uuid : alliance.getNationClaims().keySet()) {
             autoFilledClaims += alliance.getNationClaims().get(uuid).size();
         }
+        return autoFilledClaims;
+    }
+
+    private void fillClaims(Alliance alliance) {
+        int numberOfClaims = getMaxAllianceClaims(alliance);
+        int autoFilledClaims = getNumberOfClaims(alliance);
 
         if (autoFilledClaims >= numberOfClaims) {
             return;

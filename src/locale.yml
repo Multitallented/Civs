@@ -8,6 +8,7 @@ en:
   language-menu: Select Language
   language-set: "Your language has been set to $1"
   back-button: Back
+  claims: "Claims"
 
   #Tutorial
   start-tutorial: "Achievements On"
@@ -282,6 +283,7 @@ pt_br:
   language-menu: Selecione sua linguagem
   language-set: "Sua língua foi definida para: $1"
   back-button: Voltar
+  claims: "Reivindicações"
 
   #shop
   shop: Loja
@@ -503,6 +505,7 @@ de:
   language-menu: Sprache auswählen
   language-set: "Ihre Sprache wurde auf $1 gesetzt"
   back-button: Zurück
+  claims: "Ansprüche"
 
   #Tutorial
   start-tutorial: "Erfolge auf"

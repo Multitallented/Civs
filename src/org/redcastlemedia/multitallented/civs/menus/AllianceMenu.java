@@ -109,6 +109,18 @@ public class AllianceMenu extends Menu {
                 inventory.setItem(3, is);
             }
         }
+        //4 Claims
+        {
+            CVItem cvItem = CVItem.createCVItemFromString("GRASS_BLOCK");
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "claims"));
+            ArrayList<String> lore = new ArrayList<>();
+            int currentClaims = AllianceManager.getInstance().getNumberOfClaims(alliance);
+            int maxClaims = AllianceManager.getInstance().getMaxAllianceClaims(alliance);
+            lore.add(currentClaims + " / " + maxClaims);
+            cvItem.setLore(lore);
+            inventory.setItem(4, cvItem.createItemStack());
+        }
 
         //6 Leave Alliance
         if (isOwnerOfTown) {
