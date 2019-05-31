@@ -45,6 +45,7 @@ en:
   ai-help: "$1 can give you a tour of the place."
   cant-build-in-nation: "You can't build inside $1 claimed land."
   neutralized-claim: "$1's protections on this land have been removed."
+  alliance-chunk-claimed: "This land has been claimed for the alliance $1"
 
   cooldown-buff-desc: "$1% cooldown reduction for all $2"
   payout-buff-desc: "$1% region payout increase for all $2"
@@ -477,7 +478,7 @@ pt_br:
   karma-lost: "Karma: -$1, $2 de dinheiro perdido"
   cant-build-in-nation: "Você não pode construir dentro de uma terra reivindicada de $1."
   neutralized-claim: "As proteções de $1 nesta terra foram removidas."
-  
+  alliance-chunk-claimed: "Esta terra foi reivindicada para a aliança $1"
 es:
   name: Español
   icon: YELLOW_WOOL
@@ -761,8 +762,9 @@ de:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 geld gewonnen"
   karma-lost: "Karma: -$1, $2 geld verloren"
-  cant-build-in-nation: "Sie können nicht innerhalb von $1 beanspruchtem Land bauen"
-  neutralized-claim: "Der Schutz von $1 für dieses Land wurde entfernt."
+  cant-build-in-nation: "Sie können nicht innerhalb von $1 beanspruchtem land bauen"
+  neutralized-claim: "Der schutz von $1 für dieses land wurde entfernt."
+  alliance-chunk-claimed: "Dieses land wurde für die allianz $1 beansprucht"
 ru:
   name: русский
   icon: RED_WOOL

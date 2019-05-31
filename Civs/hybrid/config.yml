@@ -128,6 +128,8 @@ civs-item-prefix: "Civs"
 
 # how long should invaders sit in an uncontested alliance claim (16x16) before neutralizing it
 alliance-claim-capture-seconds: 180
+# The material needed to capture new alliance claims
+claim-material: REDSTONE*64
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?

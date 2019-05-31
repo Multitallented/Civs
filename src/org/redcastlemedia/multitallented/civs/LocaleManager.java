@@ -560,6 +560,8 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
             currentLanguage.put("town-tax-gov-type",
                     localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
+            currentLanguage.put("alliance-chunk-claimed",
+                    localeConfig.getString(langKey + ".alliance-chunk-claimed", "This land has been claimed for the alliance $1"));
             languageMap.put(langKey, currentLanguage);
         }
     }

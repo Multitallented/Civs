@@ -126,3 +126,5 @@ default-gov-type: "DICTATORSHIP"
 days-between-elections: 7
 # how long should invaders sit in an uncontested alliance claim (16x16) before neutralizing it
 alliance-claim-capture-seconds: 180
+# The material needed to capture new alliance claims
+claim-material: REDSTONE*64

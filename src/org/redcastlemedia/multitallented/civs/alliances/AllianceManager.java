@@ -196,6 +196,19 @@ public class AllianceManager implements Listener {
         return alliances.get(name);
     }
 
+    public HashSet<Alliance> getAlliances(UUID uuid) {
+        HashSet<Alliance> returnAlliances = new HashSet<>();
+        for (Alliance alliance : alliances.values()) {
+            for (String townName : alliance.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (town.getRawPeople().containsKey(uuid)) {
+                    returnAlliances.add(alliance);
+                }
+            }
+        }
+        return returnAlliances;
+    }
+
     public HashSet<Alliance> getAlliances(Town town) {
         HashSet<Alliance> returnAlliances = new HashSet<>();
         for (Alliance alliance : alliances.values()) {

@@ -105,6 +105,8 @@ public class ConfigManager {
     @Getter
     long allianceClaimCaptureTime;
     @Getter
+    String claimMaterial;
+    @Getter
     String topGuideSpacer;
     @Getter
     String bottomGuideSpacer;
@@ -336,6 +338,7 @@ public class ConfigManager {
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
+            claimMaterial = config.getString("claim-material", "REDSTONE*64");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -361,6 +364,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        claimMaterial = "REDSTONE*64";
         civsChatPrefix = "@{GREEN}[Civs]";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
