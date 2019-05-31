@@ -109,6 +109,17 @@ public class ConfigManager {
     String civsChatPrefix;
     String civsItemPrefix;
 
+    public ConfigManager() {
+        loadDefaults();
+        configManager = this;
+    }
+
+    public ConfigManager(File configFile) {
+        configManager = this;
+        loadFile(configFile);
+    }
+
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -207,11 +218,6 @@ public class ConfigManager {
             cvItem = CVItem.createCVItemFromString("CHEST");
         }
         return cvItem;
-    }
-
-    public ConfigManager(File configFile) {
-        configManager = this;
-        loadFile(configFile);
     }
 
     public void reload() {
@@ -357,6 +363,8 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        civsChatPrefix = "@{GREEN}[Civs]";
+        civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         daysBetweenVotes = 7;
         defaultLanguage = "en";
@@ -419,7 +427,11 @@ public class ConfigManager {
 
     public static ConfigManager getInstance() {
         if (configManager == null) {
-            configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            if (Civs.getInstance() != null) {
+                configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            } else {
+                new ConfigManager();
+            }
             return configManager;
         } else {
             return configManager;
