@@ -196,16 +196,16 @@ public class ConveyorEffect implements Listener {
                 HashSet<ItemStack> cartInventory = new HashSet<>();
 
                 Inventory originInv = null;
-                try {
-                    originInv = ((Chest) carts.get(sm).getLocation().getBlock().getState()).getInventory();
-                    if (originInv.firstEmpty() > -1) {
-                        originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
-                    } else {
-                        originInv.setItem(originInv.getSize() -1, new ItemStack(Material.CHEST_MINECART, 1));
-                    }
-                } catch (Exception e) {
-
-                }
+//                try {
+//                    originInv = ((Chest) carts.get(sm).getLocation().getBlock().getState()).getInventory();
+//                    if (originInv.firstEmpty() > -1) {
+//                        originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
+//                    } else {
+//                        originInv.setItem(originInv.getSize() -1, new ItemStack(Material.CHEST_MINECART, 1));
+//                    }
+//                } catch (Exception e) {
+//
+//                }
                 boolean isFull = false;
                 cartInventory.addAll(Arrays.asList(sm.getInventory().getContents()));
                 for (ItemStack is : cartInventory) {
@@ -234,6 +234,9 @@ public class ConveyorEffect implements Listener {
                     Chest chest = (Chest) r.getLocation().getBlock().getState();
                     if (chest.getBlockInventory().firstEmpty() > -1) {
                         chest.getBlockInventory().addItem(new ItemStack(Material.CHEST_MINECART));
+                    } else {
+                        chest.getBlockInventory().setItem(chest.getBlockInventory().getSize() -1,
+                                new ItemStack(Material.CHEST_MINECART));
                     }
                 } catch (Exception e) {
 
