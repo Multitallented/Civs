@@ -22,7 +22,7 @@ public class ActiveEffect implements Listener {
 
         long lastActive = region.getLastActive();
 
-        if (lastActive > 0 && inactiveDuration + lastActive > System.currentTimeMillis()) {
+        if (lastActive < 1 || inactiveDuration + lastActive > System.currentTimeMillis()) {
             return;
         }
         region.getEffects().clear();

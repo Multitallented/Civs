@@ -990,6 +990,21 @@ public class RegionsTests {
         ItemManager.getInstance().loadRegionType(config);
     }
 
+    public static void loadRegionTypeActive() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "active");
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("CHEST*2");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_build");
+        effects.add("block_break");
+        effects.add("active:120960");
+        config.set("build-radius", 5);
+        config.set("effects", effects);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+
     public static void loadRegionTypeCobble() {
         FileConfiguration config = new YamlConfiguration();
         config.set("name", "cobble");

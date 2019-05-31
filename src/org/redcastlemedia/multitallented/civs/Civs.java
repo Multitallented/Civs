@@ -259,7 +259,7 @@ public class Civs extends JavaPlugin {
         return perm;
     }
     public static String getPrefix() {
-        return ConfigManager.getInstance().civsChatPrefix + " ";
+        return ConfigManager.getInstance().getCivsChatPrefix() + " ";
     }
     public static synchronized Civs getInstance() {
         return civs;
