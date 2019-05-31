@@ -268,9 +268,10 @@ public class TownTests {
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
         Town town = new Town(name, type,
                 location,
-                owners, 500, 500, 2, 0, -1);
+                owners, townType.getPower(), townType.getMaxPower(), 2, 0, -1);
         TownManager.getInstance().addTown(town);
         return town;
     }
@@ -285,7 +286,7 @@ public class TownTests {
         effects.add("deny_mob_spawn");
         effects.add("block_break");
         config.set("effects", effects);
-        config.set("power", 0);
+        config.set("power", 100);
         config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "hamlet");
     }

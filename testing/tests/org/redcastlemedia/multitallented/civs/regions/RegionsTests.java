@@ -742,7 +742,7 @@ public class RegionsTests {
         regionManager.addRegion(region);
         TownTests.loadTownTypeHamlet();
         Town town = new Town("townname", "hamlet", location1,
-                owners, 300, 305, 2, 0, -1);
+                owners, 200, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         new DailyScheduler().run();
         assertEquals(302, town.getPower());

@@ -61,6 +61,9 @@ public class AllianceManager implements Listener {
         String chunkKey = chunk.getX() + "," + chunk.getZ();
         for (Alliance alliance : alliances.values()) {
 
+            if (!alliance.getNationClaims().containsKey(location.getWorld().getUID())) {
+                continue;
+            }
             if (alliance.getNationClaims().get(location.getWorld().getUID())
                     .containsKey(chunkKey)) {
                 return alliance.getNationClaims().get(location.getWorld().getUID())
@@ -252,7 +255,7 @@ public class AllianceManager implements Listener {
             alliance.getMembers().add(town1.getName());
             alliance.getMembers().add(town2.getName());
             alliance.setName(town1.getName() + "-" + town2.getName());
-            // TODO fill claims
+            fillClaims(alliance);
             alliances.put(alliance.getName(), alliance);
             saveAlliance(alliance);
         } else {
@@ -268,7 +271,7 @@ public class AllianceManager implements Listener {
                 removeThese.add(alliance);
             }
             mergeClaims(mergeAlliance, removeThese);
-            // TODO auto fill claims
+            fillClaims(mergeAlliance);
         }
 
         for (Alliance alliance : removeThese) {
@@ -278,6 +281,72 @@ public class AllianceManager implements Listener {
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
         }
+    }
+
+    int getMaxAllianceClaims(Alliance alliance) {
+        int numberOfClaims = 0;
+        for (String townName : alliance.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            numberOfClaims += town.getPower();
+        }
+        return numberOfClaims / ConfigManager.getInstance().getPowerPerAllianceClaim();
+    }
+
+    private void fillClaims(Alliance alliance) {
+        int numberOfClaims = getMaxAllianceClaims(alliance);
+        int autoFilledClaims = 0;
+        for (UUID uuid : alliance.getNationClaims().keySet()) {
+            autoFilledClaims += alliance.getNationClaims().get(uuid).size();
+        }
+
+        if (autoFilledClaims >= numberOfClaims) {
+            return;
+        }
+
+        int claimsAvailable = numberOfClaims - autoFilledClaims;
+        // TODO add claims to each town until each town has enough claims to buffer their radius
+        // TODO connect towns if they are in the same world
+        // TODO spiral outwards from connected towns
+    }
+
+    Chunk getSurroundTownClaim(int index, Location location) {
+        if (0 == index) {
+            return location.getChunk();
+        }
+        int layer = 0;
+        int currentStep = 0;
+        int layerProgress = 0;
+        for (;;) {
+            layer++;
+            currentStep++;
+            layerProgress = index - currentStep;
+            currentStep += Math.min(layer * 8, layerProgress);
+            if (currentStep >= index) {
+                break;
+            }
+        }
+        // 1, 1, 1, 0, -1, -1, -1, 0
+        int side = (int) ((double) layer * 2) + 1;
+        int x = layer;
+        int z = layer;
+
+        if (layerProgress < side) {
+            z = z - layerProgress;
+        } else if (layerProgress < side * 2 - 2) {
+            z = -z;
+            x = x - layerProgress - 1 + side;
+        } else if (layerProgress < side * 3 - 2) {
+            x = -x;
+            z = -z + layerProgress + 2 - side * 2;
+        } else {
+            x = -x + layerProgress + 3 - side * 3;
+        }
+
+
+        Chunk chunk = location.getChunk();
+        x = chunk.getX() + x;
+        z = chunk.getZ() + z;
+        return location.getWorld().getChunkAt(x, z);
     }
 
     private void mergeClaims(Alliance rootAlliance, HashSet<Alliance> merges) {

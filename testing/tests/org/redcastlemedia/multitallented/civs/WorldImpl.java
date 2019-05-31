@@ -77,13 +77,20 @@ public class WorldImpl implements World {
 
     @Override
     public Chunk getChunkAt(int i, int i1) {
-        return null;
+        Chunk chunk = mock(Chunk.class);
+        when(chunk.getX()).thenReturn(i);
+        when(chunk.getZ()).thenReturn(i1);
+        when(chunk.isLoaded()).thenReturn(true);
+        when(chunk.getWorld()).thenReturn(this);
+        return chunk;
     }
 
     @Override
     public Chunk getChunkAt(Location location) {
         Chunk chunk = mock(Chunk.class);
         when(chunk.isLoaded()).thenReturn(true);
+        when(chunk.getX()).thenReturn((int) (location.getX() / 16));
+        when(chunk.getZ()).thenReturn((int) (location.getZ() / 16));
         return chunk;
     }
 

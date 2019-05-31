@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -87,6 +88,34 @@ public class AllianceTests {
         assertEquals(2, AllianceManager.getInstance().getAllAlliances().size());
         assertEquals(3, AllianceManager.getInstance().getAllAlliances().get(0).getMembers().size());
         assertEquals(3, AllianceManager.getInstance().getAllAlliances().get(1).getMembers().size());
+    }
+
+    @Test
+    public void allianceShouldHaveCorrectMaxClaims() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        Alliance alliance = AllianceManager.getInstance().getAllAlliances().get(0);
+        assertEquals(200, AllianceManager.getInstance().getMaxAllianceClaims(alliance));
+    }
+
+    @Test
+    public void allianceClaimsShouldFill2Towns() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        Alliance alliance = AllianceManager.getInstance().getAllAlliances().get(0);
+        assertEquals(200, alliance.getNationClaims().get(TestUtil.world.getUID()).size());
+    }
+
+    @Test
+    public void spiralClaimsShouldReturnCorrectXY() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getX());
+        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getZ());
+        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getX());
+        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getZ());
+        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
+        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getZ());
+        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
+        assertEquals(-1, AllianceManager.getInstance().getSurroundTownClaim(5, town1.getLocation()).getX());
+        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(9, town1.getLocation()).getX());
     }
 
     private void printAlliances() {

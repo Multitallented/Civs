@@ -114,6 +114,8 @@ public class ConfigManager {
     String civsItemPrefix;
     @Getter
     List<String> allianceClaimEffects;
+    @Getter
+    int powerPerAllianceClaim;
 
     public ConfigManager() {
         loadDefaults();
@@ -345,6 +347,7 @@ public class ConfigManager {
             if (allianceClaimEffects.isEmpty()) {
                 allianceClaimEffects = getDefaultAllianceEffects();
             }
+            powerPerAllianceClaim = config.getInt("power-per-alliance-claim", 1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -377,6 +380,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        powerPerAllianceClaim = 1;
         claimMaterial = "REDSTONE*64";
         civsChatPrefix = "@{GREEN}[Civs]";
         civsItemPrefix = "Civs";

@@ -130,6 +130,8 @@ civs-item-prefix: "Civs"
 alliance-claim-capture-seconds: 180
 # The material needed to capture new alliance claims
 claim-material: REDSTONE*64
+# How much power should an alliance have per land claim
+power-per-alliance-claim: 1
 claim-effects:
   - "block_break"
   - "block_build"
