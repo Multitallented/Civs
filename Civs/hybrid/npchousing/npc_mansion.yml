@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: PURPLE_BED
 name: NPC_Mansion
 max: 2
 price: 2000
@@ -11,7 +12,7 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- mansion:built=1
+- basemansion:built=1
 
 build-reqs:
 - CHEST*8

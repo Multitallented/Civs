@@ -17,6 +17,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class TownInviteConfirmationMenu extends Menu {
@@ -31,10 +33,9 @@ public class TownInviteConfirmationMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         CivilianManager civilianManager = CivilianManager.getInstance();
-        String townName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
-        Town town = TownManager.getInstance().getTown(townName);
+
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
+        Town town = (Town) getData(civilian.getUuid(), "town");
         Town myTown = TownManager.getInstance().isOwnerOfATown(civilian);
 
         if (Menu.isBackButton(event.getCurrentItem(), civilian.getLocale())) {
@@ -60,9 +61,9 @@ public class TownInviteConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             clearHistory(civilian.getUuid());
             event.getWhoClicked().closeInventory();
-            myTown.getAllyInvites().remove(townName);
+            myTown.getAllyInvites().remove(town.getName());
             event.getWhoClicked().sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-ally-request-denied").replace("$1", townName));
+                    "town-ally-request-denied").replace("$1", town.getName()));
             for (UUID uuid : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(uuid).contains("owner")) {
                     Player pSend = Bukkit.getPlayer(uuid);
@@ -82,6 +83,9 @@ public class TownInviteConfirmationMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
         LocaleManager localeManager = LocaleManager.getInstance();
         CVItem icon = new CVItem(townType.getMat(), 1, 0, town.getName());
+        Map<String, Object> data = new HashMap<>();
+        data.put("town", town);
+        setNewData(civilian.getUuid(), data);
 
         inventory.setItem(0, icon.createItemStack());
 

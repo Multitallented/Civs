@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: Siege_Machine_Active
 is-in-shop: false
 groups:

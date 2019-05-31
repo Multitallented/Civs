@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: STONE_PICKAXE
 name: Stone_Works
 price: 20
 groups:

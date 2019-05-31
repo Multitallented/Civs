@@ -140,6 +140,7 @@ public class ClassManager {
             classType = new ClassType(new ArrayList<String>(),
                     "default",
                     CVItem.createCVItemFromString("STONE"),
+                    CVItem.createCVItemFromString("STONE"),
                     0,
                     "",
                     new ArrayList<String>(),

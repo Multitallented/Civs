@@ -1,10 +1,10 @@
 type: region
 icon: CHEST
+shop-icon: EMERALD_ORE
 name: Jade_Mine
 max: 1
 price: 600
 groups:
-- mine
 - trademine
 - trading
 level: 3

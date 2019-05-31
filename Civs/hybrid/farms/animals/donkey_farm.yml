@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DONKEY_SPAWN_EGG
 name: Donkey_Farm
 max: 1
 price: 1500

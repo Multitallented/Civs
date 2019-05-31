@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: weapons_factory
 price: 750
 groups:

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: BOOKSHELF
 name: Library
 price: 1000
 max: 1

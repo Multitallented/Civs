@@ -104,6 +104,23 @@ public class ConfigManager {
     double capitalismVotingCost;
     @Getter
     long allianceClaimCaptureTime;
+    @Getter
+    String topGuideSpacer;
+    @Getter
+    String bottomGuideSpacer;
+    String civsChatPrefix;
+    String civsItemPrefix;
+
+    public ConfigManager() {
+        loadDefaults();
+        configManager = this;
+    }
+
+    public ConfigManager(File configFile) {
+        configManager = this;
+        loadFile(configFile);
+    }
+
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -173,6 +190,13 @@ public class ConfigManager {
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
 
+    public String getCivsChatPrefix() {
+        return Util.parseColors(civsChatPrefix);
+    }
+    public String getCivsItemPrefix() {
+        return Util.parseColors(civsItemPrefix + " ");
+    }
+
     public List<String> getCustomItemDescription(String key) {
         List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
         if (returnDescription == null) {
@@ -196,11 +220,6 @@ public class ConfigManager {
             cvItem = CVItem.createCVItemFromString("CHEST");
         }
         return cvItem;
-    }
-
-    public ConfigManager(File configFile) {
-        configManager = this;
-        loadFile(configFile);
     }
 
     private void loadFile(File configFile) {
@@ -310,6 +329,13 @@ public class ConfigManager {
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             allianceClaimCaptureTime = config.getLong("alliance-claim-capture-seconds", 180);
+            topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
+            bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            if ("".equals(civsItemPrefix)) {
+                civsItemPrefix = "Civs";
+            }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -335,6 +361,8 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        civsChatPrefix = "@{GREEN}[Civs]";
+        civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         allianceClaimCaptureTime = 180;
         daysBetweenVotes = 7;
@@ -398,7 +426,11 @@ public class ConfigManager {
 
     public static ConfigManager getInstance() {
         if (configManager == null) {
-            configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            if (Civs.getInstance() != null) {
+                configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            } else {
+                new ConfigManager();
+            }
             return configManager;
         } else {
             return configManager;

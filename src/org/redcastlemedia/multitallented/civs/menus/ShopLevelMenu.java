@@ -66,7 +66,7 @@ public class ShopLevelMenu extends Menu {
                     !civItem.getInShop()) {
                 continue;
             }
-            if (civilian.isAtMax(civItem)) {
+            if (civilian.isAtMax(civItem) != null) {
                 continue;
             }
             returnMap.put(civItem.getProcessedName(), 1);

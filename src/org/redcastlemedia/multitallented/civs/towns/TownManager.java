@@ -34,6 +34,13 @@ public class TownManager {
         townManager = this;
     }
 
+    public void reload() {
+        towns.clear();
+        sortedTowns.clear();
+        invites.clear();
+        loadAllTowns();
+    }
+
     public void loadAllTowns() {
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {
@@ -428,7 +435,10 @@ public class TownManager {
             config.set("name", town.getName());
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
-            for (UUID key : town.getPeople().keySet()) {
+            for (UUID key : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(key).contains("ally")) {
+                    continue;
+                }
                 config.set("people." + key, town.getPeople().get(key));
             }
             List<String> locationList = new ArrayList<>();

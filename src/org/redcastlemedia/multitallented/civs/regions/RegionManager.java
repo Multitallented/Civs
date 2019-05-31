@@ -13,10 +13,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -45,6 +47,10 @@ public class RegionManager {
 
     public RegionManager() {
         regionManager = this;
+    }
+
+    public void reload() {
+        loadAllRegions();
     }
 
     public void addRegionCreatedListener(String key, RegionCreatedListener listener) {
@@ -76,6 +82,7 @@ public class RegionManager {
     }
     public void loadAllRegions() {
         regions.clear();
+        regionLocations.clear();
         Civs civs = Civs.getInstance();
         File regionFolder = new File(civs.getDataFolder(), "regions");
         if (!regionFolder.exists()) {
@@ -168,7 +175,10 @@ public class RegionManager {
     }
 
     private void removeRegion(Region region) {
-        regions.get(region.getLocation().getWorld().getUID()).remove(region);
+        for (UUID uuid : regions.keySet()) {
+            regions.get(uuid).remove(region);
+        }
+//        regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
         Civs civs = Civs.getInstance();
         if (civs == null) {
@@ -228,6 +238,11 @@ public class RegionManager {
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
+            if (region.getLastActive() > 0) {
+                regionConfig.set("last-active", region.getLastActive());
+            } else {
+                regionConfig.set("last-active", null);
+            }
             regionConfig.save(regionFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
@@ -266,6 +281,10 @@ public class RegionManager {
             double forSale = regionConfig.getDouble("sale", -1);
             if (forSale != -1) {
                 region.setForSale(forSale);
+            }
+            long lastActive = regionConfig.getLong("last-active", -1);
+            if (lastActive > -1) {
+                region.setLastActive(lastActive);
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
@@ -359,7 +378,7 @@ public class RegionManager {
             return false;
         }
         String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
-        regionTypeName = regionTypeName.replace("Civs ", "");
+        regionTypeName = regionTypeName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "");
 
         RegionType regionType;
         try {
@@ -595,10 +614,10 @@ public class RegionManager {
         return true;
     }
 
-    void adjustRadii(int[] radii, Location location, int x, int y, int z) {
-        int currentRelativeX = x - (int) location.getX();
-        int currentRelativeY = y - (int) location.getY();
-        int currentRelativeZ = z - (int) location.getZ();
+    void adjustRadii(int[] radii, Location location, double x, double y, double z) {
+        int currentRelativeX = (int) Math.round(x - location.getX());
+        int currentRelativeY = (int) Math.round(y - location.getY());
+        int currentRelativeZ = (int) Math.round(z - location.getZ());
         if (currentRelativeX < 0) {
             currentRelativeX = Math.abs(currentRelativeX);
             radii[2] = radii[2] > currentRelativeX ? radii[2] : currentRelativeX;

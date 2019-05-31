@@ -119,7 +119,7 @@ public class Town {
         if (allies.isEmpty()) {
             return people;
         }
-        HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
+        HashMap<UUID, String> newPeople = new HashMap<>(people);
         for (Alliance alliance : allies) {
             for (String townName : alliance.getMembers()) {
                 if (townName.equals(name)) {
@@ -190,7 +190,13 @@ public class Town {
     }
 
     public int getPopulation() {
-        return people.size() + getVillagers();
+        int memberCount = 0;
+        for (String role : people.values()) {
+            if (!role.contains("ally")) {
+                memberCount++;
+            }
+        }
+        return memberCount + getVillagers();
     }
     private int x = 0;
     private int z = 0;

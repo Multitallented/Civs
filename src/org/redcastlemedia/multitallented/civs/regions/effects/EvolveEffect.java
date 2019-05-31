@@ -50,11 +50,15 @@ public class EvolveEffect implements Listener {
         for (UUID uuid : r.getOwners()) {
             Player player = Bukkit.getPlayer(uuid);
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+            String locationString = r.getLocation().getWorld().getName() + " " +
+                    (int) r.getLocation().getX() +
+                    (int) r.getLocation().getY() +
+                    (int) r.getLocation().getZ();
             if (player != null && player.isOnline()) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "region-evolved")
-                        .replace("$1", r.getId())
+                        .replace("$1", locationString)
                         .replace("$2", evolveTarget));
             }
         }

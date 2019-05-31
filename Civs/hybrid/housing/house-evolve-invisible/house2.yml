@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PINK_BED
 name: House2
 max: 2
 is-in-shop: false

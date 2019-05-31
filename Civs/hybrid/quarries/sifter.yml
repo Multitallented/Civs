@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: NETHER_STAR
 name: Sifter
 price: 6000
 groups:

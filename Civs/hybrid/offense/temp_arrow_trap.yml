@@ -1,7 +1,8 @@
 type: region
-name: Arrow_Trap
+name: Temp_Arrow_Trap
+shop-icon: ARROW
 icon: CHEST
-price: 500
+price: 50
 groups:
 - offense
 - trap

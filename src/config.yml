@@ -95,7 +95,7 @@ item-groups:
 groups:
   shop: 3
   quarry: 12
-  housing: 2
+  housing: 3
   superregion: 1
 
 #region port configs
@@ -115,6 +115,10 @@ tutorial:
   use-tutorial: true
   use-guide: true
   url: "https://youtu.be/pa_rfrpUAS8"
+top-guide-spacer: "-----------------Civs-----------------"
+bottom-guide-spacer: "--------------------------------------"
+civs-chat-prefix: "@{GREEN}[Civs]"
+civs-item-prefix: "Civs"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"

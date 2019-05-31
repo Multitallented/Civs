@@ -1,29 +1,40 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +53,10 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     long lastTick = 0;
+
+    @Getter
+    @Setter
+    private long lastActive = 0;
 
     @Getter
     @Setter
@@ -156,16 +171,10 @@ public class Region {
         return locationToString(location);
     }
     public static String blockLocationToString(Location location) {
-        double x = location.getX();
-        double z = location.getZ();
-        if (x < 0 && Math.ceil(x) == x) {
-            x = x + 1;
-        }
-        if (z < 0 && Math.ceil(z) == z) {
-            z = z + 1;
-        }
-        Location location1 = new Location(location.getWorld(), x, location.getY(), z);
-        return locationToString(location1);
+//        double x = location.getX();
+//        double z = location.getZ();
+//        Location location1 = new Location(location.getWorld(), x, location.getY(), z);
+        return locationToString(location);
     }
     public static String locationToString(Location location) {
         if (location == null || location.getWorld() == null) {
@@ -174,19 +183,11 @@ public class Region {
         StringBuilder builder = new StringBuilder();
         builder.append(location.getWorld().getUID().toString());
         builder.append("~");
-        if (location.getX() >= 0) {
-            builder.append(Math.floor(location.getX()) + 0.5);
-        } else {
-            builder.append(Math.ceil(location.getX()) - 0.5);
-        }
+        builder.append(Math.floor(location.getX()) + 0.5);
         builder.append("~");
         builder.append(Math.floor(location.getY()) + 0.5);
         builder.append("~");
-        if (location.getZ() >= 0) {
-            builder.append(Math.floor(location.getZ()) + 0.5);
-        } else {
-            builder.append(Math.ceil(location.getZ()) - 0.5);
-        }
+        builder.append(Math.floor(location.getZ()) + 0.5);
 
         return builder.toString();
     }
@@ -263,9 +264,9 @@ public class Region {
                 }
             }
         }
-        for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        for (int x=xMin; x<=xMax;x++) {
+            for (int y=yMin; y<=yMax; y++) {
+                for (int z=zMin; z<=zMax; z++) {
 
                     Block currentBlock = currentWorld.getBlockAt(x,y,z);
                     if (currentBlock == null) {
@@ -312,7 +313,7 @@ public class Region {
     }
 
     private static int[] addItemCheck(int[] radii, Location location, World currentWorld,
-                                     int xMin, int xMax, int yMin, int yMax, int zMin, int zMax,
+                                     double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
                                      List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
         HashMap<Material, Integer> maxCheck = new HashMap<>();
@@ -326,11 +327,12 @@ public class Region {
             }
         }
         List<Block> blocksFound = new ArrayList<>();
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<=xMax;x++) {
+            for (double y=yMin; y<=yMax; y++) {
+                for (double z=zMin; z<=zMax; z++) {
 
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
+                    Location location1 = new Location(currentWorld, x, y, z);
+                    Block currentBlock = location1.getBlock();
                     if (currentBlock == null) {
                         continue;
                     }
@@ -451,12 +453,12 @@ public class Region {
 
         World currentWorld = location.getWorld();
         int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
-        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
+        double xMax = location.getX() + biggestXZRadius * 1.5;
+        double xMin = location.getX() - biggestXZRadius * 1.5;
+        double yMax = location.getY() + regionType.getBuildRadiusY() * 1.5;
+        double yMin = location.getY() - regionType.getBuildRadiusY() * 1.5;
+        double zMax = location.getZ() + biggestXZRadius * 1.5;
+        double zMin = location.getZ() - biggestXZRadius * 1.5;
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
@@ -498,22 +500,23 @@ public class Region {
             radii[i]=regionType.getBuildRadiusX();
         }
 
-        int xMax = (int) location.getX() + 1 + (int) ((double) regionType.getBuildRadiusX());
-        int xMin = (int) location.getX() - (int) ((double) regionType.getBuildRadiusX());
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY());
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY());
-        int zMax = (int) location.getZ() + 1 + (int) ((double) regionType.getBuildRadiusX());
-        int zMin = (int) location.getZ() - (int) ((double) regionType.getBuildRadiusX());
+        double xMax = location.getX() + regionType.getBuildRadiusX();
+        double xMin = location.getX() - regionType.getBuildRadiusX();
+        double yMax = location.getY() + regionType.getBuildRadiusY();
+        double yMin = location.getY() - regionType.getBuildRadiusY();
+        double zMax = location.getZ() + regionType.getBuildRadiusX();
+        double zMin = location.getZ() - regionType.getBuildRadiusX();
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
 
-        outer: for (int x=xMin; x<xMax;x++) {
-            for (int y=yMin; y<yMax; y++) {
-                for (int z=zMin; z<zMax; z++) {
+        outer: for (double x=xMin; x<=xMax;x++) {
+            for (double y=yMin; y<=yMax; y++) {
+                for (double z=zMin; z<=zMax; z++) {
 
-                    Block currentBlock = currentWorld.getBlockAt(x,y,z);
-                    if (currentBlock == null) {
+                    Location location1 = new Location(currentWorld, x, y, z);
+                    Block currentBlock = location1.getBlock();
+                    if (currentBlock.getType() == Material.AIR) {
                         continue;
                     }
                     Material mat = currentBlock.getType();
@@ -533,13 +536,9 @@ public class Region {
                         i++;
                     }
                     if (destroyIndex) {
-                        if (itemCheck.size() < 2) {
-                            itemCheck.remove(i);
-                            if (itemCheck.isEmpty()) {
-                                break outer;
-                            }
-                        } else {
-                            itemCheck.remove(i);
+                        itemCheck.remove(i);
+                        if (itemCheck.isEmpty()) {
+                            break outer;
                         }
                     }
                 }
@@ -618,12 +617,12 @@ public class Region {
 
         World currentWorld = location.getWorld();
         int biggestXZRadius = Math.max(regionType.getBuildRadiusX(), regionType.getBuildRadiusZ());
-        int xMax = (int) location.getX() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int xMin = (int) location.getX() - (int) ((double) biggestXZRadius * 1.5);
-        int yMax = (int) location.getY() + 1 + (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int yMin = (int) location.getY() - (int) ((double) regionType.getBuildRadiusY() * 1.5);
-        int zMax = (int) location.getZ() + 1 + (int) ((double) biggestXZRadius * 1.5);
-        int zMin = (int) location.getZ() - (int) ((double) biggestXZRadius * 1.5);
+        double xMax = location.getX() + biggestXZRadius * 1.5;
+        double xMin = location.getX() - biggestXZRadius * 1.5;
+        double yMax = location.getY() + regionType.getBuildRadiusY() * 1.5;
+        double yMin = location.getY() - regionType.getBuildRadiusY() * 1.5;
+        double zMax = location.getZ() + biggestXZRadius * 1.5;
+        double zMin = location.getZ() - biggestXZRadius * 1.5;
 
         yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
         yMin = yMin < 0 ? 0 : yMin;
@@ -756,7 +755,8 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
+            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1 ||
+                    chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 2;
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
@@ -780,17 +780,22 @@ public class Region {
                 if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                         town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                     double size = (double) town.getRawPeople().size();
-                    double coopCut = payout * 0.1;
                     if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
                         payout = payout / size;
+                        for (UUID uuid : town.getRawPeople().keySet()) {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                            Civs.econ.depositPlayer(offlinePlayer, payout);
+                            hasMoney = true;
+                        }
                     } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                        payout = (payout - coopCut) / size;
+                        double coopCut = payout * 0.1;
                         town.setBankAccount(town.getBankAccount() + coopCut);
-                    }
-                    for (UUID uuid : town.getRawPeople().keySet()) {
-                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                        Civs.econ.depositPlayer(offlinePlayer, payout);
-                        hasMoney = true;
+                        HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                        for (UUID uuid : payouts.keySet()) {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                            Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
+                            hasMoney = true;
+                        }
                     }
                 } else {
                     payout = payout / (double) getOwners().size();

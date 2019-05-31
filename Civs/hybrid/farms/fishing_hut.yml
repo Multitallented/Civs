@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SALMON
 name: Fishing_Hut
 max: 1
 price: 200

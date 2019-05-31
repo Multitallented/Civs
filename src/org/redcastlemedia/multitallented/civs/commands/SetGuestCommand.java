@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +15,8 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.UUID;
 
 public class SetGuestCommand implements CivCommand {
 
@@ -45,7 +48,7 @@ public class SetGuestCommand implements CivCommand {
         //0 invite
         //1 player
         //2 regionname
-        String playerName = strings[1];
+        UUID inviteUUID = UUID.fromString(strings[1]);
         String locationString = strings[2];
 
         Town town = TownManager.getInstance().getTown(locationString);
@@ -68,16 +71,7 @@ public class SetGuestCommand implements CivCommand {
                     "no-permission"));
             return true;
         }
-        Player invitee = Bukkit.getPlayer(playerName);
-        if (invitee == null) {
-            if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "player-not-online").replace("$1", playerName));
-            } else {
-                commandSender.sendMessage(Civs.getPrefix() + "Player " + playerName + " is not online");
-            }
-            return true;
-        }
+        OfflinePlayer invitee = Bukkit.getOfflinePlayer(inviteUUID);
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
         if (!isAdmin && town != null && civilian != null) {
@@ -88,23 +82,24 @@ public class SetGuestCommand implements CivCommand {
 
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
-            invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            Player invitePlayer = (Player) invitee;
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
                     "add-guest-region").replace("$1", name));
         }
-        if (player != null) {
+        if (player != null && civilian!= null && invitee.getName() != null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "guest-added-region").replace("$1", playerName)
+                    "guest-added-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {
-            commandSender.sendMessage(Civs.getPrefix() + playerName + " is now a guest of your " + name);
+            commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is now a guest of your " + name);
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains("guest")) {
-            region.setPeople(invitee.getUniqueId(), "guest");
+            region.setPeople(inviteUUID, "guest");
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
                 !town.getPeople().get(invitee.getUniqueId()).contains("guest")) {
-            town.setPeople(invitee.getUniqueId(), "guest");
+            town.setPeople(inviteUUID, "guest");
             TownManager.getInstance().saveTown(town);
         }
         return true;

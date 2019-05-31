@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DARK_OAK_LOG
 name: Dark_Oak_Lumberyard
 max: 2
 price: 100

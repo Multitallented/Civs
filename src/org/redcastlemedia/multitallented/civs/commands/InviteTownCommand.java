@@ -58,7 +58,8 @@ public class InviteTownCommand implements CivCommand {
                     "player-not-online").replace("$1", playerName));
             return true;
         }
-        if (town.getRawPeople().keySet().contains(invitee.getUniqueId())) {
+        if (town.getRawPeople().keySet().contains(invitee.getUniqueId()) &&
+                !town.getRawPeople().get(invitee.getUniqueId()).contains("ally")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "already-member").replace("$1", player.getDisplayName())
                     .replace("$2", townName));
@@ -74,7 +75,8 @@ public class InviteTownCommand implements CivCommand {
         }
 
         for (Town otherTown : TownManager.getInstance().getTowns()) {
-            if (!otherTown.getRawPeople().containsKey(invitee.getUniqueId())) {
+            if (otherTown.equals(town) ||
+                    !otherTown.getRawPeople().containsKey(invitee.getUniqueId())) {
                 continue;
             }
             if ((town.getGovernmentType() == GovernmentType.TRIBALISM ||

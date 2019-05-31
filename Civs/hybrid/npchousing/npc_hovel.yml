@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: BROWN_BED
 name: NPC_Hovel
 max: 2
 price: 200
@@ -11,7 +12,7 @@ level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
-- hovel:built=1
+- basehovel:built=1
 
 build-reqs:
 - CHEST*2

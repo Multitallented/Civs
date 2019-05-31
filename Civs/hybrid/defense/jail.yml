@@ -1,5 +1,6 @@
 type: region
 icon: IRON_BLOCK
+shop-icon: IRON_BARS
 name: Jail
 max: 1
 price: 600

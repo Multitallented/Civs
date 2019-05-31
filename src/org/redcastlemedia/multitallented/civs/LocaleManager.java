@@ -233,9 +233,9 @@ public class LocaleManager {
             currentLanguage.put("leaderboard",
                     localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
             currentLanguage.put("enter-town",
-                    localeConfig.getString(langKey + ".enter-town", "You have entered $1"));
+                    localeConfig.getString(langKey + ".enter-town", "You have entered $1 ($2)"));
             currentLanguage.put("exit-town",
-                    localeConfig.getString(langKey + ".exit-town", "You have exited $1"));
+                    localeConfig.getString(langKey + ".exit-town", "You have exited $1 ($2)"));
             currentLanguage.put("town-created",
                     localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
             currentLanguage.put("town-destroyed",
@@ -550,6 +550,16 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".cant-build-in-nation", "You can't build inside $1 claimed land."));
             currentLanguage.put("neutralized-claim",
                     localeConfig.getString(langKey + ".neutralized-claim", "$1's protections on this land have been removed."));
+            currentLanguage.put("item-locked",
+                    localeConfig.getString(langKey + ".item-locked", "You have not yet unlocked this item."));
+            currentLanguage.put("max-qty",
+                    localeConfig.getString(langKey + ".max-qty", "$1 has too many $2 and can't own more"));
+            currentLanguage.put("ai-invite",
+                    localeConfig.getString(langKey + ".ai-invite", "Hey, @$1 would you like to join my town?"));
+            currentLanguage.put("ai-help",
+                    localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
+            currentLanguage.put("town-tax-gov-type",
+                    localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
             languageMap.put(langKey, currentLanguage);
         }
     }

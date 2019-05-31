@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: MELON_SLICE
 name: Melon_Farm
 max: 1
 price: 100

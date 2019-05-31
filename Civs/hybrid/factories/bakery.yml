@@ -1,6 +1,7 @@
 type: region
 name: Bakery
 icon: CHEST
+shop-icon: PUMPKIN_PIE
 price: 200
 max: 1
 groups:

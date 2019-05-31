@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
+import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -153,6 +154,28 @@ public class RegionEffectTests {
 
         warehouseEffect.onCustomEvent(regionTickEvent);
         assertEquals(Material.IRON_PICKAXE, ((Chest) TestUtil.blockUnique2.getState()).getBlockInventory().getItem(0).getType());
+    }
+
+    @Test
+    public void activeEffectShouldProperlyDetectLastActive() {
+        RegionsTests.loadRegionTypeActive();
+        Region region = RegionsTests.createNewRegion("active");
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        ActiveEffect activeEffect = new ActiveEffect();
+        RegionTickEvent event = new RegionTickEvent(region, regionType, true, true);
+        activeEffect.onRegionTick(event);
+        assertEquals(3, region.getEffects().size());
+    }
+
+    @Test
+    public void activeEffectShouldProperlySetLastActive() {
+        RegionsTests.loadRegionTypeActive();
+        Region region = RegionsTests.createNewRegion("active", TestUtil.player.getUniqueId());
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        ActiveEffect activeEffect = new ActiveEffect();
+        PlayerInRegionEvent event = new PlayerInRegionEvent(TestUtil.player.getUniqueId(), region, regionType);
+        activeEffect.onPlayerInRegion(event);
+        assertTrue(region.getLastActive() > 0);
     }
 
     @After

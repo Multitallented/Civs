@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PAPER
 name: Bank
 price: 200
 groups:

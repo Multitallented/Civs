@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PIG_SPAWN_EGG
 name: Pig_Pen
 max: 1
 price: 10

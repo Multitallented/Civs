@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: INK_SAC
 name: Dye_Works
 price: 20
 groups:

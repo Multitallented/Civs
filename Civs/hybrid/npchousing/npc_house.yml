@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: PINK_BED
 name: NPC_House
 max: 2
 price: 800
@@ -11,7 +12,7 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- house:built=1
+- basehouse:built=1
 
 build-reqs:
 - CHEST*4

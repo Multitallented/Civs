@@ -65,22 +65,22 @@ public class MemberActionMenu extends Menu {
 //        appendHistory(civilian.getUuid(), MENU_NAME + "," + locationString);
 
         if (event.getCurrentItem().getType().equals(Material.GOLD_BLOCK)) {
-            cPlayer.performCommand("cv setowner " + player.getName() + " " + locationString);
+            cPlayer.performCommand("cv setowner " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.IRON_BLOCK)) {
-            cPlayer.performCommand("cv setmember " + player.getName() + " " + locationString);
+            cPlayer.performCommand("cv setmember " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.DIORITE)) {
-            cPlayer.performCommand("cv setguest " + player.getName() + " " + locationString);
+            cPlayer.performCommand("cv setguest " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
             return;
         }
         if (event.getCurrentItem().getType().equals(Material.REDSTONE_BLOCK)) {
-            cPlayer.performCommand("cv removemember " + player.getName() + " " + locationString + " " + uuid);
+            cPlayer.performCommand("cv removemember " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
             return;
         }

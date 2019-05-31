@@ -56,6 +56,7 @@ public class TownType extends CivItem {
 
     public TownType(String name,
                     CVItem icon,
+                    CVItem shopIcon,
                     List<String> civReqs,
                     int civQty,
                     int civMin,
@@ -81,6 +82,7 @@ public class TownType extends CivItem {
                 ItemType.TOWN,
                 name,
                 icon.getMat(),
+                shopIcon,
                 civQty,
                 civMin,
                 civMax,

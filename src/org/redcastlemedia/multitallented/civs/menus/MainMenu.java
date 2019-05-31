@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 
@@ -92,6 +93,9 @@ public class MainMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
+        }
+        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+            return TutorialChoosePathMenu.createMenu(civilian);
         }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
@@ -176,11 +180,11 @@ public class MainMenu extends Menu {
 
     private void printTutorial(HumanEntity player, Civilian civilian) {
         String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
-        player.sendMessage("-----------------" + Civs.NAME + "-----------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
         TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
         player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
         player.sendMessage(tutorialUrl);
-        player.sendMessage("--------------------------------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getBottomGuideSpacer()));
     }
 
 }

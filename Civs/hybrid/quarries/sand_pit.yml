@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SAND
 name: Sand_Pit
 price: 80
 groups:

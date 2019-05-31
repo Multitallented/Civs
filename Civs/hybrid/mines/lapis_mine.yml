@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LAPIS_ORE
 name: Lapis_Mine
 max: 1
 price: 300
@@ -31,7 +32,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:LAPIS_LAZULI

@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: GREEN_BED
 name: NPC_Dwelling
 max: 2
 price: 400
@@ -11,7 +12,7 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- dwelling:built=1
+- basedwelling:built=1
 
 build-reqs:
 - CHEST*4

@@ -60,6 +60,16 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().openInventory(DestroyConfirmationMenu.createMenu(civilian, town));
             return;
         }
+
+        // town type info
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(town.getType() + "@" + town.getName())) {
+            event.getWhoClicked().closeInventory();
+            appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            event.getWhoClicked().openInventory(TownTypeInfoMenu.createMenu(civilian, townType));
+            return;
+        }
+
         // TODO improve this variable somehow
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
         if (townOwner != null && event.getCurrentItem().getItemMeta().getDisplayName().equals(
@@ -132,6 +142,9 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().closeInventory();
             List<Player> people = new ArrayList<>();
             for (UUID uuid : town.getPeople().keySet()) {
+                if (town.getPeople().get(uuid).contains("ally")) {
+                    continue;
+                }
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     people.add(player);
@@ -337,7 +350,7 @@ public class TownActionMenu extends Menu {
         }
 
         //10 Add person
-        if (govTypeOpenToAnyone || isOwner || colonialOverride) {
+        if (govTypeOpenToAnyone || isOwner || colonialOverride || isAdmin) {
             CVItem skull2 = CVItem.createCVItemFromString("PLAYER_HEAD");
             skull2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "add-member"));
             inventory.setItem(10, skull2.createItemStack());

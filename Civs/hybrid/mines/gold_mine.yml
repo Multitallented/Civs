@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: GOLD_ORE
 name: Gold_Mine
 max: 1
 price: 350
@@ -29,7 +30,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:GOLD_INGOT

@@ -56,14 +56,24 @@ public class TownCommand implements CivCommand {
 
         //0 town
         //1 townName
-        if (args.length < 2 || !Util.validateFileName(args[1])) {
+        Town town = TownManager.getInstance().getTownAt(player.getLocation());
+        if (args.length < 2 && town == null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "specify-town-name"));
             return true;
         }
-        String name = Util.getValidFileName(args[1]);
+        String name = args.length > 1 ? args[1] : town.getName();
+        if (!Util.validateFileName(name)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "specify-town-name"));
+            return true;
+        }
+        name = Util.getValidFileName(name);
 
-        if (TownManager.getInstance().townNameExists(name)) {
+
+        if (TownManager.getInstance().townNameExists(name) && (town == null ||
+                !town.getName().equalsIgnoreCase(name) ||
+                !town.getRawPeople().containsKey(civilian.getUuid()))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "specify-town-name"));
             return true;
@@ -76,7 +86,7 @@ public class TownCommand implements CivCommand {
             return true;
         }
         CivItem civItem = itemManager.getItemType(itemStack.getItemMeta().getDisplayName()
-                .replace("Civs ", "").toLowerCase());
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
 
         if (civItem == null || !(civItem instanceof TownType)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
@@ -183,40 +193,41 @@ public class TownCommand implements CivCommand {
         }
 
         int housingCount = getHousingCount(newTownLocation, townType);
-        Town town = new Town(name,
+        Town newTown = new Town(name,
                 townType.getProcessedName(),
                 newTownLocation,
                 people,
                 townType.getPower(),
                 townType.getMaxPower(), housingCount, villagerCount, -1);
-        town.setChildLocations(childLocations);
+        newTown.setChildLocations(childLocations);
         if (governmentType != null) {
-            town.setGovernmentType(governmentType);
+            newTown.setGovernmentType(governmentType);
         } else {
-            town.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
+            newTown.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
         }
-        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        Government government = GovernmentManager.getInstance().getGovernment(newTown.getGovernmentType());
         if (government != null) {
             for (GovTypeBuff buff : government.getBuffs()) {
                 if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
                     continue;
                 }
-                town.setMaxPower(town.getMaxPower() * (1 + buff.getAmount() / 100));
+                newTown.setMaxPower(newTown.getMaxPower() * (1 + buff.getAmount() / 100));
                 break;
             }
         }
-        townManager.addTown(town);
+        townManager.addTown(newTown);
         player.getInventory().remove(itemStack);
 
         if (childTownType != null) {
-            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(town, childTownType, townType);
+            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
             Bukkit.getPluginManager().callEvent(townEvolveEvent);
 
-            if (town.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null) {
+            if (newTown.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
+                    newTown.getBankAccount() > 0) {
                 double price = townType.getPrice();
-                price = Math.min(price, town.getBankAccount());
+                price = Math.min(price, newTown.getBankAccount());
                 Civs.econ.depositPlayer(player, price);
-                town.setBankAccount(town.getBankAccount() - price);
+                newTown.setBankAccount(newTown.getBankAccount() - price);
                 String priceString = Util.getNumberFormat(price, civilian.getLocale());
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "town-assist-price").replace("$1", priceString)
@@ -224,19 +235,19 @@ public class TownCommand implements CivCommand {
             }
 
         } else {
-            TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, townType);
-            town.setLastVote(System.currentTimeMillis());
+            TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
+            newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
-        townManager.saveTown(town);
+        townManager.saveTown(newTown);
 
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                "town-created").replace("$1", town.getName()));
+                "town-created").replace("$1", newTown.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
-            town.createRing();
+            newTown.createRing();
         }
         if (ConfigManager.getInstance().isAllowChangingOfGovType() && childTownType == null) {
-            player.openInventory(SelectGovTypeMenu.createMenu(civilian, town));
+            player.openInventory(SelectGovTypeMenu.createMenu(civilian, newTown));
         }
         return true;
     }

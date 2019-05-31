@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: GREEN_BED
 name: Dwelling1
 max: 2
 price: 400

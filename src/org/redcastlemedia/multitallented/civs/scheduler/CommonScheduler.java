@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -33,10 +35,14 @@ public class CommonScheduler implements Runnable {
     public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
+    public static boolean run = true;
 
     @Override
     public void run() {
         try {
+            if (!run) {
+                return;
+            }
             depreciateKarma();
             StructureUtil.cleanUpExpiredBoundingBoxes();
 
@@ -213,15 +219,27 @@ public class CommonScheduler implements Runnable {
         PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        String govName = "Unknown";
+        if (government != null) {
+            govName = government.getNames().get(civilian.getLocale());
+        }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "enter-town").replace("$1", town.getName()));
+                "enter-town").replace("$1", town.getName())
+                .replace("$2", govName));
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
         PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerExitTownEvent);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        String govName = "Unknown";
+        if (government != null) {
+            govName = government.getNames().get(civilian.getLocale());
+        }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "exit-town").replace("$1", town.getName()));
+                "exit-town").replace("$1", town.getName())
+                .replace("$2", govName));
     }
 
     private void playerInRegion(Player player) {

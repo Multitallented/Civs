@@ -37,6 +37,9 @@ public class ForSaleEffect implements Listener {
     public static void sendTitleForSale(Region region, RegionType regionType, Player player) {
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.isAtMax(regionType) != null) {
+            return;
+        }
         String title = Civs.NAME;
         String subTitle = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", regionType.getName())

@@ -118,7 +118,7 @@ public class CVItem {
         if (im.getLore() == null || im.getLore().size() < 2 || !im.getLore().get(1).equals(im.getDisplayName())) {
             return false;
         }
-        return im.getDisplayName().contains("Civs ");
+        return im.getDisplayName().contains(ConfigManager.getInstance().getCivsItemPrefix());
     }
 
     public static CVItem createFromItemStack(ItemStack is) {

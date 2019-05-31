@@ -39,6 +39,7 @@ public class RegionType extends CivItem {
 
     public RegionType(String name,
                       CVItem icon,
+                      CVItem shopIcon,
                       List<String> civReqs,
                       int civQty,
                       int civMin,
@@ -67,6 +68,7 @@ public class RegionType extends CivItem {
                 true,
                 ItemType.REGION,
                 name, icon.getMat(),
+                shopIcon,
                 civQty,
                 civMin,
                 civMax,

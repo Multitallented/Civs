@@ -1,5 +1,6 @@
 type: region
 icon: TNT
+shop-icon: BIRCH_FENCE_GATE
 name: Command_Tent
 max: 2
 price: 200

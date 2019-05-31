@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: IRON_ORE
 name: Iron_Mine
 max: 1
 price: 150
@@ -32,7 +33,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:IRON_INGOT

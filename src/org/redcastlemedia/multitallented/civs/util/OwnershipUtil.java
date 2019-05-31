@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -7,14 +11,13 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.util.UUID;
 
 public final class OwnershipUtil {
     private OwnershipUtil() {
@@ -95,7 +98,8 @@ public final class OwnershipUtil {
                     "invalid-target"));
             return 0;
         }
-        if (amount > town.getBankAccount()) {
+        boolean isTax = "tax".equals(args[0]);
+        if (!isTax && amount > town.getBankAccount()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "not-enough-money").replace("$1", args[2]));
             return 0;
@@ -115,5 +119,38 @@ public final class OwnershipUtil {
         }
 
         return amount;
+    }
+
+    public static HashMap<UUID, Double> getCooperativeSplit(Town town) {
+        HashMap<UUID, Double> payoutSplit = new HashMap<>();
+        int total = 0;
+        for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            int i=0;
+            for (RegionUpkeep upkeep : regionType.getUpkeeps()) {
+                if (upkeep.getPayout() <= 0) {
+                    i++;
+                    continue;
+                }
+                if (region.hasUpkeepItems(i, false)) {
+                    Set<UUID> owners = region.getOwners();
+                    for (UUID uuid : owners) {
+                        double amount = 1 / (double) owners.size();
+                        if (payoutSplit.containsKey(uuid)) {
+                            payoutSplit.put(uuid, payoutSplit.get(uuid) + amount);
+                        } else {
+                            payoutSplit.put(uuid, amount);
+                        }
+                    }
+                    total++;
+                }
+                i++;
+            }
+        }
+        HashMap<UUID, Double> payouts = new HashMap<>();
+        for (UUID uuid : payoutSplit.keySet()) {
+            payouts.put(uuid, payoutSplit.get(uuid) / total * 0.9);
+        }
+        return payouts;
     }
 }

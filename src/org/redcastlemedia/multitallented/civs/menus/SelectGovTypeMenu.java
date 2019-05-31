@@ -83,6 +83,30 @@ public class SelectGovTypeMenu extends Menu {
 
         // TODO any other changes that need to be made
 
+        Government prevGovernment = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (prevGovernment != null) {
+            for (GovTypeBuff buff : prevGovernment.getBuffs()) {
+                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
+                    continue;
+                }
+                town.setMaxPower(town.getMaxPower() * (1 - buff.getAmount() / 100));
+                break;
+            }
+        }
+
+        Government government = GovernmentManager.getInstance().getGovernment(governmentType);
+        if (government != null) {
+            for (GovTypeBuff buff : government.getBuffs()) {
+                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
+                    continue;
+                }
+                town.setMaxPower(town.getMaxPower() * (1 + buff.getAmount() / 100));
+                break;
+            }
+        }
+
+
+
         if (governmentType == GovernmentType.MERITOCRACY) {
             Util.promoteWhoeverHasMostMerit(town, false);
         }
