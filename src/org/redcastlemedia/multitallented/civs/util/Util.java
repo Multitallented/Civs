@@ -176,7 +176,7 @@ public final class Util {
                 itemStack.getItemMeta().getLore().isEmpty()) {
             return false;
         }
-        return itemStack.getItemMeta().getLore().get(0).equals("starter-book");
+        return ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0)).equals("starter-book");
     }
 
     public static List<String> parseColors(List<String> inputString) {
