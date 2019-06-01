@@ -193,6 +193,7 @@ public final class Util {
         returnInput = returnInput.replaceAll("@\\{BOLD\\}", ChatColor.BOLD + "");
         returnInput = returnInput.replaceAll("@\\{DARK_AQUA\\}", ChatColor.DARK_AQUA + "");
         returnInput = returnInput.replaceAll("@\\{DARK_BLUE\\}", ChatColor.DARK_BLUE + "");
+        returnInput = returnInput.replaceAll("@\\{GRAY\\}", ChatColor.GRAY + "");
         returnInput = returnInput.replaceAll("@\\{DARK_GRAY\\}", ChatColor.DARK_GRAY + "");
         returnInput = returnInput.replaceAll("@\\{DARK_GREEN\\}", ChatColor.DARK_GREEN + "");
         returnInput = returnInput.replaceAll("@\\{DARK_PURPLE\\}", ChatColor.DARK_PURPLE + "");
