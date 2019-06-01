@@ -118,6 +118,7 @@ tutorial:
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
 civs-chat-prefix: "@{GREEN}[Civs]"
+prefix-all-text: ""
 civs-item-prefix: "Civs"
 
 allow-changing-gov-type: true

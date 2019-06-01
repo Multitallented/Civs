@@ -755,8 +755,7 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1 ||
-                    chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 2;
+            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
