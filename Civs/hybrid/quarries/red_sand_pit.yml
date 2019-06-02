@@ -19,7 +19,7 @@ effects:
 - block_build
 - conveyor:RED_SAND
 
-period: 30
+period: 60
 upkeep:
   0:
     reagents:

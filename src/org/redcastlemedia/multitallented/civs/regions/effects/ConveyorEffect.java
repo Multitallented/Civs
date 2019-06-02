@@ -59,6 +59,7 @@ public class ConveyorEffect implements Listener {
 
         //Check if has reagents
         if (!r.hasUpkeepItems()) {
+            System.out.println("No upkeep " + r.getId());
             cacheSpawnPoints.remove(r);
             cacheDestinationRegions.remove(r);
             returnCart(r, true);
@@ -87,6 +88,7 @@ public class ConveyorEffect implements Listener {
                 }
             }
             if (loc == null) {
+                System.out.println("no powered rail " + r.getId());
                 return;
             }
             loc = cacheSpawnPoints.get(r);
@@ -96,6 +98,7 @@ public class ConveyorEffect implements Listener {
         try {
             chest = (Chest) l.getBlock().getState();
         } catch (Exception e) {
+            e.printStackTrace();
             return;
         }
         Inventory cInv = chest.getInventory();
@@ -114,6 +117,7 @@ public class ConveyorEffect implements Listener {
             }
         }
         if (iss.isEmpty()) {
+            System.out.println("no items to move " + r.getId());
             return;
         }
 
@@ -123,6 +127,7 @@ public class ConveyorEffect implements Listener {
                 Chest tempChest = (Chest) cacheDestinationRegions.get(r).getLocation().getBlock().getState();
                 if (tempChest.getBlockInventory().firstEmpty() < 0 ||
                         tempChest.getBlockInventory().firstEmpty() > tempChest.getBlockInventory().getSize() - 3) {
+                    System.out.println("unloaded full chest " + r.getId());
                     return;
                 }
                 for (ItemStack is : iss) {
@@ -133,9 +138,10 @@ public class ConveyorEffect implements Listener {
                         tempChest.getInventory().addItem(is);
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
+            System.out.println("unloaded chunk items teleported " + r.getId());
             return;
         } else {
             for (ItemStack is : iss) {
@@ -146,6 +152,7 @@ public class ConveyorEffect implements Listener {
             cInv.removeItem(tempCart);
 
             StorageMinecart cart = loc.getWorld().spawn(loc, StorageMinecart.class);
+            System.out.println("cart spawned " + r.getId());
 
             for (ItemStack is : iss) {
                 cart.getInventory().addItem(is);
@@ -158,6 +165,7 @@ public class ConveyorEffect implements Listener {
         if (!carts.containsKey(region)) {
             return;
         }
+        System.out.println("Returning cart " + region.getId());
         StorageMinecart sm = carts.get(region);
         sm.remove();
         try {
@@ -170,7 +178,7 @@ public class ConveyorEffect implements Listener {
                         new ItemStack(Material.CHEST_MINECART));
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         if (removeFromCarts) {
             carts.remove(region);
@@ -198,18 +206,12 @@ public class ConveyorEffect implements Listener {
             StorageMinecart sm = carts.get(r);
             if (!sm.isValid() || sm.isDead()) {
                 carts.remove(r);
+                System.out.println("cleaned up existing invalid cart " + r.getId());
                 return;
             }
             if (!sm.getLocation().getChunk().isLoaded()) {
                 returnCart(r, true);
-//                try {
-//                    Chest returnChest = (Chest) r.getLocation().getBlock().getState();
-//                    returnChest.getInventory().addItem(new ItemStack(Material.CHEST_MINECART, 1));
-//                } catch (Exception e) {
-//                    //don't care
-//                }
-//                sm.remove();
-//                carts.remove(r);
+                System.out.println("unloaded cart cleanup " + r.getId());
                 return;
             }
             Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
@@ -218,23 +220,18 @@ public class ConveyorEffect implements Listener {
                 try {
                     currentChest = (Chest) region.getLocation().getBlock().getState();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return;
                 }
-                HashSet<ItemStack> cartInventory = new HashSet<>();
+                HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
 
                 Inventory originInv = null;
-//                try {
-//                    originInv = ((Chest) carts.get(sm).getLocation().getBlock().getState()).getInventory();
-//                    if (originInv.firstEmpty() > -1) {
-//                        originInv.addItem(new ItemStack(Material.CHEST_MINECART, 1));
-//                    } else {
-//                        originInv.setItem(originInv.getSize() -1, new ItemStack(Material.CHEST_MINECART, 1));
-//                    }
-//                } catch (Exception e) {
-//
-//                }
+                try {
+                    originInv = ((Chest) carts.get(r).getLocation().getBlock().getState()).getInventory();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 boolean isFull = false;
-                cartInventory.addAll(Arrays.asList(sm.getInventory().getContents()));
                 for (ItemStack is : cartInventory) {
                     try {
                         if (!isFull) {
@@ -254,9 +251,10 @@ public class ConveyorEffect implements Listener {
                             originInv.addItem(is);
                         }
                     } catch (NullPointerException npe) {
-
+                        npe.printStackTrace();
                     }
                 }
+                System.out.println("cart reached destination " + r.getId());
                 returnCart(r, false);
                 removeMe.add(r);
                 if (!cacheDestinationRegions.containsKey(r)) {
@@ -266,7 +264,6 @@ public class ConveyorEffect implements Listener {
         }
 
         for (Region rr : removeMe) {
-//            carts.get(rr).remove();
             carts.remove(rr);
         }
     }
