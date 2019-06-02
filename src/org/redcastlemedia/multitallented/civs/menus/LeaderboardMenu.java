@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class LeaderboardMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+        String itemName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         int page = (int) getData(civilian.getUuid(), "page");
 
@@ -41,14 +42,14 @@ public class LeaderboardMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         if (event.getCurrentItem().getType() == Material.EMERALD &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "next-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "next-button")))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, page + 1));
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "prev-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "prev-button")))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, page - 1));

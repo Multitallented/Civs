@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -49,6 +50,7 @@ public abstract class CivItem extends CVItem {
         return processItemName(getDisplayName());
     }
     public static String processItemName(String input) {
+        input = ChatColor.stripColor(input);
         return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
     }
     public String getDescription(String locale) {

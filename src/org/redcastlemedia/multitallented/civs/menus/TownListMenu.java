@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -30,11 +31,12 @@ public class TownListMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() || (event.getCurrentItem().getType() == Material.STONE &&
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() ||
+                (event.getCurrentItem().getType() == Material.STONE &&
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+        String itemName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         int page = (int) getData(civilian.getUuid(), "page");
         UUID uuid = (UUID) getData(civilian.getUuid(), "uuid");
@@ -46,7 +48,7 @@ public class TownListMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         if (event.getCurrentItem().getType() == Material.EMERALD &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "next-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "next-button")))) {
             if (uuid == null) {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             } else {
@@ -57,7 +59,7 @@ public class TownListMenu extends Menu {
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "prev-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "prev-button")))) {
             if (uuid == null) {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             } else {

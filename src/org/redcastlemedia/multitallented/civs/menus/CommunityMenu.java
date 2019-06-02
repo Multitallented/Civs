@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -34,7 +35,7 @@ public class CommunityMenu extends Menu {
         }
 
         ItemMeta im = clickedStack.getItemMeta();
-        String itemName = im.getDisplayName();
+        String itemName = ChatColor.stripColor(im.getDisplayName());
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
@@ -67,7 +68,7 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(AllianceListMenu.createMenu(civilian, 0));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "players"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "players")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0));

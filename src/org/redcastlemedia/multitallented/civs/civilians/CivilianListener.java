@@ -184,9 +184,7 @@ public class CivilianListener implements Listener {
     @EventHandler
     public void onStarterBookClick(PlayerInteractEvent event) {
         if (event.getItem() == null ||
-                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
-                event.getItem().getType() != Material.WRITTEN_BOOK ||
-                !event.getItem().hasItemMeta()) {
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
         if (ConfigManager.getInstance().getBlackListWorlds()
@@ -194,12 +192,8 @@ public class CivilianListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book")
-                .equals(event.getItem().getItemMeta().getDisplayName()) &&
-                !localeManager.getTranslation("en", "starter-book")
-                .equals(event.getItem().getItemMeta().getDisplayName())) {
+        if (!Util.isStarterBook(event.getItem())) {
             return;
         }
         event.setCancelled(true);

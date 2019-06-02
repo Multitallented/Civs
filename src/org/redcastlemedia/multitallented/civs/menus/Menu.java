@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -237,7 +238,8 @@ public abstract class Menu implements Listener {
                 is.getType() == Material.REDSTONE_BLOCK &&
                 is.hasItemMeta() &&
                 is.getItemMeta().getDisplayName() != null &&
-                is.getItemMeta().getDisplayName().equals(LocaleManager.getInstance().getTranslation(locale, "back-button"));
+                ChatColor.stripColor(is.getItemMeta().getDisplayName())
+                        .equals(ChatColor.stripColor(LocaleManager.getInstance().getTranslation(locale, "back-button")));
     }
     static void appendHistory(UUID uuid, String params) {
         if (history.get(uuid) == null) {

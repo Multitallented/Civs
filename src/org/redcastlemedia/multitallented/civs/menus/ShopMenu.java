@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -39,7 +40,7 @@ public class ShopMenu extends Menu {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();
-        String itemName = im.getDisplayName();
+        String itemName = ChatColor.stripColor(im.getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         if (isBackButton(clickedStack, civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -47,7 +48,8 @@ public class ShopMenu extends Menu {
         }
 
         String history = MENU_NAME;
-        if (itemName.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "sort-by-level"))) {
+        if (itemName.equals(ChatColor.stripColor(LocaleManager.getInstance()
+                .getTranslation(civilian.getLocale(), "sort-by-level")))) {
             event.getWhoClicked().closeInventory();
             appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().openInventory(ShopLevelMenu.createMenu(civilian));
