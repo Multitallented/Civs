@@ -26,6 +26,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
+import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
+
 public class ArrowTurret implements Listener {
     public static String KEY = "arrow_turret";
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
@@ -33,7 +35,9 @@ public class ArrowTurret implements Listener {
     //Shoot arrows at mobs
     @EventHandler
     public void onRegionTickEvent(RegionTickEvent event) {
-        if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs()) {
+        if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs() ||
+                !event.getRegion().getLocation().getChunk().isLoaded() ||
+                !isLocationWithinSightOfPlayer(event.getRegion().getLocation())) {
             return;
         }
         Region region = event.getRegion();

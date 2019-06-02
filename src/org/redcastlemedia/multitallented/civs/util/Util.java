@@ -214,6 +214,18 @@ public final class Util {
         returnInput = returnInput.replaceAll("@\\{YELLOW\\}", ChatColor.YELLOW + "");
         return returnInput;
     }
+
+    public static boolean isLocationWithinSightOfPlayer(Location location) {
+        final int RENDER_RANGE_SQUARED = 25600;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&
                 type != Material.LEVER &&
