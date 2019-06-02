@@ -199,6 +199,7 @@ en:
   last-renamed-by: "Last renamed by: $1"
   leave-alliance: "Leave alliance"
   hunting-players: "Caution! Someone is hunting players in your area."
+  target-not-in-world: "$1 is not in the same world as you."
 
   #errors
   cant-place-town: "Type /cv town townNameHere"
@@ -473,7 +474,8 @@ pt_br:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 de dinheiro ganho"
   karma-lost: "Karma: -$1, $2 de dinheiro perdido"
-  
+
+  target-not-in-world: "$1 não está no mesmo mundo que você."
 es:
   name: Español
   icon: YELLOW_WOOL
@@ -757,6 +759,8 @@ de:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 geld gewonnen"
   karma-lost: "Karma: -$1, $2 geld verloren"
+
+  target-not-in-world: "$1 ist nicht in der gleichen welt wie sie."
 ru:
   name: русский
   icon: RED_WOOL
