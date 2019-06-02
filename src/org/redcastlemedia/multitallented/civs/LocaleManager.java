@@ -15,11 +15,12 @@ public class LocaleManager {
     HashMap<String, HashMap<String, String>> languageMap = new HashMap<>();
 
     public String getTranslation(String language, String key) {
+        String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
                 !languageMap.get(language).containsKey(key)) {
-            return languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
+            return textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
         }
-        return languageMap.get(language).get(key);
+        return textPrefix + languageMap.get(language).get(key);
     }
     public Set<String> getAllLanguages() {
         return languageMap.keySet();

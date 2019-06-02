@@ -107,6 +107,8 @@ public class ConfigManager {
     @Getter
     String bottomGuideSpacer;
     String civsChatPrefix;
+    @Getter
+    String prefixAllText;
     String civsItemPrefix;
 
     public ConfigManager() {
@@ -334,6 +336,7 @@ public class ConfigManager {
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
@@ -363,6 +366,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        prefixAllText = "";
         civsChatPrefix = "@{GREEN}[Civs]";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
