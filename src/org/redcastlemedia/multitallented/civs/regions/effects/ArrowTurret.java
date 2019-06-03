@@ -36,7 +36,6 @@ public class ArrowTurret implements Listener {
     @EventHandler
     public void onRegionTickEvent(RegionTickEvent event) {
         if (ConfigManager.getInstance().getDenyArrowTurretShootAtMobs() ||
-                !event.getRegion().getLocation().getChunk().isLoaded() ||
                 !isLocationWithinSightOfPlayer(event.getRegion().getLocation())) {
             return;
         }

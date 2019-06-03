@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -201,7 +202,7 @@ public class ConveyorEffect implements Listener {
                 carts.remove(r);
                 return;
             }
-            if (!sm.getLocation().getChunk().isLoaded()) {
+            if (!Util.isLocationWithinSightOfPlayer(sm.getLocation())) {
                 returnCart(r, true);
                 return;
             }
