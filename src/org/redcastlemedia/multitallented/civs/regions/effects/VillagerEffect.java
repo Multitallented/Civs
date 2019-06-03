@@ -96,8 +96,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     }
 
     static Villager spawnVillager(Region region) {
-        if (!region.getLocation().getChunk().isLoaded() ||
-                !Util.isLocationWithinSightOfPlayer(region.getLocation())) {
+        if (!Util.isLocationWithinSightOfPlayer(region.getLocation())) {
             return null;
         }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
@@ -118,8 +117,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         int radius = townType.getBuildRadius();
         int radiusY = townType.getBuildRadiusY();
-        if (!town.getLocation().getChunk().isLoaded() ||
-                !Util.isLocationWithinSightOfPlayer(town.getLocation())) {
+        if (!Util.isLocationWithinSightOfPlayer(town.getLocation())) {
             return null;
         }
         for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {

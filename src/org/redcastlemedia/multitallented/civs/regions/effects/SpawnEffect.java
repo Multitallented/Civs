@@ -19,7 +19,6 @@ public class SpawnEffect implements Listener {
     public void onUpkeep(RegionUpkeepEvent event) {
         Location location = event.getRegion().getLocation();
         if (!event.getRegion().getEffects().containsKey(KEY) ||
-                !location.getChunk().isLoaded() ||
                 !Util.isLocationWithinSightOfPlayer(location)) {
             return;
         }

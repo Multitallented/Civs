@@ -559,15 +559,6 @@ public class RegionManager {
             }
         }
 
-        HashMap<UUID, String> people;
-        if (rebuildRegion != null) {
-            people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
-            //TODO copy over other stuff too?
-            removeRegion(rebuildRegion, false, false);
-        } else {
-            people = new HashMap<>();
-            people.put(player.getUniqueId(), "owner");
-        }
         for (Region currentRegion : regionManager.getRegionsXYZ(location,
                 radii[0], radii[2], radii[4], radii[5], radii[1], radii[3], false)) {
             if (currentRegion == rebuildRegion) {
@@ -578,6 +569,15 @@ public class RegionManager {
                     localeManager.getTranslation(civilian.getLocale(), "too-close-region")
                             .replace("$1", regionTypeName).replace("$2", currentRegion.getType()));
             return false;
+        }
+        HashMap<UUID, String> people;
+        if (rebuildRegion != null) {
+            people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            //TODO copy over other stuff too?
+            removeRegion(rebuildRegion, false, false);
+        } else {
+            people = new HashMap<>();
+            people.put(player.getUniqueId(), "owner");
         }
 
         player.sendMessage(Civs.getPrefix() +
