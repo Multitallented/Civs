@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.EventHandler;
@@ -185,10 +186,11 @@ public class ConveyorEffect implements Listener {
         }
         Region destinationRegion = cacheDestinationRegions.get(region);
         Block destinationBlock = destinationRegion.getLocation().getBlock();
-        if (!(destinationBlock.getState() instanceof Chest)) {
+        BlockState state = destinationBlock.getState();
+        if (!(state instanceof Chest)) {
             return true;
         }
-        Chest chest = (Chest) destinationBlock.getState();
+        Chest chest = (Chest) state;
         return chest.getBlockInventory().firstEmpty() < 0 ||
                 chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 3;
     }

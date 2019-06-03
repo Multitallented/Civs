@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -662,10 +663,11 @@ public class Region {
             return true;
         }
         Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
         }
-        Chest chest = (Chest) block.getState();
+        Chest chest = (Chest) state;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
@@ -691,10 +693,11 @@ public class Region {
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
         Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
         }
-        Chest chest = (Chest) block.getState();
+        Chest chest = (Chest) state;
 
         if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                 Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
@@ -732,8 +735,9 @@ public class Region {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
         Chest chest = null;
-        if (block.getState() instanceof Chest) {
-            chest = (Chest) block.getState();
+        BlockState state = block.getState();
+        if (state instanceof Chest) {
+            chest = (Chest) state;
         }
 
         boolean hadUpkeep = false;

@@ -26,8 +26,8 @@ public class RegionTickThread implements Runnable {
             boolean hasUpkeep = false;
             try {
                 hasUpkeep = !regionType.isDailyPeriod() && region.runUpkeep();
-            } catch (NullPointerException npe) {
-                
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             RegionTickEvent regionTickEvent = new RegionTickEvent(region, regionType, hasUpkeep, shouldTick);

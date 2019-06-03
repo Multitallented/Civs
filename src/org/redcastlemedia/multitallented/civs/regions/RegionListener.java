@@ -43,9 +43,6 @@ public class RegionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
-        if (blockPlaceEvent.getBlockPlaced().getState() == null) {
-            return;
-        }
 
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(blockPlaceEvent.getBlockPlaced().getLocation().getWorld().getName())) {
