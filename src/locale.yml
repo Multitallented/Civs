@@ -734,7 +734,7 @@ de:
   invalid-target: "Ungültiges ziel"
   raid-target-inside-region: "Du kannst keinen ort innerhalb einer bereich festlegen"
   req-build-inside-town: "Dieser $1 muss innerhalb von $2 gebaut werden"
-  missing-region-requirements: "In Ihrem $ 1 fehlen erforderliche bereich"
+  missing-region-requirements: "Ihnen fehlen einige erforderliche bereiche in ihrer $1."
   friendly-fire: "Du kannst niemandem auf deiner freundesliste schaden zufügen"
   limits: "Grenzen"
   region-limit-reached: "Ein $1 kann nur $2 $3 haben"

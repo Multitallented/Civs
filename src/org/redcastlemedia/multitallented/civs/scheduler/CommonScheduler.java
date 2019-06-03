@@ -57,8 +57,8 @@ public class CommonScheduler implements Runnable {
             }
             if (i == MAX_TPS - 1) {
                 i = 0;
-                RegionTickThread regionTickThread = new RegionTickThread();
-                regionTickThread.run();
+                RegionTickTask regionTickTask = new RegionTickTask();
+                regionTickTask.run();
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());

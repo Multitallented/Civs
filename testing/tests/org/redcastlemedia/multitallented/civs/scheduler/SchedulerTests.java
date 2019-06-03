@@ -19,7 +19,6 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.HashMap;
@@ -48,7 +47,7 @@ public class SchedulerTests {
                 RegionsTests.getRadii(), effects);
         regionManager.addRegion(region);
 
-        RegionTickThread regionTickThread = new RegionTickThread();
+        RegionTickTask regionTickThread = new RegionTickTask();
         regionTickThread.run();
     }*/
 
@@ -87,8 +86,8 @@ public class SchedulerTests {
                 RegionsTests.getRadii(), effects, 0);
         regionManager.addRegion(region);
 
-        RegionTickThread regionTickThread = new RegionTickThread();
-        regionTickThread.run();
+        RegionTickTask regionTickTask = new RegionTickTask();
+        regionTickTask.run();
     }
 
     @Test(expected = SuccessException.class)

@@ -133,8 +133,6 @@ public class Civs extends JavaPlugin {
 
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
-
-        //sync repeating task for war
     }
 
     private void initCommands() {
