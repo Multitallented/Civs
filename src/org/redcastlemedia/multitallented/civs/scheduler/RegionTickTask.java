@@ -13,9 +13,8 @@ import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RegionTickThread implements Runnable {
+public class RegionTickTask {
 
-    @Override
     public void run() {
         RegionManager regionManager = RegionManager.getInstance();
         Set<Region> destroyThese = new HashSet<>();
