@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -743,9 +744,16 @@ public class Region {
             Block block = getLocation().getBlock();
 
             Chest chest = null;
-            BlockState state = block.getState();
-            if (needsItems && state instanceof Chest) {
-                chest = (Chest) state;
+            try {
+                BlockState state = block.getState();
+                if (state instanceof Chest) {
+                    chest = (Chest) state;
+                }
+            } catch (ConcurrentModificationException e) {
+                BlockState state = block.getState();
+                if (state instanceof Chest) {
+                    chest = (Chest) state;
+                }
             }
             if (needsItems && chest == null) {
                 continue;
