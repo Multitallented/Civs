@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -196,7 +197,7 @@ public class DeathListener implements Listener {
 
         ArrayList<ItemStack> removeMe = new ArrayList<>();
         for (ItemStack is : event.getDrops()) {
-            if (is.getType() != Material.AIR && CVItem.isCivsItem(is)) {
+            if (CivilianListener.checkDroppedItem(is, player)) {
                 removeMe.add(is);
             }
         }
