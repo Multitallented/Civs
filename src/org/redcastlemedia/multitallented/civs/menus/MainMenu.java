@@ -162,7 +162,7 @@ public class MainMenu extends Menu {
         //5 Regions
         if (showBuiltRegions) {
             i++;
-            CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
+            CVItem cvItemRegion = CVItem.createCVItemFromString("BRICKS");
             cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
             inventory.setItem(i, cvItemRegion.createItemStack());
         }
