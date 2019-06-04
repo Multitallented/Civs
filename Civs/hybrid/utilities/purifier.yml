@@ -4,7 +4,7 @@ shop-icon: ROTTEN_FLESH
 name: Purifier
 price: 5
 groups:
-- farm
+- utility
 level: 1
 
 build-reqs:

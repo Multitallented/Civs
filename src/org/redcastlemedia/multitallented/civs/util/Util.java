@@ -219,7 +219,9 @@ public final class Util {
         final int RENDER_RANGE_SQUARED = 25600;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+            if (location.getWorld() != null &&
+                    location.getWorld().equals(player.getWorld()) &&
+                    player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
                 return true;
             }
         }
