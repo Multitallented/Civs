@@ -135,21 +135,26 @@ public class CivilianListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
-                item.getItemStack().getItemMeta() != null &&
-                item.getItemStack().getItemMeta().getDisplayName() != null &&
-                item.getItemStack().getItemMeta().getDisplayName().contains(ConfigManager.getInstance().getCivsItemPrefix())) {
+        if (checkDroppedItem(item.getItemStack(), event.getPlayer())) {
             item.remove();
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-            String itemName = item.getItemStack().getItemMeta().getDisplayName()
-                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
-            if (civilian.getStashItems().containsKey(itemName)) {
-                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
-            } else {
-                civilian.getStashItems().put(itemName, 1);
-            }
-            CivilianManager.getInstance().saveCivilian(civilian);
         }
+    }
+
+    public static boolean checkDroppedItem(ItemStack itemStack, Player player) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems() ||
+                !CVItem.isCivsItem(itemStack)) {
+            return false;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        String itemName = itemStack.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        if (civilian.getStashItems().containsKey(itemName)) {
+            civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+        } else {
+            civilian.getStashItems().put(itemName, 1);
+        }
+        CivilianManager.getInstance().saveCivilian(civilian);
+        return true;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
