@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -23,6 +24,7 @@ public class ReloadCommand implements CivCommand {
         TutorialManager.getInstance().reload();
         AllianceManager.getInstance().reload();
         CommonScheduler.run = true;
+        commandSender.sendMessage(Civs.NAME + " reloaded");
         return true;
     }
 }

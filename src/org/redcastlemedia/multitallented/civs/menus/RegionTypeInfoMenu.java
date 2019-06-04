@@ -40,7 +40,7 @@ public class RegionTypeInfoMenu extends Menu {
             return;
         }
 
-        if (!event.getCurrentItem().hasItemMeta() || event.getCurrentItem().getItemMeta().getDisplayName() == null
+        if (!event.getCurrentItem().hasItemMeta() || event.getCurrentItem().getItemMeta() == null
                 || event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(event.getInventory().getItem(0).getItemMeta().getDisplayName())) {
             return;
         }
