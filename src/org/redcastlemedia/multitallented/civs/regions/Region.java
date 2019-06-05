@@ -869,7 +869,7 @@ public class Region {
         if (hadUpkeep) {
             for (UUID uuid : getOwners()) {
                 Player player = Bukkit.getPlayer(uuid);
-                if (!player.isOnline()) {
+                if (player == null || !player.isOnline()) {
                     continue;
                 }
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);

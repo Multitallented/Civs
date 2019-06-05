@@ -435,6 +435,7 @@ public class TownManager {
             config.set("name", town.getName());
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
+            config.set("people", null);
             for (UUID key : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(key).contains("ally")) {
                     continue;
@@ -456,6 +457,7 @@ public class TownManager {
             config.set("taxes", town.getTaxes());
             config.set("bank", town.getBankAccount());
             config.set("last-vote", town.getLastVote());
+            config.set("votes", null);
             if (!town.getVotes().isEmpty()) {
                 for (UUID uuid : town.getVotes().keySet()) {
                     for (UUID cUuid : town.getVotes().get(uuid).keySet()) {
@@ -463,10 +465,9 @@ public class TownManager {
                                 town.getVotes().get(uuid).get(cUuid));
                     }
                 }
-            } else {
-                config.set("votes", null);
             }
 
+            config.set("bounties", null);
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
                 for (int i = 0; i < town.getBounties().size(); i++) {
                     if (town.getBounties().get(i).getIssuer() != null) {
@@ -474,8 +475,6 @@ public class TownManager {
                     }
                     config.set("bounties." + i + ".amount", town.getBounties().get(i).getAmount());
                 }
-            } else {
-                config.set("bounties", null);
             }
             if (town.getColonialTown() == null) {
                 config.set("colonial-town", null);

@@ -12,10 +12,10 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>spigot-repo</id>-->
+            <!--<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>-->
+        <!--</repository>-->
         <!--Bungeecord Repo-->
         <!--Only include if using the Spigot API dependency-->
         <repository>
@@ -39,6 +39,12 @@
             <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.bukkit</groupId>-->
+            <!--<artifactId>bukkit</artifactId>-->
+            <!--<version>1.13.2-R0.1-SNAPSHOT</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>me.clip</groupId>

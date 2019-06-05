@@ -96,7 +96,6 @@ groups:
   shop: 3
   quarry: 12
   housing: 3
-  superregion: 1
 
 #region port configs
 port:

@@ -3,13 +3,11 @@ package org.redcastlemedia.multitallented.civs;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.redcastlemedia.multitallented.civs.ai.AIListener;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -159,6 +157,7 @@ public class Civs extends JavaPlugin {
         commandList.put("colony", new ColonyCommand());
         commandList.put("newday", new DayCommand());
         commandList.put("reload", new ReloadCommand());
+        commandList.put("toggleann", new ToggleAnnouncementCommand());
     }
 
     private void initListeners() {

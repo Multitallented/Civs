@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -31,7 +35,7 @@ public final class AnnouncementUtil {
 
     public static void sendAnnouncement(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (civilian.isInCombat()) {
+        if (civilian.isInCombat() || !civilian.isUseAnnouncements()) {
             return;
         }
         ArrayList<String> messages = new ArrayList<>();
@@ -57,10 +61,10 @@ public final class AnnouncementUtil {
 
         if (isOwnerOfATown) {
             for (Town town : towns) {
-                if (town.getBankAccount() > 0) {
+                if (town.getBankAccount() > 0 && town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
                     messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-bank")
                             .replace("$1", town.getName())
-                            .replace("$2", "" + town.getBankAccount()));
+                            .replace("$2", Util.getNumberFormat(town.getBankAccount(), civilian.getLocale())));
                 }
             }
 
@@ -117,13 +121,19 @@ public final class AnnouncementUtil {
             regions.add(region);
         }
         Collections.shuffle(regions);
+        int regionCount = 0;
         regionOuter: for (Region region : regions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             for (int i=0; i<regionType.getUpkeeps().size(); i++) {
                 if (!region.hasUpkeepItems(i, true)) {
                     messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-missing-input")
                             .replace("$1", regionType.getName()));
-                    break regionOuter;
+                    regionCount++;
+                    if (regionCount > 2) {
+                        break regionOuter;
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
@@ -174,12 +184,25 @@ public final class AnnouncementUtil {
         if (messages.isEmpty()) {
             return;
         } else if (messages.size() < 2) {
-            player.sendMessage(Civs.getPrefix() + messages.get(0));
+            TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(0) + " ");
+            message.setColor(ChatColor.GREEN);
+            TextComponent unsub = new TextComponent("[X]");
+            unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
+            unsub.setColor(ChatColor.RED);
+            unsub.setUnderlined(true);
+            message.addExtra(unsub);
+            player.spigot().sendMessage(message);
             return;
         }
-
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
-        player.sendMessage(Civs.getPrefix() + messages.get(randIndex));
+        TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(randIndex) + " ");
+        message.setColor(ChatColor.GREEN);
+        TextComponent unsub = new TextComponent("[X]");
+        unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
+        unsub.setColor(ChatColor.RED);
+        unsub.setUnderlined(true);
+        message.addExtra(unsub);
+        player.spigot().sendMessage(message);
     }
 }
