@@ -80,6 +80,12 @@ public class CommunityMenu extends Menu {
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, civilian.getUuid()));
             return;
         }
+        if (clickedStack.getType() == Material.ENDER_PEARL) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
+            return;
+        }
         //TODO finish this stub
     }
 
@@ -142,6 +148,32 @@ public class CommunityMenu extends Menu {
             CVItem cvItem6 = CVItem.createCVItemFromString("EMERALD");
             cvItem6.setDisplayName(localeManager.getTranslation(locale, "regions-for-sale"));
             inventory.setItem(i, cvItem6.createItemStack());
+        }
+
+        boolean hasPort = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (!region.getEffects().containsKey("port")) {
+                continue;
+            }
+            if (!region.getPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            //Don't show private ports
+            if (region.getEffects().get("port") != null &&
+                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+                continue;
+            }
+            hasPort = true;
+            break;
+        }
+
+        //6 Ports
+        if (hasPort) {
+            i++;
+            CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
+            cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
+            inventory.setItem(i, cvItem5.createItemStack());
         }
 
         //8 Back Button
