@@ -44,12 +44,6 @@ public class CommunityMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        if (clickedStack.getType() == Material.ENDER_PEARL) {
-            appendHistory(civilian.getUuid(), MENU_NAME);
-            event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
-            return;
-        }
         if (clickedStack.getType() == Material.SIGN) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -134,40 +128,15 @@ public class CommunityMenu extends Menu {
         cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
         inventory.setItem(i, cvItem4.createItemStack());
 
-        boolean hasPort = false;
-        for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (!region.getEffects().containsKey("port")) {
-                continue;
-            }
-            if (!region.getPeople().containsKey(civilian.getUuid())) {
-                continue;
-            }
-            //Don't show private ports
-            if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
-                continue;
-            }
-            hasPort = true;
-            break;
-        }
-
-        //5 Ports
-        if (hasPort) {
-            i++;
-            CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
-            cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
-            inventory.setItem(i, cvItem5.createItemStack());
-        }
-
         boolean hasRegionsForSale = false;
         for (Region r : RegionManager.getInstance().getAllRegions()) {
-            if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
+            if (r.getForSale() != -1 && (!r.getRawPeople().containsKey(civilian.getUuid()) ||
+                    r.getRawPeople().get(civilian.getUuid()).contains("ally"))) {
                 hasRegionsForSale = true;
                 break;
             }
         }
-        //6 Regions for sale
+        //5 Regions for sale
         if (hasRegionsForSale) {
             i++;
             CVItem cvItem6 = CVItem.createCVItemFromString("EMERALD");

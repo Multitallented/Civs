@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -85,15 +86,32 @@ public class DailyScheduler implements Runnable {
                     }
                 }
             }
-            UUID mostVotes = null;
+            ArrayList<UUID> mostVotesList = new ArrayList<>();
             int mostVoteCount = 0;
             for (UUID uuid : voteTally.keySet()) {
                 if (mostVoteCount < voteTally.get(uuid)) {
-                    mostVotes = uuid;
+                    mostVotesList.clear();
+                    mostVotesList.add(uuid);
                     mostVoteCount = voteTally.get(uuid);
+                } else if (mostVoteCount == voteTally.get(uuid)) {
+                    mostVotesList.add(uuid);
                 }
             }
-            if (mostVotes != null && town.getRawPeople().containsKey(mostVotes) &&
+            if (mostVotesList.isEmpty()) {
+                town.setVotes(new HashMap<>());
+                saveTheseTowns.add(town);
+                continue;
+            }
+
+            UUID mostVotes;
+            if (mostVotesList.size() == 1) {
+                mostVotes = mostVotesList.get(0);
+            } else {
+                int randIndex = (int) Math.floor(Math.random() * (mostVotesList.size() - 1));
+                mostVotes = mostVotesList.get(randIndex);
+            }
+
+            if (town.getRawPeople().containsKey(mostVotes) &&
                     !town.getRawPeople().get(mostVotes).contains("owner")) {
                 HashSet<UUID> setMembers = new HashSet<>();
                 for (UUID uuid : town.getRawPeople().keySet()) {
