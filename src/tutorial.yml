@@ -15,6 +15,7 @@ default:
       pt_br: "Primeiro, abra seu livro, vá para plantas, pegue seu abrigo e coloque-o."
       ru: "Сначала откройте свою книгу, зайдите в чертежи, найдите укрытие и разместите его."
       de: "Öffnen Sie zuerst Ihr Buch, gehen Sie zu den Bauplänen, nehmen Sie Ihre Unterkunft und platzieren Sie es."
+      hu: "Építs egy menedéket (shelter). Nyisd meg a könyvet, válaszd az alaprajzok menüt, majd vedd ki a menedéked (shelter) és helyezd le."
   - type: upkeep
     region: shelter
     rewards:
@@ -26,6 +27,7 @@ default:
       pt_br: "Em seguida, reúna 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no baú do abrigo."
       ru: "Затем соберите 4 хлебов, 32 моркови, 32 стейка или 32 картофеля. Положите их в сундук с укрытием."
       de: "Als nächstes sammeln Sie 4 Brot, 32 Karotten, 32 Steak oder 32 Kartoffeln. Legen Sie sie in die Schutzkiste."
+      hu: "Gyűjts össze 4 db kenyeret, 32 db répát, steaket, krumplit, majd tedd bele a menedék (shelter) ládájába."
   - type: buy
     region: coal_shop
     rewards:
@@ -41,6 +43,7 @@ default:
       pt_br: "O abrigo paga por comida, mas a loja de carvão paga mais. Abra seu livro, vá até a loja e compre a loja de carvão."
       ru: "Приют платит вам за еду, а угольный магазин платит больше. Откройте свою книгу, идите в магазин и купите угольный магазин."
       de: "Das Tierheim zahlt Sie für Nahrung, aber der Kohlenladen zahlt mehr. Öffne dein Buch, gehe in den Laden und kaufe den Kohlenladen."
+      hu: "A menedék (shelter) ételért ad neked pénzt, de a szénbolt (coal shop) többet fizet. Nyisd meg a könyved, majd a bolt menüt, és vedd ki a szénboltot."
   - type: build
     region: coal_shop
     rewards:
@@ -55,6 +58,7 @@ default:
       pt_br: "Coloque 25 lã, 14 cercas e 2 baús. Em seguida, coloque a loja de carvão."
       ru: "Поместите 25 шерсти, 14 заборов и 2 сундука. Затем разместите угольный цех."
       de: "Platziere 25 Wolle, 14 Zäune und 2 Truhen. Dann legen Sie den Kohlenladen."
+      hu: "Tedd le a 25 db gyapjút, 14 db kerítést és 2 db ládát, majd tedd le a szénboltot (coal shop) is."
   - type: choose
     paths:
     - warrior
@@ -70,6 +74,7 @@ warrior:
     pt_br: "Guerreiro"
     ru: "воин"
     de: "Krieger"
+    hu: "Harcos"
   steps:
   - type: buy
     region: altar
@@ -85,6 +90,7 @@ warrior:
       pt_br: "Primeiro, compre o altar. Você pode usar este altar para obter equipamentos de diamante."
       ru: "Сначала купите алтарь. Вы можете использовать этот алтарь, чтобы получить алмазное снаряжение."
       de: "Zuerst den Altar kaufen. Sie können diesen Altar verwenden, um ein Diamantenzahnrad zu erhalten."
+      hu: "Vedd meg az oltárt (altar). Gyémánt szerszámokat tudsz szerezni a segítségével."
   - type: upkeep
     region: altar
     rewards:
@@ -97,6 +103,7 @@ warrior:
       pt_br: "Agora, coloque uma espada de ferro no baú do altar. Se você tiver $300, receberá seu equipamento."
       ru: "Теперь поместите железный меч в сундук алтаря. Если у вас есть 300 долларов, вы получите свое снаряжение."
       de: "Stecke jetzt ein Eisenschwert in die Altarbrust. Wenn Sie 300 € haben, erhalten Sie Ihre Ausrüstung."
+      hu: "Tégy egy vaskardot az oltár ládájába. Ha van $300-od, akkor kapsz egy gyémántfelszerelést."
   - type: kill
     kill-type: player
     rewards:
@@ -112,6 +119,7 @@ warrior:
       pt_br: "Aqui está uma maçã dourada encantada. Agora você tem tudo que precisa. Seu próximo objetivo é matar alguém."
       ru: "Вот заколдованное золотое яблоко. Теперь у вас есть все, что вам нужно. Ваша следующая цель - убить кого-то."
       de: "Hier ist ein verzauberter goldener Apfel. Jetzt hast du alles was du brauchst. Dein nächstes Ziel ist es, jemanden zu töten."
+      hu: "Itt egy aranyalma. Most már mindened megvan a következő feladathoz: ölj meg valakit."
   - type: build
     region: raid_porter
     rewards:
@@ -123,6 +131,7 @@ warrior:
       pt_br: "Parabéns! Você é agora um guerreiro comum. Agora, para se tornar um atacante. Compre e construa um raid_porter perto de uma cidade."
       ru: "Поздравляем! Теперь ты обычный воин. Теперь стать рейдером. Купить и построить raid_porter близко к городу."
       de: "Glückwunsch! Du bist jetzt ein gewöhnlicher Krieger. Nun, um ein Raider zu werden. Kaufe und baue einen raid_porter in der Nähe einer Stadt."
+      hu: "Gratulálok! Most vált harcos belőled. Következő feladatod: vegyél egy raid_porter-t és építsd fel közel egy városhoz."
   - type: upkeep
     region: raid_porter
     rewards:
@@ -135,11 +144,12 @@ warrior:
       pt_br: "Uma vez que seu raid_porter estiver ativo, fique em cima dele para se teletransportar para a cidade."
       ru: "Когда ваш raid_porter активен, встаньте на него сверху, чтобы телепортироваться в город."
       de: "Sobald Ihr raid_porter aktiv ist, stellen Sie sich darauf, um in die Stadt zu teleportieren."
+      hu: "Amint a raid_porter-ed aktív, lépj a tetejére és teleportálj a városba."
   - type: build
     region: command_tent
     rewards:
       items:
-        - DIAMOND*3
+      - DIAMOND*3
       money: 1000
     messages:
       en: "Now that you've raided a town, it's time go to war with one. Build a Command_Tent near an enemy town."
@@ -148,6 +158,7 @@ warrior:
       pt_br: "Agora que você invadiu uma cidade, é hora de entrar em guerra com uma. Construa um Command_Tent perto de uma cidade inimiga."
       ru: "Теперь, когда вы совершили набег на город, пришло время сразиться с ним. Постройте Command_Tent возле вражеского города."
       de: "Nun, da Sie eine Stadt überfallen haben, ist es Zeit, mit einer zu kämpfen. Baue ein Command_Tent in der Nähe einer feindlichen Stadt"
+      hu: "Most, hogy kifosztottad a várost, itt az ideje háborúba lépni valakivel. Építs egy parancsnoki sátrat (Command_Tent) közel egy ellenséges városhoz."
   - type: build
     region: siege_machine
     rewards:
@@ -160,6 +171,7 @@ warrior:
       pt_br: "Agora compre e construa o Outpost no topo da sua Command_Tent. Depois disso, compre e construa o Siege_Machine."
       ru: "Теперь купите и постройте форпост на вершине вашей Command_Tent. После этого купите и постройте Siege_Machine."
       de: "Kaufen Sie jetzt den Outpost und bauen Sie ihn auf Ihrem Command_Tent. Danach kaufe und baue die Siege_Machine."
+      hu: "Most vásárolj és építs fel egy előörsöt (Outpost) a parancsnoki sátor (Command_Tent) felé. Ezután vásárolj és építs egy ostromgépet (Siege_Machine)."
   - type: build
     region: castle
     rewards:
@@ -174,6 +186,7 @@ warrior:
       pt_br: "O Siege_Machine irá lentamente reduzir o poder da cidade inimiga, o que força a cidade a atacar você. Compre e construa um castelo no topo da sua Command_Tent."
       ru: "Siege_Machine будет постепенно уменьшать силу вражеского города, что заставит город атаковать вас Купите и постройте замок на вершине вашей Command_Tent."
       de: "Die Siege_Machine verringert langsam die Macht der gegnerischen Stadt, was die Stadt dazu zwingt, Sie anzugreifen. Kaufe und baue ein Schloss auf deinem Command_Tent."
+      hu: "Az ostromgép (Siege_Machine) lassan csökkenti az ellenséges város erőpontjait, amely a várost támadásra fogja kényszeríteni. Vásárolj és építs egy bástyát (Castle) a parancsnoki sátrad (Command_Tent) tetejére."
   - type: build
     region: memorial
     rewards:
@@ -187,6 +200,7 @@ warrior:
       pt_br: "Agora que você construiu o Castelo, compre e construa o Keep. Depois disso, construa um Memorial."
       ru: "Теперь, когда вы построили замок, купите и постройте крепость. После этого постройте Мемориал."
       de: "Jetzt, da du das Schloss gebaut hast, kaufe und baue die Festung. Baue danach ein Denkmal."
+      hu: "Most, hogy megépítetted a bástyád (Castle) vásárolj és építs egy várat (Keep). Aztán építs egy ostrom spawnpointot (Memorial)."
   - type: end
     messages:
       en: "Congratulations! You are now wise in the ways of warfare. This concludes the warrior path."
@@ -195,6 +209,7 @@ warrior:
       pt_br: "Parabéns! Agora você é sábio nos modos de guerra. Isso conclui o caminho do guerreiro."
       ru: "Поздравляем! Вы теперь мудры в способах ведения войны. Это завершает путь воина."
       de: "Herzliche Glückwünsche! Sie sind jetzt weise auf dem Weg der Kriegsführung. Dies schließt den Weg des Kriegers ab."
+      hu: "Gratulálok! Most már kiokosodtál a háborús rendszerben. Megcsináltad a harcos életpályát."
 builder:
   icon: DIAMOND_BLOCK
   names:
@@ -204,6 +219,7 @@ builder:
     pt_br: "Construtor"
     ru: "строитель"
     de: "Baumeister"
+    hu: "Építész"
   steps:
   - type: buy
     region: council_room
@@ -219,6 +235,7 @@ builder:
       pt_br: "Comece comprando o council_room. Este é o coração de uma cidade. Cria energia, protege contra PVP e fornece 2 alojamentos."
       ru: "Начните с покупки совета. Это сердце города. Он создает энергию, защищает от PVP и обеспечивает 2 корпуса."
       de: "Beginnen Sie mit dem Kauf des council_room. Dies ist das Herz einer Stadt. Es erzeugt Strom, schützt vor PVP und bietet 2 Gehäuse."
+      hu: "A fejlődést egy tanácsszoba (council_room) építésével. Ez egy város szíve. Generál erőpontot, megvéd a PVP-vel szemben és 2 lakost ad a városhoz."
   - type: build
     region: council_room
     rewards:
@@ -230,6 +247,7 @@ builder:
       pt_br: "Agora construa o council_room."
       ru: "Теперь постройте комнату совета."
       de: "Baue jetzt den council_room."
+      hu: "Most építsd meg a tanácsszobát (council_room)."
   - type: buy
     region: settlement
     rewards:
@@ -244,6 +262,7 @@ builder:
       pt_br: "Agora que você construiu o coração da cidade, reivindique sua terra. Compre o assentamento."
       ru: "Теперь, когда вы построили сердце города, заберите свою землю. Купить поселок."
       de: "Nachdem Sie das Herz der Stadt gebaut haben, fordern Sie Ihr Land heraus. Kaufen Sie die Siedlung."
+      hu: "Most, hogy megépítetted a városod szívét, foglald le a területed. Vegyél egy telepet (settlement)."
   - type: build
     region: shack
     rewards:
@@ -257,6 +276,7 @@ builder:
       pt_br: "Parabéns! Crie sua reivindicação com /cv town nome_da_cidade_vai_aqui. Quando você fez isso, compre e construa um Shack."
       ru: "Поздравляем! Создайте заявку с помощью /cv town название_города_здесь. Когда вы это сделаете, купите и постройте Shack."
       de: "Herzliche Glückwünsche! Erstellen Sie Ihren Anspruch mit /cv town ortsname_geht_hier. Wenn du das getan hast, kaufe und baue eine Shack."
+      hu: "Gratulálok! Foglald le a területed a /cv town városnév paranccsal. Ha kész vagy vásárolj és építs egy kunyhót (shack)."
   - type: build
     region: npc_shack
     rewards:
@@ -272,6 +292,7 @@ builder:
       pt_br: "Uma Shack fornece alojamento. A moradia é necessária para convidar pessoas para sua cidade. Agora compre e coloque um NPCShack dentro do seu Shack."
       ru: "Хижина предоставляет жилье. Жилье требуется для приглашения людей в ваш город. Теперь купите и поместите NPCShack в вашу хижину."
       de: "Eine Shack bietet Unterkunft. Wohnraum ist erforderlich, um Menschen in Ihre Stadt einzuladen. Kaufen Sie jetzt einen NPCShack und platzieren Sie ihn in Ihrer Shack."
+      hu: "A kunyhó (shack) egy alap szintű ház. A házak határozzák meg, hogy mennyi lakosa lehet a városnak. Vásárolj és helyezz le egy NPC kunyhót (NPCShack) a kunyhón (shack) belül."
   - type: build
     region: church
     rewards:
@@ -283,6 +304,7 @@ builder:
       pt_br: "Os aldeões contam como população. Se eles morrem, a cidade perde o poder. Os aldeões também reaparecem. Agora construa uma igreja."
       ru: "Сельские жители считаются населением. Если они умрут, город потеряет власть. Жители деревни тоже возрождаются. Теперь постройте церковь."
       de: "Dorfbewohner zählen als Bevölkerung. Wenn sie sterben, verliert die Stadt an Macht. Dorfbewohner respawnen ebenfalls. Bauen Sie jetzt eine Kirche."
+      hu: "Falusiak bele számítanak a lakosságba. Ha meghalnak, a város veszít erőt. A falusiak is újraélednek. Most építs egy templomot (church)."
   - type: build
     region: arrow_trap
     rewards:
@@ -297,6 +319,7 @@ builder:
       pt_br: "É importante criar edifícios que gerem energia. O poder protege a cidade. Construa uma arrow_trap para defender ainda mais a sua cidade."
       ru: "Важно создавать здания, которые генерируют энергию. Власть защищает город. Постройте arrow_trap для дальнейшей защиты вашего города."
       de: "Es ist wichtig, Gebäude zu schaffen, die Strom erzeugen. Macht schützt die Stadt. Baue eine arrow_trap, um deine Stadt weiter zu verteidigen."
+      hu: "Fontos, hogy építs olyan épületeket, amelyek erőpontokat generálnak. Az erőpontok védik meg a várost. Építs egy íjászgépet (arrow_trap) a városod védelmére."
   - type: build
     region: arrow_factory
     rewards:
@@ -313,6 +336,7 @@ builder:
       pt_br: "Em seguida, construa uma arrow_factory para fornecer setas às suas defesas."
       ru: "Затем создайте arrow_factory, чтобы обеспечить стрелки для вашей защиты."
       de: "Als Nächstes erstellen Sie eine arrow_factory, um Pfeile für Ihre Abwehr bereitzustellen."
+      hu: "Következő feladatod, hogy építs egy nyílgyárat (arrow_factory), amely nyilakat biztosít a védekezéshez."
   - type: build
     region: hovel
     rewards:
@@ -329,6 +353,7 @@ builder:
       pt_br: "Assentamentos são limitados a 4 barracos. Para maximizar o seu alojamento, construa um barraco, depois compre e coloque um casebre dentro daquele barraco."
       ru: "Поселения ограничены 4 лачугами. Чтобы максимально увеличить ваше жилье, постройте лачугу, затем купите и поместите в нее лачугу."
       de: "Siedlungen sin auf 4 Hütten beschränkt. Um Ihre Wohnung zu maximieren, bauen Sie eine Hütte und kaufen Sie eine Hütte in die Hütte."
+      hu: "Egy telepbe csak 4 kunyhó (shack) tehető. Hogy maximalizáld a lakosságot, építs egy kunyhót (shack), majd vásárolj és helyezd el a kalyibát (hovel) a választott kunyhóba (shack)."
   - type: build
     region: catapult
     rewards:
@@ -341,6 +366,7 @@ builder:
       pt_br: "Em seguida, construa uma catapulta. Catapultas são canhões de TNT precisos que você pode usar para destruir as estruturas de cerco do atacante."
       ru: "Далее строим катапульту. Катапульты - это точные пушки TNT, которые вы можете использовать для разрушения осадных структур атакующего."
       de: "Baue als nächstes ein Katapult. Katapulte sind präzise TNT-Kanonen, mit denen Sie die Belagerungsstrukturen des Angreifers zerstören können."
+      hu: "Most építs egy katapultot (catapult). A katapultok elég pontos TNT ágyúk, amelyeket használhatsz a támadók ostromgépeinek elpusztításához."
   - type: build
     region: dwelling
     rewards:
@@ -354,6 +380,7 @@ builder:
       pt_br: "Vá em frente e atualize sua cidade para um Hamlet. Uma vez feito isso, construa uma morada. A cada nível da cidade, você obtém um nível de moradia autônomo."
       ru: "Идите вперед и улучшите свой город до Гамлета. Как только вы это сделаете, постройте жилище. С каждым теперь уровнем города вы получаете отдельный уровень жилья."
       de: "Machen Sie Ihre Stadt zu einem Hamlet. Wenn Sie das getan haben, bauen Sie eine Wohnung. Mit jeder jetzt städtischen Ebene erhalten Sie eine eigenständige Wohnebene."
+      hu: "Menj és frissítsd a városod falura (Hamlet). Amint sikerült, építs egy házat (Dwelling). Minden szintlépéssel növeled a házak szintjét."
   - type: build
     region: stables
     rewards:
@@ -366,6 +393,7 @@ builder:
       pt_br: "Agora atualize sua cidade novamente para a aldeia. Depois disso, construa os Estábulos."
       ru: "Теперь обновите свой город снова до деревни. Как только вы это сделаете, постройте конюшни."
       de: "Rüste deine Stadt jetzt erneut zum Dorf auf. Sobald Sie das getan haben, bauen Sie die Ställe."
+      hu: "Fejleszd a városod községre (village), majd építs egy istállót (Stables)."
   - type: build
     region: town_hall
     rewards:
@@ -379,6 +407,7 @@ builder:
       pt_br: "Antes de poder atualizar sua vila, você precisará atualizar seu Council_Room. Compre e coloque a Town_Hall dentro do seu Council_Room."
       ru: "Прежде чем вы сможете обновить свою деревню, вам нужно обновить ваш Council_Room. Купите и разместите Town_Hall внутри вашего Council_Room."
       de: "Bevor Sie Ihr Dorf verbessern können, müssen Sie Ihren Council_Room aktualisieren. Kaufen und platzieren Sie die Town_Hall in Ihrem Council_Room."
+      hu: "Mielőtt fejleszteni tudnád a falvad, fejleszteni kell a tanácsszobát (Council_Room). Vegyél majd helyezz le egy városházát (Town_Hall-t) a tanácsszobában (Council_Room)."
   - type: end
     messages:
       en: "Congratulations! You're quite the accomplished architect. This concludes the builder path."
@@ -387,6 +416,7 @@ builder:
       pt_br: "Parabéns! Você é um arquiteto talentoso. Isso conclui o caminho do construtor."
       ru: "Поздравляем! Вы довольно опытный архитектор. Это завершает путь строителя."
       de: "Herzliche Glückwünsche! Sie sind durchaus der versierte Architekt. Damit ist der Builder-Pfad abgeschlossen."
+      hu: "Grautlálok! Már gyakorlott építész lettél. Befejezted az építész életpályát."
 
 merchant:
   icon: DIAMOND*64
@@ -397,6 +427,7 @@ merchant:
     pt_br: "Comerciante"
     ru: "коммерсант"
     de: "Händler"
+    hu: "Kereskedő"
   steps:
   - type: upkeep
     region: shack
@@ -409,6 +440,7 @@ merchant:
       pt_br: "Junte-se a uma cidade. Então, compre um barraco de alguém naquela cidade. Uma vez que você o tenha definido como dono do Shack, coloque um pouco de pão no baú do Shack."
       ru: "Присоединяйся к городу. Тогда купите хижину у кого-то в этом городе. Как только они установят вас как владельца Шака, положите немного хлеба в сундук Шака"
       de: "Trete einer Stadt bei. Dann kaufen Sie eine Hütte von jemandem in dieser Stadt. Sobald Sie Sie als Besitzer der Hütte eingestellt haben, legen Sie etwas Brot in die Hütte-Truhe."
+      hu: "Csatlakozz egy városba, majd vásárolj egy kunyhót (shack) valakitől a városban. Miután beállítottak tulajdonosnak, tégy néhány kenyeret a kunyhó ládájába."
   - type: buy
     region: hovel
     rewards:
@@ -426,6 +458,7 @@ merchant:
       pt_br: "Casas podem ser atualizadas para lhe dar mais dinheiro. Compre o Hovel da loja."
       ru: "Дома могут быть улучшены, чтобы дать вам больше денег. Купите Лавку в магазине."
       de: "Häuser können aufgewertet werden, um mehr Geld zu erhalten. Kaufen Sie die Hovel im Shop."
+      hu: "A házakat fejleszteni lehet, hogy több pénzt hozzanak a kasszára. Vásárolj egy kalyibát (hovel) a boltból."
   - type: build
     region: hovel
     rewards:
@@ -440,6 +473,7 @@ merchant:
       pt_br: "Acrescente ao seu Shack para torná-lo uma região 9x9x9, depois coloque o baú do Hovel dentro."
       ru: "Добавьте к своей хижине, чтобы сделать ее 9х9х9 областью, затем поместите сундук Хоувела внутрь."
       de: "Fügen Sie Ihrem Shack eine 9x9x9-gebiet, hinzu und platzieren Sie die Hovel-Truhe darin."
+      hu: "Fejleszd a kunyhód kalyibára, hogy 9x9x9-es méret legyen. Helyezd el a kalyiba ládát (hovel) a kunyhó (shack) belsejébe."
   - type: upkeep
     region: hovel1
     rewards:
@@ -455,6 +489,7 @@ merchant:
       pt_br: "Coloque 384 batatas no peito do Hovel. Em 24 horas, o seu Hovel venderá todos eles e fará o upgrade para um Hovel1."
       ru: "Поместите 384 картофеля в сундук Ховеля. Через 24 часов ваш Ховел продаст их всех и перейдет на Ховела1."
       de: "Legen Sie 384 Kartoffeln in Ihre Hovel-Truhe. In 24 Stunden verkauft Ihre Hovel alle und baut ein Upgrade auf eine Hovel1 auf."
+      hu: "Rakj 384 db krumplit a kalyiba ládájába. 24 órán belül a kalyibád eladja őket és felfejlődik kalyiba1-re (hovel1)."
   - type: build
     region: apple_orchard
     rewards:
@@ -466,6 +501,7 @@ merchant:
       pt_br: "Compre e construa um pomar de maçãs. Construa uma pista de minecart de dentro do seu pomar para dentro do seu Hovel1. Coloque um trilho em uma inclinação dentro do apple_orchard."
       ru: "Купить и построить яблоневый сад. Постройте гусеничную дорожку изнутри вашего яблоневого сада внутрь вашего Ховела1 Поместите силовой рельс на уклон внутри яблоневого сада."
       de: "Kaufe und baue einen Apfelgarten. Baue eine Minecart-Spur von deinem Apfelgarten bis zu deinem Hovel1. Platzieren Sie eine angetriebene Schiene auf einer Steigung im Apfel_orchard."
+      hu: "Vásárolj és építs egy gyümölcsöskertet (apple_orchad). Építs egy minecart sínt a kalyibád (hovel1) és a gyümölcsöskerted közé. Helyezz el egy elektromos sínt egy leejtőre a gyümölcsöskerten belül."
   - type: build
     region: dwelling
     rewards:
@@ -479,6 +515,7 @@ merchant:
       pt_br: "Hora de atualizar novamente. Compre e coloque uma residência dentro do seu Hovel1."
       ru: "Время обновить снова. Купите и разместите жилище в своем Hovel1."
       de: "Zeit zum erneuten Upgrade. Kaufen und platzieren Sie eine Wohnung in Ihrem Hovel1."
+      hu: "Itt az idő újabb fejlesztéshez. Vásárolj és tégy le egy házat (dwelling) a kalyiba1-en belül (hovel1)."
   - type: build
     region: house
     rewards:
@@ -494,6 +531,7 @@ merchant:
       pt_br: "As moradias dão muito dinheiro, mas uma casa lhe dá mais. Compre e atualize sua residência para uma casa."
       ru: "Жилища дают вам много денег, а дом - больше. Купите и обновите свое жилище до дома."
       de: "Wohnungen geben Ihnen viel Geld, aber ein Haus gibt Ihnen mehr. Kaufen Sie Ihre Wohnung und bauen Sie sie in ein Haus auf."
+      hu: "A házak (dwelling) jó pénzt hoznak, de a lakások (house) többet adnak. Vásárolj és fejlessz egy házat lakássá."
   - type: upkeep
     region: house1
     rewards:
@@ -507,6 +545,7 @@ merchant:
       pt_br: "Coloque este pão em sua casa para atualizá-lo para uma casa1."
       ru: "Поместите этот хлеб в свой Дом, чтобы улучшить его до Дома1."
       de: "Legen Sie dieses Brot in Ihr Haus, um es zu einem Haus1 zu verbessern."
+      hu: "Tégy kenyeret a lakásodba (house), hogy felfejleszd lakás1-re (house1)"
   - type: upkeep
     region: house2
     rewards:
@@ -518,6 +557,7 @@ merchant:
       pt_br: "Coloque esses salmões em sua casa 1 para atualizá-los para uma casa 2."
       ru: "Поместите этого лосося в свой Дом 1, чтобы улучшить его до Дома 2."
       de: "Setzen Sie diese Lachse in Ihr Haus 1 ein, um ein Haus 2 zu erhalten."
+      hu: "Tégy lazacokat a lakás1-be, hogy felfejleszd lakás2-re."
   - type: build
     region: iron_shop
     rewards:
@@ -533,6 +573,7 @@ merchant:
       pt_br: "Agora construa uma loja de ferro para aumentar ainda mais sua renda."
       ru: "Теперь создайте iron_shop, чтобы увеличить свой доход."
       de: "Bauen Sie jetzt einen iron_shop auf, um Ihr Einkommen weiter zu steigern."
+      hu: "Építs egy vasboltot (iron_shop), hogy tovább növeld a bevételeid."
   - type: build
     region: jade_shop
     rewards:
@@ -546,6 +587,7 @@ merchant:
       pt_br: "Cada jogador pode ter apenas 3 lojas. A loja mais lucrativa é uma loja de trading. Construa o Jade_Shop. Destrua uma de suas outras lojas se já tiver 3."
       ru: "У каждого игрока может быть только 3 магазина. Самый прибыльный магазин - это торговый магазин. Постройте Jade_Shop. Уничтожьте один из ваших других магазинов, если уже есть 3."
       de: "Jeder Spieler darf nur 3 Geschäfte haben. Der lukrativste Laden ist ein Handelsshop. Baue den Jade_Shop. Zerstöre einen deiner anderen Shops, wenn du bereits 3 hast."
+      hu: "Minden játékosnak 3 boltja lehet. A legjövedelmezőbb bolt egy Jade bolt (Jade_Shop). Építs egyet."
   - type: end
     messages:
       en: "Congratulations! You can now sell items you buy from another town's Jade_Mine. This concludes the path of the merchant."
@@ -554,3 +596,4 @@ merchant:
       pt_br: "Parabéns! Agora você pode vender itens comprados no Jade_Mine de outra cidade. Isso conclui o caminho do comerciante."
       ru: "Поздравляем! Теперь вы можете продавать предметы, которые вы покупаете в Jade_Mine другого города. Это завершает путь торговца."
       de: "Herzliche Glückwünsche! Sie können jetzt Gegenstände verkaufen, die Sie von Jade_Mine einer anderen Stadt kaufen. Dies schließt den Weg des Händlers ab."
+      hu: "Gratulálok! Mostantól el tudsz adni tárgyakat és tudsz vásárolni más város lakóitól Jade-t. Végeztél a kereskedő életpályával."

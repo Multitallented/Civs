@@ -14,6 +14,7 @@ name:
   pt_br: "Oligarquia"
   fr: "Oligarchie"
   es: "Oligarquía"
+  hu: "Oligarchia"
 description:
   en: "Dictatorship + Town ownership can be bought into and bought out."
   es: "Dictadura + La propiedad de la ciudad se puede comprar y comprar."
@@ -21,6 +22,7 @@ description:
   de: "Diktatur + Stadteigentum kann ein- und ausgekauft werden."
   ru: "диктатура + Городская собственность может быть куплена и выкуплена."
   fr: "Dictature + La propriété de la ville peut être achetée et rachetée."
+  hu: "Diktatúra + A város vezetését meg lehet vásárolni."
 buffs:
   payout:
     percent: 25
