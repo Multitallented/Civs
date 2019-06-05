@@ -15,6 +15,7 @@ name:
   pt_br: "Anarquia"
   es: "Anarquía"
   fr: "Anarchie"
+  zh_cn: "无政府状态"
 description:
   en: "Anyone can manage town and region membership. No taxes. No alliances."
   fr: "Tout le monde peut gérer l'appartenance à une ville ou une région. Pas d'impôts. Pas d'alliances."
@@ -22,6 +23,7 @@ description:
   pt_br: "Qualquer pessoa pode gerenciar a associação à cidade e região. Sem impostos. Sem alianças."
   ru: "Любой может управлять городским и районным членством. Нет налогов. Нет альянсов."
   de: "Jeder kann die Mitgliedschaft in einer Stadt oder Region verwalten. Keine Steuern. Keine Allianzen."
+  zh_cn: " 任何人都可以接管城镇和地区成员. 没有税收. 没有联盟."
 buffs:
   cost:
     percent: 35
