@@ -269,6 +269,276 @@ en:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 money gained"
   karma-lost: "Karma: -$1, $2 money lost"
+zh:
+  name: 简体中文
+  icon: CYAN_WOOL
+  starter-book: 城镇文明菜单
+  next-button: 下一页
+  prev-button: 上一页
+  #语言菜单
+  language-menu: 选择你的语言
+  language-set: "你的语言已设置为 $1"
+  back-button: 返回
+
+  #教程
+  start-tutorial: "开启成就"
+  start-tutorial-desc: "完成成就获得金钱和物品"
+  skip: "关闭成就"
+  tutorial-click: "请查看城镇文明向导"
+  tutorial-wiki: "城镇文明百科"
+  click-info: "点击查看详情"
+  guide: "向导"
+  guide-desc: "点击这里查看你的下一个目标."
+  choose-path: "选择你的路径"
+
+  new-owner-town: "$1 继承了 $2 ，成为 $3 的城主"
+  town-bank-balance: "银行存款: $1"
+  town-bank-desc: "使用 /cv withdraw $1 amount"
+  widthdrawn-money: "你从$2的银行内取出了$$1 "
+  town-tax: "城镇税收: $1"
+  town-tax-desc: "使用 /cv tax $1 amount 设置税收"
+  town-tax-gov-type: "$1 无法设置税收"
+  town-tax-set: "$1 税设置为 $2"
+  tax-too-high: "你无法设置大于 $1 的税"
+  town-assist-price: "你的城镇银行消耗了 $1 来建造 $2"
+  colony-town-set: "你设置了 $1 成为一群 $2"
+  cant-build-feudal: "你不能在其他城镇内建造区域."
+  tribalism-no-invite: "你的城镇部落禁止你邀请 $1 到非盟友城镇 $2"
+  vote-member: "投票选举下一任城主"
+  capitalism-voting-cost: "额外投票需消耗 $1"
+  voted: "你已为 $1 投上你宝贵的一票"
+  gov-type-change: "$1 从 $2 变更为 $3"
+  cost-buff: "你已重建 $1 for buildings a $2 in a $3 城镇."
+  merit-new-owner: "恭喜! 你胜过了 $1. 现在你的新的城主!"
+  item-locked: "你尚未解锁这个物品."
+
+  ai-invite: "嘿, @$1 想要加入我的城镇吗?"
+  ai-help: "$1 可以带你参观这个地方."
+
+  cooldown-buff-desc: "$1% 减少了对所有的 $2 冷却"
+  payout-buff-desc: "$1% 区域支出增加region payout increase for all $2"
+  power-buff-desc: "$1% 增加每日power"
+  max_power-buff-desc: "$1% 增加最大max-power"
+  cost-buff-desc: "$1% cost refund on all $2"
+
+  #shop
+  shop: 商店
+  buy-item: 出售
+  price: 价格
+  buy: "购买 $1"
+  cancel: 取消
+  item-bought: "恭喜你! 你用 $2 购买了 $1"
+  max-item: "你不能购买多于 $2 个 $1"
+  max-qty: "$1 拥有太多 $2 了，不能再获得更多了"
+
+  #物品
+  items: 物品
+
+  #职业
+  classes: 职业
+
+  #魔法
+  spells: 魔法
+
+  #蓝图
+  blueprints: 蓝图
+
+  #区域
+  regions: 区域
+
+  #社区
+  community: 社区
+  players: 玩家
+  towns: 城镇
+  your-towns: 你的城镇
+  wars: 战争
+  alliances: 联盟
+  leaderboard: 排行榜
+  ports: 港口
+  money: "金钱: $$1"
+  points: "点数: $1"
+  killstreak: "连杀: $1"
+  highest-killstreak: "最多连杀: $1"
+  kills: "击杀: $1"
+  deaths: "死亡: $1"
+  friends: "朋友"
+  confirm: "确认"
+  reject: "拒绝"
+  effects: "效果"
+
+  #区域
+  size: 大小
+  range: 范围
+  build-reqs-title: 建筑需求
+  population: 人口
+  population-req: "需要 $1 和 $2 人口"
+  biomes: 生物群系
+  devolve-town: "$1 耗尽了 power 并降级为 $2!"
+  pop-desc: "$1 人口 / $2 房产 / $3 村民"
+  build-reqs: "建筑 $1 所需的方块"
+  reagents-title: 试剂
+  reagents: "$1 箱子里的所有你需要的物品"
+  upkeep: "所有 $1 消耗的物品"
+  output: "所有 $1 创建的物品"
+  payout: "这片区域获得了 $$1"
+  power-input: "这片区域消耗了 $1 power"
+  power-output: "这片区域生成了 $1 power"
+  too-close-region: "你的 $1 靠 $2 太近了"
+  too-close-town: "你的 $1 靠另一个重载太近了"
+  town-created: "$1 已被创建!"
+  town-destroyed: "$1 已破灭!"
+  region-built: "你成功地建造了一个 $1 区域"
+  region-type: "区域类型"
+  destroy: "破坏"
+  region-in-town: "你的区域位于 $1"
+  town-req-desc: "你必须在这里建造你的区域:"
+  view-members: "查看成员"
+  add-member: "添加成员"
+  operation: "操作"
+  region-working: "你的区域运行正常"
+  region-not-working: "你的区域少了点东西"
+  owner: 地主
+  member: 成员
+  guest: 游客
+  recruiter: 招募者
+  set-owner: 设置地主
+  set-member: 设置成员
+  set-guest: 设置游客
+  remove-member: 删除成员
+  leave-town: 离开重载
+  you-left-town: "你离开了 $1"
+  add-member-region: "你成为了 $1 的一员"
+  member-added-region: "$1 现在是 $2 的一员了"
+  owner-description: "地主可以为所欲为"
+  guest-description: "游客只可以使用门和按钮"
+  member-description: "成员可以建造和使用这片区域"
+  remove-member-region: "你不再是 $1 的一员"
+  member-removed-region: "$1 不再是 $2 的一员"
+  add-owner-region: "你为 $1 添加了一个地主"
+  owner-added-region: "$1 现在是 $2 的地主"
+  add-guest-region: "你已成为 $1 的游客"
+  guest-added-region: "$1 现在是 $2 的游客"
+  invite-owner-region: "你成为了 $1 的一员"
+  owner-invited-region: "$1 已加入你的 $2"
+  stand-in-region: "请让 $1 站在该区域内"
+  create: 创建
+  click-for-region-limits: "点击这里查看区域限制列表"
+  click-for-req-regions: "点击这里查看所需区域列表"
+  town-instructions: "输入/cv town [城镇名] 来创建 $1"
+  town-enter: "你进入了 $1"
+  town-exit: "你退出了 $1"
+  new-town-member: "$1 加入了 $2"
+  must-be-built-on-top: "$1 必须造在 $2 的上面"
+  town-power: "Power: $1/$2"
+  port-warmup: "你将在 $1 秒后被传送"
+  teleported: "已传送!"
+  location-set: "已设置 $1 的地点"
+  rename-town: "修改城镇名"
+  rename-desc: "使用 /cv rename [旧城镇名] [新城镇名]"
+  town-renamed: "你的重载已从 $1 更名为 $2"
+  bounty-set: "$1 设置了悬赏： $2"
+  bounty-bonus: "你获得了 $1 的赏金"
+  add-friend: "交友"
+  remove-friend: "绝交"
+  friend-added: "$1 已成为了你的好友"
+  friend-removed: "$1 不再是你的好友了"
+  bounty: "设置悬赏： /cv bounty $1 数量"
+  town-ally: "将 $1 视为盟友"
+  town-unally: "将 $1 视为敌人"
+  town-ally-invites: "你收到了其他重载的结盟申请"
+  town-ally-request-sent: "结盟邀请已发给 $1"
+  town-ally-request-accepted: "$1 和 $2 已结盟"
+  town-ally-request-denied: "$1 的结盟申请被拒绝"
+  town-ally-removed: "$1 和 $2 的联盟破灭了"
+  region-evolved: "你的 $1 加入到了 $2"
+  anti-camp-active: "$1的 anti-camp 已激活"
+  anti-camp-expired: "$1的 anti-camp 已失效"
+  region-sale-set: "$1 现以 $2 的价格出售"
+  sell-region: "出售区域"
+  cancel-sale: "取消出售"
+  buy-region: "用$2 购买 $1"
+  regions-for-sale: "出售区域"
+  use-sell-command: "输入 /cv sell [价格]"
+  region-bought: "你用$2 购买了 $1 "
+  sort-by-level: "分级整理区域"
+  level: "$1级"
+  rename-alliance: "重命名联盟"
+  rename-alliance-desc: "输入 /cv really $1 [新联盟名]"
+  alliance-renamed: "$1 已重命名为 $2"
+  invalid-name: "无效的名称"
+  last-renamed-by: "最后由: $1 重命名"
+  leave-alliance: "离开联盟"
+  hunting-players: "小心! 有人在攻击你区域内的玩家."
+
+  #错误
+  cant-place-town: "输入 /cv town 城镇名 "
+  no-region-type-found: "找不到区域类型 $1"
+  building-too-big: "你造的 $1 太大了"
+  no-required-blocks: "你未放置建造 $1 所需的方块"
+  cant-build-on-region: "你不能在 $2 上面建造 $1"
+  rebuild-required: "你需要在 $2 上面建造 $1"
+  prevent-civs-item-share: "你不能分享Civ的物品"
+  region-protected: "这片区域受到保护"
+  region-destroyed: "区域 $1 已被摧毁!"
+  specify-player-town: "请指定玩家和城镇名"
+  specify-town-name: "你指定重载名"
+  specify-player-region: "请指定玩家和区域名"
+  town-not-exist: "$1 不是一个城镇"
+  no-permission-invite: "你没有邀请玩家到 $1 的权限"
+  player-not-online: "$1 不在线"
+  invite-player: "$1 想要邀请你加入 $2 $3. 输入 /cv accept 以接受"
+  already-member: "$1 已经是 $2 的一员了"
+  broke-own-region: "你的 $1 缺少方块"
+  no-permission: "无权限"
+  class-changed: "你的职业已更改为 $1"
+  not-enough-money: "你没有 $$1"
+  not-allowed-place: "$1 无法被放置"
+  hold-town: "请手持城镇物品"
+  no-commands-in-jail: "你不能在 $1 的监狱里使用指令"
+  mana-use-exp: "魔法值未满前你不能使用这个"
+  building-requires-2space: "这个建筑需要在中心箱子上面留两格空间"
+  missing-blocks-build: "你需要放置这些方块来建造 $1"
+  in-combat: "你不能在战斗时这么做"
+  cooldown: "冷却中： $1s"
+  need-more-health: "你需要更多的 $1 生命值才能这么做"
+  need-more-stamina: "你需要更多的 $1 耐力才能这么做"
+  need-more-mana: "你需要更多的 $1 魔法才能这么做"
+  port-not-found: "找不到港口"
+  region-missing-upkeep-items: "区域不需要物品"
+  raid-target-lost: "在$2 格内没有名为 $1 的城镇"
+  searching-for-target: "搜寻侵略传送点中..."
+  raid-target-blocked: "侵略传送点被封锁."
+  raid-porter-warning: "警告! $1 创建了一个朝向 $3 的 $2"
+  raid-remote: "你获得了控制这个 $1 的物品"
+  raid-sign: "你需要在箱子上面放写有目标城镇名的牌子"
+  invalid-target: "无效目标"
+  raid-target-inside-region: "你不能在区域内设置地点"
+  req-build-inside-town: "这个 $1 只能在 $2 里建"
+  missing-region-requirements: "你的 $1 缺少所需的区域"
+  friendly-fire: "你不能伤害你的朋友"
+  limits: "限制"
+  region-limit-reached: "$1 只能拥有 $2 $3"
+  region-in-biome: "你可以在$2 建造 $1"
+  not-enough-housing: "你需要建造更多房子才能邀请玩家加入"
+  not-member-port: "你不是这个港口的成员"
+  cant-repair-item: "这个东西不能修"
+  more-repair-items: "你需要更多的 $1 才能修复这件物品"
+  hold-repair-item: "你必须手持你想要修复的物品"
+  player-not-found: "找不到 $1 这名玩家"
+
+  #生死
+  repeat-kill: "$1 死太多次了. 你没有获得点数."
+  kill-streak: "$1 完成了连杀： $2"
+  kill-joy: "$1 终极了 $2 的大杀特杀： $3"
+  death: "你死亡失去了 $1 点数"
+  kill: "击杀: $1"
+  low-health: "残血奖励: $1"
+  killstreak-points: "连杀奖励: $1"
+  killjoy-points: "Killjoy奖励: $1"
+  total-points: "共有点数: $1"
+  karma: "业: $1"
+  karma-gained: "业: +$1,获得 $2 "
+  karma-lost: "业: -$1,失去 $2 "  
 pt_br:
   name: Português Brasil
   icon: CYAN_WOOL
