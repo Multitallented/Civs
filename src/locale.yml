@@ -269,7 +269,7 @@ en:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 money gained"
   karma-lost: "Karma: -$1, $2 money lost"
-zh:
+zh_cn:
   name: 简体中文
   icon: CYAN_WOOL
   starter-book: 城镇文明菜单
