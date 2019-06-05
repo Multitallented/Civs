@@ -270,6 +270,20 @@ en:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 money gained"
   karma-lost: "Karma: -$1, $2 money lost"
+
+  #announcements
+  ann-limit: "[Info] You have $1 of $2 $3 buildings."
+  ann-achievement: "[Info] Check the guide to see your next available achievement."
+  ann-town-join: "[Info] You can be a member of multiple towns. Usually towns love to people."
+  ann-town-protection: "[Info] Towns protect lots of land and unlock new buildings in the shop."
+  ann-town-housing: "[Info] $1 has $2 of $3 housing filled. Build more housing if you want to grow your town."
+  ann-make-allies: "[Info] Consider joining an alliance. Under community > towns > town you can set towns to allied."
+  ann-town-low-power: "[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."
+  ann-bank: "[Info] $1 has $$2 sitting in the bank. You can withdraw that money using /cv withdraw $1 amount"
+  ann-vote: "[Info] Don't forget to vote for the next owner of $1. Community > Your towns > $1 > View Members > player > Vote"
+  ann-karma: "[Caution] $1 is online. If you can kill $1, then you will be rewarded."
+  ann-missing-input: "[Info] Your $1 needs items. Use the Civs book on it to check which reagents/inputs it needs."
+  ann-bounty: "[Info] $1 has a bounty of $2 on his or her head."
 pt_br:
   name: Português Brasil
   icon: CYAN_WOOL
@@ -476,6 +490,20 @@ pt_br:
   karma-lost: "Karma: -$1, $2 de dinheiro perdido"
 
   target-not-in-world: "$1 não está no mesmo mundo que você."
+
+  #announcements
+  ann-limit: "[Notar] Você tem $1 de $2 $3 edifícios."
+  ann-achievement: "[Notar] Verifique o guia para ver sua próxima conquista disponível."
+  ann-town-join: "[Notar] Você pode ser um membro de várias cidades. Geralmente as cidades gostam de adicionar pessoas."
+  ann-town-protection: "[Notar] As cidades protegem mais terra e desbloqueiam novos edifícios na loja."
+  ann-town-housing: "[Notar] $1 tem $2 de $3 usados. Construa mais moradias se quiser expandir sua cidade."
+  ann-make-allies: "[Notar] Considere aderir a uma aliança. Em comunidade > cidades > cidade, você pode definir cidades como aliadas."
+  ann-town-low-power: "[Aviso] $1 tem apenas $2 de $3 energia. Considere construir mais estruturas que gerem potência."
+  ann-bank: "[Notar] $1 tem $$2 no banco. Você pode sacar esse dinheiro usando /cv withdraw $1 montante"
+  ann-vote: "[Notar] Não se esqueça de votar no próximo proprietário de $1. Comunidade > Suas cidades > $1 > Ver pessoas > jogador > Votar"
+  ann-karma: "[Cuidado] $1 está online. Se você pode matar $1, então você será recompensado."
+  ann-missing-input: "[Notar] Seu $1 precisa de itens. Use o livro Civs para verificar quais reagentes/insumos são necessários."
+  ann-bounty: "[Notar] $1 tem uma recompensa de $2 na cabeça dele."
 es:
   name: Español
   icon: YELLOW_WOOL
@@ -670,7 +698,7 @@ de:
   town-ally-invites: "Sie haben stadt-verbündete lädt ein"
   town-ally-request-sent: "Eine allianz wurde für $1 vorgeschlagen"
   town-ally-request-accepted: "Allianz wurde zwischen $1 und $2 gebildet"
-  town-ally-request-denied: "Allianzanfrage mit 1 $ wurde abgelehnt"
+  town-ally-request-denied: "Allianzanfrage mit $1 wurde abgelehnt"
   town-ally-removed: "Allianz zwischen $1 und $2 hat sich aufgelöst"
   region-evolved: "Ihr $1 hat sich zu einem $2 entwickelt"
   anti-camp-active: "Das anti-zelten von $1 wurde aktiviert"
@@ -761,6 +789,20 @@ de:
   karma-lost: "Karma: -$1, $2 geld verloren"
 
   target-not-in-world: "$1 ist nicht in der gleichen welt wie sie."
+
+  #announcements
+  ann-limit: "[Info] Du hast $1 von $2 $3 Gebäuden."
+  ann-achievement: "[Info] Überprüfen Sie die Anleitung, um Ihren nächsten verfügbaren Schritt anzuzeigen."
+  ann-town-join: "[Info] Sie können Mitglied mehrerer Städte sein. Normalerweise lieben Städte es, Menschen hinzuzufügen."
+  ann-town-protection: "[Info] Städte schützen viel Land und schalten neue Gebäude im Laden frei."
+  ann-town-housing: "[Info] $1 hat $2 von $3 Wohnraum gefüllt. Baue mehr Häuser, wenn du deine Stadt vergrößern willst."
+  ann-make-allies: "[Info] Erwäge, einer Allianz beizutreten. Unter Gemeinschaft > Städte > Dorf können Sie Städte als verbündete Städte festlegen."
+  ann-town-low-power: "[Warnung] $1 hat nur $2 von $3 Macht. Erwägen Sie, mehr Strukturen zu bauen, die Energie erzeugen."
+  ann-bank: "[Info] $1 hat $2 in der Bank. Sie können dieses Geld mit /cv withdraw $1 Betrag"
+  ann-vote: "[Info] Vergessen Sie nicht, für den nächsten Besitzer von $1 zu stimmen. Community > Deine Städte > $1 > Mitglieder anzeigen > Spieler > Abstimmen"
+  ann-karma: "[Achtung] $1 ist online. Wenn du $1 töten kannst, wirst du belohnt."
+  ann-missing-input: "[Info] Ihr $1 benötigt Gegenstände. Verwenden Sie das Civs-Buch, um zu überprüfen, welche Reagenzien / Eingaben benötigt werden."
+  ann-bounty: "[Info] $1 hat ein Kopfgeld von $2."
 ru:
   name: русский
   icon: RED_WOOL

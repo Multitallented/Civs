@@ -103,6 +103,7 @@ public class CivilianListener implements Listener {
 //        civilianManager.unloadCivilian(player);
         CommonScheduler.lastRegion.remove(uuid);
         CommonScheduler.lastTown.remove(uuid);
+        CommonScheduler.removeLastAnnouncement(uuid);
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
         StructureUtil.removeBoundingBox(uuid);

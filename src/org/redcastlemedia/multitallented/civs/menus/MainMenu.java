@@ -89,6 +89,12 @@ public class MainMenu extends Menu {
             event.getWhoClicked().openInventory(CommunityMenu.createMenu(civilian));
             return;
         }
+        if (clickedStack.getType() == Material.ENDER_PEARL) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
+            return;
+        }
     }
 
     public static Inventory createMenu(Civilian civilian) {
@@ -162,16 +168,42 @@ public class MainMenu extends Menu {
         //5 Regions
         if (showBuiltRegions) {
             i++;
-            CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
+            CVItem cvItemRegion = CVItem.createCVItemFromString("BRICKS");
             cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
             inventory.setItem(i, cvItemRegion.createItemStack());
+        }
+
+        boolean hasPort = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (!region.getEffects().containsKey("port")) {
+                continue;
+            }
+            if (!region.getPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            //Don't show private ports
+            if (region.getEffects().get("port") != null &&
+                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+                continue;
+            }
+            hasPort = true;
+            break;
+        }
+
+        //6 Ports
+        if (hasPort) {
+            i++;
+            CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
+            cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
+            inventory.setItem(i, cvItem5.createItemStack());
         }
 
 //        //4 Items
 //        CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
 //        inventory.setItem(4, cvItem2.createItemStack());
 
-        //6 Community
+        //7 Community
         i++;
         CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, 100, localeManager.getTranslation(locale, "community"));
         inventory.setItem(i, cvItem3.createItemStack());

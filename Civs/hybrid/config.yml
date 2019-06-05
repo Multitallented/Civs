@@ -102,7 +102,6 @@ groups:
   shop: 3
   quarry: 12
   housing: 3
-  superregion: 1
 
 #region port configs
 port:
@@ -131,3 +130,5 @@ allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?
 days-between-elections: 7
+use-announcements: true
+announcement-period: 60

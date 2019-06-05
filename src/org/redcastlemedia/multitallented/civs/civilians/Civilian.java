@@ -69,6 +69,10 @@ public class Civilian {
     @Setter
     private int tutorialProgress;
 
+    @Getter
+    @Setter
+    private boolean useAnnouncements;
+
     public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
             double points, int karma, int expOrbs, boolean askForTutorial) {
@@ -227,6 +231,14 @@ public class Civilian {
             level++;
         }
         return level;
+    }
+
+    public boolean isAtGroupMax(String group) {
+        if (ConfigManager.getInstance().getGroups().get(group) != null &&
+                ConfigManager.getInstance().getGroups().get(group) <= getCountGroup(group)) {
+            return true;
+        }
+        return false;
     }
 
     public String isAtMax(CivItem civItem) {
