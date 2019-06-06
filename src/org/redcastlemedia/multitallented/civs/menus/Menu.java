@@ -390,7 +390,8 @@ public abstract class Menu implements Listener {
         }
 
         public synchronized void advanceItemPositions() {
-            for (GUIItemSet guiItemSet : cycleItems) {
+            ArrayList<GUIItemSet> clonedCycleItems = new ArrayList<>(cycleItems);
+            for (GUIItemSet guiItemSet : clonedCycleItems) {
                 int position = guiItemSet.getPosition();
                 int pos = position;
                 if (guiItemSet.getItems().size() - 2 < position) {
