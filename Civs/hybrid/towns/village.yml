@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: IRON_BLOCK
 name: Village
 max: 1
 price: 8000

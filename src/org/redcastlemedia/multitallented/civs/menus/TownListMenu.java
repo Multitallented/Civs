@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -162,7 +163,17 @@ public class TownListMenu extends Menu {
         for (int k=startIndex; k<towns.size() && k<startIndex+36; k++) {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            CVItem cvItem1 = townType.clone();
+            CVItem cvItem1 = townType.getShopIcon().clone();
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-power").replace("$1", "" + town.getPower())
+                            .replace("$2", "" + town.getMaxPower()));
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "pop-desc")
+                    .replace("$1", town.getPopulation() + "")
+                    .replace("$2", town.getHousing() + "")
+                    .replace("$3", town.getVillagers() + ""));
+            lore.addAll(Util.textWrap("",
+                    Util.parseColors(townType.getDescription(civilian.getLocale()))));
 
             CVItem cycleItem = null;
             boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();
@@ -172,7 +183,6 @@ public class TownListMenu extends Menu {
             }
 
             cvItem1.setDisplayName(town.getName());
-            ArrayList<String> lore = new ArrayList<>();
             cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
 

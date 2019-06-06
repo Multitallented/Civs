@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: OAK_LOG
 name: Settlement
 max: 1
 price: 1000
