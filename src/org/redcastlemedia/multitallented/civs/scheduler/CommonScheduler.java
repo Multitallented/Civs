@@ -114,7 +114,8 @@ public class CommonScheduler implements Runnable {
                 continue;
             }
             civilian.setLastKarmaDepreciation(System.currentTimeMillis());
-            civilian.setKarma(civilian.getKarma() / 2);
+            double newKarma = (double) civilian.getKarma() / 2;
+            civilian.setKarma(newKarma < 0 ? (int) Math.ceil(newKarma) : (int) Math.floor(newKarma));
             CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
