@@ -34,7 +34,8 @@ public class WithdrawBankCommand implements CivCommand {
         TownManager.getInstance().saveTown(town);
         Civs.econ.depositPlayer(player, amount);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "withdrawn-money").replace("$1", args[2]));
+                "withdrawn-money").replace("$1", args[2])
+                .replace("$2", town.getName()));
         return true;
     }
 }
