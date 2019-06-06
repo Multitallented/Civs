@@ -184,20 +184,16 @@ public final class AnnouncementUtil {
         if (messages.isEmpty()) {
             return;
         } else if (messages.size() < 2) {
-            TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(0) + " ");
-            message.setColor(ChatColor.GREEN);
-            TextComponent unsub = new TextComponent("[X]");
-            unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
-            unsub.setColor(ChatColor.RED);
-            unsub.setUnderlined(true);
-            message.addExtra(unsub);
-            player.spigot().sendMessage(message);
+            sendToPlayer(player, Civs.getPrefix() + messages.get(0) + " ");
             return;
         }
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
-        TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(randIndex) + " ");
-        message.setColor(ChatColor.GREEN);
+        sendToPlayer(player, Civs.getPrefix() + messages.get(randIndex) + " ");
+    }
+
+    private static void sendToPlayer(Player player, String input) {
+        TextComponent message = Util.parseColorsComponent(input);
         TextComponent unsub = new TextComponent("[X]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);
