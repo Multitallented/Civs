@@ -2,11 +2,14 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,6 +36,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
+
+import net.md_5.bungee.api.chat.TextComponent;
 
 public final class Util {
 
@@ -190,29 +195,64 @@ public final class Util {
             return null;
         }
         String returnInput = new String(input);
-        returnInput = returnInput.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");
-        returnInput = returnInput.replaceAll("@\\{BLACK\\}", ChatColor.BLACK + "");
-        returnInput = returnInput.replaceAll("@\\{BLUE\\}", ChatColor.BLUE + "");
-        returnInput = returnInput.replaceAll("@\\{BOLD\\}", ChatColor.BOLD + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_AQUA\\}", ChatColor.DARK_AQUA + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_BLUE\\}", ChatColor.DARK_BLUE + "");
-        returnInput = returnInput.replaceAll("@\\{GRAY\\}", ChatColor.GRAY + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_GRAY\\}", ChatColor.DARK_GRAY + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_GREEN\\}", ChatColor.DARK_GREEN + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_PURPLE\\}", ChatColor.DARK_PURPLE + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_RED\\}", ChatColor.DARK_RED + "");
-        returnInput = returnInput.replaceAll("@\\{GOLD\\}", ChatColor.GOLD + "");
-        returnInput = returnInput.replaceAll("@\\{GREEN\\}", ChatColor.GREEN + "");
-        returnInput = returnInput.replaceAll("@\\{ITALIC\\}", ChatColor.ITALIC + "");
-        returnInput = returnInput.replaceAll("@\\{LIGHT_PURPLE\\}", ChatColor.LIGHT_PURPLE + "");
-        returnInput = returnInput.replaceAll("@\\{MAGIC\\}", ChatColor.MAGIC + "");
-        returnInput = returnInput.replaceAll("@\\{RED\\}", ChatColor.RED + "");
-        returnInput = returnInput.replaceAll("@\\{RESET\\}", ChatColor.RESET + "");
-        returnInput = returnInput.replaceAll("@\\{STRIKETHROUGH\\}", ChatColor.STRIKETHROUGH + "");
-        returnInput = returnInput.replaceAll("@\\{UNDERLINE\\}", ChatColor.UNDERLINE + "");
-        returnInput = returnInput.replaceAll("@\\{WHITE\\}", ChatColor.WHITE + "");
-        returnInput = returnInput.replaceAll("@\\{YELLOW\\}", ChatColor.YELLOW + "");
+        for (ChatColor color : ChatColor.values()) {
+            returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
+        }
         return returnInput;
+    }
+
+    public static TextComponent parseColorsComponent(String input) {
+        TextComponent message = new TextComponent();
+        HashMap<Integer, net.md_5.bungee.api.ChatColor> colorMap = new HashMap<>();
+        input = findColorIndexes(input, colorMap);
+        ArrayList<Integer> indexes = new ArrayList<>(colorMap.keySet());
+        Collections.sort(indexes);
+        int prevIndex = 0;
+        for (Integer index : indexes) {
+            if (index == prevIndex) {
+                continue;
+            }
+            if (prevIndex == 0) {
+                message.setText(input.substring(prevIndex, index));
+                if (colorMap.containsKey(0)) {
+                    message.setColor(colorMap.get(0));
+                }
+            } else {
+                TextComponent newComponent = new TextComponent(input.substring(prevIndex, index));
+                newComponent.setColor(colorMap.get(prevIndex));
+                message.addExtra(newComponent);
+            }
+            prevIndex = index;
+        }
+        if (colorMap.isEmpty()) {
+            message.setText(input);
+        } else {
+            TextComponent newComponent = new TextComponent(input.substring(prevIndex));
+            newComponent.setColor(colorMap.get(prevIndex));
+            message.addExtra(newComponent);
+        }
+
+        return message;
+    }
+
+    private static String findColorIndexes(String input, HashMap<Integer, net.md_5.bungee.api.ChatColor> colorMap) {
+        String patternStr = "@\\{[A-z]*\\}";
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+
+            String key = input.substring(matcher.start() + 2, matcher.end() - 1);
+            net.md_5.bungee.api.ChatColor color;
+            try {
+                color = net.md_5.bungee.api.ChatColor.valueOf(key);
+            } catch (Exception e) {
+                continue;
+            }
+            colorMap.put(matcher.start(), color);
+            input = input.replaceFirst("@\\{[A-z]*\\}", "");
+            matcher = pattern.matcher(input);
+        }
+        return input;
     }
 
     public static boolean isLocationWithinSightOfPlayer(Location location) {
