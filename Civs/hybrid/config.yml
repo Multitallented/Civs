@@ -131,3 +131,5 @@ allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?
 days-between-elections: 7
+use-announcements: true
+announcement-period: 60

@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -107,7 +108,8 @@ public class DailyScheduler implements Runnable {
             if (mostVotesList.size() == 1) {
                 mostVotes = mostVotesList.get(0);
             } else {
-                int randIndex = (int) Math.floor(Math.random() * (mostVotesList.size() - 1));
+                Random random = new Random();
+                int randIndex = random.nextInt(mostVotesList.size());
                 mostVotes = mostVotesList.get(randIndex);
             }
 

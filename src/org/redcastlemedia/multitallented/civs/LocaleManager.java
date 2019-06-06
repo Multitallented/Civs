@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +19,9 @@ public class LocaleManager {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
                 !languageMap.get(language).containsKey(key)) {
-            return textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
+            return textPrefix + Util.parseColors(languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key));
         }
-        return textPrefix + languageMap.get(language).get(key);
+        return textPrefix + Util.parseColors(languageMap.get(language).get(key));
     }
     public Set<String> getAllLanguages() {
         return languageMap.keySet();
@@ -559,6 +560,30 @@ public class LocaleManager {
                     localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
             currentLanguage.put("target-not-in-world",
                     localeConfig.getString(langKey + ".target-not-in-world", "$1 is not in the same world as you."));
+            currentLanguage.put("ann-limit",
+                    localeConfig.getString(langKey + ".ann-limit", "[Info] You have $1 of $2 $3 buildings."));
+            currentLanguage.put("ann-achievement",
+                    localeConfig.getString(langKey + ".ann-achievement", "[Info] Check the guide to see your next available achievement."));
+            currentLanguage.put("ann-town-join",
+                    localeConfig.getString(langKey + ".ann-town-join", "[Info] You can be a member of multiple towns. Usually towns love to people."));
+            currentLanguage.put("ann-town-protection",
+                    localeConfig.getString(langKey + ".ann-town-protection", "[Info] Towns protect lots of land unlock new buildings in the shop."));
+            currentLanguage.put("ann-town-housing",
+                    localeConfig.getString(langKey + ".ann-town-housing", "[Info] $1 has $2 of $3 housing filled. Build more housing if you want to grow your town."));
+            currentLanguage.put("ann-make-allies",
+                    localeConfig.getString(langKey + ".ann-make-allies", "[Info] Consider joining an alliance. Under community > towns > town you can set towns as allies."));
+            currentLanguage.put("ann-town-low-power",
+                    localeConfig.getString(langKey + ".ann-town-low-power", "[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."));
+            currentLanguage.put("ann-bank",
+                    localeConfig.getString(langKey + ".ann-bank", "[Info] $1 has $$2 sitting in the bank. You can withdraw that money using /cv withdraw $1 amount"));
+            currentLanguage.put("ann-vote",
+                    localeConfig.getString(langKey + ".ann-vote", "[Info] Don't forget to vote for the next owner of $1. Community > Your towns > $1 > View Members > player > Vote"));
+            currentLanguage.put("ann-karma",
+                    localeConfig.getString(langKey + ".ann-karma", "[Caution] $1 is online. If you can kill $1, then you will be rewarded."));
+            currentLanguage.put("ann-missing-input",
+                    localeConfig.getString(langKey + ".ann-missing-input", "[Info] Your $1 needs items. Use the Civs book on it to check which reagents/inputs it needs."));
+            currentLanguage.put("ann-bounty",
+                    localeConfig.getString(langKey + ".ann-bounty", "[Info] $1 has a bounty of $2 on his head."));
             languageMap.put(langKey, currentLanguage);
         }
     }

@@ -229,6 +229,14 @@ public class Civilian {
         return level;
     }
 
+    public boolean isAtGroupMax(String group) {
+        if (ConfigManager.getInstance().getGroups().get(group) != null &&
+                ConfigManager.getInstance().getGroups().get(group) <= getCountGroup(group)) {
+            return true;
+        }
+        return false;
+    }
+
     public String isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
         int rebuildBonus = 0;
