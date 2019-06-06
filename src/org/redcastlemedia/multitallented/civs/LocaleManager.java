@@ -127,7 +127,7 @@ public class LocaleManager {
             currentLanguage.put("player-not-online",
                     localeConfig.getString(langKey + ".player-not-online", "$1 is not online"));
             currentLanguage.put("invite-player",
-                    localeConfig.getString(langKey + ".invite-player", "$1 would like to invite you to join $2 $3. To join, type /cv accept"));
+                    localeConfig.getString(langKey + ".invite-player", "$1 would like to invite you to join $2 $3."));
             currentLanguage.put("already-member",
                     localeConfig.getString(langKey + ".already-member", "$1 is already a member of $2"));
             currentLanguage.put("broke-own-region",

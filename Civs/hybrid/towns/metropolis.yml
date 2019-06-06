@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: DIAMOND_BLOCK
 name: Metropolis
 max: 1
 price: 36000

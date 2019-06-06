@@ -12,6 +12,11 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class InviteTownCommand implements CivCommand {
 
@@ -92,10 +97,19 @@ public class InviteTownCommand implements CivCommand {
 
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
-        invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+        String inviteMessage = Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
                 "invite-player").replace("$1", player.getDisplayName())
                 .replace("$2", town.getType())
-                .replace("$3", townName));
+                .replace("$3", townName) + " ";
+        TextComponent component = Util.parseColorsComponent(inviteMessage);
+
+        TextComponent acceptComponent = new TextComponent("[✓]");
+        acceptComponent.setColor(ChatColor.GREEN);
+        acceptComponent.setUnderlined(true);
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv accept"));
+        component.addExtra(acceptComponent);
+
+        invitee.spigot().sendMessage(component);
         townManager.addInvite(invitee.getUniqueId(), town);
         return true;
     }

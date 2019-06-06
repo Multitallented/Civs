@@ -341,7 +341,7 @@ public class ConfigManager {
                 civsItemPrefix = "Civs";
             }
             useAnnouncements = config.getBoolean("use-announcements", true);
-            announcementPeriod = config.getLong("announcement-period", 60);
+            announcementPeriod = config.getLong("announcement-period", 240);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -367,7 +367,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
-        announcementPeriod = 60;
+        announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
         civsChatPrefix = "@{GREEN}[Civs]";

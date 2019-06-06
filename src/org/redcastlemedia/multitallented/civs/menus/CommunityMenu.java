@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -44,12 +45,12 @@ public class CommunityMenu extends Menu {
             clickBackButton(event.getWhoClicked());
             return;
         }
-        if (clickedStack.getType() == Material.SIGN) {
-            appendHistory(civilian.getUuid(), MENU_NAME);
-            event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, 0));
-            return;
-        }
+//        if (clickedStack.getType() == Material.SIGN) {
+//            appendHistory(civilian.getUuid(), MENU_NAME);
+//            event.getWhoClicked().closeInventory();
+//            event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, 0));
+//            return;
+//        }
         if (clickedStack.getType() == Material.EMERALD) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
@@ -65,16 +66,16 @@ public class CommunityMenu extends Menu {
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "players")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(ListAllPlayersMenu.createMenu(civilian, 0));
+            event.getWhoClicked().openInventory(LeaderboardMenu.createMenu(civilian, 0));
             return;
         }
         if (clickedStack.getType() == Material.RED_BED) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, null));
+            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0));
             return;
         }
-        if (clickedStack.getType() == Material.CHEST) {
+        if (clickedStack.getType() == Material.BLUE_BED) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, civilian.getUuid()));
@@ -84,6 +85,12 @@ public class CommunityMenu extends Menu {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, 0));
+            return;
+        }
+        if (clickedStack.getType() == Material.JUKEBOX) {
+            appendHistory(civilian.getUuid(), MENU_NAME);
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(GovLeaderBoardMenu.createMenu(civilian));
             return;
         }
         //TODO finish this stub
@@ -97,9 +104,9 @@ public class CommunityMenu extends Menu {
 
         //0 Players
         int i=0;
-        CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
-        cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
-        inventory.setItem(i, cvItem.createItemStack());
+//        CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
+//        cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
+//        inventory.setItem(i, cvItem.createItemStack());
 
         //1 Towns
         i++;
@@ -115,23 +122,25 @@ public class CommunityMenu extends Menu {
             }
         }
         //2 Your towns
-        if (isInATown) {
+        if (isInATown && TownManager.getInstance().getTowns().size() > 9) {
             i++;
-            CVItem cvItem2 = CVItem.createCVItemFromString("CHEST");
+            CVItem cvItem2 = CVItem.createCVItemFromString("BLUE_BED");
             cvItem2.setDisplayName(localeManager.getTranslation(locale, "your-towns"));
             inventory.setItem(i, cvItem2.createItemStack());
         }
 
         //3 Alliances
-        i++;
-        CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
-        cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
-        inventory.setItem(i, cvItem1.createItemStack());
+        if (!AllianceManager.getInstance().getAllAlliances().isEmpty()) {
+            i++;
+            CVItem cvItem1 = CVItem.createCVItemFromString("IRON_SWORD");
+            cvItem1.setDisplayName(localeManager.getTranslation(locale, "alliances"));
+            inventory.setItem(i, cvItem1.createItemStack());
+        }
 
         //4 PvP leaderboard
         i++;
         CVItem cvItem4 = CVItem.createCVItemFromString("SIGN");
-        cvItem4.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
+        cvItem4.setDisplayName(localeManager.getTranslation(locale, "players"));
         inventory.setItem(i, cvItem4.createItemStack());
 
         boolean hasRegionsForSale = false;
@@ -174,6 +183,14 @@ public class CommunityMenu extends Menu {
             CVItem cvItem5 = CVItem.createCVItemFromString("ENDER_PEARL");
             cvItem5.setDisplayName(localeManager.getTranslation(locale, "ports"));
             inventory.setItem(i, cvItem5.createItemStack());
+        }
+
+        //7 Gov Leaderboard
+        {
+            i++;
+            CVItem cvItem6 = CVItem.createCVItemFromString("JUKEBOX");
+            cvItem6.setDisplayName(localeManager.getTranslation(locale, "leaderboard"));
+            inventory.setItem(i, cvItem6.createItemStack());
         }
 
         //8 Back Button

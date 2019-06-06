@@ -23,6 +23,9 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+
 public class UtilTests {
 
     @BeforeClass
@@ -153,5 +156,27 @@ public class UtilTests {
         civilian.setKills(4);
         PlaceHook placeHook = new PlaceHook();
         assertEquals("4", placeHook.onPlaceholderRequest(TestUtil.player, "kills"));
+    }
+
+    @Test
+    public void parseColorComponentShouldHandleAllIndexes() {
+        String input = "@{RED}Red @{YELLOW}Yellow @{LIGHT_PURPLE} Light Blue";
+        TextComponent component = Util.parseColorsComponent(input);
+        assertEquals(2, component.getExtra().size());
+        assertEquals("Red ", component.getText());
+        assertEquals(ChatColor.RED, component.getColor());
+        assertEquals("Red Yellow  Light Blue", component.toPlainText());
+        assertEquals("Yellow ", component.getExtra().get(0).toPlainText());
+        assertEquals(" Light Blue", component.getExtra().get(1).toPlainText());
+    }
+
+    @Test
+    public void parseColorComponentShouldHandleSillyIndexes() {
+        String input = "@{RED}Red @{YELLOW}@{BLUE}Yellow @{LIGHT_PURPLE} Light Blue";
+        TextComponent component = Util.parseColorsComponent(input);
+        assertEquals(2, component.getExtra().size());
+        assertEquals("Red ", component.getText());
+        assertEquals(ChatColor.RED, component.getColor());
+        assertEquals(ChatColor.BLUE, component.getExtra().get(0).getColor());
     }
 }
