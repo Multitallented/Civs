@@ -219,6 +219,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();

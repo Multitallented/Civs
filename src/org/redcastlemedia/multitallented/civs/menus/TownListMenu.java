@@ -5,18 +5,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
@@ -84,6 +80,30 @@ public class TownListMenu extends Menu {
         }
     }
 
+    public static Inventory createMenu(Civilian civilian, int page, ArrayList<Town> towns) {
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, page, civilian, towns);
+
+        return inventory;
+    }
+
+    public static Inventory createMenu(Civilian civilian, int page) {
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, page, civilian, TownManager.getInstance().getTowns());
+
+        return inventory;
+    }
+
     public static Inventory createMenu(Civilian civilian, int page, UUID uuid) {
         List<Town> towns = TownManager.getInstance().getTowns();
         if (uuid != null) {
@@ -96,6 +116,20 @@ public class TownListMenu extends Menu {
             towns = newTownList;
         }
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+        int startIndex = page * 36;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("uuid", uuid);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, startIndex, civilian, towns);
+
+
+        return inventory;
+    }
+
+    private static void setItems(Inventory inventory, int page, Civilian civilian, List<Town> towns) {
 
         LocaleManager localeManager = LocaleManager.getInstance();
 
@@ -107,15 +141,12 @@ public class TownListMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("page", page);
-        data.put("uuid", uuid);
-        setNewData(civilian.getUuid(), data);
+        int startIndex = page * 36;
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
 
-        int startIndex = page * 36;
+
         //8 Next button
         if (startIndex + 36 < towns.size()) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
@@ -150,7 +181,5 @@ public class TownListMenu extends Menu {
 //            }
             i++;
         }
-
-        return inventory;
     }
 }
