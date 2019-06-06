@@ -71,7 +71,8 @@ public final class AnnouncementUtil {
             if (!isInAnAlliance && TownManager.getInstance().getTowns().size() > 1) {
                 messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-make-allies"));
             }
-        } else if (!towns.isEmpty()) {
+        }
+        if (!towns.isEmpty()) {
             for (Town town : towns) {
 
                 // Vote
