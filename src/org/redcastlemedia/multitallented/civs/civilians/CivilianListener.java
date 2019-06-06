@@ -412,9 +412,9 @@ public class CivilianListener implements Listener {
             return;
         }
 
-//        if (checkMoveNormalItems(event, stackInQuestion)) {
-//            return;
-//        }
+        if (checkMoveNormalItems(event, stackInQuestion)) {
+            return;
+        }
 
         if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
@@ -427,9 +427,9 @@ public class CivilianListener implements Listener {
     }
 
     private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {
-        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+        if (!(event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) ||
+                event.getView().getTitle().equals(SpellsMenu.MENU_NAME) ||
+                event.getView().getTitle().equals(ClassMenu.MENU_NAME))) {
             return false;
         }
         if (CVItem.isCivsItem(stackInQuestion)) {

@@ -84,6 +84,30 @@ public class TownListMenu extends Menu {
         }
     }
 
+    public static Inventory createMenu(Civilian civilian, int page, ArrayList<Town> towns) {
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, page, civilian, towns);
+
+        return inventory;
+    }
+
+    public static Inventory createMenu(Civilian civilian, int page) {
+        Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, page, civilian, TownManager.getInstance().getTowns());
+
+        return inventory;
+    }
+
     public static Inventory createMenu(Civilian civilian, int page, UUID uuid) {
         List<Town> towns = TownManager.getInstance().getTowns();
         if (uuid != null) {
@@ -96,6 +120,20 @@ public class TownListMenu extends Menu {
             towns = newTownList;
         }
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
+        int startIndex = page * 36;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", page);
+        data.put("uuid", uuid);
+        setNewData(civilian.getUuid(), data);
+
+        setItems(inventory, startIndex, civilian, towns);
+
+
+        return inventory;
+    }
+
+    private static void setItems(Inventory inventory, int page, Civilian civilian, List<Town> towns) {
 
         LocaleManager localeManager = LocaleManager.getInstance();
 
@@ -107,15 +145,12 @@ public class TownListMenu extends Menu {
             inventory.setItem(0, cvItem.createItemStack());
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("page", page);
-        data.put("uuid", uuid);
-        setNewData(civilian.getUuid(), data);
+        int startIndex = page * 36;
 
         //6 Back button
         inventory.setItem(6, getBackButton(civilian));
 
-        int startIndex = page * 36;
+
         //8 Next button
         if (startIndex + 36 < towns.size()) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
@@ -128,29 +163,38 @@ public class TownListMenu extends Menu {
         for (int k=startIndex; k<towns.size() && k<startIndex+36; k++) {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            CVItem cvItem1 = townType.clone();
-//            CVItem cycleItem = null;
-//            boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();
-//            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-//            if (govTypesAllowed && government != null) {
-//                cycleItem = new CVItem(government.getIcon(civilian.getLocale()).getMat(), 1);
-//            }
-            cvItem1.setDisplayName(town.getName());
+            CVItem cvItem1 = townType.getShopIcon().clone();
             ArrayList<String> lore = new ArrayList<>();
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-power").replace("$1", "" + town.getPower())
+                            .replace("$2", "" + town.getMaxPower()));
+            lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "pop-desc")
+                    .replace("$1", town.getPopulation() + "")
+                    .replace("$2", town.getHousing() + "")
+                    .replace("$3", town.getVillagers() + ""));
+            lore.addAll(Util.textWrap("",
+                    Util.parseColors(townType.getDescription(civilian.getLocale()))));
+
+            CVItem cycleItem = null;
+            boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (govTypesAllowed && government != null) {
+                cycleItem = new CVItem(government.getIcon(civilian.getLocale()).getMat(), 1);
+            }
+
+            cvItem1.setDisplayName(town.getName());
             cvItem1.setLore(lore);
             inventory.setItem(i, cvItem1.createItemStack());
 
-//            if (govTypesAllowed && government != null) {
-//                ArrayList<CVItem> cycleList = new ArrayList<>();
-//                cycleItem.setDisplayName(town.getName());
-//                cycleItem.setLore(lore);
-//                cycleList.add(cvItem1);
-//                cycleList.add(cycleItem);
-//                Menu.addCycleItems(uuid, inventory, i, cycleList);
-//            }
+            if (govTypesAllowed && government != null) {
+                ArrayList<CVItem> cycleList = new ArrayList<>();
+                cycleItem.setDisplayName(town.getName());
+                cycleItem.setLore(lore);
+                cycleList.add(cvItem1);
+                cycleList.add(cycleItem);
+                Menu.addCycleItems(civilian.getUuid(), inventory, i, cycleList);
+            }
             i++;
         }
-
-        return inventory;
     }
 }

@@ -71,7 +71,8 @@ public final class AnnouncementUtil {
             if (!isInAnAlliance && TownManager.getInstance().getTowns().size() > 1) {
                 messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-make-allies"));
             }
-        } else if (!towns.isEmpty()) {
+        }
+        if (!towns.isEmpty()) {
             for (Town town : towns) {
 
                 // Vote
@@ -79,7 +80,7 @@ public final class AnnouncementUtil {
                         town.getGovernmentType() == GovernmentType.COOPERATIVE ||
                         town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                         town.getGovernmentType() == GovernmentType.CAPITALISM;
-                if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid())) {
+                if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid()) && town.getRawPeople().size() > 1) {
                     messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-vote")
                             .replace("$1", town.getName()));
                 }
@@ -139,12 +140,15 @@ public final class AnnouncementUtil {
         }
 
         // Add max group messages
-        for (String group : ConfigManager.getInstance().getGroups().keySet()) {
+        ArrayList<String> groups = new ArrayList<>(ConfigManager.getInstance().getGroups().keySet());
+        Collections.shuffle(groups);
+        for (String group : groups) {
             if (!civilian.isAtGroupMax(group)) {
                 messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-limit")
                         .replace("$1", "" + civilian.getCountGroup(group))
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
+                break;
             }
         }
 
@@ -184,20 +188,16 @@ public final class AnnouncementUtil {
         if (messages.isEmpty()) {
             return;
         } else if (messages.size() < 2) {
-            TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(0) + " ");
-            message.setColor(ChatColor.GREEN);
-            TextComponent unsub = new TextComponent("[X]");
-            unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
-            unsub.setColor(ChatColor.RED);
-            unsub.setUnderlined(true);
-            message.addExtra(unsub);
-            player.spigot().sendMessage(message);
+            sendToPlayer(player, Civs.getPrefix() + messages.get(0) + " ");
             return;
         }
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
-        TextComponent message = new TextComponent(Civs.getPrefix() + messages.get(randIndex) + " ");
-        message.setColor(ChatColor.GREEN);
+        sendToPlayer(player, Civs.getPrefix() + messages.get(randIndex) + " ");
+    }
+
+    private static void sendToPlayer(Player player, String input) {
+        TextComponent message = Util.parseColorsComponent(input);
         TextComponent unsub = new TextComponent("[X]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);

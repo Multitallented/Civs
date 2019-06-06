@@ -15,6 +15,7 @@ name:
   pt_br: "Anarquia"
   es: "Anarquía"
   fr: "Anarchie"
+  hu: "Anarchia"
 description:
   en: "Anyone can manage town and region membership. No taxes. No alliances."
   fr: "Tout le monde peut gérer l'appartenance à une ville ou une région. Pas d'impôts. Pas d'alliances."
@@ -22,22 +23,23 @@ description:
   pt_br: "Qualquer pessoa pode gerenciar a associação à cidade e região. Sem impostos. Sem alianças."
   ru: "Любой может управлять городским и районным членством. Нет налогов. Нет альянсов."
   de: "Jeder kann die Mitgliedschaft in einer Stadt oder Region verwalten. Keine Steuern. Keine Allianzen."
+  hu: "Bárki a városban tudja kezelni a területek tagságait. Nincsenek adók, nincsenek szövetségek."
 buffs:
   cost:
     percent: 35
     groups:
-      - utility
-      - defense
-      - allhousing
-      - offense
+    - utility
+    - defense
+    - allhousing
+    - offense
   payout:
     percent: 25
     groups:
-      - shops
+    - shops
   cooldown:
     percent: 15
     groups:
-      - utility
-      - defense
+    - utility
+    - defense
     regions:
-      - inn
+    - inn

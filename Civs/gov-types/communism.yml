@@ -15,6 +15,7 @@ name:
   pt_br: "Comunismo"
   fr: "Communisme"
   es: "Comunismo"
+  hu: "Kommunizmus"
 description:
   en: "Everyone is an owner of everything. All region income is distributed evenly."
   es: "Todo el mundo es dueño de todo. Todos los ingresos de la región se distribuyen uniformemente."
@@ -22,6 +23,7 @@ description:
   pt_br: "Todo mundo é dono de tudo. Toda a renda da região é distribuída uniformemente."
   ru: "Каждый является владельцем всего. Весь доход региона распределяется равномерно."
   de: "Jeder ist Eigentümer von allem. Das gesamte Einkommen der Region ist gleichmäßig verteilt."
+  hu: "Mindenki tulajdonosa mindennek a városban. A bevételek egyenlően oszlanak el."
 buffs:
   cooldown:
     percent: 10
