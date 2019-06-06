@@ -15,6 +15,7 @@ name:
   pt_br: "Cooperativo"
   fr: "Coopératif"
   es: "Cooperativo"
+  hu: "Szövetkezet"
 description:
   en: "Democracy + All region income is distributed evenly among town members and taxes."
   es: "Democracia + Todos los ingresos de la región se distribuyen de manera uniforme entre los miembros de la ciudad y los impuestos."
@@ -22,6 +23,7 @@ description:
   pt_br: "Democracia + A renda de toda a região é distribuída igualmente entre os membros da cidade e os impostos."
   ru: "Демократия + Весь доход региона распределяется равномерно между городскими жителями и налогами."
   de: "Demokratie + Das gesamte Einkommen der Region verteilt sich gleichmäßig auf die Gemeindemitglieder und die Steuern."
+  hu: "Demokrácia + Minden régió bevételei és adói egyenlően eloszlanak a tagok között."
 buffs:
   payout:
     percent: 15

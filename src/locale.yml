@@ -809,3 +809,289 @@ ru:
   starter-book: "Меню для Civs"
   cant-place-town: "вводите /cv town название_города_здесь"
   no-region-type-found: "Для $1 не найден тип региона"
+hu:
+  name: Magyar
+  icon: GREEN_WOOL
+  starter-book: Civs menü
+  next-button: Következő
+  prev-button: Előző
+  #language-menu
+  language-menu: Válassz nyelvet
+  language-set: "A nyelved be lett állítva $1-ra/re"
+  back-button: Vissza
+
+  #Tutorial
+  start-tutorial: "Mérföldkövek bekapcsolása"
+  start-tutorial-desc: "Mérföldkövek teljesítésével jutalomban részesülhetsz"
+  skip: "Mérföldkövek kikapcsolása"
+  tutorial-click: "Civs útmutató - ajánlott megnézni"
+  tutorial-wiki: "Civs wiki"
+  click-info: "Kattints ide több információért"
+  guide: "Útmutató"
+  guide-desc: "Következő cél megtekintése."
+  choose-path: "Válaszd ki a szakmát"
+
+  new-owner-town: "$1 leváltotta $2-t $3 város élén"
+  town-bank-balance: "Város egyenlege: $1"
+  town-bank-desc: "Pénz felvétele: /cv withdraw $1 összeg"
+  widthdrawn-money: "Felvettél $$1-t $2 város bankjából"
+  town-tax: "Város adói: $1"
+  town-tax-desc: "Adók beállítása: /cv tax $1 összeg"
+  town-tax-gov-type: "$1 nem állíthat be adót."
+  town-tax-set: "$1 adói beállítva $2-ra/re"
+  tax-too-high: "Nem állíthatsz $1-nál/nél több adót be."
+  town-assist-price: "A városod fizetett $1-t köszönettképp a(z) $2 felépítéséért"
+  colony-town-set: "Beállítottad $1 várost $2 kolóniájának"
+  cant-build-feudal: "Nem építhetsz a városban tagként, ha az államforma feudalizmus."
+  tribalism-no-invite: "Nem hívhatod meg $1-t, mert $2-ból/ből származik és nem szövetséges"
+  vote-member: "Szavazz a következő vezetőre"
+  capitalism-voting-cost: "Plusz szavazat ára: $1"
+  voted: "Szavaztál $1-ra/re"
+  gov-type-change: "$1 megváltoztatta az államformát $2-ról/ről$3-ra/re"
+  cost-buff: "Vissza lett térítve $1 $2 épületekért $3 városban."
+  merit-new-owner: "Gratulálok! Felülkerekedtél $1-n. Te vagy az új vezető!"
+  item-locked: "Még nem oldottad fel ezt a tárgyat."
+
+  ai-invite: "Szia, @$1 szeretnél csatlakozni a városomba?"
+  ai-help: "$1 körbe tud vezetni a városban."
+
+  cooldown-buff-desc: "$1% várakozási idő csökkentés minden $2-ra/re"
+  payout-buff-desc: "$1% kifizetés növelés minden $2-ra/re"
+  power-buff-desc: "$1% napi erőpont növekedés"
+  max_power-buff-desc: "$1% maximum erőpont növekedés"
+  cost-buff-desc: "$1% pénzvisszatérítés minden $2-ra/re"
+
+  #shop
+  shop: Bolt
+  buy-item: Eladó
+  price: Ár
+  buy: "Vásárlás $1-ért"
+  cancel: Mégsem
+  item-bought: "Gratulálok! Megvásároltad $1-t $2-ért"
+  max-item: "Nem vásárolhatsz többet, mint $2 $1"
+  max-qty: "$1-nak/nek túl sok $2-ja/je van és nem vásárolhat többet"
+
+  #items
+  items: Tárgyak
+  click-for-item-group: "Kattints ide, hogy megnézd az összes elemet ebbne a csoportban"
+
+  #classes
+  classes: "Osztályok, fajok"
+
+  #spells
+  spells: Varázslatok
+
+  #blueprints
+  blueprints: Alaprajzok
+
+  #regions
+  regions: Területek
+
+  #community
+  community: Közösség
+  players: Játékosok
+  towns: Városok
+  your-towns: Városaid
+  wars: Háborúk
+  alliances: Szövetségek
+  leaderboard: Ranglista
+  ports: Teleportok
+  money: "Pénz: $$1"
+  points: "Erőpontok: $1"
+  killstreak: "Ölési sorozat: $1"
+  highest-killstreak: "Legmagasabb ölési sorozat: $1"
+  kills: "Ölések száma: $1"
+  deaths: "Halálok száma: $1"
+  friends: "Barátok"
+  confirm: "Megerősítés"
+  reject: "Elutasítás"
+  effects: "Effektek"
+
+  #region
+  size: Méret
+  range: Távolság
+  build-reqs-title: Építési követelmények
+  population: Lakosság
+  population-req: "Szükséges egy $1 $2 lakossággal"
+  biomes: Biomeok
+  devolve-town: "$1 kifogyott az erőpontból és le lett fokozva $2-ra/re!"
+  pop-desc: "$1 Lakosság / $2 Ház / $3 Falusi"
+  build-reqs: "Blokkok listája $1-hoz/höz"
+  reagents-title: Alapanyagok
+  reagents: "Szükséges tárgyak, amiket a $1 ládának tartalmaznia kell"
+  upkeep: "$1 által elfogyasztott tárgyak"
+  output: "$1 által termelt tárgyak"
+  payout: "Ez a terület $$1-t termel"
+  power-input: "Ez a terület $1 erőpontot fogyaszt"
+  power-output: "Ez a terület $1 erőpontot generál"
+  too-close-region: "A te $1 területed túl közel lenne $2-hoz/höz"
+  too-close-town: "$1 túl közellenne egy másik városhoz"
+  town-created: "$1 létre lett hozva!"
+  town-destroyed: "$1 el lett pusztítva!"
+  region-built: "Sikeresen építettél egy $1-t"
+  region-type: "Terület típusa"
+  destroy: "Lebontás"
+  region-in-town: "A területed $1 városban van"
+  town-req-desc: "A területed benne kell legyen:"
+  view-members: "Tagok megtekintése"
+  add-member: "Tag hozzáadása"
+  operation: "Művelet"
+  region-working: "A területed működőképes"
+  region-not-working: "A területedből hiányzik valaki"
+  owner: Tulajdonos
+  member: Tag
+  guest: Vendég
+  recruiter: Toborzó
+  set-owner: Tulajdonos beállítása
+  set-member: Tag beállítása
+  set-guest: Vendég beállítása
+  remove-member: Tag eltávolítása
+  leave-town: Város elhagyása
+  you-left-town: "Elhagytad $1 várost"
+  add-member-region: "Hozzáadtak $1-hoz/höz tagként"
+  member-added-region: "$1 tagja a(z) $2 területnek"
+  owner-description: "Tulajdonosok bármit megtehetnek a területükön"
+  guest-description: "Vendégek tudják használni az ajtót és a gombokat"
+  member-description: "Tagok tudják használni és építeni a területet"
+  remove-member-region: "Már nem vagy tagja a $1 területnek"
+  member-removed-region: "$1 már nem a tagja a(z) $2 területnek"
+  add-owner-region: "Tulajdonosa lettél a(z) $1 területnek"
+  owner-added-region: "$1 be lett állítva tulajdonosként a(z) $2 területen"
+  add-guest-region: "Vendég lettél a(z) $1 területnek"
+  guest-added-region: "$1 be lett állítva vendégként a(z) $2 területen"
+  invite-owner-region: "Tagja lettél a(z) $1 területnek"
+  owner-invited-region: "$1 hozzá lett adva a(z) $2 területnek"
+  stand-in-region: "$1-nak/nek a területben kell állnia"
+  create: Létrehoz
+  click-for-region-limits: "Kattints ide a terület határainak listázásához"
+  click-for-req-regions: "Kattints ide a szükséges területek listájához"
+  town-instructions: "Hozz létre egy $1-t, a /cv town VárosNév parancs használatával"
+  town-enter: "Megérkeztél $1 ($2) városába"
+  town-exit: "Kiléptél $1 ($2) városából"
+  new-town-member: "$1 csatlakozott $2-ba/be"
+  must-be-built-on-top: "A $1-t $2 tetejére kell építeni"
+  town-power: "Erőpontok: $1/$2"
+  port-warmup: "Teleportálás $1 másodperc múlva"
+  teleported: "Teleportálás sikeres volt!"
+  location-set: "$1 helye beállítva"
+  rename-town: "Város átnevezése"
+  rename-desc: "Használd a /cv rename régiNév újNév parancsot"
+  town-renamed: "A városod át lett nevezve $1-ról/ről $2-ra/re"
+  bounty-set: "Fejpénzt tettél $1-ra/re $2-ért"
+  bounty-bonus: "Begyűjtöttél $1 fejpénzt"
+  add-friend: "Barát hozzáadása"
+  remove-friend: "Barát eltávolítása"
+  friend-added: "$1 hozzá lett adva a barátlistádhoz"
+  friend-removed: "$1 el lett távolítva a barátlistádról"
+  bounty: "Fejpénz beállítása: /cv bounty $1 összeg"
+  town-ally: "$1 beállítása szövetségesként"
+  town-unally: "$1 beállítása ellenségként"
+  town-ally-invites: "Van függő szövetségi kérelmed"
+  town-ally-request-sent: "Küldtél egy szövetségi kérelmet $1-nak/nek"
+  town-ally-request-accepted: "Szövetség létrejött $1 és $2 között"
+  town-ally-request-denied: "Szövetségi kérelem $1-val/vel el lett utasítva"
+  town-ally-removed: "A szövetség $1 és $2 között felbomlott"
+  region-evolved: "$1 felfejlődött $2-ra/re"
+  anti-camp-active: "$1 anti-camp beállítás bekapcsolva"
+  anti-camp-expired: "$1 anti-camp beállítás lejárt"
+  region-sale-set: "$1 eladó $2-ért"
+  sell-region: "Terület eladása"
+  cancel-sale: "Eladás visszavonása"
+  buy-region: "Vásárold meg $1-t $2-ért"
+  regions-for-sale: "Eladó területek"
+  use-sell-command: "Használd a  /cv sell ár parancsot"
+  region-bought: "Megvásároltad $1-t $2-ért"
+  sort-by-level: "Területek felsorolása szintenként"
+  level: "$1. szint"
+  rename-alliance: "Szövetség átnevezése"
+  rename-alliance-desc: "Használd a /cv really $1 újSzövetségNév parancsot"
+  alliance-renamed: "$1 át lett nevezve $2-ra/re"
+  invalid-name: "Érvénytelen név"
+  last-renamed-by: "Előző átnevező: $1"
+  leave-alliance: "Szövetség elhagyása"
+  hunting-players: "Figyelem! Valaki vadászni szeretne a környékeden."
+  target-not-in-world: "$1 nem ugyan abban a világban van, mint te."
+
+  #errors
+  cant-place-town: "Használd a /cv town városNév parancsot"
+  no-region-type-found: "Nem találtunk területtípust $1-nak/nek"
+  building-too-big: "Az épületed túl nagy $1-hoz/höz"
+  no-required-blocks: "Nem helyeztél le elég blokkot még $1-hoz/höz"
+  cant-build-on-region: "Nem építhetsz egy $1-t $2 tetejére"
+  rebuild-required: "$1-t $2 tetejére kell építeni"
+  prevent-civs-item-share: "Nincs jogod Civs tárgyakat cserélni"
+  region-protected: "Ez a terület le van védve"
+  region-destroyed: "$1 terület le megsemmisült!"
+  specify-player-town: "Adj meg egy játékost és egy várost"
+  specify-town-name: "Adj meg egy városnevet"
+  specify-player-region: "Adj meg egy játékost és egy területet"
+  town-not-exist: "$1 nem egy város"
+  no-permission-invite: "Nincs elég jogod meghívni $1-ba/be játékost"
+  player-not-online: "$1 nincs fent a szerveren"
+  invite-player: "$1 meg szeretne hívni ide: $2 $3. Csatlakozáshoz használd a /cv accept parancsot"
+  already-member: "$1 már a $2 tagja"
+  broke-own-region: "$1-ból/ből hiányzik pár elem"
+  no-permission: "Nincs jogod ehhez!"
+  class-changed: "Az osztályod/kasztod meg lett változtatva $1-ra/re"
+  not-enough-money: "Nincs elég pénzed! ($$1)"
+  not-allowed-place: "$1 nem lehelyezhető"
+  hold-town: "Kérlek tarts egy városi tárgyat"
+  no-commands-in-jail: "Nem tudsz használni parancsokat a börtönbe még ennyi ideig: $1"
+  mana-use-exp: "Nem használhatod, míg nincs a mana teljesen feltöltődve"
+  building-requires-2space: "Ennek az épületnek szükséges 2 üres blokk a központi láda felett"
+  missing-blocks-build: "Le kell tenned a hiányzó blokkokat egy $1 építéséhez"
+  in-combat: "Harc közben nem használhatod ezt a funkciót"
+  cooldown: "Várakozási idő: $1 másodperc"
+  need-more-health: "Szükséged van még $1-val/vel több életre"
+  need-more-stamina: "Szükséged van még $1-val/vel több állóképességre"
+  need-more-mana: "Szükséged van még $1-val/vel több manára"
+  port-not-found: "Nem található teleport"
+  region-missing-upkeep-items: "A területnek nincs elég tárgya."
+  raid-target-lost: "Nincs $1 nevű város $2 blokkos környezetben"
+  searching-for-target: "Rajtaütés helyének keresése..."
+  raid-target-blocked: "Rajtaütés teleport helye blokkolva van."
+  raid-porter-warning: "FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3"
+  raid-remote: "Kaptál egy tárgyat, hogy irányítsd $1-t"
+  raid-sign: "Szükséged van egy táblára a láda felett a választott város nevével"
+  invalid-target: "Érvénytelen célpont"
+  raid-target-inside-region: "Nem állíthatsz be célpontot területen belül"
+  req-build-inside-town: "$1-t csak $2-n belül lehet építeni"
+  missing-region-requirements: "$1-nak/nek hiányzik szükséges terület"
+  friendly-fire: "Nem tudod megütni a barátaidat"
+  limits: "Limitek"
+  region-limit-reached: "Egy $1 csak $2 $3-t birtokolhat"
+  region-in-biome: "Nem tudsz építeni $1-t egy $2 biomban"
+  not-enough-housing: "Több házat kell építened, hogy meg tudj hívni még egy játékost"
+  not-member-port: "Nem vagy a tagja ennek a teleportnak"
+  cant-repair-item: "Ezt a tárgyat nem tudod megjavítani itt"
+  more-repair-items: "Szükséged van még több $1-ra/re a tárgy javításához"
+  hold-repair-item: "Kezedben kell tartani a megjavítandó tárgyat"
+  player-not-found: "Játékos $1 névvel nem található"
+
+  #death
+  repeat-kill: "$1 túl hamar lett megölve. Nem jár érte pont."
+  kill-streak: "$1-nak/nek ölési sorozata $2"
+  kill-joy: "$1 megfékezte $2-t. Ölési sorozata $3 volt"
+  death: "Vesztettél $1 pontot, mivel meghaltál"
+  kill: "Ölés: $1"
+  low-health: "Alacsony életerő bónusz: $1"
+  killstreak-points: "Ölési sorozat bónusz: $1"
+  killjoy-points: "Ölési kedv bónusz: $1"
+  total-points: "Pontszám: $1"
+  karma: "Karma: $1"
+  karma-gained: "Karma: +$1, $2 hozzáadva"
+  karma-lost: "Karma: -$1, $2 levonva"
+
+  #announcements
+  ann-limit: "[Info] Van $1/$2 (meglévő/max) $3 típusú épületed."
+  ann-achievement: "[Info] Ellenőrizd az útmutatót, hogy megtekintsd a következő elérhető mérföldkövet."
+  ann-town-join: "[Info] Egyszerre több város tagja lehetsz. Használd ki ezt a lehetőséget!"
+  ann-town-protection: "[Info] A városok sok területet tudnak levédeni, és új épületekhez adnak hozzáférést a boltban."
+  ann-town-housing: "[Info] $1-nak/nek $2/$3 (meglévő/max) háza van. Építs több házat, hogy a városod növekedni tudjon."
+  ann-make-allies: "[Info] Fontold meg a szövetségbe lépést. Megtalálhatod a  Közösség > Városok > Városok, amelyekkel szövetségre léphetsz menüpontban."
+  ann-town-low-power: "[Warning] $1-nak/nek $2/$3 (meglévő/max) erőpontja van. Fontold meg olyan épületek építését, amely erőpontokat generál."
+  ann-bank: "[Info] $1-nak/nek $$2 van a bankjában. Ki tudod venni az összeget a /cv withdraw $1 összeg paranccsal"
+  ann-vote: "[Info] Ne felejts el szavazni $1 új tulajdonosára. Közösség > Városaid > $1 > Tagok megtekintése > Játékos > Szavazás"
+  ann-karma: "[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban részesülsz."
+  ann-missing-input: "[Info] Hiányzik pár tárgy még a $1-ból/ből. Használd a Civs könyved, hogy ellenőrizd, mi kell még hozzá."
+  ann-bounty: "[Info] $1 nyakán $2 fejdíj van."
