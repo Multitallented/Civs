@@ -79,7 +79,7 @@ public final class AnnouncementUtil {
                         town.getGovernmentType() == GovernmentType.COOPERATIVE ||
                         town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                         town.getGovernmentType() == GovernmentType.CAPITALISM;
-                if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid())) {
+                if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid()) && town.getRawPeople().size() > 1) {
                     messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-vote")
                             .replace("$1", town.getName()));
                 }
