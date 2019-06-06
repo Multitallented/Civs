@@ -139,12 +139,15 @@ public final class AnnouncementUtil {
         }
 
         // Add max group messages
-        for (String group : ConfigManager.getInstance().getGroups().keySet()) {
+        ArrayList<String> groups = new ArrayList<>(ConfigManager.getInstance().getGroups().keySet());
+        Collections.shuffle(groups);
+        for (String group : groups) {
             if (!civilian.isAtGroupMax(group)) {
                 messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-limit")
                         .replace("$1", "" + civilian.getCountGroup(group))
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
+                break;
             }
         }
 
