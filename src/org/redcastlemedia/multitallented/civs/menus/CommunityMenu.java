@@ -113,9 +113,9 @@ public class CommunityMenu extends Menu {
 //        CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
 //        cvItem.setDisplayName(localeManager.getTranslation(locale, "players"));
 //        inventory.setItem(i, cvItem.createItemStack());
+//        i++;
 
         //1 Towns
-        i++;
         CVItem cvItem3 = CVItem.createCVItemFromString("RED_BED");
         cvItem3.setDisplayName(localeManager.getTranslation(locale, "towns"));
         inventory.setItem(i, cvItem3.createItemStack());
