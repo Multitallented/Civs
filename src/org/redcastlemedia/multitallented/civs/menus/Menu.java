@@ -176,15 +176,10 @@ public abstract class Menu implements Listener {
             return;
         }
         if (lastHistory[0].equals(TownListMenu.MENU_NAME)) {
-            for (String s : lastHistory) {
-                System.out.println(s);
-            }
             if (lastHistory.length > 2) {
                 UUID uuid = UUID.fromString(lastHistory[2]);
-                System.out.println(Integer.parseInt(lastHistory[1]));
                 humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), uuid));
             } else if (lastHistory.length > 1) {
-                System.out.println(Integer.parseInt(lastHistory[1]));
                 humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1])));
             } else {
                 clearHistory(humanEntity.getUniqueId());
