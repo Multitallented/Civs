@@ -412,9 +412,9 @@ public class CivilianListener implements Listener {
             return;
         }
 
-        if (checkMoveNormalItems(event, stackInQuestion)) {
-            return;
-        }
+//        if (checkMoveNormalItems(event, stackInQuestion)) {
+//            return;
+//        }
 
         if (!CVItem.isCivsItem(stackInQuestion) || event.getView().getTitle().startsWith("Civ")) {
             return;
