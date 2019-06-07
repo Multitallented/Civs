@@ -62,14 +62,14 @@ public final class AnnouncementUtil {
         if (isOwnerOfATown) {
             for (Town town : towns) {
                 if (town.getBankAccount() > 0 && town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-bank")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bank")
                             .replace("$1", town.getName())
                             .replace("$2", Util.getNumberFormat(town.getBankAccount(), civilian.getLocale())));
                 }
             }
 
             if (!isInAnAlliance && TownManager.getInstance().getTowns().size() > 1) {
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-make-allies"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-make-allies"));
             }
         }
         if (!towns.isEmpty()) {
@@ -81,13 +81,13 @@ public final class AnnouncementUtil {
                         town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                         town.getGovernmentType() == GovernmentType.CAPITALISM;
                 if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid()) && town.getRawPeople().size() > 1) {
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-vote")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-vote")
                             .replace("$1", town.getName()));
                 }
 
                 // Power
                 if (town.getPower() < town.getMaxPower() / 3 && town.getGovernmentType() != GovernmentType.FEUDALISM) {
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-low-power")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-low-power")
                             .replace("$1", town.getName())
                             .replace("$2", "" + town.getPower())
                             .replace("$3", "" + town.getMaxPower()));
@@ -95,7 +95,7 @@ public final class AnnouncementUtil {
 
                 // Housing
                 if (town.getPopulation() >= town.getHousing() && town.getGovernmentType() != GovernmentType.FEUDALISM) {
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-housing")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-housing")
                             .replace("$1", town.getName())
                             .replace("$2", "" + town.getPopulation())
                             .replace("$3", "" + town.getHousing()));
@@ -103,13 +103,13 @@ public final class AnnouncementUtil {
             }
 
         } else {
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-protection"));
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-join"));
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-protection"));
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-join"));
 
             // check the guide
             if (!civilian.isAskForTutorial() && civilian.getTutorialIndex() != -1 &&
                     civilian.getTutorialPath().equals("default")) {
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-achievement"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-achievement"));
             }
         }
 
@@ -127,7 +127,7 @@ public final class AnnouncementUtil {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             for (int i=0; i<regionType.getUpkeeps().size(); i++) {
                 if (!region.hasUpkeepItems(i, true)) {
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-missing-input")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-missing-input")
                             .replace("$1", regionType.getName()));
                     regionCount++;
                     if (regionCount > 2) {
@@ -144,7 +144,7 @@ public final class AnnouncementUtil {
         Collections.shuffle(groups);
         for (String group : groups) {
             if (!civilian.isAtGroupMax(group)) {
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-limit")
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-limit")
                         .replace("$1", "" + civilian.getCountGroup(group))
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
@@ -176,11 +176,11 @@ public final class AnnouncementUtil {
             }
         }
         if (lowestPlayerKarma != null) {
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-karma")
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-karma")
                     .replace("$1", lowestPlayerKarma.getDisplayName()));
         }
         if (highestPlayerBounty != null) {
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-bounty")
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bounty")
                     .replace("$1", highestPlayerBounty.getDisplayName())
                     .replace("$2", Util.getNumberFormat(highestBounty, civilian.getLocale())));
         }
@@ -188,16 +188,16 @@ public final class AnnouncementUtil {
         if (messages.isEmpty()) {
             return;
         } else if (messages.size() < 2) {
-            sendToPlayer(player, Civs.getPrefix() + messages.get(0) + " ");
+            sendToPlayer(player, Civs.getRawPrefix() + messages.get(0) + " ");
             return;
         }
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
-        sendToPlayer(player, Civs.getPrefix() + messages.get(randIndex) + " ");
+        sendToPlayer(player, Civs.getRawPrefix() + messages.get(randIndex) + " ");
     }
 
     private static void sendToPlayer(Player player, String input) {
-        TextComponent message = Util.parseColorsComponent(input);
+        BaseComponent message = Util.parseColorsComponent(input);
         TextComponent unsub = new TextComponent("[X]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);

@@ -198,7 +198,7 @@ en:
   invalid-name: "Invalid name"
   last-renamed-by: "Last renamed by: $1"
   leave-alliance: "Leave alliance"
-  hunting-players: "Caution! Someone is hunting players in your area."
+  hunting-players: "@{RED}Caution! Someone is hunting players in your area."
   target-not-in-world: "$1 is not in the same world as you."
 
   #errors
@@ -278,10 +278,10 @@ en:
   ann-town-protection: "[Info] Towns protect lots of land and unlock new buildings in the shop."
   ann-town-housing: "[Info] $1 has $2 of $3 housing filled. Build more housing if you want to grow your town."
   ann-make-allies: "[Info] Consider joining an alliance. Under community > towns > town you can set towns to allied."
-  ann-town-low-power: "[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."
+  ann-town-low-power: "@{RED}[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."
   ann-bank: "[Info] $1 has $$2 sitting in the bank. You can withdraw that money using /cv withdraw $1 amount"
   ann-vote: "[Info] Don't forget to vote for the next owner of $1. Community > Your towns > $1 > View Members > player > Vote"
-  ann-karma: "[Caution] $1 is online. If you can kill $1, then you will be rewarded."
+  ann-karma: "@{YELLOW}[Caution] $1 is online. If you can kill $1, then you will be rewarded."
   ann-missing-input: "[Info] Your $1 needs items. Use the Civs book on it to check which reagents/inputs it needs."
   ann-bounty: "[Info] $1 has a bounty of $2 on his or her head."
 pt_br:
@@ -490,6 +490,7 @@ pt_br:
   karma-lost: "Karma: -$1, $2 de dinheiro perdido"
 
   target-not-in-world: "$1 não está no mesmo mundo que você."
+  hunting-players: "@{RED}Cuidado! Alguém está caçando jogadores na sua área."
 
   #announcements
   ann-limit: "[Notar] Você tem $1 de $2 $3 edifícios."
@@ -498,10 +499,10 @@ pt_br:
   ann-town-protection: "[Notar] As cidades protegem mais terra e desbloqueiam novos edifícios na loja."
   ann-town-housing: "[Notar] $1 tem $2 de $3 usados. Construa mais moradias se quiser expandir sua cidade."
   ann-make-allies: "[Notar] Considere aderir a uma aliança. Em comunidade > cidades > cidade, você pode definir cidades como aliadas."
-  ann-town-low-power: "[Aviso] $1 tem apenas $2 de $3 energia. Considere construir mais estruturas que gerem potência."
+  ann-town-low-power: "@{RED}[Aviso] $1 tem apenas $2 de $3 energia. Considere construir mais estruturas que gerem potência."
   ann-bank: "[Notar] $1 tem $$2 no banco. Você pode sacar esse dinheiro usando /cv withdraw $1 montante"
   ann-vote: "[Notar] Não se esqueça de votar no próximo proprietário de $1. Comunidade > Suas cidades > $1 > Ver pessoas > jogador > Votar"
-  ann-karma: "[Cuidado] $1 está online. Se você pode matar $1, então você será recompensado."
+  ann-karma: "@{YELLOW}[Cuidado] $1 está online. Se você pode matar $1, então você será recompensado."
   ann-missing-input: "[Notar] Seu $1 precisa de itens. Use o livro Civs para verificar quais reagentes/insumos são necessários."
   ann-bounty: "[Notar] $1 tem uma recompensa de $2 na cabeça dele."
 es:
@@ -718,7 +719,7 @@ de:
   invalid-name: "Ungültiger name"
   last-renamed-by: "Zuletzt umbenannt von: $1"
   leave-alliance: "Allianz verlassen"
-  hunting-players: "Achtung! Jemand jagt Spieler in Ihrer Nähe."
+  hunting-players: "@{RED}Achtung! Jemand jagt Spieler in Ihrer Nähe."
 
   #Fehler
   building-too-big: "Du baust zu groß, um $1 zu sein"
@@ -797,10 +798,10 @@ de:
   ann-town-protection: "[Info] Städte schützen viel Land und schalten neue Gebäude im Laden frei."
   ann-town-housing: "[Info] $1 hat $2 von $3 Wohnraum gefüllt. Baue mehr Häuser, wenn du deine Stadt vergrößern willst."
   ann-make-allies: "[Info] Erwäge, einer Allianz beizutreten. Unter Gemeinschaft > Städte > Dorf können Sie Städte als verbündete Städte festlegen."
-  ann-town-low-power: "[Warnung] $1 hat nur $2 von $3 Macht. Erwägen Sie, mehr Strukturen zu bauen, die Energie erzeugen."
+  ann-town-low-power: "@{RED}[Warnung] $1 hat nur $2 von $3 Macht. Erwägen Sie, mehr Strukturen zu bauen, die Energie erzeugen."
   ann-bank: "[Info] $1 hat $2 in der Bank. Sie können dieses Geld mit /cv withdraw $1 Betrag"
   ann-vote: "[Info] Vergessen Sie nicht, für den nächsten Besitzer von $1 zu stimmen. Community > Deine Städte > $1 > Mitglieder anzeigen > Spieler > Abstimmen"
-  ann-karma: "[Achtung] $1 ist online. Wenn du $1 töten kannst, wirst du belohnt."
+  ann-karma: "@{YELLOW}[Achtung] $1 ist online. Wenn du $1 töten kannst, wirst du belohnt."
   ann-missing-input: "[Info] Ihr $1 benötigt Gegenstände. Verwenden Sie das Civs-Buch, um zu überprüfen, welche Reagenzien / Eingaben benötigt werden."
   ann-bounty: "[Info] $1 hat ein Kopfgeld von $2."
 ru:
@@ -1009,7 +1010,7 @@ hu:
   invalid-name: "Érvénytelen név"
   last-renamed-by: "Előző átnevező: $1"
   leave-alliance: "Szövetség elhagyása"
-  hunting-players: "Figyelem! Valaki vadászni szeretne a környékeden."
+  hunting-players: "@{RED}Figyelem! Valaki vadászni szeretne a környékeden."
   target-not-in-world: "$1 nem ugyan abban a világban van, mint te."
 
   #errors
@@ -1089,9 +1090,9 @@ hu:
   ann-town-protection: "[Info] A városok sok területet tudnak levédeni, és új épületekhez adnak hozzáférést a boltban."
   ann-town-housing: "[Info] $1-nak/nek $2/$3 (meglévő/max) háza van. Építs több házat, hogy a városod növekedni tudjon."
   ann-make-allies: "[Info] Fontold meg a szövetségbe lépést. Megtalálhatod a  Közösség > Városok > Városok, amelyekkel szövetségre léphetsz menüpontban."
-  ann-town-low-power: "[Warning] $1-nak/nek $2/$3 (meglévő/max) erőpontja van. Fontold meg olyan épületek építését, amely erőpontokat generál."
+  ann-town-low-power: "@{RED}[Warning] $1-nak/nek $2/$3 (meglévő/max) erőpontja van. Fontold meg olyan épületek építését, amely erőpontokat generál."
   ann-bank: "[Info] $1-nak/nek $$2 van a bankjában. Ki tudod venni az összeget a /cv withdraw $1 összeg paranccsal"
   ann-vote: "[Info] Ne felejts el szavazni $1 új tulajdonosára. Közösség > Városaid > $1 > Tagok megtekintése > Játékos > Szavazás"
-  ann-karma: "[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban részesülsz."
+  ann-karma: "@{YELLOW}[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban részesülsz."
   ann-missing-input: "[Info] Hiányzik pár tárgy még a $1-ból/ből. Használd a Civs könyved, hogy ellenőrizd, mi kell még hozzá."
   ann-bounty: "[Info] $1 nyakán $2 fejdíj van."
