@@ -68,6 +68,7 @@ public class DestroyConfirmationMenu extends Menu {
                 }
                 RegionManager.getInstance().removeRegion(region, true, true);
                 CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), player);
+                ItemManager.getInstance().addMinItems(civilian);
             } else if (town != null) {
                 if (doesntHavePermission(civilian, town.getPeople(), player)) {
                     return;
