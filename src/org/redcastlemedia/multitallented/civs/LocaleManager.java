@@ -19,9 +19,17 @@ public class LocaleManager {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
                 !languageMap.get(language).containsKey(key)) {
-            return textPrefix + Util.parseColors(languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key));
+            return Util.parseColors(textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key));
         }
-        return textPrefix + Util.parseColors(languageMap.get(language).get(key));
+        return Util.parseColors(textPrefix + languageMap.get(language).get(key));
+    }
+    public String getRawTranslation(String language, String key) {
+        String textPrefix = ConfigManager.getInstance().getPrefixAllText();
+        if (!languageMap.containsKey(language) ||
+                !languageMap.get(language).containsKey(key)) {
+            return textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
+        }
+        return textPrefix + languageMap.get(language).get(key);
     }
     public Set<String> getAllLanguages() {
         return languageMap.keySet();
