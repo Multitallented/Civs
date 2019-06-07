@@ -23,14 +23,7 @@ description:
   es: "Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos cambian de lugar."
   hu: "Diktatúra + Ha a város tagja megöli a város vezetőjét, helyet cserélnek."
 buffs:
-  max_power:
-    percent: 10
-  power:
+  cost:
     percent: 25
-  cooldown:
-    percent: 20
     groups:
-      - utility
-      - defense
-    regions:
-      - inn
+      - allhousing

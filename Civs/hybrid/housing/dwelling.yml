@@ -29,14 +29,8 @@ build-reqs:
 rebuild: basehovel
 build-radius: 5 #11x11x11
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
 - door_use
 - chest_use
-- housing:1
-- evolve:dwelling1.12
 - buyable
 
 towns:
@@ -46,24 +40,10 @@ towns:
 - city
 - metropolis
 
-period: 3600 #1 hour
-upkeep:
-  0:
-    power-input: 1
-  1:
-    input:
-    - POTATO*32  # 768 or 12 stacks / day
-    payout: 5.12 # $122.88 / day
-  2:
-    input:
-    - APPLE*6   # 144 or 2.25 stacks / day
-    payout: 7.8 # 187.2 / day
-    exp: 1
-
 description:
-  en: "3rd level of house. Earns $309 per day."
-  es: "3er nivel de la casa. Gana $ 309 por día."
-  de: "3. Ebene des Hauses. Verdient $ 309 pro Tag."
-  pt_br: "3º nível de casa. Ganhe $ 309 por dia."
-  fr: "3ème niveau de la maison. Gagne 309 $ par jour."
-  ru: "3-й уровень дома. Зарабатывает 309 naponta."
+  en: "3rd level of house."
+  es: "3er nivel de la casa."
+  de: "3. Ebene des Hauses."
+  pt_br: "3º nível de casa."
+  fr: "3ème niveau de la maison."
+  ru: "3-й уровень дома."

@@ -6,7 +6,7 @@
 # all farms, mines, factories, and quarries are public
 
 icon: "ORANGE_GLAZED_TERRACOTTA"
-enabled: true
+enabled: false
 name:
   en: "Libertarian Socialism"
   de: "Libertärer Sozialismus"

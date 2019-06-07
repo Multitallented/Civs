@@ -6,17 +6,20 @@ max: 1
 price: 600
 groups:
 - defense
-level: 5
+level: 2
 
 pre-reqs:
-- member=town:city:metropolis
+- member=settlement:hamlet:village:town:city:metropolis
 
 towns:
+- settlement
+- hamlet
+- village
 - town
 - city
 - metropolis
 
-build-radius: 5 #11x11x11
+build-radius: 6 #13x13x13
 build-reqs:
 - OBSIDIAN*33
 - IRON_BARS*6
@@ -27,18 +30,10 @@ build-reqs:
 - DARK_OAK_PLANKS*110,BLACK_WOOL*110,BLACK_TERRACOTTA*110,PRISMARINE*110
 
 effects:
-- block_break
-- block_build
 - deny_mob_spawn
-- block_fire
 - door_use
 - jail
-- block_command # TODO make this
-
-period: 900 #15 minutes
-upkeep:
-  0:
-    power-output: 2
+- block_command
 
 description:
   en: "A place to temporarily trap invaders who die in town."

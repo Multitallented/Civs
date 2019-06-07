@@ -24,8 +24,6 @@ description:
   fr: "Aucune propriété de la ville. Une ville mère prime la propriété de la ville."
   hu: "Nincs város vezetőség. Egy másik város kezeli a tulajdonjogokat."
 buffs:
-  max_power:
-    percent: 25
   cost:
     percent: 10
     groups:

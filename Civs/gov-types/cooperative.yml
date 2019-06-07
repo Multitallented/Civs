@@ -7,7 +7,7 @@
 # all region payouts are distributed evenly among town members after 10% goes to the bank
 
 icon: "RED_STAINED_GLASS"
-enabled: true
+enabled: false
 name:
   en: "Cooperative"
   de: "Genossenschaft"
@@ -25,10 +25,7 @@ description:
   de: "Demokratie + Das gesamte Einkommen der Region verteilt sich gleichmäßig auf die Gemeindemitglieder und die Steuern."
   hu: "Demokrácia + Minden régió bevételei és adói egyenlően eloszlanak a tagok között."
 buffs:
-  payout:
-    percent: 15
+  cost:
+    percent: 5
     groups:
-      - housing
-      - shop
-  max_power:
-    percent: 10
+      - allhousing

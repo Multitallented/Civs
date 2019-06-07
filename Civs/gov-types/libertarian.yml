@@ -23,11 +23,7 @@ description:
   de: "Kein Stadteigentum."
   hu: "Nincs tulajdonosa a városnak, nincsenek adók, nincs bank. Bárki jelentkezhet a városba."
 buffs:
-  payout:
-    percent: 15
-    groups:
-      - housing
   cost:
-    percent: 25
+    percent: 20
     groups:
-      - housing
+      - allhousing

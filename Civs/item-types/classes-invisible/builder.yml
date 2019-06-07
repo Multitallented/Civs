@@ -1,9 +1,0 @@
-items:
-- shack*3
-- councilroom*3
-
-shop:
-- cityhall
-
-pre-reqs:
-- farmer:level=5|miner:level5|fisherman:level=5

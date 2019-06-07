@@ -1,15 +1,9 @@
 black-list-worlds:
-- Resource
-- Midgard_nether
-- Midgard_the_end
-- world_nether
-- world_the_end
-- MedievalSpawn_nether
-- MedievalSpawn_the_end
+- Hub
 default-language: en
 allow-civ-item-sharing: false
 #put rings above towns
-town-rings: true
+town-rings: false
 town-ring-material: "GLOWSTONE"
 #how long a town sits at zero before protection ends
 #if destroy towns at zero is on, then this does nothing
@@ -27,7 +21,7 @@ jail-time-seconds: 300
 #cooldown before spawning a new villager in seconds
 villager-cooldown: 300
 #stops arrow turrets from shooting at monsters
-disable-arrow-turret-shooting-at-mobs: false
+disable-arrow-turret-shooting-at-mobs: true
 #cooldown before killing the same player reduces the town power
 death-grace-period-seconds: 60
 #how long a player is considered in combat after taking or dealing damage
@@ -57,20 +51,8 @@ karma-depreciate-period: 43200 #12 hours
 power-per-kill: 12
 power-per-npc-kill: 4
 folders:
-  farms: STONE_HOE
   towns: GLOWSTONE
-  shops: EMERALD
-  utilities: REDSTONE
   housing: RED_BED
-  defense: ARROW
-  quarries: STONE_SHOVEL
-  factories: PISTON
-  offense: TNT
-  mines: STONE_PICKAXE
-  woodworks: OAK_LOG
-  animals: SHEEP_SPAWN_EGG
-  npchousing: VILLAGER_SPAWN_EGG
-  trading: EMERALD_ORE
 levels:
 - DIRT
 - OAK_LOG
@@ -79,9 +61,7 @@ levels:
 - GOLD_BLOCK
 - EMERALD_BLOCK
 - DIAMOND_BLOCK
-custom-items:
-  jade:
-  - "Redeem 16 Jade at a Jade shop for $800"
+custom-items: []
 item-groups:
   sign: SIGN,WALL_SIGN
   wool: RED_WOOL,BLACK_WOOL,BLUE_WOOL,BROWN_WOOL,CYAN_WOOL,GRAY_WOOL,GREEN_WOOL,LIGHT_BLUE_WOOL,LIGHT_GRAY_WOOL,LIME_WOOL,MAGENTA_WOOL,ORANGE_WOOL,PINK_WOOL,PURPLE_WOOL,WHITE_WOOL,YELLOW_WOOL
@@ -98,11 +78,7 @@ item-groups:
   bed: RED_BED,BLACK_BED,BLUE_BED,BROWN_BED,CYAN_BED,GRAY_BED,GREEN_BED,LIGHT_BLUE_BED,LIGHT_GRAY_BED,LIME_BED,MAGENTA_BED,ORANGE_BED,PINK_BED,PURPLE_BED,WHITE_BED,YELLOW_BED
   stairs: QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS,QUARTZ_STAIRS
   vertical: LADDER,QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS
-groups:
-  shop: 3
-  quarry: 12
-  housing: 3
-
+groups: []
 #region port configs
 port:
   mana: 0
@@ -117,8 +93,8 @@ port:
   slow-warmup: true
 
 tutorial:
-  use-tutorial: true
-  use-guide: true
+  use-tutorial: false
+  use-guide: false
   url: "https://youtu.be/pa_rfrpUAS8"
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
@@ -130,5 +106,5 @@ allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?
 days-between-elections: 7
-use-announcements: true
+use-announcements: false
 announcement-period: 240

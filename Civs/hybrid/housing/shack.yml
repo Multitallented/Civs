@@ -36,30 +36,17 @@ towns:
 
 build-radius: 3 #7x7x7
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
 - door_use
 - chest_use
-- housing:1
 - buyable
 
-period: 3600 #1 hour
-upkeep:
-  0:
-    power-input: 1
-  1:
-    input:
-    - POTATO*32  # 768 or 12 stacks / day
-    payout: 5.12 # $122.88 / day
 
 
 description:
-  en: "The most basic house. Earns $122 for 12 stacks of potatoes per day."
-  es: "La casa más básica. Gana $ 122 por 12 fajos de papas por día."
-  fr: "La maison la plus basique. Gagne 122 $ pour 12 piles de pommes de terre par jour."
-  de: "Das grundlegendste Haus. Erwirbt $ 122 für 12 Stapel Kartoffeln pro Tag."
-  ru: "Самый основной дом. Зарабатывает 122 доллара за 12 стопок картофеля в день."
-  pt_br: "A casa mais básica. Ganha $ 122 por 12 pilhas de batatas por dia."
-  hu: "1. szintje a háznak. Bevétele $122 naponta 12 adag krumpliért."
+  en: "The most basic house."
+  es: "La casa más básica."
+  fr: "La maison la plus basique."
+  de: "Das grundlegendste Haus."
+  ru: "Самый основной дом."
+  pt_br: "A casa mais básica."
+  hu: "1. szintje a háznak."

@@ -27,17 +27,10 @@ build-reqs:
 - g:primary*250
 
 rebuild: basemansion
-rebuild-required: true
 build-radius: 12 #25x25x25
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
 - door_use
 - chest_use
-- housing:1
-- evolve:manor1.24
 - buyable
 
 towns:
@@ -45,29 +38,12 @@ towns:
 - city
 - metropolis
 
-period: 3600 #1 hour
-upkeep:
-  0:
-    power-input: 1
-  1:
-    input: #2.11
-    - GOLDEN_CARROT*6  # 144 or 2.25 stacks / day
-    payout: 20.8 # $500 / day
-    exp: 1
-  2:
-    input:
-    - COOKIE*24 # 576 or 9 stacks / day
-    payout: 18.4 # $432 / day
-  3:
-    input:
-    - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
-    payout: 4.2 # $100.8 / day
 
 description:
-  en: "7th level of house. Earns $1032 per day."
-  es: "7er nivel de la casa. Gana $ 1032 por día."
-  de: "7. Ebene des Hauses. Verdient $ 1032 pro Tag."
-  pt_br: "7º nível de casa. Ganhe $ 1032 por dia."
-  fr: "7ème niveau de la maison. Gagne 1032 $ par jour."
-  ru: "7-й уровень дома. Зарабатывает $ 1032 в день."
-  hu: "7. szintje a háznak. Bevétele $1032 naponta."
+  en: "7th level of house."
+  es: "7er nivel de la casa."
+  de: "7. Ebene des Hauses."
+  pt_br: "7º nível de casa."
+  fr: "7ème niveau de la maison."
+  ru: "7-й уровень дома."
+  hu: "7. szintje a háznak."

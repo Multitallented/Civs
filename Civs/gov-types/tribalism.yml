@@ -23,14 +23,7 @@ description:
   fr: "Dictature + Les membres ne peuvent pas rejoindre des villes non alliées."
   hu: "Diktatúra + Tagok nem csatlakozhatnak nem szövetséges városokba."
 buffs:
-  max_power:
-    percent: 10
-  power:
-    percent: 10
-  cooldown:
+  cost:
     percent: 10
     groups:
-      - utility
-      - defense
-    regions:
-      - inn
+      - allhousing

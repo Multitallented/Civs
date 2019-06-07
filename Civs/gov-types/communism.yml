@@ -25,13 +25,7 @@ description:
   de: "Jeder ist Eigentümer von allem. Das gesamte Einkommen der Region ist gleichmäßig verteilt."
   hu: "Mindenki tulajdonosa mindennek a városban. A bevételek egyenlően oszlanak el."
 buffs:
-  cooldown:
-    percent: 10
-    groups:
-      - factory
-      - mine
-      - quarry
   cost:
-    percent: 20
+    percent: 25
     groups:
-      - housing
+      - allhousing

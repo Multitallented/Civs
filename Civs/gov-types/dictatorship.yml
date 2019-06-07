@@ -21,13 +21,4 @@ description:
   ru: "Владельцы городов управляют альянсами, могут отменять членство в регионах и городах и устанавливать налоги."
   de: "Stadtbesitzer verwalten Allianzen, können die Mitgliedschaft in Regionen und Städten außer Kraft setzen und Steuern festlegen."
   hu: "A város tulajdonosai kezelik a szövetségeket, felül tudják írni a területeket, tagokat tudnak hozzá adni, adókat állítani."
-buffs:
-  power:
-    percent: 10
-  cooldown:
-    percent: 15
-    groups:
-      - utility
-      - defense
-    regions:
-      - inn
+buffs: []

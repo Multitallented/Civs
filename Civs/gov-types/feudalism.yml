@@ -4,7 +4,7 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
-icon: "LIGHT_GRAY_CONCRETE"
+icon: "COBBLESTONE"
 enabled: true
 name:
   en: "Feudalism"
@@ -22,14 +22,4 @@ description:
   ru: "Диктатура + Городские жители не могут строить регионы в городе."
   de: "Mitglieder von Diktatur + Stadt können keine Regionen in der Stadt errichten."
   hu: "Diktatúra + Város lakói nem építhetnek a város területein."
-buffs:
-  power:
-    percent: 10
-  cost:
-    percent: 20
-    groups:
-      - allhousing
-      - utility
-      - mine
-      - quarry
-      - factory
+buffs: []

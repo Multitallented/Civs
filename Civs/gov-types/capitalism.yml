@@ -25,10 +25,7 @@ description:
   de: "Demokratie + Stadt-Mitglieder können zusätzliche Stimmen kaufen."
   hu: "Demokrácia + Város tagjai vehetnek extra szavazatokat."
 buffs:
-  payout:
+  cost:
     percent: 10
     groups:
-      - shop
-      - housing
-  max_power:
-    percent: 10
+      - allhousing

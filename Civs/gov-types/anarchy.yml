@@ -26,20 +26,6 @@ description:
   hu: "Bárki a városban tudja kezelni a területek tagságait. Nincsenek adók, nincsenek szövetségek."
 buffs:
   cost:
-    percent: 35
+    percent: 45
     groups:
-    - utility
-    - defense
     - allhousing
-    - offense
-  payout:
-    percent: 25
-    groups:
-    - shops
-  cooldown:
-    percent: 15
-    groups:
-    - utility
-    - defense
-    regions:
-    - inn

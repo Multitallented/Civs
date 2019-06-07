@@ -24,10 +24,7 @@ description:
   fr: "Dictature + La propriété de la ville peut être achetée et rachetée."
   hu: "Diktatúra + A város vezetését meg lehet vásárolni."
 buffs:
-  payout:
-    percent: 25
+  cost:
+    percent: 20
     groups:
-      - shop
-      - housing
-  power:
-    percent: 15
+      - allhousing

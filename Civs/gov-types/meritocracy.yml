@@ -23,18 +23,7 @@ description:
   fr: "Dictature + Quiconque a les meilleurs bâtiments et la plupart des points de destruction devient le propriétaire de la ville."
   hu: "Diktatúra + A város tulajdonosa az lesz, akinek a legtöbb és legfejlettebb épülete van és a legtöbb embert ölte meg. "
 buffs:
-  max_power:
-    percent: 15
-  power:
-    percent: 5
-  cooldown:
+  cost:
     percent: 15
     groups:
-      - farm
-      - mine
-      - quarry
-      - factory
-      - utility
-      - defense
-    regions:
-      - inn
+      - allhousing

@@ -29,14 +29,8 @@ build-reqs:
 rebuild: basehouse
 build-radius: 8 #17x17x17
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
 - door_use
 - chest_use
-- housing:1
-- evolve:chalet1.24
 - buyable
 
 towns:
@@ -45,25 +39,11 @@ towns:
 - city
 - metropolis
 
-period: 3600 #1 hour
-upkeep:
-  0:
-    power-input: 1
-  1:
-    input: #2.11
-    - BREAD*6  # 144 or 2.25 stacks / day
-    payout: 46.8 # $303.84 / day
-  2:
-    input:
-    - CARROT*16   # 384 or 6 stacks / day
-    payout: 10.2 # $244.8 / day
-    exp: 1
-
 description:
-  en: "5th level of house. Earns $548 per day."
-  es: "5er nivel de la casa. Gana $ 548 por día."
-  de: "5. Ebene des Hauses. Verdient $ 548 pro Tag."
-  pt_br: "5º nível de casa. Ganhe $ 548 por dia."
-  fr: "5ème niveau de la maison. Gagne 548 $ par jour."
-  ru: "5-й уровень дома. Зарабатывает $ 548 в день."
-  hu: "5. szintje a háznak. Bevétele $548 naponta."
+  en: "5th level of house."
+  es: "5er nivel de la casa."
+  de: "5. Ebene des Hauses."
+  pt_br: "5º nível de casa."
+  fr: "5ème niveau de la maison."
+  ru: "5-й уровень дома."
+  hu: "5. szintje a háznak."

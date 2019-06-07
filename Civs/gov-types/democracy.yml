@@ -24,5 +24,7 @@ description:
   de: "Stadtbesitzer verwalten Allianzen, legen Steuern und die Mitgliedschaft in der Stadt fest. Abstimmungen legen in regelmäßigen Abständen neue Städteeigentümer fest."
   hu: "Város tulajdonosai kezelik a szövetségeket, tagokat és adókat. Időszakosan szavazzák meg az új vezetőséget."
 buffs:
-  max_power:
-    percent: 25
+  cost:
+    percent: 5
+    groups:
+      - allhousing

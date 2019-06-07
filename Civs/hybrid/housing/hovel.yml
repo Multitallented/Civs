@@ -27,17 +27,10 @@ build-reqs:
 - g:primary*50
 
 rebuild: baseshack
-rebuild-required: true
 build-radius: 4 #9x9x9
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
 - door_use
 - chest_use
-- housing:1
-- evolve:hovel1.12
 - buyable
 
 towns:
@@ -48,21 +41,11 @@ towns:
 - city
 - metropolis
 
-period: 3600 #1 hour
-upkeep:
-  0:
-    power-input: 1
-  1:
-    input:
-    - POTATO*32  # 768 or 12 stacks / day
-    payout: 5.12 # $122.88 / day
-    exp: 1
-
 description:
-  en: "2nd level of house. Earns $122 per day."
-  es: "2do nivel de vivienda. Gana $ 122 por día."
-  fr: "2ème niveau de la maison. Gagne 122 $ par jour."
-  ru: "2-й уровень дома. Зарабатывает 122 долларов США в день."
-  pt_br: "2º nível de casa. Ganhe US $ 122 por dia."
-  de: "2. Ebene des Hauses. Erwirbt $ 122 pro Tag."
-  hu: "2. szintje a háznak. Bevétele $122 naponta."
+  en: "2nd level of house."
+  es: "2do nivel de vivienda."
+  fr: "2ème niveau de la maison."
+  ru: "2-й уровень дома."
+  pt_br: "2º nível de casa."
+  de: "2. Ebene des Hauses."
+  hu: "2. szintje a háznak."
