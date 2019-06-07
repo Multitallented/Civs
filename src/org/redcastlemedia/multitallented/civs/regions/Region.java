@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -662,10 +664,11 @@ public class Region {
             return true;
         }
         Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
         }
-        Chest chest = (Chest) block.getState();
+        Chest chest = (Chest) state;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                     Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
@@ -691,10 +694,11 @@ public class Region {
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
         Block block = location.getBlock();
-        if (!(block.getState() instanceof Chest)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
         }
-        Chest chest = (Chest) block.getState();
+        Chest chest = (Chest) state;
 
         if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
                 Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
@@ -728,12 +732,20 @@ public class Region {
             return false;
         }
 
-        Block block = getLocation().getBlock();
+        Block block = location.getBlock();
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
         Chest chest = null;
-        if (block.getState() instanceof Chest) {
-            chest = (Chest) block.getState();
+        try {
+            BlockState state = block.getState();
+            if (state instanceof Chest) {
+                chest = (Chest) state;
+            }
+        } catch (ConcurrentModificationException e) {
+            BlockState state = block.getState();
+            if (state instanceof Chest) {
+                chest = (Chest) state;
+            }
         }
 
         boolean hadUpkeep = false;
@@ -755,8 +767,7 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1 ||
-                    chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 2;
+            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
@@ -858,7 +869,7 @@ public class Region {
         if (hadUpkeep) {
             for (UUID uuid : getOwners()) {
                 Player player = Bukkit.getPlayer(uuid);
-                if (!player.isOnline()) {
+                if (player == null || !player.isOnline()) {
                     continue;
                 }
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);

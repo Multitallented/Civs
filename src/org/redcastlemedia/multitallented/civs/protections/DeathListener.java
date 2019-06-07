@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -196,7 +197,7 @@ public class DeathListener implements Listener {
 
         ArrayList<ItemStack> removeMe = new ArrayList<>();
         for (ItemStack is : event.getDrops()) {
-            if (is.getType() != Material.AIR && CVItem.isCivsItem(is)) {
+            if (CivilianListener.checkDroppedItem(is, player)) {
                 removeMe.add(is);
             }
         }
@@ -329,12 +330,11 @@ public class DeathListener implements Listener {
         }
 
         int powerPerKill = ConfigManager.getInstance().getPowerPerKill();
-        if (powerPerKill > 0 && !damagerCiv.getFriends().contains(dyingCiv.getUuid()) &&
+        if (powerPerKill > 0 && !damagerCiv.isFriend(dyingCiv) &&
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             for (Town town : TownManager.getInstance().getTowns()) {
                 if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
-                        (!town.getPeople().get(dyingCiv.getUuid()).contains("member") &&
-                        !town.getPeople().get(dyingCiv.getUuid()).contains("owner"))) {
+                        town.getPeople().get(dyingCiv.getUuid()).contains("ally")) {
                     continue;
                 }
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
@@ -419,7 +419,7 @@ public class DeathListener implements Listener {
         }
 
         double bountyBonus = 0;
-        if (!dyingCiv.getBounties().isEmpty()) {
+        if (!dyingCiv.getBounties().isEmpty() && TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             Bounty bounty = dyingCiv.getBounties().remove(dyingCiv.getBounties().size() -1);
             bountyBonus = bounty.getAmount();
 

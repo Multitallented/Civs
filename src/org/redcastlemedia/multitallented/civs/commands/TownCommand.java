@@ -246,7 +246,7 @@ public class TownCommand implements CivCommand {
         if (ConfigManager.getInstance().getTownRings()) {
             newTown.createRing();
         }
-        if (ConfigManager.getInstance().isAllowChangingOfGovType() && childTownType == null) {
+        if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
             player.openInventory(SelectGovTypeMenu.createMenu(civilian, newTown));
         }
         return true;

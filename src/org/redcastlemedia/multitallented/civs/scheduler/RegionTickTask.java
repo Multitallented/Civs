@@ -13,9 +13,8 @@ import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RegionTickThread implements Runnable {
+public class RegionTickTask {
 
-    @Override
     public void run() {
         RegionManager regionManager = RegionManager.getInstance();
         Set<Region> destroyThese = new HashSet<>();
@@ -26,8 +25,8 @@ public class RegionTickThread implements Runnable {
             boolean hasUpkeep = false;
             try {
                 hasUpkeep = !regionType.isDailyPeriod() && region.runUpkeep();
-            } catch (NullPointerException npe) {
-                
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             RegionTickEvent regionTickEvent = new RegionTickEvent(region, regionType, hasUpkeep, shouldTick);

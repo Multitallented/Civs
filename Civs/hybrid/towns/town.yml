@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: GOLD_BLOCK
 name: Town
 max: 1
 price: 16000
@@ -68,3 +69,4 @@ description:
   ru: "Четвертый уровень города."
   pt_br: "O quarto nível de uma cidade."
   fr: "Le quatrième niveau d'une ville."
+  hu: "A negyedik szintje a városnak."

@@ -96,7 +96,6 @@ groups:
   shop: 3
   quarry: 12
   housing: 3
-  superregion: 1
 
 #region port configs
 port:
@@ -118,12 +117,16 @@ tutorial:
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
 civs-chat-prefix: "@{GREEN}[Civs]"
+prefix-all-text: ""
 civs-item-prefix: "Civs"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # for governments that use voting, for how long should a player be elected?
 days-between-elections: 7
+use-announcements: true
+announcement-period: 240
+
 # how long should invaders sit in an uncontested alliance claim (16x16) before neutralizing it
 alliance-claim-capture-seconds: 180
 # The material needed to capture new alliance claims

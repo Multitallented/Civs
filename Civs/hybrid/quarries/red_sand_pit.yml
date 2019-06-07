@@ -19,7 +19,7 @@ effects:
 - block_build
 - conveyor:RED_SAND
 
-period: 30
+period: 60
 upkeep:
   0:
     reagents:
@@ -44,3 +44,4 @@ description:
   de: "Erzeugt alle 30 Sekunden roten Sand"
   ru: "Создает красный песок каждые 30 секунд."
   pt_br: "Cria areia vermelha a cada 30 segundos"
+  hu: "Vörös homokot termel 30 másodpercenként."

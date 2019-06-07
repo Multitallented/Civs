@@ -202,7 +202,8 @@ en:
   invalid-name: "Invalid name"
   last-renamed-by: "Last renamed by: $1"
   leave-alliance: "Leave alliance"
-  hunting-players: "Caution! Someone is hunting players in your area."
+  hunting-players: "@{RED}Caution! Someone is hunting players in your area."
+  target-not-in-world: "$1 is not in the same world as you."
 
   #errors
   cant-place-town: "Type /cv town townNameHere"
@@ -220,7 +221,7 @@ en:
   town-not-exist: "$1 is not a town"
   no-permission-invite: "You don't have permission to invite people to $1"
   player-not-online: "$1 is not online"
-  invite-player: "$1 would like to invite you to join $2 $3. To join, type /cv accept"
+  invite-player: "$1 would like to invite you to join $2 $3."
   already-member: "$1 is already a member of $2"
   broke-own-region: "Your $1 is missing blocks"
   no-permission: "Permission denied"
@@ -273,6 +274,20 @@ en:
   karma: "Karma: $1"
   karma-gained: "Karma: +$1, $2 money gained"
   karma-lost: "Karma: -$1, $2 money lost"
+
+  #announcements
+  ann-limit: "[Info] You have $1 of $2 $3 buildings."
+  ann-achievement: "[Info] Check the guide to see your next available achievement."
+  ann-town-join: "[Info] You can be a member of multiple towns. Usually towns love to people."
+  ann-town-protection: "[Info] Towns protect lots of land and unlock new buildings in the shop."
+  ann-town-housing: "[Info] $1 has $2 of $3 housing filled. Build more housing if you want to grow your town."
+  ann-make-allies: "[Info] Consider joining an alliance. Under community > towns > town you can set towns to allied."
+  ann-town-low-power: "@{RED}[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."
+  ann-bank: "[Info] $1 has $$2 sitting in the bank. You can withdraw that money using /cv withdraw $1 amount"
+  ann-vote: "[Info] Don't forget to vote for the next owner of $1. Community > Your towns > $1 > View Members > player > Vote"
+  ann-karma: "@{YELLOW}[Caution] $1 is online. If you can kill $1, then you will be rewarded."
+  ann-missing-input: "[Info] Your $1 needs items. Use the Civs book on it to check which reagents/inputs it needs."
+  ann-bounty: "[Info] $1 has a bounty of $2 on his or her head."
 pt_br:
   name: Português Brasil
   icon: CYAN_WOOL
@@ -481,6 +496,23 @@ pt_br:
   cant-build-in-nation: "Você não pode construir dentro de uma terra reivindicada de $1."
   neutralized-claim: "As proteções de $1 nesta terra foram removidas."
   alliance-chunk-claimed: "Esta terra foi reivindicada para a aliança $1"
+
+  target-not-in-world: "$1 não está no mesmo mundo que você."
+  hunting-players: "@{RED}Cuidado! Alguém está caçando jogadores na sua área."
+
+  #announcements
+  ann-limit: "[Notar] Você tem $1 de $2 $3 edifícios."
+  ann-achievement: "[Notar] Verifique o guia para ver sua próxima conquista disponível."
+  ann-town-join: "[Notar] Você pode ser um membro de várias cidades. Geralmente as cidades gostam de adicionar pessoas."
+  ann-town-protection: "[Notar] As cidades protegem mais terra e desbloqueiam novos edifícios na loja."
+  ann-town-housing: "[Notar] $1 tem $2 de $3 usados. Construa mais moradias se quiser expandir sua cidade."
+  ann-make-allies: "[Notar] Considere aderir a uma aliança. Em comunidade > cidades > cidade, você pode definir cidades como aliadas."
+  ann-town-low-power: "@{RED}[Aviso] $1 tem apenas $2 de $3 energia. Considere construir mais estruturas que gerem potência."
+  ann-bank: "[Notar] $1 tem $$2 no banco. Você pode sacar esse dinheiro usando /cv withdraw $1 montante"
+  ann-vote: "[Notar] Não se esqueça de votar no próximo proprietário de $1. Comunidade > Suas cidades > $1 > Ver pessoas > jogador > Votar"
+  ann-karma: "@{YELLOW}[Cuidado] $1 está online. Se você pode matar $1, então você será recompensado."
+  ann-missing-input: "[Notar] Seu $1 precisa de itens. Use o livro Civs para verificar quais reagentes/insumos são necessários."
+  ann-bounty: "[Notar] $1 tem uma recompensa de $2 na cabeça dele."
 es:
   name: Español
   icon: YELLOW_WOOL
@@ -676,7 +708,7 @@ de:
   town-ally-invites: "Sie haben stadt-verbündete lädt ein"
   town-ally-request-sent: "Eine allianz wurde für $1 vorgeschlagen"
   town-ally-request-accepted: "Allianz wurde zwischen $1 und $2 gebildet"
-  town-ally-request-denied: "Allianzanfrage mit 1 $ wurde abgelehnt"
+  town-ally-request-denied: "Allianzanfrage mit $1 wurde abgelehnt"
   town-ally-removed: "Allianz zwischen $1 und $2 hat sich aufgelöst"
   region-evolved: "Ihr $1 hat sich zu einem $2 entwickelt"
   anti-camp-active: "Das anti-zelten von $1 wurde aktiviert"
@@ -696,7 +728,7 @@ de:
   invalid-name: "Ungültiger name"
   last-renamed-by: "Zuletzt umbenannt von: $1"
   leave-alliance: "Allianz verlassen"
-  hunting-players: "Achtung! Jemand jagt Spieler in Ihrer Nähe."
+  hunting-players: "@{RED}Achtung! Jemand jagt Spieler in Ihrer Nähe."
 
   #Fehler
   building-too-big: "Du baust zu groß, um $1 zu sein"
@@ -712,7 +744,7 @@ de:
   town-not-exist: "$1 ist keine stadt"
   no-permission-invite: "Sie haben keine Berechtigung, Personen zu $​​1 einzuladen"
   player-not-online: "$1 ist nicht online"
-  invite-player: "$1 möchte sie einladen, $2 $3 beizutreten. Geben sie zum beitreten /cv accept"
+  invite-player: "$1 möchte sie einladen, $2 $3 beizutreten."
   already-member: "$1 ist bereits mitglied von $2"
   broke-own-region: "In ihrem $1 fehlen blöcke"
   no-permission: "Erlaubnis verweigert"
@@ -740,7 +772,7 @@ de:
   invalid-target: "Ungültiges ziel"
   raid-target-inside-region: "Du kannst keinen ort innerhalb einer bereich festlegen"
   req-build-inside-town: "Dieser $1 muss innerhalb von $2 gebaut werden"
-  missing-region-requirements: "In Ihrem $ 1 fehlen erforderliche bereich"
+  missing-region-requirements: "Ihnen fehlen einige erforderliche bereiche in ihrer $1."
   friendly-fire: "Du kannst niemandem auf deiner freundesliste schaden zufügen"
   limits: "Grenzen"
   region-limit-reached: "Ein $1 kann nur $2 $3 haben"
@@ -768,9 +800,311 @@ de:
   cant-build-in-nation: "Sie können nicht innerhalb von $1 beanspruchtem land bauen"
   neutralized-claim: "Der schutz von $1 für dieses land wurde entfernt."
   alliance-chunk-claimed: "Dieses land wurde für die allianz $1 beansprucht"
+
+  target-not-in-world: "$1 ist nicht in der gleichen welt wie sie."
+
+  #announcements
+  ann-limit: "[Info] Du hast $1 von $2 $3 Gebäuden."
+  ann-achievement: "[Info] Überprüfen Sie die Anleitung, um Ihren nächsten verfügbaren Schritt anzuzeigen."
+  ann-town-join: "[Info] Sie können Mitglied mehrerer Städte sein. Normalerweise lieben Städte es, Menschen hinzuzufügen."
+  ann-town-protection: "[Info] Städte schützen viel Land und schalten neue Gebäude im Laden frei."
+  ann-town-housing: "[Info] $1 hat $2 von $3 Wohnraum gefüllt. Baue mehr Häuser, wenn du deine Stadt vergrößern willst."
+  ann-make-allies: "[Info] Erwäge, einer Allianz beizutreten. Unter Gemeinschaft > Städte > Dorf können Sie Städte als verbündete Städte festlegen."
+  ann-town-low-power: "@{RED}[Warnung] $1 hat nur $2 von $3 Macht. Erwägen Sie, mehr Strukturen zu bauen, die Energie erzeugen."
+  ann-bank: "[Info] $1 hat $2 in der Bank. Sie können dieses Geld mit /cv withdraw $1 Betrag"
+  ann-vote: "[Info] Vergessen Sie nicht, für den nächsten Besitzer von $1 zu stimmen. Community > Deine Städte > $1 > Mitglieder anzeigen > Spieler > Abstimmen"
+  ann-karma: "@{YELLOW}[Achtung] $1 ist online. Wenn du $1 töten kannst, wirst du belohnt."
+  ann-missing-input: "[Info] Ihr $1 benötigt Gegenstände. Verwenden Sie das Civs-Buch, um zu überprüfen, welche Reagenzien / Eingaben benötigt werden."
+  ann-bounty: "[Info] $1 hat ein Kopfgeld von $2."
 ru:
   name: русский
   icon: RED_WOOL
   starter-book: "Меню для Civs"
   cant-place-town: "вводите /cv town название_города_здесь"
   no-region-type-found: "Для $1 не найден тип региона"
+hu:
+  name: Magyar
+  icon: GREEN_WOOL
+  starter-book: Civs menü
+  next-button: Következő
+  prev-button: Előző
+  #language-menu
+  language-menu: Válassz nyelvet
+  language-set: "A nyelved be lett állítva $1-ra/re"
+  back-button: Vissza
+
+  #Tutorial
+  start-tutorial: "Mérföldkövek bekapcsolása"
+  start-tutorial-desc: "Mérföldkövek teljesítésével jutalomban részesülhetsz"
+  skip: "Mérföldkövek kikapcsolása"
+  tutorial-click: "Civs útmutató - ajánlott megnézni"
+  tutorial-wiki: "Civs wiki"
+  click-info: "Kattints ide több információért"
+  guide: "Útmutató"
+  guide-desc: "Következő cél megtekintése."
+  choose-path: "Válaszd ki a szakmát"
+
+  new-owner-town: "$1 leváltotta $2-t $3 város élén"
+  town-bank-balance: "Város egyenlege: $1"
+  town-bank-desc: "Pénz felvétele: /cv withdraw $1 összeg"
+  widthdrawn-money: "Felvettél $$1-t $2 város bankjából"
+  town-tax: "Város adói: $1"
+  town-tax-desc: "Adók beállítása: /cv tax $1 összeg"
+  town-tax-gov-type: "$1 nem állíthat be adót."
+  town-tax-set: "$1 adói beállítva $2-ra/re"
+  tax-too-high: "Nem állíthatsz $1-nál/nél több adót be."
+  town-assist-price: "A városod fizetett $1-t köszönettképp a(z) $2 felépítéséért"
+  colony-town-set: "Beállítottad $1 várost $2 kolóniájának"
+  cant-build-feudal: "Nem építhetsz a városban tagként, ha az államforma feudalizmus."
+  tribalism-no-invite: "Nem hívhatod meg $1-t, mert $2-ból/ből származik és nem szövetséges"
+  vote-member: "Szavazz a következő vezetőre"
+  capitalism-voting-cost: "Plusz szavazat ára: $1"
+  voted: "Szavaztál $1-ra/re"
+  gov-type-change: "$1 megváltoztatta az államformát $2-ról/ről$3-ra/re"
+  cost-buff: "Vissza lett térítve $1 $2 épületekért $3 városban."
+  merit-new-owner: "Gratulálok! Felülkerekedtél $1-n. Te vagy az új vezető!"
+  item-locked: "Még nem oldottad fel ezt a tárgyat."
+
+  ai-invite: "Szia, @$1 szeretnél csatlakozni a városomba?"
+  ai-help: "$1 körbe tud vezetni a városban."
+
+  cooldown-buff-desc: "$1% várakozási idő csökkentés minden $2-ra/re"
+  payout-buff-desc: "$1% kifizetés növelés minden $2-ra/re"
+  power-buff-desc: "$1% napi erőpont növekedés"
+  max_power-buff-desc: "$1% maximum erőpont növekedés"
+  cost-buff-desc: "$1% pénzvisszatérítés minden $2-ra/re"
+
+  #shop
+  shop: Bolt
+  buy-item: Eladó
+  price: Ár
+  buy: "Vásárlás $1-ért"
+  cancel: Mégsem
+  item-bought: "Gratulálok! Megvásároltad $1-t $2-ért"
+  max-item: "Nem vásárolhatsz többet, mint $2 $1"
+  max-qty: "$1-nak/nek túl sok $2-ja/je van és nem vásárolhat többet"
+
+  #items
+  items: Tárgyak
+  click-for-item-group: "Kattints ide, hogy megnézd az összes elemet ebbne a csoportban"
+
+  #classes
+  classes: "Osztályok, fajok"
+
+  #spells
+  spells: Varázslatok
+
+  #blueprints
+  blueprints: Alaprajzok
+
+  #regions
+  regions: Területek
+
+  #community
+  community: Közösség
+  players: Játékosok
+  towns: Városok
+  your-towns: Városaid
+  wars: Háborúk
+  alliances: Szövetségek
+  leaderboard: Ranglista
+  ports: Teleportok
+  money: "Pénz: $$1"
+  points: "Erőpontok: $1"
+  killstreak: "Ölési sorozat: $1"
+  highest-killstreak: "Legmagasabb ölési sorozat: $1"
+  kills: "Ölések száma: $1"
+  deaths: "Halálok száma: $1"
+  friends: "Barátok"
+  confirm: "Megerősítés"
+  reject: "Elutasítás"
+  effects: "Effektek"
+
+  #region
+  size: Méret
+  range: Távolság
+  build-reqs-title: Építési követelmények
+  population: Lakosság
+  population-req: "Szükséges egy $1 $2 lakossággal"
+  biomes: Biomeok
+  devolve-town: "$1 kifogyott az erőpontból és le lett fokozva $2-ra/re!"
+  pop-desc: "$1 Lakosság / $2 Ház / $3 Falusi"
+  build-reqs: "Blokkok listája $1-hoz/höz"
+  reagents-title: Alapanyagok
+  reagents: "Szükséges tárgyak, amiket a $1 ládának tartalmaznia kell"
+  upkeep: "$1 által elfogyasztott tárgyak"
+  output: "$1 által termelt tárgyak"
+  payout: "Ez a terület $$1-t termel"
+  power-input: "Ez a terület $1 erőpontot fogyaszt"
+  power-output: "Ez a terület $1 erőpontot generál"
+  too-close-region: "A te $1 területed túl közel lenne $2-hoz/höz"
+  too-close-town: "$1 túl közellenne egy másik városhoz"
+  town-created: "$1 létre lett hozva!"
+  town-destroyed: "$1 el lett pusztítva!"
+  region-built: "Sikeresen építettél egy $1-t"
+  region-type: "Terület típusa"
+  destroy: "Lebontás"
+  region-in-town: "A területed $1 városban van"
+  town-req-desc: "A területed benne kell legyen:"
+  view-members: "Tagok megtekintése"
+  add-member: "Tag hozzáadása"
+  operation: "Művelet"
+  region-working: "A területed működőképes"
+  region-not-working: "A területedből hiányzik valaki"
+  owner: Tulajdonos
+  member: Tag
+  guest: Vendég
+  recruiter: Toborzó
+  set-owner: Tulajdonos beállítása
+  set-member: Tag beállítása
+  set-guest: Vendég beállítása
+  remove-member: Tag eltávolítása
+  leave-town: Város elhagyása
+  you-left-town: "Elhagytad $1 várost"
+  add-member-region: "Hozzáadtak $1-hoz/höz tagként"
+  member-added-region: "$1 tagja a(z) $2 területnek"
+  owner-description: "Tulajdonosok bármit megtehetnek a területükön"
+  guest-description: "Vendégek tudják használni az ajtót és a gombokat"
+  member-description: "Tagok tudják használni és építeni a területet"
+  remove-member-region: "Már nem vagy tagja a $1 területnek"
+  member-removed-region: "$1 már nem a tagja a(z) $2 területnek"
+  add-owner-region: "Tulajdonosa lettél a(z) $1 területnek"
+  owner-added-region: "$1 be lett állítva tulajdonosként a(z) $2 területen"
+  add-guest-region: "Vendég lettél a(z) $1 területnek"
+  guest-added-region: "$1 be lett állítva vendégként a(z) $2 területen"
+  invite-owner-region: "Tagja lettél a(z) $1 területnek"
+  owner-invited-region: "$1 hozzá lett adva a(z) $2 területnek"
+  stand-in-region: "$1-nak/nek a területben kell állnia"
+  create: Létrehoz
+  click-for-region-limits: "Kattints ide a terület határainak listázásához"
+  click-for-req-regions: "Kattints ide a szükséges területek listájához"
+  town-instructions: "Hozz létre egy $1-t, a /cv town VárosNév parancs használatával"
+  town-enter: "Megérkeztél $1 ($2) városába"
+  town-exit: "Kiléptél $1 ($2) városából"
+  new-town-member: "$1 csatlakozott $2-ba/be"
+  must-be-built-on-top: "A $1-t $2 tetejére kell építeni"
+  town-power: "Erőpontok: $1/$2"
+  port-warmup: "Teleportálás $1 másodperc múlva"
+  teleported: "Teleportálás sikeres volt!"
+  location-set: "$1 helye beállítva"
+  rename-town: "Város átnevezése"
+  rename-desc: "Használd a /cv rename régiNév újNév parancsot"
+  town-renamed: "A városod át lett nevezve $1-ról/ről $2-ra/re"
+  bounty-set: "Fejpénzt tettél $1-ra/re $2-ért"
+  bounty-bonus: "Begyűjtöttél $1 fejpénzt"
+  add-friend: "Barát hozzáadása"
+  remove-friend: "Barát eltávolítása"
+  friend-added: "$1 hozzá lett adva a barátlistádhoz"
+  friend-removed: "$1 el lett távolítva a barátlistádról"
+  bounty: "Fejpénz beállítása: /cv bounty $1 összeg"
+  town-ally: "$1 beállítása szövetségesként"
+  town-unally: "$1 beállítása ellenségként"
+  town-ally-invites: "Van függő szövetségi kérelmed"
+  town-ally-request-sent: "Küldtél egy szövetségi kérelmet $1-nak/nek"
+  town-ally-request-accepted: "Szövetség létrejött $1 és $2 között"
+  town-ally-request-denied: "Szövetségi kérelem $1-val/vel el lett utasítva"
+  town-ally-removed: "A szövetség $1 és $2 között felbomlott"
+  region-evolved: "$1 felfejlődött $2-ra/re"
+  anti-camp-active: "$1 anti-camp beállítás bekapcsolva"
+  anti-camp-expired: "$1 anti-camp beállítás lejárt"
+  region-sale-set: "$1 eladó $2-ért"
+  sell-region: "Terület eladása"
+  cancel-sale: "Eladás visszavonása"
+  buy-region: "Vásárold meg $1-t $2-ért"
+  regions-for-sale: "Eladó területek"
+  use-sell-command: "Használd a  /cv sell ár parancsot"
+  region-bought: "Megvásároltad $1-t $2-ért"
+  sort-by-level: "Területek felsorolása szintenként"
+  level: "$1. szint"
+  rename-alliance: "Szövetség átnevezése"
+  rename-alliance-desc: "Használd a /cv really $1 újSzövetségNév parancsot"
+  alliance-renamed: "$1 át lett nevezve $2-ra/re"
+  invalid-name: "Érvénytelen név"
+  last-renamed-by: "Előző átnevező: $1"
+  leave-alliance: "Szövetség elhagyása"
+  hunting-players: "@{RED}Figyelem! Valaki vadászni szeretne a környékeden."
+  target-not-in-world: "$1 nem ugyan abban a világban van, mint te."
+
+  #errors
+  cant-place-town: "Használd a /cv town városNév parancsot"
+  no-region-type-found: "Nem találtunk területtípust $1-nak/nek"
+  building-too-big: "Az épületed túl nagy $1-hoz/höz"
+  no-required-blocks: "Nem helyeztél le elég blokkot még $1-hoz/höz"
+  cant-build-on-region: "Nem építhetsz egy $1-t $2 tetejére"
+  rebuild-required: "$1-t $2 tetejére kell építeni"
+  prevent-civs-item-share: "Nincs jogod Civs tárgyakat cserélni"
+  region-protected: "Ez a terület le van védve"
+  region-destroyed: "$1 terület le megsemmisült!"
+  specify-player-town: "Adj meg egy játékost és egy várost"
+  specify-town-name: "Adj meg egy városnevet"
+  specify-player-region: "Adj meg egy játékost és egy területet"
+  town-not-exist: "$1 nem egy város"
+  no-permission-invite: "Nincs elég jogod meghívni $1-ba/be játékost"
+  player-not-online: "$1 nincs fent a szerveren"
+  invite-player: "$1 meg szeretne hívni ide: $2 $3. Csatlakozáshoz használd a /cv accept parancsot"
+  already-member: "$1 már a $2 tagja"
+  broke-own-region: "$1-ból/ből hiányzik pár elem"
+  no-permission: "Nincs jogod ehhez!"
+  class-changed: "Az osztályod/kasztod meg lett változtatva $1-ra/re"
+  not-enough-money: "Nincs elég pénzed! ($$1)"
+  not-allowed-place: "$1 nem lehelyezhető"
+  hold-town: "Kérlek tarts egy városi tárgyat"
+  no-commands-in-jail: "Nem tudsz használni parancsokat a börtönbe még ennyi ideig: $1"
+  mana-use-exp: "Nem használhatod, míg nincs a mana teljesen feltöltődve"
+  building-requires-2space: "Ennek az épületnek szükséges 2 üres blokk a központi láda felett"
+  missing-blocks-build: "Le kell tenned a hiányzó blokkokat egy $1 építéséhez"
+  in-combat: "Harc közben nem használhatod ezt a funkciót"
+  cooldown: "Várakozási idő: $1 másodperc"
+  need-more-health: "Szükséged van még $1-val/vel több életre"
+  need-more-stamina: "Szükséged van még $1-val/vel több állóképességre"
+  need-more-mana: "Szükséged van még $1-val/vel több manára"
+  port-not-found: "Nem található teleport"
+  region-missing-upkeep-items: "A területnek nincs elég tárgya."
+  raid-target-lost: "Nincs $1 nevű város $2 blokkos környezetben"
+  searching-for-target: "Rajtaütés helyének keresése..."
+  raid-target-blocked: "Rajtaütés teleport helye blokkolva van."
+  raid-porter-warning: "FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3"
+  raid-remote: "Kaptál egy tárgyat, hogy irányítsd $1-t"
+  raid-sign: "Szükséged van egy táblára a láda felett a választott város nevével"
+  invalid-target: "Érvénytelen célpont"
+  raid-target-inside-region: "Nem állíthatsz be célpontot területen belül"
+  req-build-inside-town: "$1-t csak $2-n belül lehet építeni"
+  missing-region-requirements: "$1-nak/nek hiányzik szükséges terület"
+  friendly-fire: "Nem tudod megütni a barátaidat"
+  limits: "Limitek"
+  region-limit-reached: "Egy $1 csak $2 $3-t birtokolhat"
+  region-in-biome: "Nem tudsz építeni $1-t egy $2 biomban"
+  not-enough-housing: "Több házat kell építened, hogy meg tudj hívni még egy játékost"
+  not-member-port: "Nem vagy a tagja ennek a teleportnak"
+  cant-repair-item: "Ezt a tárgyat nem tudod megjavítani itt"
+  more-repair-items: "Szükséged van még több $1-ra/re a tárgy javításához"
+  hold-repair-item: "Kezedben kell tartani a megjavítandó tárgyat"
+  player-not-found: "Játékos $1 névvel nem található"
+
+  #death
+  repeat-kill: "$1 túl hamar lett megölve. Nem jár érte pont."
+  kill-streak: "$1-nak/nek ölési sorozata $2"
+  kill-joy: "$1 megfékezte $2-t. Ölési sorozata $3 volt"
+  death: "Vesztettél $1 pontot, mivel meghaltál"
+  kill: "Ölés: $1"
+  low-health: "Alacsony életerő bónusz: $1"
+  killstreak-points: "Ölési sorozat bónusz: $1"
+  killjoy-points: "Ölési kedv bónusz: $1"
+  total-points: "Pontszám: $1"
+  karma: "Karma: $1"
+  karma-gained: "Karma: +$1, $2 hozzáadva"
+  karma-lost: "Karma: -$1, $2 levonva"
+
+  #announcements
+  ann-limit: "[Info] Van $1/$2 (meglévő/max) $3 típusú épületed."
+  ann-achievement: "[Info] Ellenőrizd az útmutatót, hogy megtekintsd a következő elérhető mérföldkövet."
+  ann-town-join: "[Info] Egyszerre több város tagja lehetsz. Használd ki ezt a lehetőséget!"
+  ann-town-protection: "[Info] A városok sok területet tudnak levédeni, és új épületekhez adnak hozzáférést a boltban."
+  ann-town-housing: "[Info] $1-nak/nek $2/$3 (meglévő/max) háza van. Építs több házat, hogy a városod növekedni tudjon."
+  ann-make-allies: "[Info] Fontold meg a szövetségbe lépést. Megtalálhatod a  Közösség > Városok > Városok, amelyekkel szövetségre léphetsz menüpontban."
+  ann-town-low-power: "@{RED}[Warning] $1-nak/nek $2/$3 (meglévő/max) erőpontja van. Fontold meg olyan épületek építését, amely erőpontokat generál."
+  ann-bank: "[Info] $1-nak/nek $$2 van a bankjában. Ki tudod venni az összeget a /cv withdraw $1 összeg paranccsal"
+  ann-vote: "[Info] Ne felejts el szavazni $1 új tulajdonosára. Közösség > Városaid > $1 > Tagok megtekintése > Játékos > Szavazás"
+  ann-karma: "@{YELLOW}[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban részesülsz."
+  ann-missing-input: "[Info] Hiányzik pár tárgy még a $1-ból/ből. Használd a Civs könyved, hogy ellenőrizd, mi kell még hozzá."
+  ann-bounty: "[Info] $1 nyakán $2 fejdíj van."

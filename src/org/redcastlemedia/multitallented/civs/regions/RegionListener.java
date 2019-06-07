@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -43,9 +44,6 @@ public class RegionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
-        if (blockPlaceEvent.getBlockPlaced().getState() == null) {
-            return;
-        }
 
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(blockPlaceEvent.getBlockPlaced().getLocation().getWorld().getName())) {
@@ -87,11 +85,17 @@ public class RegionListener implements Listener {
             return;
         }
         CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civItem.getItemType() == CivItem.ItemType.TOWN) {
+            TownType townType = (TownType) civItem;
+            player.openInventory(TownTypeInfoMenu.createMenu(civilian, townType));
+            return;
+        }
+
         if (civItem.getItemType() != CivItem.ItemType.REGION) {
             return;
         }
         RegionType regionType = (RegionType) civItem;
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
     }
 

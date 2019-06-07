@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -73,7 +74,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         Player player = Bukkit.getPlayer(uuid);
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         Block block = l.getBlock().getRelative(BlockFace.UP);
-        if (!(block.getState() instanceof Sign)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Sign)) {
             return null;
         }
 
@@ -83,7 +85,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             distance = Integer.parseInt(stringDistance);
         }
 
-        Sign sign = (Sign) block.getState();
+        Sign sign = (Sign) state;
 
         Town town;
         try {

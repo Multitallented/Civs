@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,11 +44,12 @@ public class HuntEffect implements Listener, CreateRegionListener {
         Player player = Bukkit.getPlayer(uuid);
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         Block block = l.getBlock().getRelative(BlockFace.UP);
-        if (!(block.getState() instanceof Sign)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Sign)) {
             return null;
         }
 
-        Sign sign = (Sign) block.getState();
+        Sign sign = (Sign) state;
 
         Player targetPlayer = null;
         try {
@@ -68,7 +70,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (!targetPlayer.getWorld().equals(player.getWorld())) {
             block.breakNaturally();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
+                    "target-not-in-world"));
             return null;
         }
 

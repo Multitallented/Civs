@@ -185,6 +185,7 @@ public class CivilianManager {
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
+            civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -231,6 +232,7 @@ public class CivilianManager {
                 new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
+        civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(-1);
         return civilian;
     }
@@ -266,6 +268,7 @@ public class CivilianManager {
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());
+            civConfig.set("use-announcements", civilian.isUseAnnouncements());
 
             civConfig.set("items", null);
             for (String currentName : civilian.getStashItems().keySet()) {

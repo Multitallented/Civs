@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: DIAMOND_BLOCK
 name: Metropolis
 max: 1
 price: 36000
@@ -65,3 +66,4 @@ description:
   ru: "Шестой уровень города."
   pt_br: "O sexto nível de uma cidade."
   fr: "Le sixième niveau d'une ville."
+  hu: "A hatodik szintje a városnak."

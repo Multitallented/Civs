@@ -33,12 +33,18 @@ public class Government {
     }
 
     public CVItem getIcon(String locale) {
+        return getIcon(locale, true);
+    }
+
+    public CVItem getIcon(String locale, boolean isUseBuffs) {
         CVItem cvItem = icon.clone();
         cvItem.setDisplayName(names.get(locale));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + governmentType.name());
         lore.addAll(Util.textWrap("", descriptions.get(locale)));
-        lore.addAll(getBuffDescriptions(locale));
+        if (isUseBuffs) {
+            lore.addAll(getBuffDescriptions(locale));
+        }
         cvItem.setLore(lore);
         return cvItem;
     }

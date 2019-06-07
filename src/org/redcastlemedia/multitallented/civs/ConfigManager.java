@@ -111,11 +111,17 @@ public class ConfigManager {
     @Getter
     String bottomGuideSpacer;
     String civsChatPrefix;
+    @Getter
+    String prefixAllText;
     String civsItemPrefix;
     @Getter
     List<String> allianceClaimEffects;
     @Getter
     double powerPerAllianceClaim;
+    @Getter
+    boolean useAnnouncements;
+    @Getter
+    long announcementPeriod;
 
     public ConfigManager() {
         loadDefaults();
@@ -338,10 +344,13 @@ public class ConfigManager {
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
+            useAnnouncements = config.getBoolean("use-announcements", true);
+            announcementPeriod = config.getLong("announcement-period", 240);
             claimMaterial = config.getString("claim-material", "REDSTONE*64");
             allianceClaimEffects = config.getStringList("claim-effects");
             if (allianceClaimEffects.isEmpty()) {
@@ -380,6 +389,9 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        announcementPeriod = 240;
+        useAnnouncements = true;
+        prefixAllText = "";
         powerPerAllianceClaim = 1;
         claimMaterial = "REDSTONE*64";
         civsChatPrefix = "@{GREEN}[Civs]";

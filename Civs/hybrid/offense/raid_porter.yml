@@ -10,7 +10,7 @@ level: 1
 
 build-reqs:
 - TNT*5
-- SIGN*1
+- g:sign*1
 - OBSIDIAN*10
 - IRON_BARS*12
 - REDSTONE_WIRE*4
@@ -33,3 +33,4 @@ description:
   fr: "Un moyen fiable d'entrer dans une ville ennemie. Prend 4 minutes pour se réchauffer."
   pt_br: "Uma maneira confiável de entrar em uma cidade inimiga. Leva 4 minutos para aquecer."
   ru: "Надежный способ проникнуть в вражеский город. Занимает 4 минуты, чтобы разогреться."
+  hu: "Megbízható módja egy ellenséges városba bejutásának. Beüzemelése 4 perc."

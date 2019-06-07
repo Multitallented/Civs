@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.lang.ref.PhantomReference;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     }
 
     static Villager spawnVillager(Region region) {
-        if (!region.getLocation().getChunk().isLoaded()) {
+        if (!Util.isLocationWithinSightOfPlayer(region.getLocation())) {
             return null;
         }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
@@ -116,7 +117,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         int radius = townType.getBuildRadius();
         int radiusY = townType.getBuildRadiusY();
-        if (!town.getLocation().getChunk().isLoaded()) {
+        if (!Util.isLocationWithinSightOfPlayer(town.getLocation())) {
             return null;
         }
         for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {

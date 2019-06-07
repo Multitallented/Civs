@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -179,13 +180,18 @@ public abstract class Menu implements Listener {
                 UUID uuid = UUID.fromString(lastHistory[2]);
                 humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), uuid));
             } else if (lastHistory.length > 1) {
-                humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1]), null));
+                humanEntity.openInventory(TownListMenu.createMenu(civilian, Integer.parseInt(lastHistory[1])));
             } else {
                 clearHistory(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "no-permission"
                 ));
             }
+            return;
+        }
+        if (lastHistory[0].equals(GovLeaderBoardMenu.MENU_NAME)) {
+            humanEntity.closeInventory();
+            humanEntity.openInventory(GovLeaderBoardMenu.createMenu(civilian));
             return;
         }
         if (lastHistory[0].equals(TownInviteMenu.MENU_NAME)) {
@@ -237,7 +243,8 @@ public abstract class Menu implements Listener {
                 is.getType() == Material.REDSTONE_BLOCK &&
                 is.hasItemMeta() &&
                 is.getItemMeta().getDisplayName() != null &&
-                is.getItemMeta().getDisplayName().equals(LocaleManager.getInstance().getTranslation(locale, "back-button"));
+                ChatColor.stripColor(is.getItemMeta().getDisplayName())
+                        .equals(ChatColor.stripColor(LocaleManager.getInstance().getTranslation(locale, "back-button")));
     }
     static void appendHistory(UUID uuid, String params) {
         if (history.get(uuid) == null) {
@@ -383,7 +390,8 @@ public abstract class Menu implements Listener {
         }
 
         public synchronized void advanceItemPositions() {
-            for (GUIItemSet guiItemSet : cycleItems) {
+            ArrayList<GUIItemSet> clonedCycleItems = new ArrayList<>(cycleItems);
+            for (GUIItemSet guiItemSet : clonedCycleItems) {
                 int position = guiItemSet.getPosition();
                 int pos = position;
                 if (guiItemSet.getItems().size() - 2 < position) {
@@ -391,15 +399,11 @@ public abstract class Menu implements Listener {
                 } else {
                     pos++;
                 }
-                CVItem nextItem = guiItemSet.getItems().get(pos);
-                ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+                CVItem nextItem = guiItemSet.getItems().get(pos).clone();
                 if (nextItem.getGroup() != null) {
-                    ItemMeta itemMeta = is.getItemMeta();
-                    ArrayList<String> lore = new ArrayList<>();
-                    lore.add("g:" + nextItem.getGroup());
-                    itemMeta.setLore(lore);
-                    is.setItemMeta(itemMeta);
+                    nextItem.getLore().add("g:" + nextItem.getGroup());
                 }
+                ItemStack is = nextItem.createItemStack();
                 inventory.setItem(guiItemSet.getIndex(), is);
                 guiItemSet.setPosition(pos);
             }
