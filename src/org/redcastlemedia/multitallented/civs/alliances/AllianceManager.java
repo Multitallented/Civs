@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.alliances;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -316,7 +317,30 @@ public class AllianceManager implements Listener {
         if (claimsAvailable < 1) {
             return;
         }
-        // TODO connect towns if they are in the same world
+        HashSet<String> bridges = new HashSet<>();
+        for (String town1Name : alliance.getMembers()) {
+            for (String town2Name : alliance.getMembers()) {
+                if (town1Name.equals(town2Name)) {
+                    continue;
+                }
+
+                if (bridges.contains(town1Name + ":" + town2Name) ||
+                        bridges.contains(town2Name + ":" + town1Name)) {
+                    continue;
+                }
+                Town town1 = TownManager.getInstance().getTown(town1Name);
+                Town town2 = TownManager.getInstance().getTown(town2Name);
+                if (town1.getLocation().getWorld().equals(town2.getLocation().getWorld())) {
+                    bridges.add(town1Name + ":" + town2Name);
+                }
+            }
+        }
+        claimsAvailable = createBridgesBetweenAlliedTowns(alliance, bridges, claimsAvailable);
+
+        if (claimsAvailable < 1) {
+            return;
+        }
+
         // TODO spiral outwards from connected towns
     }
 
@@ -359,9 +383,56 @@ public class AllianceManager implements Listener {
         return claimsAvailable;
     }
 
-    private int createBridgeBetweenTwoAlliedTowns(Alliance alliance, Town town1, Town town2, int claimsAvailable) {
+    private int createBridgesBetweenAlliedTowns(Alliance alliance, HashSet<String> bridges, int claimsAvailable) {
+        HashSet<ClaimBridge> claimBridges = new HashSet<>();
+        for (String bridgeString : bridges) {
+            claimBridges.add(getBridges(bridgeString));
+        }
+
+        int i=0;
+        while (claimsAvailable > 0 && !claimBridges.isEmpty()) {
+            HashSet<ClaimBridge> tempBridges = new HashSet<>(claimBridges);
+            for (ClaimBridge claimBridge : tempBridges) {
+                Chunk chunk = getBridgeChunk(i, claimBridge);
+                if (chunk == null) {
+                    claimBridges.remove(claimBridge);
+                }
+                // TODO add chunk to alliance claim
+            }
+        }
 
         return claimsAvailable;
+    }
+
+    ClaimBridge getBridges(String bridgeName) {
+        Town town1 = TownManager.getInstance().getTown(bridgeName.split(":")[0]);
+        Town town2 = TownManager.getInstance().getTown(bridgeName.split(":")[1]);
+
+        double x1 = town1.getLocation().getX();
+        double x2 = town2.getLocation().getX();
+        double diffX = x2 - x1;
+
+        double z1 = town1.getLocation().getZ();
+        double z2 = town2.getLocation().getZ();
+        double diffZ = z2 - z1;
+
+        double slope = diffZ / diffX;
+
+        return new ClaimBridge(x1, x2, z1, z2, diffX, diffZ, slope, town1.getLocation().getWorld());
+    }
+
+    // TODO this is probably wrong and needs to be fixed and tested
+    Chunk getBridgeChunk(int index, ClaimBridge claimBridge) {
+        if (claimBridge.getDiffX() > 0 && claimBridge.getX1() + 16 * index > claimBridge.getX2()) {
+            return null;
+        } else if (claimBridge.getDiffX() < 0 && claimBridge.getX1() + 16 * index < claimBridge.getX2()) {
+            return null;
+        }
+        double x = claimBridge.getDiffX() > 0 ? claimBridge.getX1() + 16 * index : claimBridge.getX1() - 16 * index;
+        double z = claimBridge.getZ1() + claimBridge.getSlope() * x;
+
+        Location location = new Location(claimBridge.getWorld(), x, 60, z);
+        return location.getChunk();
     }
 
     Chunk getSurroundTownClaim(int index, Location location) {
