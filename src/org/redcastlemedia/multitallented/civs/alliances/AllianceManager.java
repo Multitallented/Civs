@@ -311,6 +311,16 @@ public class AllianceManager implements Listener {
         }
 
         int claimsAvailable = numberOfClaims - autoFilledClaims;
+        claimsAvailable = surroundAllAlliedTowns(alliance, claimsAvailable);
+
+        if (claimsAvailable < 1) {
+            return;
+        }
+        // TODO connect towns if they are in the same world
+        // TODO spiral outwards from connected towns
+    }
+
+    private int surroundAllAlliedTowns(Alliance alliance, int claimsAvailable) {
         int i=0;
         for (;;) {
             int fullTowns = 0;
@@ -336,7 +346,7 @@ public class AllianceManager implements Listener {
                     claimsAvailable--;
 
                     if (claimsAvailable < 1) {
-                        return;
+                        return 0;
                     }
                 }
 
@@ -346,9 +356,12 @@ public class AllianceManager implements Listener {
             }
             i++;
         }
+        return claimsAvailable;
+    }
 
-        // TODO connect towns if they are in the same world
-        // TODO spiral outwards from connected towns
+    private int createBridgeBetweenTwoAlliedTowns(Alliance alliance, Town town1, Town town2, int claimsAvailable) {
+
+        return claimsAvailable;
     }
 
     Chunk getSurroundTownClaim(int index, Location location) {
