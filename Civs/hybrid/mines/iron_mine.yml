@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: IRON_ORE
 name: Iron_Mine
 max: 1
 price: 150
@@ -11,13 +12,13 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:primary*90
-- g:secondary*12
 - IRON_BARS*2
 - g:door*1
 - CHEST*2
 - FURNACE*2
 - IRON_ORE*4
+- g:primary*45
+- g:secondary*6
 
 towns:
 - settlement
@@ -32,7 +33,6 @@ build-radius: 4
 effects:
 - block_break
 - block_build
-- chest_use
 - block_liquid
 - block_fire
 - conveyor:IRON_INGOT
@@ -68,3 +68,4 @@ description:
   fr: "Crée du fer en utilisant des pioches toutes les heures"
   ru: "Создает железо, используя кирки каждый час"
   pt_br: "Cria ferro usando picaretas a cada hora"
+  hu: "Vasat termel csákányok használatával."

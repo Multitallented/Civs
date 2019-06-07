@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: APPLE
 name: Apple_Orchard
 price: 200
 groups:
@@ -10,8 +11,8 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*32
+- g:fencegate*1
+- g:fence*16
 - OAK_LOG*4
 - OAK_LEAVES*12
 
@@ -45,3 +46,4 @@ description:
   ru: "Автоматическая яблочная ферма"
   de: "Automatische Apfelfarm"
   fr: "Ferme aux pommes automatique"
+  hu: "Automatikus almafarm."

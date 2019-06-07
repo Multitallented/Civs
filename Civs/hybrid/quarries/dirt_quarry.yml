@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIRT
 name: Dirt_Quarry
 price: 25
 groups:
@@ -11,7 +12,7 @@ pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
-- DIRT*48,GRASS_BLOCK*48,COARSE_DIRT*48,PODZOL*48
+- DIRT*24,GRASS_BLOCK*24,COARSE_DIRT*24,PODZOL*24
 - FURNACE*2
 - CHEST*2
 
@@ -47,3 +48,4 @@ description:
   ru: "Автоматизированное создание грязи"
   pt_br: "Criação automatizada de sujeira"
   fr: "Création automatisée de la saleté"
+  hu: "Földet termel 30 másodpercenként."

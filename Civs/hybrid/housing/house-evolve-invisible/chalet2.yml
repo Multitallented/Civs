@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: MAGENTA_BED
 name: Chalet1
 max: 2
 price: 1400
@@ -15,16 +16,16 @@ pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-- CHEST*8
-- g:door*1
-- g:window*16
-- g:bed*1
-- g:sign*1
-- FURNACE*2
-- CRAFTING_TABLE
-- g:roof*170
-- g:secondary*130
-- g:primary*400
+  - CHEST*8
+  - g:door*1
+  - g:window*8
+  - g:bed*1
+  - g:sign*1
+  - FURNACE*2
+  - CRAFTING_TABLE
+  - g:roof*85
+  - g:secondary*65
+  - g:primary*200
 
 build-radius: 8 #17x17x17
 effects:
@@ -72,3 +73,4 @@ description:
   pt_br: "5º nível de casa. Ganhe $ 1082 por dia."
   fr: "5ème niveau de la maison. Gagne 1082 $ par jour."
   ru: "5-й уровень дома. Зарабатывает $ 1082 в день."
+  hu: "5. szintje a háznak. Bevétele $1082 naponta."

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -77,12 +78,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
 
         Block b = l.getBlock().getRelative(BlockFace.UP);
-        if (!(b.getState() instanceof Sign)) {
+        BlockState state = b.getState();
+        if (!(state instanceof Sign)) {
             return;
         }
 
         //Find target Super-region
-        Sign sign = (Sign) b.getState();
+        Sign sign = (Sign) state;
         String townName = sign.getLine(0);
         Town town = TownManager.getInstance().getTown(townName);
         if (town == null) {
@@ -199,7 +201,8 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         Block b = l.getBlock().getRelative(BlockFace.UP);
-        if (!(b.getState() instanceof Sign)) {
+        BlockState state = b.getState();
+        if (!(state instanceof Sign)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(), "raid-sign"));
             return false;
@@ -212,7 +215,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
 
         //Find target Super-region
-        Sign sign = (Sign) b.getState();
+        Sign sign = (Sign) state;
         String townName = sign.getLine(0);
         Town town = null;
         for (Town cTown : TownManager.getInstance().getTowns()) {

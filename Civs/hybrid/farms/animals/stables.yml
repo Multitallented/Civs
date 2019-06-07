@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: HORSE_SPAWN_EGG
 name: Stables
 max: 1
 price: 1500
@@ -17,8 +18,8 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*46
+- g:fencegate*1
+- g:fence*22
 - WATER*1
 - CHEST*2
 - HAY_BLOCK*4
@@ -46,3 +47,4 @@ description:
   pt_br: "Cria cavalos e selas a cada hora."
   ru: "Создает лошадей и седла каждый час."
   de: "Erzeugt jede Stunde Pferde und Sättel."
+  hu: "Lovakat és nyergeket készít minden órában."

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: NETHER_STAR
 name: Sifter
 price: 6000
 groups:
@@ -45,3 +46,4 @@ description:
   ru: "Просеивает грязь, чтобы найти ценные предметы."
   pt_br: "Vasculha a sujeira para encontrar itens valiosos."
   fr: "Soulever la saleté pour trouver des objets de valeur."
+  hu: "Földet szitál, hogy értékes tárgyakat találjon."

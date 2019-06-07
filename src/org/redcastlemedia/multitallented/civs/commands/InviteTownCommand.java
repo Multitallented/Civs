@@ -6,10 +6,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class InviteTownCommand implements CivCommand {
 
@@ -56,7 +63,8 @@ public class InviteTownCommand implements CivCommand {
                     "player-not-online").replace("$1", playerName));
             return true;
         }
-        if (town.getPeople().keySet().contains(invitee.getUniqueId())) {
+        if (town.getRawPeople().keySet().contains(invitee.getUniqueId()) &&
+                !town.getRawPeople().get(invitee.getUniqueId()).contains("ally")) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "already-member").replace("$1", player.getDisplayName())
                     .replace("$2", townName));
@@ -70,12 +78,38 @@ public class InviteTownCommand implements CivCommand {
                     "not-enough-housing"));
             return true;
         }
+
+        for (Town otherTown : TownManager.getInstance().getTowns()) {
+            if (otherTown.equals(town) ||
+                    !otherTown.getRawPeople().containsKey(invitee.getUniqueId())) {
+                continue;
+            }
+            if ((town.getGovernmentType() == GovernmentType.TRIBALISM ||
+                    otherTown.getGovernmentType() == GovernmentType.TRIBALISM) &&
+                    !AllianceManager.getInstance().isAllied(town, otherTown)) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(),
+                        "tribalism-no-invite").replace("$1", invitee.getDisplayName())
+                        .replace("$2", otherTown.getName()));
+                return true;
+            }
+        }
+
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
-        invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+        String inviteMessage = Civs.getRawPrefix() + localeManager.getRawTranslation(inviteCiv.getLocale(),
                 "invite-player").replace("$1", player.getDisplayName())
                 .replace("$2", town.getType())
-                .replace("$3", townName));
+                .replace("$3", townName) + " ";
+        TextComponent component = Util.parseColorsComponent(inviteMessage);
+
+        TextComponent acceptComponent = new TextComponent("[✓]");
+        acceptComponent.setColor(ChatColor.GREEN);
+        acceptComponent.setUnderlined(true);
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv accept"));
+        component.addExtra(acceptComponent);
+
+        invitee.spigot().sendMessage(component);
         townManager.addInvite(invitee.getUniqueId(), town);
         return true;
     }

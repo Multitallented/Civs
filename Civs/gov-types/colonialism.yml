@@ -1,0 +1,32 @@
+##### BUILT IN #####
+# parent town overrides town ownership
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+# town destroy button disabled in menu
+
+icon: "GRAY_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Colonialism"
+  fr: "Colonialisme"
+  es: "Colonialismo"
+  ru: "колониализм"
+  de: "Kolonialismus"
+  pt_br: "Colonialismo"
+  hu: "Gyarmat"
+description:
+  en: "No town ownership. A parent town overrides town ownership."
+  es: "No propiedad de la ciudad. Una ciudad matriz anula la propiedad de la ciudad."
+  pt_br: "Nenhuma propriedade da cidade. Uma cidade-mãe substitui a propriedade da cidade."
+  de: "Kein Stadteigentum. Eine übergeordnete Stadt überschreibt den Besitz der Stadt."
+  ru: "Нет городской собственности. Родительский город имеет приоритет над городской собственностью."
+  fr: "Aucune propriété de la ville. Une ville mère prime la propriété de la ville."
+  hu: "Nincs város vezetőség. Egy másik város kezeli a tulajdonjogokat."
+buffs:
+  max_power:
+    percent: 25
+  cost:
+    percent: 10
+    groups:
+      - allhousing

@@ -1,5 +1,6 @@
 type: region
 icon: TNT
+shop-icon: STONE_BRICKS
 name: Castle
 max: 2
 price: 300
@@ -9,12 +10,12 @@ groups:
 level: 3
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - TNT*2
-- g:wool*25
-- g:secondary*24
-- g:primary*120
+- g:wool*24
+- g:secondary*12
+- g:primary*60
 
 pre-reqs:
 - member=outpost:keep
@@ -47,3 +48,4 @@ description:
   ru: "Центр крепости. Требуется до обновления форпоста до крепости. Создает 6 силы каждые 15 минут."
   de: "Die Mitte der Festung. Erforderlich, bevor der Außenposten zu einer Festung ausgebaut wird. Erzeugt alle 15 Minuten 6 Energie."
   fr: "Le centre du donjon. Nécessaire avant de transformer l'avant-poste en donjon. Crée 6 pouvoirs toutes les 15 minutes."
+  hu: "Egy vár közepe. Felépítéséhez szükséges az előörs fejlesztése. 6 erőpontot generál 15 percenként."

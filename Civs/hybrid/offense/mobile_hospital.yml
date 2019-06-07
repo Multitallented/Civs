@@ -13,9 +13,11 @@ build-reqs:
 - g:door*1
 - g:sign*1
 - g:bed*4
-- BIRCH_STAIRS*40,BIRCH_SLAB*40
-- BIRCH_PLANKS*120,WHITE_WOOL*120,WHITE_TERRACOTTA*120,WHITE_CONCRETE*120
+- BIRCH_STAIRS*10,BIRCH_SLAB*10
+- g:roof*10
+- BIRCH_PLANKS*30,WHITE_WOOL*39,WHITE_TERRACOTTA*30,WHITE_CONCRETE*30
 - RED_WOOL*5,RED_TERRACOTTA*5,RED_CONCRETE*5
+- g:primary*30
 
 effects:
 - block_break
@@ -32,3 +34,4 @@ description:
   pt_br: "Cura todos os jogadores dentro do hospital móvel. Destrói-se em 30 minutos."
   fr: "Soigne tous les joueurs à l'intérieur de l'hôpital mobile. Se détruit en 30 minutes."
   ru: "Лечит всех игроков внутри мобильной больницы. Уничтожает себя за 30 минут."
+  hu: "Gyógyítja a játékosokat, ha benne tartózkodnak. Megsemmisíti magát 30 perc után."

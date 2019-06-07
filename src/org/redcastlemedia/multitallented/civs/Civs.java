@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -56,6 +56,7 @@ public class Civs extends JavaPlugin {
         new LocaleManager(new File(getDataFolder(), "locale.yml"));
         new ItemManager();
         new TutorialManager();
+        new GovernmentManager();
         new BlockLogger();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();
@@ -130,8 +131,6 @@ public class Civs extends JavaPlugin {
 
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
-
-        //sync repeating task for war
     }
 
     private void initCommands() {
@@ -153,6 +152,12 @@ public class Civs extends JavaPlugin {
         commandList.put("reset", new ResetCommand());
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
+        commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("tax", new TaxCommand());
+        commandList.put("colony", new ColonyCommand());
+        commandList.put("newday", new DayCommand());
+        commandList.put("reload", new ReloadCommand());
+        commandList.put("toggleann", new ToggleAnnouncementCommand());
     }
 
     private void initListeners() {
@@ -211,6 +216,11 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
         Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
+//        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
     }
@@ -246,8 +256,10 @@ public class Civs extends JavaPlugin {
     public static Permission getPerm() {
         return perm;
     }
-    public static String getPrefix() { return ChatColor.GREEN + "[" + NAME + "] ";
+    public static String getPrefix() {
+        return ConfigManager.getInstance().getCivsChatPrefix() + " ";
     }
+    public static String getRawPrefix() { return ConfigManager.getInstance().civsChatPrefix + " ";}
     public static synchronized Civs getInstance() {
         return civs;
     }

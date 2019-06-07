@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: STONE_PICKAXE
 name: Stone_Works
 price: 20
 groups:
@@ -13,9 +14,9 @@ build-reqs:
 - g:window*2
 - g:door*1
 - FURNACE*2
-- g:roof*30
-- g:primary*80
-- g:secondary*20
+- g:roof*15
+- g:primary*40
+- g:secondary*10
 
 build-radius: 3
 
@@ -49,3 +50,4 @@ description:
   ru: "Автоматическое изготовление каменных инструментов"
   pt_br: "Elaboração automatizada de ferramentas de pedra"
   fr: "Fabrication automatisée d'outils en pierre"
+  hu: "Automatikusan gyárt kő szerszámokat."

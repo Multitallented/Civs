@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,7 +36,7 @@ public class PortMenu extends Menu {
                 event.getCurrentItem().getItemMeta().getDisplayName().startsWith("Icon"))) {
             return;
         }
-        String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+        String itemName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         int page = (int) getData(civilian.getUuid(), "page");
@@ -47,14 +48,14 @@ public class PortMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         if (event.getCurrentItem().getType() == Material.EMERALD &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "next-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "next-button")))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, page + 1));
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE &&
-                itemName.equals(localeManager.getTranslation(civilian.getLocale(), "prev-button"))) {
+                itemName.equals(ChatColor.stripColor(localeManager.getTranslation(civilian.getLocale(), "prev-button")))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(PortMenu.createMenu(civilian, page - 1));
@@ -87,8 +88,8 @@ public class PortMenu extends Menu {
             }
             //Don't show private ports
             if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).equals("member") &&
-                    !region.getPeople().get(civilian.getUuid()).equals("owner")) {
+                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
                 continue;
             }
             returnSet.add(region);

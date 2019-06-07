@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -46,9 +47,10 @@ public class LeaveConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             if (town != null) {
-                town.getPeople().remove(civilian.getUuid());
+                town.getRawPeople().remove(civilian.getUuid());
                 player.sendMessage(localeManager.getTranslation(civilian.getLocale(),
                         "you-left-town").replace("$1", town.getName()));
+                TownManager.getInstance().saveTown(town);
             }
             player.closeInventory();
             return;

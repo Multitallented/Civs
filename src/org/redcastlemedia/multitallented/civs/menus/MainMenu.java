@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,8 +13,11 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 
@@ -35,11 +39,11 @@ public class MainMenu extends Menu {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();
-        String itemName = im.getDisplayName();
+        String itemName = ChatColor.stripColor(im.getDisplayName());
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         String locale = civilian.getLocale();
-        if (itemName.equals(localeManager.getTranslation(locale, "language-menu"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "language-menu")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
@@ -49,37 +53,37 @@ public class MainMenu extends Menu {
             event.getWhoClicked().closeInventory();
             printTutorial(event.getWhoClicked(), civilian);
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "shop"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "shop")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ShopMenu.createMenu(civilian, null));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "classes"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "classes")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(ClassMenu.createMenu(civilian));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "spells"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "spells")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(SpellsMenu.createMenu(civilian));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "blueprints"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "blueprints")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(BlueprintsMenu.createMenu(civilian));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "regions"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "regions")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(BuiltRegionMenu.createMenu(civilian));
             return;
         }
-        if (itemName.equals(localeManager.getTranslation(locale, "community"))) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "community")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(CommunityMenu.createMenu(civilian));
@@ -90,6 +94,9 @@ public class MainMenu extends Menu {
     public static Inventory createMenu(Civilian civilian) {
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
+        }
+        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+            return TutorialChoosePathMenu.createMenu(civilian);
         }
 
         Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
@@ -138,22 +145,33 @@ public class MainMenu extends Menu {
         }
 
         //4 Blueprints
-        i++;
-        CVItem cvItemBlue = CVItem.createCVItemFromString("MAP");
-        cvItemBlue.setDisplayName(localeManager.getTranslation(locale, "blueprints"));
-        inventory.setItem(i, cvItemBlue.createItemStack());
+        if (!civilian.getStashItems().isEmpty()) {
+            i++;
+            CVItem cvItemBlue = CVItem.createCVItemFromString("MAP");
+            cvItemBlue.setDisplayName(localeManager.getTranslation(locale, "blueprints"));
+            inventory.setItem(i, cvItemBlue.createItemStack());
+        }
 
+        boolean showBuiltRegions = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getRawPeople().containsKey(civilian.getUuid())) {
+                showBuiltRegions = true;
+                break;
+            }
+        }
         //5 Regions
-        i++;
-        CVItem cvItemRegion = CVItem.createCVItemFromString("OAK_WOOD");
-        cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
-        inventory.setItem(i, cvItemRegion.createItemStack());
+        if (showBuiltRegions) {
+            i++;
+            CVItem cvItemRegion = CVItem.createCVItemFromString("BRICKS");
+            cvItemRegion.setDisplayName(localeManager.getTranslation(locale, "regions"));
+            inventory.setItem(i, cvItemRegion.createItemStack());
+        }
 
 //        //4 Items
 //        CVItem cvItem2 = new CVItem(Material.CHEST, 1, -1, 100, localeManager.getTranslation(locale, "items"));
 //        inventory.setItem(4, cvItem2.createItemStack());
 
-        //6 Community
+        //7 Community
         i++;
         CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, 100, localeManager.getTranslation(locale, "community"));
         inventory.setItem(i, cvItem3.createItemStack());
@@ -163,11 +181,11 @@ public class MainMenu extends Menu {
 
     private void printTutorial(HumanEntity player, Civilian civilian) {
         String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
-        player.sendMessage("-----------------" + Civs.NAME + "-----------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
         TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
         player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
         player.sendMessage(tutorialUrl);
-        player.sendMessage("--------------------------------------");
+        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getBottomGuideSpacer()));
     }
 
 }

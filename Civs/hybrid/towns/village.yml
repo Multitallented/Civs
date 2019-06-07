@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: IRON_BLOCK
 name: Village
 max: 1
 price: 8000
@@ -8,7 +9,7 @@ groups:
 level: 4
 
 pre-reqs:
-- hamlet:population=10
+- hamlet:population=5
 
 build-reqs:
 - council_room:1
@@ -62,3 +63,4 @@ description:
   ru: "Третий уровень города"
   pt_br: "O terceiro nível de uma cidade"
   fr: "Le troisième niveau d'une ville"
+  hu: "A harmadik szintje a városnak."

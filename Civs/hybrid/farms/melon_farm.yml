@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: MELON_SLICE
 name: Melon_Farm
 max: 1
 price: 100
@@ -11,10 +12,10 @@ pre-reqs:
 - member=village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*4
-- g:fence*38
-- WATER*2
-- MELON*20
+- g:fencegate*1
+- g:fence*16
+- WATER*1
+- MELON*10
 
 towns:
 - village
@@ -44,3 +45,4 @@ description:
   es: "Produce melón cada 10 minutos."
   ru: "Производит дыню каждые 10 минут"
   de: "Produziert alle 10 Minuten Melone"
+  hu: "Dinnyét termel 10 percenként."

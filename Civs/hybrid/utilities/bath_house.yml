@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: WATER_BUCKET
 name: Bath_House
 max: 1
 price: 700
@@ -11,11 +12,11 @@ pre-reqs:
 - member=metropolis
 
 build-reqs:
-- WATER*150
-- g:fencegate*2
-- FURNACE*14
-- g:primary*230
-- g:secondary*40
+- WATER*75
+- g:fencegate*1
+- FURNACE*7
+- g:primary*115
+- g:secondary*30
 
 build-radius: 7
 towns:
@@ -39,3 +40,4 @@ description:
   ru: "Производит 192 энергии в день"
   pt_br: "Produz 192 de energia por dia"
   fr: "Produit 192 puissance par jour"
+  hu: "192 erőpontot generál naponta."

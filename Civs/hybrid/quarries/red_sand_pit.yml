@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: RED_SAND
 name: Red_Sand_Pit
 price: 80
 groups:
@@ -8,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- RED_SAND*48
+- RED_SAND*24
 - FURNACE*2
 - CHEST*2
 
@@ -18,7 +19,7 @@ effects:
 - block_build
 - conveyor:RED_SAND
 
-period: 30
+period: 60
 upkeep:
   0:
     reagents:
@@ -43,3 +44,4 @@ description:
   de: "Erzeugt alle 30 Sekunden roten Sand"
   ru: "Создает красный песок каждые 30 секунд."
   pt_br: "Cria areia vermelha a cada 30 segundos"
+  hu: "Vörös homokot termel 30 másodpercenként."

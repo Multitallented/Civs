@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: PINK_BED
 name: NPC_House
 max: 2
 price: 800
@@ -11,19 +12,19 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- house:built=1
+- basehouse:built=1
 
 build-reqs:
 - CHEST*4
 - g:door*1
-- g:window*12
+- g:window*6
 - g:bed*1
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*150
-- g:secondary*110
-- g:primary*350
+- g:roof*75
+- g:secondary*55
+- g:primary*175
 
 rebuild: basehouse
 rebuild-required: true
@@ -56,3 +57,4 @@ description:
   ru: "Дом для сельского жителя. Подсчет населения города."
   de: "Ein Haus für einen Dorfbewohner. Zählt zur Stadtbevölkerung."
   fr: "Une maison pour un villageois. Compte vers la population de la ville."
+  hu: "Ház egy falusinak. Beleszámít a város lélekszámába."

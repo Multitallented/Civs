@@ -8,22 +8,23 @@ groups:
 level: 3
 
 pre-reqs:
-- member=village:town:city:metropolis
+- member=hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
 - g:door*1
-- GLOWSTONE*4
-- g:secondary*45
-- g:primary*140
-- g:roof*60
-- g:glass*8
-- g:window*8
+- GLOWSTONE*2
+- g:secondary*22
+- g:primary*70
+- g:roof*30
+- g:glass*4
+- g:window*4
 
 build-radius: 4 #9x15x9
 build-radius-y: 7
 
 towns:
+- hamlet
 - village
 - town
 - city
@@ -48,4 +49,5 @@ description:
   de: "Warnt die Stadtmitglieder, wenn ein Eindringling die Stadt betreten hat."
   pt_br: "Alerta os membros da cidade quando um intruso entrou na cidade."
   fr: "Alerte les membres de la ville lorsqu'un intrus est entré dans la ville."
+  hu: "Értesíti a város tagjait, amikor egy betolakodó belép a városba."
 

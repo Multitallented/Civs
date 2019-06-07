@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: BLUE_ORCHID
 name: Greenhouse
 price: 20
 groups:
@@ -8,8 +9,8 @@ level: 1
 
 
 build-reqs:
-- g:fencegate*2
-- g:fence*32
+- g:fencegate*1
+- g:fence*16
 - DANDELION
 - POPPY
 - BLUE_ORCHID
@@ -32,16 +33,7 @@ period: 120 #2 minutes
 upkeep:
   0:
     reagents:
-    - DANDELION
-    - POPPY
-    - BLUE_ORCHID
-    - ALLIUM
-    - AZURE_BLUET
-    - RED_TULIP
-    - ORANGE_TULIP
-    - WHITE_TULIP
-    - PINK_TULIP
-    - OXEYE_DAISY
+    - SHEARS
     output:
     - DANDELION%10,POPPY%10,BLUE_ORCHID%10,ALLIUM%10,AZURE_BLUET%10,RED_TULIP%10,ORANGE_TULIP%10,WHITE_TULIP%10,PINK_TULIP%10,OXEYE_DAISY%10
     - DEAD_BUSH%20,FERN%20,LARGE_FERN%20,GRASS%20,TALL_GRASS%20
@@ -55,3 +47,4 @@ description:
   ru: "Автоматический цветочный питомник"
   de: "Automatische Blumenschule"
   fr: "Pépinière automatique"
+  hu: "Virágokat termel automatikusan"

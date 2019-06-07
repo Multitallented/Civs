@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
@@ -20,6 +21,8 @@ public abstract class CivItem extends CVItem {
     private boolean isPlaceable = false;
     private final HashMap<String, String> description;
     private final List<String> groups;
+    @Getter
+    private final CVItem shopIcon;
     @Getter
     private final int level;
 
@@ -47,7 +50,8 @@ public abstract class CivItem extends CVItem {
         return processItemName(getDisplayName());
     }
     public static String processItemName(String input) {
-        return input.replace("Civs ", "").toLowerCase();
+        input = ChatColor.stripColor(input);
+        return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
     }
     public String getDescription(String locale) {
         String localizedDescription = description.get(locale);
@@ -67,6 +71,7 @@ public abstract class CivItem extends CVItem {
                    ItemType itemType,
                    String name,
                    Material material,
+                   CVItem shopIcon,
                    int qty,
                    int min,
                    int max,
@@ -76,8 +81,12 @@ public abstract class CivItem extends CVItem {
                    List<String> groups,
                    boolean isInShop,
                    int level) {
-        super(material, 1, 100, "Civs " + name);
+        super(material, 1, 100, ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.isPlaceable = isPlaceable;
+        this.shopIcon = new CVItem(shopIcon.getMat(),
+                shopIcon.getQty(),
+                (int) shopIcon.getChance(),
+                ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;

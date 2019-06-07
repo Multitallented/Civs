@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DIAMOND
 name: Diamond_Shop
 max: 1
 price: 400
@@ -15,7 +16,7 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - DIAMOND_BLOCK*1
 - g:wool*25
@@ -45,3 +46,4 @@ description:
   ru: "Продает 24 бриллианта на сервер за $ 1536 долларов в день."
   de: "Verkauft 24 Diamanten an den Server für $ 1536 pro Tag."
   fr: "Vend 24 diamants au serveur pour 1536 $ par jour."
+  hu: "24 db gyémántot ad el a szervernek napi $1536-ért."

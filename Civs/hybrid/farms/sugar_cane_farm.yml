@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: SUGAR_CANE
 name: Sugar_Cane_Farm
 max: 1
 price: 250
@@ -11,10 +12,10 @@ pre-reqs:
 - member=hamlet:village:town:city:metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*30
-- WATER*8
-- SUGAR_CANE*32
+- g:fencegate*1
+- g:fence*15
+- WATER*4
+- SUGAR_CANE*16
 
 towns:
 - hamlet
@@ -46,3 +47,4 @@ description:
   pt_br: "Cria 16 canas de açúcar a cada 5 minutos."
   ru: "Создает 16 сахарного тростника каждые 5 минут."
   de: "Erzeugt alle 5 Minuten 16 Zuckerrohr."
+  hu: "16 db cukornádat termel 5 percenként."

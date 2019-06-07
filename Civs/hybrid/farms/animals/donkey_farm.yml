@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: DONKEY_SPAWN_EGG
 name: Donkey_Farm
 max: 1
 price: 1500
@@ -17,8 +18,8 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fencegate*2
-- g:fence*46
+- g:fencegate*1
+- g:fence*24
 - WATER*1
 - CHEST*2
 - HAY_BLOCK*4
@@ -46,3 +47,4 @@ description:
   pt_br: "Cria burros e selas a cada hora."
   ru: "Создает ослов и седел каждый час."
   de: "Erzeugt jede Stunde Esel und Sättel"
+  hu: "Szamarakat és nyergeket készít minden órában."

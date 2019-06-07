@@ -1,5 +1,6 @@
 type: region
 icon: CRAFTING_TABLE
+shop-icon: MAGENTA_BED
 name: NPC_Chalet
 max: 2
 price: 1400
@@ -11,19 +12,19 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- chalet:built=1
+- basechalet:built=1
 
 build-reqs:
 - CHEST*8
 - g:door*1
-- g:window*16
+- g:window*8
 - g:bed*1
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*170
-- g:secondary*130
-- g:primary*400
+- g:roof*85
+- g:secondary*65
+- g:primary*200
 
 rebuild: basechalet
 rebuild-required: true
@@ -54,3 +55,4 @@ description:
   ru: "Дом для сельского жителя. Подсчет населения города."
   de: "Ein Haus für einen Dorfbewohner. Zählt zur Stadtbevölkerung."
   fr: "Une maison pour un villageois. Compte vers la population de la ville."
+  hu: "Ház egy falusinak. Beleszámít a város lélekszámába."

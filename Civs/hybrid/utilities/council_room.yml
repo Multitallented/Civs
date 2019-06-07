@@ -11,13 +11,13 @@ level: 1
 build-reqs:
 - CHEST*4
 - g:door*2
-- g:window*16
+- g:window*8
 - g:stairs*4
-- g:roof*100
+- g:roof*50
 - BOOKSHELF*8
 - g:sign*8
-- g:secondary*60
-- g:primary*250
+- g:secondary*30
+- g:primary*125
 build-radius: 5 # 11x11x11
 effects:
 - block_break
@@ -42,3 +42,4 @@ description:
   ru: "Центральная структура для города. Производит 192 энергии в день. Также выступает в качестве домашнего порта."
   pt_br: "A estrutura central de uma cidade. Produz 192 de energia por dia. Também atua como um porto de origem."
   fr: "La structure centrale d'une ville. Produit 192 puissance par jour. Agit également comme port d'attache."
+  hu: "A város központja. 192 erőpontot generál naponta. Otthon teleportnak is használható."

@@ -20,9 +20,9 @@ towns:
 build-reqs:
 - g:window*4
 - g:door*1
-- g:roof*50
-- g:primary*160
-- g:secondary*30
+- g:roof*25
+- g:primary*80
+- g:secondary*15
 
 build-radius: 4
 
@@ -45,3 +45,4 @@ description:
   ru: "Щелкните правой кнопкой мыши железный блок, чтобы починить предметы. Создает 192 сил в день"
   pt_br: "Clique com o botão direito no bloco de ferro para reparar itens. Cria 192 de energia por dia"
   fr: "Faites un clic droit sur le bloc de fer pour réparer les objets. Crée 192 puissances par jour"
+  hu: "Eszközöket javít jobb egérgombbal kattintással vasblokkra. 192 erőpontot generál naponta."

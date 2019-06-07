@@ -5,34 +5,52 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.*;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class CommonScheduler implements Runnable {
     private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
+    private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
+    public static boolean run = true;
 
     @Override
     public void run() {
         try {
+            if (!run) {
+                return;
+            }
             depreciateKarma();
             StructureUtil.cleanUpExpiredBoundingBoxes();
 
@@ -44,6 +62,7 @@ public class CommonScheduler implements Runnable {
                     playerInRegion(player);
                     playerInTown(player);
                     incrementMana(player);
+                    sendAnnouncement(player);
                 } catch (Exception e) {
 
                 }
@@ -51,8 +70,8 @@ public class CommonScheduler implements Runnable {
             }
             if (i == MAX_TPS - 1) {
                 i = 0;
-                RegionTickThread regionTickThread = new RegionTickThread();
-                regionTickThread.run();
+                RegionTickTask regionTickTask = new RegionTickTask();
+                regionTickTask.run();
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
@@ -64,6 +83,26 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
+    private void sendAnnouncement(Player player) {
+        if (!ConfigManager.getInstance().isUseAnnouncements()) {
+            return;
+        }
+        long announcementCooldown = ConfigManager.getInstance().getAnnouncementPeriod() * 1000;
+        if (!lastAnnouncment.containsKey(player.getUniqueId())) {
+            lastAnnouncment.put(player.getUniqueId(), System.currentTimeMillis() + announcementCooldown);
+            return;
+        } else if (lastAnnouncment.get(player.getUniqueId()) > System.currentTimeMillis()) {
+            return;
+        } else {
+            lastAnnouncment.put(player.getUniqueId(), System.currentTimeMillis() + announcementCooldown);
+        }
+        AnnouncementUtil.sendAnnouncement(player);
+    }
+
+    public static void removeLastAnnouncement(UUID uuid) {
+        lastAnnouncment.remove(uuid);
+    }
+
     private void depreciateKarma() {
         long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
         //TODO lazy loop this
@@ -75,7 +114,8 @@ public class CommonScheduler implements Runnable {
                 continue;
             }
             civilian.setLastKarmaDepreciation(System.currentTimeMillis());
-            civilian.setKarma(civilian.getKarma() / 2);
+            double newKarma = (double) civilian.getKarma() / 2;
+            civilian.setKarma(newKarma < 0 ? (int) Math.ceil(newKarma) : (int) Math.floor(newKarma));
             CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
@@ -135,15 +175,27 @@ public class CommonScheduler implements Runnable {
         PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        String govName = "Unknown";
+        if (government != null) {
+            govName = government.getNames().get(civilian.getLocale());
+        }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "enter-town").replace("$1", town.getName()));
+                "enter-town").replace("$1", town.getName())
+                .replace("$2", govName));
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
         PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerExitTownEvent);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        String govName = "Unknown";
+        if (government != null) {
+            govName = government.getNames().get(civilian.getLocale());
+        }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "exit-town").replace("$1", town.getName()));
+                "exit-town").replace("$1", town.getName())
+                .replace("$2", govName));
     }
 
     private void playerInRegion(Player player) {

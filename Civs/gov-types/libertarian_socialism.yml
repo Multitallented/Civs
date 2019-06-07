@@ -1,0 +1,40 @@
+##### BUILT IN #####
+# no town owners
+# no taxes
+# no bank
+# anyone can join the town
+# all farms, mines, factories, and quarries are public
+
+icon: "ORANGE_GLAZED_TERRACOTTA"
+enabled: true
+name:
+  en: "Libertarian Socialism"
+  de: "Libertärer Sozialismus"
+  ru: "Либертарианский социализм"
+  pt_br: "Socialismo Libertário"
+  fr: "Socialisme libertaire"
+  es: "Socialismo libertario"
+  hu: "Liberális szocializmus"
+description:
+  en: "Libertarian + Socialism"
+  es: "Libertario + socialismo"
+  fr: "Libertaire + socialisme"
+  pt_br: "Libertário + Socialismo"
+  ru: "Либертарианец + социализм"
+  de: "Libertärer + Sozialismus"
+  hu: "Liberalizmus + Szocializmus"
+buffs:
+  cooldown:
+    percent: 10
+    groups:
+      - factory
+      - mine
+      - quarry
+  payout:
+    percent: 10
+    groups:
+      - housing
+  cost:
+    percent: 10
+    groups:
+      - housing

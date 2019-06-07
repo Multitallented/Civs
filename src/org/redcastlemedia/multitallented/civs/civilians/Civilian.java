@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 public class Civilian {
 
@@ -67,6 +68,10 @@ public class Civilian {
     @Getter
     @Setter
     private int tutorialProgress;
+
+    @Getter
+    @Setter
+    private boolean useAnnouncements;
 
     public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
             HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -175,7 +180,6 @@ public class Civilian {
         if (lastDamage < 0) {
             return false;
         }
-        int combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
         Player player = Bukkit.getPlayer(uuid);
         if (player == null || player.isDead()) {
             lastDamager = null;
@@ -188,6 +192,8 @@ public class Civilian {
             lastDamage = -1;
             return false;
         }
+        int combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
+        combatTagDuration *= 1000;
         if (lastDamage + combatTagDuration < System.currentTimeMillis()) {
             lastDamager = null;
             lastDamage = -1;
@@ -227,7 +233,15 @@ public class Civilian {
         return level;
     }
 
-    public boolean isAtMax(CivItem civItem) {
+    public boolean isAtGroupMax(String group) {
+        if (ConfigManager.getInstance().getGroups().get(group) != null &&
+                ConfigManager.getInstance().getGroups().get(group) <= getCountGroup(group)) {
+            return true;
+        }
+        return false;
+    }
+
+    public String isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
         int rebuildBonus = 0;
         if (CivItem.ItemType.REGION == civItem.getItemType() && null != ((RegionType) civItem).getRebuild()) {
@@ -236,20 +250,20 @@ public class Civilian {
         boolean atMax = civItem.getCivMax() != -1 &&
                 civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
-            return true;
+            return civItem.getProcessedName();
         }
         ConfigManager configManager = ConfigManager.getInstance();
         if (civItem.getGroups() == null ||
                 civItem.getGroups().isEmpty()) {
-            return false;
+            return null;
         }
         for (String group : civItem.getGroups()) {
             if (configManager.getGroups().get(group) != null &&
                     configManager.getGroups().get(group) + rebuildBonus <= getCountGroup(group)) {
-                return true;
+                return group;
             }
         }
-        return false;
+        return null;
     }
 
     public int getCountStashItems(String name) {
@@ -279,7 +293,7 @@ public class Civilian {
             if (displayName == null) {
                 continue;
             }
-            displayName = displayName.replace("Civs ", "").toLowerCase();
+            displayName = displayName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
             CivItem item = itemManager.getItemType(displayName);
             if (item == null) {
                 continue;
@@ -306,8 +320,10 @@ public class Civilian {
     public int getCountRegions(String name) {
         int count = 0;
         for (Region region : RegionManager.getInstance().getAllRegions()) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (region.getOwners().contains(uuid) && (name == null ||
-                    region.getType().equalsIgnoreCase(name))) {
+                    region.getType().equalsIgnoreCase(name) ||
+                    regionType.getGroups().contains(name))) {
                 count++;
             }
         }
@@ -316,13 +332,14 @@ public class Civilian {
 
     public int getCountNonStashItems(String name) {
         int count = 0;
-        String itemName = "Civs " + name;
         for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
-            if (is == null || !is.hasItemMeta()) {
+            if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            String displayName = is.getItemMeta().getDisplayName();
-            if (displayName == null || !displayName.toLowerCase().equals(itemName)) {
+            CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
+                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+            if (!civItem.getProcessedName().equalsIgnoreCase(name) &&
+                    !civItem.getGroups().contains(name)) {
                 continue;
             }
             count += is.getAmount();

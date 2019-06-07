@@ -79,7 +79,7 @@ public class CivilianTests {
         CivilianManager civilianManager = CivilianManager.getInstance();
         civilianManager.loadCivilian(TestUtil.player);
         Civilian civilian = civilianManager.getCivilian(TestUtil.player.getUniqueId());
-        assertFalse(civilian.isAtMax(itemManager.getItemType("cobble")));
+        assertNull(civilian.isAtMax(itemManager.getItemType("cobble")));
     }
 
 //    @Test

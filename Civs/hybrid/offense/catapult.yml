@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: TNT
 name: Catapult
 price: 150
 groups:
@@ -8,7 +9,7 @@ level: 1
 
 build-reqs:
 - OBSIDIAN*16
-- IRON_BARS*16
+- IRON_BARS*8
 - REDSTONE_BLOCK*2
 - TNT*4
 
@@ -35,3 +36,4 @@ description:
   fr: "Tire TNT avec précision à longue portée."
   pt_br: "Fotografa TNT com precisão a longa distância."
   de: "Schießt TNT mit großer Präzision auf Distanz."
+  hu: "TNT-t lő nagy távolságokrara nagy pontossággal."

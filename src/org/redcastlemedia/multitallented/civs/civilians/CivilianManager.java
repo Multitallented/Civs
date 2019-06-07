@@ -37,6 +37,12 @@ public class CivilianManager {
         loadAllCivilians();
     }
 
+    public void reload() {
+        civilians.clear();
+        sortedCivilians.clear();
+        loadAllCivilians();
+    }
+
     protected CivilianManager(boolean load) {
         civilianManager = this;
     }
@@ -66,6 +72,7 @@ public class CivilianManager {
         } catch (NullPointerException npe) {
 
         }
+        listNeedsToBeSorted = true;
         sortCivilians();
     }
 
@@ -92,7 +99,8 @@ public class CivilianManager {
         if (!listNeedsToBeSorted) {
             return;
         }
-        Collections.sort(sortedCivilians, new Comparator<Civilian>() {
+        listNeedsToBeSorted = false;
+        sortedCivilians.sort(new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {
                 if (o1.getPoints() == o2.getPoints()) {
@@ -177,6 +185,7 @@ public class CivilianManager {
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
+            civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -223,6 +232,7 @@ public class CivilianManager {
                 new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
+        civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(-1);
         return civilian;
     }
@@ -258,6 +268,7 @@ public class CivilianManager {
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());
+            civConfig.set("use-announcements", civilian.isUseAnnouncements());
 
             civConfig.set("items", null);
             for (String currentName : civilian.getStashItems().keySet()) {

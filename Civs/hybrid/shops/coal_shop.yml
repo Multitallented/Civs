@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: COAL
 name: Coal_Shop
 max: 1
 price: 100
@@ -9,7 +10,7 @@ groups:
 level: 1
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - COAL_BLOCK*1
 - g:wool*25
@@ -39,3 +40,4 @@ description:
   ru: "Продает 144 угля на сервер за $ 432 в день"
   de: "Verkauft 144 Kohle an den Server für $ 432 pro Tag"
   fr: "Vend 144 charbon au serveur pour 432 $ par jour"
+  hu: "144 db szenet ad el a szervernek napi $432-ért."

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -35,6 +36,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -66,15 +68,18 @@ public class CivilianListener implements Listener {
         ConfigManager configManager = ConfigManager.getInstance();
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        outer: if (configManager.getUseStarterBook()) {
-            ItemStack stack = Util.createStarterBook(civilian.getLocale());
+        if (configManager.getUseStarterBook()) {
+            boolean hasStarterBook = false;
             for (ItemStack is : player.getInventory()) {
-                if (is == null || Util.isStarterBook(is)) {
-                    continue;
+                if (is != null && Util.isStarterBook(is)) {
+                    hasStarterBook = true;
+                    break;
                 }
-                break outer;
             }
-            player.getInventory().addItem(stack);
+            if (!hasStarterBook) {
+                ItemStack stack = Util.createStarterBook(civilian.getLocale());
+                player.getInventory().addItem(stack);
+            }
         }
     }
 
@@ -99,8 +104,10 @@ public class CivilianListener implements Listener {
 //        civilianManager.unloadCivilian(player);
         CommonScheduler.lastRegion.remove(uuid);
         CommonScheduler.lastTown.remove(uuid);
+        CommonScheduler.removeLastAnnouncement(uuid);
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
+        AnnouncementUtil.clearPlayer(uuid);
         StructureUtil.removeBoundingBox(uuid);
     }
 
@@ -131,21 +138,26 @@ public class CivilianListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() &&
-                item.getItemStack().getItemMeta() != null &&
-                item.getItemStack().getItemMeta().getDisplayName() != null &&
-                item.getItemStack().getItemMeta().getDisplayName().contains("Civs ")) {
+        if (checkDroppedItem(item.getItemStack(), event.getPlayer())) {
             item.remove();
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-            String itemName = item.getItemStack().getItemMeta().getDisplayName()
-                    .replace("Civs ", "").toLowerCase();
-            if (civilian.getStashItems().containsKey(itemName)) {
-                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
-            } else {
-                civilian.getStashItems().put(itemName, 1);
-            }
-            CivilianManager.getInstance().saveCivilian(civilian);
         }
+    }
+
+    public static boolean checkDroppedItem(ItemStack itemStack, Player player) {
+        if (ConfigManager.getInstance().getAllowSharingCivsItems() ||
+                !CVItem.isCivsItem(itemStack)) {
+            return false;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        String itemName = itemStack.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        if (civilian.getStashItems().containsKey(itemName)) {
+            civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+        } else {
+            civilian.getStashItems().put(itemName, 1);
+        }
+        CivilianManager.getInstance().saveCivilian(civilian);
+        return true;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -154,7 +166,8 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        String itemTypeName = is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
@@ -167,7 +180,8 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase();
+        String itemTypeName = is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
         CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
@@ -178,9 +192,7 @@ public class CivilianListener implements Listener {
     @EventHandler
     public void onStarterBookClick(PlayerInteractEvent event) {
         if (event.getItem() == null ||
-                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
-                event.getItem().getType() != Material.WRITTEN_BOOK ||
-                !event.getItem().hasItemMeta()) {
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
         if (ConfigManager.getInstance().getBlackListWorlds()
@@ -188,12 +200,8 @@ public class CivilianListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!localeManager.getTranslation(civilian.getLocale(), "starter-book")
-                .equals(event.getItem().getItemMeta().getDisplayName()) &&
-                !localeManager.getTranslation("en", "starter-book")
-                .equals(event.getItem().getItemMeta().getDisplayName())) {
+        if (!Util.isStarterBook(event.getItem())) {
             return;
         }
         event.setCancelled(true);
@@ -223,40 +231,44 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
+        boolean shouldCancel = shouldCancelBlockBreak(event.getBlock(), event.getPlayer());
+        if (shouldCancel) {
+            event.setCancelled(true);
+        }
+    }
+
+    public boolean shouldCancelBlockBreak(Block block, Player player) {
+        Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         BlockLogger blockLogger = BlockLogger.getInstance();
         CVItem cvItem = blockLogger.getBlock(location);
         if (cvItem == null) {
-            return;
+            return false;
         }
         UUID uuid = null;
         if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
-            uuid = UUID.fromString(cvItem.getLore().get(0));
+            uuid = UUID.fromString(ChatColor.stripColor(cvItem.getLore().get(0)));
         }
-        blockLogger.removeBlock(event.getBlock().getLocation());
-        Region region = RegionManager.getInstance()
-                .getRegionById(Region.blockLocationToString(event.getBlock().getLocation()));
-        if (region != null) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
-            if (cancelled) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-                event.getPlayer().sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            }
-        }
+        blockLogger.removeBlock(block.getLocation());
+//        Region region = RegionManager.getInstance()
+//                .getRegionById(Region.blockLocationToString(block.getLocation()));
+//        if (region != null) {
+//            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+//            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
+//            if (cancelled) {
+//                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+//                player.sendMessage(Civs.getPrefix() +
+//                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+//            }
+//        }
         cvItem.setQty(1);
-        if (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
-                uuid == null || cvItem.getMat() != event.getBlock().getType() ||
-                !uuid.equals(event.getPlayer().getUniqueId())) {
-            event.setCancelled(true);
-            event.getBlock().setType(Material.AIR);
+        if (player != null && (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
+                uuid == null || cvItem.getMat() != block.getType() ||
+                !uuid.equals(player.getUniqueId()))) {
+            block.setType(Material.AIR);
         } else {
-            event.setCancelled(true);
-            event.getBlock().setType(Material.AIR);
+            block.setType(Material.AIR);
             ItemStack itemStack = cvItem.createItemStack();
-            Player player = event.getPlayer();
-            int firstEmptyIndex = player.getInventory().firstEmpty();
+            int firstEmptyIndex = player == null ? -1 : player.getInventory().firstEmpty();
             if (firstEmptyIndex > -1) {
                 player.getInventory().setItem(firstEmptyIndex, itemStack);
             } else {
@@ -272,6 +284,7 @@ public class CivilianListener implements Listener {
             }
 //            location.getWorld().dropItemNaturally(location, itemStack);
         }
+        return true;
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -281,7 +294,8 @@ public class CivilianListener implements Listener {
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName().replace("Civs ", "").toLowerCase());
+        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
@@ -349,9 +363,9 @@ public class CivilianListener implements Listener {
         }
         ItemStack dragged = event.getOldCursor();
 
-        if (checkMoveNormalItems(event)) {
-            return;
-        }
+//        if (checkMoveNormalItems(event)) {
+//            return;
+//        }
 
         if (!CVItem.isCivsItem(dragged) ||
                 event.getInventory().getTitle().startsWith("Civ")) {
@@ -400,9 +414,9 @@ public class CivilianListener implements Listener {
             return;
         }
 
-        if (checkMoveNormalItems(event, stackInQuestion)) {
-            return;
-        }
+//        if (checkMoveNormalItems(event, stackInQuestion)) {
+//            return;
+//        }
 
         if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
             return;
@@ -415,9 +429,9 @@ public class CivilianListener implements Listener {
     }
 
     private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {
-        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
+        if (!(event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) ||
+                event.getView().getTitle().equals(SpellsMenu.MENU_NAME) ||
+                event.getView().getTitle().equals(ClassMenu.MENU_NAME))) {
             return false;
         }
         if (CVItem.isCivsItem(stackInQuestion)) {

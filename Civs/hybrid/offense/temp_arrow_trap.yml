@@ -1,7 +1,8 @@
 type: region
-name: Arrow_Trap
+name: Temp_Arrow_Trap
+shop-icon: ARROW
 icon: CHEST
-price: 500
+price: 50
 groups:
 - offense
 - trap
@@ -9,7 +10,7 @@ groups:
 level: 1
 
 build-reqs:
-- g:fence*5
+- g:fence*4
 - REDSTONE_WIRE*4
 - DISPENSER*1
 
@@ -40,4 +41,5 @@ description:
   de: "Schießt auf Pfeile in der Nähe von Nicht-Mitgliedern. Zerstört sich in 15 Minuten."
   ru: "Стреляет стрелами у ближайших нечленов. Уничтожает себя через 15 минут."
   fr: "Tire des flèches sur les non-membres proches. Se détruit en 15 minutes."
+  hu: "Nyilakat lő a közelében álló nem városlakókra. Megsemmisíti magát 15 perc után."
 

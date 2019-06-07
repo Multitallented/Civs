@@ -2,17 +2,22 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -26,17 +31,98 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
+
+import net.md_5.bungee.api.chat.TextComponent;
 
 public final class Util {
 
     private Util() {
 
+    }
+
+    public static void promoteWhoeverHasMostMerit(Town town, boolean save) {
+        UUID lowestOwner = null;
+        int lowestOwnerScore = 99999999;
+        UUID highestMember = null;
+        int highestMemberScore = 0;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            String role = town.getRawPeople().get(uuid);
+            if (role.contains("member")) {
+                int score = Util.calculateMerit(uuid, town);
+                if (score > highestMemberScore) {
+                    highestMember = uuid;
+                    highestMemberScore = score;
+                }
+            } else if (role.contains("owner")) {
+                int score = Util.calculateMerit(uuid, town);
+                if (score < lowestOwnerScore) {
+                    lowestOwnerScore = score;
+                    lowestOwner = uuid;
+                }
+            }
+        }
+        if (lowestOwner != null && highestMember != null && lowestOwnerScore < highestMemberScore) {
+            town.setPeople(lowestOwner, "member");
+            town.setPeople(highestMember, "owner");
+            if (save) {
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+    }
+
+    public static void checkMerit(Town town, Player player) {
+        if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        int score = Util.calculateMerit(player.getUniqueId(), town);
+        UUID demoteMe = null;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            if (town.getRawPeople().get(uuid).contains("owner")) {
+                if (Util.calculateMerit(uuid, town) < score) {
+                    demoteMe = uuid;
+                    break;
+                }
+            }
+        }
+        if (demoteMe != null) {
+            town.setPeople(demoteMe, "member");
+            town.setPeople(player.getUniqueId(), "owner");
+            TownManager.getInstance().saveTown(town);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
+            String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "merit-new-owner"
+            ).replace("$1", name));
+            spawnRandomFirework(player);
+        }
+    }
+
+    public static int calculateMerit(UUID uuid, Town forTown) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        int basePoints = (int) (civilian.getPoints() - (double) civilian.getDeaths() / 4);
+
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.equals(forTown) || !town.getRawPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            int townPoints = 0;
+            for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+                if (region.getRawPeople().containsKey(civilian.getUuid()) &&
+                        region.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                    RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                    townPoints += 4 * regionType.getLevel();
+                }
+            }
+            return basePoints + townPoints;
+        }
+
+        return 0;
     }
 
     public static boolean equivalentLocations(Location location1, Location location2) {
@@ -95,7 +181,7 @@ public final class Util {
                 itemStack.getItemMeta().getLore().isEmpty()) {
             return false;
         }
-        return itemStack.getItemMeta().getLore().get(0).equals("starter-book");
+        return ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0)).equals("starter-book");
     }
 
     public static List<String> parseColors(List<String> inputString) {
@@ -106,29 +192,80 @@ public final class Util {
     }
     public static String parseColors(String input) {
         String returnInput = new String(input);
-        returnInput = returnInput.replaceAll("@\\{AQUA\\}", ChatColor.AQUA + "");
-        returnInput = returnInput.replaceAll("@\\{BLACK\\}", ChatColor.BLACK + "");
-        returnInput = returnInput.replaceAll("@\\{BLUE\\}", ChatColor.BLUE + "");
-        returnInput = returnInput.replaceAll("@\\{BOLD\\}", ChatColor.BOLD + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_AQUA\\}", ChatColor.DARK_AQUA + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_BLUE\\}", ChatColor.DARK_BLUE + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_GRAY\\}", ChatColor.DARK_GRAY + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_GREEN\\}", ChatColor.DARK_GREEN + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_PURPLE\\}", ChatColor.DARK_PURPLE + "");
-        returnInput = returnInput.replaceAll("@\\{DARK_RED\\}", ChatColor.DARK_RED + "");
-        returnInput = returnInput.replaceAll("@\\{GOLD\\}", ChatColor.GOLD + "");
-        returnInput = returnInput.replaceAll("@\\{GREEN\\}", ChatColor.GREEN + "");
-        returnInput = returnInput.replaceAll("@\\{ITALIC\\}", ChatColor.ITALIC + "");
-        returnInput = returnInput.replaceAll("@\\{LIGHT_PURPLE\\}", ChatColor.LIGHT_PURPLE + "");
-        returnInput = returnInput.replaceAll("@\\{MAGIC\\}", ChatColor.MAGIC + "");
-        returnInput = returnInput.replaceAll("@\\{RED\\}", ChatColor.RED + "");
-        returnInput = returnInput.replaceAll("@\\{RESET\\}", ChatColor.RESET + "");
-        returnInput = returnInput.replaceAll("@\\{STRIKETHROUGH\\}", ChatColor.STRIKETHROUGH + "");
-        returnInput = returnInput.replaceAll("@\\{UNDERLINE\\}", ChatColor.UNDERLINE + "");
-        returnInput = returnInput.replaceAll("@\\{WHITE\\}", ChatColor.WHITE + "");
-        returnInput = returnInput.replaceAll("@\\{YELLOW\\}", ChatColor.YELLOW + "");
+        for (ChatColor color : ChatColor.values()) {
+            returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
+        }
         return returnInput;
     }
+
+    public static TextComponent parseColorsComponent(String input) {
+        TextComponent message = new TextComponent();
+        HashMap<Integer, net.md_5.bungee.api.ChatColor> colorMap = new HashMap<>();
+        input = findColorIndexes(input, colorMap);
+        ArrayList<Integer> indexes = new ArrayList<>(colorMap.keySet());
+        Collections.sort(indexes);
+        int prevIndex = 0;
+        for (Integer index : indexes) {
+            if (index == prevIndex) {
+                continue;
+            }
+            if (prevIndex == 0) {
+                message.setText(input.substring(prevIndex, index));
+                if (colorMap.containsKey(0)) {
+                    message.setColor(colorMap.get(0));
+                }
+            } else {
+                TextComponent newComponent = new TextComponent(input.substring(prevIndex, index));
+                newComponent.setColor(colorMap.get(prevIndex));
+                message.addExtra(newComponent);
+            }
+            prevIndex = index;
+        }
+        if (colorMap.isEmpty()) {
+            message.setText(input);
+        } else {
+            TextComponent newComponent = new TextComponent(input.substring(prevIndex));
+            newComponent.setColor(colorMap.get(prevIndex));
+            message.addExtra(newComponent);
+        }
+
+        return message;
+    }
+
+    private static String findColorIndexes(String input, HashMap<Integer, net.md_5.bungee.api.ChatColor> colorMap) {
+        String patternStr = "@\\{[A-z]*\\}";
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+
+            String key = input.substring(matcher.start() + 2, matcher.end() - 1);
+            net.md_5.bungee.api.ChatColor color;
+            try {
+                color = net.md_5.bungee.api.ChatColor.valueOf(key);
+            } catch (Exception e) {
+                continue;
+            }
+            colorMap.put(matcher.start(), color);
+            input = input.replaceFirst("@\\{[A-z]*\\}", "");
+            matcher = pattern.matcher(input);
+        }
+        return input;
+    }
+
+    public static boolean isLocationWithinSightOfPlayer(Location location) {
+        final int RENDER_RANGE_SQUARED = 25600;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.getWorld().equals(location.getWorld())) {
+                continue;
+            }
+            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&
                 type != Material.LEVER &&
@@ -394,7 +531,7 @@ public final class Util {
             override = !regionType.getEffects().containsKey("cant_override") &&
                     townType.getEffects().containsKey("control_override") &&
                     town.getPeople().get(civilian.getUuid()) != null &&
-                    town.getPeople().get(civilian.getUuid()).equals("owner");
+                    town.getPeople().get(civilian.getUuid()).contains("owner");
         }
         return override;
     }

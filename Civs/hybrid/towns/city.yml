@@ -1,5 +1,6 @@
 type: town
 icon: GLOWSTONE
+shop-icon: EMERALD_BLOCK
 name: City
 max: 1
 price: 24000
@@ -8,7 +9,7 @@ groups:
 level: 6
 
 pre-reqs:
-- town:population=30
+- town:population=20
 
 build-reqs:
 - city_hall:1
@@ -70,3 +71,4 @@ description:
   ru: "Пятый уровень города."
   pt_br: "O quinto nível de uma cidade."
   fr: "Le cinquième niveau d'une ville."
+  hu: "Az ötödik szintje a városnak."

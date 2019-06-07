@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: PIG_SPAWN_EGG
 name: Pig_Pen
 max: 1
 price: 10
@@ -9,8 +10,8 @@ level: 1
 
 build-reqs:
 - g:log*4
-- g:wood*20
-- g:fence*19
+- g:wood*10
+- g:fence*9
 - g:fencegate*1
 
 build-radius: 3
@@ -37,3 +38,4 @@ description:
   pt_br: "Fazenda de suínos automática"
   ru: "Автоматическая свиноферма"
   de: "Automatische Schweinefarm"
+  hu: "Automatikus malacfarm."

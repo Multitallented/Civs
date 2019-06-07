@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SpawnEffect implements Listener {
 
@@ -18,7 +19,7 @@ public class SpawnEffect implements Listener {
     public void onUpkeep(RegionUpkeepEvent event) {
         Location location = event.getRegion().getLocation();
         if (!event.getRegion().getEffects().containsKey(KEY) ||
-                !location.getChunk().isLoaded()) {
+                !Util.isLocationWithinSightOfPlayer(location)) {
             return;
         }
         EntityType entityType;

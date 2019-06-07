@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: OAK_PLANKS
 name: Shelter
 min: 1
 max: 1
@@ -17,7 +18,7 @@ effects:
 - block_explosion
 - deny_damage
 - port:private
-- active #TODO make this
+- active:120960
 
 period: 1800 # 30 minutes
 upkeep:
@@ -45,3 +46,4 @@ description:
   de: "Ein sicherer Ort, um Ihre Gegenstände zu lagern und etwas Geld zu verdienen."
   ru: "Безопасное место для хранения ваших предметов и заработок."
   pt_br: "Um lugar seguro para armazenar seus itens e ganhar algum dinheiro."
+  hu: "Egy hely, ahol biztonságosan tárolhatod a tárgyaidat. Negyed óránként egy kevés pénzt is kereshetsz vele."

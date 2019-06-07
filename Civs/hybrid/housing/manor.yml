@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: LIGHT_BLUE_BED
 name: Manor
 max: 2
 price: 4000
@@ -16,14 +17,14 @@ pre-reqs:
 build-reqs:
 - CHEST*8
 - g:door*1
-- g:window*16
+- g:window*8
 - g:bed*1
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
-- g:roof*210
-- g:secondary*160
-- g:primary*500
+- g:roof*105
+- g:secondary*80
+- g:primary*250
 
 rebuild: basemansion
 rebuild-required: true
@@ -69,3 +70,4 @@ description:
   pt_br: "7º nível de casa. Ganhe $ 1032 por dia."
   fr: "7ème niveau de la maison. Gagne 1032 $ par jour."
   ru: "7-й уровень дома. Зарабатывает $ 1032 в день."
+  hu: "7. szintje a háznak. Bevétele $1032 naponta."

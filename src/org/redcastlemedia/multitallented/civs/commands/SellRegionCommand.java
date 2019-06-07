@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class SellRegionCommand implements CivCommand {
     @Override
@@ -54,7 +52,7 @@ public class SellRegionCommand implements CivCommand {
         commandSender.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", region.getType())
-                .replace("$2", NumberFormat.getCurrencyInstance(Locale.forLanguageTag(civilian.getLocale())).format(salePrice)));
+                .replace("$2", Util.getNumberFormat(salePrice, civilian.getLocale())));
         return true;
     }
 
@@ -65,8 +63,14 @@ public class SellRegionCommand implements CivCommand {
 
     private boolean permissionToSellRegion(Player player, Region region) {
         // Dont sell allow sale of a region that has multiple members
-        if (region == null || !region.getRawPeople().containsKey(player.getUniqueId())
-                || region.getRawPeople().keySet().size() != 1) {
+        int count = 0;
+        for (String role : region.getRawPeople().values()) {
+            if (role.contains("member") || role.contains("owner")) {
+                count++;
+            }
+        }
+        if (!region.getRawPeople().containsKey(player.getUniqueId())
+                || count != 1) {
             return false;
         }
         return true;

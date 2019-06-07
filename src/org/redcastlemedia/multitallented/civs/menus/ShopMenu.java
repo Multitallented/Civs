@@ -1,12 +1,14 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -38,7 +40,7 @@ public class ShopMenu extends Menu {
             return;
         }
         ItemMeta im = clickedStack.getItemMeta();
-        String itemName = im.getDisplayName();
+        String itemName = ChatColor.stripColor(im.getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         if (isBackButton(clickedStack, civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -46,7 +48,8 @@ public class ShopMenu extends Menu {
         }
 
         String history = MENU_NAME;
-        if (itemName.equals(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "sort-by-level"))) {
+        if (itemName.equals(ChatColor.stripColor(LocaleManager.getInstance()
+                .getTranslation(civilian.getLocale(), "sort-by-level")))) {
             event.getWhoClicked().closeInventory();
             appendHistory(civilian.getUuid(), history);
             event.getWhoClicked().openInventory(ShopLevelMenu.createMenu(civilian));
@@ -136,18 +139,21 @@ public class ShopMenu extends Menu {
                     continue;
                 }
             }
-            if (civItem.getItemType() != CivItem.ItemType.FOLDER && civilian.isAtMax(civItem)) {
-                CVItem item = CVItem.createCVItemFromString("OBSIDIAN");
+            String maxLimit = civilian.isAtMax(civItem);
+            if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
+                CVItem item = CVItem.createCVItemFromString("BARRIER");
                 item.setDisplayName(civItem.getDisplayName());
+                int limit = maxLimit.equals(civItem.getProcessedName()) ? civItem.getCivMax() :
+                        ConfigManager.getInstance().getGroups().get(maxLimit);
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
-                        "max-item").replace("$1", civItem.getProcessedName())
-                            .replace("$2", civItem.getCivMax() + ""));
+                        "max-item").replace("$1", maxLimit)
+                            .replace("$2", limit + ""));
                 item.getLore().addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
                 inventory.setItem(i, item.createItemStack());
                 i++;
                 continue;
             }
-            CVItem civItem1 = civItem.clone();
+            CVItem civItem1 = civItem.getShopIcon().clone();
             if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
                 civItem1.getLore().clear();
                 civItem1.getLore().add(civilian.getUuid().toString());

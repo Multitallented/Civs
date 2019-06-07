@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -93,6 +94,41 @@ public class ConfigManager {
     @Getter
     boolean useParticleBoundingBoxes;
 
+    @Getter
+    GovernmentType defaultGovernmentType;
+
+    @Getter
+    boolean allowChangingOfGovType;
+    @Getter
+    double maxTax;
+    @Getter
+    int daysBetweenVotes;
+    @Getter
+    double capitalismVotingCost;
+    @Getter
+    String topGuideSpacer;
+    @Getter
+    String bottomGuideSpacer;
+    String civsChatPrefix;
+    @Getter
+    String prefixAllText;
+    String civsItemPrefix;
+    @Getter
+    boolean useAnnouncements;
+    @Getter
+    long announcementPeriod;
+
+    public ConfigManager() {
+        loadDefaults();
+        configManager = this;
+    }
+
+    public ConfigManager(File configFile) {
+        configManager = this;
+        loadFile(configFile);
+    }
+
+
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -161,6 +197,13 @@ public class ConfigManager {
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
 
+    public String getCivsChatPrefix() {
+        return Util.parseColors(civsChatPrefix);
+    }
+    public String getCivsItemPrefix() {
+        return Util.parseColors(civsItemPrefix + " ");
+    }
+
     public List<String> getCustomItemDescription(String key) {
         List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
         if (returnDescription == null) {
@@ -184,11 +227,6 @@ public class ConfigManager {
             cvItem = CVItem.createCVItemFromString("CHEST");
         }
         return cvItem;
-    }
-
-    public ConfigManager(File configFile) {
-        configManager = this;
-        loadFile(configFile);
     }
 
     private void loadFile(File configFile) {
@@ -288,6 +326,26 @@ public class ConfigManager {
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
             useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
+            String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
+            if (defaultGovTypeString != null) {
+                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+            } else {
+                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+            }
+            allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
+            maxTax = config.getDouble("max-town-tax", 50);
+            daysBetweenVotes = config.getInt("days-between-elections", 7);
+            capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
+            topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
+            bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
+            civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            if ("".equals(civsItemPrefix)) {
+                civsItemPrefix = "Civs";
+            }
+            useAnnouncements = config.getBoolean("use-announcements", true);
+            announcementPeriod = config.getLong("announcement-period", 240);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -313,9 +371,17 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        announcementPeriod = 240;
+        useAnnouncements = true;
+        prefixAllText = "";
+        civsChatPrefix = "@{GREEN}[Civs]";
+        civsItemPrefix = "Civs";
+        capitalismVotingCost = 200;
+        daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
         useParticleBoundingBoxes = false;
+        maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;
         priceMultiplier = 1;
@@ -367,11 +433,17 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
+        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        allowChangingOfGovType = false;
     }
 
     public static ConfigManager getInstance() {
         if (configManager == null) {
-            configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            if (Civs.getInstance() != null) {
+                configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
+            } else {
+                new ConfigManager();
+            }
             return configManager;
         } else {
             return configManager;

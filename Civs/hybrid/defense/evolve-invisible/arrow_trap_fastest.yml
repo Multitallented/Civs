@@ -1,6 +1,7 @@
 type: region
 name: Arrow_Trap_Fastest
 icon: CHEST
+shop-icon: ARROW
 groups:
 - defense
 - trap
@@ -9,7 +10,7 @@ is-in-shop: false
 level: 2
 
 build-reqs:
-- g:fence*5
+- g:fence*4
 - REDSTONE_WIRE*4
 - DISPENSER*1
 
@@ -47,3 +48,4 @@ description:
   de: "Schießt auf Pfeile in der Nähe von Nicht-Mitgliedern"
   pt_br: "Dispara flechas em não membros próximos"
   ru: "Стреляет стрелами у близлежащих членов"
+  hu: "Nyilakat lő a közelében álló nem városlakókra."

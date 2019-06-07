@@ -39,6 +39,11 @@ public class ItemManager {
         return itemManager;
     }
 
+    public void reload() {
+        itemTypes.clear();
+        loadAllItemTypes();
+    }
+
     private void loadAllItemTypes() {
         Civs civs = Civs.getInstance();
         if (civs == null) {
@@ -106,11 +111,11 @@ public class ItemManager {
             return;
         }
     }
-    public CivItem loadClassType(FileConfiguration configuration) throws NullPointerException {
+    public CivItem loadClassType(FileConfiguration config) throws NullPointerException {
         //TODO load classestype properly
-        CVItem icon = CVItem.createCVItemFromString(configuration.getString("icon", "CHEST"));
-        String name = configuration.getString("name");
-        ConfigurationSection configurationSection = configuration.getConfigurationSection("description");
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+        String name = config.getString("name");
+        ConfigurationSection configurationSection = config.getConfigurationSection("description");
         HashMap<String, String> description = new HashMap<>();
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
@@ -118,18 +123,19 @@ public class ItemManager {
             }
         }
         ClassType civItem = new ClassType(
-                configuration.getStringList("reqs"),
+                config.getStringList("reqs"),
                 name,
                 icon,
-                configuration.getDouble("price", 0),
-                configuration.getString("permission"),
-                configuration.getStringList("children"),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                config.getDouble("price", 0),
+                config.getString("permission"),
+                config.getStringList("children"),
                 description,
-                configuration.getStringList("groups"),
-                configuration.getInt("mana-per-second", 1),
-                configuration.getInt("max-mana", 100),
-                configuration.getBoolean("is-in-shop", true),
-                configuration.getInt("level", 1));
+                config.getStringList("groups"),
+                config.getInt("mana-per-second", 1),
+                config.getInt("max-mana", 100),
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1));
 
         itemTypes.put(name, civItem);
         return civItem;
@@ -149,6 +155,7 @@ public class ItemManager {
                 config.getStringList("reqs"),
                 name,
                 icon.getMat(),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
                 config.getInt("max", -1),
@@ -199,6 +206,7 @@ public class ItemManager {
         TownType townType = new TownType(
                 name,
                 icon,
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min",0),
@@ -219,6 +227,7 @@ public class ItemManager {
                 config.getInt("child-population", 0),
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
+        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType().name()));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -292,6 +301,7 @@ public class ItemManager {
         RegionType regionType = new RegionType(
                 name,
                 icon,
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
@@ -337,7 +347,7 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(name.replace("Civs ", "").toLowerCase());
+        return itemTypes.get(name.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
     }
 
     public List<CivItem> getItemGroup(String groupName) {
@@ -423,7 +433,7 @@ public class ItemManager {
         return returnList;
     }
 
-    boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
+    public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
         if (civItem.getCivReqs().isEmpty()) {
             return true;
         }
@@ -441,11 +451,8 @@ public class ItemManager {
                     }
                 //member=settlement:town:...
                 } else if (req.startsWith("member=")) {
-                    Set<String> townTypes = new HashSet<>();
                     String[] townTypeStrings = req.replace("member=", "").split(":");
-                    for (int i = 0; i < townTypeStrings.length; i++) {
-                        townTypes.add(townTypeStrings[i]);
-                    }
+                    Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (townTypes.contains(town.getType()) &&
                                 town.getPeople().containsKey(civilian.getUuid())) {
@@ -468,10 +475,6 @@ public class ItemManager {
                     continue;
                 }
                 String[] splitReq = req.split(":");
-                CivItem reqItem = itemManager.getItemType(splitReq[0]);
-                if (reqItem == null) {
-                    continue;
-                }
                 //house:???
                 if (splitReq.length < 2) {
                     if (civilian.getCountStashItems(splitReq[0]) > 0 ||
@@ -482,8 +485,8 @@ public class ItemManager {
                     }
                 }
                 String[] reqParams = splitReq[1].split("=");
-                //settlement:built=1
-                if (reqParams[0].equals("built") && reqItem.getItemType().equals(CivItem.ItemType.REGION)) {
+                //shack:built=1
+                if (reqParams[0].equals("built")) {
                     if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
@@ -491,7 +494,8 @@ public class ItemManager {
                     }
                 //bash:level=4
                 } else if (reqParams[0].equals("level")) {
-                    if (civilian.getExp().get(reqItem) == null) {
+                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                    if (reqItem == null || civilian.getExp().get(reqItem) == null) {
                         continue;
                     }
                     int level = civilian.getLevel(reqItem);

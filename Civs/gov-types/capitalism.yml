@@ -1,0 +1,34 @@
+##### BUILT IN #####
+# once a week, town owners are set to members
+# votes during the week set the winner as a town owner
+# members can pay money to vote more than once
+# town owners can override region ownership
+# town owners can set taxes
+# town owners can withdraw from the bank
+
+icon: "LIME_STAINED_GLASS"
+enabled: true
+name:
+  en: "Capitalism"
+  de: "Kapitalismus"
+  ru: "Капитализм"
+  pt_br: "Capitalismo"
+  es: "Capitalismo"
+  fr: "Capitalisme"
+  hu: "Kapitalizmus"
+description:
+  en: "Democracy + Town members can buy extra votes."
+  fr: "Les membres de Démocratie + Ville peuvent acheter des votes supplémentaires."
+  es: "Los miembros de Democracy + Town pueden comprar votos extra."
+  pt_br: "Democracia + os membros da cidade podem comprar votos extras."
+  ru: "Члены Демократии + Город могут купить дополнительные голоса."
+  de: "Demokratie + Stadt-Mitglieder können zusätzliche Stimmen kaufen."
+  hu: "Demokrácia + Város tagjai vehetnek extra szavazatokat."
+buffs:
+  payout:
+    percent: 10
+    groups:
+      - shop
+      - housing
+  max_power:
+    percent: 10

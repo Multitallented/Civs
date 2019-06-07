@@ -1,0 +1,42 @@
+##### BUILT IN #####
+# no human town owners
+# AI will invite players to the town
+# AI will set taxes
+# AI will give money from the bank to fund region creation
+# AI will propose alliances with other towns
+# AI will override region ownership
+# AI will fund town members to attack other towns
+
+icon: "LIGHT_BLUE_GLAZED_TERRACOTTA"
+enabled: false
+name:
+  en: "Cybersynacy"
+  fr: "Technocratie"
+  ru: "технократия"
+  de: "Technokratie"
+  pt_br: "Tecnocracia"
+  es: "Tecnocracia"
+  hu: "Technokrácia"
+description:
+  en: "No human town ownership. Alliances, taxes, recruitment and utilities are handled by an AI."
+  es: "Ninguna propiedad humana del pueblo. Las alianzas, los impuestos, el reclutamiento y los servicios públicos son manejados por una IA."
+  pt_br: "Nenhuma propriedade humana na cidade. Alianças, impostos, recrutamento e utilitários são manipulados por uma IA."
+  de: "Kein menschliches Stadteigentum. Allianzen, Steuern, Rekrutierung und Versorgungsunternehmen werden von einer künstlichen Intelligenz verwaltet."
+  ru: "Нет человеческой собственности города. Союзы, налоги, набор и коммунальные услуги обрабатываются с помощью искусственного интеллекта."
+  fr: "Aucune propriété humaine de la ville. Les alliances, les taxes, le recrutement et les services publics sont gérés par une IA."
+  hu: "Nincs emberi vezetőség. Szövetségek, adók, tagságok és szolgáltatásokat egy AI kezeli."
+buffs:
+  cooldown:
+    percent: 15
+    groups:
+      - farm
+      - mine
+      - factory
+      - quarry
+      - utility
+      - defense
+  payout:
+    percent: 15
+    groups:
+      - housing
+      - shops

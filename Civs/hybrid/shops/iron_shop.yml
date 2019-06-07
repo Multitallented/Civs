@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: IRON_INGOT
 name: Iron_Shop
 max: 1
 price: 100
@@ -19,7 +20,7 @@ towns:
 - metropolis
 
 build-reqs:
-- g:fence*14
+- g:fence*7
 - CHEST*1
 - IRON_BLOCK*1
 - g:wool*25
@@ -49,3 +50,4 @@ description:
   ru: "Продает 288 железа на сервер за $ 576 в день"
   de: "Verkauft 288 Eisen an den Server für 576 $ pro Tag"
   fr: "Vend 288 fer au serveur pour 576 $ par jour"
+  hu: "288 db vasat ad el a szervernek napi $576-ért."

@@ -1,5 +1,6 @@
 type: region
 icon: CHEST
+shop-icon: BIRCH_LOG
 name: Birch_Lumberyard
 max: 2
 price: 100
@@ -11,9 +12,9 @@ level: 1
 
 build-reqs:
 - BIRCH_LOG*8
-- BIRCH_LEAVES*32
-- g:fence*28
-- g:fencegate*2
+- BIRCH_LEAVES*16
+- g:fence*14
+- g:fencegate*1
 - CHEST*2
 
 build-radius: 4
@@ -46,3 +47,4 @@ upkeep:
 description:
   en: "Automated birch log farming"
   es: "Agricultura automatizada de registro de abedul"
+  hu: "Automatikus nyírfafarm."
