@@ -4,7 +4,7 @@
 # town owners can set taxes
 # town owners can withdraw from the bank
 
-icon: "LIGHT_GRAY_CONCRETE"
+icon: "COBBLESTONE"
 enabled: true
 name:
   en: "Feudalism"
