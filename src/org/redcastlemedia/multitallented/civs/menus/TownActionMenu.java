@@ -357,7 +357,8 @@ public class TownActionMenu extends Menu {
         }
 
         //11 Leave Town
-        if (town.getPeople().get(civilian.getUuid()) != null) {
+        if (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
             CVItem cvItem2 = CVItem.createCVItemFromString("OAK_DOOR");
             cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "leave-town"));
             inventory.setItem(11, cvItem2.createItemStack());
