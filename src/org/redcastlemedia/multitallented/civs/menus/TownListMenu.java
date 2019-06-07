@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TownListMenu extends Menu {
@@ -38,8 +39,10 @@ public class TownListMenu extends Menu {
         }
         String itemName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
-        int page = (int) getData(civilian.getUuid(), "page");
+        Integer dataPage = (Integer) getData(civilian.getUuid(), "page");
+        int page = dataPage == null ? 0 : dataPage;
         UUID uuid = (UUID) getData(civilian.getUuid(), "uuid");
+        ArrayList<Town> towns = (ArrayList<Town>) getData(civilian.getUuid(), "townList");
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
@@ -55,7 +58,11 @@ public class TownListMenu extends Menu {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
             }
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page + 1, uuid));
+            if (towns == null) {
+                event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page + 1, uuid));
+            } else {
+                event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page + 1, towns));
+            }
             return;
         }
         if (event.getCurrentItem().getType() == Material.REDSTONE &&
@@ -66,7 +73,11 @@ public class TownListMenu extends Menu {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
             }
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page - 1, uuid));
+            if (towns == null) {
+                event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page - 1, uuid));
+            } else {
+                event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, page - 1, towns));
+            }
             return;
         }
         String townName = event.getCurrentItem().getItemMeta().getDisplayName();
@@ -77,7 +88,6 @@ public class TownListMenu extends Menu {
             } else {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
             }
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
             return;
@@ -89,6 +99,7 @@ public class TownListMenu extends Menu {
 
         Map<String, Object> data = new HashMap<>();
         data.put("page", page);
+        data.put("townList", towns);
         setNewData(civilian.getUuid(), data);
 
         setItems(inventory, page, civilian, towns);

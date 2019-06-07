@@ -76,7 +76,7 @@ public final class AnnouncementUtil {
                 if (town.getBankAccount() > 0 && town.getRawPeople().get(civilian.getUuid()).contains("owner") &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-bank-" + town.getName())) {
                     keys.add("ann-bank-" + town.getName());
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-bank")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bank")
                             .replace("$1", town.getName())
                             .replace("$2", Util.getNumberFormat(town.getBankAccount(), civilian.getLocale())));
                 }
@@ -85,7 +85,7 @@ public final class AnnouncementUtil {
             if (!isInAnAlliance && TownManager.getInstance().getTowns().size() > 1 &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-make-allies")) {
                 keys.add("ann-make-allies");
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-make-allies"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-make-allies"));
             }
         }
         if (!towns.isEmpty()) {
@@ -99,7 +99,7 @@ public final class AnnouncementUtil {
                 if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid()) && town.getRawPeople().size() > 1 &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-vote-" + town.getName())) {
                     keys.add("ann-vote-" + town.getName());
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-vote")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-vote")
                             .replace("$1", town.getName()));
                 }
 
@@ -107,7 +107,7 @@ public final class AnnouncementUtil {
                 if (town.getPower() < town.getMaxPower() / 3 && town.getGovernmentType() != GovernmentType.FEUDALISM &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-town-low-power-" + town.getName())) {
                     keys.add("ann-town-low-power-" + town.getName());
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-low-power")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-low-power")
                             .replace("$1", town.getName())
                             .replace("$2", "" + town.getPower())
                             .replace("$3", "" + town.getMaxPower()));
@@ -117,7 +117,7 @@ public final class AnnouncementUtil {
                 if (town.getPopulation() >= town.getHousing() && town.getGovernmentType() != GovernmentType.FEUDALISM &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-town-housing-" + town.getName())) {
                     keys.add("ann-town-housing-" + town.getName());
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-housing")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-housing")
                             .replace("$1", town.getName())
                             .replace("$2", "" + town.getPopulation())
                             .replace("$3", "" + town.getHousing()));
@@ -127,11 +127,11 @@ public final class AnnouncementUtil {
         } else {
             if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-protection")) {
                 keys.add("ann-town-protection");
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-protection"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-protection"));
             }
             if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-join")) {
                 keys.add("ann-town-join");
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-town-join"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-join"));
             }
 
             // check the guide
@@ -139,7 +139,7 @@ public final class AnnouncementUtil {
                     civilian.getTutorialPath().equals("default") &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-achievement")) {
                 keys.add("ann-achievement");
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-achievement"));
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-achievement"));
             }
         }
 
@@ -161,7 +161,7 @@ public final class AnnouncementUtil {
             for (int i=0; i<regionType.getUpkeeps().size(); i++) {
                 if (!region.hasUpkeepItems(i, true)) {
                     keys.add("ann-missing-input-" + region.getId());
-                    messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-missing-input")
+                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-missing-input")
                             .replace("$1", regionType.getName()));
                     regionCount++;
                     if (regionCount > 2) {
@@ -180,7 +180,7 @@ public final class AnnouncementUtil {
             if (!civilian.isAtGroupMax(group) &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-limit-" + group)) {
                 keys.add("ann-limit-" + group);
-                messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-limit")
+                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-limit")
                         .replace("$1", "" + civilian.getCountGroup(group))
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
@@ -214,13 +214,13 @@ public final class AnnouncementUtil {
         if (lowestPlayerKarma != null &&
                 !alreadySentMessages.get(civilian.getUuid()).contains("ann-karma-" + lowestPlayerKarma.getName())) {
             keys.add("ann-karma-" + lowestPlayerKarma.getName());
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-karma")
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-karma")
                     .replace("$1", lowestPlayerKarma.getDisplayName()));
         }
         if (highestPlayerBounty != null &&
                 !alreadySentMessages.get(civilian.getUuid()).contains("ann-bounty-" + highestPlayerBounty.getName())) {
             keys.add("ann-bounty-" + highestPlayerBounty.getName());
-            messages.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "ann-bounty")
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bounty")
                     .replace("$1", highestPlayerBounty.getDisplayName())
                     .replace("$2", Util.getNumberFormat(highestBounty, civilian.getLocale())));
         }
@@ -229,17 +229,17 @@ public final class AnnouncementUtil {
             return;
         } else if (messages.size() < 2) {
             alreadySentMessages.get(civilian.getUuid()).add(keys.get(0));
-            sendToPlayer(player, Civs.getPrefix() + messages.get(0) + " ");
+            sendToPlayer(player, Civs.getRawPrefix() + messages.get(0) + " ");
             return;
         }
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
         alreadySentMessages.get(civilian.getUuid()).add(keys.get(randIndex));
-        sendToPlayer(player, Civs.getPrefix() + messages.get(randIndex) + " ");
+        sendToPlayer(player, Civs.getRawPrefix() + messages.get(randIndex) + " ");
     }
 
     private static void sendToPlayer(Player player, String input) {
-        TextComponent message = Util.parseColorsComponent(input);
+        BaseComponent message = Util.parseColorsComponent(input);
         TextComponent unsub = new TextComponent("[X]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);

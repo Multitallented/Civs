@@ -399,15 +399,11 @@ public abstract class Menu implements Listener {
                 } else {
                     pos++;
                 }
-                CVItem nextItem = guiItemSet.getItems().get(pos);
-                ItemStack is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+                CVItem nextItem = guiItemSet.getItems().get(pos).clone();
                 if (nextItem.getGroup() != null) {
-                    ItemMeta itemMeta = is.getItemMeta();
-                    ArrayList<String> lore = new ArrayList<>();
-                    lore.add("g:" + nextItem.getGroup());
-                    itemMeta.setLore(lore);
-                    is.setItemMeta(itemMeta);
+                    nextItem.getLore().add("g:" + nextItem.getGroup());
                 }
+                ItemStack is = nextItem.createItemStack();
                 inventory.setItem(guiItemSet.getIndex(), is);
                 guiItemSet.setPosition(pos);
             }
