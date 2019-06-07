@@ -77,7 +77,6 @@ public class TownListMenu extends Menu {
             } else {
                 appendHistory(civilian.getUuid(), MENU_NAME + "," + page + "," + uuid.toString());
             }
-            appendHistory(civilian.getUuid(), MENU_NAME + "," + page);
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
             return;
