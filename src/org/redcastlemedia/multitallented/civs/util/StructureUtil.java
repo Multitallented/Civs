@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
@@ -77,23 +78,45 @@ public final class StructureUtil {
 
         BoundingBox boundingBox = new BoundingBox();
 
+        boolean showParticles = ConfigManager.getInstance().isUseParticleBoundingBoxes();
         for (double x = minX; x <= maxX; x++) {
-            setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-            setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-            setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-            setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+            if (showParticles) {
+                spawnParticle(location.getWorld(), x, minY, minZ, Color.RED);
+                spawnParticle(location.getWorld(), x, maxY, maxZ, Color.RED);
+                spawnParticle(location.getWorld(), x, minY, maxZ, Color.RED);
+                spawnParticle(location.getWorld(), x, maxY, minZ, Color.RED);
+            } else {
+                setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+                setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+                setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+                setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+            }
         }
         for (double y = minY; y <= maxY; y++) {
-            setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-            setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-            setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-            setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+            if (showParticles) {
+                spawnParticle(location.getWorld(), minX, y, minZ, Color.GREEN);
+                spawnParticle(location.getWorld(), maxX, y, maxZ, Color.GREEN);
+                spawnParticle(location.getWorld(), minX, y, maxZ, Color.GREEN);
+                spawnParticle(location.getWorld(), maxX, y, minZ, Color.GREEN);
+            } else {
+                setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+                setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+                setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+                setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+            }
         }
         for (double z = minZ; z <= maxZ; z++) {
-            setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-            setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-            setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-            setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+            if (showParticles) {
+                spawnParticle(location.getWorld(), minX, minY, z, Color.BLUE);
+                spawnParticle(location.getWorld(), maxX, maxY, z, Color.BLUE);
+                spawnParticle(location.getWorld(), minX, maxY, z, Color.BLUE);
+                spawnParticle(location.getWorld(), maxX, minY, z, Color.BLUE);
+            } else {
+                setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+                setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+                setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+                setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+            }
         }
         boundingBoxes.put(player.getUniqueId(), boundingBox);
     }
@@ -125,8 +148,11 @@ public final class StructureUtil {
         boundingBoxes.remove(uuid);
     }
 
-    private static void spawnParticle(World world, int x, int y, int z, HashSet<Location> boundingBox, Color color) {
+    private static void spawnParticle(World world, double x, double y, double z, Color color) {
         Location location = new Location(world, x, y, z);
+        if (location.getBlock().getType() != Material.AIR) {
+            return;
+        }
         world.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
                 new Particle.DustOptions(color, 1), true);
     }
