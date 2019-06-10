@@ -1,3 +1,0 @@
-files:
-  - source: /Civs/translations/en.json
-    translation: /Civs/translations/%two_letters_code%.json
