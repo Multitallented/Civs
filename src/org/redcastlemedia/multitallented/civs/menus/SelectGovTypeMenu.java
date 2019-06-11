@@ -71,10 +71,10 @@ public class SelectGovTypeMenu extends Menu {
                 continue;
             }
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
-            String oldGovName = GovernmentManager.getInstance().getGovernment(town.getGovernmentType())
-                    .getNames().get(civilian1.getLocale());
-            String newGovName = GovernmentManager.getInstance().getGovernment(governmentType)
-                    .getNames().get(civilian1.getLocale());
+            String oldGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
+                    town.getGovernmentType().name().toLowerCase() + "-name");
+            String newGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
+                    governmentType.name().toLowerCase() + "-name");
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian1.getLocale(), "gov-type-change")
                     .replace("$1", town.getName())

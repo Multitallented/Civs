@@ -54,8 +54,7 @@ public class TownTests {
 
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
-        Government government = new Government(GovernmentType.CAPITALISM,
-                null, null, null, null);
+        Government government = new Government(GovernmentType.CAPITALISM,null, null);
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 

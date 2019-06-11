@@ -61,21 +61,11 @@ public class GovernmentManager {
             CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
 
             Government government = new Government(governmentType,
-                    getTranslations(config.getConfigurationSection("name")),
-                    getTranslations(config.getConfigurationSection("description")),
                     getBuffs(config.getConfigurationSection("buffs")), cvItem);
             governments.put(governmentType, government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
         }
-    }
-
-    private HashMap<String, String> getTranslations(ConfigurationSection section) {
-        HashMap<String, String> returnMap = new HashMap<>();
-        for (String key : section.getKeys(false)) {
-            returnMap.put(key, section.getString(key));
-        }
-        return returnMap;
     }
 
     private HashSet<GovTypeBuff> getBuffs(ConfigurationSection section) {

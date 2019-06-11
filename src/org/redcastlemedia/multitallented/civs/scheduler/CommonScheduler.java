@@ -178,7 +178,8 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "enter-town").replace("$1", town.getName())
@@ -191,7 +192,8 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "exit-town").replace("$1", town.getName())

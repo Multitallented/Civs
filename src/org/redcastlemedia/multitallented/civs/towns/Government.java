@@ -14,20 +14,12 @@ public class Government {
     @Getter
     private final GovernmentType governmentType;
     @Getter
-    private final HashMap<String, String> names;
-    @Getter
-    private final HashMap<String, String> descriptions;
-    @Getter
     private final HashSet<GovTypeBuff> buffs;
     private final CVItem icon;
 
     public Government(GovernmentType governmentType,
-                      HashMap<String, String> names,
-                      HashMap<String, String> descriptions,
                       HashSet<GovTypeBuff> buffs, CVItem cvItem) {
         this.governmentType = governmentType;
-        this.names = names;
-        this.descriptions = descriptions;
         this.buffs = buffs;
         this.icon = cvItem;
     }
@@ -38,10 +30,12 @@ public class Government {
 
     public CVItem getIcon(String locale, boolean isUseBuffs) {
         CVItem cvItem = icon.clone();
-        cvItem.setDisplayName(names.get(locale));
+        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale,
+                governmentType.name().toLowerCase() + "-name"));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + governmentType.name());
-        lore.addAll(Util.textWrap("", descriptions.get(locale)));
+        lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(locale,
+                governmentType.name().toLowerCase() + "-desc")));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(locale));
         }

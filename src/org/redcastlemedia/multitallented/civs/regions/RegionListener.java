@@ -168,6 +168,7 @@ public class RegionListener implements Listener {
                 civilian.getLocale(), "cost-buff"
         ).replace("$1", amountString)
                 .replace("$2", event.getRegionType().getDisplayName())
-                .replace("$3", government.getNames().get(civilian.getLocale())));
+                .replace("$3", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        government.getGovernmentType().name().toLowerCase() + "-name")));
     }
 }

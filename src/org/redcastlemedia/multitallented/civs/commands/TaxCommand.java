@@ -45,7 +45,8 @@ public class TaxCommand implements CivCommand {
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government != null) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "town-tax-gov-type").replace("$1", government.getNames().get(civilian.getLocale())));
+                        "town-tax-gov-type").replace("$1", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        government.getGovernmentType().name().toLowerCase() + "-name")));
             } else {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "no-permission"));

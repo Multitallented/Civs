@@ -38,7 +38,6 @@ public class TutorialTests {
 
         TutorialPath defaultPath = new TutorialPath();
         defaultPath.setIcon(CVItem.createCVItemFromString("DIRT"));
-        defaultPath.getNames().put("en", "default");
         TutorialStep tutorialStep = new TutorialStep();
         tutorialStep.setType("choose");
         ArrayList<String> paths = new ArrayList<>();
@@ -48,7 +47,6 @@ public class TutorialTests {
         tutorials.put("default", defaultPath);
 
         TutorialPath merchantPath = new TutorialPath();
-        merchantPath.getNames().put("en", "Merchant");
         merchantPath.setIcon(CVItem.createCVItemFromString("DIAMOND"));
         tutorials.put("merchant", merchantPath);
 
