@@ -78,6 +78,7 @@ public class Civs extends JavaPlugin {
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
         StructureUtil.removeAllBoundingBoxes();
+        ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
     }
 
