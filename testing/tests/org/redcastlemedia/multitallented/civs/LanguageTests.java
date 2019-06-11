@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.LanguageMenu;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -50,10 +51,11 @@ public class LanguageTests {
 
     @Test(expected = SuccessException.class)
     public void playerShouldNotBeAbleToDropItem() {
+        RegionsTests.loadRegionTypeCobble();
         Item item = mock(Item.class);
         ItemStack itemStack = mock(ItemStack.class);
         ItemMeta itemMeta = mock(ItemMeta.class);
-        when(itemMeta.getDisplayName()).thenReturn("Civs Cobble");
+        when(itemMeta.getDisplayName()).thenReturn("Cobble");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
         lore.add("Civs Cobble");
