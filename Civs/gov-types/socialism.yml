@@ -6,6 +6,26 @@
 
 icon: "CYAN_GLAZED_TERRACOTTA"
 enabled: true
+  0:
+    inactive: 1209600
+    to: ANARCHY
+  1:
+    money-gap: 70
+    to: OLIGARCHY
+  2:
+    revolt: 75
+    money-gap: 40
+    to: COMMUNISM
+  3:
+    revolt: 66
+    power: 30
+    to: KRATEROCRACY
+  4:
+    revolt: 75
+    to: LIBERTARIAN_SOCIALISM
+  5:
+    power: 20
+    to: TRIBALISM
 name:
   en: "Socialism"
   fr: "Socialisme"

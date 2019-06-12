@@ -8,6 +8,18 @@
 
 icon: "CYAN_STAINED_GLASS"
 enabled: true
+transition:
+  0:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  1:
+    revolt: 51
+    power: 33
+    to: KRATEROCRACY
+  2:
+    revolt: 75
+    to: LIBERTARIAN_SOCIALISM
 name:
   en: "Democratic Socialism"
   de: "Demokratischer Sozialismus"

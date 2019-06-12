@@ -5,6 +5,23 @@
 
 icon: "GLOWSTONE"
 enabled: true
+transition:
+  0:
+    money-gap: 66
+    to: OLIGARCHY
+  1:
+    revolt: 66
+    power: 40
+    to: KRATEROCRACY
+  2:
+    revolt: 75
+    to: LIBERTARIAN
+  3:
+    inactive: 1209600
+    to: ANARCHY
+  4:
+    power: 20
+    to: TRIBALISM
 name:
   en: "Dictatorship"
   de: "Diktatur"

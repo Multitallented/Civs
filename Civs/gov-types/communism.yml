@@ -8,6 +8,14 @@
 
 icon: "RED_GLAZED_TERRACOTTA"
 enabled: true
+transition:
+  0:
+    money-gap: 40
+    revolt: 51
+    to: LIBERTARIAN_SOCIALISM
+  1:
+    revolt: 51
+    to: DEMOCRATIC_SOCIALISM
 name:
   en: "Communism"
   de: "Kommunismus"

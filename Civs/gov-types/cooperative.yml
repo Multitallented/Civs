@@ -8,6 +8,21 @@
 
 icon: "RED_STAINED_GLASS"
 enabled: true
+transition:
+  0:
+    money-gap: 70
+    to: OLIGARCHY
+  1:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  2:
+    revolt: 51
+    power: 30
+    to: KRATEROCRACY
+  3:
+    revolt: 51
+    to: LIBERTARIAN_SOCIALISM
 name:
   en: "Cooperative"
   de: "Genossenschaft"

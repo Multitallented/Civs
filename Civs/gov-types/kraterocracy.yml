@@ -6,6 +6,10 @@
 
 icon: "BLACK_GLAZED_TERRACOTTA"
 enabled: true
+transition:
+  0:
+    inactive: 1209600
+    to: ANARCHY
 name:
   en: "Kraterocracy"
   es: "Kraterocracia"

@@ -7,6 +7,10 @@
 
 icon: "GRAY_GLAZED_TERRACOTTA"
 enabled: true
+transition:
+  0:
+    revolt: 66
+    to: LIBERTARIAN
 name:
   en: "Colonialism"
   fr: "Colonialisme"
