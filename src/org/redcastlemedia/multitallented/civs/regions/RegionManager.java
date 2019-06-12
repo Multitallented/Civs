@@ -573,6 +573,12 @@ public class RegionManager {
         HashMap<UUID, String> people;
         if (rebuildRegion != null) {
             people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            if (Civs.econ != null && people.containsKey(player.getUniqueId()) &&
+                    !people.get(player.getUniqueId()).contains("ally") &&
+                    !regionType.isRebuildRequired()) {
+                RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice() / 2);
+            }
             //TODO copy over other stuff too?
             removeRegion(rebuildRegion, false, false);
         } else {
