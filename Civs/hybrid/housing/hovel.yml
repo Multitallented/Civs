@@ -55,7 +55,7 @@ upkeep:
   1:
     input:
     - POTATO*32  # 768 or 12 stacks / day
-    payout: 5.12 # $122.88 / day
+    payout: 6 # $144 / day
     exp: 1
 
 description:

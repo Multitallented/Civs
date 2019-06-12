@@ -1,7 +1,7 @@
 type: region
 icon: SIGN
 name: Capitol
-price: 6000
+price: 16000
 max: 1
 groups:
 - utility

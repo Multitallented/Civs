@@ -3,7 +3,7 @@ icon: GLOWSTONE
 shop-icon: DIAMOND_BLOCK
 name: Metropolis
 max: 1
-price: 36000
+price: 120000
 groups:
 - superregion
 level: 7
