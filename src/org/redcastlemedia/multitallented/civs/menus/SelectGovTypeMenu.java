@@ -60,6 +60,11 @@ public class SelectGovTypeMenu extends Menu {
         }
 
         Town town = (Town) getData(civilian.getUuid(), "town");
+        if (town.isGovTypeChangedToday()) {
+            event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "cant-change-gov-type-daily"));
+            return;
+        }
 
         String govName = event.getCurrentItem().getItemMeta().getLore().get(0).replace("Gov Type: ", "");
         GovernmentType governmentType = GovernmentType.valueOf(govName);

@@ -208,6 +208,9 @@ public class TownManager {
                 villagers,
                 lastDisable);
         town.setGovernmentType(governmentType);
+        if (config.isSet("gov-type-changed-today")) {
+            town.setGovTypeChangedToday(true);
+        }
         if (config.isSet("last-vote")) {
             town.setLastVote(config.getLong("last-vote", 0));
         }
@@ -436,6 +439,11 @@ public class TownManager {
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
             config.set("people", null);
+            if (town.isGovTypeChangedToday()) {
+                config.set("gov-type-changed-today", true);
+            } else {
+                config.set("gov-type-changed-today", null);
+            }
             for (UUID key : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(key).contains("ally")) {
                     continue;

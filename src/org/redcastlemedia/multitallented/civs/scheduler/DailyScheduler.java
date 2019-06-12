@@ -42,6 +42,7 @@ public class DailyScheduler implements Runnable {
         HashMap<Town, Integer> addPower = new HashMap<>();
 
         for (Town town : TownManager.getInstance().getTowns()) {
+            town.setGovTypeChangedToday(false);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government != null) {
