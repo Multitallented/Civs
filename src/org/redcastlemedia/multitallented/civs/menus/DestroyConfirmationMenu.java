@@ -59,11 +59,18 @@ public class DestroyConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             if (region != null) {
-                if (doesntHavePermission(civilian, region.getPeople(), player)) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                boolean canOverride = !regionType.getEffects().containsKey("cant_override");
+                Town overrideTown = null;
+                if (canOverride) {
+                    overrideTown = TownManager.getInstance().getTownAt(region.getLocation());
+                }
+                boolean hasOverride = overrideTown != null && overrideTown.getRawPeople().containsKey(player.getUniqueId()) &&
+                        overrideTown.getRawPeople().get(player.getUniqueId()).contains("owner");
+                if (!hasOverride && doesntHavePermission(civilian, region.getPeople(), player)) {
                     return;
                 }
                 if (Civs.econ != null) {
-                    RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                     Civs.econ.depositPlayer(player, regionType.getPrice() / 2);
                 }
                 RegionManager.getInstance().removeRegion(region, true, true);
