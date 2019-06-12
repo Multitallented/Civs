@@ -37,7 +37,7 @@ upkeep:
     exp: 1
 
 description:
-  en: "The foundation for all wars. Slowly drains power from nearby target town. Takes 4 minutes to warm up."
+  en: "Destroys 1 power every 2.5 minutes. Upgrades after 3 shots."
   es: "El fundamento de todas las guerras. Lentamente drena el poder de la ciudad objetivo cercana. Tarda 4 minutos en calentar."
   ru: "Основа для всех войн. Медленно истощает энергию из соседнего целевого города. Занимает 4 минуты, чтобы разогреться."
   fr: "Le fondement de toutes les guerres. Draine lentement le courant de la ville cible proche. Prend 4 minutes pour se réchauffer."
