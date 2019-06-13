@@ -531,9 +531,11 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianBlockBreak(event);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
         assertNull(regionManager.getRegionAt(location1));
     }
 

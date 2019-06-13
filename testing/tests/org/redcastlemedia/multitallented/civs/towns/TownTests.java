@@ -52,6 +52,8 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
+        new GovernmentManager();
+        new ItemManager();
     }
 
     @Test
@@ -294,7 +296,9 @@ public class TownTests {
 
     @Test
     public void townMaxPowerShouldBeAdjustedOnCreation() {
-        loadTownTypeHamlet();
+        loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
         Government government = new Government(GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
@@ -303,16 +307,11 @@ public class TownTests {
         String[] args = new String[2];
         args[0] = "town";
         args[1] = "test";
-        Player player = mock(Player.class);
-        PlayerInventory inventory = mock(PlayerInventory.class);
-        ItemStack townItem = new ItemStack(Material.GLOWSTONE, 1);
-        townItem.getItemMeta().setDisplayName("Civs Hamlet");
-        townItem.getItemMeta().getLore().add("");
-        townItem.getItemMeta().getLore().add("hamlet");
-        when(inventory.getItemInMainHand()).thenReturn(townItem);
-        when(player.getInventory()).thenReturn(inventory);
-        when(player.getLocation()).thenReturn(new Location(TestUtil.world, 4, 0, 0));
-        townCommand.runCommand(player, null, "town", args);
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException exception) {
+
+        }
         assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());
     }
 
@@ -350,6 +349,7 @@ public class TownTests {
         config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
+        config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "tribe");
     }
     public static void loadTownTypeTribe2() {
