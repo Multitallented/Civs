@@ -71,7 +71,7 @@ public class RegionsTests {
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
         Government government = new Government(GovernmentType.ANARCHY,
-                buffs, null);
+                buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
 

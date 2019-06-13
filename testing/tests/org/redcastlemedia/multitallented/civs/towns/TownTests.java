@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class TownTests {
 
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
-        Government government = new Government(GovernmentType.CAPITALISM,null, null);
+        Government government = new Government(GovernmentType.CAPITALISM,null, null, new ArrayList<>());
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 
@@ -262,6 +263,25 @@ public class TownTests {
         BlockBreakEvent blockBreakEvent = new BlockBreakEvent(TestUtil.block, TestUtil.player2);
         protectionHandler.onBlockBreak(blockBreakEvent);
         assertFalse(blockBreakEvent.isCancelled());
+    }
+
+    @Test
+    public void townTransitionTest() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(2);
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
+                GovernmentType.ANARCHY);
+        transitions.add(govTransition);
+        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+                transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        CommonScheduler commonScheduler = new CommonScheduler();
+        for (int i=0; i<8; i++) {
+            commonScheduler.run();
+        }
+        assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
     }
 
     public static Town loadTown(String name, String type, Location location) {

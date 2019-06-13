@@ -80,6 +80,7 @@ public class CommonScheduler implements Runnable {
         }
     }
     private void checkTownTransition() {
+        HashSet<Town> saveThese = new HashSet<>();
         for (Town town : TownManager.getInstance().getTowns()) {
             if (town.isGovTypeChangedToday()) {
                 continue;
@@ -101,18 +102,33 @@ public class CommonScheduler implements Runnable {
                             highestMoney = money;
                         }
                     }
-                    moneyGap = highestMoney > transition.getMoneyGap() / 100 * totalMoney;
+                    if (highestMoney < transition.getMoneyGap() / 100 * totalMoney) {
+                        continue;
+                    }
                 }
 
-                boolean power = transition.getPower() > 0 &&
+                boolean power = transition.getPower() < 0 ||
                         town.getPower() < ((double) transition.getPower() / 100 * (double) town.getMaxPower());
+                if (!power) {
+                    continue;
+                }
 
                 boolean revolt = transition.getRevolt() > 0;
                 // TODO check if transition reqs met
 
                 boolean inactive = transition.getInactive() > 0;
-                // TODO check if requirements are met
+                if (inactive && town.getLastActive() < 0 &&
+                        town.getLastActive() + transition.getInactive() > System.currentTimeMillis()) {
+                    continue;
+                }
+
+                GovernmentManager.getInstance().transitionGovernment(town,
+                        transition.getTransitionGovernmentType(), false);
+                saveThese.add(town);
             }
+        }
+        for (Town town : saveThese) {
+            TownManager.getInstance().saveTown(town);
         }
     }
 
@@ -201,6 +217,13 @@ public class CommonScheduler implements Runnable {
             lastTown.remove(player.getUniqueId());
         } else if (town != null) {
             lastTown.put(player.getUniqueId(), town);
+        }
+
+        if (town != null && town.getRawPeople().containsKey(player.getUniqueId()) &&
+                town.getRawPeople().get(player.getUniqueId()).contains("owner") &&
+                town.getLastActive() + 10000 < System.currentTimeMillis()) {
+            town.setLastActive(System.currentTimeMillis());
+            TownManager.getInstance().saveTown(town);
         }
     }
 

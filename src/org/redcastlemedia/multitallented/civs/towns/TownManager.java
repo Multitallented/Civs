@@ -211,6 +211,14 @@ public class TownManager {
         if (config.isSet("gov-type-changed-today")) {
             town.setGovTypeChangedToday(true);
         }
+        if (config.isSet("last-active")) {
+            town.setLastVote(config.getLong("last-active", -1));
+        } else {
+            town.setLastActive(-1);
+        }
+        if (config.isSet("revolt")) {
+            loadRevolt(town, config.getStringList("revolt"));
+        }
         if (config.isSet("last-vote")) {
             town.setLastVote(config.getLong("last-vote", 0));
         }
@@ -243,6 +251,12 @@ public class TownManager {
             town.setChildLocations(locationList);
         }
         addTown(town);
+    }
+
+    private void loadRevolt(Town town, List<String> revoltList) {
+        for (String uuidString : revoltList) {
+            town.getRevolt().add(UUID.fromString(uuidString));
+        }
     }
 
     public Set<Town> getOwnedTowns(Civilian civilian) {
@@ -444,6 +458,16 @@ public class TownManager {
             } else {
                 config.set("gov-type-changed-today", null);
             }
+            if (town.getLastActive() > -1) {
+                config.set("last-active", town.getLastActive());
+            } else {
+                config.set("last-active", -1);
+            }
+            if (town.getRevolt().isEmpty()) {
+                config.set("revolt", null);
+            } else {
+                saveRevolt(town, config);
+            }
             for (UUID key : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(key).contains("ally")) {
                     continue;
@@ -496,6 +520,14 @@ public class TownManager {
             e.printStackTrace();
             Civs.logger.severe("Unable to save town " + town.getName() + ".yml");
         }
+    }
+
+    private void saveRevolt(Town town, FileConfiguration config) {
+        ArrayList<String> uuidList = new ArrayList<>();
+        for (UUID uuid : town.getRevolt()) {
+            uuidList.add(uuid.toString());
+        }
+        config.set("revolt", uuidList);
     }
 
     public static TownManager getInstance() {

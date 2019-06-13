@@ -63,6 +63,13 @@ public class Town {
     @Setter
     private boolean govTypeChangedToday;
 
+    @Getter
+    @Setter
+    private long lastActive;
+
+    @Getter
+    private HashSet<UUID> revolt = new HashSet<>();
+
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
         this.name = name;
