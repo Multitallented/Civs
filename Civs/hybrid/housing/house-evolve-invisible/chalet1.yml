@@ -52,7 +52,7 @@ upkeep:
   1:
     input: #2.11
     - BREAD*6  # 144 or 2.25 stacks / day
-    payout: 46.8 # $303.84 / day
+    payout: 12.6 # $303.84 / day
   2:
     input:
     - CARROT*16   # 384 or 6 stacks / day
@@ -61,11 +61,11 @@ upkeep:
   3:
     input:
     - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-    payout: 12 # $288 / day
+    payout: 6 # $144 / day
     exp: 1
 
 description:
-  en: "5th level of house. Earns $836 per day."
+  en: "5th level of house. Earns $692 per day."
   es: "5er nivel de la casa. Gana $ 836 por día."
   de: "5. Ebene des Hauses. Verdient $ 836 pro Tag."
   pt_br: "5º nível de casa. Ganhe $ 836 por dia."

@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
@@ -63,11 +64,6 @@ public class TutorialManager {
                 }
                 path.setIcon(CVItem.createCVItemFromString(iconString));
                 ConfigurationSection section = tutorialConfig.getConfigurationSection(key + ".names");
-                if (section != null) {
-                    for (String locale : section.getKeys(false)) {
-                        path.getNames().put(locale, section.getString(locale));
-                    }
-                }
 
                 for (Map<?,?> map : tutorialConfig.getMapList(key + ".steps")) {
                     TutorialStep tutorialStep = new TutorialStep();
@@ -94,12 +90,6 @@ public class TutorialManager {
                             for (String itemString : itemList) {
                                 tutorialStep.getRewardItems().add(CVItem.createCVItemFromString(itemString));
                             }
-                        }
-                    }
-                    LinkedHashMap<?,?> messages = (LinkedHashMap<?,?>) map.get("messages");
-                    if (messages != null) {
-                        for (Object locale : messages.keySet()) {
-                            tutorialStep.getMessages().put((String) locale, (String) messages.get(locale));
                         }
                     }
                     ArrayList<String> pathsList = (ArrayList<String>) map.get("paths");
@@ -198,28 +188,23 @@ public class TutorialManager {
 
 
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        HashMap<String, String> messageMap = step.getMessages();
-        if (!messageMap.isEmpty()) {
-            String rawMessage = messageMap.get(civilian.getLocale());
-            if (rawMessage == null) {
-                rawMessage = messageMap.get("en");
+        String rawMessage = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+        if (player != null && player.isOnline()) {
+            if (useHr) {
+                player.sendMessage("-----------------" + Civs.NAME + "-----------------");
             }
-            if (rawMessage != null && player.isOnline()) {
-                if (useHr) {
-                    player.sendMessage("-----------------" + Civs.NAME + "-----------------");
-                }
-                List<String> messages = Util.parseColors(Util.textWrap("", rawMessage));
-                for (String message : messages) {
-                    player.sendMessage(Civs.getPrefix() + message);
-                }
-                if (useHr) {
-                    player.sendMessage("--------------------------------------");
-                }
+            List<String> messages = Util.parseColors(Util.textWrap("", rawMessage));
+            for (String message : messages) {
+                player.sendMessage(Civs.getPrefix() + message);
+            }
+            if (useHr) {
+                player.sendMessage("--------------------------------------");
             }
         }
 
         String type = step.getType();
-        if ("choose".equals(type)) {
+        if ("choose".equals(type) && player != null) {
             player.closeInventory();
             player.openInventory(TutorialChoosePathMenu.createMenu(civilian));
         }
@@ -260,17 +245,13 @@ public class TutorialManager {
         for (String pathKey : pathsList) {
             TutorialPath newPath = tutorials.get(pathKey);
             CVItem cvItem = newPath.getIcon();
-            String name = newPath.getNames().get(civilian.getLocale());
-            if ("".equals(name)) {
-                name = path.getNames().get("en");
-            }
-            if (!"".equals(name)) {
-                cvItem.setDisplayName(name);
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(pathKey);
-                cvItem.setLore(lore);
-                returnList.add(cvItem);
-            }
+            String name = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "tut-" + pathKey + "-name");
+            cvItem.setDisplayName(name);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(pathKey);
+            cvItem.setLore(lore);
+            returnList.add(cvItem);
         }
 
         return returnList;

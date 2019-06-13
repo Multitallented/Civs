@@ -179,4 +179,12 @@ public class UtilTests {
         assertEquals(ChatColor.RED, component.getColor());
         assertEquals(ChatColor.BLUE, component.getExtra().get(0).getColor());
     }
+
+    @Test
+    public void formatTimeShouldReturnCorrectFormat() {
+        assertEquals("54s", AnnouncementUtil.formatTime(54));
+        assertEquals("1m 22s", AnnouncementUtil.formatTime(82));
+        assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(4830));
+        assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(8430));
+    }
 }

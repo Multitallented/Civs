@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,10 +117,17 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
-        if (im.getLore() == null || im.getLore().size() < 2 || !im.getLore().get(1).equals(im.getDisplayName())) {
+        if (im.getLore() == null || im.getLore().size() < 2 || ItemManager.getInstance().getItemType(im.getLore().get(1)) == null) {
             return false;
         }
-        return im.getDisplayName().contains(ConfigManager.getInstance().getCivsItemPrefix());
+        return true;
+    }
+
+    public CivItem getCivItem() {
+        if (lore.size() < 2) {
+            return null;
+        }
+        return ItemManager.getInstance().getItemType(lore.get(1));
     }
 
     public static CVItem createFromItemStack(ItemStack is) {

@@ -7,6 +7,21 @@
 
 icon: "WHITE_STAINED_GLASS"
 enabled: true
+transition:
+  0:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  1:
+    money-gap: 60
+    to: CAPITALISM
+  2:
+    power: 33
+    revolt: 51
+    to: KRATEROCRACY
+  3:
+    revolt: 51
+    to: DEMOCRATIC_SOCIALISM
 name:
   en: "Democracy"
   de: "Demokratie"

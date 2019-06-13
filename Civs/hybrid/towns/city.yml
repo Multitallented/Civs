@@ -3,7 +3,7 @@ icon: GLOWSTONE
 shop-icon: EMERALD_BLOCK
 name: City
 max: 1
-price: 24000
+price: 50000
 groups:
 - superregion
 level: 6

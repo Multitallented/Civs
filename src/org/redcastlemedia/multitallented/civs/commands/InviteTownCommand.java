@@ -97,6 +97,7 @@ public class InviteTownCommand implements CivCommand {
 
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(), "invite-sent"));
         String inviteMessage = Civs.getRawPrefix() + localeManager.getRawTranslation(inviteCiv.getLocale(),
                 "invite-player").replace("$1", player.getDisplayName())
                 .replace("$2", town.getType())

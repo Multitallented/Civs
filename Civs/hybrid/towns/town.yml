@@ -3,7 +3,7 @@ icon: GLOWSTONE
 shop-icon: GOLD_BLOCK
 name: Town
 max: 1
-price: 16000
+price: 20000
 groups:
 - superregion
 level: 5

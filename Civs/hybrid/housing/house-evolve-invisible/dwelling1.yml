@@ -57,11 +57,11 @@ upkeep:
   2:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
-    payout: 7.8 # 187.2 / day
+    payout: 8.5 # 204 / day
     exp: 1
 
 description:
-  en: "3rd level of house. Earns $309 per day."
+  en: "3rd level of house. Earns $326 per day."
   es: "3er nivel de la casa. Gana $ 309 por día."
   de: "3. Ebene des Hauses. Verdient $ 309 pro Tag."
   pt_br: "3º nível de casa. Ganhe $ 309 por dia."

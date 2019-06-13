@@ -12,11 +12,9 @@ import lombok.Setter;
 @Setter
 public class TutorialPath {
     private CVItem icon;
-    private HashMap<String, String> names;
     private ArrayList<TutorialStep> steps;
 
     public TutorialPath() {
         steps = new ArrayList<>();
-        names = new HashMap<>();
     }
 }

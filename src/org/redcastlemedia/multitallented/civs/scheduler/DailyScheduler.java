@@ -42,12 +42,13 @@ public class DailyScheduler implements Runnable {
         HashMap<Town, Integer> addPower = new HashMap<>();
 
         for (Town town : TownManager.getInstance().getTowns()) {
+            town.setGovTypeChangedToday(false);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government != null) {
                 for (GovTypeBuff buff : government.getBuffs()) {
                     if (buff.getBuffType() == GovTypeBuff.BuffType.POWER) {
-                        addPower.put(town, (int) (townType.getPower() * (1 + (double) buff.getAmount() / 100)));
+                        addPower.put(town, (int) Math.round((double) townType.getPower() * (1 + (double) buff.getAmount() / 100)));
                         break;
                     }
                 }

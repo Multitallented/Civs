@@ -422,6 +422,7 @@ public class RegionManager {
                 }
             }
         }
+        boolean rebuildTransition = false;
         if (rebuildRegion != null && regionType.getRebuild() == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
@@ -440,6 +441,9 @@ public class RegionManager {
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
                             .replace("$1", regionTypeName).replace("$2", regionType.getRebuild()));
             return false;
+        } else if (rebuildRegion != null) {
+            location = rebuildRegion.getLocation();
+            rebuildTransition = true;
         }
 
 
@@ -573,11 +577,23 @@ public class RegionManager {
         HashMap<UUID, String> people;
         if (rebuildRegion != null) {
             people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            if (Civs.econ != null && people.containsKey(player.getUniqueId()) &&
+                    !people.get(player.getUniqueId()).contains("ally") &&
+                    !regionType.isRebuildRequired()) {
+                RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice() / 2);
+            }
             //TODO copy over other stuff too?
             removeRegion(rebuildRegion, false, false);
         } else {
             people = new HashMap<>();
             people.put(player.getUniqueId(), "owner");
+        }
+        if (rebuildTransition) {
+            event.setCancelled(true);
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            player.getInventory().setItemInMainHand(null);
+            location.getBlock().setType(itemStack.getType());
         }
 
         player.sendMessage(Civs.getPrefix() +

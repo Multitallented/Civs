@@ -6,6 +6,20 @@
 
 icon: "GRASS_BLOCK"
 enabled: true
+transition:
+  0:
+    money-gap: 66
+    to: OLIGARCHY
+  1:
+    revolt: 66
+    power: 30
+    to: KRATEROCRACY
+  2:
+    revolt: 75
+    to: LIBERTARIAN
+  3:
+    inactive: 1814400 #3 weeks
+    to: ANARCHY
 name:
   en: "Tribalism"
   fr: "Tribalisme"

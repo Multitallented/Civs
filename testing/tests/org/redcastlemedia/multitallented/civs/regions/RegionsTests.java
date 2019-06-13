@@ -12,16 +12,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -32,6 +30,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -73,8 +72,8 @@ public class RegionsTests {
                 10, new HashSet<>(), regions);
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
-        Government government = new Government(GovernmentType.ANARCHY, null, null,
-                buffs, null);
+        Government government = new Government(GovernmentType.ANARCHY,
+                buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
 
@@ -533,10 +532,38 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianBlockBreak(event);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
         assertNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldNotBeDestroyedCenter() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
+        Player player1 = mock(Player.class);
+        when(player1.getUniqueId()).thenReturn(new UUID(1,8));
+        when(player1.getGameMode()).thenReturn(GameMode.SURVIVAL);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, player1);
+        CVItem cvItem = new CVItem(Material.CHEST, 1);
+        cvItem.getLore().add(TestUtil.player.getUniqueId().toString());
+        BlockLogger.getInstance().putBlock(location1, cvItem);
+        CivilianListener civilianListener = new CivilianListener();
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
+        assertNotNull(regionManager.getRegionAt(location1));
+        assertEquals(Material.CHEST, TestUtil.world.getBlockAt(location1).getType());
+        assertTrue(event.isCancelled());
     }
 
     @Test

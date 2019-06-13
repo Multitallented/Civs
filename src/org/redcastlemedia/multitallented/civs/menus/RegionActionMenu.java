@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -178,12 +179,13 @@ public class RegionActionMenu extends Menu {
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "operation"));
             lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(civilian.getLocale(), "region-working"));
-            int nextUpkeep = region.getSecondsTillNextTick();
+            long nextUpkeep = region.getSecondsTillNextTick();
             if (nextUpkeep < 65 && nextUpkeep > 1) {
-                cvItem1.setQty(nextUpkeep);
+                cvItem1.setQty((int) nextUpkeep);
             }
+
             lore.add(localeManager.getTranslation(civilian.getLocale(), "cooldown")
-                    .replace("$1", nextUpkeep + ""));
+                    .replace("$1", AnnouncementUtil.formatTime(nextUpkeep)));
             cvItem1.setLore(lore);
         } else {
             cvItem1 = CVItem.createCVItemFromString("RED_WOOL");

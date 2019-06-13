@@ -63,7 +63,7 @@ public class GovLeaderBoardMenu extends Menu {
         govTypeSortedArray.sort(new Comparator<GovernmentType>() {
             @Override
             public int compare(GovernmentType o1, GovernmentType o2) {
-                return govPower.get(o1).compareTo(govPower.get(o2));
+                return govPower.get(o2).compareTo(govPower.get(o1));
             }
         });
 

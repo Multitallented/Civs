@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
@@ -163,10 +164,18 @@ public class Region {
     public int getRadiusYN() {
         return radiusYN;
     }
-    public int getSecondsTillNextTick() {
+    public long getSecondsTillNextTick() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
+        if (regionType.isDailyPeriod()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            return ((86400000 + calendar.getTimeInMillis() - System.currentTimeMillis()) / 50) / 1000;
+        }
+
         long difference = new Date().getTime() - lastTick;
-        int remainingCooldown = (int) ((regionType.getPeriod()*1000 - difference) / 1000);
+        long remainingCooldown = ((regionType.getPeriod()*1000 - difference) / 1000);
         return remainingCooldown < 0 ? 0 : remainingCooldown;
     }
 

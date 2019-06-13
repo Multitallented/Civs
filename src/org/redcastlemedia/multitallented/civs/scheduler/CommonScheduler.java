@@ -17,12 +17,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -75,6 +70,7 @@ public class CommonScheduler implements Runnable {
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+                    checkTownTransition();
                 }
             } else {
                 i++;
@@ -83,6 +79,62 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
+    private void checkTownTransition() {
+        HashSet<Town> saveThese = new HashSet<>();
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (town.isGovTypeChangedToday()) {
+                continue;
+            }
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government == null) {
+                continue;
+            }
+
+            for (GovTransition transition : government.getTransitions()) {
+                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null;
+                if (moneyGap) {
+                    double highestMoney = 0;
+                    double totalMoney = 0;
+                    for (UUID uuid : town.getRawPeople().keySet()) {
+                        double money = Civs.econ.getBalance(Bukkit.getOfflinePlayer(uuid));
+                        totalMoney += money;
+                        if (highestMoney < money) {
+                            highestMoney = money;
+                        }
+                    }
+                    if (highestMoney < transition.getMoneyGap() / 100 * totalMoney) {
+                        continue;
+                    }
+                }
+
+                boolean power = transition.getPower() < 0 ||
+                        town.getPower() < ((double) transition.getPower() / 100 * (double) town.getMaxPower());
+                if (!power) {
+                    continue;
+                }
+
+                boolean revolt = transition.getRevolt() > 0;
+                double townRevoltPercent = ((double) town.getRevolt().size() / (double) town.getRawPeople().size());
+                if (revolt && townRevoltPercent < (double) transition.getRevolt() / 100) {
+                    continue;
+                }
+
+                boolean inactive = transition.getInactive() > 0;
+                if (inactive && town.getLastActive() < 0 &&
+                        town.getLastActive() + transition.getInactive() > System.currentTimeMillis()) {
+                    continue;
+                }
+
+                GovernmentManager.getInstance().transitionGovernment(town,
+                        transition.getTransitionGovernmentType(), false);
+                saveThese.add(town);
+            }
+        }
+        for (Town town : saveThese) {
+            TownManager.getInstance().saveTown(town);
+        }
+    }
+
     private void sendAnnouncement(Player player) {
         if (!ConfigManager.getInstance().isUseAnnouncements()) {
             return;
@@ -169,6 +221,13 @@ public class CommonScheduler implements Runnable {
         } else if (town != null) {
             lastTown.put(player.getUniqueId(), town);
         }
+
+        if (town != null && town.getRawPeople().containsKey(player.getUniqueId()) &&
+                town.getRawPeople().get(player.getUniqueId()).contains("owner") &&
+                town.getLastActive() + 10000 < System.currentTimeMillis()) {
+            town.setLastActive(System.currentTimeMillis());
+            TownManager.getInstance().saveTown(town);
+        }
     }
 
     private void enterTown(Player player, Civilian civilian, Town town, TownType townType) {
@@ -178,7 +237,8 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "enter-town").replace("$1", town.getName())
@@ -191,7 +251,8 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "exit-town").replace("$1", town.getName())

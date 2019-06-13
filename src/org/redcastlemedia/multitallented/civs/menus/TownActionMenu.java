@@ -137,6 +137,29 @@ public class TownActionMenu extends Menu {
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "revolt"))) {
+
+            if (!town.getRevolt().contains(civilian.getUuid())) {
+                CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
+                if (!event.getWhoClicked().getInventory().contains(costItem.createItemStack())) {
+                    event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                            civilian.getLocale(),
+                            "item-cost").replace("$1", "" + costItem.getQty())
+                            .replace("$2", costItem.getMat().name()));
+                    return;
+                }
+
+                town.getRevolt().add(civilian.getUuid());
+                TownManager.getInstance().saveTown(town);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
+                return;
+            } else {
+                town.getRevolt().remove(civilian.getUuid());
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
             event.getWhoClicked().closeInventory();
@@ -357,7 +380,8 @@ public class TownActionMenu extends Menu {
         }
 
         //11 Leave Town
-        if (town.getPeople().get(civilian.getUuid()) != null) {
+        if (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
             CVItem cvItem2 = CVItem.createCVItemFromString("OAK_DOOR");
             cvItem2.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "leave-town"));
             inventory.setItem(11, cvItem2.createItemStack());
@@ -406,6 +430,47 @@ public class TownActionMenu extends Menu {
             }
             cvItem2.setLore(lore);
             inventory.setItem(14, cvItem2.createItemStack());
+        }
+
+        // 15 revolt
+        boolean hasRevolt = false;
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        for (GovTransition govTransition : government.getTransitions()) {
+            if (govTransition.getRevolt() > -1) {
+                hasRevolt = true;
+                break;
+            }
+        }
+        if (hasRevolt && town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).contains("member")) {
+            if (!town.getRevolt().contains(civilian.getUuid())) {
+                CVItem cvItem2 = CVItem.createCVItemFromString("TORCH");
+                cvItem2.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "revolt"));
+                lore = new ArrayList<>();
+                CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "revolt-desc").replace("$1", town.getName())
+                        .replace("$2", "" + costItem.getQty())
+                        .replace("$3", costItem.getMat().name()));
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "revolt-display").replace("$1", town.getRevolt().size() + "")
+                        .replace("$2", town.getRawPeople().size() + ""));
+                cvItem2.setLore(lore);
+                inventory.setItem(15, cvItem2.createItemStack());
+            } else {
+                CVItem cvItem2 = CVItem.createCVItemFromString("TORCH");
+                cvItem2.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "revolt"));
+                lore = new ArrayList<>();
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "cancel-revolt").replace("$1", town.getName()));
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "revolt-display").replace("$1", town.getRevolt().size() + "")
+                        .replace("$2", town.getRawPeople().size() + ""));
+                cvItem2.setLore(lore);
+                inventory.setItem(15, cvItem2.createItemStack());
+            }
         }
 
 

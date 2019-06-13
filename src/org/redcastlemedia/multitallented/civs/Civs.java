@@ -53,7 +53,7 @@ public class Civs extends JavaPlugin {
         setupPermissions();
 
         new ConfigManager(new File(getDataFolder(), "config.yml"));
-        new LocaleManager(new File(getDataFolder(), "locale.yml"));
+        new LocaleManager();
         new ItemManager();
         new TutorialManager();
         new GovernmentManager();
@@ -78,6 +78,7 @@ public class Civs extends JavaPlugin {
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
         StructureUtil.removeAllBoundingBoxes();
+        ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
     }
 

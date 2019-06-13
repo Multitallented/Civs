@@ -6,6 +6,23 @@
 
 icon: "PURPLE_GLAZED_TERRACOTTA"
 enabled: true
+transition:
+  0:
+    inactive: 2419200 #4 weeks
+    to: ANARCHY
+  1:
+    money-gap: 70
+    to: OLIGARCHY
+  2:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  3:
+    revolt: 51
+    to: ANARCHY
+  4:
+    power: 20
+    to: TRIBALISM
 name:
   en: "Meritocracy"
   fr: "Méritocratie"

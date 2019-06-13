@@ -36,7 +36,7 @@ upkeep:
     reagents:
     - SHEARS
     output:
-    - APPLE*16
+    - APPLE*4
 
 
 description:

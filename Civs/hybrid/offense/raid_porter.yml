@@ -2,7 +2,7 @@ type: region
 icon: REDSTONE_BLOCK
 name: Raid_Porter
 max: 1
-price: 150
+price: 200
 groups:
 - offense
 - raidport

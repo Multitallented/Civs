@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,7 +23,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -29,21 +37,20 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.*;
-import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
+import org.redcastlemedia.multitallented.civs.menus.BlueprintsMenu;
+import org.redcastlemedia.multitallented.civs.menus.ClassMenu;
+import org.redcastlemedia.multitallented.civs.menus.Menu;
+import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.UUID;
 
 public class CivilianListener implements Listener {
 
@@ -106,6 +113,7 @@ public class CivilianListener implements Listener {
         CommonScheduler.removeLastAnnouncement(uuid);
         Menu.clearHistory(uuid);
         TownManager.getInstance().clearInvite(uuid);
+        AnnouncementUtil.clearPlayer(uuid);
         StructureUtil.removeBoundingBox(uuid);
     }
 
@@ -158,20 +166,6 @@ public class CivilianListener implements Listener {
         return true;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    public void onCivilianBlockPlace(BlockPlaceEvent event) {
-        ItemStack is = new ItemStack(event.getBlockPlaced().getType(), 1);
-        if (!CVItem.isCivsItem(is)) {
-            return;
-        }
-        String itemTypeName = is.getItemMeta().getDisplayName()
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
-        CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
-        if (!civItem.isPlaceable()) {
-            event.setCancelled(true);
-            return;
-        }
-    }
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDispense(BlockDispenseEvent event) {
         ItemStack is = event.getItem();
@@ -227,7 +221,7 @@ public class CivilianListener implements Listener {
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
         boolean shouldCancel = shouldCancelBlockBreak(event.getBlock(), event.getPlayer());
         if (shouldCancel) {
@@ -285,7 +279,7 @@ public class CivilianListener implements Listener {
         return true;
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 //        ItemStack is = event.getBlock().getState().getData().toItemStack(1);
         ItemStack is = event.getItemInHand();
@@ -310,7 +304,7 @@ public class CivilianListener implements Listener {
             cvItem.setLore(lore);
         }
         BlockLogger blockLogger = BlockLogger.getInstance();
-        blockLogger.putBlock(event.getBlock().getLocation(), cvItem);
+        blockLogger.putBlock(Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation())), cvItem);
     }
 
     // for hoppers and the like

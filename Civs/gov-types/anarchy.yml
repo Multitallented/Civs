@@ -8,6 +8,7 @@
 
 icon: "NETHERRACK"
 enabled: true
+transition: {}
 name:
   en: "Anarchy"
   de: "Anarchie"

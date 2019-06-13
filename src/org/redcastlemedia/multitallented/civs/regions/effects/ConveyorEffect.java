@@ -25,10 +25,23 @@ import java.util.*;
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
 public class ConveyorEffect implements Listener {
+    private static ConveyorEffect instance = null;
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
     private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
     private HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
+    private boolean disabled = false;
     public static String KEY = "conveyor";
+
+    public ConveyorEffect() {
+        instance = this;
+    }
+
+    public static ConveyorEffect getInstance() {
+        if (instance == null) {
+            new ConveyorEffect();
+        }
+        return instance;
+    }
 
     @EventHandler
     public void onPoweredRailBreak(BlockBreakEvent event) {
@@ -46,7 +59,7 @@ public class ConveyorEffect implements Listener {
 
     @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
-        if (!event.getRegion().getEffects().containsKey(KEY)) {
+        if (disabled || !event.getRegion().getEffects().containsKey(KEY)) {
             return;
         }
         Region r = event.getRegion();
@@ -258,6 +271,14 @@ public class ConveyorEffect implements Listener {
 
         for (Region rr : removeMe) {
             carts.remove(rr);
+        }
+    }
+
+    public void onDisable() {
+        disabled = true;
+        HashMap<Region, StorageMinecart> tempCarts = new HashMap<>(carts);
+        for (Region region : tempCarts.keySet()) {
+            returnCart(region, true);
         }
     }
 }
