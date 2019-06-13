@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -548,11 +549,17 @@ public class RegionsTests {
         when(player1.getUniqueId()).thenReturn(new UUID(1,8));
         when(player1.getGameMode()).thenReturn(GameMode.SURVIVAL);
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, player1);
+        CVItem cvItem = new CVItem(Material.CHEST, 1);
+        cvItem.getLore().add(TestUtil.player.getUniqueId().toString());
+        BlockLogger.getInstance().putBlock(location1, cvItem);
         CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianBlockBreak(event);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
         assertNotNull(regionManager.getRegionAt(location1));
+        assertEquals(Material.CHEST, TestUtil.world.getBlockAt(location1).getType());
         assertTrue(event.isCancelled());
     }
 
