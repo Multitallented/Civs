@@ -193,6 +193,7 @@ public class GovernmentManager {
             town.setLastVote(System.currentTimeMillis());
         }
 
+        town.getRevolt().clear();
         town.getVotes().clear();
         town.setTaxes(0);
         town.setColonialTown(null);

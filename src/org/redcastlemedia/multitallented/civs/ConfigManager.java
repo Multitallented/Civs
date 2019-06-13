@@ -114,6 +114,8 @@ public class ConfigManager {
     boolean useAnnouncements;
     @Getter
     long announcementPeriod;
+    @Getter
+    String revoltCost;
 
     public ConfigManager() {
         loadDefaults();
@@ -340,6 +342,7 @@ public class ConfigManager {
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
+            revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
 
@@ -367,6 +370,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        revoltCost = "GUNPOWDER*64";
         announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
