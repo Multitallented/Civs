@@ -114,7 +114,10 @@ public class CommonScheduler implements Runnable {
                 }
 
                 boolean revolt = transition.getRevolt() > 0;
-                // TODO check if transition reqs met
+                double townRevoltPercent = ((double) town.getRevolt().size() / (double) town.getRawPeople().size());
+                if (revolt && townRevoltPercent < (double) transition.getRevolt() / 100) {
+                    continue;
+                }
 
                 boolean inactive = transition.getInactive() > 0;
                 if (inactive && town.getLastActive() < 0 &&
