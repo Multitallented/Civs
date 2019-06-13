@@ -145,7 +145,7 @@ public class GovernmentManager {
                 if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
                     continue;
                 }
-                town.setMaxPower(town.getMaxPower() * (1 + buff.getAmount() / 100));
+                town.setMaxPower((int) Math.round((double) town.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
                 break;
             }
         }
