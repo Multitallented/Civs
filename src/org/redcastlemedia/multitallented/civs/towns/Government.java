@@ -15,13 +15,17 @@ public class Government {
     private final GovernmentType governmentType;
     @Getter
     private final HashSet<GovTypeBuff> buffs;
+    @Getter
+    private final ArrayList<GovTransition> transitions;
     private final CVItem icon;
 
     public Government(GovernmentType governmentType,
-                      HashSet<GovTypeBuff> buffs, CVItem cvItem) {
+                      HashSet<GovTypeBuff> buffs, CVItem cvItem,
+                      ArrayList<GovTransition> transitions) {
         this.governmentType = governmentType;
         this.buffs = buffs;
         this.icon = cvItem;
+        this.transitions = transitions;
     }
 
     public CVItem getIcon(String locale) {

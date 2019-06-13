@@ -17,12 +17,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -75,6 +70,7 @@ public class CommonScheduler implements Runnable {
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+                    checkTownTransition();
                 }
             } else {
                 i++;
@@ -83,6 +79,43 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
+    private void checkTownTransition() {
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (town.isGovTypeChangedToday()) {
+                continue;
+            }
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government == null) {
+                continue;
+            }
+
+            for (GovTransition transition : government.getTransitions()) {
+                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null;
+                if (moneyGap) {
+                    double highestMoney = 0;
+                    double totalMoney = 0;
+                    for (UUID uuid : town.getRawPeople().keySet()) {
+                        double money = Civs.econ.getBalance(Bukkit.getOfflinePlayer(uuid));
+                        totalMoney += money;
+                        if (highestMoney < money) {
+                            highestMoney = money;
+                        }
+                    }
+                    moneyGap = highestMoney > transition.getMoneyGap() / 100 * totalMoney;
+                }
+
+                boolean power = transition.getPower() > 0 &&
+                        town.getPower() < ((double) transition.getPower() / 100 * (double) town.getMaxPower());
+
+                boolean revolt = transition.getRevolt() > 0;
+                // TODO check if transition reqs met
+
+                boolean inactive = transition.getInactive() > 0;
+                // TODO check if requirements are met
+            }
+        }
+    }
+
     private void sendAnnouncement(Player player) {
         if (!ConfigManager.getInstance().isUseAnnouncements()) {
             return;

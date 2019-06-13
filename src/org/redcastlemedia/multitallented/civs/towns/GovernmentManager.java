@@ -8,10 +8,7 @@ import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GovernmentManager {
     private static GovernmentManager instance = null;
@@ -60,12 +57,45 @@ public class GovernmentManager {
             }
             CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
 
+            ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
             Government government = new Government(governmentType,
-                    getBuffs(config.getConfigurationSection("buffs")), cvItem);
+                    getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
             governments.put(governmentType, government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
         }
+    }
+
+    private ArrayList<GovTransition> processTransitionList(ConfigurationSection section) {
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        if (section == null) {
+            return transitions;
+        }
+        for (String index : section.getKeys(false)) {
+            int power = -1;
+            int moneyGap = -1;
+            int revolt = -1;
+            long inactive = -1;
+            GovernmentType governmentType = null;
+            for (String key : section.getConfigurationSection(index).getKeys(false)) {
+                if ("power".equals(key)) {
+                    power = section.getInt(index + "." + key);
+                } else if ("money-gap".equals(key)) {
+                    moneyGap = section.getInt(index + "." + key);
+                } else if ("revolt".equals(key)) {
+                    revolt = section.getInt(index + "." + key);
+                } else if ("inactive".equals(key)) {
+                    inactive = section.getLong(index + "." + key);
+                } else {
+                    governmentType = GovernmentType.valueOf(section.getString(key));
+                }
+            }
+            if (governmentType == null) {
+                continue;
+            }
+            transitions.add(new GovTransition(revolt, moneyGap, power, inactive, governmentType));
+        }
+        return transitions;
     }
 
     private HashSet<GovTypeBuff> getBuffs(ConfigurationSection section) {
