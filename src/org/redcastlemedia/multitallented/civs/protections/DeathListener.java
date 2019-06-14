@@ -432,6 +432,9 @@ public class DeathListener implements Listener {
                 }
                 bountyBonus += town.getBounties().remove(town.getBounties().size() -1).getAmount();
             }
+        } else if (!dyingCiv.getBounties().isEmpty()) {
+            damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                    "allied-bounty"));
         }
         final double BOUNTY_BONUS = bountyBonus;
 
