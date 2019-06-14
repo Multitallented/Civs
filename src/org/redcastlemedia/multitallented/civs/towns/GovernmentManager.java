@@ -70,7 +70,6 @@ public class GovernmentManager {
             governments.put(governmentType, government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
-            e.printStackTrace();
         }
     }
 

@@ -27,6 +27,8 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String HIGHEST_BOUNTY = "highestbounty";
     private static final String MANA = "mana";
     private static final String NATION = "nation";
+    private static final String POWER = "power";
+    private static final String MAX_POWER = "max_power";
 
     @Override
     public boolean canRegister() {
@@ -68,6 +70,12 @@ public class PlaceHook extends PlaceholderExpansion {
     private String routePlaceholder(Civilian civilian, String identifier) {
         if (TOWN_NAME.equals(identifier)) {
             return getReplacement(civilian);
+        } else if (POWER.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            return "" + town.getPower();
+        } else if (MAX_POWER.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            return "" + town.getMaxPower();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (KILLS.equals(identifier)) {
