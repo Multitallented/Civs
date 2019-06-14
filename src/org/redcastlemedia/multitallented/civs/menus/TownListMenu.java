@@ -120,11 +120,17 @@ public class TownListMenu extends Menu {
     }
 
     public static Inventory createMenu(Civilian civilian, int page, UUID uuid) {
+        return createMenu(civilian, page, uuid, true);
+    }
+    public static Inventory createMenu(Civilian civilian, int page, UUID uuid, boolean showAllied) {
         List<Town> towns = TownManager.getInstance().getTowns();
         if (uuid != null) {
             List<Town> newTownList = new ArrayList<>();
             for (Town town : towns) {
-                if (town.getPeople().containsKey(uuid)) {
+                if (showAllied && town.getPeople().containsKey(uuid)) {
+                    newTownList.add(town);
+                } else if (!showAllied && town.getRawPeople().containsKey(uuid) &&
+                        !town.getRawPeople().get(uuid).contains("ally")) {
                     newTownList.add(town);
                 }
             }
