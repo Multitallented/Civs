@@ -7,7 +7,7 @@
 icon: "BLACK_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  0:
+  vacate:
     inactive: 1209600
     to: ANARCHY
 name:

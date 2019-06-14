@@ -70,6 +70,7 @@ public class GovernmentManager {
             governments.put(governmentType, government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
+            e.printStackTrace();
         }
     }
 
@@ -93,8 +94,8 @@ public class GovernmentManager {
                     revolt = section.getInt(index + "." + key);
                 } else if ("inactive".equals(key)) {
                     inactive = section.getLong(index + "." + key);
-                } else {
-                    governmentType = GovernmentType.valueOf(section.getString(key));
+                } else if ("to".equals(key)) {
+                    governmentType = GovernmentType.valueOf(section.getString(index + "." + key));
                 }
             }
             if (governmentType == null) {

@@ -7,20 +7,20 @@
 icon: "PURPLE_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  0:
+  vacate:
     inactive: 2419200 #4 weeks
     to: ANARCHY
-  1:
+  corruption:
     money-gap: 70
     to: OLIGARCHY
-  2:
+  takeover:
     revolt: 51
     money-gap: 40
     to: COMMUNISM
-  3:
+  chaos:
     revolt: 51
-    to: ANARCHY
-  4:
+    to: KRATEROCRACY
+  devolve:
     power: 20
     to: TRIBALISM
 name:
