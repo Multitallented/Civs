@@ -16,7 +16,7 @@ transition:
     revolt: 75
     to: COMMUNISM
   2:
-    inactive: 1209600
+    inactive: 2419200 #4 weeks
     to: ANARCHY
   3:
     power: 20

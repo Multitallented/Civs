@@ -194,7 +194,7 @@ public class TownCommand implements CivCommand {
                 if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
                     continue;
                 }
-                newTown.setMaxPower(newTown.getMaxPower() * (1 + buff.getAmount() / 100));
+                newTown.setMaxPower((int) Math.round((double) newTown.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
                 break;
             }
         }

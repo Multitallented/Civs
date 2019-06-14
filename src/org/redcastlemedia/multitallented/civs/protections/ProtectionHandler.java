@@ -459,7 +459,7 @@ public class ProtectionHandler implements Listener {
         handleInteract(event.getClickedBlock(), event.getPlayer(), event);
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onMobSpawn(CreatureSpawnEvent event) {
         if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||

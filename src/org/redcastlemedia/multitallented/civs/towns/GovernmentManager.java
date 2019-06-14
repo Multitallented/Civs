@@ -134,7 +134,7 @@ public class GovernmentManager {
                 if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
                     continue;
                 }
-                town.setMaxPower(town.getMaxPower() * (1 - buff.getAmount() / 100));
+                town.setMaxPower((int) Math.round((double) town.getMaxPower() * (1 - (double) buff.getAmount() / 100)));
                 break;
             }
         }
@@ -145,7 +145,7 @@ public class GovernmentManager {
                 if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
                     continue;
                 }
-                town.setMaxPower(town.getMaxPower() * (1 + buff.getAmount() / 100));
+                town.setMaxPower((int) Math.round((double) town.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
                 break;
             }
         }
@@ -193,6 +193,7 @@ public class GovernmentManager {
             town.setLastVote(System.currentTimeMillis());
         }
 
+        town.getRevolt().clear();
         town.getVotes().clear();
         town.setTaxes(0);
         town.setColonialTown(null);

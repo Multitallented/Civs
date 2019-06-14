@@ -48,7 +48,7 @@ public class DailyScheduler implements Runnable {
             if (government != null) {
                 for (GovTypeBuff buff : government.getBuffs()) {
                     if (buff.getBuffType() == GovTypeBuff.BuffType.POWER) {
-                        addPower.put(town, (int) (townType.getPower() * (1 + (double) buff.getAmount() / 100)));
+                        addPower.put(town, (int) Math.round((double) townType.getPower() * (1 + (double) buff.getAmount() / 100)));
                         break;
                     }
                 }

@@ -7,7 +7,7 @@
 icon: "CYAN_GLAZED_TERRACOTTA"
 enabled: true
   0:
-    inactive: 1209600
+    inactive: 1814400 #3 weeks
     to: ANARCHY
   1:
     money-gap: 70

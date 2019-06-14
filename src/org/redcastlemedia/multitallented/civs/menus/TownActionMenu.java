@@ -136,7 +136,29 @@ public class TownActionMenu extends Menu {
             event.getWhoClicked().openInventory(LeaveConfirmationMenu.createMenu(civilian, town));
             return;
         }
-        // TODO revolt
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "revolt"))) {
+
+            if (!town.getRevolt().contains(civilian.getUuid())) {
+                CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
+                if (!event.getWhoClicked().getInventory().contains(costItem.createItemStack())) {
+                    event.getWhoClicked().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                            civilian.getLocale(),
+                            "item-cost").replace("$1", "" + costItem.getQty())
+                            .replace("$2", costItem.getMat().name()));
+                    return;
+                }
+
+                town.getRevolt().add(civilian.getUuid());
+                TownManager.getInstance().saveTown(town);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
+                return;
+            } else {
+                town.getRevolt().remove(civilian.getUuid());
+                TownManager.getInstance().saveTown(town);
+            }
+        }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(), "add-member"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townName);
@@ -426,9 +448,11 @@ public class TownActionMenu extends Menu {
                 cvItem2.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "revolt"));
                 lore = new ArrayList<>();
-                // TODO add cost display
+                CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
                 lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "revolt-desc").replace("$1", town.getName()));
+                        "revolt-desc").replace("$1", town.getName())
+                        .replace("$2", "" + costItem.getQty())
+                        .replace("$3", costItem.getMat().name()));
                 lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "revolt-display").replace("$1", town.getRevolt().size() + "")
                         .replace("$2", town.getRawPeople().size() + ""));

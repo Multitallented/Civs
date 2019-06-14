@@ -17,7 +17,7 @@ transition:
     revolt: 75
     to: LIBERTARIAN
   3:
-    inactive: 1209600
+    inactive: 1814400 #3 weeks
     to: ANARCHY
   4:
     power: 20

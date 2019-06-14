@@ -2,14 +2,20 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -20,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +34,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,6 +52,8 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
+        new GovernmentManager();
+        new ItemManager();
     }
 
     @Test
@@ -284,6 +294,27 @@ public class TownTests {
         assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
     }
 
+    @Test
+    public void townMaxPowerShouldBeAdjustedOnCreation() {
+        loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        HashSet<GovTypeBuff> buffs = new HashSet<>();
+        buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
+        Government government = new Government(GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
+        GovernmentManager.getInstance().addGovernment(government);
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[2];
+        args[0] = "town";
+        args[1] = "test";
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException exception) {
+
+        }
+        assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
@@ -318,6 +349,7 @@ public class TownTests {
         config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
+        config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "tribe");
     }
     public static void loadTownTypeTribe2() {
