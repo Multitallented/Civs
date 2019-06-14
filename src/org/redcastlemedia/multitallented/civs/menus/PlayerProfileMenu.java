@@ -49,7 +49,7 @@ public class PlayerProfileMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.OAK_DOOR)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + uuid.toString());
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, player.getUniqueId()));
+            event.getWhoClicked().openInventory(TownListMenu.createMenu(civilian, 0, player.getUniqueId(), false));
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
