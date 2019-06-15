@@ -136,8 +136,9 @@ add-recruiter-region: 你已为$1设置招募员
 recruiter-added-region: $1现在是$2的招募员
 add-guest-region: 你已成为 $1 的游客
 guest-added-region: $1 现在是 $2 的游客
-invite-owner-region: 你成为了 $1 的一员
-owner-invited-region: $1 已加入你的 $2
+invite-member-region: 你成为了 $1 的一员
+member-invited-region: $1 已加入你的 $2
+no-invite: 你没有邀请
 stand-in-region: 请让 $1 站在该区域内
 create: 创建
 click-for-region-limits: 点击这里查看区域限制列表
