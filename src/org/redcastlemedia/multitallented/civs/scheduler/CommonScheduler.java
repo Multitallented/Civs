@@ -91,7 +91,7 @@ public class CommonScheduler implements Runnable {
             }
 
             for (GovTransition transition : government.getTransitions()) {
-                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null;
+                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null && town.getRawPeople().size() > 1;
                 if (moneyGap) {
                     double highestMoney = 0;
                     double totalMoney = 0;
@@ -102,7 +102,7 @@ public class CommonScheduler implements Runnable {
                             highestMoney = money;
                         }
                     }
-                    if (highestMoney < transition.getMoneyGap() / 100 * totalMoney) {
+                    if (totalMoney == 0 || highestMoney < (double) transition.getMoneyGap() / 100 * totalMoney) {
                         continue;
                     }
                 }
@@ -121,13 +121,14 @@ public class CommonScheduler implements Runnable {
 
                 boolean inactive = transition.getInactive() > 0;
                 if (inactive && (town.getLastActive() < 0 ||
-                        town.getLastActive() + transition.getInactive() > System.currentTimeMillis())) {
+                        town.getLastActive() + transition.getInactive() * 1000 > System.currentTimeMillis())) {
                     continue;
                 }
 
                 GovernmentManager.getInstance().transitionGovernment(town,
                         transition.getTransitionGovernmentType(), false);
                 saveThese.add(town);
+                break;
             }
         }
         for (Town town : saveThese) {

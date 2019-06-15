@@ -149,6 +149,7 @@ public class TownActionMenu extends Menu {
                     return;
                 }
 
+                event.getWhoClicked().getInventory().removeItem(costItem.createItemStack());
                 town.getRevolt().add(civilian.getUuid());
                 TownManager.getInstance().saveTown(town);
                 event.getWhoClicked().closeInventory();
