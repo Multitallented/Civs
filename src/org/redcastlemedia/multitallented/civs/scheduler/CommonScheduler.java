@@ -120,8 +120,8 @@ public class CommonScheduler implements Runnable {
                 }
 
                 boolean inactive = transition.getInactive() > 0;
-                if (inactive && town.getLastActive() < 0 &&
-                        town.getLastActive() + transition.getInactive() > System.currentTimeMillis()) {
+                if (inactive && (town.getLastActive() < 0 ||
+                        town.getLastActive() + transition.getInactive() > System.currentTimeMillis())) {
                     continue;
                 }
 
