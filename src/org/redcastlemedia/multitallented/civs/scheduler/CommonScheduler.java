@@ -241,7 +241,7 @@ public class CommonScheduler implements Runnable {
                     government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "enter-town").replace("$1", town.getName())
+                "town-enter").replace("$1", town.getName())
                 .replace("$2", govName));
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
@@ -255,7 +255,7 @@ public class CommonScheduler implements Runnable {
                     government.getGovernmentType().name().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "exit-town").replace("$1", town.getName())
+                "town-exit").replace("$1", town.getName())
                 .replace("$2", govName));
     }
 

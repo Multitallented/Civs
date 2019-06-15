@@ -190,6 +190,9 @@ public class TutorialManager {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         String rawMessage = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+        if (rawMessage == null || rawMessage.isEmpty()) {
+            return;
+        }
         if (player != null && player.isOnline()) {
             if (useHr) {
                 player.sendMessage("-----------------" + Civs.NAME + "-----------------");
