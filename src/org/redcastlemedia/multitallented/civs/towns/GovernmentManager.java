@@ -94,7 +94,7 @@ public class GovernmentManager {
                 } else if ("inactive".equals(key)) {
                     inactive = section.getLong(index + "." + key);
                 } else {
-                    governmentType = GovernmentType.valueOf(section.getString(key));
+                    governmentType = GovernmentType.valueOf(section.getString(index + "." + key));
                 }
             }
             if (governmentType == null) {

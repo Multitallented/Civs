@@ -69,6 +69,11 @@ public class MemberActionMenu extends Menu {
             clickBackButton(cPlayer);
             return;
         }
+        if (event.getCurrentItem().getType().equals(Material.GOLD_INGOT)) {
+            cPlayer.performCommand("cv setrecruiter " + player.getUniqueId() + " " + locationString);
+            clickBackButton(cPlayer);
+            return;
+        }
         if (event.getCurrentItem().getType().equals(Material.IRON_BLOCK)) {
             cPlayer.performCommand("cv setmember " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
@@ -121,11 +126,11 @@ public class MemberActionMenu extends Menu {
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
-        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true, true);
+        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true, true, false);
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf,
-                                 GovernmentType governmentType, double price, boolean isOwner, boolean alreadyVoted) {
+                                 GovernmentType governmentType, double price, boolean isOwner, boolean alreadyVoted, boolean isTown) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -224,6 +229,17 @@ public class MemberActionMenu extends Menu {
             }
             inventory.setItem(13, cvItem.createItemStack());
         }
+
+        //14 set recruiter
+        if (isTown && (isAdmin || ((!viewingSelf || isOwner) &&
+                !isVoteOnly && !role.contains("recruiter") && !cantAddOwners))) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_INGOT");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-recruiter"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "recruiter-description"));
+            cvItem1.setLore(lore);
+            inventory.setItem(14, cvItem1.createItemStack());
+        }
     }
 
     public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf, boolean isOwner) {
@@ -257,7 +273,7 @@ public class MemberActionMenu extends Menu {
         boolean alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
                 !town.getVotes().get(civilian.getUuid()).isEmpty();
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted);
+        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted, true);
 
         return inventory;
     }

@@ -6,6 +6,7 @@
 
 icon: "CYAN_GLAZED_TERRACOTTA"
 enabled: true
+transition:
   0:
     inactive: 1814400 #3 weeks
     to: ANARCHY

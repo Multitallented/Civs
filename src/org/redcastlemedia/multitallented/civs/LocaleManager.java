@@ -60,14 +60,19 @@ public class LocaleManager {
         }
         for (File currentTranslationFile : translationFolder.listFiles()) {
             FileConfiguration config = new YamlConfiguration();
-            HashMap<String, String> currentLanguage = new HashMap<>();
+            try {
+                config.load(currentTranslationFile);
+                HashMap<String, String> currentLanguage = new HashMap<>();
 
-            for (String translationKey : config.getKeys(false)) {
-                currentLanguage.put(translationKey, config.getString(translationKey));
+                for (String translationKey : config.getKeys(false)) {
+                    currentLanguage.put(translationKey, config.getString(translationKey));
+                }
+
+                String langKey = currentTranslationFile.getName().replace(".yml", "");
+                languageMap.put(langKey, currentLanguage);
+            } catch (Exception e) {
+                Civs.logger.severe("Unable to load " + currentTranslationFile.getName());
             }
-
-            String langKey = currentTranslationFile.getName().replace(".yml", "");
-            languageMap.put(langKey, currentLanguage);
         }
     }
 

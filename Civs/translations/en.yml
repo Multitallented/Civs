@@ -117,6 +117,7 @@ recruiter: Recruiter
 set-owner: Set Owner
 set-member: Set Member
 set-guest: Set Guest
+set-recruiter: Set Recruiter
 remove-member: Remove Member
 leave-town: Leave Town
 you-left-town: "You have left $1"
@@ -126,10 +127,13 @@ member-added-region: "$1 is now a member of your $2"
 owner-description: "Owners can do anything in the region"
 guest-description: "Guests can use doors and buttons in the region"
 member-description: "Members can build and use the region"
+recruiter-description: "Recruiters can invite players to the town"
 remove-member-region: "You are no longer a member of $1"
 member-removed-region: "$1 is no longer a member of $2"
 add-owner-region: "You have been made an owner of $1"
 owner-added-region: "$1 is now an owner of your $2"
+add-recruiter-region: "You have ben made a recruiter for $1"
+recruiter-added-region: "$1 is now a recruiter for $2"
 add-guest-region: "You have been made a guest of $1"
 guest-added-region: "$1 is now a guest of your $2"
 invite-owner-region: "You have been become a member of $1"
@@ -152,6 +156,7 @@ rename-desc: "Use /cv rename oldName newName"
 town-renamed: "Your town has been renamed from $1 to $2"
 bounty-set: "A bounty has been set on $1 for $2"
 bounty-bonus: "You collected a bounty of $1"
+allied-bounty: "No bounty collected for killing an ally."
 add-friend: "Add Friend"
 remove-friend: "Remove Friend"
 friend-added: "$1 has been added to your friends list"
