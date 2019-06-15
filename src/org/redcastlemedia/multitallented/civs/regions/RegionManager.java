@@ -370,7 +370,7 @@ public class RegionManager {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
-        String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
+        String regionTypeName = event.getItemInHand().getItemMeta().getLore().get(1);
         regionTypeName = regionTypeName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "");
 
         RegionType regionType;

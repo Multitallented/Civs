@@ -96,14 +96,14 @@ public class MainMenu extends Menu {
             return;
         }
         if (im.getLore() != null && !im.getLore().isEmpty()) {
-            if (im.getLore().get(0).equals(ChatColor.stripColor("town")) &&
+            if (ChatColor.stripColor(im.getLore().get(0)).equals("town") &&
                     TownManager.getInstance().getTown(itemName) != null) {
                 appendHistory(civilian.getUuid(), MENU_NAME);
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian,
                         TownManager.getInstance().getTown(itemName)));
                 return;
-            } else if (im.getLore().get(0).equals(ChatColor.stripColor("region"))) {
+            } else if (ChatColor.stripColor(im.getLore().get(0)).equals("region")) {
                 appendHistory(civilian.getUuid(), MENU_NAME);
                 event.getWhoClicked().closeInventory();
                 Player player = Bukkit.getPlayer(civilian.getUuid());

@@ -58,7 +58,7 @@ public class RegionListener implements Listener {
         if (!CVItem.isCivsItem(heldItem)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getLore().get(1));
 
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(blockPlaceEvent.getPlayer().getUniqueId());

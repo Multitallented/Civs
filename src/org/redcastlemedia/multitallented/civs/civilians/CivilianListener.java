@@ -286,7 +286,7 @@ public class CivilianListener implements Listener {
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
+        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getLore().get(1)
                 .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
