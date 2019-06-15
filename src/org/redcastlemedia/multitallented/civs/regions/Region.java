@@ -794,7 +794,7 @@ public class Region {
                         if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
                             continue;
                         }
-                        payout = payout * (1 + (double) buff.getAmount());
+                        payout = payout * (1 + (double) buff.getAmount() / 100);
                         break;
                     }
                 }
