@@ -16,7 +16,8 @@ public class LocaleManager {
     public String getTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
-                !languageMap.get(language).containsKey(key)) {
+                !languageMap.get(language).containsKey(key) ||
+                languageMap.get(language).get(key).isEmpty()) {
             HashMap<String, String> map = languageMap.get(ConfigManager.getInstance().getDefaultLanguage());
             if (map == null) {
                 Civs.logger.severe("Unable to find default language for " + ConfigManager.getInstance().getDefaultLanguage());
@@ -34,7 +35,8 @@ public class LocaleManager {
     public String getRawTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
-                !languageMap.get(language).containsKey(key)) {
+                !languageMap.get(language).containsKey(key) ||
+                languageMap.get(language).get(key).isEmpty()) {
             return textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
         }
         return textPrefix + languageMap.get(language).get(key);

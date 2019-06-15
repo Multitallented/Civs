@@ -17,10 +17,10 @@ guide-desc: 点击查看你的下一个目标
 choose-path: 选择你的路径
 new-owner-town: $1 继承了 $2 的衣钵成为了 $3 的城主
 town-bank-balance: Bank balance $1
-town-bank-desc: 使用/cv withdraw $1 amount 来取款
+town-bank-desc: 使用/cv withdraw $1 量 来取款
 widthdrawn-money: "你从$2的银行取出了 $$1 "
 town-tax: "城镇税收: $1"
-town-tax-desc: 使用/cv tax $1 amount 来设置税收
+town-tax-desc: 使用/cv tax $1 量 来设置税收
 town-tax-gov-type: $1 无法设置税收
 town-tax-set: $1的税收设置为 $2
 tax-too-high: 税收不能高于$1
@@ -262,7 +262,7 @@ ann-town-protection: "[信息] 城镇保护土地并且可以在商店内解锁�
 ann-town-housing: "[信息] $1 拥有 $2 / $3 个住宅. 如果你想要发展城镇请建造更多住宅."
 ann-make-allies: "[信息] 考虑加入联盟吧. 在社区 > 城镇 >  你可以设置盟友城镇"
 ann-town-low-power: "@{RED}[警告] $1 只有 $2 / $3 点能量了. 建造更多产能的建筑吧."
-ann-bank: "[信息] $1的银行内有 $$2.你可以使用 /cv withdraw $1 amount 来取款"
+ann-bank: "[信息] $1的银行内有 $$2.你可以使用 /cv withdraw $1 量 来取款"
 ann-vote: 别忘了为下一届$1的城主投票。社区 > 你的城镇 > $1 > 查看成员 > 玩家 > 投票
 ann-karma: "@{YELLOW}[注意] $1 在线. 如果你可以杀死 $1, 你就会获得奖励。"
 ann-missing-input: " [信息] 你的 $1 需要物品。 使用城镇向导书来查看需要什么原料。"

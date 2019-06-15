@@ -197,6 +197,7 @@ public class GovernmentManager {
         town.getVotes().clear();
         town.setTaxes(0);
         town.setColonialTown(null);
+        town.setGovTypeChangedToday(true);
         town.setGovernmentType(governmentType);
         if (save) {
             TownManager.getInstance().saveTown(town);
