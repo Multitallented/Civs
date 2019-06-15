@@ -496,7 +496,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
-            if (town != null) {
+            if (town != null && role.contains("member")) {
                 if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                         town.getGovernmentType() == GovernmentType.ANARCHY) {
                     role = "owner";
@@ -607,7 +607,7 @@ public class ProtectionHandler implements Listener {
         if (role == null) {
             return true;
         }
-        if (town != null) {
+        if (town != null && role.contains("member")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                     town.getGovernmentType() == GovernmentType.ANARCHY) {
