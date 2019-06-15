@@ -87,8 +87,6 @@ public class SetRecruiterCommand implements CivCommand {
             }
         }
 
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-
         if (!isAdmin && !hasPermission && !colonialOverride) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
@@ -104,7 +102,7 @@ public class SetRecruiterCommand implements CivCommand {
         }
         if (player != null && civilian != null && invitePlayer != null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "recruiter-added-region").replace("$1", invitePlayer.getDisplayName())
+                    "recruiter-added-region").replace("$1", invitePlayer.getName())
                     .replace("$2", name));
         } else {
             commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is now a recruiter of your " + name);
