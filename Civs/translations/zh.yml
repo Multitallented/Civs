@@ -18,7 +18,7 @@ choose-path: 选择你的路径
 new-owner-town: $1 继承了 $2 的衣钵成为了 $3 的城主
 town-bank-balance: Bank balance $1
 town-bank-desc: 使用/cv withdraw $1 量 来取款
-widthdrawn-money: "你从$2的银行取出了 $$1 "
+withdrawn-money: "你从$2的银行取出了 $$1 "
 town-tax: "城镇税收: $1"
 town-tax-desc: 使用/cv tax $1 量 来设置税收
 town-tax-gov-type: $1 无法设置税收
