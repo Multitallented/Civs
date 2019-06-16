@@ -295,6 +295,45 @@ public class TownTests {
     }
 
     @Test
+    public void townShouldNotTransition() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(160);
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
+                GovernmentType.ANARCHY);
+        transitions.add(govTransition);
+        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+                transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        CommonScheduler commonScheduler = new CommonScheduler();
+        for (int i=0; i<8; i++) {
+            commonScheduler.run();
+        }
+        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+    }
+
+    @Test
+    public void townShouldNotInactiveTransition() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(160);
+        town.setLastActive(System.currentTimeMillis());
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, -1, 50000,
+                GovernmentType.ANARCHY);
+        transitions.add(govTransition);
+        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+                transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        CommonScheduler commonScheduler = new CommonScheduler();
+        for (int i=0; i<8; i++) {
+            commonScheduler.run();
+        }
+        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+    }
+
+    @Test
     public void townMaxPowerShouldBeAdjustedOnCreation() {
         loadTownTypeTribe();
         RegionsTests.loadRegionTypeCobble();
