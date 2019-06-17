@@ -41,15 +41,14 @@ public class SpellListener implements Listener {
         if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
             return;
         }
-        String itemName = CivItem.processItemName(itemStack.getItemMeta().getDisplayName());
-        CivItem civItem = ItemManager.getInstance().getItemType(itemName);
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
 
         if (!(civItem instanceof SpellType)) {
             return;
         }
         SpellType spellType = (SpellType) civItem;
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        Spell spell = new Spell(itemName, event.getPlayer(), civilian.getLevel(spellType));
+        Spell spell = new Spell(civItem.getProcessedName(), event.getPlayer(), civilian.getLevel(spellType));
         //TODO should I add this to a spell manager? Spells dont persist
         spell.useAbility();
     }

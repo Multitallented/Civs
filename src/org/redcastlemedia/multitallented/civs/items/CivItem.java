@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.items;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
@@ -106,5 +107,14 @@ public abstract class CivItem extends CVItem {
         CLASS,
         FOLDER,
         TOWN
+    }
+
+    public static CivItem getFromItemStack(ItemStack itemStack) {
+        return ItemManager.getInstance().getItemType(itemStack.getItemMeta().getLore().get(1)
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+    }
+    public static CivItem getFromItemStack(CVItem cvItem) {
+        return ItemManager.getInstance().getItemType(cvItem.getLore().get(1)
+                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
     }
 }

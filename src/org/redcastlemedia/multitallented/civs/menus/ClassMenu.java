@@ -75,13 +75,11 @@ public class ClassMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            String itemTypeName = is.getItemMeta().getDisplayName().replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
-            CivItem civItem = itemManager.getItemType(itemTypeName);
-            civItem.setQty(is.getAmount());
-            if (stashItems.containsKey(itemTypeName)) {
-                stashItems.put(itemTypeName, is.getAmount() + stashItems.get(itemTypeName));
+            CivItem civItem = CivItem.getFromItemStack(is);
+            if (stashItems.containsKey(civItem.getProcessedName())) {
+                stashItems.put(civItem.getProcessedName(), is.getAmount() + stashItems.get(civItem.getProcessedName()));
             } else {
-                stashItems.put(itemTypeName, is.getAmount());
+                stashItems.put(civItem.getProcessedName(), is.getAmount());
             }
         }
         CivilianManager.getInstance().saveCivilian(civilian);

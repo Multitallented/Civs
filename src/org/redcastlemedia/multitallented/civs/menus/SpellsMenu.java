@@ -74,9 +74,7 @@ public class SpellsMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName()
-                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
-            civItem.setQty(is.getAmount());
+            CivItem civItem = CivItem.getFromItemStack(is);
             if (stashItems.containsKey(civItem.getProcessedName())) {
                 stashItems.put(civItem.getProcessedName(),
                         civItem.getQty() + stashItems.get(civItem.getProcessedName()));

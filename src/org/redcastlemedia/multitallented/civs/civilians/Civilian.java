@@ -336,8 +336,10 @@ public class Civilian {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getDisplayName()
-                    .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+            CivItem civItem = CivItem.getFromItemStack(is);
+            if (civItem == null) {
+                continue;
+            }
             if (!civItem.getProcessedName().equalsIgnoreCase(name) &&
                     !civItem.getGroups().contains(name)) {
                 continue;

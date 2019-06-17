@@ -60,7 +60,7 @@ public class BlueprintsMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName());
+            CivItem civItem = CivItem.getFromItemStack(is);
             String name = civItem.getProcessedName();
             if (stashItems.containsKey(name)) {
                 stashItems.put(name, is.getAmount() + stashItems.get(name));
