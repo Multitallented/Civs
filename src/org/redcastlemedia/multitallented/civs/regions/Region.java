@@ -112,25 +112,26 @@ public class Region {
         if (town == null) {
             return people;
         }
-        HashMap<UUID, String> newPeople = (HashMap<UUID, String>) people.clone();
+        HashMap<UUID, String> newPeople = new HashMap<>(people);
         for (UUID uuid : town.getPeople().keySet()) {
             if (!newPeople.containsKey(uuid)) {
                 newPeople.put(uuid, "ally");
             }
         }
 
-        for (Alliance alliance : AllianceManager.getInstance().getAlliances(town)) {
-            for (String name : alliance.getMembers()) {
-                Town currentTown = townManager.getTown(name);
-                if (currentTown != null) {
-                    for (UUID uuid : currentTown.getPeople().keySet()) {
-                        if (!newPeople.containsKey(uuid)) {
-                            newPeople.put(uuid, "ally");
-                        }
-                    }
-                }
-            }
-        }
+//        for (Alliance alliance : AllianceManager.getInstance().getAlliances(town)) {
+//            for (String name : alliance.getMembers()) {
+//                Town currentTown = townManager.getTown(name);
+//                if (currentTown != null) {
+//                    for (UUID uuid : currentTown.getPeople().keySet()) {
+//                        if (!newPeople.containsKey(uuid) &&
+//                                !currentTown.getPeople().get(uuid).contains("ally")) {
+//                            newPeople.put(uuid, "ally");
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return newPeople;
     }
     public HashMap<String, String> getEffects() { return effects; }

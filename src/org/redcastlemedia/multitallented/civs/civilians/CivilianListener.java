@@ -172,9 +172,7 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCivsItem(is)) {
             return;
         }
-        String itemTypeName = is.getItemMeta().getDisplayName()
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
-        CivItem civItem = ItemManager.getInstance().getItemType(itemTypeName);
+        CivItem civItem = CivItem.getFromItemStack(is);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
             return;
@@ -265,7 +263,7 @@ public class CivilianListener implements Listener {
                 player.getInventory().setItem(firstEmptyIndex, itemStack);
             } else {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-                CivItem civItem = ItemManager.getInstance().getItemType(cvItem.getDisplayName());
+                CivItem civItem = CivItem.getFromItemStack(cvItem);
                 if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
                     civilian.getStashItems().put(civItem.getProcessedName(),
                             civilian.getStashItems().get(civItem.getProcessedName()) + 1);
@@ -281,13 +279,11 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-//        ItemStack is = event.getBlock().getState().getData().toItemStack(1);
         ItemStack is = event.getItemInHand();
         if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(is.getItemMeta().getLore().get(1)
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        CivItem civItem = CivItem.getFromItemStack(is);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);

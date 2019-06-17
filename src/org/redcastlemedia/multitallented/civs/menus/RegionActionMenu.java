@@ -65,6 +65,15 @@ public class RegionActionMenu extends Menu {
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
             return;
         }
+        if (event.getCurrentItem().getType() == Material.OAK_DOOR) {
+            Town town = TownManager.getInstance().getTown(event.getCurrentItem().getItemMeta().getDisplayName());
+            if (town != null) {
+                event.getWhoClicked().closeInventory();
+                appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
+                event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian, town));
+                return;
+            }
+        }
         if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
                 event.getCurrentItem().getItemMeta().getDisplayName().equals(
                 localeManager.getTranslation(civilian.getLocale(),
