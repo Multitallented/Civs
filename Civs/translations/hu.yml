@@ -1,0 +1,496 @@
+name: Magyar
+icon: GREEN_WOOL
+starter-book: Civs menü
+next-button: Következő
+prev-button: Előző
+language-menu: Válassz nyelvet
+language-set: A nyelved be lett állítva $1-ra/re
+back-button: Vissza
+start-tutorial: Mérföldkövek bekapcsolása
+start-tutorial-desc: Mérföldkövek teljesítésével jutalomban részesülhetsz
+skip: Mérföldkövek kikapcsolása
+tutorial-click: Civs útmutató - ajánlott megnézni
+tutorial-wiki: Civs wiki
+click-info: Kattints ide több információért
+guide: Útmutató
+guide-desc: Következő cél megtekintése.
+choose-path: Válaszd ki a szakmát
+new-owner-town: $1 leváltotta $2-t $3 város élén
+town-bank-balance: "Város egyenlege: $1"
+town-bank-desc: "Pénz felvétele: /cv withdraw $1 összeg"
+withdrawn-money: Felvettél $$1-t $2 város bankjából
+town-tax: "Város adói: $1"
+town-tax-desc: "Adók beállítása: /cv tax $1 összeg"
+town-tax-gov-type: $1 nem állíthat be adót.
+town-tax-set: $1 adói beállítva $2-ra/re
+tax-too-high: Nem állíthatsz $1-nál/nél több adót be.
+town-assist-price: A városod fizetett $1-t köszönettképp a(z) $2 felépítéséért
+colony-town-set: Beállítottad $1 várost $2 kolóniájának
+cant-build-feudal: Nem építhetsz a városban tagként, ha az államforma feudalizmus.
+tribalism-no-invite: Nem hívhatod meg $1-t, mert $2-ból/ből származik és nem szövetséges
+vote-member: Szavazz a következő vezetőre
+capitalism-voting-cost: "Plusz szavazat ára: $1"
+voted: Szavaztál $1-ra/re
+gov-type-change: $1 megváltoztatta az államformát $2-ról/ről$3-ra/re
+cost-buff: Vissza lett térítve $1 $2 épületekért $3 városban.
+merit-new-owner: Gratulálok! Felülkerekedtél $1-n. Te vagy az új vezető!
+item-locked: Még nem oldottad fel ezt a tárgyat.
+ai-invite: Szia, @$1 szeretnél csatlakozni a városomba?
+ai-help: $1 körbe tud vezetni a városban.
+cooldown-buff-desc: $1% várakozási idő csökkentés minden $2-ra/re
+payout-buff-desc: $1% kifizetés növelés minden $2-ra/re
+power-buff-desc: $1% napi erőpont növekedés
+max_power-buff-desc: $1% maximum erőpont növekedés
+cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
+shop: Bolt
+buy-item: Eladó
+price: Ár
+buy: Vásárlás $1-ért
+cancel: Mégsem
+item-bought: Gratulálok! Megvásároltad $1-t $2-ért
+max-item: Nem vásárolhatsz többet, mint $2 $1
+max-qty: $1-nak/nek túl sok $2-ja/je van és nem vásárolhat többet
+items: Tárgyak
+click-for-item-group: Kattints ide, hogy megnézd az összes elemet ebbne a csoportban
+classes: Osztályok, fajok
+spells: Varázslatok
+blueprints: Alaprajzok
+regions: Területek
+community: Közösség
+players: Játékosok
+towns: Városok
+your-towns: Városaid
+wars: Háborúk
+alliances: Szövetségek
+leaderboard: Ranglista
+ports: Teleportok
+money: "Pénz: $$1"
+points: "Erőpontok: $1"
+killstreak: "Ölési sorozat: $1"
+highest-killstreak: "Legmagasabb ölési sorozat: $1"
+kills: "Ölések száma: $1"
+deaths: "Halálok száma: $1"
+friends: Barátok
+confirm: Megerősítés
+reject: Elutasítás
+effects: Effektek
+size: Méret
+range: Távolság
+build-reqs-title: Építési követelmények
+population: Lakosság
+population-req: Szükséges egy $1 $2 lakossággal
+biomes: Biomeok
+devolve-town: $1 kifogyott az erőpontból és le lett fokozva $2-ra/re!
+pop-desc: $1 Lakosság / $2 Ház / $3 Falusi
+build-reqs: Blokkok listája $1-hoz/höz
+reagents-title: Alapanyagok
+reagents: Szükséges tárgyak, amiket a $1 ládának tartalmaznia kell
+upkeep: $1 által elfogyasztott tárgyak
+output: $1 által termelt tárgyak
+payout: Ez a terület $$1-t termel
+power-input: Ez a terület $1 erőpontot fogyaszt
+power-output: Ez a terület $1 erőpontot generál
+too-close-region: A te $1 területed túl közel lenne $2-hoz/höz
+too-close-town: $1 túl közellenne egy másik városhoz
+town-created: $1 létre lett hozva!
+town-destroyed: $1 el lett pusztítva!
+region-built: Sikeresen építettél egy $1-t
+region-type: Terület típusa
+destroy: Lebontás
+region-in-town: A területed $1 városban van
+town-req-desc: "A területed benne kell legyen:"
+view-members: Tagok megtekintése
+add-member: Tag hozzáadása
+operation: Művelet
+region-working: A területed működőképes
+region-not-working: A területedből hiányzik valaki
+owner: Tulajdonos
+member: Tag
+guest: Vendég
+recruiter: Toborzó
+set-owner: Tulajdonos beállítása
+set-member: Tag beállítása
+set-guest: Vendég beállítása
+remove-member: Tag eltávolítása
+leave-town: Város elhagyása
+you-left-town: Elhagytad $1 várost
+add-member-region: Hozzáadtak $1-hoz/höz tagként
+member-added-region: $1 tagja a(z) $2 területnek
+owner-description: Tulajdonosok bármit megtehetnek a területükön
+guest-description: Vendégek tudják használni az ajtót és a gombokat
+member-description: Tagok tudják használni és építeni a területet
+remove-member-region: Már nem vagy tagja a $1 területnek
+member-removed-region: $1 már nem a tagja a(z) $2 területnek
+add-owner-region: Tulajdonosa lettél a(z) $1 területnek
+owner-added-region: $1 be lett állítva tulajdonosként a(z) $2 területen
+add-guest-region: Vendég lettél a(z) $1 területnek
+guest-added-region: $1 be lett állítva vendégként a(z) $2 területen
+invite-member-region: Tagja lettél a(z) $1 területnek
+member-invited-region: $1 hozzá lett adva a(z) $2 területnek
+stand-in-region: $1-nak/nek a területben kell állnia
+create: Létrehoz
+click-for-region-limits: Kattints ide a terület határainak listázásához
+click-for-req-regions: Kattints ide a szükséges területek listájához
+town-instructions: Hozz létre egy $1-t, a /cv town VárosNév parancs használatával
+town-enter: Megérkeztél $1 ($2) városába
+town-exit: Kiléptél $1 ($2) városából
+new-town-member: $1 csatlakozott $2-ba/be
+must-be-built-on-top: A $1-t $2 tetejére kell építeni
+town-power: "Erőpontok: $1/$2"
+port-warmup: Teleportálás $1 másodperc múlva
+teleported: Teleportálás sikeres volt!
+location-set: $1 helye beállítva
+rename-town: Város átnevezése
+rename-desc: Használd a /cv rename régiNév újNév parancsot
+town-renamed: A városod át lett nevezve $1-ról/ről $2-ra/re
+bounty-set: Fejpénzt tettél $1-ra/re $2-ért
+bounty-bonus: Begyűjtöttél $1 fejpénzt
+add-friend: Barát hozzáadása
+remove-friend: Barát eltávolítása
+friend-added: $1 hozzá lett adva a barátlistádhoz
+friend-removed: $1 el lett távolítva a barátlistádról
+bounty: "Fejpénz beállítása: /cv bounty $1 összeg"
+town-ally: $1 beállítása szövetségesként
+town-unally: $1 beállítása ellenségként
+town-ally-invites: Van függő szövetségi kérelmed
+town-ally-request-sent: Küldtél egy szövetségi kérelmet $1-nak/nek
+town-ally-request-accepted: Szövetség létrejött $1 és $2 között
+town-ally-request-denied: Szövetségi kérelem $1-val/vel el lett utasítva
+town-ally-removed: A szövetség $1 és $2 között felbomlott
+region-evolved: $1 felfejlődött $2-ra/re
+anti-camp-active: $1 anti-camp beállítás bekapcsolva
+anti-camp-expired: $1 anti-camp beállítás lejárt
+region-sale-set: $1 eladó $2-ért
+sell-region: Terület eladása
+cancel-sale: Eladás visszavonása
+buy-region: Vásárold meg $1-t $2-ért
+regions-for-sale: Eladó területek
+use-sell-command: Használd a  /cv sell ár parancsot
+region-bought: Megvásároltad $1-t $2-ért
+sort-by-level: Területek felsorolása szintenként
+level: $1. szint
+rename-alliance: Szövetség átnevezése
+rename-alliance-desc: Használd a /cv really $1 újSzövetségNév parancsot
+alliance-renamed: $1 át lett nevezve $2-ra/re
+invalid-name: Érvénytelen név
+last-renamed-by: "Előző átnevező: $1"
+leave-alliance: Szövetség elhagyása
+hunting-players: "@{RED}Figyelem! Valaki vadászni szeretne a környékeden."
+target-not-in-world: $1 nem ugyan abban a világban van, mint te.
+cant-place-town: Használd a /cv town városNév parancsot
+no-region-type-found: Nem találtunk területtípust $1-nak/nek
+building-too-big: Az épületed túl nagy $1-hoz/höz
+no-required-blocks: Nem helyeztél le elég blokkot még $1-hoz/höz
+cant-build-on-region: Nem építhetsz egy $1-t $2 tetejére
+rebuild-required: $1-t $2 tetejére kell építeni
+prevent-civs-item-share: Nincs jogod Civs tárgyakat cserélni
+region-protected: Ez a terület le van védve
+region-destroyed: $1 terület le megsemmisült!
+specify-player-town: Adj meg egy játékost és egy várost
+specify-town-name: Adj meg egy városnevet
+specify-player-region: Adj meg egy játékost és egy területet
+town-not-exist: $1 nem egy város
+no-permission-invite: Nincs elég jogod meghívni $1-ba/be játékost
+player-not-online: $1 nincs fent a szerveren
+invite-player: "$1 meg szeretne hívni ide: $2 $3. Csatlakozáshoz használd a /cv accept
+  parancsot"
+already-member: $1 már a $2 tagja
+broke-own-region: $1-ból/ből hiányzik pár elem
+no-permission: Nincs jogod ehhez!
+class-changed: Az osztályod/kasztod meg lett változtatva $1-ra/re
+not-enough-money: Nincs elég pénzed! ($$1)
+not-allowed-place: $1 nem lehelyezhető
+hold-town: Kérlek tarts egy városi tárgyat
+no-commands-in-jail: "Nem tudsz használni parancsokat a börtönbe még ennyi ideig: $1"
+mana-use-exp: Nem használhatod, míg nincs a mana teljesen feltöltődve
+building-requires-2space: Ennek az épületnek szükséges 2 üres blokk a központi láda felett
+missing-blocks-build: Le kell tenned a hiányzó blokkokat egy $1 építéséhez
+in-combat: Harc közben nem használhatod ezt a funkciót
+cooldown: "Várakozási idő: $1 másodperc"
+need-more-health: Szükséged van még $1-val/vel több életre
+need-more-stamina: Szükséged van még $1-val/vel több állóképességre
+need-more-mana: Szükséged van még $1-val/vel több manára
+port-not-found: Nem található teleport
+region-missing-upkeep-items: A területnek nincs elég tárgya.
+raid-target-lost: Nincs $1 nevű város $2 blokkos környezetben
+searching-for-target: Rajtaütés helyének keresése...
+raid-target-blocked: Rajtaütés teleport helye blokkolva van.
+raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
+raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
+raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
+invalid-target: Érvénytelen célpont
+raid-target-inside-region: Nem állíthatsz be célpontot területen belül
+req-build-inside-town: $1-t csak $2-n belül lehet építeni
+missing-region-requirements: $1-nak/nek hiányzik szükséges terület
+friendly-fire: Nem tudod megütni a barátaidat
+limits: Limitek
+region-limit-reached: Egy $1 csak $2 $3-t birtokolhat
+region-in-biome: Nem tudsz építeni $1-t egy $2 biomban
+not-enough-housing: Több házat kell építened, hogy meg tudj hívni még egy játékost
+not-member-port: Nem vagy a tagja ennek a teleportnak
+cant-repair-item: Ezt a tárgyat nem tudod megjavítani itt
+more-repair-items: Szükséged van még több $1-ra/re a tárgy javításához
+hold-repair-item: Kezedben kell tartani a megjavítandó tárgyat
+player-not-found: Játékos $1 névvel nem található
+repeat-kill: $1 túl hamar lett megölve. Nem jár érte pont.
+kill-streak: $1-nak/nek ölési sorozata $2
+kill-joy: $1 megfékezte $2-t. Ölési sorozata $3 volt
+death: Vesztettél $1 pontot, mivel meghaltál
+kill: "Ölés: $1"
+low-health: "Alacsony életerő bónusz: $1"
+killstreak-points: "Ölési sorozat bónusz: $1"
+killjoy-points: "Ölési kedv bónusz: $1"
+total-points: "Pontszám: $1"
+karma: "Karma: $1"
+karma-gained: "Karma: +$1, $2 hozzáadva"
+karma-lost: "Karma: -$1, $2 levonva"
+ann-limit: "[Info] Van $1/$2 (meglévő/max) $3 típusú épületed."
+ann-achievement: "[Info] Ellenőrizd az útmutatót, hogy megtekintsd a következő elérhető
+  mérföldkövet."
+ann-town-join: "[Info] Egyszerre több város tagja lehetsz. Használd ki ezt a lehetőséget!"
+ann-town-protection: "[Info] A városok sok területet tudnak levédeni, és új épületekhez adnak
+  hozzáférést a boltban."
+ann-town-housing: "[Info] $1-nak/nek $2/$3 (meglévő/max) háza van. Építs több házat, hogy a
+  városod növekedni tudjon."
+ann-make-allies: "[Info] Fontold meg a szövetségbe lépést. Megtalálhatod a  Közösség > Városok
+  > Városok, amelyekkel szövetségre léphetsz menüpontban."
+ann-town-low-power: "@{RED}[Warning] $1-nak/nek $2/$3 (meglévő/max) erőpontja van. Fontold meg
+  olyan épületek építését, amely erőpontokat generál."
+ann-bank: "[Info] $1-nak/nek $$2 van a bankjában. Ki tudod venni az összeget a /cv
+  withdraw $1 összeg paranccsal"
+ann-vote: "[Info] Ne felejts el szavazni $1 új tulajdonosára. Közösség > Városaid > $1 >
+  Tagok megtekintése > Játékos > Szavazás"
+ann-karma: "@{YELLOW}[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban részesülsz."
+ann-missing-input: "[Info] Hiányzik pár tárgy még a $1-ból/ből. Használd a Civs könyved, hogy
+  ellenőrizd, mi kell még hozzá."
+ann-bounty: "[Info] $1 nyakán $2 fejdíj van."
+tut-default-0: Építs egy menedéket (shelter). Nyisd meg a könyvet, válaszd az alaprajzok
+  menüt, majd vedd ki a menedéked (shelter) és helyezd le.
+tut-default-1: Gyűjts össze 4 db kenyeret, 32 db répát, steaket, krumplit, majd tedd bele a
+  menedék (shelter) ládájába.
+tut-default-2: A menedék (shelter) ételért ad neked pénzt, de a szénbolt (coal shop) többet
+  fizet. Nyisd meg a könyved, majd a bolt menüt, és vedd ki a szénboltot.
+tut-default-3: Tedd le a 25 db gyapjút, 14 db kerítést és 2 db ládát, majd tedd le a
+  szénboltot (coal shop) is.
+tut-warrior-name: Harcos
+tut-warrior-0: Vedd meg az oltárt (altar). Gyémánt szerszámokat tudsz szerezni a segítségével.
+tut-warrior-1: Tégy egy vaskardot az oltár ládájába. Ha van $300-od, akkor kapsz egy
+  gyémántfelszerelést.
+tut-warrior-2: "Itt egy aranyalma. Most már mindened megvan a következő feladathoz: ölj meg
+  valakit."
+tut-warrior-3: "Gratulálok! Most vált harcos belőled. Következő feladatod: vegyél egy
+  raid_porter-t és építsd fel közel egy városhoz."
+tut-warrior-4: Amint a raid_porter-ed aktív, lépj a tetejére és teleportálj a városba.
+tut-warrior-5: Most, hogy kifosztottad a várost, itt az ideje háborúba lépni valakivel. Építs
+  egy parancsnoki sátrat (Command_Tent) közel egy ellenséges városhoz.
+tut-warrior-6: Most vásárolj és építs fel egy előörsöt (Outpost) a parancsnoki sátor
+  (Command_Tent) felé. Ezután vásárolj és építs egy ostromgépet (Siege_Machine).
+tut-warrior-7: Az ostromgép (Siege_Machine) lassan csökkenti az ellenséges város erőpontjait,
+  amely a várost támadásra fogja kényszeríteni. Vásárolj és építs egy bástyát
+  (Castle) a parancsnoki sátrad (Command_Tent) tetejére.
+tut-warrior-8: Most, hogy megépítetted a bástyád (Castle) vásárolj és építs egy várat (Keep).
+  Aztán építs egy ostrom spawnpointot (Memorial).
+tut-warrior-9: Gratulálok! Most már kiokosodtál a háborús rendszerben. Megcsináltad a harcos
+  életpályát.
+tut-builder-name: Építész
+tut-builder-1: Most építsd meg a tanácsszobát (council_room).
+tut-builder-2: Most, hogy megépítetted a városod szívét, foglald le a területed. Vegyél egy
+  telepet (settlement).
+tut-builder-3: Gratulálok! Foglald le a területed a /cv town városnév paranccsal. Ha kész
+  vagy vásárolj és építs egy kunyhót (shack).
+tut-builder-4: A kunyhó (shack) egy alap szintű ház. A házak határozzák meg, hogy mennyi
+  lakosa lehet a városnak. Vásárolj és helyezz le egy NPC kunyhót (NPCShack) a
+  kunyhón (shack) belül.
+tut-builder-5: Falusiak bele számítanak a lakosságba. Ha meghalnak, a város veszít erőt. A
+  falusiak is újraélednek. Most építs egy templomot (church).
+tut-builder-6: Fontos, hogy építs olyan épületeket, amelyek erőpontokat generálnak. Az
+  erőpontok védik meg a várost. Építs egy íjászgépet (arrow_trap) a városod
+  védelmére.
+tut-builder-7: Következő feladatod, hogy építs egy nyílgyárat (arrow_factory), amely nyilakat
+  biztosít a védekezéshez.
+tut-builder-8: Egy telepbe csak 4 kunyhó (shack) tehető. Hogy maximalizáld a lakosságot,
+  építs egy kunyhót (shack), majd vásárolj és helyezd el a kalyibát (hovel) a
+  választott kunyhóba (shack).
+tut-builder-9: Most építs egy katapultot (catapult). A katapultok elég pontos TNT ágyúk,
+  amelyeket használhatsz a támadók ostromgépeinek elpusztításához.
+tut-builder-10: Menj és frissítsd a városod falura (Hamlet). Amint sikerült, építs egy házat
+  (Dwelling). Minden szintlépéssel növeled a házak szintjét.
+tut-builder-11: Fejleszd a városod községre (village), majd építs egy istállót (Stables).
+tut-builder-12: Mielőtt fejleszteni tudnád a falvad, fejleszteni kell a tanácsszobát
+  (Council_Room). Vegyél majd helyezz le egy városházát (Town_Hall-t) a
+  tanácsszobában (Council_Room).
+tut-builder-13: Grautlálok! Már gyakorlott építész lettél. Befejezted az építész életpályát.
+tut-merchant-name: Kereskedő
+tut-merchant-0: Csatlakozz egy városba, majd vásárolj egy kunyhót (shack) valakitől a
+  városban. Miután beállítottak tulajdonosnak, tégy néhány kenyeret a kunyhó
+  ládájába.
+tut-merchant-1: A házakat fejleszteni lehet, hogy több pénzt hozzanak a kasszára. Vásárolj egy
+  kalyibát (hovel) a boltból.
+tut-merchant-2: Fejleszd a kunyhód kalyibára, hogy 9x9x9-es méret legyen. Helyezd el a kalyiba
+  ládát (hovel) a kunyhó (shack) belsejébe.
+tut-merchant-3: Rakj 384 db krumplit a kalyiba ládájába. 24 órán belül a kalyibád eladja őket
+  és felfejlődik kalyiba1-re (hovel1).
+tut-merchant-5: Itt az idő újabb fejlesztéshez. Vásárolj és tégy le egy házat (dwelling) a
+  kalyiba1-en belül (hovel1).
+tut-merchant-6: A házak (dwelling) jó pénzt hoznak, de a lakások (house) többet adnak.
+  Vásárolj és fejlessz egy házat lakássá.
+tut-merchant-7: Tégy kenyeret a lakásodba (house), hogy felfejleszd lakás1-re (house1)
+tut-merchant-8: Tégy lazacokat a lakás1-be, hogy felfejleszd lakás2-re.
+tut-merchant-9: Építs egy vasboltot (iron_shop), hogy tovább növeld a bevételeid.
+tut-merchant-10: Minden játékosnak 3 boltja lehet. A legjövedelmezőbb bolt egy Jade bolt
+  (Jade_Shop). Építs egyet.
+tut-merchant-11: Gratulálok! Mostantól el tudsz adni tárgyakat és tudsz vásárolni más város
+  lakóitól Jade-t. Végeztél a kereskedő életpályával.
+anarchy-name: Anarchia
+anarchy-desc: Bárki a városban tudja kezelni a területek tagságait. Nincsenek adók,
+  nincsenek szövetségek.
+capitalism-name: Kapitalizmus
+capitalism-desc: Demokrácia + Város tagjai vehetnek extra szavazatokat.
+colonialism-name: Gyarmat
+colonialism-desc: Nincs város vezetőség. Egy másik város kezeli a tulajdonjogokat.
+communism-name: Kommunizmus
+communism-desc: Mindenki tulajdonosa mindennek a városban. A bevételek egyenlően oszlanak el.
+cooperative-name: Szövetkezet
+cooperative-desc: Demokrácia + Minden régió bevételei és adói egyenlően eloszlanak a tagok
+  között.
+cybersynacy-name: Technokrácia
+cybersynacy-desc: Nincs emberi vezetőség. Szövetségek, adók, tagságok és szolgáltatásokat egy AI
+  kezeli.
+democracy-name: Demokrácia
+democracy-desc: Város tulajdonosai kezelik a szövetségeket, tagokat és adókat. Időszakosan
+  szavazzák meg az új vezetőséget.
+democratic_socialism-name: Demokratikus Szocializmus
+democratic_socialism-desc: Demokrácia + Közösen tulajdonolt szolgáltatások, farmok, bányák, gyárak és
+  lelőhelyek.
+dictatorship-name: Diktatúra
+dictatorship-desc: A város tulajdonosai kezelik a szövetségeket, felül tudják írni a területeket,
+  tagokat tudnak hozzá adni, adókat állítani.
+feudalism-name: Feudalizmus
+feudalism-desc: Diktatúra + Város lakói nem építhetnek a város területein.
+kraterocracy-name: Kraterocrácia
+kraterocracy-desc: Diktatúra + Ha a város tagja megöli a város vezetőjét, helyet cserélnek.
+libertarian-name: Liberalizmus
+libertarian-desc: Nincs tulajdonosa a városnak, nincsenek adók, nincs bank. Bárki jelentkezhet a
+  városba.
+libertarian_socialism-name: Liberális szocializmus
+libertarian_socialism-desc: Liberalizmus + Szocializmus
+meritocracy-name: Meritokrácia
+meritocracy-desc: Diktatúra + A város tulajdonosa az lesz, akinek a legtöbb és legfejlettebb
+  épülete van és a legtöbb embert ölte meg.
+oligarchy-name: Oligarchia
+oligarchy-desc: Diktatúra + A város vezetését meg lehet vásárolni.
+socialism-name: Szocializmus
+socialism-desc: Diktatúra + Közösen tulajdonolt szolgáltatások, farmok, bányák, gyárak és
+  lelőhelyek.
+tribalism-name: Törzsközösség
+tribalism-desc: Diktatúra + Tagok nem csatlakozhatnak nem szövetséges városokba.
+admin_graveyard-name: Admin Temető
+admin_graveyard-desc: Hely, ahol a város lakói újra éledhetnek és biztonságban vannak a sérülések
+  ellen.
+shelter-name: Menedék
+shelter-desc: Egy biztonságos hely, ahol a tárgyaidat tárolhatod és 30 percenként eladhatsz
+  vele kenyeret, répát, húst, krumplit.
+barracks-name: Kaszárnya
+barracks-desc: 6 házat ad a városhoz és 288 erőpontot generál naponta. Nem építhető olyan
+  városba, ahol már egy fogadó áll.
+bell_tower-name: Harangtorony
+bell_tower-desc: Értesíti a város tagjait, amikor egy betolakodó belép a városba.
+church-name: Templom
+church-desc: Egy biztonságos hely, ahol senki sem tud megsérülni és 192 erőpontot generál a
+  városnak naponta.
+graveyard-name: Temető
+graveyard-desc: Hely, ahol a város lakói újra éledhetnek és biztonságban vannak a sérülések
+  ellen.
+hospital-name: Kórház
+hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak és 192 erőpontot generál a
+  városnak naponta.
+idol-desc: Sérülési ellenállást, sebzési bónuszt ad a város tagjainak és 192 erőpontot
+  generál a városnak naponta.
+jail-name: Börtön
+monument-name: Emlékmű
+monument-desc: Sérülési ellenállást, sebzési bónuszt és gyorsaságot ad a város tagjainak és
+  192 erőpontot generál a városnak naponta.
+statue-name: Szobor
+statue-desc: Sérülési ellenállást ad a város tagjainak és 192 erőpontot generál a városnak
+  naponta.
+arrow_factory-desc: Automatikusan gyárt nyilakat.
+bakery-name: Sütöde
+mill-name: Malom
+weapons_factory-name: Fegyvergyár
+weapons_factory-desc: 3 puskaporból és 5 homokból robbanószereket gyárt
+donkey_farm-desc: Szamarakat és nyergeket készít minden órában.
+mule_farm-desc: Öszvéreket és nyergeket készít minden órában.
+pig_pen-desc: Automatikus malacfarm.
+rabbit_hutch-desc: Automatikus nyúlfarm.
+sheep_farm-desc: Automatikus birkafarm.
+stables-desc: Lovakat és nyergeket készít minden órában.
+ender_pearl_farm-desc: Automatikus véggyöngy farm.
+fishing_hut-desc: Lazacot, trópusi halat, gömbhalat, tőkehalat termel 5 percenként.
+greenhouse-desc: Virágokat termel automatikusan.
+potato_farm-desc: Krumplit és mérgező krumplit termel 5 percenként.
+jade_mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
+  ahol van Jade bolt.
+diamond_mine-desc: Gyémántot termel vascsákányok használatával.
+gunpowder_mine-desc: Puskaport termel vascsákányok használatával.
+iron_mine-desc: Vasat termel csákányok használatával.
+lapis_mine-desc: Lazuritot termel vascsákányok használatával.
+marine_mine-desc: Prizmarint termel csákányok használatával.
+obsidian_mine-desc: Obszidiánt termel automatikusan.
+quartz_mine-desc: Kvarcot termel csákányok használatával.
+npc_chalet-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_dwelling-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_house-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_hovel-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_mansion-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_shack-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+raid_porter-desc: Megbízható módja egy ellenséges városba bejutásának. Beüzemelése 4 perc.
+siege_machine-desc: Egy háború alapja. Lassan csökkenti az erőpontjait a közelében lévő városnak.
+  Beüzemelése 4 perc.
+altar-desc: Teljes gyémántszettet, kardot, íjat, és nyilakat készít $300-ért óránként.
+blindness_trap-desc: Vakságot, lassúságot és gyengeséget ad a nem városlakóknak. Megsemmisíti magát
+  30 perc múlva.
+castle-desc: Egy vár közepe. Felépítéséhez szükséges az előörs fejlesztése. 6 erőpontot
+  generál 15 percenként.
+catapult-desc: TNT-t lő nagy távolságokrara nagy pontossággal.
+command_tent-desc: Központja egy előörsnek. Segít megostromolni egy várost. 1 erőpontot generál
+  15 percenként.
+hunting_lodge-desc: Ha egy táblát helyezel egy obszidián felé az áldozatod nevével és jobb
+  egérgombbal kattintsz az obszidiánra, a játékos közelébe teleportál.
+memorial-desc: Egy hely, ahol a város lakosai újraéledhetnek. Megelőzi a sebződést is.
+mobile_hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak. Megsemmisíti magát 30 perc
+  után.
+temp_arrow_trap-desc: Nyilakat lő a közelében álló nem városlakókra. Megsemmisíti magát 15 perc után.
+clay_quarry-desc: Agyagot termel automatikusan.
+cobble_quarry-desc: Zúzottkövet termel 30 másodpercenként.
+dirt_quarry-desc: Földet termel 30 másodpercenként.
+red_sand_pit-desc: Vörös homokot termel 30 másodpercenként.
+sand_pit-desc: Homokot termel 30 másodpercenként.
+sifter-desc: Földet szitál, hogy értékes tárgyakat találjon.
+jade_shop-desc: 144 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
+  ahol van Jade bánya.
+coal_shop-desc: 144 db szenet ad el a szervernek napi $432-ért.
+diamond_shop-desc: 24 db gyémántot ad el a szervernek napi $1536-ért.
+flower_shop-desc: Virágokat ad el a szervernek napi $288-ért.
+gold_shop-desc: 288 db aranyat ad el a szervernek napi $672-ért.
+iron_shop-desc: 288 db vasat ad el a szervernek napi $576-ért.
+leather_shop-desc: Bőrt ad el a szervernek napi $360-ért.
+keep-desc: A második szintje az előörsnek.
+mining_colony-desc: Letiltja a szörnyek spawnolását és gyorsítja a bányászatot.
+outpost-desc: Az első szintje az előörsnek.
+settlement-desc: Az első szintje a városnak.
+bank-desc: 192 erőpontot generál naponta. 64 db smaragdot ad el $640-ért.
+bath_house-desc: 192 erőpontot generál naponta.
+capitol-desc: A város központja. 768 erőpontot generál naponta. Otthon teleportnak is
+  használható.
+city_hall-desc: A város központja. 576 erőpontot generál naponta. Otthon teleportnak is
+  használható.
+council_room-desc: A város központja. 192 erőpontot generál naponta. Otthon teleportnak is
+  használható.
+embassy-desc: 192 erőpontot generál naponta. Otthoni teleportként is használható.
+library-desc: 192 erőpontot generál naponta. 2 db XP üveget termel 15 percenként.
+purifier-desc: Átalakítja a rohadt húst bőrré és eltávolítja a mérget a krumplikról 15
+  percenként.
+smithy-desc: Eszközöket javít jobb egérgombbal kattintással vasblokkra. 192 erőpontot
+  generál naponta.
+town_hall-desc: A város központja. 348 erőpontot generál naponta. Otthon teleportnak is
+  használható.

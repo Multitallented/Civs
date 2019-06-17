@@ -1,0 +1,510 @@
+name: Español
+icon: YELLOW_WOOL
+starter-book: Menú para Civs
+next-button: Siguiente
+prev-button: Anterior
+language-menu: Selecciona un idioma
+language-set: Tu idioma ha sido establecido a $1
+back-button: Atrás
+start-tutorial: Logros activados
+start-tutorial-desc: Recibe dinero y objetos completando logros
+skip: Logros desactivados
+tutorial-click: Por favor, mira la guía de Civs
+tutorial-wiki: Wiki de Civs
+click-info: Click para más información
+guide: Guía
+guide-desc: Click aquí para ver tu siguiente objetivo
+choose-path: Elige tu camino
+new-owner-town: $1 ha sustituido a $2 como dueño de $3
+town-bank-balance: Dinero en el banco $1
+town-bank-desc: Retira dinero usando /cv withdraw $1 [cantidad]
+withdrawn-money: Has retirado $$1 del banco de $2
+town-tax: "Impuestos de la ciudad:  $1"
+town-tax-desc: Establece impuestos usando /cv tax $1 [cantidad]
+town-tax-gov-type: $1 no puede establecer impuestos
+town-tax-set: Los impuestos de $1 han sido establecidos a $2
+tax-too-high: No puedes establecer impuestos superiores a $1
+town-assist-price: El banco de tu ciudad ha pagado $1 en agradecimiento por la construcción de tu
+  $2
+colony-town-set: Has establecido $1 como colonia de $2
+cant-build-feudal: No puedes construir una region en una ciudad feudal a menos que seas el
+  propietario de dicha ciudad.
+vote-member: Vota para que sea el siguiente propietario de la ciudad
+capitalism-voting-cost: Los votos extras cuestan $1
+voted: Has emitido tu voto por $1
+gov-type-change: $1 ha cambiado de $2 a $3
+cant-change-gov-type-daily: No puedes cambiar el tipo de gobierno de una ciudad ciudad más de una vez al
+  día.
+revolt: Rebelión
+revolt-desc: Click para unirte a la revuelta contra $1. Cuesta $2 $3
+revolt-display: $1 / $2 miembros se están rebelando
+cancel-revolt: Click para dejar la revuelta contra $1.
+item-cost: Esta acción cuesta $1 $2
+merit-new-owner: ¡Felicidades, has superado a $1!. ¡Eres el nuevo dueño de la ciudad!
+item-locked: Aún no has desbloqueado este objeto.
+ai-invite: Hey @$1 , ¿te gustaría unirte a mi ciudad?
+ai-help: $1 puede darte un tour del lugar.
+shop: Tienda
+buy-item: En venta
+price: Precio
+buy: Comprar $1
+cancel: Cancelar
+item-bought: ¡Felicidades! Has comprado $1 por $2
+max-item: No puedes comprar más de $2 $1
+max-qty: $1 tiene demasiados $2 y no puede tener más.
+items: Objetos
+click-for-item-group: Click para ver todos los objetos en este grupo
+classes: Clases
+spells: Hechizos
+blueprints: Planos
+regions: Regiones
+community: Comunidad
+players: Jugadores
+towns: Ciudades
+your-towns: Tus ciudades
+wars: Guerras
+alliances: Alianzas
+leaderboard: Tabla de clasificaciones
+ports: Puertos
+money: Dinero
+points: Puntos
+killstreak: "Racha de asesinatos: $1"
+highest-killstreak: "Racha de asesinatos más alta: $1"
+kills: "Asesinatos: $1"
+deaths: "Muertes: $1"
+friends: Amigos
+confirm: Confirmar
+reject: Rechazar
+effects: Efectos
+size: Tamaño
+range: Rango
+build-reqs-title: Requisitos de construcción
+population: Población
+population-req: Requiere una $1 con $2 de población
+biomes: Biomas
+pop-desc: $1 Población / $2 Alojamientos / $3 Aldeanos
+build-reqs: Todos los bloques que necesitas colocar para construir un/a $1
+reagents: Todos los objetos que necesitas en el cofre de $1
+upkeep: Todos los objetos consumidos por $1
+output: Todos los objetos creados por $1
+payout: Esta región gana $$1
+power-input: Esta región consume $1 de poder
+power-output: Esta región genera $1 de poder
+too-close-region: Tu $1  estaría muy cerca de un/a $2
+too-close-town: Tu $1  estaría muy cerca de otra ciudad
+town-created: ¡$1 ha sido creada!
+town-destroyed: ¡$1 ha sido destruida!
+region-built: Has construido un/a $1
+region-type: Tipo de región
+destroy: Destruir
+region-in-town: Tu region está en $1
+town-req-desc: "Tu región debe ser construida en:"
+view-members: Ver miembros
+add-member: Añadir miembro
+operation: Operación
+region-working: "Mi region "
+region-not-working: A tu región le falta algo
+owner: Dueño
+member: Miembro
+guest: Invitado
+recruiter: Reclutador
+set-owner: Establecer como Dueño
+set-member: Establecer como Miembro
+set-guest: Establecer como Invitado
+set-recruiter: Establecer como Reclutador
+remove-member: Eliminar Miembro
+leave-town: Dejar la ciudad
+you-left-town: Has abandonado $1
+invite-sent: Invitación enviada
+add-member-region: Se te ha hecho un miembro de $1
+member-added-region: $1 es ahora un miembro de tu $2
+owner-description: Los dueños pueden hacer de todo en la región.
+guest-description: Los invitados pueden usar puertas y botones en la región.
+member-description: Los miembros pueden construir y usar la región.
+recruiter-description: Los reclutadores pueden invitar jugadores a la ciudad.
+remove-member-region: Ya no eres un miembro de $1
+member-removed-region: $1 ya no es miembro de $2
+add-owner-region: Se te ha hecho un dueño de $1
+owner-added-region: $1 es ahora un dueño de tu $2
+add-recruiter-region: Se te ha hecho reclutador para $1
+recruiter-added-region: $1 es ahora un reclutador para $2
+add-guest-region: Se te ha hecho un invitado de $1
+guest-added-region: $1 es ahora un invitado de tu $2
+invite-member-region: Ahora eres un miembro de $1
+member-invited-region: $1 ha sido añadido a tu $2
+create: Crear
+click-for-region-limits: Click aquí para obtener una lista de los limites de la región
+click-for-req-regions: Click aquí para obtener una lista de las regiones requeridas
+town-instructions: Crea una $1, usando  /cv town [NombreDeLaCiudad]
+town-enter: Has entrado a $1 ($2)
+town-exit: Has abandonado $1 ($2)
+new-town-member: $1 se ha unido a $2
+must-be-built-on-top: Un/a $1 debe ser construido/a encima de un/a $ 2
+town-power: Poder $1/$2
+port-warmup: Serás teletransportado en $1s
+teleported: ¡Has sido teletransportado!
+location-set: Ubicación de $1 establecida
+rename-town: Renombra la ciudad
+rename-desc: Usa /cv rename [antiguoNombre] [nuevoNombre]
+town-renamed: Tu ciudad ha sido renombrada de $1 a $2
+bounty-set: Se ha establecido una recompensa en $1 por $2
+bounty-bonus: Has reclamado la recompensa de $1
+allied-bounty: No has recibido recompensa por matar a un aliado.
+add-friend: Añadir amigo
+remove-friend: Eliminar amigo
+friend-added: $1 ha sido añadido/a a tu lista de amigos
+friend-removed: $1 ha sido eliminado/a de tu lista de amigos
+bounty: Pon una recompensa /cv bounty $1 cantidad
+town-ally: Establecer $1 como aliados
+town-unally: Establecer $1 como enemigos
+town-ally-invites: Tienes invitaciones de alianza
+town-ally-request-sent: Se ha propuesto una alianza a $1
+town-ally-request-accepted: Se ha formado una alianza entre $1 y $2
+town-ally-request-denied: Solicitud de alianza con $1 denegada
+town-ally-removed: Se ha disuelto la alianza entre $1 y $2
+region-evolved: Tu $1 evolucionó a $2
+anti-camp-active: El anti-camp de $1 ha sido activado
+anti-camp-expired: El anti-camp de $1 ha expirado
+region-sale-set: $1 esta a la venta por $2
+sell-region: Vender región
+cancel-sale: Cancelar venta
+buy-region: Comprar $1 por $2
+regions-for-sale: Regiones en venta
+use-sell-command: Escribe /cv sell [precio]
+region-bought: Has comprado esta $1 por $2
+sort-by-level: Ordenar regiones por nivel
+level: Nivel $1
+rename-alliance: Renombrar alianza
+rename-alliance-desc: Escribe /cv really $1 [nombreDeLaNuevaAlianza]
+alliance-renamed: $1 ha sido renombrado a $2
+invalid-name: Nombre inválido
+last-renamed-by: "Renombrado por última vez por: $1"
+leave-alliance: Dejar alianza
+hunting-players: ¡Cuidado! Alguien está cazando jugadores en tu área.
+target-not-in-world: $1 no está en el mismo mundo que tú.
+cant-place-town: Escribe /cv town [nombre]
+no-region-type-found: No se ha encontrado el tipo de región para $1
+building-too-big: Tu edificio es demasiado grande para ser un/a $1
+no-required-blocks: No has colocado los bloques requeridos para hacer un $1
+cant-build-on-region: No puedes construir un/a $1 encima de un $2
+rebuild-required: Necesitas construir este/a $1 encima de un/a $2
+prevent-civs-item-share: No tienes permitido compartir objetos de Civs
+region-protected: Esta región esta protegida
+region-destroyed: La región $1 ha sido destruida!
+specify-player-town: Por favor, especifica un jugador y una ciudad
+specify-town-name: Por favor, especifica el nombre de una ciudad
+specify-player-region: Por favor, especifica un jugador y una región
+town-not-exist: $1 no es una ciudad
+no-permission-invite: No tienes permisos para invitar gente a $1
+player-not-online: $1 no está en línea
+invite-player: $1 quiere invitarte a unirte a $2 $3
+already-member: $1 ya es un miembro de $2
+broke-own-region: A tu $1 le faltan bloques
+no-permission: Permiso denegado
+class-changed: Tu clase ha cambiado a $1
+not-enough-money: No tienes $$1
+not-allowed-place: $1 no puede ser colocado
+hold-town: Por favor, sujeta un objeto de ciudad
+no-commands-in-jail: No puedes usar comandos en la cárcel durante otros $1
+mana-use-exp: No puedes usar esto a menos que tengas maná completo
+building-requires-2space: Este edificio requiere 2 espacios vacíos sobre el cofre central.
+missing-blocks-build: Necesitas colocar estos bloques faltantes para construir un/a $1
+in-combat: No puedes hacer eso en combate
+cooldown: Eso esta en cooldown durante $1s
+need-more-health: Necesitas $1 más de salud para hacer eso.
+need-more-stamina: Necesitas $ 1 más de estamina para hacer eso.
+need-more-mana: Necesitas $ 1 más de mana para hacer eso.
+port-not-found: No se han encontrado puertos
+region-missing-upkeep-items: La región no tiene los objetos requeridos
+raid-target-lost: No hay ninguna ciudad llamada $1 en un radio de $2 bloques
+raid-remote: Te han dado un objeto para controlar este/a $1
+raid-sign: Necesitas un letrero sobre el cofre con el nombre de la ciudad objetivo
+invalid-target: Objetivo inválido
+raid-target-inside-region: No se puede establecer una ubicación dentro de una región
+req-build-inside-town: Esta $1 debe ser construida dentro de $2
+missing-region-requirements: A tu $1 le faltan las regiones requeridas
+friendly-fire: No puedes dañar a alguien en tu lista de amigos
+limits: Límites
+region-limit-reached: Una $1 solo puede tener $2 $3
+region-in-biome: No puedes construir una $1 en una $2
+not-enough-housing: Necesitas construir más viviendas antes de invitar a gente.
+not-member-port: No eres un miembro de este puerto
+cant-repair-item: Ese objeto no es algo que puedas reparar aquí.
+more-repair-items: Necesitas más de $1 para reparar ese objeto
+hold-repair-item: Debes sujetar el objeto que deseas reparar.
+player-not-found: Jugador $1 no encontrado
+repeat-kill: $1 fue asesinado recientemente. No has recibido puntos.
+kill-streak: $1 está en una racha de asesinatos de $2
+kill-joy: $1 acabó con la racha de $3 asesinatos de $2
+death: Perdiste $1 puntos por morir
+kill: Asesinato
+low-health: "Bonus por vida baja:"
+killstreak-points: "Bonus de racha: $1"
+killjoy-points: "Bonus por aguafiestas: $1"
+total-points: "Puntos totales: $1"
+karma: "Karma: $1"
+karma-gained: "Karma: +$1, $2 de dinero ganado"
+karma-lost: "Karma: -$1, $2 de dinero perdido"
+ann-limit: "[Info] Tienes $1 de $2 $3 construcciones"
+ann-achievement: "[Info] Consulta la guía para ver tu próximo logro disponible."
+ann-town-join: "[Info] Puedes ser miembro de varias ciudades. Normalmente las ciudades aman a
+  la gente."
+ann-town-protection: "[Info] Las ciudades protegen mucho terreno y desbloquean nuevos edificios en
+  la tienda."
+ann-bounty: "[Info] $1 tiene una recompensa de $2 por su cabeza."
+tut-default-0: Primero, abre tu libro, ve a planos, coge tu refugio, y colocalo.
+tut-default-1: Luego, reúne 4 panes, 32 zanahorias, 32 chuletas o 32 papas. Ponlos en el
+  cofre del refugio.
+tut-default-2: El refugio te paga por comida, pero la tienda de carbón paga más. Abre tu
+  libro, ve a la tienda y compra la tienda de carbón.
+tut-default-3: Coloca 25 lanas, 14 vallas, y 2 cofres. Después, colca la tienda de carbón.
+tut-warrior-name: Guerrero
+tut-warrior-0: Primero, compra el altar. Puedes utilizar este altar para obtener equipamiento
+  de diamante.
+tut-warrior-1: Ahora, pon una espada de hierro en el cofre del altar. Si tienes $300,
+  recibirás tu equipo.
+tut-warrior-2: Aquí tienes una manzana dorada encantada. Ahora tienes todo lo que necesitas.
+  Tu próximo objetivo es matar a alguien.
+tut-warrior-3: Felicidades Ahora eres un guerrero común. Para convertirte en un asaltante,
+  compra y construye un raid_porter cerca de una ciudad.
+tut-warrior-4: Una vez que su raid_porter esté activo, colocate sobre el para
+  teletransportarte a la ciudad.
+tut-warrior-5: Ahora que has asaltado una ciudad, es hora de ir a luchar contra una.
+  Construye un Command_Tent cerca de una ciudad enemiga.
+tut-warrior-6: Ahora compra y construye el Puesto Avanzado sobre tu Command_Tent. Después de
+  eso, compra y construye el Siege_Machine.
+anarchy-name: Anarquía
+capitalism-name: Capitalismo
+capitalism-desc: Democracia +  Los miembros de la ciudad pueden comprar votos extra.
+colonialism-name: Colonialismo
+communism-name: Comunsimo
+communism-desc: Todo el mundo es dueño de todo. Todos los ingresos de la región se distribuyen
+  uniformemente.
+cooperative-name: Cooperativa
+cooperative-desc: Democracia + Todos los ingresos de la región se distribuyen uniformemente
+  entre los miembros de la ciudad y los impuestos.
+cybersynacy-name: Tecnocracia
+cybersynacy-desc: No hay un dueño humano de la ciudad. Las alianzas, los impuestos, el
+  reclutamiento y los servicios públicos son manejados por un IA.
+democracy-name: Democracia
+democracy-desc: Los propietarios de las ciudades administran las alianzas, establecen los
+  impuestos y los miembros de la ciudad. Votar establece un nuevo dueño de la
+  ciudad periodicamente.
+democratic_socialism-name: Socialismo democrático
+democratic_socialism-desc: Democracia + Todos los servicios públicos, granjas, minas, fábricas y canteras
+  son de propiedad pública.
+dictatorship-name: Dictadura
+dictatorship-desc: Los propietarios de las ciudades administran las alianzas, pueden modificar
+  regiones y los miembros de la ciudad y establecer impuestos.
+feudalism-name: Feudalismo
+feudalism-desc: "Dictadura + "
+kraterocracy-name: Kraterocracia
+kraterocracy-desc: Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos
+  intercambian puestos.
+libertarian-name: Libertarismo
+libertarian-desc: La ciudad no tiene propietario.
+libertarian_socialism-name: Socialismo libertario
+libertarian_socialism-desc: Libertarismo + Socialismo
+meritocracy-name: Meritocracia
+meritocracy-desc: Dictadura + Quien tenga los mejores edificios y la mayor cantidad de puntos de
+  muerte se convierte en el dueño de la ciudad.
+oligarchy-name: Oligarquía
+oligarchy-desc: Dictadura + La propiedad de la ciudad se puede comprar.
+socialism-name: Socialismo
+socialism-desc: Dictadura + Todos los servicios, granjas, minas, fábricas y canteras son de
+  propiedad pública.
+tribalism-name: Tribalismo
+tribalism-desc: Dictadura + Los miembros no pueden unirse a ciudades no aliadas.
+admin_graveyard-name: Cementerio del admin
+admin_graveyard-desc: Un lugar donde todos los jugadores reaparecen. También previene daños.
+shelter-name: Refugio
+shelter-desc: Un lugar seguro para guardar tus objetos y ganar algo de dinero con pan,
+  carne, zanahorias o papas cada 30 minutos.
+arrow_trap-name: Trampa de flechas
+arrow_trap-desc: Nivel 1 | Rango 17 | Daños 30 | Velocidad 38 | Dispersión 3 | Dispara flechas
+  a jugadores no-miembros y monstruos cercanos.
+arrow_trap_fast-name: Trampa de flechas 2
+arrow_trap_fast-desc: Nivel 2 | Rango 19 | Daños 34 | Velocidad 38 | Dispersión 3 | Dispara flechas
+  a jugadores no-miembros y monstruos cercanos.
+arrow_trap_fastest-name: Trampa de flechas 3
+arrow_trap_fastest-desc: Nivel 3 | Rango 21 | Daño 38 | Velocidad 42 | Dispersión 3 | Dispara flechas a
+  jugadores no miembros y monstruos cercanos.
+barracks-name: Barracas
+barracks-desc: Añade 6 viviendas al pueblo. Genera 288 de poder por día. No se puede
+  construir en una ciudad con una posada.
+bell_tower-name: Campanario
+bell_tower-desc: Alerta a los miembros de la ciudad cuando un intruso ha entrado en la ciudad.
+church-name: Iglesia
+church-desc: Un lugar seguro donde nadie puede recibir daño. Produce 192 de poder por día.
+graveyard-name: Cementerio
+graveyard-desc: Un lugar para que los miembros de la ciudad respawneen, También evita daños.
+hospital-name: Hospital
+hospital-desc: Cura a todos los jugadores dentro del hospital. Genera 192 de poder por día.
+idol-name: Idolo
+idol-desc: Aplica buff's de resistencia y daño a los miembros. Produce 192 de poder por
+  día.
+jail-name: Carcel
+monument-name: Monumento
+statue-name: Estatua
+statue-desc: Aplica el efecto de resistencia a los miembros. Produce 192 de poder al día.
+arrow_factory-name: Fábrica de flechas
+arrow_factory-desc: Fábrica automática de flechas
+bakery-name: Panadería
+bakery-desc: Hace galletas y pastel de calabaza cada 2 minutos. Coloca una vagoneta con
+  cofre en el cofre. Construye railes desde la panadería hasta una región de
+  destino. Coloque un rail activador inclinado al principio.
+dye_works-name: Fábrica de tintes
+dye_works-desc: Creación automática de tintes de colores
+flint_works-name: Fábrica de Pedernal
+flint_works-desc: Creación automática de pedernal. Coloca una vagoneta con cofre en el cofre.
+  Construye railes desde la fábrica de pedernal hasta una región de destino.
+  Coloca un rail activador inclinado al principio.
+gold_infuser-name: Infusor de oro
+gold_infuser-desc: Crafteo automático de zanahorias y manzanas doradas.
+ice_maker-name: Máquina de hielo
+ice_maker-desc: Creación automática de hielo
+iron_works-name: Fábrica de hierro
+iron_works-desc: Creación automática de herramientas de hiero. Coloca una vagoneta con cofre en
+  el cofre. Construye railes desde la fábrica de hierro hasta una región de
+  destino. Coloca un rail activador inclinado al principio.
+lava_works-name: Fábrica de lava
+lava_works-desc: Creación automática de lava. Coloca una vagoneta con cofre en el cofre.
+  Construye railes desde la fábrica de lava hasta una región de destino. Coloca
+  un rail activador inclinado al principio.
+mill-name: Molino
+boot_grinder-name: Amoladora de arranque
+stone_works-name: Fábrica de piedra
+stone_works-desc: Creación automática de herramientas de piedra. Coloca una vagoneta con cofre
+  en el cofre. Construye railes desde la fábrica de piedra hasta una región de
+  destino. Coloca un rail activador inclinado al principio.
+weapons_factory-name: Fábrica de armas
+weapons_factory-desc: Convierte 3 pólvora y 5 arena en explosivos.
+chicken_coop-name: Gallinero
+chicken_coop-desc: Granja automática de pollos. Coloca una vagoneta con cofre en el cofre.
+  Construye railes desde el gallinero hasta una región de destino. Coloca un
+  rail activador inclinado al principio.
+donkey_farm-name: Granja de burros
+donkey_farm-desc: Crea burros y sillas de montar cada hora.
+mule_farm-name: Granja de mulas
+mule_farm-desc: Crea mulas y sillas de montar cada hora.
+pig_pen-name: Pocilga
+pig_pen-desc: Granja automática de cerdos
+rabbit_hutch-name: Conejera
+rabbit_hutch-desc: Granja automática de conejos
+ranch-name: Rancho
+ranch-desc: Granja automática de vacas. Coloca una vagoneta con cofre en el cofre.
+  Construye railes desde el rancho hasta una región de destino. Coloca un rail
+  activador inclinado al principio.
+sheep_farm-name: Granja de ovejas
+sheep_farm-desc: Granja automática de ovejas
+stables-name: Establos
+stables-desc: Crea caballos y sillas de montar cada hora.
+apple_orchard-name: Huerto de manzanas
+carrot_farm-name: Granja de zanahorias
+cocoa_farm-name: Granja de cacao
+ender_pearl_farm-name: Granja de enderpearls
+ender_pearl_farm-desc: Granja automática de enderpearls
+fishing_hut-name: Cabaña de pesca
+greenhouse-name: Invernadero
+melon_farm-name: Granja de melón
+potato_farm-name: Granja de patatas
+pumpkin_farm-name: Granja de calabazas
+sugar_cane_farm-name: Granja de caña de azúcar
+wheat_farm-name: Granja de trigo
+shack-name: Chabola
+hovel-name: Cabaña
+hovel1-name: Cabaña
+dwelling-name: Vivienda
+dwelling1-name: Vivienda1
+dwelling2-name: Vivienda2
+house-name: Casa
+house1-name: Casa1
+house2-name: casa2
+chalet-name: Chalet
+chalet1-name: Chalet1
+chalet2-name: Chalet2
+chalet3-name: Chalet3
+mansion-name: Mansión
+mansion1-name: Mansión1
+mansion2-name: Mansión2
+mansion3-name: Mansión3
+villa-name: Villa
+villa1-name: Villa1
+villa2-name: Villa2
+estate-name: Finca
+estate1-name: Finca1
+estate2-name: Finca2
+estate3-name: Finca3
+jade_mine-name: Mina de Jade
+coal_mine-name: Mina de carbón
+diamond_mine-name: Mina de diamante
+gold_mine-name: Mina de oro
+gunpowder_mine-name: Mina de pólvora
+iron_mine-name: Mina de hierro
+lapis_mine-name: Mina de lapislázuli
+marine_mine-name: Mina Marina
+obsidian_mine-name: Mina de obsidiana
+quartz_mine-name: Mina de cuarzo
+redstone_mine-name: Mina de redstone
+siege_machine-name: Máquina de asedio
+siege_machine_active-name: Máquina de asedio Activa
+siege_machine1-name: Máquina de asedio1
+siege_machine2-name: Máquina de asedio2
+siege_machine3-name: Máquina de asedio3
+altar-name: Altar
+blindness_trap-name: Trampa de ceguera
+castle-name: Castillo
+catapult-name: Catapulta
+command_tent-name: Tienda de mando
+hunting_lodge-name: Pabellón de caza
+memorial-name: Memorial
+mobile_hospital-name: Hospital movil
+clay_quarry-name: Cantera de arcilla
+cobble_quarry-name: Cantera de piedra
+cobble_grinder-name: Amoladora de piedra
+dirt_quarry-name: Cantera de tierra
+dirt_quarry-desc: Creación automática de tierra
+red_sand_pit-name: Foso de arena roja
+red_sand_pit-desc: Crea arena roja cada 30 segundos.
+sand_pit-name: Foso de arena
+sand_pit-desc: Crea arena cada 30 segundos.
+jade_shop-name: Tienda de jade
+jade_shop-desc: Vende 144 de Jade al servidor por $1000 por día. No se puede construir en una
+  ciudad con una mina de jade.
+coal_shop-name: Tienda de carbón
+coal_shop-desc: Vende 144 de carbón al servidor por $432 por día
+diamond_shop-name: Tienda de diamantes
+diamond_shop-desc: Vende 24 diamantes al servidor por $1536 por día
+flower_shop-name: Tienda de flores
+flower_shop-desc: Vende flores al servidor por $288 por día
+gold_shop-name: Tienda de oro
+gold_shop-desc: Vende 288 de oro al servidor por $672 por día
+iron_shop-name: Tienda de hierro
+iron_shop-desc: Vende 288 de hierro al servidor por $576 por día
+leather_shop-name: Tienda de cuero
+leather_shop-desc: Vende cuero al servidor por $360 por día
+city-name: Ciudad
+hamlet-name: Aldea
+hamlet-desc: El segundo nivel de una ciudad. Requiere 5 de población.
+keep-desc: El segundo nivel de una base de asedio.
+metropolis-name: Metrópoli
+mining_colony-name: Colonia minera
+outpost-name: Puesto avanzado
+outpost-desc: El primer nivel de una base de asedio.
+settlement-name: Asentamiento
+settlement-desc: El primer nivel de una ciudad.
+town-name: Ciudad
+town-desc: El cuarto nivel de una ciudad. Requiere 20 de población.
+village-name: Pueblo
+village-desc: El tercer nivel de una ciudad. Requiere 10 de población.
+bank-name: Banco
+bath_house-name: Casa de baños
+capitol-name: Capitolio
+city_hall-name: Palacio Municipal
+council_room-name: Sala del consejo
+embassy-name: Embajada
+library-name: Biblioteca
+purifier-name: Purificador
+smithy-name: Herrería
+town_hall-name: Ayuntamiento
+warehouse-name: Almacén
