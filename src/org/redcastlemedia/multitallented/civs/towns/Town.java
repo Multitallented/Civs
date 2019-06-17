@@ -138,7 +138,8 @@ public class Town {
                 }
                 Town town = TownManager.getInstance().getTown(townName);
                 for (UUID uuid : town.getRawPeople().keySet()) {
-                    if (!newPeople.containsKey(uuid)) {
+                    if (!newPeople.containsKey(uuid) &&
+                            !town.getRawPeople().get(uuid).contains("ally")) {
                         newPeople.put(uuid, "ally");
                     }
                 }
