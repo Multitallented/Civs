@@ -463,7 +463,7 @@ public class ProtectionHandler implements Listener {
         boolean shouldCancel = handleInteract(event.getClickedBlock(), event.getPlayer());
         if (shouldCancel) {
             event.setUseInteractedBlock(Event.Result.DENY);
-            event.setCancelled(false);
+            event.setCancelled(true);
         }
     }
 
