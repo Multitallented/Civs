@@ -460,21 +460,21 @@ public class RegionManager {
         }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {
-            if (town == null) {
+            if (town == null || !regionType.getTowns().contains(town.getType())) {
+                int lowestLevel = 999;
+                String lowestLevelString = null;
+                for (String inTownName : regionType.getTowns()) {
+                    TownType townType = (TownType) ItemManager.getInstance().getItemType(inTownName);
+                    if (townType.getLevel() < lowestLevel) {
+                        lowestLevelString = inTownName;
+                    }
+                }
+                if (lowestLevelString == null) {
+                    lowestLevelString = "towns";
+                }
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
-                                .replace("$1", regionTypeName).replace("$2",
-                                localeManager.getTranslation(civilian.getLocale(), "towns")));
-                event.setCancelled(true);
-                return false;
-            }
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (!regionType.getTowns().contains(townType.getProcessedName()) &&
-                    !regionType.getTowns().contains(townType.getDisplayName())) {
-                player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
-                                .replace("$1", regionTypeName).replace("$2",
-                                townType.getDisplayName()));
+                                .replace("$1", regionTypeName).replace("$2", lowestLevelString));
                 event.setCancelled(true);
                 return false;
             }
