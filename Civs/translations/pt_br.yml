@@ -1,0 +1,332 @@
+name: Português Brasil
+icon: CYAN_WOOL
+starter-book: Menu do Civs
+next-button: Próximo
+prev-button: Anterior
+language-menu: Selecione sua linguagem
+language-set: "Sua língua foi definida para: $1"
+back-button: Voltar
+start-tutorial: Conquistas Habilidatas
+start-tutorial-desc: Receba itens e dinheiro por completar conquistas
+skip: Conquistas Desabilitadas
+tutorial-click: Por favor, veja o guia do Civs
+tutorial-wiki: Wiki do Civs
+click-info: Clique para mais informações
+guide: Guia
+guide-desc: Clique aqui para saber seu próximo objetivo
+choose-path: Escolha seu caminho
+new-owner-town: $1 substituiu $2 como dono de $3
+town-bank-balance: Balanço do banco $1
+town-bank-desc: Saque com /cv withdraw $1 <quantidade>
+withdrawn-money: Você sacou &$1 do banco de $2
+town-tax: "Impostos da vila: $1"
+town-tax-desc: Estabeleça os impostos usando /cv tax $1 <quantidade>
+town-tax-gov-type: $1 não pode ter impostos
+town-tax-set: Os impostos de $1 foram estabelecidos em $1
+tax-too-high: Você não pode colocar impostos mais altos que $1
+town-assist-price: O banco da vila pagou $1 para agradecer você pela sua $2
+colony-town-set: Você definiu $1 como uma colonia de $2
+cant-build-feudal: Você não pode construir uma região em uma vila feudal, a menos que você tenha
+  seja dono dela.
+tribalism-no-invite: Seu tribalismo te proíbe de convidar $1 de uma vila não alida $2
+vote-member: Vote para o próximo dono
+capitalism-voting-cost: Votos extras custam $1
+voted: Você votou em $1
+gov-type-change: $1 trocou de $2 para $3
+cant-change-gov-type-daily: Você não pode trocar o tipo de governo de uma vila mais de uma vez por dia.
+revolt: Revolta
+revolt-desc: Clique para unir-se à revolta contra $1. Custa $2 $3
+revolt-display: $1 / $2 membros estão se revoltando.
+cancel-revolt: Clique para deixar a revolta contra $1.
+item-cost: Essa ação custa $1 $2.
+cost-buff: Você foi ressarcido $1 por construções $2 na vila $3.
+merit-new-owner: Parabéns! Você superou $1. Você agora é o novo dono da vila!
+item-locked: Você não destravou esse item ainda.
+ai-invite: Olá, @$1, gostaria de juntar-se a minha vila?
+ai-help: $1 pode te dar um tour do local.
+cooldown-buff-desc: $1% de redução de recarga para todos $2
+payout-buff-desc: $1% de aumento de renda para todos $2
+power-buff-desc: $1% de aumento do poder diário
+max_power-buff-desc: $1% aumento na capacidade máxima de poder
+cost-buff-desc: $1% valor de reembolso de todas $2
+shop: Loja
+buy-item: A venda
+price: Preço
+buy: Comprar $1
+cancel: Cancelar
+item-bought: Parabéns! Você acabou de comprar $1 por $2
+max-item: Você não pode comprar mais de $2 $1
+max-qty: $1 possui muitas $2 e não pode ter mais
+items: Itens
+click-for-item-group: Clique para ver todos os itens neste grupo
+classes: Classes
+spells: Habilidades
+blueprints: Projetos
+regions: Regiões
+community: Comunidade
+players: Jogadores
+towns: Vilas
+your-towns: Suas vilas
+wars: Guerras
+alliances: Alianças
+leaderboard: Placar
+ports: Teletransportadores
+money: "Dinheiro: $$1"
+points: "Pontos: $1"
+killstreak: "Sequência de vítimas: $1"
+highest-killstreak: "Maior sequência: $1"
+kills: "Vítimas: $1"
+deaths: "Mortes: $1"
+friends: Amigos
+confirm: Confirmar
+reject: Rejeitar
+effects: Efeitos
+size: Tamanho
+range: Alcance
+build-reqs-title: Requisitos da construção
+population: População
+population-req: Requer um $1 com $2 de população
+biomes: Biomas
+devolve-town: $1 ficou sem energia e foi rebaixada a $2!
+pop-desc: $1 População / $2 Moradias
+build-reqs: Todos os blocos que necessitam ser colocados para construir $1
+reagents-title: Reagentes
+reagents: Todos os itens que você precisa no bau de $1
+upkeep: Todos os itens consumidos por $1
+output: Todos os itens criados por $1
+payout: Essa região ganha $$1
+power-input: Essa região consome $1 de poder
+power-output: Essa região gera $1 de poder
+too-close-region: Sua $1 esta próxima de mais de uma $2
+too-close-town: Sua $1 esta próxima de mais de uma outra vila
+town-created: $1 foi construída
+town-destroyed: $1 foi destruída
+region-built: Você construiu com sucesso uma $1
+region-type: Tipo de região
+destroy: Destruir
+region-in-town: Sua região esta em $1
+town-req-desc: "Sua região precisa ser construída em:"
+view-members: Ver membros
+add-member: Adicionar membros
+operation: Operação
+region-working: Sua região esta funcionando corretamente
+region-not-working: Tem algo faltando em sua região
+owner: Dono
+member: Membro
+guest: Convidado
+recruiter: Recrutador
+set-owner: Definir dono
+set-member: Definir membro
+set-guest: Definir convidado
+remove-member: Remover membro
+leave-town: Sair da vila
+you-left-town: Você saiu de $1
+invite-sent: Convite enviado
+add-member-region: Você foi definido como membro de $1
+member-added-region: $1 é agora um membro de sua $2
+owner-description: Donos podem fazer qualquer coisa na região
+guest-description: Convidados podem abrir portas e usar botões na região
+member-description: Membros podem construir e utilizar a região
+remove-member-region: Você não é mais um membro de $1
+member-removed-region: $1 não é mais um membro de $2
+add-owner-region: Você foi definido como dono de1 $1
+owner-added-region: $1 é agora um dono de sua $2
+add-guest-region: Você foi definido como convidado de $1
+guest-added-region: $1 é agora um convidado de sua $2
+invite-member-region: Você agora é um membro de $1
+member-invited-region: $1 foi adicionado em sua $2
+stand-in-region: Por favor, faça com que $1 esteja na região
+create: Criar
+click-for-region-limits: Clique aqui para ver a lista de limites de regiões
+click-for-req-regions: Clique aqui para ver a lista de regiões requeridas
+town-instructions: Para criar $1, use /cv town NomeDaVila
+town-enter: Você entrou em $1 ($2)
+town-exit: Você saiu de $1 ($2)
+new-town-member: $1 se juntou a $2
+must-be-built-on-top: Uma $1 precisa ser construída em cima de uma $2
+town-power: "Poder: $1/$2"
+port-warmup: Você será teletransportado em $1s
+teleported: Você foi teletransportado!
+location-set: $1 local selecionado
+rename-town: Renomear vila
+rename-desc: Use /cv rename nomeVelho nomeNovo
+town-renamed: Sua vila foi renomeada de $1 para $2
+bounty-set: Uma recompensa foi colocada em $1 por $2
+bounty-bonus: Você coletou a recompensa de $1
+add-friend: Adicionar amigo
+remove-friend: Remover amigo
+friend-added: $1 foi adicionado a sua lista de amigos
+friend-removed: $1 foi removido da sua lista de amigos
+bounty: "Colocar recompensa: /cv bounty $1 quantidade"
+town-ally: Definir $1 como aliados
+town-unally: Definir $1 como inimigos
+town-ally-invites: Você tem pedidos de alianças
+town-ally-request-sent: Uma proposta de aliança foi enviada a $1
+town-ally-request-accepted: Uma aliança foi formada entre $1 e $2
+town-ally-request-denied: A proposta de aliança com $1 foi rejeitada
+town-ally-removed: A aliança entre $1 e $2 foi dissolvida
+region-evolved: Sua $1 evoluiu para uma $2
+anti-camp-active: O anti-camp de $1 foi ativado
+anti-camp-expired: O anti-camp de $1 acabou
+region-sale-set: $1 a venda por $2
+sell-region: Vender região
+cancel-sale: Cancelar venda
+buy-region: Comprar $1 por $2
+regions-for-sale: Região a venda
+use-sell-command: Digite /cv sell PreçoVemAqui
+region-bought: Você comprou essa $1 por $2
+sort-by-level: Organizar regiões por nível
+level: Nível $1
+rename-alliance: Renomear Aliança
+rename-alliance-desc: Digite really $1 novoNomeDaAliança
+alliance-renamed: $1 foi renomeada para $2
+invalid-name: Nome invalido
+last-renamed-by: "Ultima mudança de nome: $1"
+leave-alliance: Sair da aliança
+hunting-players: "@{RED}Cuidado! Alguém esta caçando jogadores na sua área."
+target-not-in-world: $1 não esta no mesmo mundo que você.
+cant-place-town: Datilografar /cv town nome_da_cidade_vai_aqui
+no-region-type-found: Nenhuma região encontrada para $1
+building-too-big: Sua construção é muito grande para ser uma $1
+no-required-blocks: Você não colocou todos os blocos requeridos para $1
+cant-build-on-region: Você não pode construir uma $1 em cima de uma $2
+rebuild-required: Você precisa construir uma $1 em cima de uma $2
+prevent-civs-item-share: Você não tem permissão para compartilhar itens de Civs
+region-protected: Esta região esta protegida
+region-destroyed: A região $1 foi destruída!
+specify-player-town: Por favor, especifique um jogador de uma vila
+specify-town-name: Por favor, especifique um nome de vila
+specify-player-region: Por favor, especifique um jogador e uma região
+town-not-exist: $1 não é uma vila
+no-permission-invite: Você não tem permissão para convidar pessoas para $1
+player-not-online: $1 não esta Online
+invite-player: $1 gostaria de te convidar para juntar-se a $2 $3
+already-member: $1 já é um membro de $2
+broke-own-region: Sua $1 esta com falta de blocos
+no-permission: Permissão Negada
+class-changed: Sua classe mudou para $1
+not-enough-money: Você não tem $$1
+not-allowed-place: Você não tem permissão para colocar $1
+hold-town: Por favor, segure um item de vila
+no-commands-in-jail: Você não pode usar comandos na prisão por mais $1
+mana-use-exp: Você não pode usar isso sem estar com a mana cheia
+building-requires-2space: Essa construção requer 2 blocos de ar em cima do baú central
+missing-blocks-build: Você precisa colocar esses blocos que faltam para construir uma $1
+in-combat: Você não pode fazer isso em combate
+cooldown: Isso esta em recarga por mais $1s
+need-more-health: Você precisa de mais $1 de vida para fazer isso
+need-more-stamina: Você precisa de mais $1 de energia para fazer isso
+need-more-mana: Você precisa de mais $1 de mana para fazer isso
+port-not-found: Teletransportador não encontrado
+region-missing-upkeep-items: Região não tem os itens necessários
+raid-target-lost: Não existe vila com nome de $1 na área de $2 blocos
+searching-for-target: Procurando por alvo de teletransportador de ataque...
+raid-target-blocked: Teletransportador de ataque bloqueado
+raid-porter-warning: ALERTA! $1 criou um $2 atacando $3
+raid-remote: Foi dado a você um item para controlar $1
+raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
+invalid-target: Alvo inválido
+raid-target-inside-region: Você não pode definir um local dentro de uma região
+req-build-inside-town: Essa $1 precisa ser construída dentro de uma $2
+missing-region-requirements: Sua $1 esta com falta de construções requeridas
+friendly-fire: Você não pode atacar alguém da sua lista de amigos
+limits: Limites
+region-limit-reached: Um $1 só pode ter $2 $3
+region-in-biome: Você não pode construir uma $1 em um $2
+not-enough-housing: Você precisa de mais habitações para convidar mais jogadores
+not-member-port: Você não é um membro deste teletransportador
+cant-repair-item: Você não pode reparar este item aqui
+more-repair-items: Você precisa de mais $1 para reparar este item
+hold-repair-item: Você precisa segurar o item que deseja reparar
+player-not-found: Jogador $1 não encontrado
+repeat-kill: $1 foi morto recentemente. Nenhum ponto adquirido.
+kill-streak: $1 esta em uma killstreak de $2
+kill-joy: $1 acabou com a killstreak de $2 de $3
+death: Você perdeu $1 pontos por morrer
+kill: "Vítima: $1"
+low-health: "Bônus por vida baixa: $1"
+killstreak-points: "Bônus por Killstreak: $1"
+killjoy-points: "Bônus por Killjoy: $1"
+total-points: "Total de pontos: $1"
+karma: "Karma: $1"
+karma-gained: "Karma: +$1, $2 de dinheiro ganho"
+karma-lost: "Karma: -$1, $2 de dinheiro perdido"
+ann-limit: "[Info] Você tem $1 de $2 $3 construções"
+ann-achievement: "[Info] Confira o guia para ver sua próxima conquista disponível"
+ann-town-join: "[Info] Você pode ser membro de múltiplas vilas. Usualmente vilas adoram
+  pessoas."
+ann-town-protection: "[Info] Vilas protegem uma boa área de terreno e destravam novas construções
+  na loja."
+ann-town-housing: "[Info] $1 tem $2 de $3 casas ocupadas. Construa mais casas para que sua vila
+  cresça."
+ann-make-allies: "[Info] Considere juntar-se a uma aliança. Você pode configurar cidades
+  aliadas em Comunidade > Cidades > Cidade"
+ann-town-low-power: "@{RED}[Alerta] $1 só possui poder $2 de $3. Considere construir mais
+  estruturas que geram poder."
+tut-warrior-name: Guerreiro
+tut-builder-name: Construtor
+tut-merchant-name: Mercador
+anarchy-name: Anarquia
+capitalism-name: Capitalismo
+colonialism-name: Colonialismo
+communism-name: Comunismo
+communism-desc: Todos são donos de tudo. Toda a receita da região é repartida igualmente.
+cooperative-name: Cooperativa
+cybersynacy-name: Tecnocracia
+democracy-name: Democracia
+democratic_socialism-name: Socialismo Democrático
+dictatorship-name: Ditadura
+feudalism-name: Feudalismo
+libertarian-name: Libertário
+libertarian_socialism-name: Socialismo Libertário
+libertarian_socialism-desc: Libertário + Socialismo
+meritocracy-name: Meritocracia
+oligarchy-name: Oligarquia
+socialism-name: Socialismo
+tribalism-name: Tribalismo
+admin_graveyard-desc: Um lugar para os jogadores renascerem. Também previne dano.
+shelter-name: Abrigo
+arrow_trap-name: Armadilha de flechas
+arrow_trap_fast-name: Armadilha de flechas 2
+arrow_trap_fastest-name: Armadilha de flechas 3
+bell_tower-name: Campanário
+church-name: Igreja
+graveyard-name: Cemitério
+hospital-name: Hospital
+idol-name: Ídolo
+jail-name: Prisão
+monument-name: Monumento
+statue-name: Estátua
+arrow_factory-name: Fábrica de flechas
+arrow_factory-desc: Fábrica automática de flechas
+bakery-name: Padaria
+ice_maker-name: Fazedor de Gelo
+mill-name: Moinho
+chicken_coop-name: Galinheiro
+ranch-name: Rancho
+sheep_farm-name: Fazenda de ovelhas
+sheep_farm-desc: Fazenda automática de ovelhas
+stables-name: Estábulos
+greenhouse-name: Estufa
+house-name: Casa
+chalet-name: Chalé
+mansion-name: Mansão
+diamond_mine-name: Mina de Diamante
+gold_mine-name: Mina de Ouro
+iron_mine-name: Mina de Ferro
+quartz_mine-name: Mina de Quartzo
+castle-name: Castelo
+catapult-name: Catapulta
+memorial-name: Memorial
+mobile_hospital-name: Hospital móvel
+coal_shop-name: Loja de Carvão
+diamond_shop-name: Loja de Diamantes
+gold_shop-name: Loja de Ouro
+village-name: Vila
+bank-name: Banco
+capitol-name: Capitólio
+city_hall-name: Prefeitura
+embassy-name: Embaixada
+library-name: Biblioteca
+purifier-name: Purificador
+warehouse-name: Armazém
