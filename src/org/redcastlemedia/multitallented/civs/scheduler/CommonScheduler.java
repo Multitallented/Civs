@@ -82,7 +82,7 @@ public class CommonScheduler implements Runnable {
     private void checkTownTransition() {
         HashSet<Town> saveThese = new HashSet<>();
         for (Town town : TownManager.getInstance().getTowns()) {
-            if (town.isGovTypeChangedToday()) {
+            if (town.isGovTypeChangedToday() || town.getRawPeople().size() < 3) {
                 continue;
             }
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
@@ -91,7 +91,7 @@ public class CommonScheduler implements Runnable {
             }
 
             for (GovTransition transition : government.getTransitions()) {
-                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null && town.getRawPeople().size() > 1;
+                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null;
                 if (moneyGap) {
                     double highestMoney = 0;
                     double totalMoney = 0;
