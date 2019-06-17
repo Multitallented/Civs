@@ -199,6 +199,9 @@ public class AllianceManager implements Listener {
     }
 
     public void unAlly(Town town1, Town town2) {
+        if (!isAllied(town1, town2)) {
+            return;
+        }
         HashSet<Alliance> saveThese = new HashSet<>();
         HashSet<Alliance> removeThese = new HashSet<>();
 

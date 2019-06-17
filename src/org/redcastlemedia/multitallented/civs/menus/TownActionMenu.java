@@ -266,7 +266,9 @@ public class TownActionMenu extends Menu {
 
         //3 Ally / Remove ally
         Town townOwner = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (townOwner != null && townOwner != town && !AllianceManager.getInstance().isAllied(townOwner, town)) {
+        boolean isAllied = townOwner != null && townOwner != town &&
+                AllianceManager.getInstance().isAllied(townOwner, town);
+        if (townOwner != null && !isAllied) {
             CVItem cvItem6 = CVItem.createCVItemFromString("IRON_SWORD");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-ally").replace("$1", town.getName()));
@@ -274,7 +276,7 @@ public class TownActionMenu extends Menu {
             lore.add(townOwner.getName());
             cvItem6.setLore(lore);
             inventory.setItem(3, cvItem6.createItemStack());
-        } else if (townOwner != null && townOwner != town) {
+        } else if (townOwner != null && isAllied) {
             CVItem cvItem6 = CVItem.createCVItemFromString("CREEPER_HEAD");
             cvItem6.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     "town-unally").replace("$1", town.getName()));
