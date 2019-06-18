@@ -134,9 +134,9 @@ public class CVItem {
 
     private static boolean isCustomItem(List<String> lore) {
         return lore != null && !lore.isEmpty() &&
-                LocaleManager.getInstance().getTranslation(
+                LocaleManager.getInstance().hasTranslation(
                         ConfigManager.getInstance().getDefaultLanguage(),
-                        "item-" + ChatColor.stripColor(lore.get(0)) + "-name") != null;
+                        "item-" + ChatColor.stripColor(lore.get(0)) + "-name");
     }
 
     private static Material getMaterialFromString(String materialString) {
