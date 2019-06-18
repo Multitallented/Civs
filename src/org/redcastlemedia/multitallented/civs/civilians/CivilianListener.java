@@ -420,7 +420,6 @@ public class CivilianListener implements Listener {
         if (!CVItem.isCustomItem(itemStack)) {
             return;
         }
-        String key = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0));
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         CVItem.translateItem(civilian.getLocale(), itemStack);
     }
