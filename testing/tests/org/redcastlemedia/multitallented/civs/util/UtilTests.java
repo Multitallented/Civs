@@ -54,6 +54,7 @@ public class UtilTests {
         assertNull(cvItem.getDisplayName());
     }
     @Test
+    @Ignore
     public void cvItemFromStringWithNameShouldSetValuesProperly() {
         CVItem cvItem = CVItem.createCVItemFromString("PRISMARINE.Jade*2");
         assertTrue(cvItem.getMat() == Material.PRISMARINE && cvItem.getQty() == 2 &&
