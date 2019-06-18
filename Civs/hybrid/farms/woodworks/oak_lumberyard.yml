@@ -44,7 +44,3 @@ upkeep:
     output:
     - OAK_LOG*8
 
-description:
-  en: "Automated oak log farming"
-  es: "Agricultura automatizada de registro de roble"
-  hu: "Automatikus tölgyfafarm."

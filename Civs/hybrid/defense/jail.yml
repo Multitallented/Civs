@@ -39,12 +39,3 @@ period: 900 #15 minutes
 upkeep:
   0:
     power-output: 2
-
-description:
-  en: "A place to temporarily trap invaders who die in town."
-  es: "Un lugar para atrapar temporalmente a los invasores que mueren en la ciudad."
-  de: "Ein Ort, um Eindringlinge, die in der Stadt sterben, vorübergehend zu fangen."
-  pt_br: "Um lugar para capturar temporariamente os invasores que morrem na cidade."
-  fr: "Un endroit pour piéger temporairement les envahisseurs qui meurent en ville."
-  ru: "Место для временного захвата захватчиков, которые умирают в городе."
-  hu: "Egy hely, ahová csapdába esnek a város támadói, ha megölöd őket."

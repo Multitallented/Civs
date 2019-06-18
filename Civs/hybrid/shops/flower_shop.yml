@@ -37,12 +37,4 @@ upkeep:
       - LILAC*2,ROSE_BUSH*2,PEONY*2,SUNFLOWER*2
     payout: 1 #144 per day
 
-description:
-  en: "Sells flowers to the server for $288 per day"
-  es: "Vende flores al servidor por $ 288 por día"
-  pt_br: "Vende flores para o servidor por US $ 288 por dia"
-  ru: "Продает цветы на сервер за 288 долларов США в день"
-  de: "Verkauft Blumen an den Server für 288 $ pro Tag"
-  fr: "Vend des fleurs au serveur pour 288 $ par jour"
-  hu: "Virágokat ad el a szervernek napi $288-ért."
   

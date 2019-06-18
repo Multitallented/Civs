@@ -38,12 +38,3 @@ upkeep:
     output:
     - COCOA_BEANS*16
 
-
-description:
-  en: "Creates 16 cocoa every 5 minutes."
-  es: "Crea 16 cacao cada 5 minutos."
-  fr: "Crée 16 cacao toutes les 5 minutes."
-  pt_br: "Cria 16 cacau a cada 5 minutos."
-  ru: "Создает 16 какао каждые 5 минут."
-  de: "Erzeugt alle 5 Minuten 16 Kakao."
-  hu: "16 db kakaóbabot termel 5 percenként."

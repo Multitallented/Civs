@@ -63,11 +63,3 @@ upkeep:
     - MELON_SLICE*32 # 768 or 12 stacks / day
     payout: 8.24 # $197.76 / day
 
-description:
-  en: "4th level of house. Earns $832 per day."
-  es: "4er nivel de la casa. Gana $ 1024 por día."
-  de: "4. Ebene des Hauses. Verdient $ 1024 pro Tag."
-  pt_br: "4º nível de casa. Ganhe $ 1024 por dia."
-  fr: "4ème niveau de la maison. Gagne 1024 $ par jour."
-  ru: "4-й уровень дома. Зарабатывает $ 1024 в день."
-  hu: "4. szintje a háznak. Bevétele $1024 naponta."

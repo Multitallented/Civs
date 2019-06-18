@@ -42,12 +42,3 @@ upkeep:
     - DIAMOND_SWORD
     output:
     - ENDER_PEARL*2
-
-description:
-  en: "Automatic ender pearl farm"
-  es: "Granja de perlas de ender automática."
-  fr: "Ferme perlière automatique"
-  pt_br: "Fazenda de pérolas automática ender"
-  ru: "Автоматическая ферма Ender Pearl"
-  de: "Automatische Enderperlenfarm"
-  hu: "Automatikus véggyöngy farm."

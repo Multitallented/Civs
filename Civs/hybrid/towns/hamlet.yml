@@ -50,11 +50,3 @@ effects:
 power: 600
 max-power: 2460
 
-description:
-  en: "The second level of a town"
-  es: "El segundo nivel de una ciudad"
-  de: "Die zweite Ebene einer Stadt"
-  ru: "Второй уровень города"
-  pt_br: "O segundo nível de uma cidade"
-  fr: "Le deuxième niveau d'une ville"
-  hu: "A második szintje a városnak."

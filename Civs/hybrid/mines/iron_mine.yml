@@ -61,11 +61,3 @@ upkeep:
     output:
     - IRON_INGOT*12
 
-description:
-  en: "Creates iron by using pickaxes every hour"
-  es: "Crea hierro usando picos cada hora."
-  de: "Erzeugt Eisen durch stündliche Verwendung von Spitzhacken"
-  fr: "Crée du fer en utilisant des pioches toutes les heures"
-  ru: "Создает железо, используя кирки каждый час"
-  pt_br: "Cria ferro usando picaretas a cada hora"
-  hu: "Vasat termel csákányok használatával."

@@ -64,11 +64,3 @@ upkeep:
     payout: 6 # $144 / day
     exp: 1
 
-description:
-  en: "5th level of house. Earns $692 per day."
-  es: "5er nivel de la casa. Gana $ 836 por día."
-  de: "5. Ebene des Hauses. Verdient $ 836 pro Tag."
-  pt_br: "5º nível de casa. Ganhe $ 836 por dia."
-  fr: "5ème niveau de la maison. Gagne 836 $ par jour."
-  ru: "5-й уровень дома. Зарабатывает $ 836 в день."
-  hu: "5. szintje a háznak. Bevétele $836 naponta."

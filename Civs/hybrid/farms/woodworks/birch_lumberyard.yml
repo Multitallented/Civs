@@ -44,7 +44,3 @@ upkeep:
     output:
     - BIRCH_LOG*8
 
-description:
-  en: "Automated birch log farming"
-  es: "Agricultura automatizada de registro de abedul"
-  hu: "Automatikus nyírfafarm."

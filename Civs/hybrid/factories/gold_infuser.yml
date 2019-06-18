@@ -50,12 +50,3 @@ upkeep:
     - GOLD_INGOT
     output:
     - GOLDEN_APPLE*2
-
-description:
-  en: "Automated crafting of golden carrots"
-  es: "Elaboración automatizada de zanahorias doradas."
-  de: "Automatisierte Herstellung von goldenen Karotten"
-  ru: "Автоматизированная обработка золотой моркови"
-  pt_br: "Elaboração automatizada de cenouras douradas"
-  fr: "Fabrication automatisée de carottes dorées"
-  hu: "Automatikusan gyárt aranyrépákat."

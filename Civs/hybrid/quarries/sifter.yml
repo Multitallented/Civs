@@ -39,11 +39,3 @@ upkeep:
     output:
     - DIRT*1%75,LEATHER_BOOTS*1%20,EMERALD*2%4,NETHER_STAR*1%1
 
-description:
-  en: "Sifts through dirt to find valuable items."
-  es: "Tamiza a través de la tierra para encontrar artículos valiosos."
-  de: "Durchsucht den Dreck, um wertvolle Gegenstände zu finden."
-  ru: "Просеивает грязь, чтобы найти ценные предметы."
-  pt_br: "Vasculha a sujeira para encontrar itens valiosos."
-  fr: "Soulever la saleté pour trouver des objets de valeur."
-  hu: "Földet szitál, hogy értékes tárgyakat találjon."

@@ -40,11 +40,3 @@ upkeep:
     output:
     - GUNPOWDER*7
 
-description:
-  en: "Creates gunpowder by using iron pickaxes"
-  es: "Crea pólvora utilizando picos de hierro."
-  de: "Erzeugt Schießpulver mit Eisen-Spitzhacken"
-  fr: "Crée de la poudre à canon en utilisant des pioches en fer"
-  ru: "Создает порох с помощью железных кирок"
-  pt_br: "Cria pólvora usando picaretas de ferro"
-  hu: "Puskaport termel vascsákányok használatával."

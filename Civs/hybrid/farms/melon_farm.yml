@@ -37,12 +37,3 @@ upkeep:
       - IRON_HOE
     output:
       - MELON_SLICE*16
-
-description:
-  en: "Produces melon every 10 minutes"
-  pt_br: "Produz melancia a cada 10 minutos"
-  fr: "Produit du melon toutes les 10 minutes"
-  es: "Produce melón cada 10 minutos."
-  ru: "Производит дыню каждые 10 минут"
-  de: "Produziert alle 10 Minuten Melone"
-  hu: "Dinnyét termel 10 percenként."

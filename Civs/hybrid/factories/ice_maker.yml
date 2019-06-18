@@ -32,12 +32,3 @@ upkeep:
     output:
     - ICE*9
     - SNOW_BLOCK*9
-
-description:
-  en: "Automated creation of ice"
-  es: "Creación automatizada de hielo."
-  de: "Automatisierte Eisbildung"
-  ru: "Автоматическое создание льда"
-  pt_br: "Criação automatizada de gelo"
-  fr: "Création automatisée de glace"
-  hu: "Automatikusan gyárt jeget."

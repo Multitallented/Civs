@@ -58,11 +58,3 @@ upkeep:
     payout: 6 # $144 / day
     exp: 1
 
-description:
-  en: "2nd level of house. Earns $122 per day."
-  es: "2do nivel de vivienda. Gana $ 122 por día."
-  fr: "2ème niveau de la maison. Gagne 122 $ par jour."
-  ru: "2-й уровень дома. Зарабатывает 122 долларов США в день."
-  pt_br: "2º nível de casa. Ganhe US $ 122 por dia."
-  de: "2. Ebene des Hauses. Erwirbt $ 122 pro Tag."
-  hu: "2. szintje a háznak. Bevétele $122 naponta."

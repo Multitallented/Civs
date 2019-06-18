@@ -43,11 +43,3 @@ upkeep:
     - IRON_INGOT*12 # 288 iron / day
     payout: 24          # $576 / day
 
-description:
-  en: "Sells 288 iron to the server for $576 per day"
-  es: "Vende 288 hierros al servidor por $ 576 por día"
-  pt_br: "Vende 288 de ferro para o servidor por $ 576 por dia"
-  ru: "Продает 288 железа на сервер за $ 576 в день"
-  de: "Verkauft 288 Eisen an den Server für 576 $ pro Tag"
-  fr: "Vend 288 fer au serveur pour 576 $ par jour"
-  hu: "288 db vasat ad el a szervernek napi $576-ért."

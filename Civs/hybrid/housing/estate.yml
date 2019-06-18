@@ -62,12 +62,3 @@ upkeep:
       - GOLDEN_APPLE*1 # 24 / day
     payout: 20 # $480 / day
     exp: 1
-
-description:
-  en: "9th level of house. Earns $1480 per day."
-  es: "9er nivel de la casa. Gana $ 1480 por día."
-  de: "9. Ebene des Hauses. Verdient $ 1480 pro Tag."
-  pt_br: "9º nível de casa. Ganhe $ 1480 por dia."
-  fr: "9ème niveau de la maison. Gagne 1480 $ par jour."
-  ru: "9-й уровень дома. Зарабатывает $ 1480 в день."
-  hu: "9. szintje a háznak. Bevétele $1480 naponta."

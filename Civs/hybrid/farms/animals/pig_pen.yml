@@ -30,12 +30,3 @@ upkeep:
     - CARROT*64
     output:
     - PORKCHOP*4
-
-description:
-  en: "Automatic pig farm"
-  es: "Granja automática de cerdos"
-  fr: "Élevage automatique"
-  pt_br: "Fazenda de suínos automática"
-  ru: "Автоматическая свиноферма"
-  de: "Automatische Schweinefarm"
-  hu: "Automatikus malacfarm."

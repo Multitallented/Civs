@@ -35,11 +35,3 @@ upkeep:
     - ARROW*32
     payout: -300
 
-description:
-  en: "Creates a full set of diamond armor, sword, bow, and arrows for $300 once per hour."
-  es: "Crea un juego completo de armadura de diamantes, espada, arco y flechas por $300 una vez por hora."
-  de: "Erzeugt einmal pro Stunde einen kompletten Satz Diamantrüstung, Schwert, Bogen und Pfeile für 300$"
-  ru: "Создает полный набор алмазной брони, меча, лука и стрел за 300 долларов один раз в час"
-  pt_br: "Cria um conjunto completo de armadura de diamante, espada, arco e flechas por $300 uma vez por hora."
-  fr: "Crée un ensemble complet d'armure de diamant, d'épée, d'arc et de flèches pour 300$ une fois par heure."
-  hu: "Teljes gyémántszettet, kardot, íjat, és nyilakat készít $300-ért óránként."

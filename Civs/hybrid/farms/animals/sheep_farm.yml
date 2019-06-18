@@ -37,11 +37,3 @@ upkeep:
     output:
     - WHITE_WOOL*4
 
-description:
-  en: "Automatic sheep farm"
-  es: "Granja de ovejas automática"
-  fr: "Élevage automatique"
-  pt_br: "Fazenda de ovelhas automática"
-  ru: "Автоматическая овцеводческая ферма"
-  de: "Automatische Schäferei"
-  hu: "Automatikus birkafarm."

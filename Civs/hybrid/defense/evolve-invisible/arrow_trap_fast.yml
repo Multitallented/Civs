@@ -44,13 +44,3 @@ upkeep:
     input:
     - ARROW*1
     exp: 1
-
-description:
-  en: "Shoots arrows at nearby non-members"
-  es: "Dispara flechas a no miembros cercanos"
-  fr: "Lance des flèches sur des non-membres proches"
-  de: "Schießt auf Pfeile in der Nähe von Nicht-Mitgliedern"
-  pt_br: "Dispara flechas em não membros próximos"
-  ru: "Стреляет стрелами у близлежащих членов"
-  hu: "Nyilakat lő a közelében álló nem városlakókra."
-

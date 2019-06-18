@@ -41,11 +41,3 @@ upkeep:
     - DIRT*4%50,PODZOL*4%25,COARSE_DIRT*4%25
     - DIRT%93,GRASS_BLOCK%5,MYCELIUM%2
 
-description:
-  en: "Automated creation of dirt"
-  es: "Creación automatizada de suciedad."
-  de: "Automatisierte Schmutzerzeugung"
-  ru: "Автоматизированное создание грязи"
-  pt_br: "Criação automatizada de sujeira"
-  fr: "Création automatisée de la saleté"
-  hu: "Földet termel 30 másodpercenként."

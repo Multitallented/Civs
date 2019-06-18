@@ -41,11 +41,3 @@ upkeep:
     output:
     - LAVA_BUCKET
 
-description:
-  en: "Automated lava creation"
-  es: "Creación de lava automatizada"
-  de: "Automatisierte Lavaerstellung"
-  ru: "Автоматизированное создание лавы"
-  pt_br: "Criação automatizada de lava"
-  fr: "Création automatisée de lave"
-  hu: "Automatikusan gyárt lávát."

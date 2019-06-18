@@ -40,11 +40,3 @@ upkeep:
     output:
     - CLAY_BALL*4
 
-description:
-  en: "Automated creation of clay"
-  es: "Creación automatizada de arcilla."
-  de: "Automatisierte Tonerzeugung"
-  ru: "Автоматическое создание глины"
-  pt_br: "Criação automatizada de argila"
-  fr: "Création automatisée d'argile"
-  hu: "Agyagot termel automatikusan."

@@ -44,11 +44,3 @@ upkeep:
     output:
     - QUARTZ*6
 
-description:
-  en: "Creates quartz by using pickaxes"
-  es: "Crea cuarzo utilizando picos."
-  de: "Erzeugt Quarz mit Spitzhacken"
-  fr: "Crée du quartz en utilisant des pioches"
-  ru: "Создает кварц, используя кирки"
-  pt_br: "Cria quartzo usando picaretas"
-  hu: "Kvarcot termel csákányok használatával."

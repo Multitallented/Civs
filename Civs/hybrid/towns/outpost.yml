@@ -35,11 +35,3 @@ effects:
 power: 256
 max-power: 256
 
-description:
-  en: "The first level of a siege base."
-  es: "El primer nivel de una base de asedio."
-  fr: "Le premier niveau d'une base de siège."
-  pt_br: "O primeiro nível de uma base de cerco."
-  ru: "Первый уровень осадной базы."
-  de: "Die erste Ebene einer Belagerungsbasis."
-  hu: "Az első szintje az előörsnek."

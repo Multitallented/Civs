@@ -56,11 +56,3 @@ effects:
 power: 1000
 max-power: 3120
 
-description:
-  en: "The third level of a town"
-  es: "El tercer nivel de un pueblo."
-  de: "Die dritte Ebene einer Stadt"
-  ru: "Третий уровень города"
-  pt_br: "O terceiro nível de uma cidade"
-  fr: "Le troisième niveau d'une ville"
-  hu: "A harmadik szintje a városnak."

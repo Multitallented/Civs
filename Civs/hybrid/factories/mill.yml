@@ -45,12 +45,4 @@ upkeep:
     output:
     - BREAD
 
-description:
-  en: "Turns 2 wheat into 1 bread every 30 seconds."
-  es: "Convierte 2 trigo en 1 pan cada 30 segundos."
-  ru: "Превращает 2 пшеницы в 1 хлеб каждые 30 секунд."
-  de: "Verwandelt alle 30 Sekunden 2 Weizen in 1 Brot."
-  pt_br: "Transforma 2 trigo em 1 pão a cada 30 segundos."
-  fr: "Transforme 2 blés en 1 pain toutes les 30 secondes."
-  hu: "2 búzából gyárt 1 kenyeret minden 30. másodpercben."
 

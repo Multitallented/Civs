@@ -43,11 +43,3 @@ upkeep:
     output:
     - TNT*1
 
-description:
-  en: "Turns 3 gunpowder and 5 sand into explosives."
-  es: "Convierte 3 pólvora y 5 arena en explosivos."
-  de: "Verwandelt 3 Schießpulver und 5 Sand in Sprengstoff."
-  ru: "Превращает 3 пороха и 5 песков во взрывчатку."
-  pt_br: "Transforma 3 pólvora e 5 areia em explosivos."
-  fr: "Transforme 3 poudre à canon et 5 sable en explosifs."
-  hu: "3 puskaporból és 5 homokból gyárt robbanóanyagokat."

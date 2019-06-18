@@ -49,11 +49,3 @@ upkeep:
     output:
     - GOLD_INGOT*6
 
-description:
-  en: "Creates gold by using iron pickaxes"
-  es: "Crea oro utilizando picos de hierro."
-  de: "Erzeugt Gold mit Eisen-Spitzhacken"
-  fr: "Crée de l'or en utilisant des pics de fer"
-  ru: "Создает золото, используя железные кирки"
-  pt_br: "Cria ouro usando picaretas de ferro"
-  hu: "Aranyat termel vascsákányok használatával."

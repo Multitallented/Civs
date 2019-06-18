@@ -51,12 +51,3 @@ upkeep:
     output:
     - PUMPKIN_PIE
 
-description:
-  en: "Makes cookies and pumpkin pie every 2 minutes."
-  es: "Hace galletas y pastel de calabaza cada 2 minutos."
-  ru: "Делает печенье и тыквенный пирог каждые 2 минуты."
-  de: "Macht alle 2 Minuten Kekse und Kürbiskuchen."
-  pt_br: "Faz biscoitos e torta de abóbora a cada 2 minutos."
-  fr: "Donne des biscuits et une tarte à la citrouille toutes les 2 minutes."
-  hu: "Automatikusan gyárt sütiket és tökpitéket két percenként."
-

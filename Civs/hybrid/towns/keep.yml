@@ -35,12 +35,3 @@ effects:
 
 power: 1028
 max-power: 1028
-
-description:
-  en: "The second level of a siege base."
-  es: "El segundo nivel de una base de asedio."
-  fr: "Le deuxième niveau d'une base de siège."
-  pt_br: "O segundo nível de uma base de cerco."
-  ru: "Второй уровень осадной базы."
-  de: "Die zweite Ebene einer Belagerungsbasis."
-  hu: "A második szintje az előörsnek."

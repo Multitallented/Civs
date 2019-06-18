@@ -32,12 +32,3 @@ upkeep:
     - LEATHER*8
     payout: 2.5 # $360 per day
 
-description:
-  en: "Sells leather to the server for $360 per day"
-  es: "Vende cuero al servidor por $360 por día"
-  pt_br: "Vende couro para o servidor por $360 por dia"
-  ru: "Продает кожу на сервер за 360 долларов в день"
-  de: "Verkauft Leder für 360$ pro Tag an den Server"
-  fr: "Vend du cuir au serveur pour 360$ par jour"
-  zh: "以每天360美元的价格向服务器出售皮革"
-  hu: "Bőrt ad el a szervernek napi $360-ért."

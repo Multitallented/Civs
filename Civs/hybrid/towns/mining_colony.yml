@@ -26,11 +26,3 @@ effects:
 power: 48
 max-power: 48
 
-description:
-  en: "Prevents monsters from spawning and gives fast digging buff."
-  es: "Evita que los monstruos desoven y les da un rápido beneficio de excavación."
-  fr: "Empêche les monstres de se reproduire et procure un buff de fouille rapide"
-  de: "Verhindert das Laichen von Monstern und gibt einen schnellen Grabungsbuff."
-  ru: "Предотвращает появление монстров и дает положительный эффект при копании."
-  pt_br: "Impede que os monstros desovam e dá buff de escavação rápida."
-  hu: "Letiltja a szörnyek spawnolását és gyorsítja a bányászatot."

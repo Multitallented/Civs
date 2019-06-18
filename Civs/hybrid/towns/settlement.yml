@@ -37,12 +37,3 @@ effects:
 
 power: 300
 max-power: 2040
-
-description:
-  en: "The first level of a town"
-  es: "El primer nivel de una ciudad"
-  fr: "Le premier niveau d'une ville"
-  de: "Die erste Ebene einer Stadt"
-  ru: "Первый уровень города"
-  pt_br: "O primeiro nível de uma cidade"
-  hu: "Az első szintje a városnak."

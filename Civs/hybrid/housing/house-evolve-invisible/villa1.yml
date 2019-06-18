@@ -67,12 +67,3 @@ upkeep:
       - BUCKET
     payout: 12.4 # $297 / day
     exp: 1
-
-description:
-  en: "8th level of house. Earns $1397 per day."
-  es: "8er nivel de la casa. Gana $ 1397 por día."
-  de: "8. Ebene des Hauses. Verdient $ 1397 pro Tag."
-  pt_br: "8º nível de casa. Ganhe $ 1397 por dia."
-  fr: "8ème niveau de la maison. Gagne 1397 $ par jour."
-  ru: "8-й уровень дома. Зарабатывает $ 1397 в день."
-  hu: "8. szintje a háznak. Bevétele $1397 naponta."
