@@ -41,6 +41,7 @@ public class RegionManager {
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
     private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
+    private HashSet<Region> checkedRegions = new HashSet<>();
 
     public RegionManager() {
         regionManager = this;
@@ -48,6 +49,7 @@ public class RegionManager {
 
     public void reload() {
         loadAllRegions();
+        checkedRegions.clear();
     }
 
     public void addRegionCreatedListener(String key, RegionCreatedListener listener) {
@@ -696,5 +698,20 @@ public class RegionManager {
             regionManager = new RegionManager();
         }
         return regionManager;
+    }
+
+    public boolean hasRegionChestChanged(Region region) {
+        return !checkedRegions.contains(region);
+    }
+
+    public void removeCheckedRegion(Location location) {
+        Region region = RegionManager.getInstance().getRegionAt(location);
+        if (region != null) {
+            checkedRegions.remove(region);
+        }
+    }
+
+    public void addCheckedRegion(Region region) {
+        checkedRegions.add(region);
     }
 }

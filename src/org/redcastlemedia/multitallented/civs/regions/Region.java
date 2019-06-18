@@ -747,22 +747,26 @@ public class Region {
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
         boolean hadUpkeep = false;
+        Chest chest = null;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
-            Block block = getLocation().getBlock();
 
-            Chest chest = null;
-            try {
-                BlockState state = block.getState();
-                if (state instanceof Chest) {
-                    chest = (Chest) state;
-                }
-            } catch (ConcurrentModificationException e) {
-                BlockState state = block.getState();
-                if (state instanceof Chest) {
-                    chest = (Chest) state;
+            if (chest == null && needsItems &&
+                    RegionManager.getInstance().hasRegionChestChanged(this)) {
+                Block block = getLocation().getBlock();
+                RegionManager.getInstance().addCheckedRegion(this);
+                try {
+                    BlockState state = block.getState();
+                    if (state instanceof Chest) {
+                        chest = (Chest) state;
+                    }
+                } catch (ConcurrentModificationException e) {
+                    BlockState state = block.getState();
+                    if (state instanceof Chest) {
+                        chest = (Chest) state;
+                    }
                 }
             }
             if (needsItems && chest == null) {

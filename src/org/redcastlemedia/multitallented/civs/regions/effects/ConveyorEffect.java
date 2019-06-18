@@ -36,6 +36,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     public ConveyorEffect() {
         instance = this;
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (!region.getEffects().containsKey(KEY)) {
+                continue;
+            }
+            checkForPoweredRail(region);
+        }
     }
 
     public static ConveyorEffect getInstance() {
