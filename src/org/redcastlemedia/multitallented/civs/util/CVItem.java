@@ -112,7 +112,7 @@ public class CVItem {
     }
 
     public static boolean isCustomItem(ItemStack itemStack) {
-        return itemStack.hasItemMeta() &&
+        return itemStack != null && itemStack.hasItemMeta() &&
                 itemStack.getItemMeta() != null &&
                 isCustomItem(itemStack.getItemMeta().getLore());
     }
