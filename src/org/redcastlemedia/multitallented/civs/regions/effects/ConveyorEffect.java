@@ -10,6 +10,7 @@ import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -24,7 +25,7 @@ import java.util.*;
 
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
-public class ConveyorEffect implements Listener {
+public class ConveyorEffect implements Listener, RegionCreatedListener {
     private static ConveyorEffect instance = null;
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
     private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
@@ -34,6 +35,7 @@ public class ConveyorEffect implements Listener {
 
     public ConveyorEffect() {
         instance = this;
+        RegionManager.getInstance().addRegionCreatedListener(KEY, this);
     }
 
     public static ConveyorEffect getInstance() {
@@ -55,6 +57,52 @@ public class ConveyorEffect implements Listener {
             return;
         }
         cacheSpawnPoints.remove(regions.get(0));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPoweredRailPlace(BlockPlaceEvent event) {
+        if (event.getBlockPlaced().getType() != Material.POWERED_RAIL) {
+            return;
+        }
+        checkForPoweredRail(event.getBlockPlaced().getLocation());
+    }
+
+    @Override
+    public void regionCreatedHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
+        checkForPoweredRail(region);
+    }
+
+    private void checkForPoweredRail(Location location) {
+        Region region = RegionManager.getInstance().getRegionAt(location);
+        if (region == null) {
+            return;
+        }
+        checkForPoweredRail(region);
+    }
+
+    private void checkForPoweredRail(Region region) {
+        Location l = region.getLocation();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        double radius = regionType.getBuildRadius();
+        double x0 = l.getX();
+        double y0 = l.getY();
+        double z0 = l.getZ();
+        outer: for (int x = (int) (x0 - radius); x < x0 + radius; x++) {
+            for (int y = (int) (y0 - radius); y < y0 + radius; y++) {
+                for (int z = (int) (z0 - radius); z < z0 + radius; z++) {
+                    Block b = l.getWorld().getBlockAt(x, y, z);
+                    if (b.getType() == Material.POWERED_RAIL) {
+                        Location location = b.getRelative(BlockFace.UP).getLocation();
+                        location = Region.idToLocation(Region.blockLocationToString(location));
+                        cacheSpawnPoints.put(region, location);
+                        break outer;
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -87,27 +135,7 @@ public class ConveyorEffect implements Listener {
         if (cacheSpawnPoints.containsKey(r)) {
             loc = cacheSpawnPoints.get(r);
         } else {
-            double radius = rt.getBuildRadius();
-            double x0 = l.getX();
-            double y0 = l.getY();
-            double z0 = l.getZ();
-            outer: for (int x = (int) (x0 - radius); x < x0 + radius; x++) {
-                for (int y = (int) (y0 - radius); y < y0 + radius; y++) {
-                    for (int z = (int) (z0 - radius); z < z0 + radius; z++) {
-                        Block b = l.getWorld().getBlockAt(x, y, z);
-                        if (b.getType() == Material.POWERED_RAIL) {
-                            Location location = b.getRelative(BlockFace.UP).getLocation();
-                            location = Region.idToLocation(Region.blockLocationToString(location));
-                            cacheSpawnPoints.put(r, location);
-                            break outer;
-                        }
-                    }
-                }
-            }
-            if (loc == null) {
-                return;
-            }
-            loc = cacheSpawnPoints.get(r);
+            return;
         }
 
         Chest chest = null;
