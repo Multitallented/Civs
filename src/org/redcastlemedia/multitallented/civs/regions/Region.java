@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -742,27 +743,32 @@ public class Region {
             return false;
         }
 
-        Block block = location.getBlock();
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
-        Chest chest = null;
-        try {
-            BlockState state = block.getState();
-            if (state instanceof Chest) {
-                chest = (Chest) state;
-            }
-        } catch (ConcurrentModificationException e) {
-            BlockState state = block.getState();
-            if (state instanceof Chest) {
-                chest = (Chest) state;
-            }
-        }
 
         boolean hadUpkeep = false;
+        Chest chest = null;
+        boolean hasItemUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
+
+            if (chest == null && needsItems &&
+                    RegionManager.getInstance().hasRegionChestChanged(this)) {
+                Block block = getLocation().getBlock();
+                try {
+                    BlockState state = block.getState();
+                    if (state instanceof Chest) {
+                        chest = (Chest) state;
+                    }
+                } catch (ConcurrentModificationException e) {
+                    BlockState state = block.getState();
+                    if (state instanceof Chest) {
+                        chest = (Chest) state;
+                    }
+                }
+            }
             if (needsItems && chest == null) {
                 continue;
             }
@@ -782,6 +788,7 @@ public class Region {
                 i++;
                 continue;
             }
+            hasItemUpkeep = true;
             boolean hasMoney = false;
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
@@ -822,9 +829,6 @@ public class Region {
                     payout = payout / (double) getOwners().size();
                     for (UUID uuid : getOwners()) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                        if (player == null) {
-                            continue;
-                        }
                         if (payout == 0) {
                             hasMoney = true;
                         } else if (payout > 0) {
@@ -885,6 +889,9 @@ public class Region {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
+        }
+        if (!hasItemUpkeep) {
+            RegionManager.getInstance().addCheckedRegion(this);
         }
         return hadUpkeep;
     }

@@ -3,10 +3,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -420,6 +417,8 @@ public class ProtectionHandler implements Listener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            } else {
+                RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
             }
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||

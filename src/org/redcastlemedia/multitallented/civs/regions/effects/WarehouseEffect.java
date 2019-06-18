@@ -425,6 +425,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 ItemStack moveMe = itemsToMove.get(chest).get(i);
                 chest.getBlockInventory().removeItem(moveMe);
                 destinationChest.getBlockInventory().addItem(moveMe);
+                RegionManager.getInstance().removeCheckedRegion(destination);
 
                 if (destinationChest.getBlockInventory().firstEmpty() < 0) {
                     break outerNew;
