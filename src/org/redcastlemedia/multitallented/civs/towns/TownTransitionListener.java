@@ -18,7 +18,7 @@ public class TownTransitionListener implements Listener {
     private void checkTownTransition() {
         HashSet<Town> saveThese = new HashSet<>();
         for (Town town : TownManager.getInstance().getTowns()) {
-            if (town.isGovTypeChangedToday()) {
+            if (town.isGovTypeChangedToday() || town.getRawPeople().size() < 3) {
                 continue;
             }
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
