@@ -90,7 +90,7 @@ public class RegionManager {
         try {
             for (File file : regionFolder.listFiles()) {
                 Region region = loadRegion(file);
-                if (region == null) {
+                if (region == null || regionLocations.containsKey(region.getId())) {
                     continue;
                 }
                 UUID worldName = region.getLocation().getWorld().getUID();
