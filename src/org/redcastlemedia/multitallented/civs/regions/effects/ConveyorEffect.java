@@ -69,9 +69,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     @Override
     public void regionCreatedHandler(Region region) {
-        if (!region.getEffects().containsKey(KEY)) {
-            return;
-        }
         checkForPoweredRail(region);
     }
 
@@ -125,7 +122,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
         //Check if has reagents
         if (!r.hasUpkeepItems()) {
-            cacheSpawnPoints.remove(r);
             cacheDestinationRegions.remove(r);
             returnCart(r, true);
             return;

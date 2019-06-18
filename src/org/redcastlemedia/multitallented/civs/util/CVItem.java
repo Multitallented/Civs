@@ -112,7 +112,9 @@ public class CVItem {
     }
 
     public static boolean isCustomItem(ItemStack itemStack) {
-        return itemStack.hasItemMeta() && isCustomItem(itemStack.getItemMeta().getLore());
+        return itemStack.hasItemMeta() &&
+                itemStack.getItemMeta() != null &&
+                isCustomItem(itemStack.getItemMeta().getLore());
     }
 
     public static void translateItem(String locale, ItemStack itemStack) {
