@@ -85,7 +85,7 @@ public class SchedulerTests {
         regionManager.addRegion(region);
 
         RegionTickTask regionTickTask = new RegionTickTask();
-        regionTickTask.run();
+        regionTickTask.onTwoSecondEvent(null);
     }
 
     @Test(expected = SuccessException.class)
