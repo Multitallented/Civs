@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -38,7 +39,7 @@ public class SpellListener implements Listener {
     @EventHandler
     public void onSpellUse(PlayerInteractEvent event) {
         ItemStack itemStack = event.getItem();
-        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || !CivItem.isCivsItem(itemStack)) {
             return;
         }
         CivItem civItem = CivItem.getFromItemStack(itemStack);
@@ -55,7 +56,8 @@ public class SpellListener implements Listener {
 
     @EventHandler
     public void onListenerDamage(EntityDamageEvent event) {
-        if (event.isCancelled() || event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || event.isCancelled() ||
+                event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();
