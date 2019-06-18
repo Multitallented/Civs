@@ -33,12 +33,3 @@ upkeep:
     output:
     - RABBIT*3
     - RABBIT*1%95,RABBIT_FOOT*1%5
-
-description:
-  en: "Automatic rabbit farm"
-  es: "Granja de conejos automática"
-  fr: "Élevage automatique de lapins"
-  pt_br: "Fazenda de coelho automática"
-  ru: "Автоматическая кроличья ферма"
-  de: "Automatische Kaninchenfarm"
-  hu: "Automatikus nyúlfarm."

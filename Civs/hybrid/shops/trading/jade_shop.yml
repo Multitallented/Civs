@@ -40,14 +40,6 @@ upkeep:
     power-input: 12
   1:
     input:
-    - EMERALD.Jade*16
+    - EMERALD.jade*16
     payout: 1000          # 1000 / day
 
-description:
-  en: "Sells 144 Jade to the server for $1000 per day. Can't be built in a town with a Jade Mine."
-  es: "Vende 144 Jade al servidor por $ 1000 por día. No se puede construir en una ciudad con una mina de jade."
-  pt_br: "Vende 144 Jade ao servidor por $ 1000 por dia. Não pode ser construído em uma cidade com uma mina de jade."
-  ru: "Продает 144 Jade на сервер за 1000 долларов США в день. Не может быть построен в городе с нефритовой шахтой."
-  de: "Verkauft 144 Jade an den Server für 1000 pro Tag. Kann nicht in einer Stadt mit einer Jade-Mine gebaut werden."
-  fr: "Vend 144 Jade au serveur pour 1000 $ par jour. Ne peut pas être construit dans une ville avec une mine de jade."
-  hu: "144 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban, ahol van Jade bánya."

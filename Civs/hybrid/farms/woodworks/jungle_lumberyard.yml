@@ -44,7 +44,3 @@ upkeep:
     output:
     - JUNGLE_LOG*8
 
-description:
-  en: "Automated jungle log farming"
-  es: "Agricultura automatizada de registro en la jungla"
-  hu: "Automatikus dzsungelfafarm."

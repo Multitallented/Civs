@@ -63,12 +63,3 @@ effects:
 
 power: 3000
 max-power: 8100
-
-description:
-  en: "The fifth level of a town."
-  es: "El quinto nivel de un pueblo."
-  de: "Die fünfte Ebene einer Stadt."
-  ru: "Пятый уровень города."
-  pt_br: "O quinto nível de uma cidade."
-  fr: "Le cinquième niveau d'une ville."
-  hu: "Az ötödik szintje a városnak."

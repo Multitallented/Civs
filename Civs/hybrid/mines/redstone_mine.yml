@@ -50,11 +50,3 @@ upkeep:
     output:
     - REDSTONE*12
 
-description:
-  en: "Creates redstone by using pickaxes"
-  es: "Crea Redstone utilizando picos"
-  de: "Erzeugt roten Stein mit Spitzhacken"
-  fr: "Crée Redstone en utilisant des pioches"
-  ru: "Создает красный камень, используя кирки"
-  pt_br: "Cria redstone usando picaretas"
-  hu: "Vöröskövet termel csákányok használatával."

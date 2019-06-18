@@ -44,7 +44,3 @@ upkeep:
     output:
     - SPRUCE_LOG*8
 
-description:
-  en: "Automated spruce log farming"
-  es: "Agricultura automatizada de registro de picea"
-  hu: "Automatikus fenyőfafarm."

@@ -31,12 +31,3 @@ period: 900 #15 minutes
 upkeep:
   0:
     power-output: 2
-
-description:
-  en: "Applies damage resistance to members. Creates 192 power per day."
-  es: "Aplica resistencia a los daños a los miembros. Crea 192 de energía por día."
-  pt_br: "Aplica resistência a danos aos membros. Cria 192 de energia por dia."
-  de: "Wendet Schaden gegen Mitglieder an. Erzeugt 192 Energie pro Tag."
-  ru: "Применяет сопротивление урону к членам. Создает 192 силы в день."
-  fr: "Applique la résistance aux dommages aux membres. Crée 192 points de puissance par jour."
-  hu: "Sérülési ellenállást ad a város tagjainak és 192 erőpontot generál a városnak naponta."

@@ -39,12 +39,3 @@ upkeep:
     - APPLE*64
     output:
     - SADDLE*1
-
-description:
-  en: "Creates mules and saddles every hour."
-  es: "Crea mulas y monturas cada hora."
-  fr: "Crée des mules et des selles toutes les heures."
-  pt_br: "Cria mulas e selas a cada hora."
-  ru: "Создает мулов и седел каждый час."
-  de: "Erzeugt jede Stunde Maultiere und Sättel."
-  hu: "Öszvéreket és nyergeket készít minden órában."

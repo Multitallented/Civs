@@ -36,7 +36,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.ClassMenu;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
@@ -388,6 +387,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
+        handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
@@ -414,6 +414,15 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
         humanEntity.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+    }
+
+    private void handleCustomItem(ItemStack itemStack, UUID uuid) {
+        if (!CVItem.isCustomItem(itemStack)) {
+            return;
+        }
+        String key = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        CVItem.translateItem(civilian.getLocale(), itemStack);
     }
 
     private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {

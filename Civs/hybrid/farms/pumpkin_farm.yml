@@ -37,11 +37,3 @@ upkeep:
     output:
     - PUMPKIN*16
 
-description:
-  en: "Produces pumpkin every 10 minutes"
-  pt_br: "Produz abóbora a cada 10 minutos"
-  fr: "Produit de la citrouille toutes les 10 minutes"
-  es: "Produce calabaza cada 10 minutos."
-  ru: "Производит тыкву каждые 10 минут"
-  de: "Produziert alle 10 Minuten Kürbis"
-  hu: "Tököt termel 10 percenként."

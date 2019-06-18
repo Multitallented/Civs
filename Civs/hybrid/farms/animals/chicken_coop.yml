@@ -39,12 +39,3 @@ upkeep:
     - SHEARS
     output:
     - FEATHER*32
-
-description:
-  en: "Automatic chicken farm"
-  es: "Granja de pollos automatica"
-  fr: "Ferme de poulet automatique"
-  pt_br: "Fazenda de frango automático"
-  ru: "Автоматическая птицефабрика"
-  de: "Automatische Hühnerfarm"
-  hu: "Automatikus csirkefarm."

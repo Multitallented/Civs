@@ -37,13 +37,3 @@ upkeep:
     - SHEARS
     output:
     - APPLE*4
-
-
-description:
-  en: "Automatic apple farm"
-  es: "Granja automática de manzanas"
-  pt_br: "Fazenda de maçã automática"
-  ru: "Автоматическая яблочная ферма"
-  de: "Automatische Apfelfarm"
-  fr: "Ferme aux pommes automatique"
-  hu: "Automatikus almafarm."

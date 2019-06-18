@@ -39,12 +39,3 @@ upkeep:
     output:
     - SUGAR_CANE*16
 
-
-description:
-  en: "Creates 16 sugarcane every 5 minutes."
-  es: "Crea 16 caña de azúcar cada 5 minutos."
-  fr: "Crée 16 cannes à sucre toutes les 5 minutes."
-  pt_br: "Cria 16 canas de açúcar a cada 5 minutos."
-  ru: "Создает 16 сахарного тростника каждые 5 минут."
-  de: "Erzeugt alle 5 Minuten 16 Zuckerrohr."
-  hu: "16 db cukornádat termel 5 percenként."

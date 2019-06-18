@@ -63,11 +63,3 @@ upkeep:
     - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
     payout: 4.2 # $100.8 / day
 
-description:
-  en: "7th level of house. Earns $1032 per day."
-  es: "7er nivel de la casa. Gana $ 1032 por día."
-  de: "7. Ebene des Hauses. Verdient $ 1032 pro Tag."
-  pt_br: "7º nível de casa. Ganhe $ 1032 por dia."
-  fr: "7ème niveau de la maison. Gagne 1032 $ par jour."
-  ru: "7-й уровень дома. Зарабатывает $ 1032 в день."
-  hu: "7. szintje a háznak. Bevétele $1032 naponta."

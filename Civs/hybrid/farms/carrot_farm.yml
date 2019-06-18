@@ -38,12 +38,3 @@ upkeep:
     output:
     - CARROT*16
 
-
-description:
-  en: "Creates 16 carrots every 5 minutes."
-  es: "Crea 16 zanahorias cada 5 minutos."
-  fr: "Crée 16 carottes toutes les 5 minutes."
-  pt_br: "Cria 16 cenouras a cada 5 minutos."
-  ru: "Создает 16 моркови каждые 5 минут."
-  de: "Erzeugt alle 5 Minuten 16 Karotten."
-  hu: "16 db répát termel 5 percenként."

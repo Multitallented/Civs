@@ -41,11 +41,3 @@ upkeep:
     output:
     - OBSIDIAN*4
 
-description:
-  en: "Creates obsidian slowly"
-  es: "Crea obsidiana lentamente."
-  de: "Erzeugt langsam Obsidian"
-  fr: "Crée l'obsidienne lentement"
-  ru: "Медленно создает обсидиан"
-  pt_br: "Cria obsidiana lentamente"
-  hu: "Obszidiánt termel automatikusan."

@@ -62,11 +62,3 @@ effects:
 power: 1500
 max-power: 5100
 
-description:
-  en: "The fourth level of a town."
-  es: "El cuarto nivel de un pueblo."
-  de: "Die vierte Ebene einer Stadt."
-  ru: "Четвертый уровень города."
-  pt_br: "O quarto nível de uma cidade."
-  fr: "Le quatrième niveau d'une ville."
-  hu: "A negyedik szintje a városnak."

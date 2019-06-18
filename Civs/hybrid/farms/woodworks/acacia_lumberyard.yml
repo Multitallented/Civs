@@ -44,7 +44,3 @@ upkeep:
     output:
     - ACACIA_LOG*8
 
-description:
-  en: "Automated acacia log farming"
-  es: "Agricultura automatizada de registro de acacia"
-  hu: "Automatikus akáciafafarm."

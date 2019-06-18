@@ -40,11 +40,3 @@ upkeep:
     - LILAC%25,ROSE_BUSH%25,PEONY%25,SUNFLOWER%25
 
 
-description:
-  en: "Automatic flower nursery"
-  es: "Vivero automático de flores."
-  pt_br: "Viveiro automático de flores"
-  ru: "Автоматический цветочный питомник"
-  de: "Automatische Blumenschule"
-  fr: "Pépinière automatique"
-  hu: "Virágokat termel automatikusan"

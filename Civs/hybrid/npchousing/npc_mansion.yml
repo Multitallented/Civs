@@ -49,10 +49,3 @@ upkeep:
   0:
     power-input: 1
 
-description:
-  en: "A house for a villager. Counts towards town population."
-  es: "Una casa para un aldeano. Cuenta para la población de la ciudad"
-  ru: "Дом для сельского жителя. Подсчет населения города."
-  de: "Ein Haus für einen Dorfbewohner. Zählt zur Stadtbevölkerung."
-  fr: "Une maison pour un villageois. Compte vers la population de la ville."
-  hu: "Ház egy falusinak. Beleszámít a város lélekszámába."

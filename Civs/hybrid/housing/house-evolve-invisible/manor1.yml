@@ -67,12 +67,3 @@ upkeep:
     - BUCKET
     payout: 10.2 # $244 / day
     exp: 1
-
-description:
-  en: "7th level of house. Earns $1276 per day."
-  es: "7er nivel de la casa. Gana $ 1276 por día."
-  de: "7. Ebene des Hauses. Verdient $ 1276 pro Tag."
-  pt_br: "7º nível de casa. Ganhe $ 1276 por dia."
-  fr: "7ème niveau de la maison. Gagne 1276 $ par jour."
-  ru: "7-й уровень дома. Зарабатывает $ 1276 в день."
-  hu: "7. szintje a háznak. Bevétele $1276 naponta."

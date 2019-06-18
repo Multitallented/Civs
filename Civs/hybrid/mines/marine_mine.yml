@@ -44,11 +44,3 @@ upkeep:
     output:
     - PRISMARINE_SHARD*6
 
-description:
-  en: "Creates prismarine by using pickaxes"
-  es: "Crea prismarine utilizando picos"
-  de: "Erzeugt Prismarine mithilfe von Spitzhacken"
-  fr: "Crée de la prismarine à l'aide de pioches"
-  ru: "Создает призмарин с помощью кирок"
-  pt_br: "Cria prismarinha usando picaretas"
-  hu: "Prizmarint termel csákányok használatával."

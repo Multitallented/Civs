@@ -46,12 +46,3 @@ upkeep:
     - IRON_PICKAXE
     output:
     - DIAMOND*2
-
-description:
-  en: "Creates diamonds by using iron pickaxes"
-  es: "Crea diamantes utilizando picos de hierro."
-  de: "Erzeugt Diamanten mit Eisen-Spitzhacken"
-  fr: "Crée des diamants en utilisant des pics de fer"
-  ru: "Создает алмазы, используя железные кирки"
-  pt_br: "Cria diamantes usando picaretas de ferro"
-  hu: "Gyémántot termel vascsákányok használatával."

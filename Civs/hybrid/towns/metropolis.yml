@@ -58,12 +58,3 @@ effects:
 
 power: 6500
 max-power: 15000
-
-description:
-  en: "The sixth level of a town."
-  es: "El sexto nivel de un pueblo."
-  de: "Die sechste Ebene einer Stadt."
-  ru: "Шестой уровень города."
-  pt_br: "O sexto nível de uma cidade."
-  fr: "Le sixième niveau d'une ville."
-  hu: "A hatodik szintje a városnak."

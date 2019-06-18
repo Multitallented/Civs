@@ -40,12 +40,3 @@ period: 900 # 15 minutes
 upkeep:
   0:
     power-output: 6
-
-description:
-  en: "The center of the keep. Required before upgrading the outpost to a keep. Creates 6 power every 15 minutes."
-  es: "El centro de la fortaleza. Requerido antes de actualizar el puesto de avanzada para mantener. Crea 6 potencias cada 15 minutos."
-  pt_br: "O centro da fortaleza. Necessário antes de atualizar o posto avançado para uma fortaleza. Cria 6 de energia a cada 15 minutos."
-  ru: "Центр крепости. Требуется до обновления форпоста до крепости. Создает 6 силы каждые 15 минут."
-  de: "Die Mitte der Festung. Erforderlich, bevor der Außenposten zu einer Festung ausgebaut wird. Erzeugt alle 15 Minuten 6 Energie."
-  fr: "Le centre du donjon. Nécessaire avant de transformer l'avant-poste en donjon. Crée 6 pouvoirs toutes les 15 minutes."
-  hu: "Egy vár közepe. Felépítéséhez szükséges az előörs fejlesztése. 6 erőpontot generál 15 percenként."

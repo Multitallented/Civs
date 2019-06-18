@@ -42,12 +42,3 @@ period: 900 #15 minutes
 upkeep:
   0:
     power-output: 3
-
-description:
-  en: "Adds 6 housing to the town. Creates 288 power per day."
-  es: "Añade 6 viviendas al pueblo. Crea 288 de energía por día."
-  de: "Fügt der Stadt 6 Wohnungen hinzu. Erzeugt 288 Energie pro Tag."
-  pt_br: "Adiciona 6 casas para a cidade. Cria 288 de energia por dia."
-  fr: "Ajoute 6 logements à la ville. Crée 288 points de puissance par jour."
-  ru: "Добавляет 6 жилья в город. Создает 288 силы в день."
-  hu: "6 lakost ad hozzá a városhoz és 288 erőpontot generál a városnak naponta."

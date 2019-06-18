@@ -43,12 +43,3 @@ upkeep:
     - STONE_SHOVEL
     output:
     - FLINT*4
-
-description:
-  en: "Automated creation of flint"
-  es: "Creación automatizada de pedernal"
-  de: "Automatisierte Erstellung von Feuerstein"
-  ru: "Автоматическое создание кремня"
-  pt_br: "Criação automatizada de sílex"
-  fr: "Création automatisée de silex"
-  hu: "Automatikusan gyárt kovakövet."

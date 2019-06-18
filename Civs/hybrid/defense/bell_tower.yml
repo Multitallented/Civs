@@ -42,12 +42,3 @@ upkeep:
   0:
     power-output: 2
 
-description:
-  en: "Alerts town members when an intruder has entered the town."
-  es: "Alerta a los miembros de la ciudad cuando un intruso ha entrado en la ciudad."
-  ru: "Оповещает жителей города, когда злоумышленник вошел в город."
-  de: "Warnt die Stadtmitglieder, wenn ein Eindringling die Stadt betreten hat."
-  pt_br: "Alerta os membros da cidade quando um intruso entrou na cidade."
-  fr: "Alerte les membres de la ville lorsqu'un intrus est entré dans la ville."
-  hu: "Értesíti a város tagjait, amikor egy betolakodó belép a városba."
-

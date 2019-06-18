@@ -64,11 +64,3 @@ upkeep:
     payout: 6 # $144 / day
     exp: 1
 
-description:
-  en: "4th level of house. Earns $635 per day."
-  es: "4er nivel de la casa. Gana $ 779 por día."
-  de: "4. Ebene des Hauses. Verdient $ 779 pro Tag."
-  pt_br: "4º nível de casa. Ganhe $ 779 por dia."
-  fr: "4ème niveau de la maison. Gagne 779 $ par jour."
-  ru: "4-й уровень дома. Зарабатывает $ 779 в день."
-  hu: "4. szintje a háznak. Bevétele $779 naponta."

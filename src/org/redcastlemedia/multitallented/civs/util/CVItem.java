@@ -3,12 +3,14 @@ package org.redcastlemedia.multitallented.civs.util;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
@@ -56,7 +58,11 @@ public class CVItem {
         this.chance = 1;
     }
 
-    public static CVItem createCVItemFromString(String materialString)  {
+    public static CVItem createCVItemFromString(String materialString) {
+        return createCVItemFromString(ConfigManager.getInstance().getDefaultLanguage(), materialString);
+    }
+
+    public static CVItem createCVItemFromString(String locale, String materialString)  {
         String quantityString = "1";
         String chanceString = "100";
         String nameString = null;
@@ -96,9 +102,39 @@ public class CVItem {
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            List<String> lore = ConfigManager.getInstance().getCustomItemDescription(nameString);
-            return new CVItem(mat, quantity, chance, nameString, lore);
+            String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.BLACK + nameString);
+            lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix(),
+                    LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+            return new CVItem(mat, quantity, chance, displayName, lore);
         }
+    }
+
+    public static boolean isCustomItem(ItemStack itemStack) {
+        return itemStack.hasItemMeta() && isCustomItem(itemStack.getItemMeta().getLore());
+    }
+
+    public static void translateItem(String locale, ItemStack itemStack) {
+        String nameString = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0));
+        String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.BLACK + nameString);
+        lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix(),
+                LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+        itemStack.getItemMeta().setDisplayName(displayName);
+        itemStack.getItemMeta().setLore(lore);
+    }
+
+    public boolean isCustomItem() {
+        return isCustomItem(lore);
+    }
+
+    private static boolean isCustomItem(List<String> lore) {
+        return lore != null && !lore.isEmpty() &&
+                LocaleManager.getInstance().getTranslation(
+                        ConfigManager.getInstance().getDefaultLanguage(),
+                        "item-" + ChatColor.stripColor(lore.get(0)) + "-name") != null;
     }
 
     private static Material getMaterialFromString(String materialString) {

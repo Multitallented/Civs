@@ -66,12 +66,3 @@ upkeep:
     - COOKIE*32 # 768 or 12 stacks / day
     payout: 12.4 # $297.6 / day
     exp: 1
-
-description:
-  en: "6th level of house. Earns $894 per day."
-  es: "6er nivel de la casa. Gana $ 894 por día."
-  de: "6. Ebene des Hauses. Verdient $ 894 pro Tag."
-  pt_br: "6º nível de casa. Ganhe $ 894 por dia."
-  fr: "6ème niveau de la maison. Gagne 894 $ par jour."
-  ru: "6-й уровень дома. Зарабатывает $ 894 в день."
-  hu: "6. szintje a háznak. Bevétele $894 naponta."

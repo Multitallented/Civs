@@ -50,11 +50,3 @@ upkeep:
     output:
     - COAL*12
 
-description:
-  en: "Creates coal by using pickaxes"
-  es: "Crea carbón utilizando picos"
-  de: "Erzeugt Kohle mithilfe von Spitzhacken"
-  fr: "Crée du charbon en utilisant des pioches"
-  ru: "Создает уголь с помощью кирок"
-  pt_br: "Cria carvão usando picaretas"
-  hu: "Szenet termel csákányok használatával."

@@ -41,11 +41,3 @@ upkeep:
     - GOLD_INGOT*12 # 288 / day
     payout: 28          # $576 / day
 
-description:
-  en: "Sells 288 gold to the server for $672 per day."
-  es: "Vende 288 de oro al servidor por $ 672 por día."
-  pt_br: "Vende 288 de ouro para o servidor por $ 672 por dia."
-  ru: "Продает 288 золотых серверу за $ 672 доллара в день."
-  de: "Verkauft 288 Gold an den Server für 672 $ pro Tag."
-  fr: "Vend 288 pièces d’or au serveur pour 672 $ par jour."
-  hu: "288 db aranyat ad el a szervernek napi $672-ért."

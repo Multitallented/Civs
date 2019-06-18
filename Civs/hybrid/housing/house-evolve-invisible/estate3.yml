@@ -67,11 +67,3 @@ upkeep:
     - CAKE # 24 / day
     payout: 22.8 # $547 / day
 
-description:
-  en: "9th level of house. Earns $2621 per day."
-  es: "9er nivel de la casa. Gana $ 2621 por día."
-  de: "9. Ebene des Hauses. Verdient $ 2621 pro Tag."
-  pt_br: "9º nível de casa. Ganhe $ 2621 por dia."
-  fr: "9ème niveau de la maison. Gagne 2621 $ par jour."
-  ru: "9-й уровень дома. Зарабатывает $ 2621 в день."
-  hu: "9. szintje a háznak. Bevétele $2621 naponta."
