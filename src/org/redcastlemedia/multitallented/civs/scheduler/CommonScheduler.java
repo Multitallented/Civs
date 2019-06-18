@@ -56,8 +56,12 @@ public class CommonScheduler implements Runnable {
                     Player player = (Player) players.toArray()[j];
                     playerInRegion(player);
                     playerInTown(player);
-                    incrementMana(player);
-                    sendAnnouncement(player);
+                    if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                        incrementMana(player);
+                    }
+                    if (ConfigManager.getInstance().isUseAnnouncements()) {
+                        sendAnnouncement(player);
+                    }
                 } catch (Exception e) {
 
                 }
@@ -65,12 +69,9 @@ public class CommonScheduler implements Runnable {
             }
             if (i == MAX_TPS - 1) {
                 i = 0;
-                RegionTickTask regionTickTask = new RegionTickTask();
-                regionTickTask.run();
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
-                    checkTownTransition();
                 }
             } else {
                 i++;
@@ -79,67 +80,8 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
-    private void checkTownTransition() {
-        HashSet<Town> saveThese = new HashSet<>();
-        for (Town town : TownManager.getInstance().getTowns()) {
-            if (town.isGovTypeChangedToday()) {
-                continue;
-            }
-            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-            if (government == null) {
-                continue;
-            }
-
-            for (GovTransition transition : government.getTransitions()) {
-                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null && town.getRawPeople().size() > 1;
-                if (moneyGap) {
-                    double highestMoney = 0;
-                    double totalMoney = 0;
-                    for (UUID uuid : town.getRawPeople().keySet()) {
-                        double money = Civs.econ.getBalance(Bukkit.getOfflinePlayer(uuid));
-                        totalMoney += money;
-                        if (highestMoney < money) {
-                            highestMoney = money;
-                        }
-                    }
-                    if (totalMoney == 0 || highestMoney < (double) transition.getMoneyGap() / 100 * totalMoney) {
-                        continue;
-                    }
-                }
-
-                boolean power = transition.getPower() < 0 ||
-                        town.getPower() < ((double) transition.getPower() / 100 * (double) town.getMaxPower());
-                if (!power) {
-                    continue;
-                }
-
-                boolean revolt = transition.getRevolt() > 0;
-                double townRevoltPercent = ((double) town.getRevolt().size() / (double) town.getRawPeople().size());
-                if (revolt && townRevoltPercent < (double) transition.getRevolt() / 100) {
-                    continue;
-                }
-
-                boolean inactive = transition.getInactive() > 0;
-                if (inactive && (town.getLastActive() < 0 ||
-                        town.getLastActive() + transition.getInactive() * 1000 > System.currentTimeMillis())) {
-                    continue;
-                }
-
-                GovernmentManager.getInstance().transitionGovernment(town,
-                        transition.getTransitionGovernmentType(), false);
-                saveThese.add(town);
-                break;
-            }
-        }
-        for (Town town : saveThese) {
-            TownManager.getInstance().saveTown(town);
-        }
-    }
 
     private void sendAnnouncement(Player player) {
-        if (!ConfigManager.getInstance().isUseAnnouncements()) {
-            return;
-        }
         long announcementCooldown = ConfigManager.getInstance().getAnnouncementPeriod() * 1000;
         if (!lastAnnouncment.containsKey(player.getUniqueId())) {
             lastAnnouncment.put(player.getUniqueId(), System.currentTimeMillis() + announcementCooldown);
