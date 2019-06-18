@@ -287,10 +287,8 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
+        TownTransitionListener townTransitionListener = new TownTransitionListener();
+        townTransitionListener.onTwoSecondEvent(null);
         assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
     }
 
@@ -306,10 +304,8 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
+        TownTransitionListener townTransitionListener = new TownTransitionListener();
+        townTransitionListener.onTwoSecondEvent(null);
         assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
     }
 
@@ -326,10 +322,8 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
+        TownTransitionListener townTransitionListener = new TownTransitionListener();
+        townTransitionListener.onTwoSecondEvent(null);
         assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
     }
 
