@@ -748,6 +748,7 @@ public class Region {
 
         boolean hadUpkeep = false;
         Chest chest = null;
+        boolean hasItemUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
@@ -788,6 +789,7 @@ public class Region {
                 i++;
                 continue;
             }
+            hasItemUpkeep = true;
             boolean hasMoney = false;
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();
@@ -888,6 +890,9 @@ public class Region {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
+        }
+        if (!hasItemUpkeep) {
+            RegionManager.getInstance().addCheckedRegion(this);
         }
         return hadUpkeep;
     }

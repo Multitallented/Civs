@@ -707,8 +707,11 @@ public class RegionManager {
     public void removeCheckedRegion(Location location) {
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region != null) {
-            checkedRegions.remove(region);
+            removeCheckedRegion(region);
         }
+    }
+    public void removeCheckedRegion(Region region) {
+        checkedRegions.remove(region);
     }
 
     public void addCheckedRegion(Region region) {

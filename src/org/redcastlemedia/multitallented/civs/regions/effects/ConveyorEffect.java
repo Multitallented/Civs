@@ -284,6 +284,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                             }
                             sm.getInventory().removeItem(is);
                             currentChest.getInventory().addItem(is);
+                            RegionManager.getInstance().removeCheckedRegion(region);
                         } else {
                             sm.getInventory().removeItem(is);
                             originInv.addItem(is);
