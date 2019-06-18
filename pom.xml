@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
