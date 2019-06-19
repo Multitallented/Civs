@@ -347,9 +347,11 @@ public class TownActionMenu extends Menu {
                 town.getGovernmentType() == GovernmentType.CYBERSYNACY ||
                 town.getGovernmentType() == GovernmentType.COMMUNISM;
 
-        boolean govTypeOpenToAnyone = town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+        boolean govTypeOpenToAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
+                (town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                town.getGovernmentType() == GovernmentType.ANARCHY;
+                town.getGovernmentType() == GovernmentType.ANARCHY);
 
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
                 town.getPeople().get(civilian.getUuid()).contains("owner");
