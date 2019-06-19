@@ -29,6 +29,8 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String NATION = "nation";
     private static final String POWER = "power";
     private static final String MAX_POWER = "max_power";
+    private static final String POPULATION = "population";
+    private static final String HOUSING = "housing";
 
     @Override
     public boolean canRegister() {
@@ -76,6 +78,12 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (MAX_POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
             return "" + town.getMaxPower();
+        } else if (POPULATION.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            return "" + town.getPopulation();
+        } else if (HOUSING.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (KILLS.equals(identifier)) {
