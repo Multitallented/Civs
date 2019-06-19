@@ -138,6 +138,7 @@ add-guest-region: Du er blevet lavet til gæst af $1
 guest-added-region: $1 Er nu gæst i $2
 invite-member-region: Du er blevet medlem af $1
 member-invited-region: $1 er blevet tilføjet $2
+no-invite: Du har ingen invitationer
 stand-in-region: Vær venlig at have $ 1 til at stå i regionen
 create: Skab
 click-for-region-limits: Klik her for en liste over regionens begrænsninger
@@ -204,7 +205,7 @@ specify-player-region: Angiv venligst en spiller og en region
 town-not-exist: $1 er ikke en by
 no-permission-invite: Du har ikke tilladelse til at invitere folk til $1
 player-not-online: $1 er ikke online
-invite-player: $1 vil gerne invitere dig til $2 $3.
+invite-player: $1 vil gerne invitere dig til $2 $3. Acceptere?
 already-member: $1 er allerede medlem af $2
 broke-own-region: $1 mangler blokke
 no-permission: Ikke tilladt
@@ -338,6 +339,19 @@ tut-merchant-4: Køb og byg et apple_orchard. Byg e minecart spor fra indersiden
   skråning inde i apple_orchard. Til sidst skal du placere en kiste minecart
   inde i apple_orchard
 tut-merchant-5: Tid til at opgradere igen. Køb og læg en dewelling inde i dit Hovel1.
+tut-merchant-6: Boliger giver dig mange penge, men et hus giver dig mere. Køb og opgrader din
+  bolig til en Hus
+tut-merchant-7: Placer dette brød i dit hus for at opgradere det til et hus1.
+tut-merchant-8: Placer disse laks i dit hus1 for at opgradere det til et hus2.
+tut-merchant-9: Byg nu en iron_shop for yderligere at øge din indkomst.
+tut-merchant-10: " Hver spiller må kun have 3 butikker. Den mest lukrative butik er en
+  handelsbutik. Byg Jade_Shop. Ødelæg en af ​​dine andre butikker, hvis du
+  allerede har 3"
+tut-merchant-11: Tillykke! Du kan nu sælge varer, du køber fra en anden bys Jade_Mine. Dette er
+  sidste trin på købmandens vej.
+anarchy-name: Anarki
+anarchy-desc: " Enhver kan styre by og regions medlemskab. Ingen skatter. Ingen alliancer."
+capitalism-name: Kapitalisme
 library-name: Bibliotek
 smithy-name: Smed
 town_hall-name: Rådhus

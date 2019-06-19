@@ -135,6 +135,7 @@ add-guest-region: Você foi definido como convidado de $1
 guest-added-region: $1 é agora um convidado de sua $2
 invite-member-region: Você agora é um membro de $1
 member-invited-region: $1 foi adicionado em sua $2
+no-invite: Você não tem convites
 stand-in-region: Por favor, faça com que $1 esteja na região
 create: Criar
 click-for-region-limits: Clique aqui para ver a lista de limites de regiões
@@ -153,6 +154,7 @@ rename-desc: Use /cv rename nomeVelho nomeNovo
 town-renamed: Sua vila foi renomeada de $1 para $2
 bounty-set: Uma recompensa foi colocada em $1 por $2
 bounty-bonus: Você coletou a recompensa de $1
+allied-bounty: Nenhuma recompensa colhida por matar um aliado.
 add-friend: Adicionar amigo
 remove-friend: Remover amigo
 friend-added: $1 foi adicionado a sua lista de amigos
@@ -200,7 +202,7 @@ specify-player-region: Por favor, especifique um jogador e uma região
 town-not-exist: $1 não é uma vila
 no-permission-invite: Você não tem permissão para convidar pessoas para $1
 player-not-online: $1 não esta Online
-invite-player: $1 gostaria de te convidar para juntar-se a $2 $3
+invite-player: $1 gostaria de te convidar para juntar-se a $2 $3. Aceitar?
 already-member: $1 já é um membro de $2
 broke-own-region: Sua $1 esta com falta de blocos
 no-permission: Permissão Negada
@@ -263,6 +265,8 @@ ann-make-allies: "[Info] Considere juntar-se a uma aliança. Você pode configur
   aliadas em Comunidade > Cidades > Cidade"
 ann-town-low-power: "@{RED}[Alerta] $1 só possui poder $2 de $3. Considere construir mais
   estruturas que geram poder."
+tut-default-1: Em seguida, colete 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no
+  baú do abrigo.
 tut-warrior-name: Guerreiro
 tut-builder-name: Construtor
 tut-merchant-name: Mercador
@@ -322,7 +326,16 @@ mobile_hospital-name: Hospital móvel
 coal_shop-name: Loja de Carvão
 diamond_shop-name: Loja de Diamantes
 gold_shop-name: Loja de Ouro
+city-name: Cidade
+city-desc: O quinto nível de uma cidade. Requer 30 habitantes.
+hamlet-name: Aldeia
+hamlet-desc: O segundo nível de uma cidade. Requer 5 habitantes.
+settlement-name: Assentamento
+settlement-desc: O primeiro nível de uma cidade.
+town-name: Centro
+town-desc: O quarto nível de uma cidade. Requer 20 habitantes.
 village-name: Vila
+village-desc: O terceiro nível de uma cidade. Requer 10 habitantes.
 bank-name: Banco
 capitol-name: Capitólio
 city_hall-name: Prefeitura
