@@ -163,7 +163,7 @@ public class PlaceHook extends PlaceholderExpansion {
                     highestPopulation = pop;
                 }
             }
-            return highestTown == null ? "" : highestTown.getName();
+            return highestTown == null ? "-" : highestTown.getName();
         }
     }
 }
