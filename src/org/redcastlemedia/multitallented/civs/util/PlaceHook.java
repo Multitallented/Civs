@@ -29,6 +29,8 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String NATION = "nation";
     private static final String POWER = "power";
     private static final String MAX_POWER = "max_power";
+    private static final String POPULATION = "population";
+    private static final String HOUSING = "housing";
 
     @Override
     public boolean canRegister() {
@@ -72,10 +74,28 @@ public class PlaceHook extends PlaceholderExpansion {
             return getReplacement(civilian);
         } else if (POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
             return "" + town.getPower();
         } else if (MAX_POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
             return "" + town.getMaxPower();
+        } else if (POPULATION.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
+            return "" + town.getPopulation();
+        } else if (HOUSING.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
+            return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (KILLS.equals(identifier)) {
@@ -93,7 +113,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
             if (bounty == null) {
-                return "";
+                return "-";
             }
             String bountyString = Util.getNumberFormat(bounty.getAmount(), civilian.getLocale());
             if (bounty.getIssuer() == null) {
@@ -109,7 +129,7 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             return nation;
         } else {
-            return "";
+            return "-";
         }
     }
 
@@ -143,7 +163,7 @@ public class PlaceHook extends PlaceholderExpansion {
                     highestPopulation = pop;
                 }
             }
-            return highestTown == null ? "" : highestTown.getName();
+            return highestTown == null ? "-" : highestTown.getName();
         }
     }
 }

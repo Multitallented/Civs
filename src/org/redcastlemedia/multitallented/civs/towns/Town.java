@@ -140,7 +140,7 @@ public class Town {
                 for (UUID uuid : town.getRawPeople().keySet()) {
                     if (!newPeople.containsKey(uuid) &&
                             !town.getRawPeople().get(uuid).contains("ally")) {
-                        newPeople.put(uuid, "ally");
+                        newPeople.put(uuid, "allyforeign");
                     }
                 }
             }

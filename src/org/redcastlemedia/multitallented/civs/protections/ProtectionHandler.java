@@ -599,7 +599,7 @@ public class ProtectionHandler implements Listener {
         if (role == null) {
             return true;
         }
-        if (town != null && role.contains("member")) {
+        if (town != null && !role.contains("foreign")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
                     town.getGovernmentType() == GovernmentType.ANARCHY) {
