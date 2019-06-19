@@ -75,25 +75,25 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
             if (town == null) {
-                return "";
+                return "-";
             }
             return "" + town.getPower();
         } else if (MAX_POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
             if (town == null) {
-                return "";
+                return "-";
             }
             return "" + town.getMaxPower();
         } else if (POPULATION.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
             if (town == null) {
-                return "";
+                return "-";
             }
             return "" + town.getPopulation();
         } else if (HOUSING.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
             if (town == null) {
-                return "";
+                return "-";
             }
             return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
@@ -113,7 +113,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
             if (bounty == null) {
-                return "";
+                return "-";
             }
             String bountyString = Util.getNumberFormat(bounty.getAmount(), civilian.getLocale());
             if (bounty.getIssuer() == null) {
@@ -129,7 +129,7 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             return nation;
         } else {
-            return "";
+            return "-";
         }
     }
 
