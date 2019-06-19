@@ -48,9 +48,11 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
-        boolean inviteAnyone = town.getGovernmentType() == GovernmentType.ANARCHY ||
+        boolean inviteAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
+                (town.getGovernmentType() == GovernmentType.ANARCHY ||
                 town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN;
+                town.getGovernmentType() == GovernmentType.LIBERTARIAN);
         if (Civs.perm != null && !Civs.perm.has(player, "civs.admin") &&
                 !inviteAnyone) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
