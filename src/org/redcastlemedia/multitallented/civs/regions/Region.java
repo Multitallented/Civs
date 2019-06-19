@@ -115,7 +115,11 @@ public class Region {
         HashMap<UUID, String> newPeople = new HashMap<>(people);
         for (UUID uuid : town.getPeople().keySet()) {
             if (!newPeople.containsKey(uuid)) {
-                newPeople.put(uuid, "ally");
+                if (town.getPeople().get(uuid).contains("foreign")) {
+                    newPeople.put(uuid, "allyforeign");
+                } else {
+                    newPeople.put(uuid, "ally");
+                }
             }
         }
 
