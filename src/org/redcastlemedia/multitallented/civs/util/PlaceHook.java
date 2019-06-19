@@ -74,15 +74,27 @@ public class PlaceHook extends PlaceholderExpansion {
             return getReplacement(civilian);
         } else if (POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "";
+            }
             return "" + town.getPower();
         } else if (MAX_POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "";
+            }
             return "" + town.getMaxPower();
         } else if (POPULATION.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "";
+            }
             return "" + town.getPopulation();
         } else if (HOUSING.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "";
+            }
             return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
