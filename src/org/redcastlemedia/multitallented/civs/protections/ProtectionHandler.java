@@ -417,8 +417,6 @@ public class ProtectionHandler implements Listener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            } else {
-                RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
             }
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
