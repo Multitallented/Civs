@@ -753,6 +753,10 @@ public class Region {
         boolean hadUpkeep = false;
         Chest chest = null;
         boolean hasItemUpkeep = false;
+        boolean debug = regionType.getProcessedName().equals("clay_quarry");
+        if (debug) {
+            System.out.println("Upkeep check on clay quarry: " + RegionManager.getInstance().hasRegionChestChanged(this));
+        }
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
@@ -791,6 +795,9 @@ public class Region {
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
+            }
+            if (debug) {
+                System.out.println("hasItemUpkeep true");
             }
             hasItemUpkeep = true;
             boolean hasMoney = false;
@@ -895,6 +902,9 @@ public class Region {
             }
         }
         if (!hasItemUpkeep) {
+            if (debug) {
+                System.out.println("adding checked region");
+            }
             RegionManager.getInstance().addCheckedRegion(this);
         }
         return hadUpkeep;
