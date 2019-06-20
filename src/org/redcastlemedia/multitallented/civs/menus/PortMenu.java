@@ -80,6 +80,9 @@ public class PortMenu extends Menu {
         List<Region> returnSet = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
         for (Region region : regionSet) {
+            if (returnSet.contains(region)) {
+                continue;
+            }
             if (!region.getEffects().containsKey("port")) {
                 continue;
             }
