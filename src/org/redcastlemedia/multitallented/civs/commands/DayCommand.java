@@ -27,6 +27,7 @@ public class DayCommand implements CivCommand {
 
         DailyScheduler dailyScheduler = new DailyScheduler();
         dailyScheduler.run();
+        commandSender.sendMessage(Civs.getPrefix() + "new day started");
         return true;
     }
 }

@@ -212,7 +212,7 @@ public class TownManager {
             town.setGovTypeChangedToday(true);
         }
         if (config.isSet("last-active")) {
-            town.setLastVote(config.getLong("last-active", -1));
+            town.setLastActive(config.getLong("last-active", -1));
         } else {
             town.setLastActive(-1);
         }
