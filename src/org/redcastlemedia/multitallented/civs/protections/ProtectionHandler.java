@@ -418,8 +418,6 @@ public class ProtectionHandler implements Listener {
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
                 return true;
-            } else {
-                RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
             }
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
@@ -387,6 +389,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
+        handleRegionCache(event.getClickedInventory());
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
@@ -414,6 +417,14 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
         humanEntity.sendMessage(Civs.getPrefix() +
                 LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+    }
+
+    private void handleRegionCache(Inventory inventory) {
+        if (inventory == null || inventory.getHolder() == null || !(inventory.getHolder() instanceof Chest)) {
+            return;
+        }
+        Chest chest = (Chest) inventory.getHolder();
+        RegionManager.getInstance().removeCheckedRegion(chest.getLocation());
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {
