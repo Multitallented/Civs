@@ -445,8 +445,133 @@ arrow_factory-name: Pfeilfabrik
 arrow_factory-desc: Erzeugt automatisiert Pfeile
 bakery-name: Bäckerei
 bakery-desc: Erzeugt alle 2 Minuten Kekse und Kürbiskuchen. Gib eine Güterlore in die
-  Bäckereikiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
-  danach eine Antriebsschiene am Startpunkt.
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
 dye_works-name: Farbwerke
 dye_works-desc: Erzeugt automatisiert verschiedene Farben.
 flint_works-name: Feuersteinfabrik
+flint_works-desc: Erzeugt Feuerstein. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+gold_infuser-name: Goldbad
+gold_infuser-desc: Erzeugt goldene Karotten und Äpfel
+ice_maker-name: Eismaschine
+ice_maker-desc: Erzeugt Eis
+iron_works-name: Eisenwerke
+iron_works-desc: Erzeugt Werkzeuge. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+lava_works-name: Lavawerke
+lava_works-desc: Erzeugt Lava. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+mill-name: Mühle
+mill-desc: Erzeugt alle 30 Sekunden 1 Brot aus 2 Weizen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+boot_grinder-name: Stiefelschleifer
+boot_grinder-desc: Erzeugt Leder aus Lederstiefeln. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+stone_works-name: Steinwerke
+stone_works-desc: Erzeugt SteinwerkzeugeGib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+weapons_factory-name: Waffenfabrik
+weapons_factory-desc: Erzeugt TNT aus 3 Schwarzpulver und 5 Sand.
+chicken_coop-name: Hühnerstall
+chicken_coop-desc: Automatische Hühnerfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+donkey_farm-name: Eselfarm
+donkey_farm-desc: Erzeugt Esel und Sättel.
+mule_farm-name: Maultierfarm
+mule_farm-desc: Erzeugt Maultiere und Sättel.
+pig_pen-name: Schweinestall
+pig_pen-desc: Automatische Schweinefarm.
+rabbit_hutch-name: Hasenstall
+rabbit_hutch-desc: Automatische Hasenfarm.
+ranch-name: Ranch
+ranch-desc: Automatische Kuhfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+sheep_farm-name: Schafspferch
+sheep_farm-desc: Automatische Schaffarm.
+stables-name: Stallungen
+stables-desc: Erzeugt Pferde und Sättel.
+acacia_lumberyard-name: Akazienbaumschule
+acacia_lumberyard-desc: Erzeugt Akazienholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+birch_lumberyard-name: Birkenbaumschule
+birch_lumberyard-desc: Erzeugt Birkenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+dark_oak_lumberyard-name: Schwarzeichenbaumschule
+dark_oak_lumberyard-desc: Erzeugt Schwarzeichenholz. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+jungle_lumberyard-name: Tropenbaumschule
+jungle_lumberyard-desc: Erzeugt Tropenbaumholz. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+oak_lumberyard-name: Eichenbaumschule
+oak_lumberyard-desc: Erzeugt Eichenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+spruce_lumberyard-name: Fichtenbaumschule
+spruce_lumberyard-desc: Erzeugt Fichtenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+apple_orchard-name: Apfel-Obstgarten
+apple_orchard-desc: Automatische Apfelfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+carrot_farm-name: Karottenfarm
+carrot_farm-desc: Erzeugt 16 Karotten alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+cocoa_farm-name: Kakaoplantage
+cocoa_farm-desc: Erzeugt 16 Kakao alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+ender_pearl_farm-name: Enderperlenfarm
+ender_pearl_farm-desc: Erzeugt Enderperlen.
+fishing_hut-name: Fischerhütte
+fishing_hut-desc: Erzeugt verschiedensten Fisch und Lederstiefel alle 5 Minuten.
+greenhouse-name: Gewächshaus
+greenhouse-desc: Erzeugt verschiedene Blumen.
+melon_farm-name: Melonenfarm
+melon_farm-desc: Erzeugt Melonen alle 10 Minuten. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+potato_farm-name: Kartoffelfarm
+potato_farm-desc: Erzeugt Kartoffeln und giftige Kartoffeln alle 5 Minuten.
+pumpkin_farm-name: Kürbisfarm
+pumpkin_farm-desc: Erzeugt Kürbisse alle 10 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+sugar_cane_farm-name: Zuckerrohrfarm
+sugar_cane_farm-desc: Erzeugt 16 Zuckerrohr alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+wheat_farm-name: Weizenfarm
+wheat_farm-desc: Erzeugt Weizen und tote Büsche alle 5 Minuten. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+coal_mine-name: Kohlemine
+coal_mine-desc: Benutzt Spitzhacken um Kohle zu erzeugen. Gib eine Güterlore in die Hauptkiste
+  und baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+gold_mine-name: Goldmine
+gold_mine-desc: Benutzt Eisenspitzhacken um Gold zu erzeugen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+redstone_mine-name: Redstonemine
+redstone_mine-desc: Benutzt Spitzhacken um Redstone zu erzeugen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+cobble_grinder-name: Bruchsteingenerator
+cobble_grinder-desc: Erzeugt Bruchstein alle 30 Sekunden. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
