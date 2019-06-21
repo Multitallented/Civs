@@ -123,7 +123,8 @@ public class RegionTypeInfoMenu extends Menu {
             lore.add(localeManager.getTranslation(civilian.getLocale(), "range") +
                     ": " + regionType.getEffectRadius());
         }
-        lore.addAll(Util.textWrap("", Util.parseColors(regionType.getDescription(civilian.getLocale()))));
+
+        lore.addAll(Util.textWrap(regionType.getDescription(civilian.getLocale())));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

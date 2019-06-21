@@ -362,7 +362,7 @@ public class ConfigManager {
             if (returnList.isEmpty()) {
                 returnList.add(key);
             } else if (returnList.size() == 1) {
-                returnMap.put(key, Util.textWrap("", Util.parseColors(returnList.get(0))));
+                returnMap.put(key, Util.textWrap(Util.parseColors(returnList.get(0))));
             }
             returnMap.put(key, returnList);
         }

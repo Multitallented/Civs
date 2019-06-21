@@ -210,7 +210,7 @@ public class MainMenu extends Menu {
             townIcon.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "town");
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     townType.getProcessedName() + "-desc")));
             townIcon.setLore(lore);
             inventory.setItem(9, townIcon.createItemStack());
@@ -225,7 +225,7 @@ public class MainMenu extends Menu {
                     regionType.getProcessedName() + "-name"));
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "region");
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-desc")));
             regionIcon.setLore(lore);
             inventory.setItem(10, regionIcon.createItemStack());

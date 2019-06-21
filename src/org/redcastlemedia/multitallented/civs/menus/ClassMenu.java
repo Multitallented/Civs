@@ -97,7 +97,7 @@ public class ClassMenu extends Menu {
             CVItem cvItem = civItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentName));

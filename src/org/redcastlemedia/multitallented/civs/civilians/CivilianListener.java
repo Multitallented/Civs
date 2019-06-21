@@ -297,7 +297,7 @@ public class CivilianListener implements Listener {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             lore.add(cvItem.getDisplayName());
-            lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
         }
         BlockLogger blockLogger = BlockLogger.getInstance();

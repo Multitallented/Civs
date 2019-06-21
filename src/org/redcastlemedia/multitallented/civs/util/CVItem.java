@@ -105,7 +105,7 @@ public class CVItem {
             String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + nameString);
-            lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix(),
+            lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix() +
                     LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
             return new CVItem(mat, quantity, chance, displayName, lore);
         }
@@ -124,7 +124,7 @@ public class CVItem {
         String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + nameString);
-        lore.addAll(Util.textWrap("",
+        lore.addAll(Util.textWrap(
                 LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
         itemStack.getItemMeta().setDisplayName(displayName);
         itemStack.getItemMeta().setLore(lore);

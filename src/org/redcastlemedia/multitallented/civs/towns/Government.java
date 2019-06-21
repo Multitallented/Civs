@@ -38,7 +38,7 @@ public class Government {
                 governmentType.name().toLowerCase() + "-name"));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + governmentType.name());
-        lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(locale,
+        lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(locale,
                 governmentType.name().toLowerCase() + "-desc")));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(locale));
@@ -51,7 +51,7 @@ public class Government {
         ArrayList<String> lore = new ArrayList<>();
         for (GovTypeBuff buff : buffs) {
             String applyString = getApplyString(buff);
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
                     locale, buff.getBuffType().name().toLowerCase() + "-buff-desc")
                     .replace("$1", buff.getAmount() + "")
                     .replace("$2", applyString)));

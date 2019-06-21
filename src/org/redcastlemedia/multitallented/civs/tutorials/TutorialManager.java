@@ -195,7 +195,7 @@ public class TutorialManager {
             if (useHr) {
                 player.sendMessage("-----------------" + Civs.NAME + "-----------------");
             }
-            List<String> messages = Util.parseColors(Util.textWrap("", rawMessage));
+            List<String> messages = Util.parseColors(Util.textWrap(rawMessage));
             for (String message : messages) {
                 player.sendMessage(Civs.getPrefix() + message);
             }

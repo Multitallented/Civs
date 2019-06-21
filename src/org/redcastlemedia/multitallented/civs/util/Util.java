@@ -139,8 +139,9 @@ public final class Util {
         return xEq && yEq && zEq;
     }
 
-    public static ArrayList<String> textWrap(String prefix, String input) {
-        prefix = ChatColor.WHITE + prefix;
+    public static ArrayList<String> textWrap(String input) {
+        String prefix = getDefaultColor(input);
+//        prefix = ChatColor.WHITE + prefix;
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
         String[] sends = sendMe.split(" ");
@@ -182,6 +183,14 @@ public final class Util {
             return false;
         }
         return ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0)).equals("starter-book");
+    }
+
+    public static String getDefaultColor(String message) {
+        String beginningColor = "" + ChatColor.RESET;
+        if (message.startsWith("" + ChatColor.COLOR_CHAR)) {
+            beginningColor = message.substring(0, 2);
+        }
+        return beginningColor;
     }
 
     public static List<String> parseColors(List<String> inputString) {
