@@ -28,7 +28,6 @@ public class SpellType extends CivItem {
                      int max,
                      double price,
                      String permission,
-                     HashMap<String, String> description,
                      List<String> groups,
                      FileConfiguration config,
                      boolean isInShop,
@@ -44,7 +43,6 @@ public class SpellType extends CivItem {
                 max,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);

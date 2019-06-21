@@ -748,7 +748,7 @@ public class RegionsTests {
     public void regionShouldConsiderAlliesAsGuests() {
         UUID uuid1 = new UUID(1, 3);
         Region region = load2TownsWith1Region(uuid1, true);
-        assertEquals("ally", region.getPeople().get(uuid1));
+        assertEquals("allyforeign", region.getPeople().get(uuid1));
     }
 
     @Test

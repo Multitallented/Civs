@@ -115,13 +115,6 @@ public class ItemManager {
         //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         ClassType civItem = new ClassType(
                 config.getStringList("reqs"),
                 name,
@@ -130,7 +123,6 @@ public class ItemManager {
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 config.getStringList("children"),
-                description,
                 config.getStringList("groups"),
                 config.getInt("mana-per-second", 1),
                 config.getInt("max-mana", 100),
@@ -144,13 +136,6 @@ public class ItemManager {
     public CivItem loadSpellType(FileConfiguration config) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         SpellType spellType = new SpellType(
                 config.getStringList("reqs"),
                 name,
@@ -161,7 +146,6 @@ public class ItemManager {
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
                 config.getString("permission"),
-                description,
                 config.getStringList("groups"),
                 config,
                 config.getBoolean("is-in-shop", true),
@@ -196,13 +180,6 @@ public class ItemManager {
             }
         }
         int buildRadius = config.getInt("build-radius", 20);
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         TownType townType = new TownType(
                 name,
                 icon,
@@ -219,7 +196,6 @@ public class ItemManager {
                 buildRadius,
                 config.getInt("build-radius-y", buildRadius),
                 config.getStringList("critical-build-reqs"),
-                description,
                 config.getInt("power", 200),
                 config.getInt("max-power", 1000),
                 config.getStringList("groups"),
@@ -285,13 +261,6 @@ public class ItemManager {
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
         String rebuild = config.getString("rebuild", null);
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         Set<Biome> biomes = new HashSet<>();
         if (config.isSet("biomes")) {
             for (String s : config.getStringList("biomes")) {
@@ -319,7 +288,6 @@ public class ItemManager {
                 rebuild,
                 townSet,
                 biomes,
-                description,
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),
                 config.getStringList("groups"),

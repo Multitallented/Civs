@@ -144,7 +144,6 @@ public class ClassManager {
                     0,
                     "",
                     new ArrayList<String>(),
-                    new HashMap<String, String>(),
                     new ArrayList<String>(),
                     5, 100, true, 1);
         }

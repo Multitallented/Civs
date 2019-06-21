@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.HashMap;
@@ -20,7 +21,6 @@ public abstract class CivItem extends CVItem {
     private final String permission;
     private final boolean isInShop;
     private boolean isPlaceable = false;
-    private final HashMap<String, String> description;
     private final List<String> groups;
     @Getter
     private final CVItem shopIcon;
@@ -55,14 +55,7 @@ public abstract class CivItem extends CVItem {
         return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
     }
     public String getDescription(String locale) {
-        String localizedDescription = description.get(locale);
-        if (localizedDescription == null) {
-            localizedDescription = description.get(ConfigManager.getInstance().getDefaultLanguage());
-            if (localizedDescription == null) {
-                return "";
-            }
-        }
-        return localizedDescription;
+        return LocaleManager.getInstance().getTranslation(locale, getProcessedName().toLowerCase() + "-desc");
     }
     public List<String> getGroups() { return groups; }
 
@@ -78,7 +71,6 @@ public abstract class CivItem extends CVItem {
                    int max,
                    double price,
                    String permission,
-                   HashMap<String, String> description,
                    List<String> groups,
                    boolean isInShop,
                    int level) {
@@ -95,7 +87,6 @@ public abstract class CivItem extends CVItem {
         this.max = max;
         this.price = price;
         this.permission = permission;
-        this.description = description;
         this.groups = groups;
         this.isInShop = isInShop;
         this.level = level;
