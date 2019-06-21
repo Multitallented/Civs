@@ -138,6 +138,7 @@ add-guest-region: Du er blevet lavet til gæst af $1
 guest-added-region: $1 Er nu gæst i $2
 invite-member-region: Du er blevet medlem af $1
 member-invited-region: $1 er blevet tilføjet $2
+no-invite: Du har ingen invitationer
 stand-in-region: Vær venlig at have $ 1 til at stå i regionen
 create: Skab
 click-for-region-limits: Klik her for en liste over regionens begrænsninger
@@ -204,7 +205,7 @@ specify-player-region: Angiv venligst en spiller og en region
 town-not-exist: $1 er ikke en by
 no-permission-invite: Du har ikke tilladelse til at invitere folk til $1
 player-not-online: $1 er ikke online
-invite-player: $1 vil gerne invitere dig til $2 $3.
+invite-player: $1 vil gerne invitere dig til $2 $3. Acceptere?
 already-member: $1 er allerede medlem af $2
 broke-own-region: $1 mangler blokke
 no-permission: Ikke tilladt
@@ -338,6 +339,70 @@ tut-merchant-4: Køb og byg et apple_orchard. Byg e minecart spor fra indersiden
   skråning inde i apple_orchard. Til sidst skal du placere en kiste minecart
   inde i apple_orchard
 tut-merchant-5: Tid til at opgradere igen. Køb og læg en dewelling inde i dit Hovel1.
+tut-merchant-6: Boliger giver dig mange penge, men et hus giver dig mere. Køb og opgrader din
+  bolig til en Hus
+tut-merchant-7: Placer dette brød i dit hus for at opgradere det til et hus1.
+tut-merchant-8: Placer disse laks i dit hus1 for at opgradere det til et hus2.
+tut-merchant-9: Byg nu en iron_shop for yderligere at øge din indkomst.
+tut-merchant-10: " Hver spiller må kun have 3 butikker. Den mest lukrative butik er en
+  handelsbutik. Byg Jade_Shop. Ødelæg en af ​​dine andre butikker, hvis du
+  allerede har 3"
+tut-merchant-11: Tillykke! Du kan nu sælge varer, du køber fra en anden bys Jade_Mine. Dette er
+  sidste trin på købmandens vej.
+anarchy-name: Anarki
+anarchy-desc: " Enhver kan styre by og regions medlemskab. Ingen skatter. Ingen alliancer."
+capitalism-name: Kapitalisme
+capitalism-desc: Demokrati + Bymedlemmer kan købe ekstra stemmer.
+colonialism-name: Kolonialisme
+colonialism-desc: Ingen ejer by. En hovedby forhindrer ejerskabet.
+communism-name: Kommunisme
+communism-desc: Alle er ejer af alt. Al regionindkomst er jævnt fordelt.
+cooperative-name: Samarbejde
+cooperative-desc: Demokrati + Al regionindkomst fordeles jævnt blandt bymedlemmer og skatter.
+cybersynacy-name: Teknokrati
+cybersynacy-desc: Ingen menneskelig byejerskab. Alliancer, skatter, rekruttering og
+  forsyningsselskaber håndteres af en AI.
+democracy-name: Demokrati
+democracy-desc: Ejere forvalter alliancer, fastsætter skatter og bymedlemmer. Afstemning
+  sørger periodisk for nyt byejerskab.
+democratic_socialism-name: Demokratisk socialisme
+democratic_socialism-desc: Demokrati + Alle forsyningsvirksomheder, gårde, miner, fabrikker og stenbrud
+  er offentligt ejede.
+dictatorship-name: Diktatur
+dictatorship-desc: Byejere forvalter alliancer, kan tilsidesætte region og bymedlemskab og
+  fastsætte skatter.
+feudalism-name: Feudalisme
+feudalism-desc: Diktatur + Bymedlemmer kan ikke bygge regioner i byen.
+kraterocracy-name: Kraterocracy
+kraterocracy-desc: Diktatur + Når et bymedlem dræber en ejer, skifter de plads.
+libertarian-name: Libertære
+libertarian-desc: Ingen byejerskab.
+libertarian_socialism-name: Libertære Socialisme
+libertarian_socialism-desc: Libertære + Socialisme
+meritocracy-name: Meritokrati
+meritocracy-desc: Diktatur + Den, der har de bedste bygninger og de fleste Drabs Point bliver
+  byens ejer.
+oligarchy-name: Oligarki
+oligarchy-desc: Diktatur + Byejerskab kan købes
+socialism-name: Socialisme
+socialism-desc: Diktatur + Alle forsyningsvirksomheder, gårde, miner, fabrikker og stenbrud er
+  offentligt ejede.
+tribalism-name: Tribalisme
+tribalism-desc: Diktatur + Medlemmer kan ikke deltage i byer der ikke er allierede.
+admin_graveyard-name: Admin kirkegård
+admin_graveyard-desc: Et sted for alle spillere at respawn. Forhindrer også skade.
+shelter-name: Ly
+shelter-desc: Et sikkert sted at gemme dine genstande og tjene nogle penge fra brød,
+  oksekød, gulerødder eller kartofler hvert 30. minut.
+arrow_trap-name: Pile fælde
+arrow_trap-desc: Niveau 1 | Rækkevidde 17 | Skade 30 | Hastighed 38 | Dispersion 3 | Skytter
+  pile på alle ikke allierede spillere og monstre.
+arrow_trap_fast-name: Pile fælde 2
+arrow_trap_fast-desc: Niveau 2 | Rækkevidde 19 | Skade 34 | Hastighed 38 | Dispersion 4 | Skytter
+  pile på alle ikke allierede spillere og monstre.
+arrow_trap_fastest-name: Pile fælde 3
+arrow_trap_fastest-desc: Niveau 3 | Rækkevidde 21 | Skade 38 | Hastighed 42 | Dispersion 3 | Skytter
+  pile på alle ikke allierede spillere og monstre.
 library-name: Bibliotek
 smithy-name: Smed
 town_hall-name: Rådhus
@@ -345,3 +410,4 @@ town_hall-desc: Den centrale struktur for en by. Producerer 384 Power pr. Dag. F
   som hjemmehavn.
 warehouse-name: Varehus
 warehouse-desc: Distribuerer varer fra ​​sine kister, til regioner der har brug for dem.
+item-jade-name: Jade
