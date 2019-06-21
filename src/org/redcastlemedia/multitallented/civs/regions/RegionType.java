@@ -57,7 +57,6 @@ public class RegionType extends CivItem {
                       String rebuild,
                       HashSet<String> towns,
                       Set<Biome> biomes,
-                      HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
                       List<String> groups,
@@ -74,7 +73,6 @@ public class RegionType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);

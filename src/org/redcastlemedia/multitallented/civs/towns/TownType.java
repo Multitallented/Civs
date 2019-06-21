@@ -69,7 +69,6 @@ public class TownType extends CivItem {
                     int buildRadius,
                     int buildRadiusY,
                     List<String> criticalReqs,
-                    HashMap<String, String> description,
                     int power,
                     int maxPower,
                     List<String> groups,
@@ -88,7 +87,6 @@ public class TownType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);
