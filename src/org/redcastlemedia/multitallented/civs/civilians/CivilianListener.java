@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -216,7 +217,9 @@ public class CivilianListener implements Listener {
             player.performCommand("cv");
             return;
         }
-        StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
+        if (player.getGameMode() == GameMode.SURVIVAL) {
+            StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
+        }
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
