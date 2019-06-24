@@ -57,6 +57,10 @@ public class ShopMenu extends Menu {
         }
 
         ItemManager itemManager = ItemManager.getInstance();
+        if (im.getLore() == null || im.getLore().isEmpty()) {
+            return;
+        }
+        itemName = im.getLore().get(0);
         itemName = CivItem.processItemName(itemName);
         CivItem civItem = itemManager.getItemType(itemName);
         if (civItem == null) {
@@ -132,17 +136,20 @@ public class ShopMenu extends Menu {
 
         int i=9;
         for (CivItem civItem : shopItems) {
+            CVItem civItem1 = civItem.getShopIcon().clone();
             if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                 FolderType folderType = (FolderType) civItem;
                 if (!folderType.getVisible() &&
                         (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
                     continue;
                 }
+                civItem1.getLore().add(folderType.getDisplayName());
             }
             String maxLimit = civilian.isAtMax(civItem);
             if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
                 CVItem item = CVItem.createCVItemFromString("BARRIER");
-                item.setDisplayName(civItem.getDisplayName());
+                item.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                        civItem.getProcessedName() + "-name"));
                 int limit = maxLimit.equals(civItem.getProcessedName()) ? civItem.getCivMax() :
                         ConfigManager.getInstance().getGroups().get(maxLimit);
                 item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
@@ -153,11 +160,11 @@ public class ShopMenu extends Menu {
                 i++;
                 continue;
             }
-            CVItem civItem1 = civItem.getShopIcon().clone();
             if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
+                civItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+                        civItem.getProcessedName() + "-name"));
                 civItem1.getLore().clear();
-                civItem1.getLore().add(civilian.getUuid().toString());
-                civItem1.getLore().add(civItem1.getDisplayName());
+                civItem1.getLore().add(ChatColor.BLACK + civItem.getProcessedName());
                 civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
                         ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));
                 civItem1.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
