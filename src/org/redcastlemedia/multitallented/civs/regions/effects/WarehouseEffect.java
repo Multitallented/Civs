@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -198,7 +199,16 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                     if (!availableItems.containsKey(r)) {
                         availableItems.put(r, new HashMap<>());
                     }
-                    availableItems.get(r).remove(lo);
+                    BlockState blockState;
+                    try {
+                        blockState = lo.getBlock().getState();
+                        if (!(blockState instanceof Chest)) {
+                            continue;
+                        }
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    availableItems.get(r).put(lo, (Chest) blockState);
                 }
                 invs.put(r, tempLocations);
             } catch (Exception e) {
@@ -212,9 +222,11 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             for (Location lo : invs.get(r)) {
                 if (lo.getBlock().getType() != Material.CHEST) {
                     removeMe.add(lo);
+                    if (availableItems.containsKey(r)) {
+                        availableItems.get(r).remove(lo);
+                    }
                     continue;
                 }
-                availableItems.get(r).remove(lo);
             }
 
             //Remove excess chests from the data file
@@ -370,6 +382,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     }
 
     private void moveNeededItems(Region region, Region destination, List<List<CVItem>> neededItems) {
+        if (!availableItems.containsKey(region)) {
+            return;
+        }
         Chest destinationChest = null;
 
         try {

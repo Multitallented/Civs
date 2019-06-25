@@ -139,23 +139,24 @@ public class RegionEffectTests {
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
         Location location2 = new Location(Bukkit.getWorld("world"), 3,100,0);
         Region warehouse = RegionsTests.createNewRegion("warehouse", location2);
-        ArrayList<Chest> availableItems = new ArrayList<>();
         Chest cobbleChest = (Chest) TestUtil.blockUnique2.getState();
         Chest warehouseChest = (Chest) TestUtil.blockUnique3.getState();
-        availableItems.add(warehouseChest);
 
         WarehouseEffect warehouseEffect = new WarehouseEffect();
         RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
         ArrayList<Location> inventoryLocations = new ArrayList<>();
         inventoryLocations.add(TestUtil.blockUnique3.getLocation());
         warehouseEffect.invs.put(warehouse, inventoryLocations);
+        HashMap<Location, Chest> chestMap = new HashMap<>();
+        chestMap.put(TestUtil.blockUnique3.getLocation(), warehouseChest);
+        warehouseEffect.availableItems.put(warehouse, chestMap);
 
         TownTests.loadTownTypeHamlet();
         Location townLocation = new Location(Bukkit.getWorld("world"), 2, 75, 0);
         TownTests.loadTown("test", "hamlet", townLocation);
 
         warehouseEffect.onCustomEvent(regionTickEvent);
-        assertEquals(Material.IRON_PICKAXE, ((Chest) TestUtil.blockUnique2.getState()).getBlockInventory().getItem(0).getType());
+        assertEquals(Material.IRON_PICKAXE, cobbleChest.getBlockInventory().getItem(0).getType());
     }
 
     @Test
