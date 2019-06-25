@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -43,6 +44,13 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             new ConveyorEffect();
         }
         return instance;
+    }
+
+    @EventHandler
+    public void onRegionDestroyed(RegionDestroyedEvent event) {
+        carts.remove(event.getRegion());
+        cacheSpawnPoints.remove(event.getRegion());
+        cacheDestinationRegions.remove(event.getRegion());
     }
 
     @EventHandler
