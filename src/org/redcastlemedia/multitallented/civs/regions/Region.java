@@ -707,6 +707,9 @@ public class Region {
     }
 
     public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
+        if (!RegionManager.getInstance().hasRegionChestChanged(this)) {
+            return false;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().size() <= upkeepIndex) {
             return false;
