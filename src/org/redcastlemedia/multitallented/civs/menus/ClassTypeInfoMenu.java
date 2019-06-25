@@ -90,7 +90,7 @@ public class ClassTypeInfoMenu extends Menu {
 
         //TODO write info about the class
 
-        lore.addAll(Util.textWrap("", Util.parseColors(classType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(classType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

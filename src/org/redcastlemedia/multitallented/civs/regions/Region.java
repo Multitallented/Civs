@@ -671,9 +671,13 @@ public class Region {
         return lastTick + period * 1000 < new Date().getTime();
     }
     public boolean hasUpkeepItems() {
-        return hasUpkeepItems(false);
+        return RegionManager.getInstance().hasRegionChestChanged(this) &&
+                hasUpkeepItems(false);
     }
     public boolean hasUpkeepItems(boolean ignoreReagents) {
+        if (!RegionManager.getInstance().hasRegionChestChanged(this)) {
+            return false;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
@@ -703,6 +707,9 @@ public class Region {
     }
 
     public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
+        if (!RegionManager.getInstance().hasRegionChestChanged(this)) {
+            return false;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         if (regionType.getUpkeeps().size() <= upkeepIndex) {
             return false;

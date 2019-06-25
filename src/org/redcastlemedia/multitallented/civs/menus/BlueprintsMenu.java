@@ -96,7 +96,7 @@ public class BlueprintsMenu extends Menu {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
-                lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+                lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentName));

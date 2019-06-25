@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -151,6 +152,7 @@ public class RegionManager {
         for (String key : this.destroyRegionListener.keySet()) {
             this.destroyRegionListener.get(key).destroyRegionHandler(region);
         }
+        Bukkit.getPluginManager().callEvent(new RegionDestroyedEvent(region));
 
         if (checkCritReqs) {
             TownManager.getInstance().checkCriticalRequirements(region);

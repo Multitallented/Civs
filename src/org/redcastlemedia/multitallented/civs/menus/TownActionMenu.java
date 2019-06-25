@@ -226,8 +226,7 @@ public class TownActionMenu extends Menu {
         //0 Icon
         CVItem cvItem = new CVItem(townType.getMat(), 1);
         cvItem.setDisplayName(town.getType() + "@" + town.getName());
-        ArrayList<String> lore = new ArrayList<>(Util.textWrap(ChatColor.WHITE + "",
-                townType.getDescription(civilian.getLocale())));
+        ArrayList<String> lore = new ArrayList<>(Util.textWrap(townType.getDescription(civilian.getLocale())));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

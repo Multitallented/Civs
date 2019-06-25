@@ -58,7 +58,7 @@ public class SpellTypeInfoMenu extends Menu {
         //0 Icon
         CVItem cvItem = spellType.clone();
         List<String> lore = new ArrayList<>();
-        lore.addAll(Util.textWrap("", Util.parseColors(spellType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(spellType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

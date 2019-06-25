@@ -35,7 +35,6 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- door_use
 - chest_use
 - housing:1
 - villager

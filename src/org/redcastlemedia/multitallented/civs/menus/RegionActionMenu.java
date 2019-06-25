@@ -163,7 +163,7 @@ public class RegionActionMenu extends Menu {
         //0 Icon
         {
             CVItem cvItem = regionType.getShopIcon().clone();
-            lore = new ArrayList<>(Util.textWrap("", regionType.getDescription(civilian.getLocale())));
+            lore = new ArrayList<>(Util.textWrap(regionType.getDescription(civilian.getLocale())));
             cvItem.setLore(lore);
             inventory.setItem(0, cvItem.createItemStack());
         }

@@ -189,8 +189,7 @@ public class TownListMenu extends Menu {
                     .replace("$1", town.getPopulation() + "")
                     .replace("$2", town.getHousing() + "")
                     .replace("$3", town.getVillagers() + ""));
-            lore.addAll(Util.textWrap("",
-                    Util.parseColors(townType.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
 
             CVItem cycleItem = null;
             boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();

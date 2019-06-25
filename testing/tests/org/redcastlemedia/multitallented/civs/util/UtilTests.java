@@ -188,4 +188,10 @@ public class UtilTests {
         assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(4830));
         assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(8430));
     }
+
+    @Test
+    public void getDefaultColorShouldReturnRed() {
+        String message = ChatColor.RED + "[Civs] Something";
+        assertEquals("" + ChatColor.RED, Util.getDefaultColor(message));
+    }
 }

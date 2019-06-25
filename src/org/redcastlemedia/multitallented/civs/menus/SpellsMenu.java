@@ -101,7 +101,7 @@ public class SpellsMenu extends Menu {
             CVItem newItem = cvItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             newItem.setLore(lore);
             newItem.setQty(civilian.getStashItems().get(currentName));

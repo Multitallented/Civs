@@ -77,7 +77,7 @@ public class ConfirmationMenu extends Menu {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else if (isRegion) {
-                lore.addAll(Util.textWrap("", Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                lore.addAll(Util.textWrap(Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         civItem.getProcessedName() + "-desc"))));
             }
             purchasedItem.setLore(lore);

@@ -88,7 +88,7 @@ public class TownTypeInfoMenu extends Menu {
         List<String> lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
                 ": " + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadiusY() * 2 + 1));
-        lore.addAll(Util.textWrap("", Util.parseColors(townType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

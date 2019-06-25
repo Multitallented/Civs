@@ -332,8 +332,8 @@ tut-builder-8: Siedlungen sind auf 4 Unterkünfte limitiert. Um mehr Wohnungen z
 tut-builder-9: Baue als nächstes ein Katapult. Katapulte sind präzise TNT-Kanonen mit denen
   sich feindliche Belagerungsstrukturen zerstören lassen.
 tut-builder-10: Upgrade als nächstes deine Siedlung zu einem Weiler. Wenn du das gemacht hast,
-  kaufe und baue ein Haus. Mit jedem weiteren Stadtlevel bekommst zu Zugriff auf
-  weitere eigenständige Häusertypen.
+  kaufe und baue ein Eigenheim. Mit jedem weiteren Stadtlevel bekommst zu
+  Zugriff auf weitere eigenständige Häusertypen.
 tut-builder-11: Upgrade jetzt deinen Weiler zu einem Dorf. Sobald du das gemacht hast baue
   Stallungen.
 tut-builder-12: Bevor du dein Dorf weiter upgraden kannst, brauchst du ein Rathaus. Verbessere
@@ -559,19 +559,242 @@ wheat_farm-name: Weizenfarm
 wheat_farm-desc: Erzeugt Weizen und tote Büsche alle 5 Minuten. Gib eine Güterlore in die
   Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
   danach eine geneigte Antriebsschiene am Startpunkt.
+shack-name: Unterkunft
+shack-desc: Das grundlegendste Haus. Generiert 122 $ am Tag mit Kartoffeln.
+hovel-name: Hütte
+hovel-desc: Haus Level 2. Ein Upgrade für die Unterkunft. Generiert 144 $ am Tag mit
+  Kartoffeln. Nur als Upgrade für die Unterkunft verfügbar.
+hovel1-name: Hütte1
+hovel1-desc: Haus Level 2.1. Generiert 310 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling-name: Eigenheim
+dwelling-desc: Haus Level 3. Generiert 309 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling1-name: Eigenheim1
+dwelling1-desc: Haus Level 3.1. Generiert 309 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling2-name: Eigenheim2
+dwelling2-desc: Haus Level 3.2. Generiert 598 $ am Tag mit Kartoffeln, Äpfeln und Fisch.
+house-name: Haus
+house-desc: Haus Level 4. Ein Upgrade für dein Eigenheim. Generiert 491 $ am Tag mit Brot
+  und Äpfeln. Nur als Upgrade für ein Eigenheim verfügbar.
+house1-name: Haus1
+house1-desc: Haus Level 4.1. Generiert 635 $ am Tag mit Brot, Äpfeln und Fisch.
+house2-name: Haus2
+house2-desc: Haus Level 4.2. Generiert 832 $ am Tag mit Brot, Fisch, Äpfeln und
+  Melonenstücken.
+chalet-name: Landhaus
+chalet-desc: Haus Level 5. Generiert 548 $ am Tag mit Brot und Karotten.
+chalet1-name: Landhaus1
+chalet1-desc: Haus Level 5.1. Generiert 692 $ am Tag mit Brot, Karotten und Fisch.
+chalet2-name: Landhaus2
+chalet2-desc: Haus Level 5.2. Generiert 890 $ am Tag mit Brot, Fisch, Karotten und
+  Melonenstücken.
+chalet3-name: Landhaus3
+chalet3-desc: Haus Level 5.3. Generiert 1022 $ am Tag mit Brot, Fisch, Karotten, Keksen und
+  Melonenstücken.
+mansion-name: Residenz
+mansion-desc: Haus Level 6. Ein upgrade für dein Landhaus. Generiert 648 $ am Tag mit Brot,
+  Karotten und Rindfleisch. Nur als Upgrade für ein Landhaus verfügbar.
+mansion1-name: Residenz1
+mansion1-desc: Haus Level 6.1. Generiert 894 $ am Tag mit Brot, Karotten, Rindfleisch und
+  Keksen.
+mansion2-name: Residenz2
+mansion2-desc: Haus Level 6.2. Generiert 1167 $ am Tag mit Brot, Karotten, Rindfleisch und
+  Keksen.
+mansion3-name: Residenz3
+mansion3-desc: Haus Level 6.3. Generiert 1407 $ am Tag mit Brot, Karotten, Rindfleisch,
+  Keksen und Milch.
+manor-name: Gutshof
+manor-desc: Haus Level 7. Ein Upgrade für deine Residenz. Generiert 1032 $ am Tag mit
+  goldenen Karotten, Keksen und Rindfleisch. Nur als Upgrade für eine Residenz
+  verfügbar.
+manor1-name: Landgut1
+manor1-desc: Haus Level 7.1. Generiert 1276 $ am Tag mit goldenen Karotten, Keksen,
+  Rindfleisch und Milch.
+manor2-name: Landgut2
+manor2-desc: Haus Level 7.2. Generiert 1679 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch, Keksen und Milch.
+manor3-name: Landgut3
+manor3-desc: Haus Level 7.3. Generiert 1751 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch, Keksen und Milch.
+villa-name: Villa
+villa-desc: Haus Level 8. Generiert 1100 $ am Tag mit goldenen Karotten, Kürbiskuchen und
+  Rindfleisch.
+villa1-name: Villa1
+villa1-desc: Haus Level 8.1. Generiert 1397 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch und Milch.
+villa2-name: Villa2
+villa2-desc: Haus Level 8.2. Generiert 1877 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Milch, Rindfleisch und goldenen Äpfeln.
+estate-name: Landgut
+estate-desc: Haus Level 9. Ein Upgrade für die Villa. Generiert 1480 $ am Tag mit goldenen
+  Karotten, Kürbiskuchen und goldenen Äpfel. Nur als Upgrade für die Villa
+  verfügbar.
+estate1-name: Landgut1
+estate1-desc: Haus Level 9.1. Generiert 1917 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  goldenen Äpfeln und Keksen.
+estate2-name: Landgut2
+estate2-desc: Haus Level 9.2. Generiert 2397 $ am Tag mit goldenen Karotten, goldenen
+  Äpfeln, Kürbiskuchen, Kaninchenragout und Keksen.
+estate3-name: Landgut3
+estate3-desc: Haus Level 9.3. Generiert 2621 $ am Tag mit goldenen Karotten, goldenen
+  Äpfeln, Kürbiskuchen, Kaninchenragout und Keksen.
+jade_mine-name: Jademine
+jade_mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
+  nicht in einer Stadt gebaut werden welche einen Jadeshop hat. Jade ist eine
+  Handelsware.
 coal_mine-name: Kohlemine
 coal_mine-desc: Benutzt Spitzhacken um Kohle zu erzeugen. Gib eine Güterlore in die Hauptkiste
   und baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
   geneigte Antriebsschiene am Startpunkt.
+diamond_mine-name: Diamantenmine
+diamond_mine-desc: Benutzt Eisenspitzhacken um Diamanten zu erzeugen.
 gold_mine-name: Goldmine
 gold_mine-desc: Benutzt Eisenspitzhacken um Gold zu erzeugen. Gib eine Güterlore in die
   Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
   danach eine geneigte Antriebsschiene am Startpunkt.
+gunpowder_mine-name: Schwarzpulvelminie
+gunpowder_mine-desc: Benutzt Eisenspitzhacken um Schwarzpulver zu erzeugen.
+iron_mine-name: Eisenmine
+iron_mine-desc: Benutzt Spitzhacken um Eisen zu erzeugen.
+lapis_mine-name: Lapismine
+lapis_mine-desc: Benutzt Eisenspitzhacken um Lapis zu erzeugen.
+marine_mine-name: Meeresmine
+marine_mine-desc: Benutzt Spitzhacken um Prismarine zu erzeugen.
+obsidian_mine-name: Obsidianmine
+obsidian_mine-desc: Generiert langsam Obsidian.
+quartz_mine-name: Quarzmine
+quartz_mine-desc: Benutzt Spitzhacken um Quarz zu erzeugen.
 redstone_mine-name: Redstonemine
 redstone_mine-desc: Benutzt Spitzhacken um Redstone zu erzeugen. Gib eine Güterlore in die
   Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
   danach eine geneigte Antriebsschiene am Startpunkt.
+npc_chalet-name: Dorfbewohner-Landhaus
+npc_chalet-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_dwelling-name: Dorfbewohner-Eigenheim
+npc_dwelling-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_house-name: Dorfbewohner-Haus
+npc_house-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_hovel-name: Dorfbewohner-Hütte
+npc_hovel-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_mansion-name: Dorfbewohner-Residenz
+npc_mansion-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_shack-name: Dorfbewohner-Unterkunft
+npc_shack-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+raid_porter-name: Überfall-Teleporter
+raid_porter-desc: Ein nützlicher Weg in eine feindliche Stadt. Braucht 4 Minuten Aufladezeit.
+raid_porter_active-name: Aktiver Überfall-Teleporter
+raid_porter_active-desc: Platziere ein Schild über dem zentralen Block mit dem Namen der Zielstadt.
+  Dann stelle dich auf den zentralen Block.
+siege_machine-name: Belagerungsmaschine
+siege_machine-desc: Das Fundament eines jeden Krieges. Entzieht der nahen Stadt langsam Macht.
+  Braucht 4 Minuten Aufladezeit.
+siege_machine_active-name: Aktive Belagerungsmaschine
+siege_machine_active-desc: Entzieht 1 Macht alle 3 Minuten. Verbessert sich nach 3 Schüssen.
+siege_machine1-name: Belagerungsmaschine1
+siege_machine1-desc: Entzieht 1 Macht alle 2.5 Minuten. Verbessert sich nach 3 Schüssen.
+siege_machine2-name: Belagerungsmaschine2
+siege_machine2-desc: Entzieht 1 Macht alle 2 Minuten. Verbessert sich nach 4 Schüssen.
+siege_machine3-name: Belagerungsmaschine3
+siege_machine3-desc: Entzieht 1 Macht alle 1.5 Minuten.
+altar-name: Altar
+altar-desc: Erzeugt ein volles Set Diamantrüstung, 1 Schwert, 1 Bogen und Pfeile für 300 $
+  pro Stunde.
+blindness_trap-name: Blendfalle
+blindness_trap-desc: Fügt einem Ziel Blindheit, Langsamkeit und Schwäche hinzu. Gilt nur für
+  Nicht-Mitglieder. Zerstört sich nach 30 Minuten.
+castle-name: Burg
+castle-desc: Der zentrale Punkt des Burgfried. Wir benötigt um den Außenposten zu einem
+  Burgfried aufzurüsten. Erzeugt 6 Macht alle 15 Minuten.
+catapult-name: Katapult
+catapult-desc: Wirft TNT mit hoher Präzision auf weite Entfernung.
+command_tent-name: Kommandozelt
+command_tent-desc: Der zentrale Befehlsstand des Außenpostens. Erlaubt die Belagerung naher
+  Städte. Erzeugt 1 Macht alle 15 Minuten.
+hunting_lodge-name: Jagdhütte
+hunting_lodge-desc: Schreibe den Namen deines Ziel auf ein Schild über den Obsidianblock. Du
+  kannst jetzt den Obsidian Rechtsklicken um dich in die Nähe deines Ziels zu
+  teleportieren.
+memorial-name: Denkmal
+memorial-desc: Ein Platz an dem Stadtmitglieder respawnen können. Verhindert Schaden.
+mobile_hospital-name: Mobiles Krankenhaus
+mobile_hospital-desc: Heilt alle Spieler innerhalb des Mobilen Krankenhauses. Zerstört sich nach 30
+  Minuten.
+temp_arrow_trap-name: Temporäre Pfeilfalle
+temp_arrow_trap-desc: Schießt Pfeile auf nahe Nicht-Mitglieder. Zerstört sich nach 15 Minuten.
+clay_quarry-name: Lehmgrube
+clay_quarry-desc: Generiert Lehm
+cobble_quarry-name: Bruchsteingrube
+cobble_quarry-desc: Erzeugt Bruchstein alle 30 Sekunden.
 cobble_grinder-name: Bruchsteingenerator
 cobble_grinder-desc: Erzeugt Bruchstein alle 30 Sekunden. Gib eine Güterlore in die Hauptkiste und
   baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
   geneigte Antriebsschiene am Startpunkt.
+dirt_quarry-name: Erdgrube
+dirt_quarry-desc: Generiert Erde
+red_sand_pit-name: Rote Sandgrube
+red_sand_pit-desc: Erzeugt roten Sand alle 30 Sekunden.
+sand_pit-name: Sandgrube
+sand_pit-desc: Erzeugt Sand alle 30 Sekunden.
+sifter-name: Siebstation
+sifter-desc: Siebt Erde um nützliche Items zu finden.
+jade_shop-name: Jadeshop
+jade_shop-desc: Verkauft 144 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
+  Jademine gebaut werden. Jade ist ein Handelsgut.
+coal_shop-name: Kohlenshop
+coal_shop-desc: Verkauft 144 Kohle für 432 $ am Tag
+diamond_shop-name: Diamantenshop
+diamond_shop-desc: Verkauft 24 Diamanten für 1536 $ am Tag
+flower_shop-name: Blumengeschäft
+flower_shop-desc: Verkauft Blumen für 288 $ am Tag
+gold_shop-name: Goldshop
+gold_shop-desc: Verkauft 288 Gold für 672 $ am Tag
+iron_shop-name: Eisenshop
+iron_shop-desc: Verkauft 288 Eisen für 576 $ am Tag
+leather_shop-name: Ledershop
+leather_shop-desc: Verkauft Leder für 360 $ am Tag
+city-name: Stadt
+city-desc: Der 5te Level einer Stadt. Benötigt 30 Population.
+hamlet-name: Weiler
+hamlet-desc: Das 2te Level einer Stadt. Benötigt 5 Population.
+keep-name: Burgfried
+keep-desc: Das 2te Level der Belagerungsbasis
+metropolis-name: Metropole
+metropolis-desc: Das 6te Level einer Stadt. Benötigt 50 Population.
+mining_colony-name: Bergbaukolonie
+mining_colony-desc: "Verhindert das Spawnen von Monstern und gibt einen "
+outpost-name: Außenposten
+outpost-desc: Das erste Level einer Belagerungsbasis
+settlement-name: Siedlung
+settlement-desc: Das erste Level einer Stadt.
+town-name: Stadt
+town-desc: Das 4te Level einer Stadt. Benötigt 20 Population.
+village-name: Dorf
+village-desc: Das 3te Level einer Stadt. Benötigt 10 Population.
+bank-name: Bank
+bank-desc: Produziert 192 Macht am Tag. Wechselt 64 Smaragde zu 640 $ und umgekehrt.
+bath_house-name: Badehaus
+bath_house-desc: Produziert 192 Macht am Tag
+capitol-name: Kapitol
+capitol-desc: Die zentrale Struktur einer Stadt. Produziert 768 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+city_hall-name: Stadtverwaltung
+city_hall-desc: Die zentrale Struktur einer Stadt. Produziert 576 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+council_room-name: Ratszimmer
+council_room-desc: Die zentrale Struktur einer Stadt. Produziert 192 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+embassy-name: Botschaft
+embassy-desc: Produziert 192 Macht am Tag. Ist ausserdem ein Heimatpunkt.
+library-name: Bibliothek
+library-desc: Produziert 192 Macht am Tag. Generiert 2 Erfahrungsfläschchen alle 15 Minuten.
+purifier-name: Reiniger
+purifier-desc: Reinigt alle 15 Minuten verrottetes Fleisch zu Leder und giftige Kartoffeln zu
+  Kartoffeln.
+smithy-name: Schmiede
+smithy-desc: Rechtsklick auf den Eisenblock um Items zu reparieren. Erzeugt 192 Macht am Tag
+town_hall-name: Rathaus
+town_hall-desc: Die zentrale Struktur einer Stadt. Produziert 384 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+warehouse-name: Warenhaus
+warehouse-desc: Verteilt Items aus seinen Kisten zu Regionen die sie benötigen.
+item-jade-name: Jade
+item-jade-desc: Tausche 16 Jade an einem Jadeshop zu 1000 $
