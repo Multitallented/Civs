@@ -127,9 +127,15 @@ public class PortMenu extends Menu {
             inventory.setItem(8, cvItem1.createItemStack());
         }
 
+        HashSet<Region> regionsAdded = new HashSet<>();
         int i=9;
         for (int k=startIndex; k<returnSet.size() && k<startIndex+36; k++) {
             Region region = returnSet.get(k);
+            if (regionsAdded.contains(region)) {
+                continue;
+            } else {
+                regionsAdded.add(region);
+            }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem1 = regionType.clone();
             cvItem1.setDisplayName(region.getId());

@@ -143,7 +143,9 @@ public class ShopMenu extends Menu {
                         (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
                     continue;
                 }
-                civItem1.getLore().add(folderType.getDisplayName());
+                civItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-name"));
+                civItem1.getLore().add(ChatColor.BLACK + folderType.getDisplayName());
+                civItem1.getLore().addAll(Util.textWrap(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-desc")));
             }
             String maxLimit = civilian.isAtMax(civItem);
             if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
