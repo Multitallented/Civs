@@ -38,7 +38,7 @@ public class MainMenu extends Menu {
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack.getItemMeta() == null) {
+        if (clickedStack == null || clickedStack.getItemMeta() == null) {
             return;
         }
         if (clickedStack.getItemMeta().getDisplayName() == null) {
