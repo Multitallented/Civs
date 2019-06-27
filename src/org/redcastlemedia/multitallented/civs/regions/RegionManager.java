@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -710,6 +711,9 @@ public class RegionManager {
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region != null) {
             removeCheckedRegion(region);
+            if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
+                WarehouseEffect.getInstance().refreshChest(region, location);
+            }
         }
     }
     public void removeCheckedRegion(Region region) {
