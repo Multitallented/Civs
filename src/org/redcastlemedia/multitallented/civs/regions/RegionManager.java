@@ -342,7 +342,7 @@ public class RegionManager {
 
     private Region findRegion(int index1, int index2, Location location, int index) {
         UUID worldUuid = location.getWorld().getUID();
-        for (int i=index1; i<index2; i++) {
+        for (int i=index1; i<=index2; i++) {
             if (i==index) {
                 continue;
             }

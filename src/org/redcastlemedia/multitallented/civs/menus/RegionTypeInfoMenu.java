@@ -118,6 +118,7 @@ public class RegionTypeInfoMenu extends Menu {
         //0 Icon
         CVItem cvItem = regionType.getShopIcon().clone();
         List<String> lore = new ArrayList<>();
+        cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name"));
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
                 ": " + (regionType.getBuildRadiusX() * 2 + 1) + "x" + (regionType.getBuildRadiusZ() * 2 + 1) + "x" + (regionType.getBuildRadiusY() * 2 + 1));
         if (regionType.getEffectRadius() != regionType.getBuildRadius()) {
