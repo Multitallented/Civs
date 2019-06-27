@@ -534,6 +534,15 @@ public final class Util {
         return remainingItems;
     }
 
+    public static boolean isChestEmpty(Inventory inv) {
+        for (ItemStack item : inv.getContents()) {
+            if (item != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean hasOverride(Region region, Civilian civilian) {
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         return hasOverride(region, civilian, town);
