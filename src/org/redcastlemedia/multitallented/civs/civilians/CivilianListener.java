@@ -337,8 +337,9 @@ public class CivilianListener implements Listener {
         }
     }
 
-//    @EventHandler(ignoreCancelled = true)
-//    public void onItemMoveEvent(InventoryMoveItemEvent event) {
+    @EventHandler(ignoreCancelled = true)
+    public void onItemMoveEvent(InventoryMoveItemEvent event) {
+        RegionManager.getInstance().removeCheckedRegion(event.getDestination().getLocation());
 //        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
 //            return;
 //        }
@@ -346,7 +347,7 @@ public class CivilianListener implements Listener {
 //            return;
 //        }
 //        event.setCancelled(true);
-//    }
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDragItem(InventoryDragEvent event) {
