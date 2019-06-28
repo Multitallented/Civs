@@ -147,8 +147,8 @@ public class RegionEffectTests {
         ArrayList<Location> inventoryLocations = new ArrayList<>();
         inventoryLocations.add(TestUtil.blockUnique3.getLocation());
         warehouseEffect.invs.put(warehouse, inventoryLocations);
-        HashMap<Location, Chest> chestMap = new HashMap<>();
-        chestMap.put(TestUtil.blockUnique3.getLocation(), warehouseChest);
+        HashMap<String, Chest> chestMap = new HashMap<>();
+        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest);
         warehouseEffect.availableItems.put(warehouse, chestMap);
 
         TownTests.loadTownTypeHamlet();

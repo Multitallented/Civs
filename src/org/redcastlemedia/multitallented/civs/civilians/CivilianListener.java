@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -393,7 +394,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianClickItem(InventoryClickEvent event) {
-        RegionManager.getInstance().removeCheckedRegion(event.getWhoClicked().getLocation());
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
@@ -402,6 +402,14 @@ public class CivilianListener implements Listener {
                 event.getClickedInventory().equals(event.getWhoClicked().getInventory());
         boolean dragToChest = event.getClickedInventory() != null &&
                 !event.getClickedInventory().equals(event.getWhoClicked().getInventory());
+
+        if (event.getView().getTopInventory().getHolder() instanceof DoubleChest) {
+            DoubleChest doubleChest = (DoubleChest) event.getView().getTopInventory().getHolder();
+            RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getLeftSide()).getLocation());
+            RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getRightSide()).getLocation());
+        } else {
+            RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
+        }
 
         ItemStack stackInQuestion = shiftClick ? event.getCurrentItem() : event.getCursor();
 
