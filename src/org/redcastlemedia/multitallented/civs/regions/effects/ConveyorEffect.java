@@ -112,7 +112,8 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
-        if (disabled || !event.getRegion().getEffects().containsKey(KEY)) {
+        if (disabled || !event.getRegion().getEffects().containsKey(KEY) ||
+                !cacheSpawnPoints.containsKey(event.getRegion())) {
             return;
         }
         Region r = event.getRegion();
@@ -129,18 +130,13 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         handleExistingCarts(r);
 
         //Check if has reagents
-        if (!r.hasUpkeepItems()) {
+        if (!RegionManager.getInstance().hasRegionChestChanged(r)) {
             cacheDestinationRegions.remove(r);
             returnCart(r, true);
             return;
         }
 
-        Location loc = null;
-        if (cacheSpawnPoints.containsKey(r)) {
-            loc = cacheSpawnPoints.get(r);
-        } else {
-            return;
-        }
+        Location loc = cacheSpawnPoints.get(r);
 
         Chest chest = null;
         try {
@@ -241,69 +237,70 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     }
 
     private void handleExistingCarts(Region r) {
-        HashSet<Region> removeMe = new HashSet<>();
-
-        if (carts.containsKey(r)) {
-            StorageMinecart sm = carts.get(r);
-            if (!sm.isValid() || sm.isDead()) {
-                carts.remove(r);
-                return;
-            }
-            if (!Util.isLocationWithinSightOfPlayer(sm.getLocation())) {
-                returnCart(r, true);
-                return;
-            }
-            Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
-            if (region != null && !r.equals(region)) {
-                Chest currentChest = null;
-                try {
-                    currentChest = (Chest) region.getLocation().getBlock().getState();
-                } catch (Exception e) {
-                    return;
-                }
-                HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
-
-                Inventory originInv = null;
-                try {
-                    originInv = ((Chest) carts.get(r).getLocation().getBlock().getState()).getInventory();
-                } catch (Exception e) {
-                }
-                boolean isFull = false;
-                for (ItemStack is : cartInventory) {
-                    if (is == null || is.getType() == Material.AIR) {
-                        continue;
-                    }
-                    try {
-                        if (!isFull) {
-                            if (currentChest.getBlockInventory().firstEmpty() < 0) {
-                                isFull = true;
-                                if (originInv == null || originInv.firstEmpty() < 0) {
-                                    break;
-                                } else {
-                                    originInv.addItem(is);
-                                    sm.getInventory().removeItem(is);
-                                }
-                            }
-                            sm.getInventory().removeItem(is);
-                            currentChest.getInventory().addItem(is);
-                            RegionManager.getInstance().removeCheckedRegion(region);
-                        } else {
-                            sm.getInventory().removeItem(is);
-                            originInv.addItem(is);
-                        }
-                    } catch (NullPointerException npe) {
-                    }
-                }
-                returnCart(r, false);
-                removeMe.add(r);
-                if (!cacheDestinationRegions.containsKey(r)) {
-                    cacheDestinationRegions.put(r, region);
-                }
-            }
+        if (!carts.containsKey(r)) {
+            return;
         }
 
-        for (Region rr : removeMe) {
-            carts.remove(rr);
+        StorageMinecart sm = carts.get(r);
+        if (!sm.isValid() || sm.isDead()) {
+            carts.remove(r);
+            return;
+        }
+
+        if (!Util.isLocationWithinSightOfPlayer(sm.getLocation())) {
+            returnCart(r, true);
+            return;
+        }
+
+        Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
+        if (region == null || r.equals(region)) {
+            return;
+        }
+
+        Chest currentChest = null;
+        try {
+            currentChest = (Chest) region.getLocation().getBlock().getState();
+        } catch (Exception e) {
+            return;
+        }
+        HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
+
+        Inventory originInv = null;
+        try {
+            originInv = ((Chest) carts.get(r).getLocation().getBlock().getState()).getInventory();
+        } catch (Exception e) {
+
+        }
+        boolean isFull = false;
+        for (ItemStack is : cartInventory) {
+            if (is == null || is.getType() == Material.AIR) {
+                continue;
+            }
+            try {
+                if (!isFull) {
+                    if (currentChest.getBlockInventory().firstEmpty() < 0) {
+                        isFull = true;
+                        if (originInv == null || originInv.firstEmpty() < 0) {
+                            break;
+                        } else {
+                            originInv.addItem(is);
+                            sm.getInventory().removeItem(is);
+                        }
+                    }
+                    sm.getInventory().removeItem(is);
+                    currentChest.getInventory().addItem(is);
+                    RegionManager.getInstance().removeCheckedRegion(region);
+                } else {
+                    sm.getInventory().removeItem(is);
+                    originInv.addItem(is);
+                }
+            } catch (NullPointerException npe) {
+            }
+        }
+        returnCart(r, false);
+        carts.remove(r);
+        if (!cacheDestinationRegions.containsKey(r)) {
+            cacheDestinationRegions.put(r, region);
         }
     }
 
