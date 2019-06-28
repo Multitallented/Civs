@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
@@ -419,6 +420,10 @@ public class ProtectionHandler implements Listener {
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             } else {
                 RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
+                checkRelative(clickedBlock, BlockFace.NORTH);
+                checkRelative(clickedBlock, BlockFace.EAST);
+                checkRelative(clickedBlock, BlockFace.SOUTH);
+                checkRelative(clickedBlock, BlockFace.WEST);
             }
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
@@ -450,6 +455,13 @@ public class ProtectionHandler implements Listener {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
+        }
+    }
+
+    private void checkRelative(Block block, BlockFace blockFace) {
+        Block relativeBlock = block.getRelative(blockFace);
+        if (relativeBlock.getType() == Material.CHEST) {
+            RegionManager.getInstance().removeCheckedRegion(relativeBlock.getLocation());
         }
     }
 
