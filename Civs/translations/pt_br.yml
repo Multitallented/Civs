@@ -788,3 +788,37 @@ warehouse-desc: Distribui itens de qualquer um dos seus muitos baús para regiõ
   deles.
 item-jade-name: Jade
 item-jade-desc: Entregue 16 Jades na loja de Jade por $1000
+farms-name: Fazendas
+farms-desc: Todas as estruturas produtoras de comida, animais e materiais naturais.
+towns-name: Centros
+towns-desc: Todas as atualizações, campos de guerra e campos de mineração das cidades.
+shops-name: Lojas
+shops-desc: Lojas para venda de mercadorias ao servidor. Máximo de 3 por jogador.
+utilities-name: Utilidades
+utilities-desc: Todas as mercadorias e estruturas públicas que produzem poder para a cidade.
+housing-name: Habitação
+housing-desc: Construções que aumentam a população máxima das cidades. A maioria das
+  habitações vende comida para o servidor.
+defense-name: Defesa
+defense-desc: Construções que auxiliam na defesa da cidade. Algumas também geram poder.
+quarries-name: Pedreiras
+quarries-desc: Construções que produzem materiais da terra.
+factories-name: Fábricas
+factories-desc: Construções que produzem itens eficientemente. A maioria utilizam ferrovias
+  para entregar itens a outras regiões.
+offense-name: Ofensiva
+offense-desc: Construções que auxiliam em guerras fora de cidades. Incluem máquinas de cerco
+  para destruição de cidades.
+mines-name: Minas
+mines-desc: Construções que produzem minérios e outros materiais valiosos das profundezas
+  da terra.
+woodworks-name: Trabalhos com Madeira
+woodworks-desc: Madeireiras para todos os tipos de madeiras.
+animals-name: Fazendas de Animais
+animals-desc: Fazendas que produzem animais.
+npchousing-name: Habitações de NPC
+npchousing-desc: Construções que proveem habitação e população na forma de aldeões. Essas
+  construções não geram receita e devem ser atualizadas a partir de uma casa
+  normal.
+trading-name: Comércio
+trading-desc: Construções que envolvem comércio entre cidades.
