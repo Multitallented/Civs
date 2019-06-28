@@ -57,6 +57,9 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     long lastTick = 0;
+    @Getter
+    @Setter
+    private HashSet<Integer> failingUpkeeps = new HashSet<>();
 
     @Getter
     @Setter
@@ -765,6 +768,10 @@ public class Region {
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
 
+            if (needsItems) {
+                failingUpkeeps.add(i);
+            }
+
             if (chest == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
                 Block block = getLocation().getBlock();
@@ -800,6 +807,7 @@ public class Region {
                 continue;
             }
             hasItemUpkeep = true;
+            failingUpkeeps.remove(i);
             boolean hasMoney = false;
             if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
                 double payout = regionUpkeep.getPayout();

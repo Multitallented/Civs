@@ -197,13 +197,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         RegionType rt       = (RegionType) ItemManager.getInstance().getItemType(r.getType());
         Chest rChest        = null;
 
-//        if (availableItems.containsKey(r)) {
-//            System.out.println("avai: " + availableItems.get(r).size());
-//        }
-//        if (invs.containsKey(r)) {
-//            System.out.println("invs: " + invs.get(r).size());
-//        }
-
         if (rt == null) {
             return;
         }
@@ -215,7 +208,62 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             rChest = (Chest) r.getLocation().getBlock().getState();
         }
 
-        // Check for excess chests
+        checkExcessChests(r);
+
+        HashSet<Region> deliverTo = new HashSet<>();
+        //Check if any regions nearby need items
+        Town town = TownManager.getInstance().getTownAt(r.getLocation());
+        if (town == null) {
+            return;
+        }
+        for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
+            if (re.getFailingUpkeeps().isEmpty()) {
+                continue;
+            }
+            boolean hasMember = false;
+            for (UUID uuid : r.getOwners()) {
+                if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
+                    continue;
+                }
+                hasMember = true;
+                break;
+            }
+            if (!hasMember) {
+                for (UUID uuid : r.getRawPeople().keySet()) {
+                    if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
+                        continue;
+                    }
+                    hasMember = true;
+                    break;
+                }
+            }
+            if (!hasMember) {
+                continue;
+            }
+            deliverTo.add(re);
+        }
+        for (Region re : deliverTo) {
+            if (re.getLocation().getBlock().getType() != Material.CHEST) {
+                continue;
+            }
+            Chest chest = (Chest) re.getLocation().getBlock().getState();
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
+            if (regionType == null) {
+                continue;
+            }
+            List<List<CVItem>> missingItems = getMissingItems(regionType, chest);
+
+            if (missingItems.isEmpty()) {
+                continue;
+            }
+            moveNeededItems(r, re, missingItems);
+        }
+
+        // To avoid cluttering the center chest, move items to available chests
+        tidyCentralChest(r, rChest);
+    }
+
+    private void checkExcessChests(Region r) {
         if ((!invs.containsKey(r) || invs.get(r).isEmpty()) && Civs.getInstance() != null) {
             System.out.println("load from file");
             // Since there isn't a cached list of chests for this warehouse, retrieve it from the data file
@@ -298,61 +346,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 }
             }
         }
-
-        HashSet<Region> deliverTo = new HashSet<>();
-        //Check if any regions nearby need items
-        Town town = TownManager.getInstance().getTownAt(r.getLocation());
-        if (town == null) {
-            return;
-        }
-        for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
-            boolean hasMember = false;
-            for (UUID uuid : r.getOwners()) {
-                if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
-                    continue;
-                }
-                hasMember = true;
-                break;
-            }
-            if (!hasMember) {
-                for (UUID uuid : r.getPeople().keySet()) {
-                    if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
-                        continue;
-                    }
-                    hasMember = true;
-                    break;
-                }
-            }
-            if (!hasMember) {
-                continue;
-            }
-            for (int i=0; i<regionType.getUpkeeps().size(); i++) {
-                if (!re.hasUpkeepItems(i, false)) {
-                    deliverTo.add(re);
-                    break;
-                }
-            }
-        }
-        for (Region re : deliverTo) {
-            if (re.getLocation().getBlock().getType() != Material.CHEST) {
-                continue;
-            }
-            Chest chest = (Chest) re.getLocation().getBlock().getState();
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
-            if (regionType == null) {
-                continue;
-            }
-            List<List<CVItem>> missingItems = getMissingItems(regionType, chest);
-
-            if (missingItems.isEmpty()) {
-                continue;
-            }
-            moveNeededItems(r, re, missingItems);
-        }
-
-        // To avoid cluttering the center chest, move items to available chests
-        tidyCentralChest(r, rChest);
     }
 
     private void tidyCentralChest(Region r, Chest rChest) {
