@@ -3,7 +3,7 @@ icon: GLOWSTONE
 shop-icon: OAK_LOG
 name: Settlement
 max: 1
-price: 1000
+price: 500
 groups:
 - superregion
 level: 2

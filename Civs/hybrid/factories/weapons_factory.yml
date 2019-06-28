@@ -37,9 +37,9 @@ effects:
 period: 15 # 15 seconds
 upkeep:
   0:
-    reagents:
-    - GUNPOWDER*3
-    - SAND*5
+    input:
+    - GUNPOWDER*2
+    - SAND*2
     output:
     - TNT*1
 
