@@ -804,3 +804,38 @@ warehouse-desc: Distribuye objetos de cualquiera de sus muchos cofres a las regi
   necesitan.
 item-jade-name: Jade
 item-jade-desc: Canjea 16 de Jade en la tienda de Jade por $1000
+farms-name: Granjas
+farms-desc: Todas las estructuras que producen comida, animales, y materiales naturales.
+towns-name: Ciudades
+towns-desc: Todas las mejoras de la ciudad, campamentos de guerra y pueblos mineros.
+shops-name: Tiendas
+shops-desc: Tiendas para vender productos al servidor. 3 máximas por jugador.
+utilities-name: Servicios
+utilities-desc: Todos los bienes públicos y edificios de infraestructura que producen poder
+  para proteger la ciudad.
+housing-name: Viviendas
+housing-desc: Edificios que aumentan la población máxima de las ciudades. La mayoría de las
+  viviendas venden comida al servidor.
+defense-name: Defensa
+defense-desc: Edificios que ayudan en la defensa de una ciudad. Algunos de estos edificios
+  también generan poder.
+quarries-name: Canteras
+quarries-desc: Edificios que producen materiales de la tierra.
+factories-name: Fabricas
+factories-desc: Edificios que fabrican objetos de manera eficiente. La mayoría utiliza
+  vagonetas para entregar objetos a otras regiones.
+offense-name: Ofensa
+offense-desc: Edificios que ayudan en la guerra fuera de las ciudades. Incluye máquinas de
+  asedio para destruir ciudades.
+mines-name: Minas
+mines-desc: Edificios que producen minerales y otros materiales valiosos de las
+  profundidades de la tierra.
+woodworks-name: Aserraderos
+woodworks-desc: Aserraderos para todos los tipos de madera.
+animals-name: Granjas de animales
+animals-desc: Granjas que generan animales
+npchousing-name: Viviendas NPC
+npchousing-desc: Edificios que proporcionan vivienda y población en forma de aldeanos. Estos
+  edificios no generan ingresos y deben mejorarse a partir de viviendas básicas.
+trading-name: Comercio
+trading-desc: Edificios que involucran el comercio entre pueblos.

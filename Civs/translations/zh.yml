@@ -200,7 +200,7 @@ prevent-civs-item-share: 你不能分享Civ的物品
 region-protected: 这片区域受到保护
 region-destroyed: 区域 $1 已被摧毁!
 specify-player-town: 请指定玩家和城镇名
-specify-town-name: 你指定重载名
+specify-town-name: 请设置城镇名
 specify-player-region: 请指定玩家和区域名
 town-not-exist: $1 不是一个城镇
 no-permission-invite: 你没有邀请玩家到 $1 的权限
@@ -639,3 +639,30 @@ warehouse-name: 仓库
 warehouse-desc: 分配物品到有需求的区域内.
 item-jade-name: 玉
 item-jade-desc: 以1000美元的价格在玉器店兑换16翡翠
+farms-name: 农场
+farms-desc: 有关食物、动物和矿物生产的建筑.
+towns-name: 城镇
+towns-desc: 升级城镇、战争营地和矿镇.
+shops-name: 商店
+shops-desc: 出售货物给服务器的商店.每名玩家最多拥有3个商店.
+utilities-name: 公共事业
+housing-name: 住宅
+housing-desc: 住宅可以增加城镇人口上限.大多数住宅可以出售食物给服务器.
+defense-name: 防御工事
+defense-desc: 防御城镇的建筑.一些建筑也可以提供能量.
+quarries-name: 采集场
+quarries-desc: 生产土质材料的建筑.
+factories-name: 工厂
+factories-desc: 高效合成物品的建筑.主要使用铁路来传输物品到其他区域.
+offense-name: 侵略
+offense-desc: 战争建筑.包括破坏城镇的围攻机.
+mines-name: 矿业
+mines-desc: 可以生产矿物和其他稀有物品的建筑.
+woodworks-name: 伐木场
+woodworks-desc: 包含各种木头的伐木场.
+animals-name: 动物农场
+animals-desc: 生成动物的农场.
+npchousing-name: 村民住宅
+npchousing-desc: 为村民提供住宅并视为城镇人口.这些建筑不会生产收入且必须从普通的住宅升级而来.
+trading-name: 贸易
+trading-desc: 进行城镇间交易所需建筑.

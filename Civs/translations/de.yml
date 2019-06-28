@@ -798,3 +798,36 @@ warehouse-name: Warenhaus
 warehouse-desc: Verteilt Items aus seinen Kisten zu Regionen die sie benötigen.
 item-jade-name: Jade
 item-jade-desc: Tausche 16 Jade an einem Jadeshop zu 1000 $
+farms-name: Farmen
+farms-desc: Hier gibt es Gebäude für die Produktion von Essen, Tieren und sonstigen
+  natürlichen Ressourcen.
+towns-name: Städte
+towns-desc: Städte, Upgrades für Städte, Kriegscamps und Bergbaustädte
+shops-name: Shops
+shops-desc: Shops um verschiedenes zu verkaufen. Maximal 3 Stück pro Spieler.
+utilities-name: Nützliches
+utilities-desc: Alle öffentlichen Gebäude und Strukturen die Macht zum Schutze der Stadt
+  erzeugen.
+housing-name: Häuser
+housing-desc: Gebäude die der Stadt Population bringen. Die meisten Häuser verkaufen Essen.
+defense-name: Verteidigungsgebäude
+quarries-name: Gruben
+quarries-desc: Gebäude die erdiges Material fördern.
+factories-name: Fabriken
+factories-desc: Gebäude die Items effizient herstellen. Die meisten nutzen Loren und Schienen
+  um die Ware in andere Regionen zu liefern.
+offense-name: Kriegsgebäude
+offense-desc: Gebäude für den Krieg. Unter anderem Belagerungsmaschinen um feindlichen
+  Städten Macht zu nehmen.
+mines-name: Minen
+mines-desc: Gebäude die Erze und andere wertvolle Materialien abbauen.
+woodworks-name: Holzfarmen
+woodworks-desc: Verschiedene Baumschulen.
+animals-name: Tierfarmen
+animals-desc: Farmen die Tiere spawnen.
+npchousing-name: Dorfbewohner-Häuser
+npchousing-desc: Gebäude die Population in Form von Dorfbewohnern bringe. Diese Gebäude
+  erzeugen kein Einkommen und müssen als Upgrade für normale Häuser gekauft
+  werden.
+trading-name: Handel
+trading-desc: Gebäude die den Handel zwischen Städten fördern.
