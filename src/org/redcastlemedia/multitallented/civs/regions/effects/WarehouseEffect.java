@@ -178,6 +178,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     }
 
     public void refreshChest(Region region, Location location, Chest chest) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {

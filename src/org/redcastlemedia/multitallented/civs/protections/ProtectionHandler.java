@@ -472,6 +472,13 @@ public class ProtectionHandler implements Listener {
         }
     }
 
+    private void checkRelative(Block block, BlockFace blockFace) {
+        Block relativeBlock = block.getRelative(blockFace);
+        if (relativeBlock.getType() == Material.CHEST) {
+            RegionManager.getInstance().removeCheckedRegion(relativeBlock.getLocation());
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onBlockInteract(PlayerInteractEvent event) {
         boolean shouldCancel = handleInteract(event.getClickedBlock(), event.getPlayer());
