@@ -231,7 +231,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //14 set recruiter
-        if (isTown && (isAdmin || ((!viewingSelf || isOwner) &&
+        if (isTown && (isAdmin || (isOwner &&
                 !isVoteOnly && !role.contains("recruiter") && !cantAddOwners))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_INGOT");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-recruiter"));

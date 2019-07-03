@@ -686,7 +686,12 @@ public class Region {
             return true;
         }
         Block block = location.getBlock();
-        BlockState state = block.getState();
+        BlockState state = null;
+        try {
+            state = block.getState();
+        } catch (Exception e) {
+            return needsReagentsOrInput();
+        }
         if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
         }
