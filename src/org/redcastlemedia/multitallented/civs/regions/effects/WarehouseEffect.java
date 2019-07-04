@@ -172,6 +172,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         try {
             state = (Chest) block.getState();
         } catch (Exception e) {
+            e.printStackTrace();
             return;
         }
         refreshChest(region, location, state);
@@ -275,7 +276,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
     private void checkExcessChests(Region r) {
         if ((!invs.containsKey(r) || invs.get(r).isEmpty()) && Civs.getInstance() != null) {
-            System.out.println("load from file");
             // Since there isn't a cached list of chests for this warehouse, retrieve it from the data file
             File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
             if (!dataFolder.exists()) {
@@ -378,6 +378,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             try {
                 currentChest = (Chest) block.getState();
             } catch (Exception e) {
+                e.printStackTrace();
                 continue;
             }
             if (currentChest.equals(rChest)) {

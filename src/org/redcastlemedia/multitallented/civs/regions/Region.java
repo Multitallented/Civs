@@ -690,6 +690,7 @@ public class Region {
         try {
             state = block.getState();
         } catch (Exception e) {
+            e.printStackTrace();
             return needsReagentsOrInput();
         }
         if (!(state instanceof Chest)) {
@@ -787,6 +788,7 @@ public class Region {
                         chest = (Chest) state;
                     }
                 } catch (ConcurrentModificationException e) {
+                    e.printStackTrace();
                     BlockState state = block.getState();
                     if (state instanceof Chest) {
                         chest = (Chest) state;
