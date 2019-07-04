@@ -279,6 +279,25 @@ public class ProtectionHandler implements Listener {
         }
     }
 
+    @EventHandler
+    public void onFireSpread(BlockSpreadEvent event) {
+        if (event.getSource().getType() != Material.FIRE) {
+            return;
+        }
+        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), "block_fire");
+        if (shouldDeny) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent event) {
+        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), "block_break");
+        if (shouldDeny) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
