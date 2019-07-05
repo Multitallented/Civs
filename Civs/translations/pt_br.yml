@@ -800,7 +800,6 @@ housing-name: Habitação
 housing-desc: Construções que aumentam a população máxima das cidades. A maioria das
   habitações vende comida para o servidor.
 defense-name: Defesa
-defense-desc: Construções que auxiliam na defesa da cidade. Algumas também geram poder.
 quarries-name: Pedreiras
 quarries-desc: Construções que produzem materiais da terra.
 factories-name: Fábricas
@@ -822,3 +821,13 @@ npchousing-desc: Construções que proveem habitação e população na forma de
   normal.
 trading-name: Comércio
 trading-desc: Construções que envolvem comércio entre cidades.
+fireworks_factory-name: Fábrica de Fogos de Artifício
+fireworks_factory-desc: Cria estrelas de fogo de artifício sem consumir pólvora
+admin-name: Admin
+admin-desc: Itens apenas para admins
+house-evolve-name: Casa Evoluir
+house-evolve-desc: Casas evoluídas escondidas
+trade-mines-name: Minas Comerciais
+trade-mines-desc: Minas que produzem itens para serem vendidos em outras cidades.
+evolve-name: Evoluir
+evolve-desc: Formas evoluídas ocultas de vários edifícios.
