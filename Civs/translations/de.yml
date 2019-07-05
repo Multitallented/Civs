@@ -831,3 +831,14 @@ npchousing-desc: Gebäude die Population in Form von Dorfbewohnern bringe. Diese
   werden.
 trading-name: Handel
 trading-desc: Gebäude die den Handel zwischen Städten fördern.
+fireworks_factory-name: Feuerwerksfabrik
+fireworks_factory-desc: Erzeugt Feuerwerksterne, ohne Schießpulver zu konsumieren
+admin-name: Admin
+admin-desc: Nur für Admin
+house-evolve-name: Haus entwickeln
+house-evolve-desc: Versteckte weiterentwickelte Formen von Wohngebäuden
+trade-mines-name: Handelsminen
+trade-mines-desc: Minen, die Gegenstände produzieren, die in anderen Städten verkauft werden
+  sollen.
+evolve-name: Entwickeln
+evolve-desc: Versteckte entwickelte Formen verschiedener Gebäude

@@ -32,6 +32,12 @@ vote-member: Szavazz a következő vezetőre
 capitalism-voting-cost: "Plusz szavazat ára: $1"
 voted: Szavaztál $1-ra/re
 gov-type-change: $1 megváltoztatta az államformát $2-ról/ről$3-ra/re
+cant-change-gov-type-daily: Nem változtathatod meg a városod államformáját egy nap többször.
+revolt: Lázadás
+revolt-desc: "Kattints ide, hogy csatlakozz a lázadáshoz $1 ellen. Ára: $2 $3."
+revolt-display: $1 / $2 tag lázad.
+cancel-revolt: Kattints ide, hogy elhagyd a lázadást $1 ellen.
+item-cost: Ennek a műveletnek az ára $1 $2.
 cost-buff: Vissza lett térítve $1 $2 épületekért $3 városban.
 merit-new-owner: Gratulálok! Felülkerekedtél $1-n. Te vagy az új vezető!
 item-locked: Még nem oldottad fel ezt a tárgyat.
@@ -111,22 +117,28 @@ recruiter: Toborzó
 set-owner: Tulajdonos beállítása
 set-member: Tag beállítása
 set-guest: Vendég beállítása
+set-recruiter: Toborzó beállítása
 remove-member: Tag eltávolítása
 leave-town: Város elhagyása
 you-left-town: Elhagytad $1 várost
+invite-sent: Meghívás elküldve
 add-member-region: Hozzáadtak $1-hoz/höz tagként
 member-added-region: $1 tagja a(z) $2 területnek
 owner-description: Tulajdonosok bármit megtehetnek a területükön
 guest-description: Vendégek tudják használni az ajtót és a gombokat
 member-description: Tagok tudják használni és építeni a területet
+recruiter-description: Toborzók meg tudnak hívni játékosokat a városba.
 remove-member-region: Már nem vagy tagja a $1 területnek
 member-removed-region: $1 már nem a tagja a(z) $2 területnek
 add-owner-region: Tulajdonosa lettél a(z) $1 területnek
 owner-added-region: $1 be lett állítva tulajdonosként a(z) $2 területen
+add-recruiter-region: $1 toborzója lettél.
+recruiter-added-region: $1 a toborzója lett $2-nak/nek
 add-guest-region: Vendég lettél a(z) $1 területnek
 guest-added-region: $1 be lett állítva vendégként a(z) $2 területen
 invite-member-region: Tagja lettél a(z) $1 területnek
 member-invited-region: $1 hozzá lett adva a(z) $2 területnek
+no-invite: Jelenleg nincsenek meghívóid.
 stand-in-region: $1-nak/nek a területben kell állnia
 create: Létrehoz
 click-for-region-limits: Kattints ide a terület határainak listázásához
@@ -446,51 +458,136 @@ npc_shack-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
 raid_porter-desc: Megbízható módja egy ellenséges városba bejutásának. Beüzemelése 4 perc.
 siege_machine-desc: Egy háború alapja. Lassan csökkenti az erőpontjait a közelében lévő városnak.
   Beüzemelése 4 perc.
+altar-name: Oltár
 altar-desc: Teljes gyémántszettet, kardot, íjat, és nyilakat készít $300-ért óránként.
 blindness_trap-desc: Vakságot, lassúságot és gyengeséget ad a nem városlakóknak. Megsemmisíti magát
   30 perc múlva.
+castle-name: Kastély
 castle-desc: Egy vár közepe. Felépítéséhez szükséges az előörs fejlesztése. 6 erőpontot
   generál 15 percenként.
+catapult-name: Katapult
 catapult-desc: TNT-t lő nagy távolságokrara nagy pontossággal.
+command_tent-name: Parancsnoki sátor
 command_tent-desc: Központja egy előörsnek. Segít megostromolni egy várost. 1 erőpontot generál
   15 percenként.
+hunting_lodge-name: Vadász kabin
 hunting_lodge-desc: Ha egy táblát helyezel egy obszidián felé az áldozatod nevével és jobb
   egérgombbal kattintsz az obszidiánra, a játékos közelébe teleportál.
+memorial-name: Emlékmű
 memorial-desc: Egy hely, ahol a város lakosai újraéledhetnek. Megelőzi a sebződést is.
+mobile_hospital-name: Mobil kórház
 mobile_hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak. Megsemmisíti magát 30 perc
   után.
 temp_arrow_trap-desc: Nyilakat lő a közelében álló nem városlakókra. Megsemmisíti magát 15 perc után.
+clay_quarry-name: Agyag bánya
 clay_quarry-desc: Agyagot termel automatikusan.
+cobble_quarry-name: Zúzottkő bánya
 cobble_quarry-desc: Zúzottkövet termel 30 másodpercenként.
+cobble_grinder-name: Zúzottkő örlőgép
+cobble_grinder-desc: Zúzottkövet gyárt  minden 30 másodpercben. Helyezz el egy ládás minecart-ot a
+  ládában. Építs utat sínből a Zúzottkő örlőgéptől a célhoz. Helyezz el egy
+  leejtős elektromos sínt a kezdőpontba.
+dirt_quarry-name: Föld bánya
 dirt_quarry-desc: Földet termel 30 másodpercenként.
+red_sand_pit-name: Vörös homok gödör
 red_sand_pit-desc: Vörös homokot termel 30 másodpercenként.
+sand_pit-name: Homok gödör
 sand_pit-desc: Homokot termel 30 másodpercenként.
+sifter-name: Rosta
 sifter-desc: Földet szitál, hogy értékes tárgyakat találjon.
+jade_shop-name: Jade bolt
 jade_shop-desc: 144 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
   ahol van Jade bánya.
+coal_shop-name: Szén bolt
 coal_shop-desc: 144 db szenet ad el a szervernek napi $432-ért.
+diamond_shop-name: Gyémánt bolt
 diamond_shop-desc: 24 db gyémántot ad el a szervernek napi $1536-ért.
+flower_shop-name: Virág bolt
 flower_shop-desc: Virágokat ad el a szervernek napi $288-ért.
+gold_shop-name: Arany bolt
 gold_shop-desc: 288 db aranyat ad el a szervernek napi $672-ért.
+iron_shop-name: Vas bolt
 iron_shop-desc: 288 db vasat ad el a szervernek napi $576-ért.
+leather_shop-name: Bőr bolt
 leather_shop-desc: Bőrt ad el a szervernek napi $360-ért.
+city-name: Nagyváros
+city-desc: Az ötödik szintje a városnak. Szükséges hozzá 30 lakos.
+hamlet-name: Kisfalu
+hamlet-desc: A második szintje a városnak. Szükséges hozzá 5 lakos.
+keep-name: Fejlesztett előörs
 keep-desc: A második szintje az előörsnek.
+metropolis-name: Metropolisz
+metropolis-desc: A hatodik szintje a városnak. Szükséges hozzá 50 lakos.
+mining_colony-name: Bányász kolónia
 mining_colony-desc: Letiltja a szörnyek spawnolását és gyorsítja a bányászatot.
+outpost-name: Előörs
 outpost-desc: Az első szintje az előörsnek.
+settlement-name: Telep
 settlement-desc: Az első szintje a városnak.
+town-name: Város
+town-desc: A negyedik szintje a városnak. Szükséges hozzá 20 lakos.
+village-name: Falu
+village-desc: A harmadik szintje a városnak. Szükséges hozzá 10 lakos.
+bank-name: Bank
 bank-desc: 192 erőpontot generál naponta. 64 db smaragdot ad el $640-ért.
+bath_house-name: Fürdőház
 bath_house-desc: 192 erőpontot generál naponta.
+capitol-name: Kongresszus
 capitol-desc: A város központja. 768 erőpontot generál naponta. Otthon teleportnak is
   használható.
+city_hall-name: Városháza (nagy)
 city_hall-desc: A város központja. 576 erőpontot generál naponta. Otthon teleportnak is
   használható.
+council_room-name: Tanácsháza
 council_room-desc: A város központja. 192 erőpontot generál naponta. Otthon teleportnak is
   használható.
+embassy-name: Követség
 embassy-desc: 192 erőpontot generál naponta. Otthoni teleportként is használható.
+library-name: Könyvtár
 library-desc: 192 erőpontot generál naponta. 2 db XP üveget termel 15 percenként.
+purifier-name: Tisztító
 purifier-desc: Átalakítja a rohadt húst bőrré és eltávolítja a mérget a krumplikról 15
   percenként.
+smithy-name: Kovácsműhely
 smithy-desc: Eszközöket javít jobb egérgombbal kattintással vasblokkra. 192 erőpontot
   generál naponta.
+town_hall-name: Városháza
 town_hall-desc: A város központja. 348 erőpontot generál naponta. Otthon teleportnak is
   használható.
+warehouse-name: Raktár
+warehouse-desc: Elosztja a régiók között a tárgyakat, ahol szükség keletkezik.
+item-jade-name: Jade
+item-jade-desc: Beváltható 16 db Jade a Jade boltban $1000-ért.
+farms-name: Farmok
+farms-desc: Minden, ami ételt, állatokat és természetes  alapanyagokat gyárt.
+towns-name: Városok
+towns-desc: Minden, ami városfejlesztés, háborúhoz táborok és bányászvárosok.
+shops-name: Bolt
+shops-desc: A boltok tárgyakat adnak el a szervernek. Egy játékosnak 3 db lehet csak.
+utilities-name: Közjavak
+utilities-desc: Minden épület, ami erőpontot generál és megvédi a várost.
+housing-name: Lakások
+housing-desc: Épületek, amelyek segítenek a város lakosságát növelni. Legtöbb lakás tud
+  eladni élelmiszereket a szervernek.
+defense-name: Védekezés
+defense-desc: Épületek, amelyek segítik a város védelmét. Néhány épület generál erőpontot is.
+quarries-name: Kőbánya
+quarries-desc: Épületek, amelyek a föld anyagait termelik. Kövek, föld stb.
+factories-name: Gyárak
+factories-desc: Épületek, amelyek hatékonyan gyártanak tárgyakat. Legtöbb síneket használ
+  tárgyak szállításához más régiókból.
+offense-name: Támadás
+offense-desc: Épületek, mely a háborút segítik a városon kívül. Ostromgépeket is tartalmaz
+  városok támadásához.
+mines-name: Bánya
+mines-desc: Épület, amely érceket és más értékes anyagokat generál.
+woodworks-name: Fatelep
+woodworks-desc: Fatelep, mindenféle fára.
+animals-name: Állat farm
+animals-desc: Farm, ahol állatok spawnolnak.
+npchousing-name: NPC ház
+npchousing-desc: Épület, amely lakhatást biztosít és növeli a lakosok számát falusi formájában.
+  Ezek az épületek nem generálnak bevételt és fel kell fejleszteni normális
+  lakásból.
+trading-name: Kereskedőház
+trading-desc: Épület, amelyben városok között kereskedhetünk.

@@ -192,7 +192,7 @@ hunting-players: 警告！ 有人在你所在地区打猎
 target-not-in-world: $1 和你不在同一个世界.
 cant-place-town: "输入 /cv town 城镇名 "
 no-region-type-found: 找不到区域类型 $1
-building-too-big: 你造的 $1 太大了
+building-too-big: 你造的$1太大了
 no-required-blocks: 你未放置建造 $1 所需的方块
 cant-build-on-region: 你不能在 $2 上面建造 $1
 rebuild-required: 你需要在 $2 上面建造 $1
@@ -256,7 +256,7 @@ total-points: "共有点数: $1"
 karma: "业: $1"
 karma-gained: "业: +$1,获得 $2 "
 karma-lost: "业: -$1,失去 $2 "
-ann-limit: "[信息]You have $1 of $2 $3 buildings"
+ann-limit: "[信息] 你拥有$1/ $2座$3建筑."
 ann-achievement: "[信息]打开向导来查看下一个成就"
 ann-town-join: "[信息] 你可以是多个城镇的居民。"
 ann-town-protection: "[信息] 城镇保护土地并且可以在商店内解锁新的建筑."
@@ -265,9 +265,9 @@ ann-make-allies: "[信息] 考虑加入联盟吧. 在社区 > 城镇 >  你可�
 ann-town-low-power: "@{RED}[警告] $1 只有 $2 / $3 点能量了. 建造更多产能的建筑吧."
 ann-bank: "[信息] $1的银行内有 $$2.你可以使用 /cv withdraw $1 量 来取款"
 ann-vote: 别忘了为下一届$1的城主投票。社区 > 你的城镇 > $1 > 查看成员 > 玩家 > 投票
-ann-karma: "@{YELLOW}[注意] $1 在线. 如果你可以杀死 $1, 你就会获得奖励。"
+ann-karma: "@{YELLOW}[提醒] $1在线. 如果你杀死$1, 你就会获得奖励.但请不要恶意PVP哦."
 ann-missing-input: " [信息] 你的 $1 需要物品。 使用城镇向导书来查看需要什么原料。"
-ann-bounty: " [信息] $1 的悬赏为$2。"
+ann-bounty: " [信息] $1的悬赏为$2。"
 tut-default-0: 首先打开向导书，点击蓝图，拿好你的庇护所，然后放置庇护所。
 tut-default-1: 接下来请把 4块面包、32个胡萝卜、32个猪排或32个土豆放到庇护所的箱子里.
 tut-default-2: 庇护所会提供给你食物, 但煤炭商店会给你更多东西. 打开向导, 点击商店, 然后购买煤炭商店.
@@ -302,7 +302,7 @@ tut-merchant-name: 商人
 tut-merchant-0: 加入一个城镇。从居民身上购买一个小屋。一旦你成为了屋主，你就可以在小屋的箱子里放置一些面包。
 tut-merchant-1: 升级房屋可以使你获得更多的钱。请从商店内购买棚屋。
 tut-merchant-2: 加到你的小屋里来使其成为9x9x9的区域，然后在里面放置棚屋箱子。
-tut-merchant-3: 在棚屋箱子内放入384个土偶的。24小时内，你的棚屋会出售所有土豆并升级为1级棚屋。
+tut-merchant-3: 在棚屋箱子内放入384个土豆。24小时内，你的棚屋会出售所有土豆并升级为1级棚屋。
 tut-merchant-4: 购买和建造一个苹果园。然后在苹果园内建造矿车轨道并延伸到你的1级棚屋内。在棚屋内的轨道终点放置倾斜的充能铁轨。最后请在苹果园内放置箱子矿车。
 tut-merchant-5: 是时候再次升级了。购买并在你的1级棚屋内放置一个寓所。
 tut-merchant-6: 寓所可以给予你很多钱，但是房屋可以给你更多钱。请购买并升级你的寓所为房屋。
@@ -646,10 +646,10 @@ towns-desc: 升级城镇、战争营地和矿镇.
 shops-name: 商店
 shops-desc: 出售货物给服务器的商店.每名玩家最多拥有3个商店.
 utilities-name: 公共事业
+utilities-desc: 所有可生成能量保护城镇的公共设施.
 housing-name: 住宅
 housing-desc: 住宅可以增加城镇人口上限.大多数住宅可以出售食物给服务器.
 defense-name: 防御工事
-defense-desc: 防御城镇的建筑.一些建筑也可以提供能量.
 quarries-name: 采集场
 quarries-desc: 生产土质材料的建筑.
 factories-name: 工厂
@@ -666,3 +666,13 @@ npchousing-name: 村民住宅
 npchousing-desc: 为村民提供住宅并视为城镇人口.这些建筑不会生产收入且必须从普通的住宅升级而来.
 trading-name: 贸易
 trading-desc: 进行城镇间交易所需建筑.
+fireworks_factory-name: 烟花工厂
+fireworks_factory-desc: 消耗火药制作烟花火箭.
+admin-name: 管理员
+admin-desc: 管理员特供
+house-evolve-name: 进化之屋
+house-evolve-desc: 隐藏的房屋建筑
+trade-mines-name: 贸易矿
+trade-mines-desc: 可生产出售给其他城镇的矿物
+evolve-name: 进化之屋
+evolve-desc: 隐藏的建筑
