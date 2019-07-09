@@ -82,8 +82,14 @@ public class BlueprintsMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         int i=0;
-        for (String currentName : civilian.getStashItems().keySet()) {
+        boolean saveCiv = false;
+        for (String currentName : new HashMap<>(civilian.getStashItems()).keySet()) {
             CivItem civItem = ItemManager.getInstance().getItemType(currentName);
+            if (civItem == null) {
+                civilian.getStashItems().remove(currentName);
+                saveCiv = true;
+                continue;
+            }
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (!civItem.getItemType().equals(CivItem.ItemType.REGION) && !isTown) {
                 continue;
@@ -102,6 +108,9 @@ public class BlueprintsMenu extends Menu {
             cvItem.setQty(civilian.getStashItems().get(currentName));
             inventory.setItem(i, cvItem.createItemStack());
             i++;
+        }
+        if (saveCiv) {
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
 
         return inventory;

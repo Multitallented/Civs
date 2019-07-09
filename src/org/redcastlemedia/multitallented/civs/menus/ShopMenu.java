@@ -64,7 +64,6 @@ public class ShopMenu extends Menu {
         itemName = CivItem.processItemName(itemName);
         CivItem civItem = itemManager.getItemType(itemName);
         if (civItem == null) {
-            Civs.logger.severe("Error! Unable to find item " + itemName);
             return;
         }
         if (event.getInventory().getItem(0) != null) {

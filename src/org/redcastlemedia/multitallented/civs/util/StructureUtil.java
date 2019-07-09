@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
@@ -38,6 +39,9 @@ public final class StructureUtil {
         }
     }
     public static void showGuideBoundingBox(Player player, Location location, Region region) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         int[] radii = new int[6];
         radii[0] = region.getRadiusXP();
         radii[1] = region.getRadiusZP();
@@ -49,6 +53,9 @@ public final class StructureUtil {
     }
 
     public static void showGuideBoundingBox(Player player, Location location, RegionType regionType) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         int[] radii = new int[6];
         radii[0] = regionType.getBuildRadiusX();
         radii[1] = regionType.getBuildRadiusZ();
@@ -60,6 +67,9 @@ public final class StructureUtil {
     }
 
     public static void showGuideBoundingBox(Player player, Location location, int[] radii) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         if (location.getWorld() == null || Civs.getInstance() == null) {
             return;
         }
@@ -125,12 +135,12 @@ public final class StructureUtil {
             if (Util.isLocationWithinSightOfPlayer(location)) {
                 continue;
             }
-            Block block = location.getBlock();
-            if (block.getType() != Material.RED_STAINED_GLASS &&
-                    block.getType() != Material.LIME_STAINED_GLASS &&
-                    block.getType() != Material.BLUE_STAINED_GLASS) {
-                continue;
-            }
+//            Block block = location.getBlock();
+//            if (block.getType() != Material.RED_STAINED_GLASS &&
+//                    block.getType() != Material.LIME_STAINED_GLASS &&
+//                    block.getType() != Material.BLUE_STAINED_GLASS) {
+//                continue;
+//            }
             player.sendBlockChange(location, Material.AIR.createBlockData());
         }
         boundingBoxes.remove(uuid);
