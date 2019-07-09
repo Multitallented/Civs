@@ -817,6 +817,8 @@ housing-name: Viviendas
 housing-desc: Edificios que aumentan la población máxima de las ciudades. La mayoría de las
   viviendas venden comida al servidor.
 defense-name: Defensa
+defense-desc: Edificios que ayudan en la defensa de un pueblo. Algunos edificios de defensa
+  también generan energía.
 quarries-name: Canteras
 quarries-desc: Edificios que producen materiales de la tierra.
 factories-name: Fabricas

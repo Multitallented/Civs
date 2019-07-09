@@ -811,6 +811,8 @@ utilities-desc: Alle öffentlichen Gebäude und Strukturen die Macht zum Schutze
 housing-name: Häuser
 housing-desc: Gebäude die der Stadt Population bringen. Die meisten Häuser verkaufen Essen.
 defense-name: Verteidigungsgebäude
+defense-desc: Gebäude, die zur Verteidigung einer Stadt beitragen. Einige
+  Verteidigungsgebäude erzeugen auch Energie.
 quarries-name: Gruben
 quarries-desc: Gebäude die erdiges Material fördern.
 factories-name: Fabriken

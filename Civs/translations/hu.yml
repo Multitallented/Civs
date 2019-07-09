@@ -157,6 +157,7 @@ rename-desc: Használd a /cv rename régiNév újNév parancsot
 town-renamed: A városod át lett nevezve $1-ról/ről $2-ra/re
 bounty-set: Fejpénzt tettél $1-ra/re $2-ért
 bounty-bonus: Begyűjtöttél $1 fejpénzt
+allied-bounty: Szövetséges levadászásáért nem jár jutalom.
 add-friend: Barát hozzáadása
 remove-friend: Barát eltávolítása
 friend-added: $1 hozzá lett adva a barátlistádhoz
@@ -305,6 +306,8 @@ tut-warrior-8: Most, hogy megépítetted a bástyád (Castle) vásárolj és ép
 tut-warrior-9: Gratulálok! Most már kiokosodtál a háborús rendszerben. Megcsináltad a harcos
   életpályát.
 tut-builder-name: Építész
+tut-builder-0: Kezdd el az építést egy tanácsszoba (council_room) építésével. Ez a város
+  szíve. Erőpontot generél és 2 lakhatást biztosít
 tut-builder-1: Most építsd meg a tanácsszobát (council_room).
 tut-builder-2: Most, hogy megépítetted a városod szívét, foglald le a területed. Vegyél egy
   telepet (settlement).
@@ -402,6 +405,15 @@ admin_graveyard-desc: Hely, ahol a város lakói újra éledhetnek és biztonsá
 shelter-name: Menedék
 shelter-desc: Egy biztonságos hely, ahol a tárgyaidat tárolhatod és 30 percenként eladhatsz
   vele kenyeret, répát, húst, krumplit.
+arrow_trap-name: Íjásztorony
+arrow_trap-desc: Szint 1 | Hatótáv 15 | Sebzés 30 | Gyorsaság 38 | Szórás 3 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
+arrow_trap_fast-name: Íjásztorony (2. szint)
+arrow_trap_fast-desc: Szint 2 | Hatótáv 19 | Sebzés 34 | Gyorsaság 38 | Szórás 4 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
+arrow_trap_fastest-name: Íjásztorony (3. szint)
+arrow_trap_fastest-desc: Szint 3 | Hatótáv 21 | Sebzés 38 | Gyorsaság 42 | Szórás 3 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
 barracks-name: Kaszárnya
 barracks-desc: 6 házat ad a városhoz és 288 erőpontot generál naponta. Nem építhető olyan
   városba, ahol már egy fogadó áll.
@@ -419,41 +431,211 @@ hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak és 192 erőp
 idol-desc: Sérülési ellenállást, sebzési bónuszt ad a város tagjainak és 192 erőpontot
   generál a városnak naponta.
 jail-name: Börtön
+jail-desc: Egy hely, ahol ideiglenesen csapdába tudod ejteni a városban meghaltakat és
+  192 erőpontot generál a városnak naponta.
 monument-name: Emlékmű
 monument-desc: Sérülési ellenállást, sebzési bónuszt és gyorsaságot ad a város tagjainak és
   192 erőpontot generál a városnak naponta.
 statue-name: Szobor
 statue-desc: Sérülési ellenállást ad a város tagjainak és 192 erőpontot generál a városnak
   naponta.
+arrow_factory-name: Nyílgyár
 arrow_factory-desc: Automatikusan gyárt nyilakat.
 bakery-name: Sütöde
+bakery-desc: Sütiket és tökpitét csinál minden második percben.  Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
 mill-name: Malom
 weapons_factory-name: Fegyvergyár
 weapons_factory-desc: 3 puskaporból és 5 homokból robbanószereket gyárt
+chicken_coop-name: Csirkeól
+chicken_coop-desc: Automatikus csirke farm. Helyezz egy minecart-ot a ládába, építs sínekből utat
+  a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+donkey_farm-name: Szamár farm
 donkey_farm-desc: Szamarakat és nyergeket készít minden órában.
+mule_farm-name: Összvér farm
 mule_farm-desc: Öszvéreket és nyergeket készít minden órában.
+pig_pen-name: Disznóól
 pig_pen-desc: Automatikus malacfarm.
+rabbit_hutch-name: Nyúl ketrec
 rabbit_hutch-desc: Automatikus nyúlfarm.
+ranch-name: Tehén farm
+ranch-desc: Automatikus tehénfarm. Helyezz egy minecart-ot a ládába, építs sínekből utat a
+  célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+sheep_farm-name: Birka farm
 sheep_farm-desc: Automatikus birkafarm.
+stables-name: Istálló
 stables-desc: Lovakat és nyergeket készít minden órában.
+acacia_lumberyard-name: Akácia fatelep
+acacia_lumberyard-desc: Automatikus akácia fa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+birch_lumberyard-name: Nyír fatelep
+birch_lumberyard-desc: Automatikus nyírfa farm. Helyezz egy minecart-ot a ládába, építs sínekből utat
+  a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+dark_oak_lumberyard-name: Sötét tölgy fatelep
+dark_oak_lumberyard-desc: Automatikus sötét tölgyfa farm. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+jungle_lumberyard-name: Trópusifa fatelep
+jungle_lumberyard-desc: Automatikus trópusifa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+oak_lumberyard-name: Tölgy fatelep
+oak_lumberyard-desc: Automatikus tölgyfa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+spruce_lumberyard-name: Fenyő fatelep
+spruce_lumberyard-desc: Automatikus fenyőfa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+apple_orchard-name: Alma farm
+apple_orchard-desc: Automatikus alma farm. Helyezz egy minecart-ot a ládába, építs sínekből utat a
+  célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+carrot_farm-name: Répa farm
+carrot_farm-desc: 16 db répát termel minden ötödik percben. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+cocoa_farm-name: Kakaóbab farm
+cocoa_farm-desc: 16 db kakaóbabot termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+ender_pearl_farm-name: Véggyöngy farm
 ender_pearl_farm-desc: Automatikus véggyöngy farm.
+fishing_hut-name: Halászkunyhó
 fishing_hut-desc: Lazacot, trópusi halat, gömbhalat, tőkehalat termel 5 percenként.
+greenhouse-name: Üvegház
 greenhouse-desc: Virágokat termel automatikusan.
+melon_farm-name: Dinnye farm
+melon_farm-desc: Dinnyét termel minden tizedik percben. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+potato_farm-name: Krumpli farm
 potato_farm-desc: Krumplit és mérgező krumplit termel 5 percenként.
+pumpkin_farm-name: Tök farm
+pumpkin_farm-desc: Tököt termel minden tizedik percben. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+sugar_cane_farm-name: Cukornád farm
+sugar_cane_farm-desc: 16 db cukornádat termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+wheat_farm-name: Búza farm
+wheat_farm-desc: Búzát és halott kórót termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+shack-name: Kalyiba
+shack-desc: 1. szintje a háznak. Bevétele $122 naponta krumpli eladásával.
+hovel-name: Kunyhó
+hovel-desc: 2. szintje a háznak. Bevétele $144 naponta krumpli eladásával. Csak kaliyba
+  fejlesztésével elérhető.
+hovel1-name: Kunyhó1
+hovel1-desc: 2. szintje a háznak. Bevétele $310 naponta krumpli és alma eladásával.
+dwelling-name: Házikó
+dwelling-desc: 3. szintje a háznak. Bevétele $309 naponta krumpli és alma eladásával.
+dwelling1-name: Házikó1
+dwelling1-desc: 3. szintje a háznak. Bevétele $326 naponta krumpli és alma eladásával.
+dwelling2-name: Házikó2
+dwelling2-desc: 3. szintje a háznak. Bevétele $598 naponta krumpli, alma és hal eladásával.
+house-name: Ház
+house-desc: 4. szintje a háznak. Bevétele $491 naponta kenyér és alma eladásával. Csak
+  házikó fejlesztésével elérhető.
+house1-name: Ház1
+house1-desc: 4. szintje a háznak. Bevétele $635 naponta kenyér, alma és hal eladásával.
+house2-name: Ház2
+house2-desc: 4. szintje a háznak. Bevétele $832 naponta kenyér, alma, hal és dinnyeszeletek
+  eladásával.
+chalet-name: Lakás
+chalet-desc: 5. szintje a háznak. Bevétele $548 naponta kenyér és répa eladásával.
+chalet1-name: Lakás1
+chalet1-desc: 5. szintje a háznak. Bevétele $692 naponta kenyér, répa és hal eladásával.
+chalet2-name: Lakás2
+chalet2-desc: 5. szintje a háznak. Bevétele $890 naponta kenyér, hal, répa és dinnyeszeletek
+  eladásával.
+chalet3-name: Lakás3
+chalet3-desc: 5. szintje a háznak. Bevétele $1022 naponta kenyér, hal, répa, süti és
+  dinnyeszeletek eladásával.
+mansion-name: Kúria
+mansion-desc: 6. szintje a háznak. Bevétele $648 naponta kenyér, répa és marhahús
+  eladásával. Csak lakás fejlesztésével elérhető.
+mansion1-name: Kúria1
+mansion1-desc: 6. szintje a háznak. Bevétele $894 naponta kenyér, répa, marhahús és sütik
+  eladásával.
+mansion2-name: Kúria2
+mansion2-desc: 6. szintje a háznak. Bevétele $1167 naponta kenyér, répa, marhahús és sütik
+  eladásával.
+mansion3-name: Kúria3
+mansion3-desc: 6. szintje a háznak. Bevétele $1407 naponta kenyér, répa, marhahús, süti és
+  tej eladásával.
+manor-name: Majorság
+manor-desc: 7. szintje a háznak. Bevétele $1032 naponta aranyrépa, sütik és marhahús
+  eladásával. Csak kúria fejlesztésével érhető el.
+manor1-name: Majorság1
+manor1-desc: 7. szintje a háznak. Bevétele $1276 naponta aranyrépa, sütik, marhahús és tej
+  eladásával.
+manor2-name: Majorság2
+manor2-desc: 7. szintje a háznak. Bevétele $1679 naponta aranyrépa, tökpite, marhahús sütik
+  és tej eladásával.
+manor3-name: Majorság3
+manor3-desc: 7. szintje a háznak. Bevétele $1751 naponta aranyrépa, tökpite, marhahús sütik
+  és tej eladásával.
+villa-name: Villa
+villa-desc: 8. szintje a háznak. Bevétele $1100 naponta aranyrépa, tökpite és marhahús
+  eladásával.
+villa1-name: Villa1
+villa1-desc: 8. szintje a háznak. Bevétele $11397 naponta aranyrépa, tökpite, marhahús és
+  tej eladásával.
+villa2-name: Villa2
+villa2-desc: 8. szintje a háznak. Bevétele $1877 naponta aranyrépa, tökpite, marhahús és
+  aranyalma eladásával.
+estate-name: Kastély
+estate-desc: 9. szintje a háznak. Bevétele $1480 naponta aranyrépa, tökpite és aranyalma
+  eladásával. Csak villa fejlesztésével érhető el.
+estate1-name: Kastély1
+estate1-desc: 9. szintje a háznak. Bevétele $1917 naponta aranyrépa, tökpite, aranyalma és
+  süti eladásával.
+estate2-name: Kastély2
+estate2-desc: 9. szintje a háznak. Bevétele $2397 naponta aranyrépa, aranyalma, tökpite
+  nyúlragu és torta eladásával.
+estate3-name: Kastély3
+estate3-desc: 9. szintje a háznak. Bevétele $2621 naponta aranyrépa, aranyalma, tökpite
+  nyúlragu és torta eladásával.
+jade_mine-name: Jade bánya
 jade_mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
   ahol van Jade bolt.
+coal_mine-name: Szén bánya
+coal_mine-desc: Szenet termel csákányok használatával. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+diamond_mine-name: Gyémánt bánya
 diamond_mine-desc: Gyémántot termel vascsákányok használatával.
+gold_mine-name: Arany bánya
+gold_mine-desc: Aranyat termel vas csákányok használatával. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+gunpowder_mine-name: Puskapor bánya
 gunpowder_mine-desc: Puskaport termel vascsákányok használatával.
+iron_mine-name: Vas bánya
 iron_mine-desc: Vasat termel csákányok használatával.
+lapis_mine-name: Lapis (lazurit) bánya
 lapis_mine-desc: Lazuritot termel vascsákányok használatával.
+marine_mine-name: Tengeri bánya
 marine_mine-desc: Prizmarint termel csákányok használatával.
+obsidian_mine-name: Obsidian bánya
 obsidian_mine-desc: Obszidiánt termel automatikusan.
+quartz_mine-name: Kvarc bánya
 quartz_mine-desc: Kvarcot termel csákányok használatával.
+redstone_mine-name: Vöröskő bánya
+redstone_mine-desc: Vöröskövet termel csákányok használatával. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+npc_chalet-name: NPC Lakás
 npc_chalet-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_dwelling-name: NPC Házikó
 npc_dwelling-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_house-name: NPC Ház
 npc_house-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_hovel-name: NPC Kunyhó
 npc_hovel-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_mansion-name: NPC Kúria
 npc_mansion-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_shack-name: NPC Kunyhó
 npc_shack-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
 raid_porter-desc: Megbízható módja egy ellenséges városba bejutásának. Beüzemelése 4 perc.
 siege_machine-desc: Egy háború alapja. Lassan csökkenti az erőpontjait a közelében lévő városnak.
@@ -570,7 +752,6 @@ housing-name: Lakások
 housing-desc: Épületek, amelyek segítenek a város lakosságát növelni. Legtöbb lakás tud
   eladni élelmiszereket a szervernek.
 defense-name: Védekezés
-defense-desc: Épületek, amelyek segítik a város védelmét. Néhány épület generál erőpontot is.
 quarries-name: Kőbánya
 quarries-desc: Épületek, amelyek a föld anyagait termelik. Kövek, föld stb.
 factories-name: Gyárak
@@ -591,3 +772,11 @@ npchousing-desc: Épület, amely lakhatást biztosít és növeli a lakosok szá
   lakásból.
 trading-name: Kereskedőház
 trading-desc: Épület, amelyben városok között kereskedhetünk.
+admin-name: Admin
+admin-desc: Tárgyak adminoknak
+house-evolve-name: Ház fejlesztést
+house-evolve-desc: Rejtett fejlesztett formái a lakásoknak
+trade-mines-name: Bányák kereskedéshez
+trade-mines-desc: Bányák, amelyek tárgyakat gyártanak, amiket más városban adhatsz el.
+evolve-name: Fejlesztések
+evolve-desc: Rejtett fejlesztett formái bizonyos épületeknek

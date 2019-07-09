@@ -650,6 +650,7 @@ utilities-desc: 所有可生成能量保护城镇的公共设施.
 housing-name: 住宅
 housing-desc: 住宅可以增加城镇人口上限.大多数住宅可以出售食物给服务器.
 defense-name: 防御工事
+defense-desc: 防御性建筑。 一些建筑物也会发电。
 quarries-name: 采集场
 quarries-desc: 生产土质材料的建筑.
 factories-name: 工厂
