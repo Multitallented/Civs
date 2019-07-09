@@ -132,7 +132,7 @@ public final class StructureUtil {
             return;
         }
         for (Location location : locations) {
-            if (Util.isLocationWithinSightOfPlayer(location)) {
+            if (!Util.isLocationWithinSightOfPlayer(location)) {
                 continue;
             }
 //            Block block = location.getBlock();
