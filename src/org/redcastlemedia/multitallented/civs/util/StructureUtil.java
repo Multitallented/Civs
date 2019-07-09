@@ -125,12 +125,12 @@ public final class StructureUtil {
             if (Util.isLocationWithinSightOfPlayer(location)) {
                 continue;
             }
-            Block block = location.getBlock();
-            if (block.getType() != Material.RED_STAINED_GLASS &&
-                    block.getType() != Material.LIME_STAINED_GLASS &&
-                    block.getType() != Material.BLUE_STAINED_GLASS) {
-                continue;
-            }
+//            Block block = location.getBlock();
+//            if (block.getType() != Material.RED_STAINED_GLASS &&
+//                    block.getType() != Material.LIME_STAINED_GLASS &&
+//                    block.getType() != Material.BLUE_STAINED_GLASS) {
+//                continue;
+//            }
             player.sendBlockChange(location, Material.AIR.createBlockData());
         }
         boundingBoxes.remove(uuid);
