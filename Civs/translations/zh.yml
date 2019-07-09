@@ -272,6 +272,7 @@ tut-default-0: 首先打开向导书，点击蓝图，拿好你的庇护所，�
 tut-default-1: 接下来请把 4块面包、32个胡萝卜、32个猪排或32个土豆放到庇护所的箱子里.
 tut-default-2: 庇护所会提供给你食物, 但煤炭商店会给你更多东西. 打开向导, 点击商店, 然后购买煤炭商店.
 tut-default-3: 放置25块羊毛、14个栅栏和两个箱子. 之后这里就成为煤炭商店了.
+tut-default-4: 恭喜！ 您已完成默认教程。 现在选择你的路径。
 tut-warrior-name: 战士
 tut-warrior-0: 首先请购买祭坛. 你可以使用祭坛来获得钻石装备.
 tut-warrior-1: 现在, 放一把铁剑到祭坛箱子内. 如果你拥有 $300, 你就会获得装备.
@@ -650,6 +651,7 @@ utilities-desc: 所有可生成能量保护城镇的公共设施.
 housing-name: 住宅
 housing-desc: 住宅可以增加城镇人口上限.大多数住宅可以出售食物给服务器.
 defense-name: 防御工事
+defense-desc: 防御性建筑。 一些建筑物也会发电。
 quarries-name: 采集场
 quarries-desc: 生产土质材料的建筑.
 factories-name: 工厂

@@ -27,7 +27,7 @@ public class StartTutorialMenu extends Menu {
         CivilianManager civilianManager = CivilianManager.getInstance();
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
 
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (event.getCurrentItem() == null || !(event.getWhoClicked() instanceof Player)) {
             return;
         }
 

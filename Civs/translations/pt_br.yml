@@ -283,6 +283,7 @@ tut-default-1: Em seguida, colete 4 pães, 32 cenouras, 32 bifes ou 32 batatas. 
 tut-default-2: O abrigo paga por comida, mas a loja de carvão paga mais. Abra seu livro, vá
   até a loja e compre a loja de carvão.
 tut-default-3: Coloque 25 lãs, 14 cercas e 2 baús. Em seguida, coloque a loja de carvão.
+tut-default-4: Parabéns! Você concluiu o tutorial padrão. Agora escolha seu caminho.
 tut-warrior-name: Guerreiro
 tut-warrior-0: Primeiro, compre o altar. Você pode usá-lo para obter equipamentos de diamante.
 tut-warrior-1: Agora, ponha uma espada de ferro no baú do altar. Se você tiver $300, receberá
@@ -800,6 +801,8 @@ housing-name: Habitação
 housing-desc: Construções que aumentam a população máxima das cidades. A maioria das
   habitações vende comida para o servidor.
 defense-name: Defesa
+defense-desc: Edifícios que ajudam na defesa de uma cidade. Alguns edifícios de defesa
+  também geram energia.
 quarries-name: Pedreiras
 quarries-desc: Construções que produzem materiais da terra.
 factories-name: Fábricas

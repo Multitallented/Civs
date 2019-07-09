@@ -285,6 +285,7 @@ tut-default-1: Luego, reúne 4 panes, 32 zanahorias, 32 chuletas o 32 papas. Pon
 tut-default-2: El refugio te paga por comida, pero la tienda de carbón paga más. Abre tu
   libro, ve a la tienda y compra la tienda de carbón.
 tut-default-3: Coloca 25 lanas, 14 vallas, y 2 cofres. Después, colca la tienda de carbón.
+tut-default-4: ¡Felicidades! Has completado el tutorial por defecto. Ahora elige tu camino.
 tut-warrior-name: Guerrero
 tut-warrior-0: Primero, compra el altar. Puedes utilizar este altar para obtener equipamiento
   de diamante.
@@ -817,6 +818,8 @@ housing-name: Viviendas
 housing-desc: Edificios que aumentan la población máxima de las ciudades. La mayoría de las
   viviendas venden comida al servidor.
 defense-name: Defensa
+defense-desc: Edificios que ayudan en la defensa de un pueblo. Algunos edificios de defensa
+  también generan energía.
 quarries-name: Canteras
 quarries-desc: Edificios que producen materiales de la tierra.
 factories-name: Fabricas
