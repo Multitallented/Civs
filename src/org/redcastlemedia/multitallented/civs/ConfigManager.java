@@ -116,6 +116,8 @@ public class ConfigManager {
     long announcementPeriod;
     @Getter
     String revoltCost;
+    @Getter
+    boolean useBoundingBox;
 
     public ConfigManager() {
         loadDefaults();
@@ -345,6 +347,7 @@ public class ConfigManager {
             revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
+            useBoundingBox = config.getBoolean("use-region-bounding-box", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -370,6 +373,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useBoundingBox = true;
         revoltCost = "GUNPOWDER*64";
         announcementPeriod = 240;
         useAnnouncements = true;

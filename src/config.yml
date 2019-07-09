@@ -32,6 +32,8 @@ allow-food-heal-in-combat: true
 allow-teleporting-during-combat: false
 #use the class and spell system from Civs
 use-classes-and-spells: false
+#whether or not the glass box should appear to show the region's boundaries
+use-region-bounding-box: true
 points:
   killstreak: 0.1
   killjoy: 0.2
