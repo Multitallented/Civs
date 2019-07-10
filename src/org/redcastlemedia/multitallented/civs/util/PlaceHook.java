@@ -14,6 +14,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class PlaceHook extends PlaceholderExpansion {
 
     private static final String ROOT_ID = "civs";
@@ -137,8 +140,11 @@ public class PlaceHook extends PlaceholderExpansion {
         for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
+                if (town == null) {
+                    continue;
+                }
                 if (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                        !town.getRawPeople().get(civilian.getUuid()).equals("ally")) {
+                        !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
                     return alliance.getName();
                 }
             }
