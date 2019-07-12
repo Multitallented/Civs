@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -315,7 +316,9 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(name.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        String processedName = ChatColor.stripColor(name);
+        return itemTypes.get(processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
 
     public List<CivItem> getItemGroup(String groupName) {
