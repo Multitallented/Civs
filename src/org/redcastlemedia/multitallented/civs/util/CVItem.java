@@ -120,7 +120,7 @@ public class CVItem {
     public static void translateItem(String locale, ItemStack itemStack) {
         String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
         String nameString = ChatColor.stripColor(itemDisplayName
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
         String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + nameString);

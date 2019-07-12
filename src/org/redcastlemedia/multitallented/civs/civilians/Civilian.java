@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -278,12 +279,20 @@ public class Civilian {
 
     public int getCountGroup(String group) {
         int count = 0;
+        HashSet<String> removeThese = new HashSet<>();
         ItemManager itemManager = ItemManager.getInstance();
         for (String currentName : stashItems.keySet()) {
             CivItem item = ItemManager.getInstance().getItemType(currentName);
+            if (item == null) {
+                removeThese.add(currentName);
+                continue;
+            }
             if (item.getGroups().contains(group)) {
                 count += stashItems.get(currentName);
             }
+        }
+        for (String removeThis : removeThese) {
+            stashItems.remove(removeThis);
         }
         for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
             if (is == null || !is.hasItemMeta()) {
@@ -293,7 +302,8 @@ public class Civilian {
             if (displayName == null) {
                 continue;
             }
-            displayName = displayName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+            displayName = ChatColor.stripColor(displayName).replace(
+                    ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
             CivItem item = itemManager.getItemType(displayName);
             if (item == null) {
                 continue;
