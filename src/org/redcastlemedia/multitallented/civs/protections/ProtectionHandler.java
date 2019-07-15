@@ -655,7 +655,7 @@ public class ProtectionHandler implements Listener {
                 type.equals("block_break")) {
             return true;
         }
-        if (pRole == null && role.contains("ally")) {
+        if (pRole == null && (role.contains("ally") || role.contains("member"))) {
             return false;
         }
         if (pRole != null && role.contains(pRole)) {
