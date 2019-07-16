@@ -316,9 +316,9 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(ChatColor.stripColor(name.replace(
-                ConfigManager.getInstance().getCivsItemPrefix(),
-                "").toLowerCase()));
+        String processedName = ChatColor.stripColor(name);
+        return itemTypes.get(processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
 
     public List<CivItem> getItemGroup(String groupName) {

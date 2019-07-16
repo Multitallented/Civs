@@ -158,8 +158,9 @@ public class CivilianListener implements Listener {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String itemName = itemStack.getItemMeta().getDisplayName()
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+        String itemName = processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
         if (civilian.getStashItems().containsKey(itemName)) {
             civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
         } else {

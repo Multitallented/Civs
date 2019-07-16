@@ -52,7 +52,7 @@ public abstract class CivItem extends CVItem {
     }
     public static String processItemName(String input) {
         input = ChatColor.stripColor(input);
-        return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        return input.replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
     }
     public String getDescription(String locale) {
         return LocaleManager.getInstance().getTranslation(locale, getProcessedName().toLowerCase() + "-desc");
@@ -101,11 +101,13 @@ public abstract class CivItem extends CVItem {
     }
 
     public static CivItem getFromItemStack(ItemStack itemStack) {
-        return ItemManager.getInstance().getItemType(itemStack.getItemMeta().getLore().get(1)
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
+        return ItemManager.getInstance().getItemType(processedName
+                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
     public static CivItem getFromItemStack(CVItem cvItem) {
-        return ItemManager.getInstance().getItemType(cvItem.getLore().get(1)
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        String processedName = ChatColor.stripColor(cvItem.getLore().get(1));
+        return ItemManager.getInstance().getItemType(processedName
+                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
 }

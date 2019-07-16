@@ -110,6 +110,7 @@ public class RegionTypeInfoMenu extends Menu {
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
+        String localizedRegionName = localeManager.getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
 
         Map<String, Object> data = new HashMap<>();
         data.put("regionType", regionType);
@@ -205,7 +206,7 @@ public class RegionTypeInfoMenu extends Menu {
                 "build-reqs-title"));
         lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "build-reqs")
-                .replace("$1", regionType.getName()));
+                .replace("$1", localizedRegionName));
         cvItem1.setLore(lore);
         inventory.setItem(6, cvItem1.createItemStack());
 
@@ -229,7 +230,7 @@ public class RegionTypeInfoMenu extends Menu {
                 cvItem2.setDisplayName("Reagents" + i);
                 lore = new ArrayList<>();
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "reagents")
-                        .replace("$1", regionType.getName()));
+                        .replace("$1", localizedRegionName));
                 cvItem2.setLore(lore);
                 inventory.setItem(9 + i * 9, cvItem2.createItemStack());
             }
@@ -240,7 +241,7 @@ public class RegionTypeInfoMenu extends Menu {
                 cvItem3.setDisplayName("Input" + i);
                 lore = new ArrayList<>();
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "upkeep")
-                        .replace("$1", regionType.getName()));
+                        .replace("$1", localizedRegionName));
                 cvItem3.setLore(lore);
                 inventory.setItem(10 + i * 9, cvItem3.createItemStack());
             }
@@ -251,7 +252,7 @@ public class RegionTypeInfoMenu extends Menu {
                 cvItem4.setDisplayName("Output" + i);
                 lore = new ArrayList<>();
                 lore.add(localeManager.getTranslation(civilian.getLocale(), "output")
-                        .replace("$1", regionType.getName()));
+                        .replace("$1", localizedRegionName));
                 cvItem4.setLore(lore);
                 inventory.setItem(11 + i * 9, cvItem4.createItemStack());
             }

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -56,8 +57,9 @@ public class RegionListMenu extends Menu {
             return;
         }
 
-        String regionTypeName = event.getCurrentItem().getItemMeta().getDisplayName()
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        String processedName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
+        String regionTypeName = processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
         event.getWhoClicked().closeInventory();
         event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));

@@ -67,7 +67,7 @@ public class ShopMenu extends Menu {
             return;
         }
         if (event.getInventory().getItem(0) != null) {
-            String parentName = CivItem.processItemName(event.getInventory().getItem(0).getItemMeta().getDisplayName());
+            String parentName = CivItem.processItemName(event.getInventory().getItem(0).getItemMeta().getLore().get(0));
             history += "," + parentName;
         }
         if (civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
@@ -124,7 +124,13 @@ public class ShopMenu extends Menu {
         Player player = Bukkit.getPlayer(civilian.getUuid());
 
         if (parent != null) {
-            inventory.setItem(0, parent.createItemStack());
+            CVItem icon = parent.clone();
+            icon.setDisplayName(localeManager.getTranslation(civilian.getLocale(), parent.getProcessedName() + "-name"));
+            icon.getLore().clear();
+            icon.getLore().add(ChatColor.BLACK + parent.getDisplayName());
+            icon.getLore().addAll(Util.textWrap(localeManager.getTranslation(civilian.getLocale(),
+                    parent.getProcessedName() + "-desc")));
+            inventory.setItem(0, icon.createItemStack());
         }
 
         CVItem cvItem = CVItem.createCVItemFromString("BOOKSHELF");
