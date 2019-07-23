@@ -181,6 +181,10 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         if (Civs.getInstance() == null) {
             return;
         }
+        if (chest == null) {
+            availableItems.get(region).remove(Region.locationToString(location));
+            return;
+        }
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
