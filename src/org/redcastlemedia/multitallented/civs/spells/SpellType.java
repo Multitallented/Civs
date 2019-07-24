@@ -11,7 +11,7 @@ import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
 import java.util.List;

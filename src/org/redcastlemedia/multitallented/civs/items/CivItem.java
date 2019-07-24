@@ -6,9 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class CivItem extends CVItem {

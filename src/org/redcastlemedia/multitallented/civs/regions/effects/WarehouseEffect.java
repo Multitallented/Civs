@@ -25,7 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -180,6 +180,10 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
     public void refreshChest(Region region, Location location, Chest chest) {
         if (Civs.getInstance() == null) {
+            return;
+        }
+        if (chest == null) {
+            availableItems.get(region).remove(Region.locationToString(location));
             return;
         }
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {

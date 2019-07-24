@@ -1,10 +1,9 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import lombok.Getter;

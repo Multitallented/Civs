@@ -2,12 +2,11 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
 
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

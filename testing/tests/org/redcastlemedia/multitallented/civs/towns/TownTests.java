@@ -2,20 +2,13 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -25,8 +18,6 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +25,6 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

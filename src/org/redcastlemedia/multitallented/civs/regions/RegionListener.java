@@ -1,12 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,9 +14,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
@@ -32,7 +24,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class RegionListener implements Listener {
