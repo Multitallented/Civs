@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import org.redcastlemedia.multitallented.civs.util.CVItem;
-
 import java.util.ArrayList;
 import java.util.List;
 

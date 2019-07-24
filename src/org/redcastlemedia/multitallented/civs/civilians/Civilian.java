@@ -27,7 +27,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class Civilian {
 

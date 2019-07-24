@@ -1,6 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.List;
 

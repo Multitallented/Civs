@@ -20,15 +20,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -36,7 +35,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -767,7 +766,7 @@ public class Region {
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
         boolean hadUpkeep = false;
-        Chest chest = null;
+        Inventory chestInventory = null;
         boolean hasItemUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
@@ -778,29 +777,17 @@ public class Region {
                 failingUpkeeps.add(i);
             }
 
-            if (chest == null && needsItems &&
+            if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
-                Block block = getLocation().getBlock();
-                try {
-                    BlockState state = block.getState();
-                    if (state instanceof Chest) {
-                        chest = (Chest) state;
-                    }
-                } catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
-                    BlockState state = block.getState();
-                    if (state instanceof Chest) {
-                        chest = (Chest) state;
-                    }
-                }
+                chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
             }
-            if (needsItems && chest == null) {
+            if (needsItems && chestInventory == null) {
                 continue;
             }
-            boolean containsReagents = chest != null &&
-                    Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory());
-            boolean containsInputs = chest != null &&
-                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory());
+            boolean containsReagents = chestInventory != null &&
+                    Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+            boolean containsInputs = chestInventory != null &&
+                    Util.containsItems(regionUpkeep.getInputs(), chestInventory);
             boolean hasReagents = !needsItems || (containsReagents && containsInputs);
             if (!hasReagents) {
                 i++;
@@ -808,7 +795,7 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chest == null || chest.getBlockInventory().firstEmpty() == -1;
+            boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
@@ -890,9 +877,9 @@ public class Region {
                     TownManager.getInstance().saveTown(town);
                 }
             }
-            if (chest != null) {
-                Util.removeItems(regionUpkeep.getInputs(), chest.getBlockInventory());
-                Util.addItems(regionUpkeep.getOutputs(), chest.getBlockInventory());
+            if (chestInventory != null) {
+                Util.removeItems(regionUpkeep.getInputs(), chestInventory);
+                Util.addItems(regionUpkeep.getOutputs(), chestInventory);
             }
             if (regionUpkeep.getExp() > 0) {
                 exp += regionUpkeep.getExp();
