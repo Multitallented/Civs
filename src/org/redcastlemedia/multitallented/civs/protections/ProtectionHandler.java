@@ -16,6 +16,8 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -24,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -42,6 +45,17 @@ import java.util.Set;
 
 public class ProtectionHandler implements Listener {
 
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+//        System.out.println("chunk unloaded " + event.getChunk().getX() + "/" + event.getChunk().getZ());
+    }
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+//        System.out.println("chunk loaded " + event.getChunk().getX() + "/" + event.getChunk().getZ());
+        UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {

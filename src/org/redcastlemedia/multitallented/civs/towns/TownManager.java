@@ -55,6 +55,7 @@ public class TownManager {
                     loadTown(config, file.getName().replace(".yml", ""));
                 } catch (Exception e) {
                     Civs.logger.warning("Unable to read from towns/" + file.getName());
+                    e.printStackTrace();
                 }
             }
         } catch (NullPointerException npe) {

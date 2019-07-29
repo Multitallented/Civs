@@ -186,6 +186,12 @@ public final class Util {
         return ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0)).equals("starter-book");
     }
 
+    public static boolean isChunkLoadedAt(Location location) {
+        int x = (int) Math.floor(location.getX() / 16);
+        int z = (int) Math.floor(location.getZ() / 16);
+        return location.getWorld().isChunkLoaded(x, z);
+    }
+
     public static String getDefaultColor(String message) {
         String beginningColor = "" + ChatColor.RESET;
         if (message.startsWith("" + ChatColor.COLOR_CHAR)) {

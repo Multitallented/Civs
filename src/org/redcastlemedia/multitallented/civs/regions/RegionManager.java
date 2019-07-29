@@ -291,6 +291,7 @@ public class RegionManager {
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
+            e.printStackTrace();
             return null;
         }
         return region;

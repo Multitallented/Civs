@@ -56,9 +56,9 @@ public class RegionActionMenu extends Menu {
             return;
         }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
-                localeManager.getTranslation(civilian.getLocale(),
-                        "region-type"))) {
+        if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
+                event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "region-type"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
