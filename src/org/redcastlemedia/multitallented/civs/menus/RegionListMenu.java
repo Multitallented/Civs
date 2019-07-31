@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.util.*;
 
@@ -60,6 +61,16 @@ public class RegionListMenu extends Menu {
         String processedName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
         String regionTypeName = processedName.replace(
                 ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
+        CivItem civItem = ItemManager.getInstance().getItemType(regionTypeName);
+        if (civItem instanceof TownType) {
+            TownType townType = (TownType) civItem;
+            event.getWhoClicked().closeInventory();
+            event.getWhoClicked().openInventory(TownTypeInfoMenu.createMenu(civilian, townType));
+            return;
+        }
+        if (!(civItem instanceof RegionType)) {
+            return;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
         event.getWhoClicked().closeInventory();
         event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
