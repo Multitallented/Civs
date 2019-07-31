@@ -118,6 +118,8 @@ public class ConfigManager {
     String revoltCost;
     @Getter
     boolean useBoundingBox;
+    @Getter
+    boolean mobsDropItemsWhenKilledInDenyDamage;
 
     public ConfigManager() {
         loadDefaults();
@@ -348,6 +350,7 @@ public class ConfigManager {
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
+            mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -373,6 +376,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        mobsDropItemsWhenKilledInDenyDamage = false;
         useBoundingBox = true;
         revoltCost = "GUNPOWDER*64";
         announcementPeriod = 240;
