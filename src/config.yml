@@ -22,6 +22,8 @@ jail-time-seconds: 300
 villager-cooldown: 300
 #stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
+#mobs killed in safe zones will not drop items
+stop-mobs-from-dropping-items-in-safe-zones: false
 #cooldown before killing the same player reduces the town power
 death-grace-period-seconds: 60
 #how long a player is considered in combat after taking or dealing damage

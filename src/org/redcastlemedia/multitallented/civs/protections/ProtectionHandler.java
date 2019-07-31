@@ -6,10 +6,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -17,7 +14,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -45,15 +41,8 @@ import java.util.Set;
 
 public class ProtectionHandler implements Listener {
 
-
-    @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-//        System.out.println("chunk unloaded " + event.getChunk().getX() + "/" + event.getChunk().getZ());
-    }
-
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-//        System.out.println("chunk loaded " + event.getChunk().getX() + "/" + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
 
@@ -184,6 +173,21 @@ public class ProtectionHandler implements Listener {
         boolean setCancelled = event.isCancelled() || (!shouldTakeActionFrom && shouldTakeActionTo);
         if (setCancelled) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onMobDeath(EntityDeathEvent event) {
+        if (!ConfigManager.getInstance().isMobsDropItemsWhenKilledInDenyDamage()) {
+            return;
+        }
+        if (!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) {
+            return;
+        }
+        boolean shouldCancel = shouldBlockAction(event.getEntity().getLocation(), null, "deny_damage");
+        if (shouldCancel) {
+            event.getDrops().clear();
+            event.setDroppedExp(0);
         }
     }
 

@@ -50,7 +50,6 @@ public class UnloadedInventoryHandler {
         return getUnloadedChestInventory(Region.locationToString(location));
     }
 
-    // TODO store inventory as a 27 length array of itemstacks
     private Inventory getUnloadedChestInventory(String locationString) {
         Location location = Region.idToLocation(locationString);
         if (Util.isChunkLoadedAt(location)) {
