@@ -26,6 +26,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -408,7 +409,9 @@ public class CivilianListener implements Listener {
             RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getLeftSide()).getLocation());
             RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getRightSide()).getLocation());
         } else {
-            RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
+            if (event.getClickedInventory().getType() != InventoryType.ENDER_CHEST) {
+                RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
+            }
         }
 
         ItemStack stackInQuestion = shiftClick ? event.getCurrentItem() : event.getCursor();
