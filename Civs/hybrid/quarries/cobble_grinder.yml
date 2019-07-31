@@ -33,21 +33,22 @@ effects:
 - block_build
 - conveyor:COBBLESTONE
 
-period: 30
+period: 300
 upkeep:
   0:
     reagents:
     - STONE_PICKAXE
     output:
-    - COBBLESTONE*4
+    - COBBLESTONE*24
   1:
     reagents:
     - IRON_PICKAXE
     output:
-    - COBBLESTONE*8
+    - COBBLESTONE*48
   2:
     reagents:
     - DIAMOND_PICKAXE
     output:
-    - COBBLESTONE*12
+    - COBBLESTONE*64
+    - COBBLESTONE*8
 

@@ -32,11 +32,12 @@ effects:
 - block_liquid
 - block_fire
 
-period: 15 #15 seconds
+period: 300 #5 minutes
 upkeep:
   0:
     reagents:
     - STONE_SHOVEL
     output:
-    - CLAY_BALL*4
+    - CLAY_BALL*64
+    - CLAY_BALL*16
 

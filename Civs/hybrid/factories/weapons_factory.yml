@@ -34,12 +34,12 @@ effects:
 - block_liquid
 - block_fire
 
-period: 15 # 15 seconds
+period: 60 # 1 minute
 upkeep:
   0:
     input:
-    - GUNPOWDER*2
-    - SAND*2
+    - GUNPOWDER*8
+    - SAND*8
     output:
-    - TNT*1
+    - TNT*4
 
