@@ -33,6 +33,9 @@ public class DestroyConfirmationMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getCurrentItem() == null) {
+            return;
+        }
 
         CivilianManager civilianManager = CivilianManager.getInstance();
 

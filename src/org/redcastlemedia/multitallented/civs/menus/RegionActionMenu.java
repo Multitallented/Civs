@@ -42,6 +42,12 @@ public class RegionActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         Region region = (Region) getData(civilian.getUuid(), "region");
 
+        if (region == null) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
