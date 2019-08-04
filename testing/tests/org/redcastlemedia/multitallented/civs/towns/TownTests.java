@@ -277,8 +277,7 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        TownTransitionListener townTransitionListener = new TownTransitionListener();
-        townTransitionListener.onTwoSecondEvent(null);
+        TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
     }
 
@@ -294,8 +293,7 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        TownTransitionListener townTransitionListener = new TownTransitionListener();
-        townTransitionListener.onTwoSecondEvent(null);
+        TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
     }
 
@@ -312,8 +310,7 @@ public class TownTests {
         Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        TownTransitionListener townTransitionListener = new TownTransitionListener();
-        townTransitionListener.onTwoSecondEvent(null);
+        TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
     }
 

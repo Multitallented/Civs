@@ -33,7 +33,7 @@ public final class TownTransitionUtil {
         }
     }
 
-    private static boolean checkTown(Town town) {
+    protected static boolean checkTown(Town town) {
         if (town.isGovTypeChangedToday()) {
             return false;
         }

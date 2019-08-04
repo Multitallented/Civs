@@ -267,6 +267,10 @@ public class ItemManager {
                 biomes.add(Biome.valueOf(s));
             }
         }
+        HashSet<String> worlds = new HashSet<>();
+        if (config.isSet("worlds")) {
+            worlds.addAll(config.getStringList("worlds"));
+        }
         RegionType regionType = new RegionType(
                 name,
                 icon,
@@ -293,7 +297,8 @@ public class ItemManager {
                 config.getStringList("groups"),
                 config.getBoolean("is-in-shop", true),
                 config.getBoolean("rebuild-required", false),
-                config.getInt("level",1));
+                config.getInt("level",1),
+                worlds);
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

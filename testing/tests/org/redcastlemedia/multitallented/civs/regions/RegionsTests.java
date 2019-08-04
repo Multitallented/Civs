@@ -31,6 +31,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -770,7 +771,11 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new DailyScheduler().run();
+        try {
+            new DailyScheduler().run();
+        } catch (SuccessException se) {
+
+        }
         assertEquals(302, town.getPower());
     }
 
