@@ -32,6 +32,8 @@ public class RegionType extends CivItem {
     private List<RegionUpkeep> upkeeps;
     private final long period;
     private final Set<Biome> biomes;
+    @Getter
+    private final HashSet<String> worlds;
 
     @Getter
     private final boolean rebuildRequired;
@@ -61,7 +63,8 @@ public class RegionType extends CivItem {
                       List<String> groups,
                       boolean isInShop,
                       boolean rebuildRequired,
-                      int level) {
+                      int level,
+                      HashSet<String> worlds) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -90,6 +93,7 @@ public class RegionType extends CivItem {
         this.towns = towns;
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
+        this.worlds = worlds;
     }
     public String getName() {
         return name;

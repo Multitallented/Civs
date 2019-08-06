@@ -1,6 +1,6 @@
 type: region
 icon: OAK_SIGN
-name: Town_Hall
+name: City_Hall
 price: 8000
 max: 1
 groups:

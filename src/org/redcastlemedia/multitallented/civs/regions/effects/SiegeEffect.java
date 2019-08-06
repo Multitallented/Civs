@@ -208,6 +208,8 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return false;
         }
 
+        System.out.println(l.getBlock().getRelative(BlockFace.UP).getY() + ":" +
+                l.getWorld().getHighestBlockAt(l).getY());
         if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-blocks-above-chest").replace("$1", regionType.getName()));

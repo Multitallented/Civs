@@ -8,7 +8,7 @@ icon: "BLACK_GLAZED_TERRACOTTA"
 enabled: true
 transition:
   vacate:
-    inactive: 1209600
+    inactive: 1209600 # 2 weeks
     to: ANARCHY
 name:
   en: "Kraterocracy"
