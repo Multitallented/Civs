@@ -156,6 +156,10 @@ public class GovernmentManager {
             Util.promoteWhoeverHasMostMerit(town, false);
         }
 
+        if (governmentType == GovernmentType.IDIOCRACY) {
+            Util.promoteWhoeverHasMostNoise(town, false);
+        }
+
         if (governmentType == GovernmentType.COMMUNISM) {
             HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
             for (UUID uuid : setThesePeople) {

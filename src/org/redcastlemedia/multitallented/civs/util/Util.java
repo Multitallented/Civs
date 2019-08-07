@@ -46,6 +46,10 @@ public final class Util {
 
     }
 
+    public static void promoteWhoeverHasMostNoise(Town town, boolean save) {
+        // TODO
+    }
+
     public static void promoteWhoeverHasMostMerit(Town town, boolean save) {
         UUID lowestOwner = null;
         int lowestOwnerScore = 99999999;

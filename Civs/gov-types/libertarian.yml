@@ -25,22 +25,6 @@ transition:
   4:
     revolt: 51
     to: MERITOCRACY
-name:
-  en: "Libertarian"
-  de: "Libertär"
-  ru: "вольный"
-  pt_br: "Libertário"
-  fr: "Libertaire"
-  es: "Libertario"
-  hu: "Liberalizmus"
-description:
-  en: "No town ownership."
-  es: "No propiedad de la ciudad."
-  fr: "Aucune propriété de la ville."
-  pt_br: "Nenhuma propriedade da cidade."
-  ru: "Нет городской собственности."
-  de: "Kein Stadteigentum."
-  hu: "Nincs tulajdonosa a városnak, nincsenek adók, nincs bank. Bárki jelentkezhet a városba."
 buffs:
   payout:
     percent: 15

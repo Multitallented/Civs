@@ -1,33 +1,27 @@
 ##### BUILT IN #####
-# only town owners can build regions in town
 # town owners can override region ownership
 # town owners can set taxes
 # town owners can withdraw from the bank
+# every week, a new owner is chosen based on the number of
+#  signs they place with their name on them and the number of fireworks they use
 
-icon: "COBBLESTONE"
-enabled: true
+
+icon: "BRICKS"
+enabled: false
 transition:
   0:
-    money-gap: 66
-    to: OLIGARCHY
-  1:
-    revolt: 66
+    revolt: 51
     power: 30
     to: KRATEROCRACY
   2:
-    revolt: 75
+    revolt: 51
     to: LIBERTARIAN
-  3:
-    inactive: 1814400 #3 weeks
-    to: ANARCHY
   4:
     power: 20
-    to: TRIBALISM
+    to: ANARCHY
 buffs:
-  power:
-    percent: 10
   cost:
-    percent: 20
+    percent: 25
     groups:
       - allhousing
       - utility

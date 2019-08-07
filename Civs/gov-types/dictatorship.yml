@@ -22,22 +22,6 @@ transition:
   4:
     power: 20
     to: TRIBALISM
-name:
-  en: "Dictatorship"
-  de: "Diktatur"
-  ru: "диктатура"
-  pt_br: "Ditadura"
-  fr: "Dictature"
-  es: "Dictadura"
-  hu: "Diktatúra"
-description:
-  en: "Town owners manage alliances, can override region and town membership and set taxes."
-  es: "Los propietarios de las ciudades administran alianzas, pueden anular la membresía de la región y la ciudad y establecer impuestos."
-  fr: "Les propriétaires de ville gèrent des alliances, peuvent annuler l'adhésion d'une région ou d'une ville et établir des taxes."
-  pt_br: "Os proprietários de cidades administram alianças, podem substituir a participação na região e na cidade e estabelecer impostos."
-  ru: "Владельцы городов управляют альянсами, могут отменять членство в регионах и городах и устанавливать налоги."
-  de: "Stadtbesitzer verwalten Allianzen, können die Mitgliedschaft in Regionen und Städten außer Kraft setzen und Steuern festlegen."
-  hu: "A város tulajdonosai kezelik a szövetségeket, felül tudják írni a területeket, tagokat tudnak hozzá adni, adókat állítani."
 buffs:
   power:
     percent: 10

@@ -26,22 +26,6 @@ transition:
   4:
     revolt: 51
     to: MERITOCRACY
-name:
-  en: "Libertarian Socialism"
-  de: "Libertärer Sozialismus"
-  ru: "Либертарианский социализм"
-  pt_br: "Socialismo Libertário"
-  fr: "Socialisme libertaire"
-  es: "Socialismo libertario"
-  hu: "Liberális szocializmus"
-description:
-  en: "Libertarian + Socialism"
-  es: "Libertario + socialismo"
-  fr: "Libertaire + socialisme"
-  pt_br: "Libertário + Socialismo"
-  ru: "Либертарианец + социализм"
-  de: "Libertärer + Sozialismus"
-  hu: "Liberalizmus + Szocializmus"
 buffs:
   cooldown:
     percent: 10
