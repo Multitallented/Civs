@@ -390,6 +390,15 @@ public class RegionManager {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
+        if (!regionType.getWorlds().isEmpty() &&
+                !regionType.getWorlds().contains(location.getWorld().getName())) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "region-not-allowed-in-world")
+                            .replace("$1", regionTypeName));
+            return false;
+        }
+
         if (regionType == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
