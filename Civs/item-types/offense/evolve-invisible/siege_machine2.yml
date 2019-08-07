@@ -18,13 +18,14 @@ build-radius: 3 #7x7x7
 effects:
 - block_build
 - block_break
-- drain_power:120.1
+- drain_power:1
 - evolve:siege_machine3.4
 
 towns:
 - outpost
 - keep
 
+period: 120
 upkeep:
   0:
     input:

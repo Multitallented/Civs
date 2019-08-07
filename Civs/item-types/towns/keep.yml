@@ -31,7 +31,7 @@ effects:
 - deny_mob_spawn
 - control_override
 - power_shield
-- potion:HEALTH_BOOST.80,DAMAGE_RESISTANCE.80
+- potion:HEALTH_BOOST.160,DAMAGE_RESISTANCE.160
 
 power: 1028
 max-power: 1028
