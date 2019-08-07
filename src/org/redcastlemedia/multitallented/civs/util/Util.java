@@ -141,25 +141,34 @@ public final class Util {
     }
 
     public static ArrayList<String> textWrap(String input) {
+        final int LINE_LENGTH = 40;
         String prefix = getDefaultColor(input);
-//        prefix = ChatColor.WHITE + prefix;
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
         String[] sends = sendMe.split(" ");
-        String outString = "";
+        String addMe = prefix.equals("§r") ? prefix : "";
         for (String s : sends) {
-            if (outString.length() > 40) {
-                lore.add(outString);
-                outString = "";
-            }
-            if (!outString.equals("")) {
-                outString += prefix + " ";
-            } else {
-                outString += prefix;
-            }
-            outString += s;
+            do {
+                if (s.length() < LINE_LENGTH) {
+                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > LINE_LENGTH) {
+                        lore.add("" + addMe.trim());
+                        addMe = prefix;
+                    }
+                    addMe += s + " ";
+                    s = "";
+                } else {
+                    if (!addMe.equals(prefix) && addMe.length() > 0) {
+                        lore.add("" + addMe.trim());
+                        addMe = prefix;
+                    }
+                    addMe += s.substring(0, LINE_LENGTH - 1);
+                    s = s.substring(LINE_LENGTH - 1);
+                }
+            } while (s.length() > 0);
         }
-        lore.add(outString);
+        if (!addMe.equals(prefix) && addMe.length() > 0) {
+            lore.add("" + addMe.trim());
+        }
         return lore;
     }
 
