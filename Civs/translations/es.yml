@@ -189,6 +189,7 @@ rename-alliance: Renombrar alianza
 rename-alliance-desc: Escribe /cv really $1 [nombreDeLaNuevaAlianza]
 alliance-renamed: $1 ha sido renombrado a $2
 invalid-name: Nombre inválido
+region-not-allowed-in-world: No puedes construir una $1 en este mundo
 last-renamed-by: "Renombrado por última vez por: $1"
 leave-alliance: Dejar alianza
 hunting-players: ¡Cuidado! Alguien está cazando jugadores en tu área.
@@ -233,6 +234,7 @@ raid-target-blocked: Teletransporte de invasión bloqueado.
 raid-porter-warning: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
 raid-remote: Te han dado un objeto para controlar este/a $1
 raid-sign: Necesitas un letrero sobre el cofre con el nombre de la ciudad objetivo
+no-blocks-above-chest: No debe haber bloques encima del cofre central
 invalid-target: Objetivo inválido
 raid-target-inside-region: No se puede establecer una ubicación dentro de una región
 req-build-inside-town: Esta $1 debe ser construida dentro de $2
@@ -642,6 +644,9 @@ estate2-desc: 9º nivel de casa. Gana $2397 por día vendiendo zanahorias dorada
 estate3-name: Finca3
 estate3-desc: 9º nivel de casa. Gana $2621 por día vendiendo zanahorias doradas y manzanas
   doradas, pastel de calabaza, estofado de conejo y tarta.
+inn-name: Posada
+inn-desc: Proporciona 12 alojamientos y un puerto. Útil para agregar personas a la
+  ciudad sin tener que construir viviendas primero.
 jade_mine-name: Mina de Jade
 jade_mine-desc: Crea 16 de jade una vez al día que puede ser vendida usando una tienda de
   jade. No se puede construir en una ciudad con una tienda de jade.

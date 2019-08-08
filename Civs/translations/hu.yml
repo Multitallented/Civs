@@ -186,6 +186,7 @@ rename-alliance: Szövetség átnevezése
 rename-alliance-desc: Használd a /cv really $1 újSzövetségNév parancsot
 alliance-renamed: $1 át lett nevezve $2-ra/re
 invalid-name: Érvénytelen név
+region-not-allowed-in-world: Nem építhetsz $1 ebben a világban
 last-renamed-by: "Előző átnevező: $1"
 leave-alliance: Szövetség elhagyása
 hunting-players: "@{RED}Figyelem! Valaki vadászni szeretne a környékeden."
@@ -231,6 +232,7 @@ raid-target-blocked: Rajtaütés teleport helye blokkolva van.
 raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
 raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
 raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
+no-blocks-above-chest: A középső mellkas felett nem lehetnek blokkok
 invalid-target: Érvénytelen célpont
 raid-target-inside-region: Nem állíthatsz be célpontot területen belül
 req-build-inside-town: $1-t csak $2-n belül lehet építeni
@@ -326,8 +328,8 @@ tut-builder-8: Egy telepbe csak 4 kalyiba tehető. Hogy maximalizáld a lakossá
   kalyibát, majd vásárolj és helyezd el a kunyhót a választott kalyibába.
 tut-builder-9: Most építs egy katapultot. A katapultok elég pontos TNT ágyúk, amelyeket
   használhatsz a támadók ostromgépeinek elpusztításához.
-tut-builder-10: Menj és frissítsd a városod kisfalu szintre. Amint sikerült, építs egy
-  házikót. Minden szintlépéssel növeled a házak szintjét.
+tut-builder-10: Fejleszd a városod kisfalu szintre. Amint sikerült, építs egy házikót. Minden
+  szintlépéssel növeled a házak szintjét.
 tut-builder-11: Fejleszd a városod falura (village), majd építs egy istállót.
 tut-builder-12: Mielőtt fejleszteni tudnád a falvad, fejleszteni kell a tanácsszobát. Vegyél
   majd helyezz le egy városházát a tanácsszobában.
@@ -622,6 +624,9 @@ estate2-desc: 9. szintje a háznak. Bevétele $2397 naponta aranyrépa, aranyalm
 estate3-name: Kastély3
 estate3-desc: 9. szintje a háznak. Bevétele $2621 naponta aranyrépa, aranyalma, tökpite
   nyúlragu és torta eladásával.
+inn-name: Fogadó
+inn-desc: 12 lakhatást biztosít és egy teleportot. Hasznos arra, hogy úgy adj lakosságot
+  a városhoz, hogy ne kelljen külön házakat építeni.
 jade_mine-name: Jade bánya
 jade_mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
   ahol van Jade bolt.
