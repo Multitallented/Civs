@@ -409,7 +409,7 @@ public class CivilianListener implements Listener {
             RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getLeftSide()).getLocation());
             RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getRightSide()).getLocation());
         } else {
-            if (event.getClickedInventory().getType() != InventoryType.ENDER_CHEST) {
+            if (event.getClickedInventory() != null && event.getClickedInventory().getType() != InventoryType.ENDER_CHEST) {
                 RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
             }
         }
