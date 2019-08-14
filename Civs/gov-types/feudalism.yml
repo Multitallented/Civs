@@ -23,22 +23,6 @@ transition:
   4:
     power: 20
     to: TRIBALISM
-name:
-  en: "Feudalism"
-  de: "Feudalismus"
-  ru: "феодализм"
-  pt_br: "Feudalismo"
-  fr: "Féodalisme"
-  es: "Feudalismo"
-  hu: "Feudalizmus"
-description:
-  en: "Dictatorship + Town members can't build regions in town."
-  es: "Dictadura + Los miembros de la ciudad no pueden construir regiones en la ciudad."
-  fr: "Dictature + Les membres de la ville ne peuvent pas construire de régions en ville."
-  pt_br: "Ditadura + Os membros da cidade não podem construir regiões na cidade."
-  ru: "Диктатура + Городские жители не могут строить регионы в городе."
-  de: "Mitglieder von Diktatur + Stadt können keine Regionen in der Stadt errichten."
-  hu: "Diktatúra + Város lakói nem építhetnek a város területein."
 buffs:
   power:
     percent: 10

@@ -16,22 +16,6 @@ transition:
   1:
     revolt: 51
     to: DEMOCRATIC_SOCIALISM
-name:
-  en: "Communism"
-  de: "Kommunismus"
-  ru: "Коммунизм"
-  pt_br: "Comunismo"
-  fr: "Communisme"
-  es: "Comunismo"
-  hu: "Kommunizmus"
-description:
-  en: "Everyone is an owner of everything. All region income is distributed evenly."
-  es: "Todo el mundo es dueño de todo. Todos los ingresos de la región se distribuyen uniformemente."
-  fr: "Tout le monde est propriétaire de tout. Tous les revenus de la région sont répartis de manière égale."
-  pt_br: "Todo mundo é dono de tudo. Toda a renda da região é distribuída uniformemente."
-  ru: "Каждый является владельцем всего. Весь доход региона распределяется равномерно."
-  de: "Jeder ist Eigentümer von allem. Das gesamte Einkommen der Region ist gleichmäßig verteilt."
-  hu: "Mindenki tulajdonosa mindennek a városban. A bevételek egyenlően oszlanak el."
 buffs:
   cooldown:
     percent: 10
