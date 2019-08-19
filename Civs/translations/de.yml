@@ -744,7 +744,7 @@ sand_pit-desc: Erzeugt Sand alle 30 Sekunden.
 sifter-name: Siebstation
 sifter-desc: Siebt Erde um nützliche Items zu finden.
 jade_shop-name: Jadeshop
-jade_shop-desc: Verkauft 144 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
+jade_shop-desc: Verkauft 16 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
   Jademine gebaut werden. Jade ist ein Handelsgut.
 coal_shop-name: Kohlenshop
 coal_shop-desc: Verkauft 144 Kohle für 432 $ am Tag

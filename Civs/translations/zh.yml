@@ -589,7 +589,7 @@ sand_pit-desc: 每30秒合成沙子。
 sifter-name: 筛子
 sifter-desc: 从泥土中筛出有用的物品。
 jade_shop-name: 绿宝石商店
-jade_shop-desc: 每天出售144块绿宝石给给服务器并获得1000元。无法在已经建造了绿宝石矿源的城镇内建造。
+jade_shop-desc: 每天出售16块绿宝石给给服务器并获得1000元。无法在已经建造了绿宝石矿源的城镇内建造。
 coal_shop-name: 煤炭商店
 coal_shop-desc: 每天出售144块煤炭给服务器并获得432元。
 diamond_shop-name: 钻石商店

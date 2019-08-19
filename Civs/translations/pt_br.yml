@@ -733,7 +733,7 @@ sand_pit-desc: Cria areia a cada 30 segundos.
 sifter-name: Peneira
 sifter-desc: Peneire terra para encontrar itens valiosos.
 jade_shop-name: Loja de Jade
-jade_shop-desc: Vende 144 jades para o servidor por $1000 por dia. Não pode ser construída
+jade_shop-desc: Vende 16 jades para o servidor por $1000 por dia. Não pode ser construída
   numa cidade com uma Mina de Jade.
 coal_shop-name: Loja de Carvão
 coal_shop-desc: Vende 144 carvões para o servidor por $432 por dia

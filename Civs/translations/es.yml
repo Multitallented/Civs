@@ -746,7 +746,7 @@ sand_pit-desc: Crea arena cada 30 segundos.
 sifter-name: Filtrador
 sifter-desc: Filtra tierra para encontrar objetos valiosos.
 jade_shop-name: Tienda de jade
-jade_shop-desc: Vende 144 de Jade al servidor por $1000 por día. No se puede construir en una
+jade_shop-desc: Vende 16 de Jade al servidor por $1000 por día. No se puede construir en una
   ciudad con una mina de jade.
 coal_shop-name: Tienda de carbón
 coal_shop-desc: Vende 144 de carbón al servidor por $432 por día

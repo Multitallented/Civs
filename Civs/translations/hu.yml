@@ -724,7 +724,7 @@ sand_pit-desc: Homokot termel 30 másodpercenként.
 sifter-name: Rosta
 sifter-desc: Földet szitál, hogy értékes tárgyakat találjon.
 jade_shop-name: Jade bolt
-jade_shop-desc: 144 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
+jade_shop-desc: 16 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
   ahol van Jade bánya.
 coal_shop-name: Szén bolt
 coal_shop-desc: 144 db szenet ad el a szervernek napi $432-ért.
