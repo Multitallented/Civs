@@ -312,8 +312,8 @@ tut-merchant-6: 寓所可以给予你很多钱，但是房屋可以给你更多�
 tut-merchant-7: 在你的房屋内放置这个面板来将其升级为1级房屋。
 tut-merchant-8: 把这些鲑鱼放到你的1级房屋内来将其升级为2级房屋。
 tut-merchant-9: 现在请建造一个铁商店来增加你的收入。
-tut-merchant-10: 每名玩家最多只能开3个商店。最赚钱的商店是贸易商店。现在请建造绿宝石商店。如果你已经有3个商店的话请拆掉其中一个。
-tut-merchant-11: 恭喜你！你现在可以出售从其他城镇的绿宝石矿源内购买的物品。你的商人生涯已经登峰造极。
+tut-merchant-10: 每名玩家最多只能开3个商店。最赚钱的商店是贸易商店。现在请建造玉商店。如果你已经有3个商店的话请拆掉其中一个。
+tut-merchant-11: 恭喜你！你现在可以出售从其他城镇的玉矿源内购买的物品。你的商人生涯已经登峰造极。
 anarchy-name: 无政府主义
 anarchy-desc: 任何人可以破坏城镇和伤害区域内的成员。没有税收，也没有联盟。
 capitalism-name: 资本主义
@@ -508,8 +508,8 @@ estate3-name: 3级房地产
 estate3-desc: 9级房屋。出售金胡萝卜、南瓜派、兔肉煲、蛋糕和金苹果每天可获得2621元。
 inn-name: 旅馆
 inn-desc: 提供12住宅和一个港口。对于没有住宅而又想要拉人的城镇来说很有用。
-jade_mine-name: 绿宝石矿源
-jade_mine-desc: 每天生成16块绿宝石，这些绿宝石只能用绿宝石商店出售。无法在已经有绿宝石商店的城镇内建造。
+jade_mine-name: 玉矿源
+jade_mine-desc: 每天生成16块玉，这些玉只能用玉商店出售。无法在已经有玉商店的城镇内建造。
 coal_mine-name: 煤炭矿源
 coal_mine-desc: 消耗镐子挖掘煤炭。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 diamond_mine-name: 钻石矿源
@@ -588,8 +588,8 @@ sand_pit-name: 沙坑
 sand_pit-desc: 每30秒合成沙子。
 sifter-name: 筛子
 sifter-desc: 从泥土中筛出有用的物品。
-jade_shop-name: 绿宝石商店
-jade_shop-desc: 每天出售16块绿宝石给给服务器并获得1000元。无法在已经建造了绿宝石矿源的城镇内建造。
+jade_shop-name: 玉商店
+jade_shop-desc: 每天出售16块玉给给服务器并获得1000元。无法在已经建造了玉矿源的城镇内建造。
 coal_shop-name: 煤炭商店
 coal_shop-desc: 每天出售144块煤炭给服务器并获得432元。
 diamond_shop-name: 钻石商店
@@ -642,8 +642,8 @@ town_hall-name: 城镇大厅
 town_hall-desc: 城镇中心的建筑。每天提供384点能量。同时也是城镇之家。
 warehouse-name: 仓库
 warehouse-desc: 分配物品到有需求的区域内.
-item-jade-name: 绿宝石
-item-jade-desc: 以1000元的价格在绿宝石商店兑换16绿宝石
+item-jade-name: 玉
+item-jade-desc: 以1000元的价格在玉商店兑换16玉
 farms-name: 农场
 farms-desc: 有关食物、动物和矿物生产的建筑.
 towns-name: 城镇
