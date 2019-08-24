@@ -459,7 +459,10 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX) {
+                mat == Material.SHULKER_BOX ||
+                mat == Material.COMPOSTER ||
+                mat == Material.BARREL ||
+                mat == Material.BLAST_FURNACE) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, "chest_use");
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
