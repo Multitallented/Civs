@@ -116,6 +116,9 @@ public class RegionListMenu extends Menu {
                 inventory.setItem(index, is);
             }
             index++;
+            if (index > 44) {
+                break;
+            }
         }
 
         return inventory;
