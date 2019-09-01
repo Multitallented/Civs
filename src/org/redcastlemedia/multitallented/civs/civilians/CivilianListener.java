@@ -213,6 +213,7 @@ public class CivilianListener implements Listener {
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
             for (Region r : regionSet) {
+                Menu.clearHistory(player.getUniqueId());
                 player.openInventory(RegionActionMenu.createMenu(civilian, r));
                 return;
             }
@@ -222,6 +223,7 @@ public class CivilianListener implements Listener {
         if (player.getGameMode() == GameMode.SURVIVAL) {
             StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         }
+        Menu.clearHistory(player.getUniqueId());
         player.openInventory(RegionActionMenu.createMenu(civilian, region));
     }
 
@@ -245,17 +247,6 @@ public class CivilianListener implements Listener {
             uuid = UUID.fromString(ChatColor.stripColor(cvItem.getLore().get(0)));
         }
         blockLogger.removeBlock(block.getLocation());
-//        Region region = RegionManager.getInstance()
-//                .getRegionById(Region.blockLocationToString(block.getLocation()));
-//        if (region != null) {
-//            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-//            boolean cancelled = ProtectionHandler.removeRegionIfNotIndestructible(region, regionType, event);
-//            if (cancelled) {
-//                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-//                player.sendMessage(Civs.getPrefix() +
-//                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-//            }
-//        }
         cvItem.setQty(1);
         if (player != null && (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
                 uuid == null || cvItem.getMat() != block.getType() ||
@@ -410,8 +401,13 @@ public class CivilianListener implements Listener {
             RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getRightSide()).getLocation());
         } else {
             if (event.getClickedInventory() != null &&
-                    event.getClickedInventory().getType() != InventoryType.ENDER_CHEST) {
-                RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
+                    event.getClickedInventory().getType() != InventoryType.ENDER_CHEST &&
+                    event.getView().getTopInventory().getType() != InventoryType.ENDER_CHEST) {
+                try {
+                    RegionManager.getInstance().removeCheckedRegion(event.getView().getTopInventory().getLocation());
+                } catch (NullPointerException npe) {
+                    // Doesn't matter if there's an error here
+                }
             }
         }
 

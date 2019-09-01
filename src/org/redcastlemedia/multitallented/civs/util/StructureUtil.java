@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +31,9 @@ public final class StructureUtil {
         HashSet<UUID> removeThese = new HashSet<>();
         for (UUID uuid : boundingBoxes.keySet()) {
             long createdTime = boundingBoxes.get(uuid).getCreationTime();
+            if (createdTime == -1) {
+                continue;
+            }
             if (createdTime + DURATION < System.currentTimeMillis()) {
                 removeThese.add(uuid);
             }
@@ -49,10 +53,13 @@ public final class StructureUtil {
         radii[3] = region.getRadiusZN();
         radii[4] = region.getRadiusYP();
         radii[5] = region.getRadiusYN();
-        showGuideBoundingBox(player, location, radii);
+        showGuideBoundingBox(player, location, radii, false);
     }
 
-    public static void showGuideBoundingBox(Player player, Location location, RegionType regionType) {
+    public static void showGuideBoundingBox(Player player,
+                                            Location location,
+                                            RegionType regionType,
+                                            boolean isInfinite) {
         if (!ConfigManager.getInstance().isUseBoundingBox()) {
             return;
         }
@@ -63,10 +70,10 @@ public final class StructureUtil {
         radii[3] = regionType.getBuildRadiusZ();
         radii[4] = regionType.getBuildRadiusY();
         radii[5] = regionType.getBuildRadiusY();
-        showGuideBoundingBox(player, location, radii);
+        showGuideBoundingBox(player, location, radii, isInfinite);
     }
 
-    public static void showGuideBoundingBox(Player player, Location location, int[] radii) {
+    public static void showGuideBoundingBox(Player player, Location location, int[] radii, boolean isInfinite) {
         if (!ConfigManager.getInstance().isUseBoundingBox()) {
             return;
         }
@@ -90,6 +97,9 @@ public final class StructureUtil {
         double minZ = location.getZ() - radii[3] - 1;
 
         BoundingBox boundingBox = new BoundingBox();
+        if (isInfinite) {
+            boundingBox.setCreationTime(-1);
+        }
 
         for (double x = minX; x <= maxX; x++) {
             setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS, player);
@@ -135,12 +145,6 @@ public final class StructureUtil {
             if (!Util.isLocationWithinSightOfPlayer(location)) {
                 continue;
             }
-//            Block block = location.getBlock();
-//            if (block.getType() != Material.RED_STAINED_GLASS &&
-//                    block.getType() != Material.LIME_STAINED_GLASS &&
-//                    block.getType() != Material.BLUE_STAINED_GLASS) {
-//                continue;
-//            }
             player.sendBlockChange(location, Material.AIR.createBlockData());
         }
         boundingBoxes.remove(uuid);
@@ -164,6 +168,7 @@ public final class StructureUtil {
     }
 
     private static class BoundingBox {
+        @Setter
         private long creationTime;
         private HashSet<Location> locations;
         public BoundingBox() {

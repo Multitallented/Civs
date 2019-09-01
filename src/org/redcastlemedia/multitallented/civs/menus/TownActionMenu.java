@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -254,8 +255,11 @@ public class TownActionMenu extends Menu {
             CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
             cvItem2.setDisplayName(town.getName());
             lore = new ArrayList<>();
-            lore.add(town.getLocation().getWorld().getName() + " " +
-                    (int) town.getLocation().getX() + "x " + (int) town.getLocation().getY() + "y " +
+            World world = town.getLocation().getWorld();
+            String worldName = world == null ? "null" : world.getName();
+            lore.add(worldName + " " +
+                    (int) town.getLocation().getX() + "x " +
+                    (int) town.getLocation().getY() + "y " +
                     (int) town.getLocation().getZ() + "z");
             cvItem2.setLore(lore);
             inventory.setItem(2, cvItem2.createItemStack());
