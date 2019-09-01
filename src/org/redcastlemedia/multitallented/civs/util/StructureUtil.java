@@ -82,7 +82,8 @@ public final class StructureUtil {
         }
         if (boundingBoxes.containsKey(player.getUniqueId())) {
             BoundingBox boundingBox = boundingBoxes.get(player.getUniqueId());
-            if (boundingBox.getCreationTime() + COOLDOWN > System.currentTimeMillis()) {
+            if (boundingBox.getCreationTime() > -1 &&
+                    boundingBox.getCreationTime() + COOLDOWN > System.currentTimeMillis()) {
                 return;
             } else {
                 removeBoundingBox(player.getUniqueId());
