@@ -104,8 +104,15 @@ public class RegionTypeInfoMenu extends Menu {
         return createMenu(civilian, regionType, true);
     }
     public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
+        return createInventory(civilian, regionType, showPrice, false);
+    }
+    public static Inventory createMenuInfinite(Civilian civilian, RegionType regionType) {
+        return createInventory(civilian, regionType, true, true);
+    }
+    private static Inventory createInventory(Civilian civilian, RegionType regionType, boolean showPrice, boolean isInfinite) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType);
+        StructureUtil.removeBoundingBox(civilian.getUuid());
+        StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, true);
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
