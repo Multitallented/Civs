@@ -202,7 +202,7 @@ public class RecipeMenu extends Menu {
                 itemMeta.setLore(lore);
                 is.setItemMeta(itemMeta);
             }
-            if (pIndex < inventorySize) {
+            if (pIndex + 9 < inventorySize) {
                 inv.setItem(pIndex + 9, is);
             } else {
                 break;
