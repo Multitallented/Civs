@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -116,7 +117,7 @@ public class TutorialManager {
     }
 
     public void completeStep(Civilian civilian, TutorialType type, String param) {
-        if (Civs.getInstance() == null) {
+        if (Civs.getInstance() == null || !ConfigManager.getInstance().isUseTutorial()) {
             return;
         }
 
