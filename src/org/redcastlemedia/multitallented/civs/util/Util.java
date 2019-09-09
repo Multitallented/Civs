@@ -141,7 +141,7 @@ public final class Util {
     }
 
     public static ArrayList<String> textWrap(String input) {
-        final int LINE_LENGTH = 40;
+        final int LINE_LENGTH = 25;
         String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
