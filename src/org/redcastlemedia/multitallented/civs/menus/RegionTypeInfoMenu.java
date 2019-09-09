@@ -13,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -111,7 +113,12 @@ public class RegionTypeInfoMenu extends Menu {
     }
     private static Inventory createInventory(Civilian civilian, RegionType regionType, boolean showPrice, boolean isInfinite) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, isInfinite);
+        Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+        if (region == null) {
+            StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, isInfinite);
+        } else {
+            StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType, isInfinite);
+        }
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -294,8 +301,6 @@ public class RegionTypeInfoMenu extends Menu {
                 inventory.setItem(14 + i * 9, cvItem4.createItemStack());
             }
         }
-
-        //TODO finish this stub
 
         return inventory;
     }
