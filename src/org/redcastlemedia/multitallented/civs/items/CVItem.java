@@ -295,9 +295,13 @@ public class CVItem {
                 return false;
             }
             Type mmoType = nbtItem.getType();
-            if (!mmoItemName.equals(mmoType.getName())) {
+            if (!mmoItemType.equalsIgnoreCase(mmoType.getName())) {
                 return false;
             }
+            if (!mmoItemName.equalsIgnoreCase(nbtItem.getString("MMOITEMS_ITEM_ID"))) {
+                return false;
+            }
+            return true;
         }
         if (useDisplayName) {
             boolean nullComparison = getDisplayName() == null;
