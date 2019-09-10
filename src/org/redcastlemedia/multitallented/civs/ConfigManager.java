@@ -247,7 +247,7 @@ public class ConfigManager {
             }
             config.load(configFile);
 
-            blackListWorlds = config.getStringList("blacklist-worlds");
+            blackListWorlds = config.getStringList("black-list-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             explosionOverride = config.getBoolean("explosion-override", false);
