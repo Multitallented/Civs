@@ -193,6 +193,7 @@ public class CivilianListener implements Listener {
         }
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(event.getPlayer().getWorld().getName())) {
+            event.setCancelled(true);
             return;
         }
         Player player = event.getPlayer();
