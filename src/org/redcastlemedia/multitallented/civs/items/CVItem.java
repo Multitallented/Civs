@@ -373,6 +373,8 @@ public class CVItem {
     @Override
     public CVItem clone() {
         CVItem cvItem = new CVItem(mat, qty, (int) chance, displayName, new ArrayList<>(lore));
+        cvItem.mmoItemName = mmoItemName;
+        cvItem.mmoItemType = mmoItemType;
         cvItem.setGroup(group);
         return cvItem;
     }
