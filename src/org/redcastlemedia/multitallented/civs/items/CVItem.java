@@ -2,6 +2,11 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.Indyuce.mmoitems.MMOItems;
+import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.MMOItem;
+import net.Indyuce.mmoitems.api.item.NBTItem;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,8 +30,14 @@ public class CVItem {
     private int qty;
     private final double chance;
     private String displayName = null;
-    @Getter
-    @Setter
+
+    @Getter @Setter
+    private String mmoItemType = null;
+
+    @Setter @Getter
+    private String mmoItemName = null;
+
+    @Getter @Setter
     private String group = null;
     private List<String> lore = new ArrayList<>();
 
@@ -62,9 +73,15 @@ public class CVItem {
     }
 
     public static CVItem createCVItemFromString(String locale, String materialString)  {
+        boolean isMMOItem = materialString.contains("mi:");
+        if (isMMOItem) {
+            materialString = materialString.replace("mi:", "");
+        }
+
         String quantityString = "1";
         String chanceString = "100";
         String nameString = null;
+        String mmoType = "";
         Material mat;
 
         String[] splitString;
@@ -87,10 +104,16 @@ public class CVItem {
                 nameString = splitString[splitString.length -1];
                 materialString = splitString[0];
             } else {
-                mat = getMaterialFromString(materialString);
+                if (isMMOItem) {
+                    mmoType = materialString;
+                    mat = Material.STONE;
+                } else {
+                    mat = getMaterialFromString(materialString);
+                }
                 break;
             }
         }
+
 
         if (mat == null) {
             mat = Material.STONE;
@@ -98,6 +121,29 @@ public class CVItem {
         }
         int quantity = Integer.parseInt(quantityString);
         int chance = Integer.parseInt(chanceString);
+
+        if (isMMOItem) {
+            if (Civs.mmoItems == null) {
+                Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
+                return new CVItem(mat, quantity, chance);
+            }
+            Type mmoItemType = Civs.mmoItems.getTypes().get(mmoType);
+            if (mmoItemType == null) {
+                Civs.logger.severe(Civs.getPrefix() + "MMOItem type " + mmoType + " not found");
+                return new CVItem(mat, quantity, chance);
+            }
+            if (nameString == null) {
+                Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + mmoType + " did not provide item name");
+                return new CVItem(mat, quantity, chance);
+            }
+            MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoItemType, nameString);
+            ItemStack item = mmoItem.newBuilder().build();
+            CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
+                    item.getItemMeta().getLore());
+            cvItem.mmoItemName = nameString;
+            cvItem.mmoItemType = mmoType;
+            return cvItem;
+        }
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
@@ -216,6 +262,12 @@ public class CVItem {
     }
 
     public ItemStack createItemStack() {
+        if (mmoItemType != null && mmoItemName != null && Civs.mmoItems != null) {
+            Type mmoType = Civs.mmoItems.getTypes().get(mmoItemType);
+            MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoType, mmoItemName);
+            return mmoItem.newBuilder().build();
+        }
+
         ItemStack is = new ItemStack(mat, qty);
         if (displayName != null || (lore != null && !lore.isEmpty())) {
             if (!is.hasItemMeta()) {
@@ -237,6 +289,20 @@ public class CVItem {
     }
 
     public boolean equivalentItem(ItemStack iss, boolean useDisplayName) {
+        if (mmoItemType != null && mmoItemName != null) {
+            NBTItem nbtItem = NBTItem.get(iss);
+            if (!nbtItem.hasType()) {
+                return false;
+            }
+            Type mmoType = nbtItem.getType();
+            if (!mmoItemType.equalsIgnoreCase(mmoType.getName())) {
+                return false;
+            }
+            if (!mmoItemName.equalsIgnoreCase(nbtItem.getString("MMOITEMS_ITEM_ID"))) {
+                return false;
+            }
+            return true;
+        }
         if (useDisplayName) {
             boolean nullComparison = getDisplayName() == null;
             boolean hasItemMeta = iss.hasItemMeta();
@@ -257,6 +323,14 @@ public class CVItem {
     }
 
     public boolean equivalentCVItem(CVItem iss, boolean useDisplayName) {
+        if (!ObjectUtils.equals(mmoItemName, iss.getMmoItemName()) ||
+                !ObjectUtils.equals(mmoItemType, iss.getMmoItemType())) {
+            return false;
+        }
+        if (mmoItemType != null) {
+            return true;
+        }
+
         if (useDisplayName) {
             return iss.getMat() == getMat() &&
                     ((getDisplayName() == null && iss.getDisplayName() == null) || getDisplayName().equals(iss.getDisplayName()));
@@ -299,6 +373,8 @@ public class CVItem {
     @Override
     public CVItem clone() {
         CVItem cvItem = new CVItem(mat, qty, (int) chance, displayName, new ArrayList<>(lore));
+        cvItem.mmoItemName = mmoItemName;
+        cvItem.mmoItemType = mmoItemType;
         cvItem.setGroup(group);
         return cvItem;
     }

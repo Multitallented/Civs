@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -32,6 +33,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -322,11 +324,21 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
-        if (!"PlaceholderAPI".equals(event.getPlugin().getName())) {
-            return;
-        }
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if ("PlaceholderAPI".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+        }
+        if ("MMOItems".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
+            Civs.mmoItems = MMOItems.plugin;
+        }
+    }
+
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        if ("MMOItems".equals(event.getPlugin().getName()) &&
+                !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
+            Civs.mmoItems = null;
         }
     }
 

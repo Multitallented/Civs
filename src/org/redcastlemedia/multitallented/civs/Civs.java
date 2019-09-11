@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -42,6 +43,7 @@ public class Civs extends JavaPlugin {
     public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
+    public static MMOItems mmoItems;
     private static Civs civs;
     public static Logger logger;
 
@@ -49,7 +51,7 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
-        setupPlaceholders();
+        setupDependencies();
         setupEconomy();
         setupPermissions();
 
@@ -243,9 +245,12 @@ public class Civs extends JavaPlugin {
             perm = permissionProvider.getProvider();
         }
     }
-    public void setupPlaceholders() {
+    public void setupDependencies() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
+            mmoItems = MMOItems.plugin;
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {

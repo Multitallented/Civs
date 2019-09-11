@@ -69,6 +69,13 @@
         </dependency>
 
         <dependency>
+            <groupId>net.Indyuce.mmoitems</groupId>
+            <artifactId>MMOItems</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
