@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -144,13 +145,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
         Location loc = cacheSpawnPoints.get(r);
 
-        Chest chest = null;
-        try {
-            chest = (Chest) l.getBlock().getState();
-        } catch (Exception e) {
-            return;
-        }
-        Inventory cInv = chest.getInventory();
+        Inventory cInv = UnloadedInventoryHandler.getInstance().getChestInventory(l);
         HashSet<ItemStack> iss = new HashSet<>();
         if (!cInv.contains(Material.CHEST_MINECART) || !cInv.contains(conveyor)) {
             return;
@@ -172,9 +167,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         //If chunk not loaded try using region cache to move directly
         if (!isLocationWithinSightOfPlayer(loc)) {
             if (cacheDestinationRegions.containsKey(r)) {
-                Chest tempChest = (Chest) cacheDestinationRegions.get(r).getLocation().getBlock().getState();
-                if (tempChest.getBlockInventory().firstEmpty() < 0 ||
-                        tempChest.getBlockInventory().firstEmpty() > tempChest.getBlockInventory().getSize() - 3) {
+                Inventory cachedInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
+                if (cachedInventory.firstEmpty() < 0 ||
+                        cachedInventory.firstEmpty() > cachedInventory.getSize() - 3) {
                     return;
                 }
                 for (ItemStack is : iss) {
@@ -182,7 +177,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 }
                 try {
                     for (ItemStack is : iss) {
-                        tempChest.getInventory().addItem(is);
+                        cachedInventory.addItem(is);
                     }
                 } catch (Exception e) {
                 }
@@ -212,12 +207,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         StorageMinecart sm = carts.get(region);
         sm.remove();
         try {
-            Chest chest = (Chest) region.getLocation().getBlock().getState();
-            if (chest.getBlockInventory().firstEmpty() > -1 ||
-                    chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 3) {
-                chest.getBlockInventory().addItem(new ItemStack(Material.CHEST_MINECART));
+            Inventory returnInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
+            if (returnInventory.firstEmpty() > -1 ||
+                    returnInventory.firstEmpty() > returnInventory.getSize() - 3) {
+                returnInventory.addItem(new ItemStack(Material.CHEST_MINECART));
             } else {
-                chest.getBlockInventory().setItem(chest.getBlockInventory().getSize() -1,
+                returnInventory.setItem(returnInventory.getSize() -1,
                         new ItemStack(Material.CHEST_MINECART));
             }
         } catch (Exception e) {
@@ -232,14 +227,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return false;
         }
         Region destinationRegion = cacheDestinationRegions.get(region);
-        Block destinationBlock = destinationRegion.getLocation().getBlock();
-        BlockState state = destinationBlock.getState();
-        if (!(state instanceof Chest)) {
-            return true;
-        }
-        Chest chest = (Chest) state;
-        return chest.getBlockInventory().firstEmpty() < 0 ||
-                chest.getBlockInventory().firstEmpty() > chest.getBlockInventory().getSize() - 3;
+        Inventory destinationInventory = UnloadedInventoryHandler.getInstance()
+                .getChestInventory(destinationRegion.getLocation());
+        return destinationInventory.firstEmpty() < 0 ||
+                destinationInventory.firstEmpty() > destinationInventory.getSize() - 3;
     }
 
     private void handleExistingCarts(Region r) {
@@ -263,20 +254,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        Chest currentChest = null;
-        try {
-            currentChest = (Chest) region.getLocation().getBlock().getState();
-        } catch (Exception e) {
-            return;
-        }
+        Inventory currentInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
         HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
 
-        Inventory originInv = null;
-        try {
-            originInv = ((Chest) carts.get(r).getLocation().getBlock().getState()).getInventory();
-        } catch (Exception e) {
-
-        }
+        Inventory originInv = UnloadedInventoryHandler.getInstance().getChestInventory(carts.get(r).getLocation());
         boolean isFull = false;
         for (ItemStack is : cartInventory) {
             if (is == null || is.getType() == Material.AIR) {
@@ -284,7 +265,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             }
             try {
                 if (!isFull) {
-                    if (currentChest.getBlockInventory().firstEmpty() < 0) {
+                    if (currentInventory.firstEmpty() < 0) {
                         isFull = true;
                         if (originInv == null || originInv.firstEmpty() < 0) {
                             break;
@@ -294,7 +275,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                         }
                     }
                     sm.getInventory().removeItem(is);
-                    currentChest.getInventory().addItem(is);
+                    currentInventory.addItem(is);
                     RegionManager.getInstance().removeCheckedRegion(region);
                 } else {
                     sm.getInventory().removeItem(is);

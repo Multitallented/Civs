@@ -337,6 +337,12 @@ public class TutorialManager {
         if (path == null) {
             return returnList;
         }
+        if (civilian.getTutorialIndex() >= path.getSteps().size()) {
+            civilian.setTutorialIndex(path.getSteps().size() - 1);
+        }
+        if (civilian.getTutorialIndex() < 0) {
+            civilian.setTutorialIndex(0);
+        }
         TutorialStep step = path.getSteps().get(civilian.getTutorialIndex());
         if (step == null) {
             return returnList;
