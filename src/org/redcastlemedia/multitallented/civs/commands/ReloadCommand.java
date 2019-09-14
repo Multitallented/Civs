@@ -16,7 +16,8 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 public class ReloadCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if(commandSender.hasPermission("civs.admin")) {
+        if(commandSender.hasPermission("civs.admin"))
+        {
             CommonScheduler.run = false;
             ConfigManager.getInstance().reload();
             ItemManager.getInstance().reload();
