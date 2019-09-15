@@ -30,6 +30,7 @@ public class ReloadCommand implements CivCommand {
             commandSender.sendMessage(Civs.NAME + " reloaded");
             return true;
         }
+
         else
             {
                 commandSender.sendMessage(ChatColor.RED + "Permission Denied!");
