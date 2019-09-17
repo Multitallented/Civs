@@ -473,38 +473,23 @@ public final class Util {
             double prevChance = 0;
             for (CVItem item : tempItems) {
                 if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
-                    ItemStack is = new ItemStack(item.getMat(), 1);
-                    if (item.getDisplayName() != null) {
-                        ItemMeta im = is.getItemMeta();
-                        im.setDisplayName(item.getDisplayName());
-                        if (item.getLore() != null) {
-                            im.setLore(item.getLore());
-                        }
-                        is.setItemMeta(im);
-                    }
+                    ItemStack is = item.createItemStack();
+                    is.setAmount(1);
                     if (inv == null) {
                         remainingItems.add(is);
                         continue;
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    String displayName = is.hasItemMeta() ? is.getItemMeta().getDisplayName() : null;
-                    List<String> lore = is.hasItemMeta() ? is.getItemMeta().getLore() : null;
                     for (ItemStack iss : inv) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
-                                isa = new ItemStack(is.getType(), max);
+                                isa = item.createItemStack();
+                                isa.setAmount(max);
                             } else {
-                                isa = new ItemStack(is.getType(), amount);
-                            }
-                            if (displayName != null) {
-                                ItemMeta ima = isa.getItemMeta();
-                                ima.setDisplayName(displayName);
-                                if (lore != null) {
-                                    ima.setLore(lore);
-                                }
-                                isa.setItemMeta(ima);
+                                isa = item.createItemStack();
+                                isa.setAmount(amount);
                             }
                             inv.addItem(isa);
                             if (amount > max) {
@@ -514,11 +499,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (iss.getType() == is.getType() &&
-                                iss.getAmount() < iss.getMaxStackSize() &&
-                                ((!iss.hasItemMeta() && !is.hasItemMeta()) ||
-                                        (iss.hasItemMeta() && is.hasItemMeta() &&
-                                                iss.getItemMeta().getDisplayName().equals(is.getItemMeta().getDisplayName())))) {
+                        if (item.equivalentItem(iss)) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());

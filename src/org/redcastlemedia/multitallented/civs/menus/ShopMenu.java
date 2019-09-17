@@ -176,7 +176,12 @@ public class ShopMenu extends Menu {
                         ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));
                 civItem1.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
-            inventory.setItem(i, civItem1.createItemStack());
+            ItemStack itemStack = civItem1.createItemStack();
+            if (civItem1.getMmoItemType() != null) {
+                List<String> lore = itemStack.getItemMeta().getLore();
+                lore.add(0, ChatColor.BLACK + civItem.getProcessedName());
+            }
+            inventory.setItem(i, itemStack);
             i++;
         }
 
