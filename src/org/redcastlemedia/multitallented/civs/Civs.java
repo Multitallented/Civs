@@ -83,6 +83,7 @@ public class Civs extends JavaPlugin {
         StructureUtil.removeAllBoundingBoxes();
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
 
