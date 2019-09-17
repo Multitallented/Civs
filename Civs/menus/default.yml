@@ -1,0 +1,12 @@
+back:
+  icon: REDSTONE_BLOCK
+  name: back-button
+  description: []
+previous:
+  icon: REDSTONE
+  name: prev-button
+  description: []
+next:
+  icon: EMERALD
+  name: next-button
+  description: []
