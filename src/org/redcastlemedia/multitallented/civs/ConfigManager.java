@@ -232,6 +232,11 @@ public class ConfigManager {
         return cvItem;
     }
 
+    public void reload() {
+        File config = new File(Civs.getInstance().getDataFolder(), "config.yml");
+        loadFile(config);
+    }
+
     private void loadFile(File configFile) {
         FileConfiguration config = new YamlConfiguration();
         try {
