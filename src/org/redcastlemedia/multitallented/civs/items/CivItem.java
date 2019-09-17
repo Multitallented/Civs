@@ -74,10 +74,14 @@ public abstract class CivItem extends CVItem {
                    int level) {
         super(material, 1, 100, ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.isPlaceable = isPlaceable;
-        this.shopIcon = new CVItem(shopIcon.getMat(),
-                shopIcon.getQty(),
-                (int) shopIcon.getChance(),
-                ConfigManager.getInstance().getCivsItemPrefix() + name);
+        if (shopIcon.getMmoItemType() == null) {
+            this.shopIcon = new CVItem(shopIcon.getMat(),
+                    shopIcon.getQty(),
+                    (int) shopIcon.getChance(),
+                    ConfigManager.getInstance().getCivsItemPrefix() + name);
+        } else {
+            this.shopIcon = shopIcon;
+        }
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;
