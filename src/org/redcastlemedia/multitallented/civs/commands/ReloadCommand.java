@@ -16,8 +16,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 public class ReloadCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if(commandSender.hasPermission("civs.admin"))
-        {
+        if ((Civs.perm != null && commandSender.hasPermission("civs.admin")) || commandSender.isOp()) {
             CommonScheduler.run = false;
             ConfigManager.getInstance().reload();
             ItemManager.getInstance().reload();
@@ -27,14 +26,11 @@ public class ReloadCommand implements CivCommand {
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
             CommonScheduler.run = true;
-            commandSender.sendMessage(Civs.NAME + " reloaded");
+            commandSender.sendMessage(Civs.getPrefix() + "reloaded");
+            return true;
+        } else {
+            commandSender.sendMessage(ChatColor.RED + "Permission Denied!");
             return true;
         }
-
-        else
-            {
-                commandSender.sendMessage(ChatColor.RED + "Permission Denied!");
-                return true;
-            }
     }
 }
