@@ -1,0 +1,23 @@
+size: auto
+icon:
+  index: 0
+  icon: GOLDEN_SWORD
+rename:
+  index: 2
+  icon: PAPER
+  name: rename-alliance
+  desc: rename-alliance-desc
+last-rename:
+  index: 3
+  # icon is the player's head
+  name: last-renamed-by
+  # desc
+leave-alliance:
+  index: 6
+  icon: BARRIER
+  name: leave-alliance
+  # desc
+back:
+  index: 8
+members:
+  index: 9
