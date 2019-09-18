@@ -1,23 +1,31 @@
-size: auto
-icon:
-  index: 0
-  icon: GOLDEN_SWORD
-rename:
-  index: 2
-  icon: PAPER
-  name: rename-alliance
-  desc: rename-alliance-desc
-last-rename:
-  index: 3
-  # icon is the player's head
-  name: last-renamed-by
-  # desc
-leave-alliance:
-  index: 6
-  icon: BARRIER
-  name: leave-alliance
-  # desc
-back:
-  index: 8
-members:
-  index: 9
+size: 36
+items:
+  icon:
+    index: 0
+    icon: GOLDEN_SWORD
+  rename:
+    index: 2
+    icon: PAPER
+    name: rename-alliance
+    desc: rename-alliance-desc
+  last-rename:
+    index: 3
+    # icon is the player's head
+    name: last-renamed-by
+    # desc
+  leave-alliance:
+    index: 6
+    icon: BARRIER
+    name: leave-alliance
+    # desc
+  back:
+    index: 8
+  prev:
+    index: 9
+  spacer1:
+    index: 10-16
+    icon: LIGHT_BLUE_STAINED_GLASS
+  next:
+    index: 17
+  members:
+    index: 18-35

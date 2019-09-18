@@ -1,6 +1,9 @@
 package org.redcastlemedia.multitallented.civs.menus.alliance;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -12,34 +15,36 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-public class AllianceMenu implements CustomMenu {
-    private int size;
-    private MenuIcon menuIcon;
-    private MenuIcon renameIcon;
-    private MenuIcon lastRenameIcon;
-    private MenuIcon leaveAllianceIcon;
-    private int memberStartIndex;
-    private int backIndex;
+public class AllianceMenu extends CustomMenu {
 
     @Override
     public Inventory createMenu(Civilian civilian) {
-        Alliance alliance = (Alliance) MenuManager.getInstance().getData(civilian.getUuid(), "alliance");
+        Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
+        int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+
         int instanceSize = size;
         if (size == -1) {
             instanceSize = MenuManager.getInventorySize(alliance.getMembers().size()) + 9;
         }
         Inventory inventory = Bukkit.createInventory(null, instanceSize, getKey());
-        inventory.setItem(menuIcon.getIndex(), menuIcon.createCVItem(civilian.getLocale()).createItemStack());
-        inventory.setItem(renameIcon.getIndex(), renameIcon.createCVItem(civilian.getLocale()).createItemStack());
 
-        if (alliance.getLastRenamedBy() != null) {
+        /*if (menuIcon.getIndex().get(0) != -1) {
+            inventory.setItem(menuIcon.getIndex().get(0), menuIcon.createCVItem(civilian.getLocale()).createItemStack());
+        }
+
+        if (renameIcon.getIndex().get(0) != -1) {
+            inventory.setItem(renameIcon.getIndex().get(0), renameIcon.createCVItem(civilian.getLocale()).createItemStack());
+        }
+
+        if (alliance.getLastRenamedBy() != null &&
+                lastRenameIcon.getIndex().get(0) != -1) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(alliance.getLastRenamedBy());
             if (offlinePlayer.getName() != null) {
                 CVItem lastRenameCVItem = lastRenameIcon.createCVItem(civilian.getLocale());
@@ -50,7 +55,7 @@ public class AllianceMenu implements CustomMenu {
                         "last-renamed-by").replace("$1", offlinePlayer.getName()));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
-                inventory.setItem(lastRenameIcon.getIndex(), is);
+                inventory.setItem(lastRenameIcon.getIndex().get(0), is);
             }
         }
 
@@ -64,25 +69,32 @@ public class AllianceMenu implements CustomMenu {
             }
         }
 
-        if (isOwnerOfTown) {
-            inventory.setItem(leaveAllianceIcon.getIndex(), leaveAllianceIcon.createCVItem(civilian.getLocale()).createItemStack());
+        if (isOwnerOfTown && leaveAllianceIcon.getIndex().get(0) != -1) {
+            inventory.setItem(leaveAllianceIcon.getIndex().get(0), leaveAllianceIcon.createCVItem(civilian.getLocale()).createItemStack());
         }
 
-        inventory.setItem(backIndex, MenuManager.getInstance().getBackButton(civilian));
+        if (backIndex > -1) {
+            inventory.setItem(backIndex, MenuManager.getInstance().getBackButton(civilian));
+        }
 
-        // TODO create paginated list of members
+        int startIndex = (page - 1) * memberStartIndex.size();
+        int endIndex = startIndex + memberStartIndex.size();
+        String[] memberNames = new String[alliance.getMembers().size()];
+        memberNames = alliance.getMembers().toArray(memberNames);
+
+        for (int j = startIndex; j < memberNames.length && j <= endIndex; j++) {
+            int index = memberStartIndex.get(j);
+            String townName = memberNames[j];
+            Town town = TownManager.getInstance().getTown(townName);
+            CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
+            cvItem.setDisplayName(town.getName());
+            cvItem.getLore().clear();
+            inventory.setItem(index, cvItem.createItemStack());
+        }*/
+
+        // TODO set actions
 
         return inventory;
-    }
-    @Override
-    public void loadConfig(FileConfiguration config, int size) {
-        this.size = size;
-        this.menuIcon = new MenuIcon(config.getConfigurationSection("icon"));
-        this.renameIcon = new MenuIcon(config.getConfigurationSection("rename"));
-        this.lastRenameIcon = new MenuIcon(config.getConfigurationSection("last-rename"));
-        this.leaveAllianceIcon = new MenuIcon(config.getConfigurationSection("leave-alliance"));
-        this.backIndex = config.getInt("back.index", 8);
-        this.memberStartIndex = config.getInt("members.index", 9);
     }
 
     @Override
@@ -93,5 +105,10 @@ public class AllianceMenu implements CustomMenu {
     @Override
     public String getFileName() {
         return "alliance";
+    }
+
+    @Override
+    public void doAction(Civilian civilian, MenuIcon menuIcon) {
+
     }
 }

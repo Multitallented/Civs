@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
@@ -48,9 +47,9 @@ public class MenuManager {
         try {
             FileConfiguration config = new YamlConfiguration();
             config.load(menuFile);
-            backButton = new MenuIcon(config.getConfigurationSection("back"));
-            prevButton = new MenuIcon(config.getConfigurationSection("prev"));
-            nextButton = new MenuIcon(config.getConfigurationSection("next"));
+            backButton = new MenuIcon("back", config.getConfigurationSection("back"));
+            prevButton = new MenuIcon("prev", config.getConfigurationSection("prev"));
+            nextButton = new MenuIcon("next", config.getConfigurationSection("next"));
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu default.yml");
             return;
@@ -79,16 +78,20 @@ public class MenuManager {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
         }
         int size = -1;
-        try {
-            String sizeString = config.getString("size", "auto");
-            if (!sizeString.equals("auto")) {
-                int newSize = Integer.parseInt(sizeString);
-                size = getInventorySize(newSize);
+        int newSize = config.getInt("size", 36);
+        size = getInventorySize(newSize);
+        HashMap<Integer, MenuIcon> items = new HashMap<>();
+        for (String key : config.getConfigurationSection("items").getKeys(false)) {
+            MenuIcon menuIcon = new MenuIcon(key, config.getConfigurationSection("items." + key));
+            if (menuIcon.getIndex().isEmpty() ||
+                    menuIcon.getIndex().get(0) < 0) {
+                continue;
             }
-        } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
+            for (Integer i : menuIcon.getIndex()) {
+                items.put(i, menuIcon);
+            }
         }
-        customMenu.loadConfig(config, size);
+        customMenu.loadConfig(items, size);
     }
 
     public ItemStack getBackButton(Civilian civilian) {
@@ -122,5 +125,4 @@ public class MenuManager {
     public static void clearData(UUID uuid) {
         data.remove(uuid);
     }
-
 }
