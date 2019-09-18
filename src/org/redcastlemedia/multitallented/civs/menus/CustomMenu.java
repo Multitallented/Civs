@@ -14,12 +14,19 @@ public abstract class CustomMenu {
 
     public Inventory createMenu(Civilian civilian) {
         Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getKey());
+        HashMap<String, Integer> duplicateCount = new HashMap<>();
         for (Integer i : itemIndexes.keySet()) {
-            inventory.setItem(i, itemIndexes.get(i).createCVItem(civilian.getLocale()).createItemStack());
+            MenuIcon menuIcon = itemIndexes.get(i);
+            if (duplicateCount.containsKey(menuIcon.getKey())) {
+                duplicateCount.put(menuIcon.getKey(), duplicateCount.get(menuIcon.getKey()) + 1);
+            } else {
+                duplicateCount.put(menuIcon.getKey(), 0);
+            }
+            inventory.setItem(i, createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey())));
         }
         return inventory;
     }
-    protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon) {
+    protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         return menuIcon.createCVItem(civilian.getLocale()).createItemStack();
     }
     public void loadConfig(HashMap<Integer, MenuIcon> itemIndexes,

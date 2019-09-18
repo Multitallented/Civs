@@ -26,9 +26,26 @@ public class MenuIcon {
         this.key = key;
         if (section != null) {
             this.index = parseIndexArrayFromString(section.getString("index", "-1"));
-            this.icon = section.getString("icon", "STONE");
-            this.name = section.getString("name", "items");
-            this.desc = section.getString("desc", "items");
+            if (key.equals("back")) {
+                MenuIcon backIcon = MenuManager.getInstance().getBackButton();
+                this.icon = backIcon.getIcon();
+                this.name = backIcon.getName();
+                this.desc = backIcon.getDesc();
+            } else if (key.equals("prev")) {
+                MenuIcon backIcon = MenuManager.getInstance().getPrevButton();
+                this.icon = backIcon.getIcon();
+                this.name = backIcon.getName();
+                this.desc = backIcon.getDesc();
+            } else if (key.equals("next")) {
+                MenuIcon backIcon = MenuManager.getInstance().getBackButton();
+                this.icon = backIcon.getIcon();
+                this.name = backIcon.getName();
+                this.desc = backIcon.getDesc();
+            } else {
+                this.icon = section.getString("icon", "STONE");
+                this.name = section.getString("name", "items");
+                this.desc = section.getString("desc", "items");
+            }
         }
     }
 

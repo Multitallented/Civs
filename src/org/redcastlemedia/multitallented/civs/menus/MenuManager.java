@@ -7,21 +7,27 @@ import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 
-public class MenuManager {
+import lombok.Getter;
+
+public class MenuManager implements Listener {
     private static MenuManager instance = null;
     private static HashMap<UUID, HashMap<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<String>> history = new HashMap<>();
     private static HashMap<UUID, HashMap<ItemStack, String>> menuActionKeys = new HashMap<>();
     private static HashMap<String, CustomMenu> menus = new HashMap<>();
 
+    @Getter
     private MenuIcon backButton;
+    @Getter
     private MenuIcon prevButton;
+    @Getter
     private MenuIcon nextButton;
 
     public MenuManager() {
@@ -34,6 +40,12 @@ public class MenuManager {
         return instance;
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onInventoryInteract(InventoryInteractEvent event) {
+        // TODO call the correct menu action
+    }
+
+    // TODO call this on enable
     public void loadMenuConfigs() {
         File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
         if (menuFolder.exists()) {
@@ -92,14 +104,6 @@ public class MenuManager {
             }
         }
         customMenu.loadConfig(items, size);
-    }
-
-    public ItemStack getBackButton(Civilian civilian) {
-        CVItem backButton = this.backButton.createCVItem(civilian.getLocale());
-        if (history.get(civilian.getUuid()) == null) {
-            history.put(civilian.getUuid(), new ArrayList<>());
-        }
-        return backButton.createItemStack();
     }
 
     public static int getInventorySize(int count) {
