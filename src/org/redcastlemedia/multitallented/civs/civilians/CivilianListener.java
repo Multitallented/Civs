@@ -45,6 +45,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.menus.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.ClassMenu;
 import org.redcastlemedia.multitallented.civs.menus.Menu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
 import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -117,6 +118,7 @@ public class CivilianListener implements Listener {
         CommonScheduler.lastTown.remove(uuid);
         CommonScheduler.removeLastAnnouncement(uuid);
         Menu.clearHistory(uuid);
+        MenuManager.clearData(uuid);
         TownManager.getInstance().clearInvite(uuid);
         AnnouncementUtil.clearPlayer(uuid);
         StructureUtil.removeBoundingBox(uuid);

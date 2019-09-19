@@ -93,7 +93,13 @@ public class AllianceMenu extends CustomMenu {
     }
 
     @Override
-    public void doAction(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
+    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
         // TODO design this
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+            return true;
+        }
+
+
+        return true;
     }
 }

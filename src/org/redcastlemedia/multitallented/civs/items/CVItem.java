@@ -289,6 +289,10 @@ public class CVItem {
     }
 
     public boolean equivalentItem(ItemStack iss, boolean useDisplayName) {
+        return equivalentItem(iss, useDisplayName, false);
+    }
+
+    public boolean equivalentItem(ItemStack iss, boolean useDisplayName, boolean lore) {
         if (mmoItemType != null && mmoItemName != null) {
             NBTItem nbtItem = NBTItem.get(iss);
             if (!nbtItem.hasType()) {

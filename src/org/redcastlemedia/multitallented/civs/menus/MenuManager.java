@@ -11,9 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -52,7 +49,29 @@ public class MenuManager implements Listener {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-        menus.get(openMenus.get(uuid)).doAction(civilian, event.getCursor(), event.getCurrentItem());
+        if (event.getCurrentItem() != null) {
+            if (backButton.createCVItem(civilian.getLocale())
+                    .equivalentItem(event.getCurrentItem(), true, true)) {
+                // TODO click back button
+                return;
+            } else if (prevButton.createCVItem(civilian.getLocale())
+                    .equivalentItem(event.getCurrentItem(), true, true)) {
+                int page = (Integer) getData(civilian.getUuid(), "page");
+                putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
+                return;
+            } else if (backButton.createCVItem(civilian.getLocale())
+                    .equivalentItem(event.getCurrentItem(), true, true)) {
+                int page = (Integer) getData(civilian.getUuid(), "page");
+                int maxPage = (Integer) getData(civilian.getUuid(), "max-page");
+                putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
+                return;
+            }
+        }
+
+        boolean shouldCancel = menus.get(openMenus.get(uuid)).doActionAndCancel(civilian, event.getCursor(), event.getCurrentItem());
+        if (shouldCancel) {
+            event.setCancelled(true);
+        }
     }
 
     public void loadMenuConfigs() {
@@ -140,6 +159,9 @@ public class MenuManager implements Listener {
             return null;
         }
         return dataMap.get(key);
+    }
+    public static void putData(UUID uuid, String key, Object value) {
+        data.get(uuid).put(key, value);
     }
     public static void setNewData(UUID uuid, HashMap<String, Object> newData) {
         data.put(uuid, newData);
