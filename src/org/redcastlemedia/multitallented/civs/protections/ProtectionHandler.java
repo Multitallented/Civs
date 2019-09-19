@@ -388,10 +388,11 @@ public class ProtectionHandler implements Listener {
             Set<Region> tempArray = new HashSet<>();
             for (Region region : regionManager.getContainingRegions(location, 5)) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
-                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-                    tempArray.add(region);
-                }
+//                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
+//                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+//                    tempArray.add(region);
+//                }
+                tempArray.add(region);
             }
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
