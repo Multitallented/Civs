@@ -7,10 +7,12 @@ import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -111,6 +113,15 @@ public class MenuManager implements Listener {
             }
         }
         customMenu.loadConfig(items, size);
+    }
+
+    public void openMenu(Player player, String menuName) {
+        if (!menus.containsKey(menuName)) {
+            return;
+        }
+        openMenus.put(player.getUniqueId(), menuName);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        player.openInventory(menus.get(menuName).createMenu(civilian));
     }
 
     public static int getInventorySize(int count) {
