@@ -9,9 +9,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 
 import lombok.Getter;
@@ -20,7 +23,7 @@ public class MenuManager implements Listener {
     private static MenuManager instance = null;
     private static HashMap<UUID, HashMap<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<String>> history = new HashMap<>();
-    private static HashMap<UUID, HashMap<ItemStack, String>> menuActionKeys = new HashMap<>();
+    private static HashMap<UUID, String> openMenus = new HashMap<>();
     private static HashMap<String, CustomMenu> menus = new HashMap<>();
 
     @Getter
@@ -41,11 +44,15 @@ public class MenuManager implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryInteract(InventoryInteractEvent event) {
-        // TODO call the correct menu action
+    public void onInventoryClick(InventoryClickEvent event) {
+        UUID uuid = event.getWhoClicked().getUniqueId();
+        if (!openMenus.containsKey(uuid)) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        menus.get(openMenus.get(uuid)).doAction(civilian, event.getCursor(), event.getCurrentItem());
     }
 
-    // TODO call this on enable
     public void loadMenuConfigs() {
         File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
         if (menuFolder.exists()) {

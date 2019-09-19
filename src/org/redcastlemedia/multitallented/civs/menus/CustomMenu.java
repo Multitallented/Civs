@@ -36,5 +36,5 @@ public abstract class CustomMenu {
     }
     public abstract String getKey();
     public abstract String getFileName();
-    public abstract void doAction(Civilian civilian, MenuIcon menuIcon);
+    public abstract void doAction(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem);
 }

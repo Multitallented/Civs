@@ -93,7 +93,7 @@ public class AllianceMenu extends CustomMenu {
     }
 
     @Override
-    public void doAction(Civilian civilian, MenuIcon menuIcon) {
+    public void doAction(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
         // TODO design this
     }
 }
