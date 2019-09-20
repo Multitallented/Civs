@@ -90,6 +90,15 @@ public class AllianceMenu extends CustomMenu {
         Alliance alliance = AllianceManager.getInstance().getAlliance(allianceName);
         data.put("alliance", alliance);
 
+        if (params.containsKey("page")) {
+            data.put("page", Integer.parseInt(params.get("page")));
+        } else {
+            data.put("page", 0);
+        }
+        int maxPage = (int) Math.ceil((double) alliance.getMembers().size() / (double) itemsPerPage.get("members"));
+        maxPage = maxPage > 0 ? maxPage - 1 : 0;
+        data.put("maxPage", maxPage);
+
         data.put("lastRename", alliance.getLastRenamedBy().toString());
         if (!params.containsKey("selectedTown")) {
             for (String townName : alliance.getMembers()) {

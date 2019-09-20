@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 
 public abstract class CustomMenu {
     protected HashMap<Integer, MenuIcon> itemIndexes;
+    protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
     protected HashMap<UUID, HashMap<ItemStack, String>> actions = new HashMap<>();
     protected int size;
 
@@ -24,10 +25,10 @@ public abstract class CustomMenu {
     public Inventory createMenu(Civilian civilian, Map<String, String> params) {
         MenuManager.clearData(civilian.getUuid());
         Map<String, Object> newData = createData(civilian, params);
-
-        // TODO set page and maxPage?
-
         MenuManager.setNewData(civilian.getUuid(), newData);
+        return createMenu(civilian);
+    }
+    public Inventory createMenu(Civilian civilian) {
         actions.put(civilian.getUuid(), new HashMap<>());
         Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getKey());
         HashMap<String, Integer> duplicateCount = new HashMap<>();
@@ -67,6 +68,11 @@ public abstract class CustomMenu {
                     int size) {
         this.itemIndexes = itemIndexes;
         this.size = size;
+        for (MenuIcon menuIcon : itemIndexes.values()) {
+            if (menuIcon.getIndex().size() > 1) {
+                itemsPerPage.put(menuIcon.getKey(), menuIcon.getIndex().size());
+            }
+        }
     }
     public abstract String getKey();
     public abstract String getFileName();

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -59,12 +60,14 @@ public class MenuManager implements Listener {
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
                 putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
+                refreshMenu(civilian);
                 return;
             } else if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
                 int maxPage = (Integer) getData(civilian.getUuid(), "max-page");
                 putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
+                refreshMenu(civilian);
                 return;
             }
         }
@@ -142,6 +145,13 @@ public class MenuManager implements Listener {
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
+    }
+    public void refreshMenu(Civilian civilian) {
+        if (!openMenus.containsKey(civilian.getUuid())) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        player.openInventory(menus.get(openMenus.get(civilian.getUuid())).createMenu(civilian));
     }
 
     public static int getInventorySize(int count) {
