@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +21,7 @@ import lombok.Getter;
 
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
-    private static HashMap<UUID, HashMap<String, Object>> data = new HashMap<>();
+    private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<String>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
     private static HashMap<String, CustomMenu> menus = new HashMap<>();
@@ -134,13 +135,13 @@ public class MenuManager implements Listener {
         customMenu.loadConfig(items, size);
     }
 
-    public void openMenu(Player player, String menuName) {
+    public void openMenu(Player player, String menuName, Map<String, String> params) {
         if (!menus.containsKey(menuName)) {
             return;
         }
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        player.openInventory(menus.get(menuName).createMenu(civilian));
+        player.openInventory(menus.get(menuName).createMenu(civilian, params));
     }
 
     public static int getInventorySize(int count) {
@@ -153,8 +154,11 @@ public class MenuManager implements Listener {
         }
         return Math.min(size, 54);
     }
+    public static Map<String, Object> getAllData(UUID uuid) {
+        return data.get(uuid);
+    }
     public static Object getData(UUID uuid, String key) {
-        HashMap<String, Object> dataMap = data.get(uuid);
+        Map<String, Object> dataMap = data.get(uuid);
         if (dataMap == null) {
             return null;
         }
@@ -163,7 +167,7 @@ public class MenuManager implements Listener {
     public static void putData(UUID uuid, String key, Object value) {
         data.get(uuid).put(key, value);
     }
-    public static void setNewData(UUID uuid, HashMap<String, Object> newData) {
+    public static void setNewData(UUID uuid, Map<String, Object> newData) {
         data.put(uuid, newData);
     }
     public static void clearData(UUID uuid) {

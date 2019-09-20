@@ -1,4 +1,7 @@
 size: 36
+# variables:
+#  $lastRename$ uuid of last person to rename
+#  $selectedTown$ selected alliance member town you own
 items:
   icon:
     index: 0
@@ -11,13 +14,14 @@ items:
   last-rename:
     index: 3
     # icon is the player's head
-    name: last-renamed-by
-    # desc
+    # name = player's name
+    desc: last-renamed-by
+    action: menu:player?uuid=$lastRename$
   leave-alliance:
     index: 6
     icon: BARRIER
     name: leave-alliance
-    # desc
+    action: leave-alliance
   back:
     index: 8
   prev:
@@ -29,3 +33,5 @@ items:
     index: 17
   members:
     index: 18-35
+    # name = town name
+    action: menu:town?town=$itemName$
