@@ -10,6 +10,13 @@ items:
     index: 0
     icon: GOLDEN_SWORD
     # name alliance name
+  select-town:
+    index: 1
+    # icon: town icon
+    # name: town name
+    desc: selected-town
+    actions:
+      - menu:select-town
   rename:
     index: 2
     icon: PAPER

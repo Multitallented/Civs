@@ -113,16 +113,18 @@ public abstract class CustomMenu {
             if (actionString.startsWith("menu:")) {
                 String menuString = actionString.replace("menu:", "");
                 String[] menuSplit = menuString.split("\\?");
-                String[] queryString = menuSplit[1].split(",");
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 Map<String, String> params = new HashMap<>();
-                for (String queryParams : queryString) {
-                    String[] splitParams = queryParams.split("=");
-                    if (clickedItem.getItemMeta() == null) {
-                        params.put(splitParams[0], splitParams[1]);
-                    } else {
-                        params.put(splitParams[0], splitParams[1]
-                                .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
+                if (menuSplit.length > 1) {
+                    String[] queryString = menuSplit[1].split(",");
+                    for (String queryParams : queryString) {
+                        String[] splitParams = queryParams.split("=");
+                        if (clickedItem.getItemMeta() == null) {
+                            params.put(splitParams[0], splitParams[1]);
+                        } else {
+                            params.put(splitParams[0], splitParams[1]
+                                    .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
+                        }
                     }
                 }
                 MenuManager.getInstance().openMenu(player, menuSplit[0], params);
