@@ -13,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.CommandUtil;
+import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -176,85 +178,13 @@ public class TutorialManager {
         List<String> permissions = step.getPermissions();
         if (Civs.perm != null && !permissions.isEmpty()) {
             for (String permission : permissions) {
-                boolean remove = false;
-                boolean transientPerm = false;
-                String finalPermission = permission;
-                for (;;) {
-                    if (finalPermission.startsWith("!")) {
-                        remove = true;
-                        finalPermission = finalPermission.substring(1);
-                    } else if (finalPermission.startsWith("^")) {
-                        transientPerm = true;
-                        finalPermission = finalPermission.substring(1);
-                    } else {
-                        break;
-                    }
-                }
-
-                if (player != null) {
-                    if (transientPerm) {
-                        if (remove) {
-                            Civs.perm.playerRemove(player, finalPermission);
-                        } else {
-                            Civs.perm.playerAddTransient(player, finalPermission);
-                        }
-                    } else {
-                        if (remove) {
-                            Civs.perm.playerRemove(player, finalPermission);
-                        } else {
-                            Civs.perm.playerAdd(player, finalPermission);
-                        }
-                    }
-                } else {
-                    Player player1 = offlinePlayer.getPlayer();
-                    if (player1 != null && player1.getLocation().getWorld() != null) {
-                        String worldName = player1.getLocation().getWorld().getName();
-                        if (remove) {
-                            Civs.perm.playerRemove(worldName, offlinePlayer, finalPermission);
-                        } else {
-                            Civs.perm.playerAdd(worldName, offlinePlayer, finalPermission);
-                        }
-                    }
-                }
+                PermissionUtil.applyPermission(offlinePlayer, permission);
             }
         }
         List<String> commands = step.getCommands();
         if (!commands.isEmpty()) {
             for (String command : commands) {
-                String finalCommand = command;
-                boolean runAsOp = false;
-                boolean runFromConsole = false;
-                for (;;) {
-                    if (finalCommand.startsWith("^")) {
-                        runAsOp = true;
-                        finalCommand = finalCommand.substring(1);
-                    } else if (finalCommand.startsWith("!")) {
-                        runFromConsole = true;
-                        finalCommand = finalCommand.substring(1);
-                    } else {
-                        break;
-                    }
-                }
-                if (player != null) {
-                    finalCommand = finalCommand.replace("$name$", player.getName());
-                } else {
-                    Player player1 = offlinePlayer.getPlayer();
-                    if (player1 != null && player1.isValid()) {
-                        finalCommand = finalCommand.replace("$name$", player1.getName());
-                    }
-                }
-                if (runFromConsole) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
-                } else if (player != null) {
-                    boolean setOp = runAsOp && !player.isOp();
-                    if (setOp) {
-                        player.setOp(true);
-                    }
-                    player.performCommand(finalCommand);
-                    if (setOp) {
-                        player.setOp(false);
-                    }
-                }
+                CommandUtil.performCommand(offlinePlayer, command);
             }
         }
 
