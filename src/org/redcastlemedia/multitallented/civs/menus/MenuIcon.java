@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class MenuIcon {
+    @Getter
+    private List<String> actions = new ArrayList<>();
     @Getter @Setter
     private ArrayList<Integer> index;
     @Getter @Setter
@@ -47,6 +50,7 @@ public class MenuIcon {
                 this.icon = section.getString("icon", "STONE");
                 this.name = section.getString("name", "items");
                 this.desc = section.getString("desc", "items");
+                this.actions = section.getStringList("actions");
                 this.perm = section.getString("permission", "");
             }
         }

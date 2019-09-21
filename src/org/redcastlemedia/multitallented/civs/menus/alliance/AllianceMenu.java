@@ -38,7 +38,9 @@ public class AllianceMenu extends CustomMenu {
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
             cvItem.setDisplayName(town.getName());
             cvItem.getLore().clear();
-            return cvItem.createItemStack();
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack);
+            return itemStack;
         }
         if (menuIcon.getKey().equals("last-rename")) {
             if (alliance == null || alliance.getLastRenamedBy() == null) {
@@ -55,8 +57,16 @@ public class AllianceMenu extends CustomMenu {
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
+                putActions(civilian, menuIcon, is);
                 return is;
             }
+        }
+        if (menuIcon.getKey().equals("icon")) {
+            CVItem icon = menuIcon.createCVItem(civilian.getLocale());
+            icon.setDisplayName(alliance.getName());
+            ItemStack itemStack = icon.createItemStack();
+            putActions(civilian, menuIcon, itemStack);
+            return itemStack;
         }
 
         if (menuIcon.getKey().equals("rename") ||
@@ -107,6 +117,9 @@ public class AllianceMenu extends CustomMenu {
                     break;
                 }
             }
+        } else {
+            data.put("selectedTown",
+                    TownManager.getInstance().getTown(params.get("selectedTown")));
         }
         return data;
     }

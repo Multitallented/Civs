@@ -75,10 +75,17 @@ public abstract class CustomMenu {
         }
 
         ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale()).createItemStack();
-        List<String> currentActions = new ArrayList<>();
-        currentActions.add(menuIcon.getKey());
-        actions.get(civilian.getUuid()).put(itemStack, currentActions);
+        putActions(civilian, menuIcon, itemStack);
         return itemStack;
+    }
+    protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack) {
+        List<String> currentActions = new ArrayList<>();
+        if (menuIcon.getActions().isEmpty()) {
+            currentActions.add(menuIcon.getKey());
+        } else {
+            currentActions.addAll(menuIcon.getActions());
+        }
+        actions.get(civilian.getUuid()).put(itemStack, currentActions);
     }
     public void loadConfig(HashMap<Integer, MenuIcon> itemIndexes,
                     int size) {

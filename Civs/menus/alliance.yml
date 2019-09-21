@@ -2,12 +2,14 @@ size: 36
 # variables:
 #  $lastRename$ uuid of last person to rename
 #  $selectedTown$ selected alliance member town you own
+#  $allianceName$
 # custom actions:
 #  leave-alliance unallies all towns in the alliance
 items:
   icon:
     index: 0
     icon: GOLDEN_SWORD
+    # name alliance name
   rename:
     index: 2
     icon: PAPER
