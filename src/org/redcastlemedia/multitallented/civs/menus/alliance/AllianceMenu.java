@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.alliance;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -37,9 +38,7 @@ public class AllianceMenu extends CustomMenu {
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
             cvItem.setDisplayName(town.getName());
             cvItem.getLore().clear();
-            ItemStack itemStack = cvItem.createItemStack();
-            actions.get(civilian.getUuid()).put(itemStack, "menu:town=" + town.getName());
-            return itemStack;
+            return cvItem.createItemStack();
         }
         if (menuIcon.getKey().equals("last-rename")) {
             if (alliance == null || alliance.getLastRenamedBy() == null) {
@@ -56,7 +55,6 @@ public class AllianceMenu extends CustomMenu {
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
-                actions.get(civilian.getUuid()).put(is, "menu:player=" + offlinePlayer.getName());
                 return is;
             }
         }
@@ -121,12 +119,14 @@ public class AllianceMenu extends CustomMenu {
         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
             return true;
         }
-        String actionString = actions.get(civilian.getUuid()).get(clickedItem);
-        if (actionString.equals("leave-alliance")) {
-            Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
-            // TODO finish this
-            return true;
+        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
+        for (String actionString : actionStrings) {
+            if (actionString.equals("leave-alliance")) {
+                Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
+                // TODO finish this
+
+            }
         }
-        return true;
+        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
     }
 }

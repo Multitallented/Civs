@@ -21,6 +21,8 @@ public class MenuIcon {
     private String desc;
     @Getter @Setter
     private String key;
+    @Getter @Setter
+    private String perm = "";
 
     public MenuIcon(String key, ConfigurationSection section) {
         this.key = key;
@@ -45,6 +47,7 @@ public class MenuIcon {
                 this.icon = section.getString("icon", "STONE");
                 this.name = section.getString("name", "items");
                 this.desc = section.getString("desc", "items");
+                this.perm = section.getString("permission", "");
             }
         }
     }
