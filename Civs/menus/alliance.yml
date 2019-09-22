@@ -1,6 +1,6 @@
 size: 36
 # variables:
-#  $lastRename$ uuid of last person to rename
+#  $lastRename$ uuid of last person to rename alliance
 #  $selectedTown$ selected alliance member town you own
 #  $allianceName$
 # custom actions:
@@ -9,14 +9,14 @@ items:
   icon:
     index: 0
     icon: GOLDEN_SWORD
-    # name alliance name
+    # name: alliance name
   select-town:
     index: 1
     # icon: town icon
     # name: town name
     desc: selected-town
     actions:
-      - menu:select-town
+      - menu:select-town?prevMenu=Alliance&preserveData=true
   rename:
     index: 2
     icon: PAPER
@@ -24,8 +24,8 @@ items:
     desc: rename-alliance-desc
   last-rename:
     index: 3
-    # icon is the player's head
-    # name = player's name
+    # icon: player's head
+    # name: player's name
     desc: last-renamed-by
     actions:
       - menu:player?uuid=$lastRename$
@@ -47,6 +47,6 @@ items:
     index: 17
   members:
     index: 18-35
-    # name = town name
+    # name: town name
     actions:
       - menu:town?town=$itemName$

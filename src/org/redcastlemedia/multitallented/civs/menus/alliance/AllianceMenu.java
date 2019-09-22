@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.alliance;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -132,12 +133,21 @@ public class AllianceMenu extends CustomMenu {
         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
             return true;
         }
+        Town town = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        if (town == null) {
+            return true;
+        }
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
         for (String actionString : actionStrings) {
             if (actionString.equals("leave-alliance")) {
                 Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
-                // TODO finish this
-
+                for (String townName : new HashSet<>(alliance.getMembers())) {
+                    if (townName.equals(town.getName())) {
+                        continue;
+                    }
+                    Town currentTown = TownManager.getInstance().getTown(townName);
+                    AllianceManager.getInstance().unAlly(town, currentTown);
+                }
             }
         }
         return super.doActionAndCancel(civilian, cursorItem, clickedItem);

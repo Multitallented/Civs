@@ -116,14 +116,24 @@ public abstract class CustomMenu {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 Map<String, String> params = new HashMap<>();
                 if (menuSplit.length > 1) {
-                    String[] queryString = menuSplit[1].split(",");
+                    String[] queryString = menuSplit[1].split("&");
                     for (String queryParams : queryString) {
                         String[] splitParams = queryParams.split("=");
                         if (clickedItem.getItemMeta() == null) {
                             params.put(splitParams[0], splitParams[1]);
                         } else {
-                            params.put(splitParams[0], splitParams[1]
-                                    .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
+                            if (splitParams[0].equals("preserveData")) {
+                                Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
+                                for (String key : data.keySet()) {
+                                    String dataString = stringifyData(key, data.get(key));
+                                    if (dataString != null) {
+                                        params.put(key, dataString);
+                                    }
+                                }
+                            } else {
+                                params.put(splitParams[0], splitParams[1]
+                                        .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
+                            }
                         }
                     }
                 }
@@ -143,32 +153,38 @@ public abstract class CustomMenu {
         }
         return true;
     }
-    public String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
+
+    private String stringifyData(String key, Object data) {
+        if (key.equals("town")) {
+            Town town = (Town) data;
+            return town.getName();
+        } else if (key.equals("alliance")) {
+            Alliance alliance = (Alliance) data;
+            return alliance.getName();
+        } else if (key.equals("region")) {
+            Region region = (Region) data;
+            return region.getId();
+        } else if (key.equals("regionType")) {
+            RegionType regionType = (RegionType) data;
+            return regionType.getProcessedName();
+        } else if (key.equals("townType")) {
+            TownType townType = (TownType) data;
+            return townType.getProcessedName();
+        } else if (data instanceof String) {
+            return (String) data;
+        } else {
+            return null;
+        }
+    }
+
+    private String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
         if (clickedItem.getItemMeta() != null) {
             actionString = actionString.replaceAll("\\$itemName\\$",
                     clickedItem.getItemMeta().getDisplayName());
         }
         Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
         for (String key : data.keySet()) {
-            String replaceString = "";
-            if (key.equals("town")) {
-                Town town = (Town) data.get(key);
-                replaceString = town.getName();
-            } else if (key.equals("alliance")) {
-                Alliance alliance = (Alliance) data.get(key);
-                replaceString = alliance.getName();
-            } else if (key.equals("region")) {
-                Region region = (Region) data.get(key);
-                replaceString = region.getId();
-            } else if (key.equals("regionType")) {
-                RegionType regionType = (RegionType) data.get(key);
-                replaceString = regionType.getProcessedName();
-            } else if (key.equals("townType")) {
-                TownType townType = (TownType) data.get(key);
-                replaceString = townType.getProcessedName();
-            } else {
-                replaceString = (String) data.get(key);
-            }
+            String replaceString = stringifyData(key, data.get(key));
             actionString = actionString.replaceAll("\\$" + key + "\\$", replaceString);
         }
         return actionString;

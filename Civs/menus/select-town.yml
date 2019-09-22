@@ -1,2 +1,23 @@
 size: 36
+# variables:
+#  $prevMenu$ name of last menu called
 items:
+  icon:
+    index: 0
+    icon: BLUE_BED
+    name: your-towns
+  back:
+    index: 8
+  prev:
+    index: 9
+  spacer:
+    index: 10-16
+    icon: LIGHT_BLUE_STAINED_GLASS
+  next:
+    index: 17
+  towns:
+    index: 18-35
+    # name: town name
+    # icon: town icon
+    actions:
+      - menu:$prevMenu$?selectedTown=$itemName$&preserveData=true
