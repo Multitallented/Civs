@@ -2,8 +2,7 @@ size: 18
 # variables:
 #  town: name of the town you're currently in
 #  region: id of the region you're currently in
-# custom-actions:
-#  print-tutorial: prints the current tutorial step
+name: Main
 items:
   guide:
     index: 0
@@ -38,7 +37,7 @@ items:
     actions:
       - menu:community
   language:
-    index: 8
+    index: 17
     icon: GRASS_BLOCK
     name: language-menu
     actions:

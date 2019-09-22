@@ -1,4 +1,5 @@
 size: 36
+name: Select Town
 # variables:
 #  $prevMenu$ name of last menu called
 items:

@@ -14,14 +14,26 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.StartTutorialMenu;
+import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 public class MainMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+//        clearHistory(civilian.getUuid());
+        StructureUtil.removeBoundingBox(civilian.getUuid());
+        if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
+//            return StartTutorialMenu.createMenu(civilian);
+        }
+        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+//            return TutorialChoosePathMenu.createMenu(civilian);
+        }
         Map<String, Object> data = new HashMap<>();
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Region region = RegionManager.getInstance().getRegionAt(player.getLocation());

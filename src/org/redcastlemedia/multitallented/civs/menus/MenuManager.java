@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
@@ -115,6 +116,11 @@ public class MenuManager implements Listener {
             MainMenu mainMenu = new MainMenu();
             loadConfig(mainMenu);
             menus.put(mainMenu.getFileName(), mainMenu);
+        }
+        {
+            LanguageMenu languageMenu = new LanguageMenu();
+            loadConfig(languageMenu);
+            menus.put(languageMenu.getFileName(), languageMenu);
         }
     }
 

@@ -1,4 +1,5 @@
 size: 36
+name: Alliance
 # variables:
 #  $lastRename$ uuid of last person to rename alliance
 #  $selectedTown$ selected alliance member town you own

@@ -1,0 +1,21 @@
+size: 18
+name: Language
+items:
+  icon:
+    index: 0
+    icon: GRASS_BLOCK
+    name: language-menu
+  prev:
+    index: 3
+  next:
+    index: 5
+  back:
+    index: 8
+  languages:
+    index: 9-17
+    # icon: lang icon
+    # name: lang name
+    # desc: lang key
+    actions:
+      - select-lang
+      - menu:main

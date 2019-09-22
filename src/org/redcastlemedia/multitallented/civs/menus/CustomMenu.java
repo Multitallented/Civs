@@ -108,6 +108,9 @@ public abstract class CustomMenu {
         if (!actions.containsKey(civilian.getUuid())) {
             return false;
         }
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+            return true;
+        }
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
         if (actionStrings == null || actionStrings.isEmpty()) {
             return true;
@@ -119,6 +122,7 @@ public abstract class CustomMenu {
                 return true;
             } else if (actionString.equals("close")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
+                // TODO clear history
                 player.closeInventory();
                 return true;
             }
