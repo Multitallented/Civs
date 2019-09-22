@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
@@ -47,7 +48,10 @@ public abstract class CustomMenu {
             } else {
                 duplicateCount.put(menuIcon.getKey(), 0);
             }
-            inventory.setItem(i, createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey())));
+            ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
+            if (itemStack.getType() != Material.AIR) {
+                inventory.setItem(i, itemStack);
+            }
         }
         return inventory;
     }
@@ -106,9 +110,18 @@ public abstract class CustomMenu {
         }
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
         if (actionStrings == null || actionStrings.isEmpty()) {
-            return false;
+            return true;
         }
         for (String actionString : actionStrings) {
+            if (actionString.equals("print-tutorial")) {
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                TutorialManager.getInstance().printTutorial(player, civilian);
+                return true;
+            } else if (actionString.equals("close")) {
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                player.closeInventory();
+                return true;
+            }
             actionString = replaceVariables(civilian, clickedItem, actionString);
             if (actionString.startsWith("menu:")) {
                 String menuString = actionString.replace("menu:", "");
@@ -146,9 +159,6 @@ public abstract class CustomMenu {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
                 PermissionUtil.applyPermission(offlinePlayer, actionString
                         .replace("permission:", ""));
-            } else if (actionString.equals("close")) {
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                player.closeInventory();
             }
         }
         return true;
@@ -173,7 +183,7 @@ public abstract class CustomMenu {
         } else if (data instanceof String) {
             return (String) data;
         } else {
-            return null;
+            return "";
         }
     }
 
@@ -184,6 +194,9 @@ public abstract class CustomMenu {
         }
         Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
         for (String key : data.keySet()) {
+            if (!actionString.contains("\\$" + key + "\\$")) {
+                continue;
+            }
             String replaceString = stringifyData(key, data.get(key));
             actionString = actionString.replaceAll("\\$" + key + "\\$", replaceString);
         }

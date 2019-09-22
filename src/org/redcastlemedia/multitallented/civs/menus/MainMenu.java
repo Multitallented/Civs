@@ -58,7 +58,7 @@ public class MainMenu extends Menu {
         }
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "guide")))) {
             event.getWhoClicked().closeInventory();
-            printTutorial(event.getWhoClicked(), civilian);
+            TutorialManager.getInstance().printTutorial(event.getWhoClicked(), civilian);
         }
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "shop")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
@@ -235,14 +235,4 @@ public class MainMenu extends Menu {
 
         return inventory;
     }
-
-    private void printTutorial(HumanEntity player, Civilian civilian) {
-        String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
-        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
-        TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
-        player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
-        player.sendMessage(tutorialUrl);
-        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getBottomGuideSpacer()));
-    }
-
 }

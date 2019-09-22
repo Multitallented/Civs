@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
 import lombok.Getter;
@@ -100,13 +101,21 @@ public class MenuManager implements Listener {
             return;
         }
 
-        AllianceMenu allianceMenu = new AllianceMenu();
-        loadConfig(allianceMenu);
-        menus.put(allianceMenu.getKey(), allianceMenu);
-
-        SelectTownMenu selectTownMenu = new SelectTownMenu();
-        loadConfig(selectTownMenu);
-        menus.put(selectTownMenu.getKey(), selectTownMenu);
+        {
+            AllianceMenu allianceMenu = new AllianceMenu();
+            loadConfig(allianceMenu);
+            menus.put(allianceMenu.getFileName(), allianceMenu);
+        }
+        {
+            SelectTownMenu selectTownMenu = new SelectTownMenu();
+            loadConfig(selectTownMenu);
+            menus.put(selectTownMenu.getFileName(), selectTownMenu);
+        }
+        {
+            MainMenu mainMenu = new MainMenu();
+            loadConfig(mainMenu);
+            menus.put(mainMenu.getFileName(), mainMenu);
+        }
     }
 
     private void loadConfig(CustomMenu customMenu) {
