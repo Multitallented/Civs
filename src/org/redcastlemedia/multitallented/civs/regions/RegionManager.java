@@ -69,14 +69,14 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
+        saveRegion(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
-            regions.put(worldUuid, new ArrayList<Region>());
+            regions.put(worldUuid, new ArrayList<>());
         }
         regions.get(worldUuid).add(region);
         regionLocations.put(region.getId(), region);
         sortRegions(worldUuid);
-        saveRegion(region);
         for (String key : regionCreatedListenerHashMap.keySet()) {
             if (region.getEffects().containsKey(key)) {
                 regionCreatedListenerHashMap.get(key).regionCreatedHandler(region);
@@ -248,6 +248,7 @@ public class RegionManager {
                 regionConfig.set("last-active", null);
             }
             regionConfig.save(regionFile);
+            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;
