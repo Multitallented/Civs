@@ -46,7 +46,7 @@ public class Region {
 
     private String type;
     private final HashMap<UUID, String> people;
-    private final Location location;
+    private Location location;
     private final int radiusXP;
     private final int radiusZP;
     private final int radiusXN;
@@ -87,6 +87,9 @@ public class Region {
         this.exp = exp;
     }
 
+    protected void setLocation(Location location) {
+        this.location = location;
+    }
     public double getExp() {
         return exp;
     }
