@@ -81,7 +81,7 @@ public class LanguageMenu extends CustomMenu {
             data.put("page", 0);
         }
         int maxPage = (int) Math.ceil((double) LocaleManager.getInstance().getAllLanguages().size() /
-                (double) itemsPerPage.get("members"));
+                (double) itemsPerPage.get("languages"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
         return data;

@@ -25,7 +25,7 @@ public class SelectTownMenu extends CustomMenu {
             data.put("page", 0);
         }
         Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
-        int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("members"));
+        int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("towns"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 

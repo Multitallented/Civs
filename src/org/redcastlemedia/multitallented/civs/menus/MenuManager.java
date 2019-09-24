@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
 import lombok.Getter;
@@ -121,6 +122,11 @@ public class MenuManager implements Listener {
             LanguageMenu languageMenu = new LanguageMenu();
             loadConfig(languageMenu);
             menus.put(languageMenu.getFileName(), languageMenu);
+        }
+        {
+            RegionListMenu regionListMenu = new RegionListMenu();
+            loadConfig(regionListMenu);
+            menus.put(regionListMenu.getFileName(), regionListMenu);
         }
     }
 

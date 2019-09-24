@@ -1,0 +1,22 @@
+size: 45
+name: RegionList
+# variables:
+#  region: the region you click on
+items:
+  icon:
+    index: 0
+    icon: BRICKS
+    name: regions
+    prev:
+      index: 3
+    next:
+      index: 5
+    back:
+      index: 8
+    regions:
+      index: 9-44
+      # icon: region icon
+      # name: region name
+      # desc: region key + desc
+      actions:
+        - menu:region?region=$region$
