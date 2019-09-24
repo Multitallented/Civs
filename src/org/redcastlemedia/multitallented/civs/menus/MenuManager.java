@@ -27,7 +27,7 @@ import lombok.Getter;
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
-    private static HashMap<UUID, ArrayList<String>> history = new HashMap<>();
+    private static HashMap<UUID, ArrayList<CustomMenu>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
     private static HashMap<String, CustomMenu> menus = new HashMap<>();
 
@@ -58,7 +58,9 @@ public class MenuManager implements Listener {
         if (event.getCurrentItem() != null) {
             if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
-                // TODO click back button
+                CustomMenu menu = popLastMenu(civilian.getUuid());
+                // TODO get a way of storing menu data
+                openMenu((Player) event.getWhoClicked(), menu.getKey(), null);
                 return;
             } else if (prevButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
@@ -189,6 +191,24 @@ public class MenuManager implements Listener {
             }
         }
         return Math.min(size, 54);
+    }
+    public static void addHistory(UUID uuid, CustomMenu customMenu) {
+        if (!history.containsKey(uuid)) {
+            history.put(uuid, new ArrayList<>());
+        }
+        history.get(uuid).add(customMenu);
+    }
+    public static CustomMenu popLastMenu(UUID uuid) {
+        if (!history.containsKey(uuid) ||
+                history.get(uuid).isEmpty()) {
+            return menus.get("main");
+        }
+        CustomMenu menu = history.get(uuid).get(history.get(uuid).size() - 1);
+        history.get(uuid).remove(history.get(uuid).size() - 1);
+        return menu;
+    }
+    public static void clearHistory(UUID uuid) {
+        history.remove(uuid);
     }
     public static Map<String, Object> getAllData(UUID uuid) {
         return data.get(uuid);

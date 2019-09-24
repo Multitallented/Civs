@@ -122,7 +122,7 @@ public abstract class CustomMenu {
                 return true;
             } else if (actionString.equals("close")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
-                // TODO clear history
+                MenuManager.clearHistory(civilian.getUuid());
                 player.closeInventory();
                 return true;
             }
