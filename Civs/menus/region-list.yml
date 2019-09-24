@@ -19,4 +19,4 @@ items:
       # name: region name
       # desc: region key + desc
       actions:
-        - menu:region?region=$region$
+        - menu:region?region=$region$&preserveData=true
