@@ -213,4 +213,8 @@ public abstract class CustomMenu {
         }
         return actionString;
     }
+
+    public void onCloseMenu(Civilian civilian, Inventory inventory) {
+        // Do nothing normally
+    }
 }

@@ -13,12 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
@@ -52,10 +54,20 @@ public class MenuManager implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onInventoryClose(InventoryCloseEvent event) {
+        UUID uuid = event.getPlayer().getUniqueId();
+        if (!openMenus.containsKey(uuid)) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        menus.get(openMenus.get(uuid)).onCloseMenu(civilian, event.getInventory());
+        openMenus.remove(uuid);
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
-            System.out.println("no openMenus");
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
@@ -146,6 +158,11 @@ public class MenuManager implements Listener {
             RegionListMenu regionListMenu = new RegionListMenu();
             loadConfig(regionListMenu);
             menus.put(regionListMenu.getFileName(), regionListMenu);
+        }
+        {
+            BlueprintsMenu blueprintsMenu = new BlueprintsMenu();
+            loadConfig(blueprintsMenu);
+            menus.put(blueprintsMenu.getFileName(), blueprintsMenu);
         }
     }
 
