@@ -28,6 +28,7 @@ public abstract class CustomMenu {
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
     protected HashMap<UUID, HashMap<ItemStack, List<String>>> actions = new HashMap<>();
     protected int size;
+    private String name;
 
     public abstract Map<String, Object> createData(Civilian civilian, Map<String, String> params);
 
@@ -37,9 +38,13 @@ public abstract class CustomMenu {
         MenuManager.setNewData(civilian.getUuid(), newData);
         return createMenu(civilian);
     }
+    public Inventory createMenuFromHistory(Civilian civilian, Map<String, Object> data) {
+        MenuManager.setNewData(civilian.getUuid(), data);
+        return createMenu(civilian);
+    }
     public Inventory createMenu(Civilian civilian) {
         actions.put(civilian.getUuid(), new HashMap<>());
-        Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getKey());
+        Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getName());
         HashMap<String, Integer> duplicateCount = new HashMap<>();
         for (Integer i : itemIndexes.keySet()) {
             MenuIcon menuIcon = itemIndexes.get(i);
@@ -92,16 +97,19 @@ public abstract class CustomMenu {
         actions.get(civilian.getUuid()).put(itemStack, currentActions);
     }
     public void loadConfig(HashMap<Integer, MenuIcon> itemIndexes,
-                    int size) {
+                    int size, String name) {
         this.itemIndexes = itemIndexes;
         this.size = size;
+        this.name = name;
         for (MenuIcon menuIcon : itemIndexes.values()) {
             if (menuIcon.getIndex().size() > 1) {
                 itemsPerPage.put(menuIcon.getKey(), menuIcon.getIndex().size());
             }
         }
     }
-    public abstract String getKey();
+    public String getName() {
+        return this.name;
+    }
     public abstract String getFileName();
 
     public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
@@ -116,18 +124,16 @@ public abstract class CustomMenu {
             return true;
         }
         for (String actionString : actionStrings) {
+            System.out.println(actionString);
             if (actionString.equals("print-tutorial")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 TutorialManager.getInstance().printTutorial(player, civilian);
-                return true;
             } else if (actionString.equals("close")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 MenuManager.clearHistory(civilian.getUuid());
                 player.closeInventory();
-                return true;
-            }
-            actionString = replaceVariables(civilian, clickedItem, actionString);
-            if (actionString.startsWith("menu:")) {
+            } else if (actionString.startsWith("menu:")) {
+                actionString = replaceVariables(civilian, clickedItem, actionString);
                 String menuString = actionString.replace("menu:", "");
                 String[] menuSplit = menuString.split("\\?");
                 Player player = Bukkit.getPlayer(civilian.getUuid());
@@ -156,10 +162,12 @@ public abstract class CustomMenu {
                 }
                 MenuManager.getInstance().openMenu(player, menuSplit[0], params);
             } else if (actionString.startsWith("command:")) {
+                actionString = replaceVariables(civilian, clickedItem, actionString);
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
                 CommandUtil.performCommand(offlinePlayer, actionString
                         .replace("command:", ""));
             } else if (actionString.startsWith("permission:")) {
+                actionString = replaceVariables(civilian, clickedItem, actionString);
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
                 PermissionUtil.applyPermission(offlinePlayer, actionString
                         .replace("permission:", ""));

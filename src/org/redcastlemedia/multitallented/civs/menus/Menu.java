@@ -52,14 +52,14 @@ public abstract class Menu implements Listener {
         currentMenuStorage.remove(uuid);
     }
 
-    @EventHandler
-    public void onMenuInteract(InventoryClickEvent event) {
-        if (event.getClickedInventory() == null ||
-                !event.getView().getTitle().equals(MENU_NAME)) {
-            return;
-        }
-        handleInteract(event);
-    }
+//    @EventHandler
+//    public void onMenuInteract(InventoryClickEvent event) {
+//        if (event.getClickedInventory() == null ||
+//                !event.getView().getTitle().equals(MENU_NAME)) {
+//            return;
+//        }
+//        handleInteract(event);
+//    }
     static int getInventorySize(int count) {
         int size = 9;
         if (count > size) {

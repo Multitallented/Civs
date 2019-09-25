@@ -95,12 +95,7 @@ public class RegionListMenu extends CustomMenu {
     }
 
     @Override
-    public String getKey() {
-        return "region-list";
-    }
-
-    @Override
     public String getFileName() {
-        return "RegionList";
+        return "region-list";
     }
 }

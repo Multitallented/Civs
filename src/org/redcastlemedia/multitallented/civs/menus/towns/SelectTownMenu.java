@@ -58,13 +58,8 @@ public class SelectTownMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-        @Override
-    public String getKey() {
-        return "SelectTowns";
-    }
-
     @Override
     public String getFileName() {
-        return "select-towns";
+        return "select-town";
     }
 }

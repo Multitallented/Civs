@@ -101,11 +101,6 @@ public class MainMenu extends CustomMenu {
     }
 
     @Override
-    public String getKey() {
-        return "Main";
-    }
-
-    @Override
     public String getFileName() {
         return "main";
     }
