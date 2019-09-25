@@ -9,6 +9,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.Inventory;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
@@ -144,11 +145,9 @@ public class RegionEffectTests {
 
         WarehouseEffect warehouseEffect = new WarehouseEffect();
         RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
-        ArrayList<Location> inventoryLocations = new ArrayList<>();
-        inventoryLocations.add(TestUtil.blockUnique3.getLocation());
-        warehouseEffect.invs.put(warehouse, inventoryLocations);
-        HashMap<String, Chest> chestMap = new HashMap<>();
-        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest);
+        warehouseEffect.putInventoryLocation(warehouse, TestUtil.blockUnique3.getLocation(), warehouseChest.getBlockInventory());
+        HashMap<String, Inventory> chestMap = new HashMap<>();
+        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest.getBlockInventory());
         warehouseEffect.availableItems.put(warehouse, chestMap);
 
         TownTests.loadTownTypeHamlet();
