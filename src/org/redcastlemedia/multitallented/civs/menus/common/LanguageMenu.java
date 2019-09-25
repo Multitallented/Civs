@@ -30,9 +30,6 @@ public class LanguageMenu extends CustomMenu {
             String language = languages[startIndex + count];
             CVItem cvItem = CVItem.createCVItemFromString(ChatColor.stripColor(LocaleManager.getInstance()
                     .getTranslation(language, "icon")));
-            if (cvItem == null) {
-                cvItem = new CVItem(Material.GRASS, count+1);
-            }
             String name = LocaleManager.getInstance().getTranslation(language, "name");
             if (name == null) {
                 name = "Error";
@@ -88,12 +85,7 @@ public class LanguageMenu extends CustomMenu {
     }
 
     @Override
-    public String getKey() {
-        return "language";
-    }
-
-    @Override
     public String getFileName() {
-        return "Language";
+        return "language";
     }
 }

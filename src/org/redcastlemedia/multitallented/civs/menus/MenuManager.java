@@ -27,7 +27,7 @@ import lombok.Getter;
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
-    private static HashMap<UUID, ArrayList<CustomMenu>> history = new HashMap<>();
+    private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
     private static HashMap<String, CustomMenu> menus = new HashMap<>();
 
@@ -39,10 +39,13 @@ public class MenuManager implements Listener {
     private MenuIcon nextButton;
 
     public MenuManager() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+        }
         instance = this;
     }
     public static MenuManager getInstance() {
-        if (instance != null) {
+        if (instance == null) {
             new MenuManager();
         }
         return instance;
@@ -52,21 +55,23 @@ public class MenuManager implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
+            System.out.println("no openMenus");
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         if (event.getCurrentItem() != null) {
             if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
-                CustomMenu menu = popLastMenu(civilian.getUuid());
-                // TODO get a way of storing menu data
-                openMenu((Player) event.getWhoClicked(), menu.getKey(), null);
+                MenuHistoryState menuHistoryState = popLastMenu(civilian.getUuid());
+                openMenuFromHistory((Player) event.getWhoClicked(), menuHistoryState.getMenuName(), menuHistoryState.getData());
+                event.setCancelled(true);
                 return;
             } else if (prevButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
                 putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
                 refreshMenu(civilian);
+                event.setCancelled(true);
                 return;
             } else if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
@@ -74,6 +79,7 @@ public class MenuManager implements Listener {
                 int maxPage = (Integer) getData(civilian.getUuid(), "max-page");
                 putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
                 refreshMenu(civilian);
+                event.setCancelled(true);
                 return;
             }
         }
@@ -90,18 +96,28 @@ public class MenuManager implements Listener {
             menuFolder.mkdir();
         }
         File menuFile = new File(menuFolder, "default.yml");
-        if (menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu default.yml");
+        if (!menuFile.exists()) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to find menu default.yml");
             return;
         }
         try {
             FileConfiguration config = new YamlConfiguration();
             config.load(menuFile);
-            backButton = new MenuIcon("back", config.getConfigurationSection("back"));
-            prevButton = new MenuIcon("prev", config.getConfigurationSection("prev"));
-            nextButton = new MenuIcon("next", config.getConfigurationSection("next"));
+            backButton = new MenuIcon("back",
+                    config.getString("back.icon", "REDSTONE_BLOCK"),
+                    config.getString("back.name", "back-button"),
+                    config.getString("back.desc", ""));
+            prevButton = new MenuIcon("prev",
+                    config.getString("prev.icon", "REDSTONE"),
+                    config.getString("prev.name", "prev-button"),
+                    config.getString("prev.desc", ""));
+            prevButton = new MenuIcon("next",
+                    config.getString("next.icon", "EMERALD"),
+                    config.getString("next.name", "next-button"),
+                    config.getString("next.desc", ""));
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu default.yml");
+            e.printStackTrace();
             return;
         }
 
@@ -138,7 +154,7 @@ public class MenuManager implements Listener {
             menuFolder.mkdir();
         }
         File menuFile = new File(menuFolder, customMenu.getFileName() + ".yml");
-        if (menuFile.exists()) {
+        if (!menuFile.exists()) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
             return;
         }
@@ -152,6 +168,7 @@ public class MenuManager implements Listener {
         int size = -1;
         int newSize = config.getInt("size", 36);
         size = getInventorySize(newSize);
+        String name = config.getString("name", "Unnamed");
         HashMap<Integer, MenuIcon> items = new HashMap<>();
         for (String key : config.getConfigurationSection("items").getKeys(false)) {
             MenuIcon menuIcon = new MenuIcon(key, config.getConfigurationSection("items." + key));
@@ -163,7 +180,16 @@ public class MenuManager implements Listener {
                 items.put(i, menuIcon);
             }
         }
-        customMenu.loadConfig(items, size);
+        customMenu.loadConfig(items, size, name);
+    }
+
+    public void openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {
+        if (!menus.containsKey(menuName)) {
+            return;
+        }
+        openMenus.put(player.getUniqueId(), menuName);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
     }
 
     public void openMenu(Player player, String menuName, Map<String, String> params) {
@@ -192,20 +218,22 @@ public class MenuManager implements Listener {
         }
         return Math.min(size, 54);
     }
-    public static void addHistory(UUID uuid, CustomMenu customMenu) {
+    public static void addHistory(UUID uuid, CustomMenu customMenu, Map<String, Object> data) {
         if (!history.containsKey(uuid)) {
             history.put(uuid, new ArrayList<>());
         }
-        history.get(uuid).add(customMenu);
+        MenuHistoryState menuHistoryState = new MenuHistoryState(customMenu.getFileName(), data);
+        history.get(uuid).add(menuHistoryState);
     }
-    public static CustomMenu popLastMenu(UUID uuid) {
+    public static MenuHistoryState popLastMenu(UUID uuid) {
         if (!history.containsKey(uuid) ||
                 history.get(uuid).isEmpty()) {
-            return menus.get("main");
+            MenuHistoryState menuHistoryState = new MenuHistoryState("main", new HashMap<>());
+            return menuHistoryState;
         }
-        CustomMenu menu = history.get(uuid).get(history.get(uuid).size() - 1);
+        MenuHistoryState menuHistoryState = history.get(uuid).get(history.get(uuid).size() - 1);
         history.get(uuid).remove(history.get(uuid).size() - 1);
-        return menu;
+        return menuHistoryState;
     }
     public static void clearHistory(UUID uuid) {
         history.remove(uuid);

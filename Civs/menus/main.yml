@@ -10,8 +10,8 @@ items:
     name: guide
     desc: guide-desc
     actions:
-      - close
       - print-tutorial
+      - close
   shop:
     index: 1
     icon: EMERALD

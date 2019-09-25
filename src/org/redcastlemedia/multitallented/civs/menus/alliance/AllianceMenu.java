@@ -82,11 +82,6 @@ public class AllianceMenu extends CustomMenu {
     }
 
     @Override
-    public String getKey() {
-        return "Alliance";
-    }
-
-    @Override
     public String getFileName() {
         return "alliance";
     }

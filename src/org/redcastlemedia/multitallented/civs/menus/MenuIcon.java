@@ -55,6 +55,13 @@ public class MenuIcon {
             }
         }
     }
+    public MenuIcon(String key, String icon, String name, String desc) {
+        this.key = key;
+        this.index = new ArrayList<>();
+        this.name = name;
+        this.icon = icon;
+        this.desc = desc;
+    }
 
     public MenuIcon(String key, int index, String icon, String name, String desc) {
         this.key = key;
@@ -77,6 +84,9 @@ public class MenuIcon {
 
     public static ArrayList<Integer> parseIndexArrayFromString(String indexString) {
         ArrayList<Integer> indexList = new ArrayList<>();
+        if (indexString.equals("-1")) {
+            return indexList;
+        }
         String[] splitList = indexString.split(",");
         for (String currentIndexString : splitList) {
             if (currentIndexString.contains("-")) {
