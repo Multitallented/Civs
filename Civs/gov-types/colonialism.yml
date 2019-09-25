@@ -8,7 +8,7 @@
 icon: "GRAY_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  0:
+  overthrow:
     revolt: 66
     to: LIBERTARIAN
 buffs:

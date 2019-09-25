@@ -18,6 +18,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -823,7 +824,7 @@ public class RegionsTests {
                 EquipmentSlot.HAND);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
-        assertFalse(playerInteractEvent.isCancelled());
+        assertSame(Event.Result.ALLOW, playerInteractEvent.useInteractedBlock());
     }
 
     @Test

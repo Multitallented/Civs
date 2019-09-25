@@ -50,6 +50,10 @@ public class RemoveMemberCommand implements CivCommand {
         //2 regionname
         UUID inviteUUID = UUID.fromString(strings[1]);
         String locationString = strings[2];
+        String uuidString = null;
+        if (strings.length > 3) {
+            uuidString = strings[3];
+        }
 
         Town town = TownManager.getInstance().getTown(locationString);
         Town overrideTown = null;

@@ -9,18 +9,18 @@
 icon: "LIME_STAINED_GLASS"
 enabled: true
 transition:
-  0:
+  corruption:
     money-gap: 70
     to: OLIGARCHY
-  1:
+  takeover:
     revolt: 58
     money-gap: 40
     to: COMMUNISM
-  2:
+  chaos:
     revolt: 51
     power: 30
     to: KRATEROCRACY
-  3:
+  overthrow:
     revolt: 61
     to: LIBERTARIAN
 buffs:

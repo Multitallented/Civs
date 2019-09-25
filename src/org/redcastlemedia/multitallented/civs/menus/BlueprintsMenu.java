@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -37,7 +38,11 @@ public class BlueprintsMenu extends Menu {
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
         Inventory inventory = event.getInventory();
-        if (!inventory.getTitle().equals(MENU_NAME)) {
+        try {
+            if (!event.getView().getTitle().equals(MENU_NAME)) {
+                return;
+            }
+        } catch (IllegalStateException stateException) {
             return;
         }
 

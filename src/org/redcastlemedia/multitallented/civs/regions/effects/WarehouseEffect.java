@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -523,9 +524,19 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         return req;
     }
 
+    protected void putInventoryLocation(Region region, Location location, Inventory inventory) {
+        if (invs.get(region) != null) {
+            invs.get(region).add(new InventoryLocation(location, inventory));
+        } else {
+            ArrayList<InventoryLocation> inventoryLocations = new ArrayList<>();
+            inventoryLocations.add(new InventoryLocation(location, inventory));
+            invs.put(region, inventoryLocations);
+        }
+    }
+
     @Getter
     @Setter
-    private class InventoryLocation {
+    private static class InventoryLocation {
         private Location location;
         private Inventory inventory;
 

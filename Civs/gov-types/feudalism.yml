@@ -7,20 +7,20 @@
 icon: "COBBLESTONE"
 enabled: true
 transition:
-  0:
+  corruption:
     money-gap: 66
     to: OLIGARCHY
-  1:
+  chaos:
     revolt: 66
     power: 30
     to: KRATEROCRACY
-  2:
+  overthrow:
     revolt: 75
     to: LIBERTARIAN
-  3:
+  vacate:
     inactive: 1814400 #3 weeks
     to: ANARCHY
-  4:
+  devolve:
     power: 20
     to: TRIBALISM
 buffs:

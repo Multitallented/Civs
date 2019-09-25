@@ -369,7 +369,7 @@ public class CivilianListener implements Listener {
 //        }
 
         if (!CVItem.isCivsItem(dragged) ||
-                event.getInventory().getTitle().startsWith("Civ")) {
+                event.getView().getTitle().startsWith("Civ")) {
             return;
         }
 
@@ -436,7 +436,7 @@ public class CivilianListener implements Listener {
 //            return;
 //        }
 
-        if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
+        if (!CVItem.isCivsItem(stackInQuestion) || event.getView().getTitle().startsWith("Civ")) {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();

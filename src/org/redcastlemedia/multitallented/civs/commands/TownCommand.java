@@ -197,6 +197,7 @@ public class TownCommand implements CivCommand {
                 break;
             }
         }
+        townManager.saveTown(newTown);
         townManager.addTown(newTown);
         player.getInventory().remove(itemStack);
 
@@ -221,7 +222,6 @@ public class TownCommand implements CivCommand {
             newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
-        townManager.saveTown(newTown);
 
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                 "town-created").replace("$1", newTown.getName()));

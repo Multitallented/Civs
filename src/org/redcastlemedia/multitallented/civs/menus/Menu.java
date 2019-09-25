@@ -11,9 +11,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -55,8 +55,7 @@ public abstract class Menu implements Listener {
     @EventHandler
     public void onMenuInteract(InventoryClickEvent event) {
         if (event.getClickedInventory() == null ||
-                event.getClickedInventory().getTitle() == null ||
-                !event.getClickedInventory().getTitle().equals(MENU_NAME)) {
+                !event.getView().getTitle().equals(MENU_NAME)) {
             return;
         }
         handleInteract(event);
@@ -286,8 +285,18 @@ public abstract class Menu implements Listener {
                 divideByTwo(item);
             } else if (mat == Material.REDSTONE_WIRE) {
                 item.setMat(Material.REDSTONE);
-            } else if (mat == Material.WALL_SIGN) {
-                item.setMat(Material.SIGN);
+            } else if (mat == Material.OAK_WALL_SIGN) {
+                item.setMat(Material.OAK_SIGN);
+            } else if (mat == Material.BIRCH_WALL_SIGN) {
+                item.setMat(Material.BIRCH_SIGN);
+            } else if (mat == Material.SPRUCE_WALL_SIGN) {
+                item.setMat(Material.SPRUCE_SIGN);
+            } else if (mat == Material.JUNGLE_WALL_SIGN) {
+                item.setMat(Material.JUNGLE_SIGN);
+            } else if (mat == Material.DARK_OAK_WALL_SIGN) {
+                item.setMat(Material.DARK_OAK_SIGN);
+            } else if (mat == Material.ACACIA_WALL_SIGN) {
+                item.setMat(Material.ACACIA_SIGN);
             } else if (mat == Material.WATER) {
                 item.setMat(Material.WATER_BUCKET);
             } else if (mat == Material.LAVA) {
@@ -331,6 +340,7 @@ public abstract class Menu implements Listener {
             return;
         }
         clearCycleItems(he.getUniqueId());
+        clearData(he.getUniqueId());
 //        history.remove(he.getUniqueId());
     }
 

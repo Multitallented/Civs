@@ -1,6 +1,6 @@
 type: region
 icon: OBSIDIAN
-shop-icon: SIGN
+shop-icon: SPRUCE_SIGN
 name: Town_Hall
 price: 4000
 max: 1

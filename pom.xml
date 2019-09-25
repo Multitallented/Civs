@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.2.1</version>
+    <version>1.5.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.14.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->

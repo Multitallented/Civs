@@ -22,6 +22,7 @@ build-reqs:
 - g:sign*1
 - FURNACE*2
 - CRAFTING_TABLE
+- g:jobblock*1
 - g:roof*85
 - g:secondary*65
 - g:primary*200

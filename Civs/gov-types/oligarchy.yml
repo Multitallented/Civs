@@ -8,17 +8,17 @@
 icon: "LIME_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  0:
+  chaos:
     revolt: 66
     power: 30
     to: KRATEROCRACY
-  1:
+  takeover:
     revolt: 75
     to: COMMUNISM
-  2:
+  vacate:
     inactive: 2419200 #4 weeks
     to: ANARCHY
-  3:
+  devolve:
     power: 20
     to: TRIBALISM
 buffs:

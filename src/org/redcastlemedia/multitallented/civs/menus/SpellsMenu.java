@@ -52,7 +52,11 @@ public class SpellsMenu extends Menu {
     @Override @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         super.onInventoryClose(event);
-        if (!event.getInventory().getTitle().equals(MENU_NAME)) {
+        try {
+            if (!event.getView().getTitle().equals(MENU_NAME)) {
+                return;
+            }
+        } catch (IllegalStateException stateException) {
             return;
         }
 

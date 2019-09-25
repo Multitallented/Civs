@@ -11,6 +11,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.InventoryImpl;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
@@ -49,10 +50,10 @@ public class BlueprintsMenuTests {
         loadRegionTypeShelter();
         blueprintsMenu = new BlueprintsMenu();
         this.inventory = new InventoryImpl();
-        this.inventory.setTitle("CivsRegionStash");
         InventoryView inventoryView = mock(InventoryView.class);
         when(inventoryView.getTopInventory()).thenReturn(inventory);
         when(inventoryView.getPlayer()).thenReturn(TestUtil.player);
+        when(inventoryView.getTitle()).thenReturn("CivsRegionStash");
 
         this.event = new InventoryCloseEvent(inventoryView);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());

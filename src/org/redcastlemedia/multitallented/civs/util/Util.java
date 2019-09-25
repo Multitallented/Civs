@@ -216,6 +216,9 @@ public final class Util {
         return inputString;
     }
     public static String parseColors(String input) {
+        if (input == null) {
+            return null;
+        }
         String returnInput = new String(input);
         for (ChatColor color : ChatColor.values()) {
             returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
@@ -281,10 +284,9 @@ public final class Util {
         final int RENDER_RANGE_SQUARED = 25600;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().equals(location.getWorld())) {
-                continue;
-            }
-            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+            if (location.getWorld() != null &&
+                    location.getWorld().equals(player.getWorld()) &&
+                    player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
                 return true;
             }
         }
@@ -294,7 +296,12 @@ public final class Util {
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&
                 type != Material.LEVER &&
-                type != Material.WALL_SIGN &&
+                type != Material.OAK_WALL_SIGN &&
+                type != Material.BIRCH_WALL_SIGN &&
+                type != Material.SPRUCE_WALL_SIGN &&
+                type != Material.DARK_OAK_WALL_SIGN &&
+                type != Material.ACACIA_WALL_SIGN &&
+                type != Material.JUNGLE_WALL_SIGN &&
                 type != Material.TORCH &&
                 type != Material.STONE_BUTTON &&
                 type != Material.BIRCH_BUTTON &&

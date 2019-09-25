@@ -35,11 +35,12 @@ effects:
 - block_fire
 - conveyor:FLINT
 
-period: 15 #15 seconds
+period: 300 #5 minutes
 upkeep:
   0:
     reagents:
     - GRAVEL*64
     - STONE_SHOVEL
     output:
-    - FLINT*4
+    - FLINT*64
+    - FLINT*16

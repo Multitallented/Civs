@@ -183,9 +183,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return false;
         }
 
-        System.out.println(l.getBlock().getRelative(BlockFace.UP).getY() + ":" +
-                l.getWorld().getHighestBlockAt(l).getY());
-        if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
+        if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-blocks-above-chest").replace("$1", regionType.getName()));
             return false;
@@ -221,9 +219,10 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+            String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
-                    .replace("$2", regionType.getName()).replace("$3", town.getName()));
+                    civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
+                    .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         return true;
     }

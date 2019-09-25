@@ -53,7 +53,7 @@ public class MainMenu extends Menu {
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "language-menu")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
             event.getWhoClicked().closeInventory();
-            event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
+            event.getWhoClicked().openInventory(LanguageMenu.createMenu());
             return;
         }
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "guide")))) {

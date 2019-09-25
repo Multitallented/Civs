@@ -52,7 +52,7 @@ public class TownManager {
                 try {
                     config.load(file);
 
-                    loadTown(config, file.getName().replace(".yml", ""));
+                    loadTown(config);
                 } catch (Exception e) {
                     Civs.logger.warning("Unable to read from towns/" + file.getName());
                     e.printStackTrace();
@@ -187,7 +187,7 @@ public class TownManager {
         return towns;
     }
 
-    private void loadTown(FileConfiguration config, String name) {
+    private void loadTown(FileConfiguration config) {
 
         HashMap<UUID, String> people = new HashMap<>();
         for (String key : config.getConfigurationSection("people").getKeys(false)) {
@@ -199,7 +199,7 @@ public class TownManager {
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
         GovernmentType governmentType = GovernmentType.valueOf(config.getString("gov-type", "DICTATORSHIP"));
-        Town town = new Town(name,
+        Town town = new Town(config.getString("name", "NameNotFound"),
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
                 people,

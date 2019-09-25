@@ -269,6 +269,9 @@ public class TownTests {
     public void townTransitionTest() {
         TownTests.loadTownTypeHamlet();
         Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(2);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -285,6 +288,9 @@ public class TownTests {
     public void townShouldNotTransition() {
         TownTests.loadTownTypeHamlet();
         Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -301,6 +307,9 @@ public class TownTests {
     public void townShouldNotInactiveTransition() {
         TownTests.loadTownTypeHamlet();
         Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();

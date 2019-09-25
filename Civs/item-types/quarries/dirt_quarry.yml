@@ -32,12 +32,12 @@ effects:
 - block_liquid
 - block_fire
 
-period: 15 #15 seconds
+period: 300 # 5 minutes
 upkeep:
   0:
     reagents:
     - STONE_SHOVEL
     output:
-    - DIRT*4%50,PODZOL*4%25,COARSE_DIRT*4%25
-    - DIRT%93,GRASS_BLOCK%5,MYCELIUM%2
+    - DIRT*80%50,PODZOL*40%25,COARSE_DIRT*40%25
+    - DIRT*20%93,GRASS_BLOCK*20%5,MYCELIUM*20%2
 
