@@ -124,7 +124,6 @@ public abstract class CustomMenu {
             return true;
         }
         for (String actionString : actionStrings) {
-            System.out.println(actionString);
             if (actionString.equals("print-tutorial")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 TutorialManager.getInstance().printTutorial(player, civilian);
