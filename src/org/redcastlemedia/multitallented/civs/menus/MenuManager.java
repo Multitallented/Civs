@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
@@ -163,6 +164,11 @@ public class MenuManager implements Listener {
             BlueprintsMenu blueprintsMenu = new BlueprintsMenu();
             loadConfig(blueprintsMenu);
             menus.put(blueprintsMenu.getFileName(), blueprintsMenu);
+        }
+        {
+            CommunityMenu communityMenu = new CommunityMenu();
+            loadConfig(communityMenu);
+            menus.put(communityMenu.getFileName(), communityMenu);
         }
     }
 
