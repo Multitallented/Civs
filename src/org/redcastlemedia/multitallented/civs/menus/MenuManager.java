@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceListMenu;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
@@ -169,6 +170,11 @@ public class MenuManager implements Listener {
             CommunityMenu communityMenu = new CommunityMenu();
             loadConfig(communityMenu);
             menus.put(communityMenu.getFileName(), communityMenu);
+        }
+        {
+            AllianceListMenu allianceListMenu = new AllianceListMenu();
+            loadConfig(allianceListMenu);
+            menus.put(allianceListMenu.getFileName(), allianceListMenu);
         }
     }
 
