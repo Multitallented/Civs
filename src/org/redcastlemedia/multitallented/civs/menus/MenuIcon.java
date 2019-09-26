@@ -48,8 +48,8 @@ public class MenuIcon {
                 this.desc = backIcon.getDesc();
             } else {
                 this.icon = section.getString("icon", "STONE");
-                this.name = section.getString("name", "items");
-                this.desc = section.getString("desc", "items");
+                this.name = section.getString("name", "");
+                this.desc = section.getString("desc", "");
                 this.actions = section.getStringList("actions");
                 this.perm = section.getString("permission", "");
             }
@@ -76,8 +76,12 @@ public class MenuIcon {
     public CVItem createCVItem(String locale) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
         if (cvItem.getMmoItemType() == null) {
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
+            if (!name.isEmpty()) {
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name));
+            }
+            if (!desc.isEmpty()) {
+                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
+            }
         }
         return cvItem;
     }

@@ -13,12 +13,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
@@ -52,16 +55,27 @@ public class MenuManager implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onInventoryClose(InventoryCloseEvent event) {
+        UUID uuid = event.getPlayer().getUniqueId();
+        if (!openMenus.containsKey(uuid)) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        menus.get(openMenus.get(uuid)).onCloseMenu(civilian, event.getInventory());
+        openMenus.remove(uuid);
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
-            System.out.println("no openMenus");
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         if (event.getCurrentItem() != null) {
             if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
+                popLastMenu(civilian.getUuid());
                 MenuHistoryState menuHistoryState = popLastMenu(civilian.getUuid());
                 openMenuFromHistory((Player) event.getWhoClicked(), menuHistoryState.getMenuName(), menuHistoryState.getData());
                 event.setCancelled(true);
@@ -146,6 +160,16 @@ public class MenuManager implements Listener {
             loadConfig(regionListMenu);
             menus.put(regionListMenu.getFileName(), regionListMenu);
         }
+        {
+            BlueprintsMenu blueprintsMenu = new BlueprintsMenu();
+            loadConfig(blueprintsMenu);
+            menus.put(blueprintsMenu.getFileName(), blueprintsMenu);
+        }
+        {
+            CommunityMenu communityMenu = new CommunityMenu();
+            loadConfig(communityMenu);
+            menus.put(communityMenu.getFileName(), communityMenu);
+        }
     }
 
     private void loadConfig(CustomMenu customMenu) {
@@ -190,6 +214,11 @@ public class MenuManager implements Listener {
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
+        if (!history.containsKey(player.getUniqueId())) {
+            history.put(player.getUniqueId(), new ArrayList<>());
+        }
+        MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
+        history.get(player.getUniqueId()).add(menuHistoryState);
     }
 
     public void openMenu(Player player, String menuName, Map<String, String> params) {
@@ -199,6 +228,11 @@ public class MenuManager implements Listener {
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
+        if (!history.containsKey(player.getUniqueId())) {
+            history.put(player.getUniqueId(), new ArrayList<>());
+        }
+        MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
+        history.get(player.getUniqueId()).add(menuHistoryState);
     }
     public void refreshMenu(Civilian civilian) {
         if (!openMenus.containsKey(civilian.getUuid())) {

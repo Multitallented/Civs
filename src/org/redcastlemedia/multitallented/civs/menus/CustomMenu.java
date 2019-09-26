@@ -124,7 +124,6 @@ public abstract class CustomMenu {
             return true;
         }
         for (String actionString : actionStrings) {
-            System.out.println(actionString);
             if (actionString.equals("print-tutorial")) {
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 TutorialManager.getInstance().printTutorial(player, civilian);
@@ -213,5 +212,9 @@ public abstract class CustomMenu {
             actionString = actionString.replaceAll("\\$" + key + "\\$", replaceString);
         }
         return actionString;
+    }
+
+    public void onCloseMenu(Civilian civilian, Inventory inventory) {
+        // Do nothing normally
     }
 }
