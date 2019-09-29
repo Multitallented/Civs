@@ -24,6 +24,7 @@ limits:
 child: outpost
 build-radius: 36 # 73x73x73
 effects:
+- exempt-housing
 - block_break
 - block_build
 - block_liquid
