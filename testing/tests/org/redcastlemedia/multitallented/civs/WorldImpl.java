@@ -188,6 +188,31 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean addPluginChunkTicket(int i, int i1, Plugin plugin) {
+        return false;
+    }
+
+    @Override
+    public boolean removePluginChunkTicket(int i, int i1, Plugin plugin) {
+        return false;
+    }
+
+    @Override
+    public void removePluginChunkTickets(Plugin plugin) {
+
+    }
+
+    @Override
+    public Collection<Plugin> getPluginChunkTickets(int i, int i1) {
+        return null;
+    }
+
+    @Override
+    public Map<Plugin, Collection<Chunk>> getPluginChunkTickets() {
+        return null;
+    }
+
+    @Override
     public Item dropItem(Location location, ItemStack itemStack) {
         return null;
     }

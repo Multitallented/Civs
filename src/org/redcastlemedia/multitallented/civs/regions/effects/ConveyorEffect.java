@@ -223,7 +223,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Region destinationRegion = cacheDestinationRegions.get(region);
         Inventory destinationInventory = UnloadedInventoryHandler.getInstance()
                 .getChestInventory(destinationRegion.getLocation());
-        return destinationInventory.firstEmpty() < 0 ||
+        return destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 3;
     }
 
