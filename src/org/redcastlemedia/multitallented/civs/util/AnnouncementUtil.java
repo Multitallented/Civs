@@ -153,23 +153,20 @@ public final class AnnouncementUtil {
         }
         Collections.shuffle(regions);
         int regionCount = 0;
-        regionOuter: for (Region region : regions) {
+        for (Region region : regions) {
             if (alreadySentMessages.get(civilian.getUuid()).contains("ann-missing-input-" + region.getId())) {
                 continue;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            for (int i=0; i<regionType.getUpkeeps().size(); i++) {
-                if (!region.hasUpkeepItems(i, true)) {
-                    keys.add("ann-missing-input-" + region.getId());
-                    messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-missing-input")
-                            .replace("$1", regionType.getName()));
-                    regionCount++;
-                    if (regionCount > 2) {
-                        break regionOuter;
-                    } else {
-                        continue;
-                    }
-                }
+            if (region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+                continue;
+            }
+            keys.add("ann-missing-input-" + region.getId());
+            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-missing-input")
+                    .replace("$1", regionType.getName()));
+            regionCount++;
+            if (regionCount > 2) {
+                break;
             }
         }
 
