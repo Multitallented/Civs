@@ -24,9 +24,9 @@ villager-cooldown: 300
 disable-arrow-turret-shooting-at-mobs: false
 #mobs killed in safe zones will not drop items
 stop-mobs-from-dropping-items-in-safe-zones: false
-#cooldown before killing the same player reduces the town power
+#cooldown in seconds before killing the same player reduces the town power
 death-grace-period-seconds: 60
-#how long a player is considered in combat after taking or dealing damage
+#how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
 #should food heal in combat?
 allow-food-heal-in-combat: true
@@ -128,3 +128,6 @@ default-gov-type: "DICTATORSHIP"
 days-between-elections: 7
 use-announcements: true
 announcement-period: 240
+
+# do not turn this on unless you want to spam your console with potentially useless info
+debug-log: false

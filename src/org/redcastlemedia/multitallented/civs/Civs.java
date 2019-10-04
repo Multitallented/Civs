@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -134,6 +135,9 @@ public class Civs extends JavaPlugin {
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
+        if (ConfigManager.getInstance().isDebugLog()) {
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, DebugLogger.timedDebugTask(), 20L, 20L);
+        }
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
     }

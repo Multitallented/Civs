@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
@@ -30,6 +31,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -433,10 +435,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
 
         HashSet<HashSet<CVItem>> req = convertToHashSet(neededItems);
-        outer2: for (Iterator<HashSet<CVItem>> it = req.iterator(); it.hasNext();) {
-            HashSet<CVItem> orReqs = it.next();
-            outer1: for (Iterator<CVItem> its = orReqs.iterator(); its.hasNext();) {
-                CVItem orReq = its.next();
+        outer2: for (HashSet<CVItem> orReqs : req) {
+            HashSet<CVItem> removeTheseCVItems = new HashSet<>();
+            outer1: for (CVItem orReq : orReqs) {
                 HashSet<String> removeTheseChests = new HashSet<>();
                 for (String locationString : availableItems.get(region).keySet()) {
                     Inventory inv = availableItems.get(region).get(locationString);
@@ -448,6 +449,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                     try {
 
                         int i = 0;
+                        HashSet<ItemStack> removeTheseItems = new HashSet<>();
                         for (ItemStack is : inv.getContents()) {
                             if (is != null && is.getType() != Material.AIR && orReq.equivalentItem(is, orReq.getDisplayName() != null)) {
 
@@ -458,16 +460,18 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                                 ItemStack nIS = CVItem.createFromItemStack(is).createItemStack();
                                 if (orReq.getQty() > is.getAmount()) {
                                     orReq.setQty(orReq.getQty() - is.getAmount());
+//                                    System.out.println("putting " + nIS.getAmount() + " " + nIS.getType().name());
                                     itemsToMove.get(inventoryLocation).put(i, nIS);
                                 } else {
                                     if (orReq.getQty() < is.getAmount()) {
                                         nIS.setAmount(is.getAmount() - orReq.getQty());
                                     }
+//                                    System.out.println("putting " + nIS.getAmount() + " " + nIS.getType().name());
                                     itemsToMove.get(inventoryLocation).put(i, nIS);
 
-                                    its.remove();
+                                    orReqs.remove(orReq);
                                     if (orReqs.isEmpty()) {
-                                        it.remove();
+                                        req.remove(orReqs);
                                         continue outer2;
                                     }
 
@@ -486,12 +490,18 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
         }
 
+//        System.out.println("items to move length " + itemsToMove.size());
+
         //move items from warehouse to needed region
         outerNew: for (InventoryLocation inventoryLocation : itemsToMove.keySet()) {
             for (Integer i : itemsToMove.get(inventoryLocation).keySet()) {
                 ItemStack moveMe = itemsToMove.get(inventoryLocation).get(i);
                 inventoryLocation.getInventory().removeItem(moveMe);
                 refreshChest(region, inventoryLocation.getLocation());
+//                System.out.println("adding item " + moveMe.getType().name());
+                if (ConfigManager.getInstance().isDebugLog()) {
+                    DebugLogger.inventoryModifications++;
+                }
                 destinationInventory.addItem(moveMe);
                 RegionManager.getInstance().removeCheckedRegion(destination);
 

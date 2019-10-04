@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -176,6 +177,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                     cInv.removeItem(is);
                 }
                 try {
+                    if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     for (ItemStack is : iss) {
                         cachedInventory.addItem(is);
                     }
@@ -193,6 +197,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
             StorageMinecart cart = loc.getWorld().spawn(loc, StorageMinecart.class);
 
+            if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
+                DebugLogger.inventoryModifications++;
+            }
             for (ItemStack is : iss) {
                 cart.getInventory().addItem(is);
             }
@@ -229,7 +236,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Region destinationRegion = cacheDestinationRegions.get(region);
         Inventory destinationInventory = UnloadedInventoryHandler.getInstance()
                 .getChestInventory(destinationRegion.getLocation());
-        return destinationInventory.firstEmpty() < 0 ||
+        return destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 3;
     }
 
@@ -274,11 +281,17 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                             sm.getInventory().removeItem(is);
                         }
                     }
+                    if (ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     sm.getInventory().removeItem(is);
                     currentInventory.addItem(is);
                     RegionManager.getInstance().removeCheckedRegion(region);
                 } else {
                     sm.getInventory().removeItem(is);
+                    if (ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     originInv.addItem(is);
                 }
             } catch (NullPointerException npe) {

@@ -138,6 +138,7 @@ public class RegionEffectTests {
         RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
         Location location = new Location(Bukkit.getWorld("world"), 2,50,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
+        cobbleRegion.getFailingUpkeeps().add(0);
         Location location2 = new Location(Bukkit.getWorld("world"), 3,100,0);
         Region warehouse = RegionsTests.createNewRegion("warehouse", location2);
         Chest cobbleChest = (Chest) TestUtil.blockUnique2.getState();
