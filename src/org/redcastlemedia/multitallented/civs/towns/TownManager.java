@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -436,6 +437,9 @@ public class TownManager {
     public void saveTown(Town town) {
         if (Civs.getInstance() == null) {
             return;
+        }
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.saves++;
         }
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {
