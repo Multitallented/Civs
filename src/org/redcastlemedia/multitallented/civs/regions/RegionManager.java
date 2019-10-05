@@ -1,5 +1,17 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,7 +22,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -35,10 +46,6 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
 public class RegionManager {
     private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
     protected HashMap<String, Region> regionLocations = new HashMap<>();
@@ -47,6 +54,7 @@ public class RegionManager {
     private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
     private HashSet<Region> checkedRegions = new HashSet<>();
+    private ArrayList<Region> needsSaving = new ArrayList<>();
 
     public RegionManager() {
         regionManager = this;
@@ -202,6 +210,35 @@ public class RegionManager {
     }
 
     public void saveRegion(Region region) {
+        needsSaving.add(region);
+    }
+
+    public int getCountOfPendingSaves() {
+        return needsSaving.size();
+    }
+
+    public void saveNextRegion() {
+        Region r = null;
+        for (Region region : needsSaving) {
+            r = region;
+            saveRegionNow(r);
+            break;
+        }
+        if (r != null) {
+            while (needsSaving.contains(r)) {
+                needsSaving.remove(r);
+            }
+        }
+    }
+
+    public void saveAllUnsavedRegions() {
+        for (Region region : needsSaving) {
+            saveRegionNow(region);
+        }
+        needsSaving.clear();
+    }
+
+    private void saveRegionNow(Region region) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;

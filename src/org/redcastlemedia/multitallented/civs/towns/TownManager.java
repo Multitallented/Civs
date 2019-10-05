@@ -30,6 +30,7 @@ public class TownManager {
     private HashMap<String, Town> towns = new HashMap<>();
     private List<Town> sortedTowns = new ArrayList<>();
     private HashMap<UUID, Town> invites = new HashMap<>();
+    private ArrayList<Town> needsSaving = new ArrayList<>();
 
     public TownManager() {
         townManager = this;
@@ -435,6 +436,35 @@ public class TownManager {
     }
 
     public void saveTown(Town town) {
+        needsSaving.add(town);
+    }
+
+    public void saveAllUnsavedTowns() {
+        for (Town town : needsSaving) {
+            saveTownNow(town);
+        }
+        needsSaving.clear();
+    }
+
+    public int getCountOfPendingSaves() {
+        return needsSaving.size();
+    }
+
+    public void saveNextTown() {
+        Town t = null;
+        for (Town town : needsSaving) {
+            t = town;
+            saveTownNow(t);
+            break;
+        }
+        if (t != null) {
+            while (needsSaving.contains(t)) {
+                needsSaving.remove(t);
+            }
+        }
+    }
+
+    private void saveTownNow(Town town) {
         if (Civs.getInstance() == null) {
             return;
         }
