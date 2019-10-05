@@ -82,6 +82,8 @@ public class Civs extends JavaPlugin {
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
         StructureUtil.removeAllBoundingBoxes();
+        RegionManager.getInstance().saveAllUnsavedRegions();
+        TownManager.getInstance().saveAllUnsavedTowns();
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
@@ -136,10 +138,19 @@ public class Civs extends JavaPlugin {
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
         if (ConfigManager.getInstance().isDebugLog()) {
-            getServer().getScheduler().scheduleSyncRepeatingTask(this, DebugLogger.timedDebugTask(), 20L, 20L);
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, DebugLogger.timedDebugTask(), 600L, 600L);
         }
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
+
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+
+            @Override
+            public void run() {
+                RegionManager.getInstance().saveNextRegion();
+                TownManager.getInstance().saveNextTown();
+            }
+        }, 20L, 20L);
     }
 
     private void initCommands() {
