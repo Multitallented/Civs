@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public final class DebugLogger {
     public static int saves = 0;
+    public static int chunkLoads = 0;
     public static int inventoryModifications = 0;
     private static final HashMap<Region, Integer> regionActivity = new HashMap<>();
 
@@ -22,6 +23,7 @@ public final class DebugLogger {
             @Override
             public void run() {
                 Civs.getInstance().getLogger().info("Saves:                   " + saves);
+                Civs.getInstance().getLogger().info("Chunk Loads:             " + chunkLoads);
                 Civs.getInstance().getLogger().info("Inventory Modifications: " + inventoryModifications);
                 Civs.getInstance().getLogger().info("Pending Town Saves:      " + TownManager.getInstance().getCountOfPendingSaves());
                 Civs.getInstance().getLogger().info("Pending Region Saves:    " + RegionManager.getInstance().getCountOfPendingSaves());
@@ -43,6 +45,7 @@ public final class DebugLogger {
                     Civs.getInstance().getLogger().info("^^Ran " + highestActivity + " times");
                 }
                 saves = 0;
+                chunkLoads = 0;
                 inventoryModifications = 0;
                 regionActivity.clear();
             }
