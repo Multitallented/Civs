@@ -33,6 +33,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -48,6 +49,9 @@ public class ProtectionHandler implements Listener {
 //    }
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.chunkLoads++;
+        }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
