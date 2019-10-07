@@ -108,6 +108,19 @@ public class TownTests {
     }
 
     @Test
+    public void newTownShouldStartWithHousing() {
+        TownTests.loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("tribe");
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+
+        int housing = TownManager.getInstance().getHousingCount(location, townType);
+        assertEquals(2, housing);
+    }
+
+    @Test
     public void townShouldDestroyWhenCriticalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
@@ -115,6 +128,40 @@ public class TownTests {
         HashMap<String, String> effects = new HashMap<>();
         Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
         Region region = new Region("cobble", people,
+                regionLocation,
+                RegionsTests.getRadii(),
+                effects,0);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
+
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        loadTown("Sanmak-kol", "tribe", townLocation);
+        if (townManager.getTowns().isEmpty()) {
+            fail("No town found");
+        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Block block = mock(Block.class);
+        when(block.getLocation()).thenReturn(regionLocation);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        if (!blockBreakEvent.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(blockBreakEvent);
+        }
+//        regionManager.removeRegion(region, false);
+        assertTrue(townManager.getTowns().isEmpty());
+    }
+
+    @Test
+    public void townShouldDestroyWhenCriticalRegionDestroyed2() {
+        RegionsTests.loadRegionTypeCobbleGroup();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
+        Region region = new Region("town_hall", people,
                 regionLocation,
                 RegionsTests.getRadii(),
                 effects,0);

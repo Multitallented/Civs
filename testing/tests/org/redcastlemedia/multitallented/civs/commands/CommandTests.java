@@ -41,22 +41,6 @@ public class CommandTests {
         new TownManager();
     }
 
-    @Test
-    public void newTownShouldStartWithHousing() {
-        TownTests.loadTownTypeTribe();
-        RegionsTests.loadRegionTypeCobble();
-        RegionsTests.createNewRegion("cobble");
-        TownType townType = (TownType) ItemManager.getInstance().getItemType("tribe");
-
-        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-
-        TownCommand townCommand = new TownCommand();
-
-
-        int housing = townCommand.getHousingCount(location, townType);
-        assertEquals(2, housing);
-    }
-
     @Test(expected = SuccessException.class)
     public void playerShouldBeAbleToPort() {
         when(Bukkit.getServer().getScheduler()).thenThrow(new SuccessException());

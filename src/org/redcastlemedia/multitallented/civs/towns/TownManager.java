@@ -111,11 +111,11 @@ public class TownManager {
 
     public void checkCriticalRequirements(Region region) {
         Town town = getTownAt(region.getLocation());
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        RegionManager regionManager = RegionManager.getInstance();
         if (town == null) {
             return;
         }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        RegionManager regionManager = RegionManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             boolean containsReq = false;
