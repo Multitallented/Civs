@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,10 +11,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -24,6 +27,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -188,6 +192,77 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             return;
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onAdvertisementBreak(BlockBreakEvent event) {
+        Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.IDIOCRACY) {
+            return;
+        }
+        changeAdvertising(event.getBlock(), town, false);
+    }
+
+    private void changeAdvertising(Block block, Town town, boolean increment) {
+        if (!(block instanceof Sign)) {
+            return;
+        }
+        Sign sign = (Sign) block;
+        changeAdvertising(sign.getLines(), town, increment);
+    }
+    private void changeAdvertising(String[] lines, Town town, boolean increment) {
+        HashSet<UUID> changeThese = new HashSet<>();
+        for (UUID uuid : town.getIdiocracyScore().keySet()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            if (offlinePlayer.getName() == null) {
+                continue;
+            }
+            for (String line : lines) {
+                if (line.contains(offlinePlayer.getName())) {
+                    changeThese.add(uuid);
+                }
+            }
+        }
+        for (UUID uuid : changeThese) {
+            if (increment) {
+                if (!town.getIdiocracyScore().containsKey(uuid)) {
+                    town.getIdiocracyScore().put(uuid, 1);
+                } else {
+                    town.getIdiocracyScore().put(uuid,
+                            town.getIdiocracyScore().get(uuid) + 1);
+                }
+            } else {
+                if (town.getIdiocracyScore().containsKey(uuid)) {
+                    if (town.getIdiocracyScore().get(uuid) < 2) {
+                        town.getIdiocracyScore().remove(uuid);
+                    } else {
+                        town.getIdiocracyScore().put(uuid,
+                                town.getIdiocracyScore().get(uuid) - 1);
+                    }
+                }
+            }
+        }
+        if (!changeThese.isEmpty()) {
+            TownManager.getInstance().saveTown(town);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onAdvertisementPlace(SignChangeEvent event) {
+        Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.IDIOCRACY) {
+            return;
+        }
+        changeAdvertising(event.getBlock(), town, false);
+        changeAdvertising(event.getLines(), town, true);
     }
 
     @EventHandler(ignoreCancelled = true)
