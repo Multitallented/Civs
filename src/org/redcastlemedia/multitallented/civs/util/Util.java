@@ -47,7 +47,28 @@ public final class Util {
     }
 
     public static void promoteWhoeverHasMostNoise(Town town, boolean save) {
-        // TODO
+        int highestScore = 0;
+        UUID newOwner = null;
+        for (UUID uuid : town.getIdiocracyScore().keySet()) {
+            if (town.getIdiocracyScore().get(uuid) > highestScore) {
+                highestScore = town.getIdiocracyScore().get(uuid);
+                newOwner = uuid;
+            }
+        }
+        if (newOwner == null) {
+            return;
+        }
+        HashMap<UUID, String> people = new HashMap<>(town.getRawPeople());
+        for (UUID uuid : people.keySet()) {
+            if (people.get(uuid).contains("owner")) {
+                town.getRawPeople().put(uuid, "member");
+            }
+        }
+        town.getRawPeople().put(newOwner, "owner");
+        town.getIdiocracyScore().clear();
+        if (save) {
+            TownManager.getInstance().saveTown(town);
+        }
     }
 
     public static void promoteWhoeverHasMostMerit(Town town, boolean save) {
