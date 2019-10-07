@@ -50,6 +50,8 @@ import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -197,7 +199,11 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
-        if (town == null || town.getGovernmentType() != GovernmentType.IDIOCRACY) {
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.IDIOCRACY) {
             return;
         }
         if (!town.getIdiocracyScore().containsKey(civilian.getUuid())) {
