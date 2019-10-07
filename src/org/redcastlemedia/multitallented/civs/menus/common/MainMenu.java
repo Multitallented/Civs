@@ -71,10 +71,6 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack);
                 return itemStack;
             }
-        } else if (menuIcon.getKey().equals("blueprints")) {
-            if (civilian.getStashItems().isEmpty()) {
-                return new ItemStack(Material.AIR);
-            }
         } else if (menuIcon.getKey().equals("regions")) {
             boolean showBuiltRegions = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {
