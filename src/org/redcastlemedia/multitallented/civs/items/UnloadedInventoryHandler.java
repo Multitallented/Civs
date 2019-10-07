@@ -94,6 +94,13 @@ public class UnloadedInventoryHandler {
             delayedUpkeeps.put(locationString, new ArrayList<>());
         }
         delayedUpkeeps.get(locationString).add(upkeepIndex);
+        new Runnable() {
+
+            @Override
+            public void run() {
+                location.getWorld().loadChunk(location.getChunk());
+            }
+        }.run();
     }
 
     public static String getChunkString(Location location) {
