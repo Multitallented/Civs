@@ -50,7 +50,9 @@ import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
@@ -286,6 +288,16 @@ public class CivilianListener implements Listener {
         CivItem civItem = CivItem.getFromItemStack(is);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "not-allowed-place").replace("$1", civItem.getDisplayName()));
+            return;
+        }
+        if (civItem instanceof TownType) {
+            Town town = TownManager.getInstance().getTownAt(event.getBlockPlaced().getLocation());
+            if (town != null) {
+                TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
+            }
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));

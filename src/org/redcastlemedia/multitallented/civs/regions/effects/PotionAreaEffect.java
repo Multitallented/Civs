@@ -53,6 +53,7 @@ public class PotionAreaEffect implements Listener {
             PotionEffectType potionType;
             int duration = 40;
             int amplifier = 1;
+            int chance = 100;
             try {
                 potionType = PotionEffectType.getByName(potionTypeString);
                 if (potionType == null) {
@@ -65,8 +66,15 @@ public class PotionAreaEffect implements Listener {
                 if (splitPotionString.length > 2) {
                     amplifier = Integer.parseInt(splitPotionString[2]);
                 }
+                if (splitPotionString.length > 3) {
+                    chance = Integer.parseInt(splitPotionString[3]);
+                    chance = Math.max(Math.min(chance, 100), 0);
+                }
             } catch (Exception e) {
                 Civs.logger.severe("Invalid potion type for " + name);
+                return;
+            }
+            if (Math.random() * 100 > chance) {
                 return;
             }
             PotionEffect potionEffect = new PotionEffect(potionType, duration, amplifier);
