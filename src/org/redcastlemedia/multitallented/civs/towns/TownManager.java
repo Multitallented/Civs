@@ -208,7 +208,7 @@ public class TownManager {
         int housing = config.getInt("housing", 0);
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
-        GovernmentType governmentType = GovernmentType.valueOf(config.getString("gov-type", "DICTATORSHIP"));
+        String governmentType = config.getString("gov-type", GovernmentType.DICTATORSHIP.name());
         Town town = new Town(config.getString("name", "NameNotFound"),
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
@@ -528,7 +528,7 @@ public class TownManager {
             config.set("last-disable", town.getLastDisable());
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
-            config.set("gov-type", town.getGovernmentType().name());
+            config.set("gov-type", town.getGovernmentType());
             config.set("taxes", town.getTaxes());
             config.set("bank", town.getBankAccount());
             config.set("last-vote", town.getLastVote());
@@ -693,11 +693,11 @@ public class TownManager {
 
 
         HashMap<UUID, String> people = new HashMap<>();
-            people.put(player.getUniqueId(), "owner");
+        people.put(player.getUniqueId(), "owner");
         Location newTownLocation = player.getLocation();
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;
-        GovernmentType governmentType = null;
+        String governmentType = null;
         int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
@@ -743,16 +743,18 @@ public class TownManager {
                 newTown.setMaxPower((int) Math.round((double) newTown.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
                 break;
             }
+        } else {
+            government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
         }
-            townManager.saveTown(newTown);
-            townManager.addTown(newTown);
-            player.getInventory().remove(itemStack);
+        townManager.saveTown(newTown);
+        townManager.addTown(newTown);
+        player.getInventory().remove(itemStack);
 
         if (childTownType != null) {
             TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
             Bukkit.getPluginManager().callEvent(townEvolveEvent);
 
-            if (newTown.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
+            if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
                     newTown.getBankAccount() > 0) {
                 double price = townType.getPrice();
                 price = Math.min(price, newTown.getBankAccount());

@@ -77,7 +77,11 @@ public final class Util {
     }
 
     public static void checkMerit(Town town, Player player) {
-        if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.MERITOCRACY) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

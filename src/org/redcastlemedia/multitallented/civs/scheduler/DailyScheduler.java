@@ -63,10 +63,11 @@ public class DailyScheduler implements Runnable {
             if (town.getVotes().isEmpty()) {
                 continue;
             }
-            if (town.getGovernmentType() != GovernmentType.DEMOCRACY &&
-                    town.getGovernmentType() != GovernmentType.DEMOCRATIC_SOCIALISM &&
-                    town.getGovernmentType() != GovernmentType.COOPERATIVE &&
-                    town.getGovernmentType() != GovernmentType.CAPITALISM) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() != GovernmentType.DEMOCRACY &&
+                    government.getGovernmentType() != GovernmentType.DEMOCRATIC_SOCIALISM &&
+                    government.getGovernmentType() != GovernmentType.COOPERATIVE &&
+                    government.getGovernmentType() != GovernmentType.CAPITALISM) {
                 continue;
             }
             long daysBetweenVotes = ConfigManager.getInstance().getDaysBetweenVotes() * 86400000;

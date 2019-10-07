@@ -12,6 +12,9 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -25,6 +28,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CommandTests {
 
@@ -62,6 +66,10 @@ public class CommandTests {
         TownTests.loadTownTypeTribe2();
         Location location = TestUtil.player.getLocation();
         Town town = TownTests.loadTown("test", "hamlet", location);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, new ArrayList<>());
+        TownTests.addGovernmentType(government);
+        town.setGovernmentType("DICTATORSHIP");
         town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
         TownCommand townCommand = new TownCommand();
         String[] args = new String[3];
@@ -79,6 +87,10 @@ public class CommandTests {
         TownTests.loadTownTypeTribe2();
         Location location = TestUtil.player.getLocation();
         Town town = TownTests.loadTown("test", "hamlet", location);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, new ArrayList<>());
+        TownTests.addGovernmentType(government);
+        town.setGovernmentType("DICTATORSHIP");
         town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
         TownCommand townCommand = new TownCommand();
         String[] args = new String[3];

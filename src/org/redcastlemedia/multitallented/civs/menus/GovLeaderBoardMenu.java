@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -47,7 +48,7 @@ public class GovLeaderBoardMenu extends Menu {
 
     public static Inventory createMenu(Civilian civilian) {
 
-        HashMap<GovernmentType, Integer> govPower = new HashMap<>();
+        HashMap<String, Integer> govPower = new HashMap<>();
         for (Town town : TownManager.getInstance().getTowns()) {
             if (govPower.containsKey(town.getGovernmentType())) {
                 govPower.put(town.getGovernmentType(), town.getPower() + govPower.get(town.getGovernmentType()));
@@ -57,16 +58,16 @@ public class GovLeaderBoardMenu extends Menu {
         }
         Inventory inventory = Bukkit.createInventory(null,
                 getInventorySize(govPower.size()), MENU_NAME);
-        ArrayList<GovernmentType> govTypeSortedArray = new ArrayList<>(govPower.keySet());
-        govTypeSortedArray.sort(new Comparator<GovernmentType>() {
+        ArrayList<String> govTypeSortedArray = new ArrayList<>(govPower.keySet());
+        govTypeSortedArray.sort(new Comparator<String>() {
             @Override
-            public int compare(GovernmentType o1, GovernmentType o2) {
+            public int compare(String o1, String o2) {
                 return govPower.get(o2).compareTo(govPower.get(o1));
             }
         });
 
         int i=0;
-        for (GovernmentType governmentType : govTypeSortedArray) {
+        for (String governmentType : govTypeSortedArray) {
             CVItem icon = GovernmentManager.getInstance().getGovernment(governmentType)
                     .getIcon(civilian.getLocale(), false);
             icon.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "points")

@@ -105,7 +105,8 @@ public class RegionListener implements Listener {
             return;
         }
         applyCostBuff(event, town);
-        if (town.getGovernmentType() != GovernmentType.COOPERATIVE ||
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.COOPERATIVE ||
                 !event.getRegionType().getGroups().contains("utility")) {
             return;
         }
@@ -163,6 +164,6 @@ public class RegionListener implements Listener {
         ).replace("$1", amountString)
                 .replace("$2", event.getRegionType().getDisplayName())
                 .replace("$3", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        government.getGovernmentType().name().toLowerCase() + "-name")));
+                        government.getName().toLowerCase() + "-name")));
     }
 }

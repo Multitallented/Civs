@@ -55,7 +55,8 @@ public class TownTests {
 
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
-        Government government = new Government(GovernmentType.CAPITALISM,null, null, new ArrayList<>());
+        Government government = new Government("CAPITALISM", GovernmentType.CAPITALISM,
+                null, null, new ArrayList<>());
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 
@@ -319,13 +320,16 @@ public class TownTests {
         town.setPower(2);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
-                transitions);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, transitions);
         GovernmentManager.getInstance().addGovernment(government);
+        Government anarchyGov = new Government("ANARCHY", GovernmentType.ANARCHY,
+                new HashSet<>(), null, transitions);
+        GovernmentManager.getInstance().addGovernment(anarchyGov);
         TownTransitionUtil.checkTown(town);
-        assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
+        assertEquals(GovernmentType.ANARCHY.name(), town.getGovernmentType());
     }
 
     @Test
@@ -335,13 +339,13 @@ public class TownTests {
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
         TownTransitionUtil.checkTown(town);
-        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
     }
 
     @Test
@@ -352,13 +356,13 @@ public class TownTests {
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, -1, 50000,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
         TownTransitionUtil.checkTown(town);
-        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
     }
 
     @Test
@@ -368,7 +372,7 @@ public class TownTests {
         RegionsTests.createNewRegion("cobble");
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
-        Government government = new Government(GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
         GovernmentManager.getInstance().addGovernment(government);
         TownCommand townCommand = new TownCommand();
         String[] args = new String[2];
@@ -433,5 +437,8 @@ public class TownTests {
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
         ItemManager.getInstance().loadTownType(config, "tribe");
+    }
+    public static void addGovernmentType(Government government) {
+        GovernmentManager.getInstance().addGovernment(government);
     }
 }

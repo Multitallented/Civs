@@ -92,7 +92,7 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
-    GovernmentType defaultGovernmentType;
+    String defaultGovernmentType;
 
     @Getter
     boolean allowChangingOfGovType;
@@ -337,9 +337,9 @@ public class ConfigManager {
             levelList = config.getStringList("levels");
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
-                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+                defaultGovernmentType = defaultGovTypeString.toUpperCase();
             } else {
-                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+                defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             maxTax = config.getDouble("max-town-tax", 50);
@@ -449,7 +449,7 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
-        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
     }
 

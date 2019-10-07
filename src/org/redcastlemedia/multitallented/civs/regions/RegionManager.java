@@ -38,6 +38,8 @@ import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListen
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -507,14 +509,17 @@ public class RegionManager {
 
 
         Town town = TownManager.getInstance().getTownAt(location);
-        if (town != null && town.getGovernmentType() == GovernmentType.FEUDALISM) {
-            boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
-                    town.getRawPeople().get(player.getUniqueId()).contains("owner");
-            if (!isOwner) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "cant-build-feudal"));
-                event.setCancelled(true);
-                return false;
+        if (town != null) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.FEUDALISM) {
+                boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
+                        town.getRawPeople().get(player.getUniqueId()).contains("owner");
+                if (!isOwner) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                            .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                    event.setCancelled(true);
+                    return false;
+                }
             }
         }
 
