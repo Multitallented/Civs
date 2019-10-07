@@ -48,6 +48,8 @@ import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -181,6 +183,27 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             return;
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFireworkLaunch(PlayerInteractEvent event) {
+        if (event.getItem() == null || event.getItem().getType() != Material.FIREWORK_ROCKET ||
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Town town = TownManager.getInstance().getTownAt(player.getLocation());
+        if (town == null || town.getGovernmentType() != GovernmentType.IDIOCRACY) {
+            return;
+        }
+        if (!town.getIdiocracyScore().containsKey(civilian.getUuid())) {
+            town.getIdiocracyScore().put(civilian.getUuid(), 1);
+        } else {
+            town.getIdiocracyScore().put(civilian.getUuid(),
+                    town.getIdiocracyScore().get(civilian.getUuid()) + 1);
+        }
+        TownManager.getInstance().saveTown(town);
     }
 
     @EventHandler
