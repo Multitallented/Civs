@@ -58,6 +58,7 @@ public class GovernmentManager {
                 return;
             }
             String govTypeString = govTypeFile.getName().replace(".yml", "");
+            govTypeString = config.getString("inherit", govTypeString);
             GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
             if (governmentType == GovernmentType.CYBERSYNACY) {
                 new AIManager();
