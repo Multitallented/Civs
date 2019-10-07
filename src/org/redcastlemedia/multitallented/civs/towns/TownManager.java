@@ -209,6 +209,15 @@ public class TownManager {
                 villagers,
                 lastDisable);
         town.setGovernmentType(governmentType);
+        if (config.isSet("idiocracy-score")) {
+            HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
+            for (String uuidString : config.getConfigurationSection("idiocracy-score").getKeys(false)) {
+                UUID cUuid = UUID.fromString(uuidString);
+                int score = config.getInt("idiocracy-score." + uuidString, 0);
+                idiocracyScores.put(cUuid, score);
+            }
+            town.setIdiocracyScore(idiocracyScores);
+        }
         if (config.isSet("gov-type-changed-today")) {
             town.setGovTypeChangedToday(true);
         }
@@ -497,6 +506,13 @@ public class TownManager {
                         config.set("votes." + uuid.toString() + "." + cUuid.toString(),
                                 town.getVotes().get(uuid).get(cUuid));
                     }
+                }
+            }
+            config.set("idiocracy-score", null);
+            if (!town.getIdiocracyScore().isEmpty()) {
+                for (UUID uuid : town.getIdiocracyScore().keySet()) {
+                    config.set("idiocracy-score." + uuid.toString(),
+                            town.getIdiocracyScore().get(uuid));
                 }
             }
 

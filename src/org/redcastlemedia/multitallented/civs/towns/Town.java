@@ -66,6 +66,8 @@ public class Town {
     @Getter
     @Setter
     private long lastActive;
+    @Getter @Setter
+    private HashMap<UUID, Integer> idiocracyScore = new HashMap<>();
 
     @Getter
     private HashSet<UUID> revolt = new HashSet<>();
