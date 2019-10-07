@@ -190,6 +190,7 @@ rename-alliance: Bündnis umbenennen
 rename-alliance-desc: Tippe /cv really $1 NeuerBündnisname
 alliance-renamed: $1 wur zu $2 umbenannt
 invalid-name: Ungültiger Name
+region-not-allowed-in-world: In dieser Welt kann man kein $1 bauen
 last-renamed-by: "Zuletzt Umbenannt von: $1"
 leave-alliance: Verlasse das Bündnis
 hunting-players: "@{RED}ACHTUNG! Jemand in der Nähe macht Jagd auf Spieler."
@@ -234,6 +235,7 @@ raid-target-blocked: Teleport zum Ziel des Überfalls nicht möglich
 raid-porter-warning: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
 raid-remote: Dir wurde das Kontroll-Item für $1 gegeben
 raid-sign: Über der Hauptkiste muss ein Schild mit dem Stadtnamen deines Ziel hängen
+no-blocks-above-chest: Über der mittleren Brust dürfen sich keine Blöcke befinden
 invalid-target: Ungültiges Ziel
 raid-target-inside-region: Du kannst kein Ziel innerhalb einer Region auswählen
 req-build-inside-town: Die Region $1 muss innerhalb der Region $2 gebaut werden
@@ -639,6 +641,9 @@ estate2-desc: Haus Level 9.2. Generiert 2397 $ am Tag mit goldenen Karotten, gol
 estate3-name: Landgut3
 estate3-desc: Haus Level 9.3. Generiert 2621 $ am Tag mit goldenen Karotten, goldenen
   Äpfeln, Kürbiskuchen, Kaninchenragout und Keksen.
+inn-name: Gasthaus
+inn-desc: Bietet 12 Unterkünfte und einen Teleport. Nützlich, um Leute in die Stadt zu
+  holen, ohne erst eine Wohnung bauen zu müssen.
 jade_mine-name: Jademine
 jade_mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
   nicht in einer Stadt gebaut werden welche einen Jadeshop hat. Jade ist eine
@@ -739,7 +744,7 @@ sand_pit-desc: Erzeugt Sand alle 30 Sekunden.
 sifter-name: Siebstation
 sifter-desc: Siebt Erde um nützliche Items zu finden.
 jade_shop-name: Jadeshop
-jade_shop-desc: Verkauft 144 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
+jade_shop-desc: Verkauft 16 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
   Jademine gebaut werden. Jade ist ein Handelsgut.
 coal_shop-name: Kohlenshop
 coal_shop-desc: Verkauft 144 Kohle für 432 $ am Tag

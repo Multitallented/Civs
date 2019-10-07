@@ -45,7 +45,7 @@ public class Town {
 
     @Getter
     @Setter
-    private GovernmentType governmentType;
+    private String governmentType;
 
     @Getter
     @Setter
@@ -84,7 +84,7 @@ public class Town {
         this.villagers = villagers;
         this.lastDisable = lastDisable;
         TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
-        governmentType = GovernmentType.valueOf(townType.getDefaultGovType());
+        governmentType = townType.getDefaultGovType();
     }
 
     public long getLastDisable() {

@@ -9,9 +9,14 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import net.md_5.bungee.api.ChatColor;
@@ -48,11 +53,12 @@ public class InviteTownCommand implements CivCommand {
                     "town-not-exist").replace("$1", townName));
             return true;
         }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean inviteAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
                 !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
-                (town.getGovernmentType() == GovernmentType.ANARCHY ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN);
+                (government.getGovernmentType() == GovernmentType.ANARCHY ||
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN);
         if (Civs.perm != null && !Civs.perm.has(player, "civs.admin") &&
                 !inviteAnyone) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
@@ -76,10 +82,12 @@ public class InviteTownCommand implements CivCommand {
                     .replace("$2", townName));
             return true;
         }
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         boolean adminBypass = Civs.perm != null &&
                 (Civs.perm.has(invitee, "civs.admin") ||
                 Civs.perm.has(player, "civs.admin"));
-        if (!adminBypass && town.getPopulation() >= town.getHousing()) {
+        if (!townType.getEffects().containsKey(HousingEffect.HOUSING_EXCEPT) &&
+                !adminBypass && town.getPopulation() >= town.getHousing()) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "not-enough-housing"));
             return true;
@@ -90,8 +98,9 @@ public class InviteTownCommand implements CivCommand {
                     !otherTown.getRawPeople().containsKey(invitee.getUniqueId())) {
                 continue;
             }
-            if ((town.getGovernmentType() == GovernmentType.TRIBALISM ||
-                    otherTown.getGovernmentType() == GovernmentType.TRIBALISM) &&
+            Government otherGov = GovernmentManager.getInstance().getGovernment(otherTown.getGovernmentType());
+            if ((government.getGovernmentType() == GovernmentType.TRIBALISM ||
+                    otherGov.getGovernmentType() == GovernmentType.TRIBALISM) &&
                     !AllianceManager.getInstance().isAllied(town, otherTown)) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(),

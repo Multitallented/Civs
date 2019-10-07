@@ -14,7 +14,7 @@ tutorial-wiki: 城镇文明插件百科
 click-info: 点击查看详情
 guide: 向导
 guide-desc: 点击查看你的下一个目标
-choose-path: 选择你的路径
+choose-path: 选择你的生涯路径
 new-owner-town: $1 继承了 $2 的衣钵成为了 $3 的城主
 town-bank-balance: 银行储蓄 $1
 town-bank-desc: 使用/cv withdraw $1 量 来取款
@@ -84,7 +84,7 @@ size: 大小
 range: 范围
 build-reqs-title: 建筑需求
 population: 人口
-population-req: 需要 $1 with $2 人口
+population-req: 需要 $1 和 $2 人口
 biomes: 生物群系
 devolve-town: $1 耗尽了能量并降级为 $2!
 pop-desc: $1 人口 / $2 住宅 / $3 村民
@@ -154,7 +154,7 @@ teleported: 已传送!
 location-set: 已设置 $1 的地点
 rename-town: 修改城镇名
 rename-desc: 使用 /cv rename [旧城镇名] [新城镇名]
-town-renamed: 你的重载已从 $1 更名为 $2
+town-renamed: 你的城镇已从 $1 更名为 $2
 bounty-set: $1 设置了悬赏： $2
 bounty-bonus: 你获得了 $1 的赏金
 allied-bounty: 击杀盟友不会获得悬赏。
@@ -171,24 +171,25 @@ town-ally-request-accepted: $1 和 $2 已结盟
 town-ally-request-denied: $1 的结盟申请被拒绝
 town-ally-removed: $1 和 $2 的联盟破灭了
 region-evolved: 你的 $1 加入到了 $2
-anti-camp-active: $1的 anti-camp 已激活
-anti-camp-expired: $1的 anti-camp 已失效
+anti-camp-active: $1的PVP保护已激活
+anti-camp-expired: $1的PVP保护已失效
 region-sale-set: $1 现以 $2 的价格出售
 sell-region: 出售区域
 cancel-sale: 取消出售
 buy-region: 用$2 购买 $1
 regions-for-sale: 出售区域
 use-sell-command: 输入 /cv sell 价格
-region-bought: 你成功地用$2购买了 $1
+region-bought: 你成功地用$2购买了$1
 sort-by-level: 根据等级分类区域
 level: $1级
 rename-alliance: 重命名联盟
 rename-alliance-desc: 请输入 /cv really $1 新的联盟名
 alliance-renamed: " $1 已改名为 $2"
 invalid-name: 无效的名称
+region-not-allowed-in-world: 你不能在这个世界上建$1。
 last-renamed-by: 最后由$1改名
 leave-alliance: 离开联盟
-hunting-players: 警告！ 有人在你所在地区打猎
+hunting-players: 警告！ 有人在你所在地区搞事。
 target-not-in-world: $1 和你不在同一个世界.
 cant-place-town: "输入 /cv town 城镇名 "
 no-region-type-found: 找不到区域类型 $1
@@ -208,7 +209,7 @@ player-not-online: $1 不在线
 invite-player: $1 想要邀请你加入 $2 $3. 输入 /cv accept 以接受
 already-member: $1 已经是 $2 的一员了
 broke-own-region: 你的 $1 缺少方块
-no-permission: 无权限
+no-permission: 没有权限
 class-changed: 你的职业已更改为 $1
 not-enough-money: 你没有 $$1
 not-allowed-place: $1 无法被放置
@@ -218,7 +219,7 @@ mana-use-exp: 魔法值未满前你不能使用这个
 building-requires-2space: 这个建筑需要在中心箱子上面留两格空间
 missing-blocks-build: 你需要放置这些方块来建造 $1
 in-combat: 你不能在战斗时这么做
-cooldown: 冷却中： $1s
+cooldown: 冷却中：$1
 need-more-health: 你需要更多的 $1 生命值才能这么做
 need-more-stamina: 你需要更多的 $1 耐力才能这么做
 need-more-mana: 你需要更多的 $1 魔法才能这么做
@@ -230,6 +231,7 @@ raid-target-blocked: 侵略传送点被封锁.
 raid-porter-warning: 警告! $1 创建了一个朝向 $3 的 $2
 raid-remote: 你获得了控制这个 $1 的物品
 raid-sign: 你需要在箱子上面放写有目标城镇名的牌子
+no-blocks-above-chest: 中央箱子上方不能有任何物品。
 invalid-target: 无效的目标
 raid-target-inside-region: 你不能在区域内设置地点
 req-build-inside-town: 这个 $1 只能在 $2 里建
@@ -240,7 +242,7 @@ region-limit-reached: $1 只能拥有 $2 $3
 region-in-biome: 你可以在$2 建造 $1
 not-enough-housing: 你需要建造更多住宅才能邀请玩家加入
 not-member-port: 你不是这个港口的成员
-cant-repair-item: 这个东西不能修
+cant-repair-item: 这个东西不能修复
 more-repair-items: 你需要更多的 $1 才能修复这件物品
 hold-repair-item: 你必须手持你想要修复的物品
 player-not-found: 找不到 $1 这名玩家
@@ -272,10 +274,10 @@ tut-default-0: 首先打开向导书，点击蓝图，拿好你的庇护所，�
 tut-default-1: 接下来请把 4块面包、32个胡萝卜、32个猪排或32个土豆放到庇护所的箱子里.
 tut-default-2: 庇护所会提供给你食物, 但煤炭商店会给你更多东西. 打开向导, 点击商店, 然后购买煤炭商店.
 tut-default-3: 放置25块羊毛、14个栅栏和两个箱子. 之后这里就成为煤炭商店了.
-tut-default-4: 恭喜！ 您已完成默认教程。 现在选择你的路径。
+tut-default-4: 恭喜！ 您已完成默认教程。 现在请选择你的下一个生涯路径。
 tut-warrior-name: 战士
 tut-warrior-0: 首先请购买祭坛. 你可以使用祭坛来获得钻石装备.
-tut-warrior-1: 现在, 放一把铁剑到祭坛箱子内. 如果你拥有 $300, 你就会获得装备.
+tut-warrior-1: 现在, 放一个钻石和末影水晶到祭坛箱子内. 如果你拥有 $1200, 你就会获得装备.
 tut-warrior-2: 这是个附魔金苹果. 现在你应有尽有了. 你的下一个目标是杀人.
 tut-warrior-3: 恭喜你! 你现在是名合格的战士了. 现在成为侵略者吧. 购买并在城镇附近建造一个强袭传送门.
 tut-warrior-4: 一旦你激活了强袭传送门, 站到上面你就会传送到城镇.
@@ -323,11 +325,11 @@ communism-desc: 任何人可以拥有任何东西。所有区域收入都被平�
 cooperative-name: 合作主义
 cooperative-desc: 民主 + 所有区域收入和税收平均分配给所有城镇居民。
 cybersynacy-name: 专家政治
-cybersynacy-desc: 无人有城镇所有权。联盟、税收、招募和公共事业由AI掌控。
+cybersynacy-desc: 无人有城镇所有权。联盟、税收、招募和公共设施由AI掌控。
 democracy-name: 民主主义
 democracy-desc: 城主可以管理联盟、设置税收和管理城镇居民。城镇定期进行选举选出城主。
 democratic_socialism-name: 民主社会主义
-democratic_socialism-desc: 民主主义 + 所有人共有所有的公共事业、农场、矿业、工厂和采石场。
+democratic_socialism-desc: 民主主义 + 所有人共有所有的公共设施、农场、矿业、工厂和采石场。
 dictatorship-name: 专政体制
 dictatorship-desc: 城主可以管理联盟、区域和城镇居民并设置税收。
 feudalism-name: 封建主义
@@ -343,7 +345,7 @@ meritocracy-desc: 专政体制 + 谁建的最好和击杀点数最多就会成�
 oligarchy-name: 寡头政治
 oligarchy-desc: 专政体制 + 城镇所有权可以购入和卖出。
 socialism-name: 社会主义
-socialism-desc: 专政体制 + 所有人共有所有的公共事业、农场、矿业、工厂和采石场。
+socialism-desc: 专政体制 + 所有人共有所有的公共设施、农场、矿业、工厂和采石场。
 tribalism-name: 部落主义
 tribalism-desc: 专政体制 + 居民无法加入非盟友城镇。
 admin_graveyard-name: 墓地
@@ -504,8 +506,8 @@ estate2-name: 2级房地产
 estate2-desc: 9级房屋。出售金胡萝卜、南瓜派、兔肉煲、蛋糕和金苹果每天可获得2397元。
 estate3-name: 3级房地产
 estate3-desc: 9级房屋。出售金胡萝卜、南瓜派、兔肉煲、蛋糕和金苹果每天可获得2621元。
-inn-name: "旅馆"
-inn-desc: "提供12住宅和一个港口。对于没有住宅而又想要拉人的城镇来说很有用。"
+inn-name: 旅馆
+inn-desc: 提供12住宅和一个港口。对于没有住宅而又想要拉人的城镇来说很有用。
 jade_mine-name: 绿宝石矿源
 jade_mine-desc: 每天生成16块绿宝石，这些绿宝石只能用绿宝石商店出售。无法在已经有绿宝石商店的城镇内建造。
 coal_mine-name: 煤炭矿源
@@ -648,7 +650,7 @@ towns-name: 城镇
 towns-desc: 升级城镇、战争营地和矿镇.
 shops-name: 商店
 shops-desc: 出售货物给服务器的商店.每名玩家最多拥有3个商店.
-utilities-name: 公共事业
+utilities-name: 公共设施
 utilities-desc: 所有可生成能量保护城镇的公共设施.
 housing-name: 住宅
 housing-desc: 住宅可以增加城镇人口上限.大多数住宅可以出售食物给服务器.

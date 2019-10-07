@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
@@ -16,10 +17,14 @@ public class TutorialStep {
     private String killType;
     private ArrayList<CVItem> rewardItems;
     private double rewardMoney;
+    private List<String> commands;
+    private List<String> permissions;
     private ArrayList<String> paths;
 
     public TutorialStep() {
         rewardItems = new ArrayList<>();
         paths = new ArrayList<>();
+        commands = new ArrayList<>();
+        permissions = new ArrayList<>();
     }
 }

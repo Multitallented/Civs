@@ -23,6 +23,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -448,11 +450,12 @@ public class DeathListener implements Listener {
         CivilianManager.getInstance().saveCivilian(damagerCiv);
 
         for (Town town : TownManager.getInstance().getOwnedTowns(dyingCiv)) {
-            if (town.getGovernmentType() == GovernmentType.MERITOCRACY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.MERITOCRACY) {
                 Util.checkMerit(town, damager);
                 continue;
             }
-            if (town.getGovernmentType() != GovernmentType.KRATEROCRACY) {
+            if (government.getGovernmentType() != GovernmentType.KRATEROCRACY) {
                 continue;
             }
             if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&

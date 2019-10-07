@@ -40,6 +40,10 @@ public class TownTypeInfoMenu extends Menu {
             return;
         }
 
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
+            return;
+        }
+
         if (event.getCurrentItem().getType().equals(Material.OAK_PLANKS)) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + townTypeName);
             event.getWhoClicked().closeInventory();

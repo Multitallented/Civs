@@ -1,5 +1,6 @@
 type: region
-icon: SIGN
+icon: OBSIDIAN
+shop-icon: SIGN
 name: Council_Room
 price: 500
 max: 1

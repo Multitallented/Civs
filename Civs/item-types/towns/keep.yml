@@ -24,6 +24,7 @@ limits:
 child: outpost
 build-radius: 36 # 73x73x73
 effects:
+- exempt-housing
 - block_break
 - block_build
 - block_liquid
@@ -31,7 +32,7 @@ effects:
 - deny_mob_spawn
 - control_override
 - power_shield
-- potion:HEALTH_BOOST.160,DAMAGE_RESISTANCE.160
+- potion:DAMAGE_RESISTANCE.80
 
 power: 1028
 max-power: 1028

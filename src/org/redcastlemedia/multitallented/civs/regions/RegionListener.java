@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
@@ -88,7 +89,8 @@ public class RegionListener implements Listener {
             return;
         }
         RegionType regionType = (RegionType) civItem;
-        player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
+        Menu.clearHistory(player.getUniqueId());
+        player.openInventory(RegionTypeInfoMenu.createMenuInfinite(civilian, regionType));
     }
 
     @EventHandler
@@ -103,7 +105,8 @@ public class RegionListener implements Listener {
             return;
         }
         applyCostBuff(event, town);
-        if (town.getGovernmentType() != GovernmentType.COOPERATIVE ||
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.COOPERATIVE ||
                 !event.getRegionType().getGroups().contains("utility")) {
             return;
         }
@@ -161,6 +164,6 @@ public class RegionListener implements Listener {
         ).replace("$1", amountString)
                 .replace("$2", event.getRegionType().getDisplayName())
                 .replace("$3", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        government.getGovernmentType().name().toLowerCase() + "-name")));
+                        government.getName().toLowerCase() + "-name")));
     }
 }

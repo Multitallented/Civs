@@ -203,7 +203,7 @@ public class ItemManager {
                 config.getInt("child-population", 0),
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
-        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType().name()));
+        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType()));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -233,7 +233,8 @@ public class ItemManager {
                 }
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
                 double exp = config.getDouble("upkeep." + key + ".exp", 0);
-                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp);
+                String perm = config.getString("upkeep." + key + ".perm", "");
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp, perm);
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));

@@ -1,5 +1,17 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,7 +22,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -27,15 +38,15 @@ import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListen
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 public class RegionManager {
     private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
@@ -45,6 +56,7 @@ public class RegionManager {
     private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
     private HashSet<Region> checkedRegions = new HashSet<>();
+    private ArrayList<Region> needsSaving = new ArrayList<>();
 
     public RegionManager() {
         regionManager = this;
@@ -68,14 +80,14 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
+        saveRegion(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
-            regions.put(worldUuid, new ArrayList<Region>());
+            regions.put(worldUuid, new ArrayList<>());
         }
         regions.get(worldUuid).add(region);
         regionLocations.put(region.getId(), region);
         sortRegions(worldUuid);
-        saveRegion(region);
         for (String key : regionCreatedListenerHashMap.keySet()) {
             if (region.getEffects().containsKey(key)) {
                 regionCreatedListenerHashMap.get(key).regionCreatedHandler(region);
@@ -200,9 +212,41 @@ public class RegionManager {
     }
 
     public void saveRegion(Region region) {
+        needsSaving.add(region);
+    }
+
+    public int getCountOfPendingSaves() {
+        return needsSaving.size();
+    }
+
+    public void saveNextRegion() {
+        Region r = null;
+        for (Region region : needsSaving) {
+            r = region;
+            saveRegionNow(r);
+            break;
+        }
+        if (r != null) {
+            while (needsSaving.contains(r)) {
+                needsSaving.remove(r);
+            }
+        }
+    }
+
+    public void saveAllUnsavedRegions() {
+        for (Region region : needsSaving) {
+            saveRegionNow(region);
+        }
+        needsSaving.clear();
+    }
+
+    private void saveRegionNow(Region region) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
+        }
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.saves++;
         }
         File regionFolder = new File(civs.getDataFolder(), "regions");
         if (!regionFolder.exists()) {
@@ -247,6 +291,7 @@ public class RegionManager {
                 regionConfig.set("last-active", null);
             }
             regionConfig.save(regionFile);
+            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;
@@ -464,14 +509,17 @@ public class RegionManager {
 
 
         Town town = TownManager.getInstance().getTownAt(location);
-        if (town != null && town.getGovernmentType() == GovernmentType.FEUDALISM) {
-            boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
-                    town.getRawPeople().get(player.getUniqueId()).contains("owner");
-            if (!isOwner) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "cant-build-feudal"));
-                event.setCancelled(true);
-                return false;
+        if (town != null) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.FEUDALISM) {
+                boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
+                        town.getRawPeople().get(player.getUniqueId()).contains("owner");
+                if (!isOwner) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                            .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                    event.setCancelled(true);
+                    return false;
+                }
             }
         }
 
@@ -619,6 +667,7 @@ public class RegionManager {
 
         Region region = new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0);
         addRegion(region);
+        StructureUtil.removeBoundingBox(civilian.getUuid());
         RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
         Bukkit.getPluginManager().callEvent(regionCreatedEvent);
 

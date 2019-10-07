@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -182,9 +183,10 @@ public class TownActionMenu extends Menu {
                 ownerCount++;
             }
         }
-        boolean govTypeDisable = town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.CYBERSYNACY;
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        boolean govTypeDisable = government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                government.getGovernmentType() == GovernmentType.CYBERSYNACY;
 
         boolean colonialOverride = getData(civilian.getUuid(), "colonial-override") != null;
 
@@ -254,8 +256,11 @@ public class TownActionMenu extends Menu {
             CVItem cvItem2 = CVItem.createCVItemFromString("COMPASS");
             cvItem2.setDisplayName(town.getName());
             lore = new ArrayList<>();
-            lore.add(town.getLocation().getWorld().getName() + " " +
-                    (int) town.getLocation().getX() + "x " + (int) town.getLocation().getY() + "y " +
+            World world = town.getLocation().getWorld();
+            String worldName = world == null ? "null" : world.getName();
+            lore.add(worldName + " " +
+                    (int) town.getLocation().getX() + "x " +
+                    (int) town.getLocation().getY() + "y " +
                     (int) town.getLocation().getZ() + "z");
             cvItem2.setLore(lore);
             inventory.setItem(2, cvItem2.createItemStack());
@@ -316,11 +321,12 @@ public class TownActionMenu extends Menu {
         }
 
         //6 Destroy
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         if ((town.getPeople().containsKey(civilian.getUuid()) &&
                 town.getPeople().get(civilian.getUuid()).contains("owner") &&
-                town.getGovernmentType() != GovernmentType.ANARCHY &&
-                town.getGovernmentType() != GovernmentType.COMMUNISM &&
-                town.getGovernmentType() != GovernmentType.COLONIALISM) ||
+                government.getGovernmentType() != GovernmentType.ANARCHY &&
+                government.getGovernmentType() != GovernmentType.COMMUNISM &&
+                government.getGovernmentType() != GovernmentType.COLONIALISM) ||
                 (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
             CVItem destroy = CVItem.createCVItemFromString("BARRIER");
             destroy.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "destroy"));
@@ -339,29 +345,28 @@ public class TownActionMenu extends Menu {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
 
-        boolean govTypeDisable = town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.CYBERSYNACY ||
-                town.getGovernmentType() == GovernmentType.COMMUNISM;
+        boolean govTypeDisable = government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                government.getGovernmentType() == GovernmentType.CYBERSYNACY ||
+                government.getGovernmentType() == GovernmentType.COMMUNISM;
 
         boolean govTypeOpenToAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
                 !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
-                (town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                town.getGovernmentType() == GovernmentType.ANARCHY);
+                (government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                        government.getGovernmentType() == GovernmentType.ANARCHY);
 
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
                 town.getPeople().get(civilian.getUuid()).contains("owner");
 
-        boolean govTypeOwnerOverride = town.getGovernmentType() == GovernmentType.ANARCHY ||
-                town.getGovernmentType() == GovernmentType.OLIGARCHY ||
-                town.getGovernmentType() == GovernmentType.COOPERATIVE ||
-                town.getGovernmentType() == GovernmentType.DEMOCRACY ||
-                town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.CAPITALISM;
+        boolean govTypeOwnerOverride = government.getGovernmentType() == GovernmentType.OLIGARCHY ||
+                government.getGovernmentType() == GovernmentType.COOPERATIVE ||
+                government.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                government.getGovernmentType() == GovernmentType.CAPITALISM;
 
 
-        if (!isOwner && town.getGovernmentType() == GovernmentType.OLIGARCHY) {
+        if (!isOwner && government.getGovernmentType() == GovernmentType.OLIGARCHY) {
             data.put("oligarchy-buy", true);
         }
         setNewData(civilian.getUuid(), data);
@@ -390,8 +395,8 @@ public class TownActionMenu extends Menu {
         }
 
         //12 Alliance Invite
-        if ((!govTypeDisable || town.getGovernmentType() == GovernmentType.COMMUNISM) &&
-                (isOwner || town.getGovernmentType() == GovernmentType.ANARCHY || colonialOverride) &&
+        if ((!govTypeDisable || government.getGovernmentType() == GovernmentType.COMMUNISM) &&
+                (isOwner || government.getGovernmentType() == GovernmentType.ANARCHY || colonialOverride) &&
                 !town.getAllyInvites().isEmpty()) {
             CVItem cvItem3 = CVItem.createCVItemFromString("IRON_SWORD");
             cvItem3.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
@@ -401,7 +406,6 @@ public class TownActionMenu extends Menu {
 
         //13 Goverment Type
         {
-            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government != null) {
                 CVItem govType = government.getIcon(civilian.getLocale());
                 inventory.setItem(13, govType.createItemStack());
@@ -421,9 +425,9 @@ public class TownActionMenu extends Menu {
                         .replace("$1", taxString));
             }
             if (isOwner || colonialOverride) {
-                if (town.getGovernmentType() != GovernmentType.COOPERATIVE &&
-                        town.getGovernmentType() != GovernmentType.COMMUNISM &&
-                        town.getGovernmentType() != GovernmentType.ANARCHY) {
+                if (government.getGovernmentType() != GovernmentType.COOPERATIVE &&
+                        government.getGovernmentType() != GovernmentType.COMMUNISM &&
+                        government.getGovernmentType() != GovernmentType.ANARCHY) {
                     lore.add(localeManager.getTranslation(civilian.getLocale(), "town-tax-desc")
                             .replace("$1", town.getName()));
                 }
@@ -436,7 +440,6 @@ public class TownActionMenu extends Menu {
 
         // 15 revolt
         boolean hasRevolt = false;
-        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         for (GovTransition govTransition : government.getTransitions()) {
             if (govTransition.getRevolt() > -1) {
                 hasRevolt = true;

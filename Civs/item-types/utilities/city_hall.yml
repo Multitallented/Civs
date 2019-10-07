@@ -1,5 +1,6 @@
 type: region
-icon: SIGN
+icon: OBSIDIAN
+shop-icon: SIGN
 name: City_Hall
 price: 8000
 max: 1

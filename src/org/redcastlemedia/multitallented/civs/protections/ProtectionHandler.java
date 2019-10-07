@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -27,11 +28,14 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -41,8 +45,16 @@ import java.util.Set;
 
 public class ProtectionHandler implements Listener {
 
+//    @EventHandler
+//    public void onChunkUnload(ChunkUnloadEvent event) {
+//        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+//    }
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.chunkLoads++;
+        }
+//        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
 
@@ -125,6 +137,8 @@ public class ProtectionHandler implements Listener {
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+            ItemManager.getInstance().addMinItems(civilian);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;
         }
@@ -380,10 +394,11 @@ public class ProtectionHandler implements Listener {
             Set<Region> tempArray = new HashSet<>();
             for (Region region : regionManager.getContainingRegions(location, 5)) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
-                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-                    tempArray.add(region);
-                }
+//                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
+//                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+//                    tempArray.add(region);
+//                }
+                tempArray.add(region);
             }
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
@@ -541,8 +556,9 @@ public class ProtectionHandler implements Listener {
             }
             String role = region.getPeople().get(player.getUniqueId());
             if (town != null && role.contains("member")) {
-                if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                        town.getGovernmentType() == GovernmentType.ANARCHY) {
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+                if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        government.getGovernmentType() == GovernmentType.ANARCHY) {
                     role = "owner";
                 }
             }
@@ -653,12 +669,13 @@ public class ProtectionHandler implements Listener {
         }
         if (town != null && !role.contains("foreign")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    town.getGovernmentType() == GovernmentType.ANARCHY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = "owner";
-            } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+            } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
                     (regionType.getGroups().contains("mine") ||
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||

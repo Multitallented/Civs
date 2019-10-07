@@ -187,6 +187,7 @@ rename-alliance: Renomear Aliança
 rename-alliance-desc: Digite really $1 novoNomeDaAliança
 alliance-renamed: $1 foi renomeada para $2
 invalid-name: Nome invalido
+region-not-allowed-in-world: Você não pode construir uma $1 neste mundo
 last-renamed-by: "Ultima mudança de nome: $1"
 leave-alliance: Sair da aliança
 hunting-players: "@{RED}Cuidado! Alguém esta caçando jogadores na sua área."
@@ -231,6 +232,7 @@ raid-target-blocked: Teletransportador de ataque bloqueado
 raid-porter-warning: ALERTA! $1 criou um $2 atacando $3
 raid-remote: Foi dado a você um item para controlar $1
 raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
+no-blocks-above-chest: Não deve haver blocos acima do tórax central
 invalid-target: Alvo inválido
 raid-target-inside-region: Você não pode definir um local dentro de uma região
 req-build-inside-town: Essa $1 precisa ser construída dentro de uma $2
@@ -629,6 +631,9 @@ estate2-desc: 9º nível de habitação. Ganhe $2397 por dia vendendo cenouras d
 estate3-name: Palácio3
 estate3-desc: 9º nível de habitação. Ganhe $2621 por dia vendendo cenouras & maçãs douradas,
   torta de abóbora, ensopados de coelho e bolos.
+inn-name: Pousada
+inn-desc: Provê 12 habitações e um porto. Útil para adicionar pessoas à cidade sem ter
+  que construir habitações primeiro.
 jade_mine-name: Mina de Jade
 jade_mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
   pode ser construída numa cidade com uma Loja de Jade.
@@ -728,7 +733,7 @@ sand_pit-desc: Cria areia a cada 30 segundos.
 sifter-name: Peneira
 sifter-desc: Peneire terra para encontrar itens valiosos.
 jade_shop-name: Loja de Jade
-jade_shop-desc: Vende 144 jades para o servidor por $1000 por dia. Não pode ser construída
+jade_shop-desc: Vende 16 jades para o servidor por $1000 por dia. Não pode ser construída
   numa cidade com uma Mina de Jade.
 coal_shop-name: Loja de Carvão
 coal_shop-desc: Vende 144 carvões para o servidor por $432 por dia

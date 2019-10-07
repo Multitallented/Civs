@@ -23,6 +23,7 @@ limits:
 
 build-radius: 24 # 49x49x49
 effects:
+- exempt-housing
 - block_break
 - block_build
 - block_liquid
@@ -30,7 +31,6 @@ effects:
 - deny_mob_spawn
 - control_override
 - power_shield
-- potion:HEALTH_BOOST.160
 
 power: 256
 max-power: 256

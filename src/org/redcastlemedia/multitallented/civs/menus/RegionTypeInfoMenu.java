@@ -13,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -104,8 +106,19 @@ public class RegionTypeInfoMenu extends Menu {
         return createMenu(civilian, regionType, true);
     }
     public static Inventory createMenu(Civilian civilian, RegionType regionType, boolean showPrice) {
+        return createInventory(civilian, regionType, showPrice, false);
+    }
+    public static Inventory createMenuInfinite(Civilian civilian, RegionType regionType) {
+        return createInventory(civilian, regionType, true, true);
+    }
+    private static Inventory createInventory(Civilian civilian, RegionType regionType, boolean showPrice, boolean isInfinite) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType);
+        Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+        if (region == null) {
+            StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, isInfinite);
+        } else {
+            StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType, isInfinite);
+        }
         Inventory inventory = Bukkit.createInventory(null, 9 + 9*regionType.getUpkeeps().size(), MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -131,14 +144,15 @@ public class RegionTypeInfoMenu extends Menu {
         inventory.setItem(0, cvItem.createItemStack());
 
         //1 Price
-        boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
+        boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+        boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
         String maxLimit = civilian.isAtMax(regionType);
         boolean isInShop = regionType.getInShop();
         lore = new ArrayList<>();
         boolean hasItemUnlocked = ItemManager.getInstance().hasItemUnlocked(civilian, regionType);
-        if (showPrice && hasShopPerms && maxLimit == null && isInShop) {
+        if (showPrice && (isCivsAdmin || (hasShopPerms && maxLimit == null && isInShop))) {
             CVItem priceItem;
-            if (hasItemUnlocked) {
+            if (hasItemUnlocked || isCivsAdmin) {
                 priceItem = CVItem.createCVItemFromString("EMERALD");
             } else {
                 priceItem = CVItem.createCVItemFromString("IRON_BARS");
@@ -287,8 +301,6 @@ public class RegionTypeInfoMenu extends Menu {
                 inventory.setItem(14 + i * 9, cvItem4.createItemStack());
             }
         }
-
-        //TODO finish this stub
 
         return inventory;
     }

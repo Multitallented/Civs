@@ -3,6 +3,10 @@ default:
   - type: build
     region: shelter
     rewards:
+#      commands:
+#        - ^!give DIRT 4
+#      permissions:
+#        - civs.shop
       items:
       - BEEF*32
       - BREAD*4

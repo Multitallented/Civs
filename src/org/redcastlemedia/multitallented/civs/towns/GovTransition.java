@@ -8,11 +8,11 @@ public class GovTransition {
     private final int moneyGap;
     private final int power;
     private final long inactive;
-    private final GovernmentType transitionGovernmentType;
+    private final String transitionGovernmentType;
 
 
     public GovTransition(int revolt, int moneyGap, int power,
-                         long inactive, GovernmentType transitionGovernmentType) {
+                         long inactive, String transitionGovernmentType) {
         this.revolt = revolt;
         this.moneyGap = moneyGap;
         this.power = power;

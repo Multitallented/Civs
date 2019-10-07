@@ -14,6 +14,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -35,8 +37,9 @@ public final class OwnershipUtil {
                 !town.getRawPeople().get(invitee.getUuid()).contains("owner");
 
         double price = townType.getPrice() * 2;
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean oligarchyOverride = player != null && !isOwner && inviteeIsOwner &&
-                town.getGovernmentType() == GovernmentType.OLIGARCHY;
+                government.getGovernmentType() == GovernmentType.OLIGARCHY;
 
         boolean hasMoney = Civs.econ != null && Civs.econ.has(player, price);
 
@@ -64,7 +67,8 @@ public final class OwnershipUtil {
     }
 
     public static boolean hasColonialOverride(Town town, Civilian civilian) {
-        boolean colonialOverride = town.getGovernmentType() == GovernmentType.COLONIALISM &&
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        boolean colonialOverride = government.getGovernmentType() == GovernmentType.COLONIALISM &&
                 town.getColonialTown() != null;
         colonial: if (colonialOverride) {
             for (Town cTown : TownManager.getInstance().getOwnedTowns(civilian)) {
