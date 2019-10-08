@@ -68,7 +68,7 @@ public class GovernmentManager {
             ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
             Government government = new Government(name, governmentType,
                     getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
-            governments.put(name, government);
+            governments.put(name.toUpperCase(), government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
         }
@@ -107,7 +107,7 @@ public class GovernmentManager {
     }
 
     void addGovernment(Government government) {
-        governments.put(government.getName(), government);
+        governments.put(government.getName().toUpperCase(), government);
     }
 
     public void transitionGovernment(Town town, String governmentType, boolean save) {
@@ -237,7 +237,7 @@ public class GovernmentManager {
     }
 
     public Government getGovernment(String governmentType) {
-        return governments.get(governmentType);
+        return governments.get(governmentType.toUpperCase());
     }
 
     public Set<String> getGovermentTypes() {
