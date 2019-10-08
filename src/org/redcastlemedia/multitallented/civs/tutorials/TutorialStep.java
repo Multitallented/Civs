@@ -1,9 +1,9 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,14 @@ public class TutorialStep {
     private String killType;
     private ArrayList<CVItem> rewardItems;
     private double rewardMoney;
-    private HashMap<String, String> messages;
+    private List<String> commands;
+    private List<String> permissions;
     private ArrayList<String> paths;
 
     public TutorialStep() {
-        messages = new HashMap<>();
         rewardItems = new ArrayList<>();
         paths = new ArrayList<>();
+        commands = new ArrayList<>();
+        permissions = new ArrayList<>();
     }
 }

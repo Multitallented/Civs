@@ -1,19 +1,17 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -75,13 +73,11 @@ public class ClassMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            String itemTypeName = is.getItemMeta().getDisplayName().replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
-            CivItem civItem = itemManager.getItemType(itemTypeName);
-            civItem.setQty(is.getAmount());
-            if (stashItems.containsKey(itemTypeName)) {
-                stashItems.put(itemTypeName, is.getAmount() + stashItems.get(itemTypeName));
+            CivItem civItem = CivItem.getFromItemStack(is);
+            if (stashItems.containsKey(civItem.getProcessedName())) {
+                stashItems.put(civItem.getProcessedName(), is.getAmount() + stashItems.get(civItem.getProcessedName()));
             } else {
-                stashItems.put(itemTypeName, is.getAmount());
+                stashItems.put(civItem.getProcessedName(), is.getAmount());
             }
         }
         CivilianManager.getInstance().saveCivilian(civilian);
@@ -99,7 +95,7 @@ public class ClassMenu extends Menu {
             CVItem cvItem = civItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentName));

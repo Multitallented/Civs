@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.LanguageMenu;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -50,15 +51,20 @@ public class LanguageTests {
 
     @Test(expected = SuccessException.class)
     public void playerShouldNotBeAbleToDropItem() {
-        PlayerDropItemEvent playerDropItemEvent = mock(PlayerDropItemEvent.class);
+        RegionsTests.loadRegionTypeCobble();
         Item item = mock(Item.class);
         ItemStack itemStack = mock(ItemStack.class);
         ItemMeta itemMeta = mock(ItemMeta.class);
-        when(itemMeta.getDisplayName()).thenReturn("Civs Cobble");
+        when(itemMeta.getDisplayName()).thenReturn("Cobble");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(TestUtil.player.getUniqueId().toString());
+        lore.add("Civs Cobble");
+        when(itemStack.hasItemMeta()).thenReturn(true);
+        when(itemMeta.getLore()).thenReturn(lore);
         when(itemStack.getItemMeta()).thenReturn(itemMeta);
         when(item.getItemStack()).thenReturn(itemStack);
-        when(playerDropItemEvent.getItemDrop()).thenReturn(item);
         doThrow(new SuccessException()).when(item).remove();
+        PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent(TestUtil.player, item);
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianDropItem(playerDropItemEvent);
     }

@@ -32,6 +32,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -76,7 +77,11 @@ public final class Util {
     }
 
     public static void checkMerit(Town town, Player player) {
-        if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.MERITOCRACY) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -139,25 +144,35 @@ public final class Util {
         return xEq && yEq && zEq;
     }
 
-    public static ArrayList<String> textWrap(String prefix, String input) {
-        prefix = ChatColor.WHITE + prefix;
+    public static ArrayList<String> textWrap(String input) {
+        final int LINE_LENGTH = 25;
+        String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
         String[] sends = sendMe.split(" ");
-        String outString = "";
+        String addMe = prefix.equals("§r") ? prefix : "";
         for (String s : sends) {
-            if (outString.length() > 40) {
-                lore.add(outString);
-                outString = "";
-            }
-            if (!outString.equals("")) {
-                outString += prefix + " ";
-            } else {
-                outString += prefix;
-            }
-            outString += s;
+            do {
+                if (s.length() < LINE_LENGTH) {
+                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > LINE_LENGTH) {
+                        lore.add("" + addMe.trim());
+                        addMe = prefix;
+                    }
+                    addMe += s + " ";
+                    s = "";
+                } else {
+                    if (!addMe.equals(prefix) && addMe.length() > 0) {
+                        lore.add("" + addMe.trim());
+                        addMe = prefix;
+                    }
+                    addMe += s.substring(0, LINE_LENGTH - 1);
+                    s = s.substring(LINE_LENGTH - 1);
+                }
+            } while (s.length() > 0);
         }
-        lore.add(outString);
+        if (!addMe.equals(prefix) && addMe.length() > 0) {
+            lore.add("" + addMe.trim());
+        }
         return lore;
     }
 
@@ -182,6 +197,20 @@ public final class Util {
             return false;
         }
         return ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0)).equals("starter-book");
+    }
+
+    public static boolean isChunkLoadedAt(Location location) {
+        int x = (int) Math.floor(location.getX() / 16);
+        int z = (int) Math.floor(location.getZ() / 16);
+        return location.getWorld().isChunkLoaded(x, z);
+    }
+
+    public static String getDefaultColor(String message) {
+        String beginningColor = "" + ChatColor.RESET;
+        if (message.startsWith("" + ChatColor.COLOR_CHAR)) {
+            beginningColor = message.substring(0, 2);
+        }
+        return beginningColor;
     }
 
     public static List<String> parseColors(List<String> inputString) {
@@ -448,38 +477,23 @@ public final class Util {
             double prevChance = 0;
             for (CVItem item : tempItems) {
                 if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
-                    ItemStack is = new ItemStack(item.getMat(), 1);
-                    if (item.getDisplayName() != null) {
-                        ItemMeta im = is.getItemMeta();
-                        im.setDisplayName(item.getDisplayName());
-                        if (item.getLore() != null) {
-                            im.setLore(item.getLore());
-                        }
-                        is.setItemMeta(im);
-                    }
+                    ItemStack is = item.createItemStack();
+                    is.setAmount(1);
                     if (inv == null) {
                         remainingItems.add(is);
                         continue;
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    String displayName = is.hasItemMeta() ? is.getItemMeta().getDisplayName() : null;
-                    List<String> lore = is.hasItemMeta() ? is.getItemMeta().getLore() : null;
                     for (ItemStack iss : inv) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
-                                isa = new ItemStack(is.getType(), max);
+                                isa = item.createItemStack();
+                                isa.setAmount(max);
                             } else {
-                                isa = new ItemStack(is.getType(), amount);
-                            }
-                            if (displayName != null) {
-                                ItemMeta ima = isa.getItemMeta();
-                                ima.setDisplayName(displayName);
-                                if (lore != null) {
-                                    ima.setLore(lore);
-                                }
-                                isa.setItemMeta(ima);
+                                isa = item.createItemStack();
+                                isa.setAmount(amount);
                             }
                             inv.addItem(isa);
                             if (amount > max) {
@@ -489,11 +503,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (iss.getType() == is.getType() &&
-                                iss.getAmount() < iss.getMaxStackSize() &&
-                                ((!iss.hasItemMeta() && !is.hasItemMeta()) ||
-                                        (iss.hasItemMeta() && is.hasItemMeta() &&
-                                                iss.getItemMeta().getDisplayName().equals(is.getItemMeta().getDisplayName())))) {
+                        if (item.equivalentItem(iss)) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());
@@ -516,6 +526,15 @@ public final class Util {
         }
 
         return remainingItems;
+    }
+
+    public static boolean isChestEmpty(Inventory inv) {
+        for (ItemStack item : inv.getContents()) {
+            if (item != null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean hasOverride(Region region, Civilian civilian) {

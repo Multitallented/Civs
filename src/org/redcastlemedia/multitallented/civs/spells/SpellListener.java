@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -38,25 +39,25 @@ public class SpellListener implements Listener {
     @EventHandler
     public void onSpellUse(PlayerInteractEvent event) {
         ItemStack itemStack = event.getItem();
-        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || !CivItem.isCivsItem(itemStack)) {
             return;
         }
-        String itemName = CivItem.processItemName(itemStack.getItemMeta().getDisplayName());
-        CivItem civItem = ItemManager.getInstance().getItemType(itemName);
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
 
         if (!(civItem instanceof SpellType)) {
             return;
         }
         SpellType spellType = (SpellType) civItem;
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        Spell spell = new Spell(itemName, event.getPlayer(), civilian.getLevel(spellType));
+        Spell spell = new Spell(civItem.getProcessedName(), event.getPlayer(), civilian.getLevel(spellType));
         //TODO should I add this to a spell manager? Spells dont persist
         spell.useAbility();
     }
 
     @EventHandler
     public void onListenerDamage(EntityDamageEvent event) {
-        if (event.isCancelled() || event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || event.isCancelled() ||
+                event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();

@@ -1,6 +1,19 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,24 +28,25 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
+import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 public class RegionManager {
     private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
@@ -41,6 +55,8 @@ public class RegionManager {
     private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
     private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
     private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
+    private HashSet<Region> checkedRegions = new HashSet<>();
+    private ArrayList<Region> needsSaving = new ArrayList<>();
 
     public RegionManager() {
         regionManager = this;
@@ -48,6 +64,7 @@ public class RegionManager {
 
     public void reload() {
         loadAllRegions();
+        checkedRegions.clear();
     }
 
     public void addRegionCreatedListener(String key, RegionCreatedListener listener) {
@@ -63,14 +80,14 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
+        saveRegion(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
-            regions.put(worldUuid, new ArrayList<Region>());
+            regions.put(worldUuid, new ArrayList<>());
         }
         regions.get(worldUuid).add(region);
         regionLocations.put(region.getId(), region);
         sortRegions(worldUuid);
-        saveRegion(region);
         for (String key : regionCreatedListenerHashMap.keySet()) {
             if (region.getEffects().containsKey(key)) {
                 regionCreatedListenerHashMap.get(key).regionCreatedHandler(region);
@@ -88,7 +105,7 @@ public class RegionManager {
         try {
             for (File file : regionFolder.listFiles()) {
                 Region region = loadRegion(file);
-                if (region == null) {
+                if (region == null || regionLocations.containsKey(region.getId())) {
                     continue;
                 }
                 UUID worldName = region.getLocation().getWorld().getUID();
@@ -149,6 +166,7 @@ public class RegionManager {
         for (String key : this.destroyRegionListener.keySet()) {
             this.destroyRegionListener.get(key).destroyRegionHandler(region);
         }
+        Bukkit.getPluginManager().callEvent(new RegionDestroyedEvent(region));
 
         if (checkCritReqs) {
             TownManager.getInstance().checkCriticalRequirements(region);
@@ -194,9 +212,41 @@ public class RegionManager {
     }
 
     public void saveRegion(Region region) {
+        needsSaving.add(region);
+    }
+
+    public int getCountOfPendingSaves() {
+        return needsSaving.size();
+    }
+
+    public void saveNextRegion() {
+        Region r = null;
+        for (Region region : needsSaving) {
+            r = region;
+            saveRegionNow(r);
+            break;
+        }
+        if (r != null) {
+            while (needsSaving.contains(r)) {
+                needsSaving.remove(r);
+            }
+        }
+    }
+
+    public void saveAllUnsavedRegions() {
+        for (Region region : needsSaving) {
+            saveRegionNow(region);
+        }
+        needsSaving.clear();
+    }
+
+    private void saveRegionNow(Region region) {
         Civs civs = Civs.getInstance();
         if (civs == null) {
             return;
+        }
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.saves++;
         }
         File regionFolder = new File(civs.getDataFolder(), "regions");
         if (!regionFolder.exists()) {
@@ -241,6 +291,7 @@ public class RegionManager {
                 regionConfig.set("last-active", null);
             }
             regionConfig.save(regionFile);
+            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;
@@ -285,6 +336,7 @@ public class RegionManager {
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
+            e.printStackTrace();
             return null;
         }
         return region;
@@ -338,7 +390,7 @@ public class RegionManager {
 
     private Region findRegion(int index1, int index2, Location location, int index) {
         UUID worldUuid = location.getWorld().getUID();
-        for (int i=index1; i<index2; i++) {
+        for (int i=index1; i<=index2; i++) {
             if (i==index) {
                 continue;
             }
@@ -357,12 +409,12 @@ public class RegionManager {
         if (!rLocation.getWorld().equals(location.getWorld())) {
             return false;
         }
-        return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
-                rLocation.getX() + region.getRadiusXP() >= location.getX() &&
-                rLocation.getY() - region.getRadiusYN() <= location.getY() &&
-                rLocation.getY() + region.getRadiusYP() >= location.getY() &&
-                rLocation.getZ() - region.getRadiusZN() <= location.getZ() &&
-                rLocation.getZ() + region.getRadiusZP() >= location.getZ();
+        return rLocation.getX() - 0.5 - region.getRadiusXN() <= location.getX() &&
+               rLocation.getX() + 0.5 + region.getRadiusXP() >= location.getX() &&
+               rLocation.getY() - 0.5 - region.getRadiusYN() <= location.getY() &&
+               rLocation.getY() + 0.5 + region.getRadiusYP() >= location.getY() &&
+               rLocation.getZ() - 0.5 - region.getRadiusZN() <= location.getZ() &&
+               rLocation.getZ() + 0.5 + region.getRadiusZP() >= location.getZ();
     }
 
     boolean detectNewRegion(BlockPlaceEvent event) {
@@ -370,8 +422,8 @@ public class RegionManager {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
-        String regionTypeName = event.getItemInHand().getItemMeta().getDisplayName();
-        regionTypeName = regionTypeName.replace(ConfigManager.getInstance().getCivsItemPrefix(), "");
+        String regionTypeName = ChatColor.stripColor(event.getItemInHand().getItemMeta().getLore().get(1));
+        regionTypeName = regionTypeName.replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "");
 
         RegionType regionType;
         try {
@@ -382,6 +434,15 @@ public class RegionManager {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (!regionType.getWorlds().isEmpty() &&
+                !regionType.getWorlds().contains(location.getWorld().getName())) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(civilian.getLocale(), "region-not-allowed-in-world")
+                            .replace("$1", regionTypeName));
+            return false;
+        }
 
         if (regionType == null) {
             event.setCancelled(true);
@@ -422,6 +483,7 @@ public class RegionManager {
                 }
             }
         }
+        boolean rebuildTransition = false;
         if (rebuildRegion != null && regionType.getRebuild() == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
@@ -440,37 +502,43 @@ public class RegionManager {
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
                             .replace("$1", regionTypeName).replace("$2", regionType.getRebuild()));
             return false;
+        } else if (rebuildRegion != null) {
+            location = rebuildRegion.getLocation();
+            rebuildTransition = true;
         }
 
 
         Town town = TownManager.getInstance().getTownAt(location);
-        if (town != null && town.getGovernmentType() == GovernmentType.FEUDALISM) {
-            boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
-                    town.getRawPeople().get(player.getUniqueId()).contains("owner");
-            if (!isOwner) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "cant-build-feudal"));
-                event.setCancelled(true);
-                return false;
+        if (town != null) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.FEUDALISM) {
+                boolean isOwner = town.getRawPeople().containsKey(player.getUniqueId()) &&
+                        town.getRawPeople().get(player.getUniqueId()).contains("owner");
+                if (!isOwner) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                            .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                    event.setCancelled(true);
+                    return false;
+                }
             }
         }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty()) {
-            if (town == null) {
+            if (town == null || !regionType.getTowns().contains(town.getType())) {
+                int lowestLevel = 999;
+                String lowestLevelString = null;
+                for (String inTownName : regionType.getTowns()) {
+                    TownType townType = (TownType) ItemManager.getInstance().getItemType(inTownName);
+                    if (townType.getLevel() < lowestLevel) {
+                        lowestLevelString = inTownName;
+                    }
+                }
+                if (lowestLevelString == null) {
+                    lowestLevelString = "towns";
+                }
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
-                                .replace("$1", regionTypeName).replace("$2",
-                                localeManager.getTranslation(civilian.getLocale(), "towns")));
-                event.setCancelled(true);
-                return false;
-            }
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (!regionType.getTowns().contains(townType.getProcessedName()) &&
-                    !regionType.getTowns().contains(townType.getDisplayName())) {
-                player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
-                                .replace("$1", regionTypeName).replace("$2",
-                                townType.getDisplayName()));
+                                .replace("$1", regionTypeName).replace("$2", lowestLevelString));
                 event.setCancelled(true);
                 return false;
             }
@@ -573,11 +641,23 @@ public class RegionManager {
         HashMap<UUID, String> people;
         if (rebuildRegion != null) {
             people = (HashMap<UUID, String>) rebuildRegion.getPeople().clone();
+            if (Civs.econ != null && people.containsKey(player.getUniqueId()) &&
+                    !people.get(player.getUniqueId()).contains("ally") &&
+                    !regionType.isRebuildRequired()) {
+                RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice() / 2);
+            }
             //TODO copy over other stuff too?
             removeRegion(rebuildRegion, false, false);
         } else {
             people = new HashMap<>();
             people.put(player.getUniqueId(), "owner");
+        }
+        if (rebuildTransition) {
+            event.setCancelled(true);
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            player.getInventory().setItemInMainHand(null);
+            location.getBlock().setType(itemStack.getType());
         }
 
         player.sendMessage(Civs.getPrefix() +
@@ -587,6 +667,7 @@ public class RegionManager {
 
         Region region = new Region(regionType.getName(), people, location, radii, (HashMap) regionType.getEffects().clone(), 0);
         addRegion(region);
+        StructureUtil.removeBoundingBox(civilian.getUuid());
         RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
         Bukkit.getPluginManager().callEvent(regionCreatedEvent);
 
@@ -680,5 +761,26 @@ public class RegionManager {
             regionManager = new RegionManager();
         }
         return regionManager;
+    }
+
+    public boolean hasRegionChestChanged(Region region) {
+        return !checkedRegions.contains(region);
+    }
+
+    public void removeCheckedRegion(Location location) {
+        Region region = RegionManager.getInstance().getRegionAt(location);
+        if (region != null) {
+            removeCheckedRegion(region);
+            if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
+                WarehouseEffect.getInstance().refreshChest(region, location);
+            }
+        }
+    }
+    public void removeCheckedRegion(Region region) {
+        checkedRegions.remove(region);
+    }
+
+    public void addCheckedRegion(Region region) {
+        checkedRegions.add(region);
     }
 }

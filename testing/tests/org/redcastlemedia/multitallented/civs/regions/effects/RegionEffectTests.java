@@ -9,6 +9,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.Inventory;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
@@ -137,25 +138,25 @@ public class RegionEffectTests {
         RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
         Location location = new Location(Bukkit.getWorld("world"), 2,50,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
+        cobbleRegion.getFailingUpkeeps().add(0);
         Location location2 = new Location(Bukkit.getWorld("world"), 3,100,0);
         Region warehouse = RegionsTests.createNewRegion("warehouse", location2);
-        ArrayList<Chest> availableItems = new ArrayList<>();
         Chest cobbleChest = (Chest) TestUtil.blockUnique2.getState();
         Chest warehouseChest = (Chest) TestUtil.blockUnique3.getState();
-        availableItems.add(warehouseChest);
 
         WarehouseEffect warehouseEffect = new WarehouseEffect();
         RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
-        ArrayList<Location> inventoryLocations = new ArrayList<>();
-        inventoryLocations.add(TestUtil.blockUnique3.getLocation());
-        warehouseEffect.invs.put(warehouse, inventoryLocations);
+        warehouseEffect.putInventoryLocation(warehouse, TestUtil.blockUnique3.getLocation(), warehouseChest.getBlockInventory());
+        HashMap<String, Inventory> chestMap = new HashMap<>();
+        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest.getBlockInventory());
+        warehouseEffect.availableItems.put(warehouse, chestMap);
 
         TownTests.loadTownTypeHamlet();
         Location townLocation = new Location(Bukkit.getWorld("world"), 2, 75, 0);
         TownTests.loadTown("test", "hamlet", townLocation);
 
         warehouseEffect.onCustomEvent(regionTickEvent);
-        assertEquals(Material.IRON_PICKAXE, ((Chest) TestUtil.blockUnique2.getState()).getBlockInventory().getItem(0).getType());
+        assertEquals(Material.IRON_PICKAXE, cobbleChest.getBlockInventory().getItem(0).getType());
     }
 
     @Test

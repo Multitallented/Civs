@@ -7,22 +7,21 @@
 
 icon: "WHITE_STAINED_GLASS"
 enabled: true
-name:
-  en: "Democracy"
-  de: "Demokratie"
-  ru: "демократия"
-  pt_br: "Democracia"
-  fr: "Démocratie"
-  es: "Democracia"
-  hu: "Demokrácia"
-description:
-  en: "Town owners manage alliances, set taxes, and town membership. Voting sets new town ownership periodically."
-  es: "Los propietarios de las ciudades administran alianzas, establecen impuestos y son miembros de la ciudad. La votación establece la propiedad de la ciudad nueva periódicamente."
-  fr: "Les propriétaires de ville gèrent des alliances, fixent des taxes et deviennent membres de la ville. Le vote fixe périodiquement la nouvelle propriété de la ville."
-  pt_br: "Os proprietários da cidade gerenciam alianças, estabelecem impostos e são membros da cidade. A votação define a posse da nova cidade periodicamente."
-  ru: "Владельцы города управляют альянсами, устанавливают налоги и членство в городе. Голосование периодически устанавливает право собственности нового города."
-  de: "Stadtbesitzer verwalten Allianzen, legen Steuern und die Mitgliedschaft in der Stadt fest. Abstimmungen legen in regelmäßigen Abständen neue Städteeigentümer fest."
-  hu: "Város tulajdonosai kezelik a szövetségeket, tagokat és adókat. Időszakosan szavazzák meg az új vezetőséget."
+transition:
+  0:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  1:
+    money-gap: 60
+    to: CAPITALISM
+  2:
+    power: 33
+    revolt: 51
+    to: KRATEROCRACY
+  3:
+    revolt: 51
+    to: DEMOCRATIC_SOCIALISM
 buffs:
   max_power:
     percent: 25

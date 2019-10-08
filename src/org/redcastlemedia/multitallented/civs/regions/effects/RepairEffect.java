@@ -158,7 +158,7 @@ public class RepairEffect implements Listener {
             return;
         }
 
-        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
+        if ((!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && !event.getAction().equals(Action.LEFT_CLICK_BLOCK)) ||
                 (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK)) ||
                 event.getHand().equals(EquipmentSlot.HAND)) {
             return;

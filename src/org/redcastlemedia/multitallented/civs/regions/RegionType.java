@@ -2,12 +2,11 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
 
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +32,8 @@ public class RegionType extends CivItem {
     private List<RegionUpkeep> upkeeps;
     private final long period;
     private final Set<Biome> biomes;
+    @Getter
+    private final HashSet<String> worlds;
 
     @Getter
     private final boolean rebuildRequired;
@@ -57,13 +58,13 @@ public class RegionType extends CivItem {
                       String rebuild,
                       HashSet<String> towns,
                       Set<Biome> biomes,
-                      HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
                       List<String> groups,
                       boolean isInShop,
                       boolean rebuildRequired,
-                      int level) {
+                      int level,
+                      HashSet<String> worlds) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -74,7 +75,6 @@ public class RegionType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);
@@ -93,6 +93,7 @@ public class RegionType extends CivItem {
         this.towns = towns;
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
+        this.worlds = worlds;
     }
     public String getName() {
         return name;

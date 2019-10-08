@@ -12,7 +12,7 @@ softdepend:
 - MultiverseCore
 commands:
    cv:
-      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv', 'towny', 'fa', 'f', 'faction']
+      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
       description: Civs commands
       usage: /<command>
 permissions:

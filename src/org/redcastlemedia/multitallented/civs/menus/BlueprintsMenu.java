@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -13,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class BlueprintsMenu extends Menu {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
-            CivItem civItem = itemManager.getItemType(is.getItemMeta().getDisplayName());
+            CivItem civItem = CivItem.getFromItemStack(is);
             String name = civItem.getProcessedName();
             if (stashItems.containsKey(name)) {
                 stashItems.put(name, is.getAmount() + stashItems.get(name));
@@ -77,8 +76,14 @@ public class BlueprintsMenu extends Menu {
 
         LocaleManager localeManager = LocaleManager.getInstance();
         int i=0;
-        for (String currentName : civilian.getStashItems().keySet()) {
+        boolean saveCiv = false;
+        for (String currentName : new HashMap<>(civilian.getStashItems()).keySet()) {
             CivItem civItem = ItemManager.getInstance().getItemType(currentName);
+            if (civItem == null) {
+                civilian.getStashItems().remove(currentName);
+                saveCiv = true;
+                continue;
+            }
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (!civItem.getItemType().equals(CivItem.ItemType.REGION) && !isTown) {
                 continue;
@@ -91,12 +96,15 @@ public class BlueprintsMenu extends Menu {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
-                lore.addAll(Util.textWrap("", Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+                lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentName));
             inventory.setItem(i, cvItem.createItemStack());
             i++;
+        }
+        if (saveCiv) {
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
 
         return inventory;

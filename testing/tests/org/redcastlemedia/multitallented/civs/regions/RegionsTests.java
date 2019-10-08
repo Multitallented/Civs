@@ -12,15 +12,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -31,7 +29,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -42,7 +42,7 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class RegionsTests {
     private RegionManager regionManager;
@@ -72,8 +72,8 @@ public class RegionsTests {
                 10, new HashSet<>(), regions);
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
-        Government government = new Government(GovernmentType.ANARCHY, null, null,
-                buffs, null);
+        Government government = new Government("ANARCHY", GovernmentType.ANARCHY,
+                buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
 
@@ -532,10 +532,38 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
         CivilianListener civilianListener = new CivilianListener();
-        civilianListener.onCivilianBlockBreak(event);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
         assertNull(regionManager.getRegionAt(location1));
+    }
+
+    @Test
+    public void regionShouldNotBeDestroyedCenter() {
+        loadRegionTypeCobble();
+        HashMap<UUID, String> owners = new HashMap<>();
+        owners.put(TestUtil.player.getUniqueId(), "owner");
+        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
+        regionManager.addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
+        Player player1 = mock(Player.class);
+        when(player1.getUniqueId()).thenReturn(new UUID(1,8));
+        when(player1.getGameMode()).thenReturn(GameMode.SURVIVAL);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, player1);
+        CVItem cvItem = new CVItem(Material.CHEST, 1);
+        cvItem.getLore().add(TestUtil.player.getUniqueId().toString());
+        BlockLogger.getInstance().putBlock(location1, cvItem);
+        CivilianListener civilianListener = new CivilianListener();
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockBreak(event);
+        if (!event.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(event);
+        }
+        assertNotNull(regionManager.getRegionAt(location1));
+        assertEquals(Material.CHEST, TestUtil.world.getBlockAt(location1).getType());
+        assertTrue(event.isCancelled());
     }
 
     @Test
@@ -721,7 +749,7 @@ public class RegionsTests {
     public void regionShouldConsiderAlliesAsGuests() {
         UUID uuid1 = new UUID(1, 3);
         Region region = load2TownsWith1Region(uuid1, true);
-        assertEquals("ally", region.getPeople().get(uuid1));
+        assertEquals("allyforeign", region.getPeople().get(uuid1));
     }
 
     @Test
@@ -743,7 +771,11 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new DailyScheduler().run();
+        try {
+            new DailyScheduler().run();
+        } catch (SuccessException se) {
+
+        }
         assertEquals(302, town.getPower());
     }
 
@@ -759,7 +791,7 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new RegionTickTask().run();
+        new RegionTickTask().onTwoSecondEvent(null);
         assertEquals(300, town.getPower());
     }
 
@@ -1080,6 +1112,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("chest_use");
         effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
@@ -1100,7 +1133,7 @@ public class RegionsTests {
     public static Region createNewRegion(String type) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
-        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);

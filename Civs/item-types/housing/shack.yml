@@ -1,29 +1,38 @@
 type: region
 icon: CHEST
+shop-icon: YELLOW_BED
 name: Shack
 max: 2
 price: 100
 groups:
-- house
-- shack
+- housing
+- allshack
+- baseshack
+- allhousing
+level: 2
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
 
 build-reqs:
 - CHEST*2
 - g:door*1
-- g:roof*49
-- g:secondary*42
-- g:primary*140
 - g:window*4
 - g:bed*1
 - g:sign*1
 - FURNACE
 - CRAFTING_TABLE
+- g:roof*16
+- g:secondary*8
+- g:primary*30
 
 towns:
 - settlement
+- hamlet
 - village
 - town
-- capital
+- city
+- metropolis
 
 build-radius: 3 #7x7x7
 effects:
@@ -34,6 +43,8 @@ effects:
 - door_use
 - chest_use
 - housing:1
+- buyable
+
 period: 3600 #1 hour
 upkeep:
   0:
@@ -44,5 +55,3 @@ upkeep:
     payout: 5.12 # $122.88 / day
 
 
-description:
-  en: "The most basic house"

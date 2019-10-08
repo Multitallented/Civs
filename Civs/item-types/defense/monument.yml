@@ -1,0 +1,38 @@
+type: region
+name: Monument
+icon: DIAMOND_BLOCK
+price: 2400
+groups:
+- defense
+- idolgroup
+level: 5
+
+build-reqs:
+- GOLD_BLOCK*3
+- EMERALD_BLOCK*2
+- DIAMOND_BLOCK*1
+
+rebuild: idol
+rebuild-required: true
+build-radius: 2 # 5x5x5
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- potion:DAMAGE_RESISTANCE.4800,INCREASE_DAMAGE.2400,SPEED.3600,GLOWING.3600
+
+pre-reqs:
+- member=town:city:metropolis
+- idol:built=1
+
+towns:
+- town
+- city
+- metropolis
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2

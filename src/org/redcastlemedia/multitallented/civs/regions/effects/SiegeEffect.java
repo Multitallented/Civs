@@ -33,7 +33,6 @@ import java.util.HashMap;
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
     public static String KEY = "drain_power";
-    private HashMap<Location, Long> lastUpkeep = new HashMap<>();
 
     public SiegeEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
@@ -42,38 +41,20 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
     @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
-        if (!event.getRegion().getEffects().containsKey(KEY)) {
+        if (!event.getRegion().getEffects().containsKey(KEY) || !event.isHasUpkeep()) {
             return;
         }
         Region region = event.getRegion();
-        RegionType regionType = event.getRegionType();
         Location l = region.getLocation();
 
-        //Check if the region has the shoot arrow effect and return arrow velocity
-        if (regionType.getEffects().get(KEY) == null) {
-            return;
-        }
-        String[] effectSplit = regionType.getEffects().get(KEY).split("\\.");
-        long period = Long.parseLong(effectSplit[0]) * 1000;
-        if (period < 1) {
-            return;
-        }
+        String damageString = region.getEffects().get(KEY);
         int damage = 1;
-        if (effectSplit.length > 1) {
-            damage = Integer.parseInt(effectSplit[1]);
-        }
-
-        if (lastUpkeep.get(l) != null && period + lastUpkeep.get(l) > new Date().getTime()) {
-            return;
+        if (damageString != null) {
+            damage = Integer.parseInt(damageString);
         }
 
         //Check if valid siege machine position
-        if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
-            return;
-        }
-
-        //Check to see if the Townships has enough reagents
-        if (!region.hasUpkeepItems()) {
+        if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
             return;
         }
 
@@ -122,13 +103,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return;
         }
 
-        //Run upkeep but don't need to know if upkeep occured
-        //effect.forceUpkeep(l);
-        region.runUpkeep(false);
-        lastUpkeep.put(l, new Date().getTime());
-
         Location spawnLoc = l.getBlock().getRelative(BlockFace.UP, 3).getLocation();
-        //Location srLoc = sr.getLocation();
         Location loc = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 15, spawnLoc.getZ());
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
         final Location loc2 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 25, spawnLoc.getZ());
@@ -208,6 +183,8 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return false;
         }
 
+        System.out.println(l.getBlock().getRelative(BlockFace.UP).getY() + ":" +
+                l.getWorld().getHighestBlockAt(l).getY());
         if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-blocks-above-chest").replace("$1", regionType.getName()));

@@ -9,6 +9,22 @@
 
 icon: "LIGHT_BLUE_GLAZED_TERRACOTTA"
 enabled: false
+transition:
+  0:
+    revolt: 51
+    money-gap: 60
+    to: COMMUNISM
+  1:
+    revolt: 51
+    money-gap: 40
+    to: DEMOCRATIC_SOCIALISM
+  2:
+    revolt: 51
+    power: 30
+    to: ANARCHY
+  3:
+    revolt: 51
+    to: DEMOCRACY
 name:
   en: "Cybersynacy"
   fr: "Technocratie"

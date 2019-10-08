@@ -1,0 +1,853 @@
+name: Deutsch
+icon: BLACK_WOOL
+starter-book: Menü für Civs
+next-button: Weiter
+prev-button: Vorherig
+language-menu: Sprache auswählen
+language-set: Deine Sprache wurde zu $1 geändert
+back-button: Zurück
+start-tutorial: Anleitung starten
+start-tutorial-desc: Erhalte Items und Geld für abgeschlossene Schritte
+skip: Anleitung abbrechen
+tutorial-click: Schaue in den Civs-Handbuch
+tutorial-wiki: Civs wiki
+click-info: Klick für mehr Informationen
+guide: Handbuch
+guide-desc: Klicke hier um dein nächstes Ziel zu sehen.
+choose-path: Wähle deinen Pfad
+new-owner-town: $1 wurde als Besitzer von $3 abgelöst. Neuer Besitzer ist $2
+town-bank-balance: "Stadtkasse: $1"
+town-bank-desc: Benutze > /cv withdraw $1 amount < um Geld aus der Stadtkasse zu nehmen.
+withdrawn-money: Du hast $1 aus der Stadtkasse von $2 herausgenommen.
+town-tax: "Steuern: $1"
+town-tax-desc: Erhebe Steuern mit > /cv tax $1 amount <
+town-tax-gov-type: Der Regierungstyp $1 kann keine Steuern erheben.
+town-tax-set: Die Steuern in $1 wurden auf $2 gesetzt.
+tax-too-high: Es können keine Steuer größer $1 erhoben werden.
+town-assist-price: Du hast $1 aus der Stadtkasse bekommen für das Erstellen von $2
+colony-town-set: Du hast $1 zur Kolonie von $2 gemacht.
+cant-build-feudal: In einer Feudalen Stadt kannst du keine Region erstellen, es sei denn du bist
+  der Besitzer der Stadt.
+tribalism-no-invite: $1 aus $2 kann nicht in den Stamm aufgenommen werden da kein Bündnis mit
+  seiner Stadt besteht.
+vote-member: Stimme über das nächste Stadtoberhaupt ab
+capitalism-voting-cost: Extra Stimmen kosten $1
+voted: Du hast für $1 abgestimmt
+gov-type-change: $1 hat die Regierungsform von $2 zu $3 gewechselt.
+cant-change-gov-type-daily: Die Regierungsform wurde nicht gewechselt. Nur ein Regierungswechsel am Tag
+  möglich.
+revolt: Rebellion
+revolt-desc: Klicke um der Rebellion gegen $1 beizutreten. Kosten $2 $3.
+revolt-display: $1 / $2 Bürger rebellieren.
+cancel-revolt: Klicke um die Rebellion gegen $1 zu verlassen.
+item-cost: Diese Aktion kostet $1 $2.
+cost-buff: Die Kosten für $2 in $3 wurden in höhe von $1 erstattet.
+merit-new-owner: Herzlichen Glückwunsch. Du hast $1 übertroffen. Du bist das neue
+  Stadtoberhaupt!
+item-locked: Dieses Item hast du noch nicht freigeschaltet.
+ai-invite: Hey, @$1, magst du meiner Stadt beitreten?
+ai-help: $1 führt dich gerne herum.
+cooldown-buff-desc: Alle $2 haben um $1% reduzierte Abklingzeit.
+payout-buff-desc: Alle $2 in der Region haben $1% erhöhte Auszahlung.
+power-buff-desc: Täglicher Machtzuwachs um $1% erhöht.
+max_power-buff-desc: Maximale Macht um $1% erhöht.
+cost-buff-desc: Für alle $2 werden $1% der Kosten rückerstattet.
+shop: Shop
+buy-item: Zu verkaufen
+price: Preis
+buy: Kaufe $1
+cancel: Abbrechen
+item-bought: Du hast $1 für $2 gekauft.
+max-item: Du kannst nicht mehr als $2 $1 kaufen.
+max-qty: $1 hat bereits zu viele $2 und kann keine weiteren besitzen.
+items: Items
+click-for-item-group: Klicke um alle Items in dieser Kategorie zu sehen.
+classes: Klassen
+spells: Zauber
+blueprints: Blaupausen
+regions: Regionen
+community: Community
+players: Spieler
+towns: Städte
+your-towns: Deine Städte
+wars: Kriege
+alliances: Bündnisse
+leaderboard: Bestenliste
+ports: Heimatpunkte
+money: "Geld: $$1"
+points: "Punkte: $1"
+killstreak: "Killstreak: $1"
+highest-killstreak: "Höchster Killstreak: $1"
+kills: "Kills: $1"
+deaths: "Tode: $1"
+friends: Freunde
+confirm: Bestätigen
+reject: Ablehnen
+effects: Effekte
+size: Größe
+range: Reichweite
+build-reqs-title: Benötigte Gebäude
+population: Population
+population-req: Benötigt $1 mit $2 Population.
+biomes: Biome
+devolve-town: $1 hat viel Macht verloren und wird auf $2 runtergestuft.
+pop-desc: $1 Population / $2 Wohnungen / $3 Dorfbewohner
+build-reqs: Für $1 benötigst du folgende Blöcke
+reagents-title: Arbeitsmaterial
+reagents: Von $1 benötigtes Arbeitsmaterial
+upkeep: Durch $1 verbrauchte Items
+output: Von $1 hergestellte Items
+payout: Diese Region bringt $$1
+power-input: Diese Region verbraucht $1 Macht
+power-output: Diese Region generiert $1 Macht
+too-close-region: $1 ist zu nah an $2 gebaut
+too-close-town: $1 ist zu nah bei einer anderen Stadt
+town-created: $1 wurde gegründet
+town-destroyed: $1 wurde zerstört
+region-built: Du hast erfolgreich $1 gebaut
+region-type: Typ der Region
+destroy: Zerstören
+region-in-town: Deine Region steht in $1
+town-req-desc: "Deine Region muss in einer anderen erstellt werden:"
+view-members: Mitgliederübersicht
+add-member: Mitglied einladen
+operation: Operation
+region-working: Deine Region arbeitet hervorragend
+region-not-working: Deiner Region fehlt etwas
+owner: Besitzer
+member: Mitglied
+guest: Gast
+recruiter: Anwerber
+set-owner: Zum Besitzer machen
+set-member: Zum Mitglied machen
+set-guest: Zum Gast machen
+set-recruiter: Zum Anwerber machen
+remove-member: Mitglieder entfernen
+leave-town: Stadt verlassen
+you-left-town: Du hast $1 verlassen
+invite-sent: Einladung verschickt
+add-member-region: Du wurdest Mitglied von $1
+member-added-region: $1 ist jetzt ein Mitglied von $2
+owner-description: Besitzer können alles in der Region verwalten
+guest-description: Gäste können Türen und Schalter benutzen
+member-description: Mitglieder können in der Region bauen und alles benutzen
+recruiter-description: Anwerber können neue Mitglieder einladen
+remove-member-region: Du bist nicht länger Mitglied von $1
+member-removed-region: $1 ist nicht länger Mitglied von $2
+add-owner-region: Du wurdest zum Besitzer von $1
+owner-added-region: $1 ist jetzt Besitzer von $2
+add-recruiter-region: Du wurdest zum Anwerber von $1
+recruiter-added-region: $1 ist jetzt Anwerber von $2
+add-guest-region: Du wurdest zum Gast von $1
+guest-added-region: $1 ist jetzt Gast von $2
+invite-member-region: Du wurdest zum Mitglied von $1
+member-invited-region: $1 ist jetzt Mitglied von $2
+no-invite: Du hast keine aktiven Einladungen
+stand-in-region: $1 muss in der Region vorhanden sein
+create: Erstelle
+click-for-region-limits: Klicke für die Limits der Region
+click-for-req-regions: Klicke für alle benötigten Regionen
+town-instructions: Erstelle die Stadtregion $1 mit /cv town Stadtname
+town-enter: Du hast die Stadt $1 ($2) betreten.
+town-exit: Du hast die Stadt $1 ($2) verlassen.
+new-town-member: $1 ist $2 beigetreten
+must-be-built-on-top: $1 muss auf $2 aufgebaut werden
+town-power: "Macht: $1/$2"
+port-warmup: Du wirst in $1 Sekunden teleportiert.
+teleported: Du wurdest teleportiert
+location-set: $1 Standort festgelegt
+rename-town: Stadt umbenennen
+rename-desc: Bennen die Stadt um mit /cv rename AlterStadtname NeuerStadtname
+town-renamed: Deine Stadt wurde von $1 in $2 umbenannt
+bounty-set: Auf $1 wurde ein Kopfgeld in höhe von $2 ausgesetzt
+bounty-bonus: Du hast das Kopfgeld für $1 kassiert
+allied-bounty: Kein Kopfgeld erhalten. Ziel war Bündnispartner
+add-friend: Freund hinzufügen
+remove-friend: Freund entfernen
+friend-added: $1 wurde deiner Freundesliste zugefügt
+friend-removed: $1 wurde aus deiner Freundesliste entfernt
+bounty: Kopfgeld ausschreiben mit /cv bounty $1 amount
+town-ally: Schließe ein Bündnis mit $1
+town-unally: Deklariere $1 als Feinde
+town-ally-invites: Dir wurde ein Bündnis vorgeschlagen
+town-ally-request-sent: $1 wurde ein Bündnis vorgeschlagen
+town-ally-request-accepted: Ein Bündnis wurde zwischen $1 und $2 beschlossen
+town-ally-request-denied: Der Bündnisvorschlag an $1 wurde abgelehnt
+town-ally-removed: Das Bündnis zwischen $1 und $2 wurde aufgelöst
+region-evolved: $1 hat sich zu $1 entwickelt
+anti-camp-active: Das Anti-Camp von $1 wurde aktiviert
+anti-camp-expired: Das Anti-Camp von $1 ist ausgelaufen
+region-sale-set: $1 steht für $2 zum verkauf
+sell-region: Region verkaufen
+cancel-sale: Verkauf abbrechen
+buy-region: Kaufe die Region $1 für $2
+regions-for-sale: Zum verkauf stehende Regionen
+use-sell-command: Zum verkaufen tippe /cv sell price
+region-bought: Du hast die Region $1 für $2 gekauft
+sort-by-level: Sortiere die Regionen nach Level
+level: Level $1
+rename-alliance: Bündnis umbenennen
+rename-alliance-desc: Tippe /cv really $1 NeuerBündnisname
+alliance-renamed: $1 wur zu $2 umbenannt
+invalid-name: Ungültiger Name
+region-not-allowed-in-world: In dieser Welt kann man kein $1 bauen
+last-renamed-by: "Zuletzt Umbenannt von: $1"
+leave-alliance: Verlasse das Bündnis
+hunting-players: "@{RED}ACHTUNG! Jemand in der Nähe macht Jagd auf Spieler."
+target-not-in-world: $1 ist nicht in der gleichen Welt wie du.
+cant-place-town: Tippe /cv town Stadtname
+no-region-type-found: Für $1 wurde kein Regionstyp gefunden
+building-too-big: Dein Gebäude ist zu groß um als $1 bezeichnet zu werden
+no-required-blocks: Für $1 hast du noch nicht die benötigten Blöcke platziert
+cant-build-on-region: Du kannst $1 nicht auf $2 bauen
+rebuild-required: Du musst $1 auf $2 aufbauen
+prevent-civs-item-share: Es ist nicht verlaubt Civ-Items zu teilen
+region-protected: Diese Region ist geschützt
+region-destroyed: Region $1 wurde zerstört
+specify-player-town: Bitte definiere einen Spieler und die Stadt
+specify-town-name: Definiere eine Stadt
+specify-player-region: Definiere einen Spieler und die Region
+town-not-exist: $1 ist keine Stadt
+no-permission-invite: Du bist nicht berechtigt Spieler nach $1 einzuladen
+player-not-online: $1 ist nicht Online
+invite-player: $1 lädt dich ein $2 $3 beizutreten. Akzeptieren?
+already-member: $1 ist schon ein Mitglied von $2
+broke-own-region: Deiner Region $1 fehlen Blöcke
+no-permission: Keine Berechtigung
+class-changed: Du hast die Klasse zu $1 gewechselt
+not-enough-money: Du hast keine $$1
+not-allowed-place: $1 kann nicht platziert werden
+hold-town: Bitte halte ein Stadtitem
+no-commands-in-jail: Du bist im Gefängnis. Keine Commands für $1
+mana-use-exp: Du kannst das nur mit vollem Mana benutzen
+building-requires-2space: Dieses Bauwerk benötigt 2 freie Blöcke über der Hauptkiste
+missing-blocks-build: Du musst die fehlenden Blöcke setzen um die Region $1 zu bauen
+in-combat: Das kannst du nicht im kampf
+cooldown: Das hat noch $1s Abklingzeit
+need-more-health: Dafür brauchst du $1 Leben mehr
+need-more-stamina: Dafür brauchst du $1 Ausdauer mehr
+need-more-mana: Dafür brauchst du $1 Mana mehr
+port-not-found: Kein Heimatpunkt gefunden
+region-missing-upkeep-items: Der Region fehlen benötigte Items
+raid-target-lost: Keine Stadt mit Namen $1 innerhalb von $2 Blöcken
+searching-for-target: Suche nach Ziel für Überfall
+raid-target-blocked: Teleport zum Ziel des Überfalls nicht möglich
+raid-porter-warning: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
+raid-remote: Dir wurde das Kontroll-Item für $1 gegeben
+raid-sign: Über der Hauptkiste muss ein Schild mit dem Stadtnamen deines Ziel hängen
+no-blocks-above-chest: Über der mittleren Brust dürfen sich keine Blöcke befinden
+invalid-target: Ungültiges Ziel
+raid-target-inside-region: Du kannst kein Ziel innerhalb einer Region auswählen
+req-build-inside-town: Die Region $1 muss innerhalb der Region $2 gebaut werden
+missing-region-requirements: Deine Region $1 hat nicht mehr die benötigte Hauptregion
+friendly-fire: Du kannst deinen Freunden keinen Schaden zufügen
+limits: Limits
+region-limit-reached: Die Region $1 kann von $3 nur $2 beinhalten
+region-in-biome: Du kannst in dem Biom $2 die Region $1 nicht bauen
+not-enough-housing: Du brauchst mehr Wohnungen bevor du Leute einladen kannst
+not-member-port: Du bist kein Mitglied von diesem Heimatpunkt
+cant-repair-item: Dieses Item kann hier nicht repariert werden
+more-repair-items: Du benötigst weitere $1 für die Reparatur dieses Items
+hold-repair-item: Du musst das Item halten welches du reparieren möchtest
+player-not-found: Spieler $1 nicht gefunden
+repeat-kill: $1 wurde zu kurz hintereinander gekillt. Es wurden keine Punkte vergeben.
+kill-streak: $1 hat eine Killstreak von $2
+kill-joy: Die Killstreak von $2 in höhe von $3 wurde von $1 unterbrochen
+death: Durch deinen Tod hast du $1 Punkte verloren
+kill: "Kill: $1"
+low-health: "Wenig-Leben-Bonus: $1"
+killstreak-points: "Killstreakbonus: $1"
+killjoy-points: "Spaßverderberbonus: $1"
+total-points: "Punkte gesamt: $1"
+karma: "Karma: $1"
+karma-gained: "Karma: +$1, $2 Geld erhalten"
+karma-lost: "Karma: -$1, $2 Geld verloren"
+ann-limit: "[Info] Du hast $1 von $2 $3 Bauwerken"
+ann-achievement: "[Info] Schaue im Guide nach den Schritten für die nächste Belohnung"
+ann-town-join: "[Info] Du kannst in mehreren Städten Mitglied sein. Normalerweise lieben
+  Städte Menschen."
+ann-town-protection: "[Info] Städte beschützen viel Land und schalten neue Bauwerke im Shop frei."
+ann-town-housing: "[Info] In $1 sind $2 von $3 Wohnungen bewohnt. Baue mehr Wohnungen damit die
+  Stadt wachsen kann."
+ann-make-allies: "[Info] Erwäge einem Bündnis beizutreten. Unter Community > Städte > Stadt
+  kannst du Städten ein Bündnis vorschlagen."
+ann-town-low-power: "@{RED}[WARNUNG] $1 hat nur $2 von $3 Macht. Du solltest Bauwerke errichten
+  die Macht erzeugen."
+ann-bank: "[Info] $1 hat $$2 auf der Bank. Du kannst mit /cv withdraw $1 amount Geld
+  abheben."
+ann-vote: "[Info] Vergiss nicht über den nächsten Besitzer von $1 abzustimmen. Community
+  > Deine Stadt > $1 > Mitglieder > Spieler > Abstimmen"
+ann-karma: "@{YELLOW}[ACHTUNG] $1 ist Online. Wenn du es schaffst $1 zu töten erhälst du
+  eine Belohnung."
+ann-missing-input: "[Info] Deine Region $1 benötigt Items. Benutze den Civ-Guid damit um zu sehen
+  welches Arbeitsmaterial/Verbrauchsgegenstände benötigt werden."
+ann-bounty: "[Info] $1 hat ein Kopfgeld von $2 erhalten."
+tut-default-0: Öffne als erstes den Civ-Guide. Gehe zu Blaupausen und nimm dir deine Zuflucht
+  und platziere sie.
+tut-default-1: Sammle als nächstes 4 Brote, 32 Karotten, 32 Steaks oder 32 Kartoffeln. Lege
+  sie in die Kiste der Zuflucht.
+tut-default-2: Die Zuflucht bezahlt schon gut für Essen, aber der Kohlen-Shop bezahlt mehr.
+  Öffne den Civ-Guide, gehe zum Shop und kaufe den Kohlen-Shop.
+tut-default-3: Platziere 25 Wolle, 14 Zäune und 2 Kisten. Platziere danach den Kohlen-Shop.
+tut-default-4: Herzliche Glückwünsche! Sie haben das Standard-Lernprogramm abgeschlossen.
+  Wählen Sie jetzt Ihren Weg.
+tut-warrior-name: Krieger
+tut-warrior-0: Als erstes, kaufe einen Altar. Diesen brauchst du um eine komplett
+  Diamant-Ausstattung zu erhalten.
+tut-warrior-1: Lege jetzt ein Eisenschwert in die Altarkiste. Wenn du 300$ hast, bekommst du
+  deine Ausrüstung.
+tut-warrior-2: Hier hast du einen verzauberten goldenen Apfel. Jetzt hast du alles was du
+  brauchst. Dein nächstes Ziel sollte sein jemanden zu töten.
+tut-warrior-3: Glückwunsch! Du bist jetzt ein Krieger. Jetzt solltest du ein Feldherr werden.
+  Kaufe und Baue ein Überfalltor nahe einer Stadt.
+tut-warrior-4: Sobald dein Überfalltor bereit ist, stell dich drauf und teleportiere dich in
+  die Stadt.
+tut-warrior-5: Jetzt da du weist wie man Städte überfällt, solltest du Krieg mit einer Stadt
+  führen. Baue ein Kommandozelt in der nähe einer feindlichen Stadt.
+tut-warrior-6: Kaufe jetzt den Aussenposten und platziere ihn auf der Region vom
+  Kommandozelt. Danach kaufe und baue eine Belagerungsmaschine.
+tut-warrior-7: Die Belagerungsmaschine reduziert langsam die Macht der nahen Stadt, was die
+  Spieler dazu bringen sollte dich anzugreifen. Kaufe und baue jetzt eine Burg
+  als Upgrade für dein Kommandozelt.
+tut-warrior-8: Eine Befestigung hast du schon mal, kaufe und baue als nächstes den Burgfried.
+  Baue danach direkt ein Denkmal.
+tut-warrior-9: Glückwunsch! Du bist nun ausgebildet in der Kunst des Krieges. Das definiert
+  dich als Krieger.
+tut-builder-name: Baumeister
+tut-builder-0: Beginne mit dem Bau des Ratszimmers. Er ist das Herzstück einer Stadt, erzeugt
+  grundlegende Macht und gibt 2 Wohnungen.
+tut-builder-1: Baue jetzt das Ratszimmer.
+tut-builder-2: Nachdem du das Herz deiner Stadt gebaut hast, beanspruche dein Land. Kaufe
+  eine Siedlung.
+tut-builder-3: Glückwunsch! Erstelle deine Stadt mit /cv town Stadtname. Wenn du damit fertig
+  bist kaufe und baue eine Unterkunft.
+tut-builder-4: Eine Unterkunft erzeugt eine Wohnung. Eine Wohnung wird benötigt um Leute in
+  die Stadt einzuladen.Kaufe und platziere jetzt eine Dorfbewohner-Unterkunft in
+  der Unterkunft.
+tut-builder-5: Dorfbewohner zählen zur Population. Wenn sie sterben verliert die Stadt Macht.
+  Dorfbewohner respawnen auch. Kaufe und baue jetzt ein Kirche.
+tut-builder-6: Es ist sehr wichtig Gebäude zu bauen die Macht erzeugen. Macht beschützt die
+  Stadt. Kaufe und baue eine Pfeilfalle um deine Stadt zu beschützen.
+tut-builder-7: Baue als nächstes eine Pfeilfabrik um Pfeile für deine Verteidigung
+  herzustellen.
+tut-builder-8: Siedlungen sind auf 4 Unterkünfte limitiert. Um mehr Wohnungen zu bekommen
+  baue eine Unterkunft und kaufe eine Hütte um deine Unterkunft zur Hütte
+  auszubauen.
+tut-builder-9: Baue als nächstes ein Katapult. Katapulte sind präzise TNT-Kanonen mit denen
+  sich feindliche Belagerungsstrukturen zerstören lassen.
+tut-builder-10: Upgrade als nächstes deine Siedlung zu einem Weiler. Wenn du das gemacht hast,
+  kaufe und baue ein Eigenheim. Mit jedem weiteren Stadtlevel bekommst zu
+  Zugriff auf weitere eigenständige Häusertypen.
+tut-builder-11: Upgrade jetzt deinen Weiler zu einem Dorf. Sobald du das gemacht hast baue
+  Stallungen.
+tut-builder-12: Bevor du dein Dorf weiter upgraden kannst, brauchst du ein Rathaus. Verbessere
+  dein Ratszimmer zu einem Rathaus in dem du ein Rathaus kaufst und platzierst.
+tut-builder-13: Glückwunsch! Du bist ein toller Architekt. Das macht dich zu einem Baumeister.
+tut-merchant-name: Händler
+tut-merchant-0: Tritt einer Stadt bei. Kaufe eine Unterkunft von jemandem in der Stadt. Wenn
+  du das gemacht hast lege etwas Brot in die Kiste der Unterkunft.
+tut-merchant-1: Die Unterkunft kann zu einer Hütte aufgewertet werden damit sie mehr Geld
+  einbringt. Kaufe die Hütte im Shop.
+tut-merchant-2: Erweitere deine Unterkunft damit sie zu einer 9x9x9 Region wird, platziere
+  danach die Hüttenkiste darin.
+tut-merchant-3: Platziere 384 Kartoffeln in der Hüttenkiste. Innerhalb 24 Stunde wird deine
+  Hütte sie alle verkaufen und bekommt ein Upgrade zu Hütte1.
+tut-merchant-4: Kaufe und baue einen Apfelgarten. Baue eine Lorenstrecke vom Apfelgarten zu
+  deiner verbesserten Hütte. Platziere eine Antriebsschiene im Apfelgarten und
+  gib eine Güterlore in die Gartenkiste.
+tut-merchant-5: Zeit für ein weiteres Upgrade. Kaufe und baue ein Eigenheim auf deine Hütte1.
+tut-merchant-6: Ein Eigenheim gibt schon gut Geld, aber ein Haus bringt natürlich mehr. Kaufe
+  und verbessere dein Eigenheim zu einem Haus.
+tut-merchant-7: Lege Brot in deine Hauskiste um Haus zu Haus1 zu upgraden.
+tut-merchant-8: Lege Lachs in die Hauskiste um dein Haus1 auf Haus2 zu upgraden.
+tut-merchant-9: Baue jetzt einen Eisenshop um deine Einnahmen weiter zu verbessern.
+tut-merchant-10: Jeder Spieler kann maximal 3 Shops unterhalten. Der lukrativste Shop ist der
+  Jadeshop. Du solltest einen kaufen und bauen. Zerstöre einen deiner anderen
+  Shops wenn nötig.
+tut-merchant-11: Glückwunsch! Du kannst jetzt in anderen Städten Jade einkaufen und eine Menge
+  Geld verdienen. Das macht dich zum Händler.
+anarchy-name: Anarchie
+anarchy-desc: Jeder kann die Stadt und Regionen verwalten. Keine Steuern und keine Bündnisse
+  möglich.
+capitalism-name: Kapitalismus
+capitalism-desc: Demokratie + Stadtmitglieder können Stimmen kaufen.
+colonialism-name: Kolonialismus
+colonialism-desc: Kein Stadtbesitzer. Eine andere Stadt stellt das Stadtoberhaupt.
+communism-name: Kommunismus
+communism-desc: Jeder besitzt alles. Alle Einkünfte werden gleichmäßig verteilt.
+cooperative-name: Genossenschaft
+cooperative-desc: Demokratie + Die Einkünfte werden gleichmäßig auf Stadtmitglieder und Steuern
+  verteilt.
+cybersynacy-name: Technokratie
+cybersynacy-desc: Kein Mensch besitzt die Stadt. Bündnisse, Steuern und das anwerben neuer
+  Mitglieder übernimmt eine KI.
+democracy-name: Demokratie
+democracy-desc: Ein Stadtoberhaupt regelt Steuern, schließt Bündnisse und lädt neue Mitglieder
+  ein. Es finden regelmäßig Wahlen statt um ein neues Stadtoberhaupt zu
+  bestimmen.
+democratic_socialism-name: Demokratischer Sozialismus
+democratic_socialism-desc: Demokratie + Alle Versorgung, Farm, Fabrik und Abbaugebäude gehören der
+  Allgemeinheit.
+dictatorship-name: Diktatur
+dictatorship-desc: Diktatoren regeln in ihrer Stadt alles.
+feudalism-name: Feudalismus
+feudalism-desc: Diktatur + Stadtmitglieder können keine Regionen innerhalb der Stadt bauen.
+kraterocracy-name: Kraterogratie
+kraterocracy-desc: Diktatur + Wenn ein Stadtmitglied einen Besitzer tötet wechselt der Besitz.
+libertarian-name: Liberalismus
+libertarian-desc: Kein Stadtoberhaupt und Stadtbesitz
+libertarian_socialism-name: Liberaler Sozialismus
+libertarian_socialism-desc: Liberalismus + Sozialismus
+meritocracy-name: Meritokratie
+meritocracy-desc: Diktatur + Wer auch immer die meisten Gebäude und Killpunkte besitzt wird
+  Stadtoberhaupt.
+oligarchy-name: Oligarchie
+oligarchy-desc: Diktatur + Man kann sich ins Stadteigentum rein- und rauskaufen.
+socialism-name: Sozialismus
+socialism-desc: Diktatur + Alle Versorgung, Farm, Fabrik und Abbaugebäude gehören der
+  Allgemeinheit.
+tribalism-name: Tribalismus
+tribalism-desc: Diktatur + Mitglieder können nur verbündeten Städten beitreten.
+admin_graveyard-name: Admin-Friedhof
+admin_graveyard-desc: Respawnplatz für alle Spieler. Verhindert außerdem Schaden.
+shelter-name: Zuflucht
+shelter-desc: Ein sicherer Platz um deine Items aufzubewahren. Generiert außerdem alle 30
+  Minuten Geld aus Brot, Rindfleisch, Karotten oder Kartoffeln.
+arrow_trap-name: Pfeilfalle
+arrow_trap-desc: Level 1 | Reichweite 17 | Schaden 30 | Geschwindigkeit 38 | Streuung 3 |
+  Schießt Pfeile auf nahe Feinde und Monster.
+arrow_trap_fast-name: Pfeilfalle 2
+arrow_trap_fast-desc: Level 1 | Reichweite 19 | Schaden 34 | Geschwindigkeit 38 | Streuung 4 |
+  Schießt Pfeile auf nahe Feinde und Monster.
+arrow_trap_fastest-name: Pfeilfalle 3
+arrow_trap_fastest-desc: Level 1 | Reichweite 21 | Schaden 38 | Geschwindigkeit 42 | Streuung 3 |
+  Schießt Pfeile auf nahe Feinde und Monster.
+barracks-name: Kaserne
+barracks-desc: Fügt einer Stadt 6 Wohnungen hinzu. Generiert 288 Macht pro Tag. Kann nicht in
+  einer Stadt mit einem Gasthaus gebaut werden.
+bell_tower-name: Glockenturm
+bell_tower-desc: Alarmiert Stadtmitglieder wenn Eindringlinge die Stadt betreten.
+church-name: Kirche
+church-desc: Ein sicherer Platz an dem niemand Schaden nehmen kann. Produziert 192 Macht
+  pro Tag.
+graveyard-name: Friedhof
+graveyard-desc: Respawnplatz für Stadtmitglieder. Verhindert Schaden.
+hospital-name: Krankenhaus
+hospital-desc: Heilt alle Spieler innerhalb. Erzeugt 192 Macht pro Tag.
+idol-name: Götze
+idol-desc: Gibt Mitgliedern einen Schadensbonus und lässt sie weniger Schaden erleiden.
+  Erzeugt 192 Macht pro Tag.
+jail-name: Gefängnis
+jail-desc: Sperrt vorübergehend Eindringlinge ein die in der Stadt sterben. Erzeugt 192
+  Macht pro Tag.
+monument-name: Monument
+monument-desc: Gibt Mitgliedern einen Schadens- sowie Geschwindigkeitsbonus und lässt sie
+  weniger Schaden erleiden. Erzeugt 192 Macht pro Tag.
+statue-name: Statue
+statue-desc: Gibt Mitgliedern Schadensresistenz. Erzeugt 192 Macht pro Tag.
+arrow_factory-name: Pfeilfabrik
+arrow_factory-desc: Erzeugt automatisiert Pfeile
+bakery-name: Bäckerei
+bakery-desc: Erzeugt alle 2 Minuten Kekse und Kürbiskuchen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+dye_works-name: Farbwerke
+dye_works-desc: Erzeugt automatisiert verschiedene Farben.
+flint_works-name: Feuersteinfabrik
+flint_works-desc: Erzeugt Feuerstein. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+gold_infuser-name: Goldbad
+gold_infuser-desc: Erzeugt goldene Karotten und Äpfel
+ice_maker-name: Eismaschine
+ice_maker-desc: Erzeugt Eis
+iron_works-name: Eisenwerke
+iron_works-desc: Erzeugt Werkzeuge. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+lava_works-name: Lavawerke
+lava_works-desc: Erzeugt Lava. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+mill-name: Mühle
+mill-desc: Erzeugt alle 30 Sekunden 1 Brot aus 2 Weizen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+boot_grinder-name: Stiefelschleifer
+boot_grinder-desc: Erzeugt Leder aus Lederstiefeln. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+stone_works-name: Steinwerke
+stone_works-desc: Erzeugt SteinwerkzeugeGib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+weapons_factory-name: Waffenfabrik
+weapons_factory-desc: Erzeugt TNT aus 3 Schwarzpulver und 5 Sand.
+chicken_coop-name: Hühnerstall
+chicken_coop-desc: Automatische Hühnerfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+donkey_farm-name: Eselfarm
+donkey_farm-desc: Erzeugt Esel und Sättel.
+mule_farm-name: Maultierfarm
+mule_farm-desc: Erzeugt Maultiere und Sättel.
+pig_pen-name: Schweinestall
+pig_pen-desc: Automatische Schweinefarm.
+rabbit_hutch-name: Hasenstall
+rabbit_hutch-desc: Automatische Hasenfarm.
+ranch-name: Ranch
+ranch-desc: Automatische Kuhfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+sheep_farm-name: Schafspferch
+sheep_farm-desc: Automatische Schaffarm.
+stables-name: Stallungen
+stables-desc: Erzeugt Pferde und Sättel.
+acacia_lumberyard-name: Akazienbaumschule
+acacia_lumberyard-desc: Erzeugt Akazienholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+birch_lumberyard-name: Birkenbaumschule
+birch_lumberyard-desc: Erzeugt Birkenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+dark_oak_lumberyard-name: Schwarzeichenbaumschule
+dark_oak_lumberyard-desc: Erzeugt Schwarzeichenholz. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+jungle_lumberyard-name: Tropenbaumschule
+jungle_lumberyard-desc: Erzeugt Tropenbaumholz. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+oak_lumberyard-name: Eichenbaumschule
+oak_lumberyard-desc: Erzeugt Eichenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+spruce_lumberyard-name: Fichtenbaumschule
+spruce_lumberyard-desc: Erzeugt Fichtenholz. Gib eine Güterlore in die Hauptkiste und baue danach eine
+  Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+apple_orchard-name: Apfel-Obstgarten
+apple_orchard-desc: Automatische Apfelfarm. Gib eine Güterlore in die Hauptkiste und baue danach
+  eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+carrot_farm-name: Karottenfarm
+carrot_farm-desc: Erzeugt 16 Karotten alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+cocoa_farm-name: Kakaoplantage
+cocoa_farm-desc: Erzeugt 16 Kakao alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+ender_pearl_farm-name: Enderperlenfarm
+ender_pearl_farm-desc: Erzeugt Enderperlen.
+fishing_hut-name: Fischerhütte
+fishing_hut-desc: Erzeugt verschiedensten Fisch und Lederstiefel alle 5 Minuten.
+greenhouse-name: Gewächshaus
+greenhouse-desc: Erzeugt verschiedene Blumen.
+melon_farm-name: Melonenfarm
+melon_farm-desc: Erzeugt Melonen alle 10 Minuten. Gib eine Güterlore in die Hauptkiste und baue
+  danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
+  Antriebsschiene am Startpunkt.
+potato_farm-name: Kartoffelfarm
+potato_farm-desc: Erzeugt Kartoffeln und giftige Kartoffeln alle 5 Minuten.
+pumpkin_farm-name: Kürbisfarm
+pumpkin_farm-desc: Erzeugt Kürbisse alle 10 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+sugar_cane_farm-name: Zuckerrohrfarm
+sugar_cane_farm-desc: Erzeugt 16 Zuckerrohr alle 5 Minuten. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+wheat_farm-name: Weizenfarm
+wheat_farm-desc: Erzeugt Weizen und tote Büsche alle 5 Minuten. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+shack-name: Unterkunft
+shack-desc: Das grundlegendste Haus. Generiert 122 $ am Tag mit Kartoffeln.
+hovel-name: Hütte
+hovel-desc: Haus Level 2. Ein Upgrade für die Unterkunft. Generiert 144 $ am Tag mit
+  Kartoffeln. Nur als Upgrade für die Unterkunft verfügbar.
+hovel1-name: Hütte1
+hovel1-desc: Haus Level 2.1. Generiert 310 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling-name: Eigenheim
+dwelling-desc: Haus Level 3. Generiert 309 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling1-name: Eigenheim1
+dwelling1-desc: Haus Level 3.1. Generiert 309 $ am Tag mit Kartoffeln und Äpfeln.
+dwelling2-name: Eigenheim2
+dwelling2-desc: Haus Level 3.2. Generiert 598 $ am Tag mit Kartoffeln, Äpfeln und Fisch.
+house-name: Haus
+house-desc: Haus Level 4. Ein Upgrade für dein Eigenheim. Generiert 491 $ am Tag mit Brot
+  und Äpfeln. Nur als Upgrade für ein Eigenheim verfügbar.
+house1-name: Haus1
+house1-desc: Haus Level 4.1. Generiert 635 $ am Tag mit Brot, Äpfeln und Fisch.
+house2-name: Haus2
+house2-desc: Haus Level 4.2. Generiert 832 $ am Tag mit Brot, Fisch, Äpfeln und
+  Melonenstücken.
+chalet-name: Landhaus
+chalet-desc: Haus Level 5. Generiert 548 $ am Tag mit Brot und Karotten.
+chalet1-name: Landhaus1
+chalet1-desc: Haus Level 5.1. Generiert 692 $ am Tag mit Brot, Karotten und Fisch.
+chalet2-name: Landhaus2
+chalet2-desc: Haus Level 5.2. Generiert 890 $ am Tag mit Brot, Fisch, Karotten und
+  Melonenstücken.
+chalet3-name: Landhaus3
+chalet3-desc: Haus Level 5.3. Generiert 1022 $ am Tag mit Brot, Fisch, Karotten, Keksen und
+  Melonenstücken.
+mansion-name: Residenz
+mansion-desc: Haus Level 6. Ein upgrade für dein Landhaus. Generiert 648 $ am Tag mit Brot,
+  Karotten und Rindfleisch. Nur als Upgrade für ein Landhaus verfügbar.
+mansion1-name: Residenz1
+mansion1-desc: Haus Level 6.1. Generiert 894 $ am Tag mit Brot, Karotten, Rindfleisch und
+  Keksen.
+mansion2-name: Residenz2
+mansion2-desc: Haus Level 6.2. Generiert 1167 $ am Tag mit Brot, Karotten, Rindfleisch und
+  Keksen.
+mansion3-name: Residenz3
+mansion3-desc: Haus Level 6.3. Generiert 1407 $ am Tag mit Brot, Karotten, Rindfleisch,
+  Keksen und Milch.
+manor-name: Gutshof
+manor-desc: Haus Level 7. Ein Upgrade für deine Residenz. Generiert 1032 $ am Tag mit
+  goldenen Karotten, Keksen und Rindfleisch. Nur als Upgrade für eine Residenz
+  verfügbar.
+manor1-name: Landgut1
+manor1-desc: Haus Level 7.1. Generiert 1276 $ am Tag mit goldenen Karotten, Keksen,
+  Rindfleisch und Milch.
+manor2-name: Landgut2
+manor2-desc: Haus Level 7.2. Generiert 1679 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch, Keksen und Milch.
+manor3-name: Landgut3
+manor3-desc: Haus Level 7.3. Generiert 1751 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch, Keksen und Milch.
+villa-name: Villa
+villa-desc: Haus Level 8. Generiert 1100 $ am Tag mit goldenen Karotten, Kürbiskuchen und
+  Rindfleisch.
+villa1-name: Villa1
+villa1-desc: Haus Level 8.1. Generiert 1397 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Rindfleisch und Milch.
+villa2-name: Villa2
+villa2-desc: Haus Level 8.2. Generiert 1877 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  Milch, Rindfleisch und goldenen Äpfeln.
+estate-name: Landgut
+estate-desc: Haus Level 9. Ein Upgrade für die Villa. Generiert 1480 $ am Tag mit goldenen
+  Karotten, Kürbiskuchen und goldenen Äpfel. Nur als Upgrade für die Villa
+  verfügbar.
+estate1-name: Landgut1
+estate1-desc: Haus Level 9.1. Generiert 1917 $ am Tag mit goldenen Karotten, Kürbiskuchen,
+  goldenen Äpfeln und Keksen.
+estate2-name: Landgut2
+estate2-desc: Haus Level 9.2. Generiert 2397 $ am Tag mit goldenen Karotten, goldenen
+  Äpfeln, Kürbiskuchen, Kaninchenragout und Keksen.
+estate3-name: Landgut3
+estate3-desc: Haus Level 9.3. Generiert 2621 $ am Tag mit goldenen Karotten, goldenen
+  Äpfeln, Kürbiskuchen, Kaninchenragout und Keksen.
+inn-name: Gasthaus
+inn-desc: Bietet 12 Unterkünfte und einen Teleport. Nützlich, um Leute in die Stadt zu
+  holen, ohne erst eine Wohnung bauen zu müssen.
+jade_mine-name: Jademine
+jade_mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
+  nicht in einer Stadt gebaut werden welche einen Jadeshop hat. Jade ist eine
+  Handelsware.
+coal_mine-name: Kohlemine
+coal_mine-desc: Benutzt Spitzhacken um Kohle zu erzeugen. Gib eine Güterlore in die Hauptkiste
+  und baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+diamond_mine-name: Diamantenmine
+diamond_mine-desc: Benutzt Eisenspitzhacken um Diamanten zu erzeugen.
+gold_mine-name: Goldmine
+gold_mine-desc: Benutzt Eisenspitzhacken um Gold zu erzeugen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+gunpowder_mine-name: Schwarzpulvelminie
+gunpowder_mine-desc: Benutzt Eisenspitzhacken um Schwarzpulver zu erzeugen.
+iron_mine-name: Eisenmine
+iron_mine-desc: Benutzt Spitzhacken um Eisen zu erzeugen.
+lapis_mine-name: Lapismine
+lapis_mine-desc: Benutzt Eisenspitzhacken um Lapis zu erzeugen.
+marine_mine-name: Meeresmine
+marine_mine-desc: Benutzt Spitzhacken um Prismarine zu erzeugen.
+obsidian_mine-name: Obsidianmine
+obsidian_mine-desc: Generiert langsam Obsidian.
+quartz_mine-name: Quarzmine
+quartz_mine-desc: Benutzt Spitzhacken um Quarz zu erzeugen.
+redstone_mine-name: Redstonemine
+redstone_mine-desc: Benutzt Spitzhacken um Redstone zu erzeugen. Gib eine Güterlore in die
+  Hauptkiste und baue danach eine Lorenstrecke zu einer Zielregion. Platziere
+  danach eine geneigte Antriebsschiene am Startpunkt.
+npc_chalet-name: Dorfbewohner-Landhaus
+npc_chalet-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_dwelling-name: Dorfbewohner-Eigenheim
+npc_dwelling-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_house-name: Dorfbewohner-Haus
+npc_house-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_hovel-name: Dorfbewohner-Hütte
+npc_hovel-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_mansion-name: Dorfbewohner-Residenz
+npc_mansion-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+npc_shack-name: Dorfbewohner-Unterkunft
+npc_shack-desc: Eine Wohneinheit für einen Dorfbewohner. Zählt zur Population einer Stadt.
+raid_porter-name: Überfall-Teleporter
+raid_porter-desc: Ein nützlicher Weg in eine feindliche Stadt. Braucht 4 Minuten Aufladezeit.
+raid_porter_active-name: Aktiver Überfall-Teleporter
+raid_porter_active-desc: Platziere ein Schild über dem zentralen Block mit dem Namen der Zielstadt.
+  Dann stelle dich auf den zentralen Block.
+siege_machine-name: Belagerungsmaschine
+siege_machine-desc: Das Fundament eines jeden Krieges. Entzieht der nahen Stadt langsam Macht.
+  Braucht 4 Minuten Aufladezeit.
+siege_machine_active-name: Aktive Belagerungsmaschine
+siege_machine_active-desc: Entzieht 1 Macht alle 3 Minuten. Verbessert sich nach 3 Schüssen.
+siege_machine1-name: Belagerungsmaschine1
+siege_machine1-desc: Entzieht 1 Macht alle 2.5 Minuten. Verbessert sich nach 3 Schüssen.
+siege_machine2-name: Belagerungsmaschine2
+siege_machine2-desc: Entzieht 1 Macht alle 2 Minuten. Verbessert sich nach 4 Schüssen.
+siege_machine3-name: Belagerungsmaschine3
+siege_machine3-desc: Entzieht 1 Macht alle 1.5 Minuten.
+altar-name: Altar
+altar-desc: Erzeugt ein volles Set Diamantrüstung, 1 Schwert, 1 Bogen und Pfeile für 300 $
+  pro Stunde.
+blindness_trap-name: Blendfalle
+blindness_trap-desc: Fügt einem Ziel Blindheit, Langsamkeit und Schwäche hinzu. Gilt nur für
+  Nicht-Mitglieder. Zerstört sich nach 30 Minuten.
+castle-name: Burg
+castle-desc: Der zentrale Punkt des Burgfried. Wir benötigt um den Außenposten zu einem
+  Burgfried aufzurüsten. Erzeugt 6 Macht alle 15 Minuten.
+catapult-name: Katapult
+catapult-desc: Wirft TNT mit hoher Präzision auf weite Entfernung.
+command_tent-name: Kommandozelt
+command_tent-desc: Der zentrale Befehlsstand des Außenpostens. Erlaubt die Belagerung naher
+  Städte. Erzeugt 1 Macht alle 15 Minuten.
+hunting_lodge-name: Jagdhütte
+hunting_lodge-desc: Schreibe den Namen deines Ziel auf ein Schild über den Obsidianblock. Du
+  kannst jetzt den Obsidian Rechtsklicken um dich in die Nähe deines Ziels zu
+  teleportieren.
+memorial-name: Denkmal
+memorial-desc: Ein Platz an dem Stadtmitglieder respawnen können. Verhindert Schaden.
+mobile_hospital-name: Mobiles Krankenhaus
+mobile_hospital-desc: Heilt alle Spieler innerhalb des Mobilen Krankenhauses. Zerstört sich nach 30
+  Minuten.
+temp_arrow_trap-name: Temporäre Pfeilfalle
+temp_arrow_trap-desc: Schießt Pfeile auf nahe Nicht-Mitglieder. Zerstört sich nach 15 Minuten.
+clay_quarry-name: Lehmgrube
+clay_quarry-desc: Generiert Lehm
+cobble_quarry-name: Bruchsteingrube
+cobble_quarry-desc: Erzeugt Bruchstein alle 30 Sekunden.
+cobble_grinder-name: Bruchsteingenerator
+cobble_grinder-desc: Erzeugt Bruchstein alle 30 Sekunden. Gib eine Güterlore in die Hauptkiste und
+  baue danach eine Lorenstrecke zu einer Zielregion. Platziere danach eine
+  geneigte Antriebsschiene am Startpunkt.
+dirt_quarry-name: Erdgrube
+dirt_quarry-desc: Generiert Erde
+red_sand_pit-name: Rote Sandgrube
+red_sand_pit-desc: Erzeugt roten Sand alle 30 Sekunden.
+sand_pit-name: Sandgrube
+sand_pit-desc: Erzeugt Sand alle 30 Sekunden.
+sifter-name: Siebstation
+sifter-desc: Siebt Erde um nützliche Items zu finden.
+jade_shop-name: Jadeshop
+jade_shop-desc: Verkauft 16 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
+  Jademine gebaut werden. Jade ist ein Handelsgut.
+coal_shop-name: Kohlenshop
+coal_shop-desc: Verkauft 144 Kohle für 432 $ am Tag
+diamond_shop-name: Diamantenshop
+diamond_shop-desc: Verkauft 24 Diamanten für 1536 $ am Tag
+flower_shop-name: Blumengeschäft
+flower_shop-desc: Verkauft Blumen für 288 $ am Tag
+gold_shop-name: Goldshop
+gold_shop-desc: Verkauft 288 Gold für 672 $ am Tag
+iron_shop-name: Eisenshop
+iron_shop-desc: Verkauft 288 Eisen für 576 $ am Tag
+leather_shop-name: Ledershop
+leather_shop-desc: Verkauft Leder für 360 $ am Tag
+city-name: Stadt
+city-desc: Der 5te Level einer Stadt. Benötigt 30 Population.
+hamlet-name: Weiler
+hamlet-desc: Das 2te Level einer Stadt. Benötigt 5 Population.
+keep-name: Burgfried
+keep-desc: Das 2te Level der Belagerungsbasis
+metropolis-name: Metropole
+metropolis-desc: Das 6te Level einer Stadt. Benötigt 50 Population.
+mining_colony-name: Bergbaukolonie
+mining_colony-desc: "Verhindert das Spawnen von Monstern und gibt einen "
+outpost-name: Außenposten
+outpost-desc: Das erste Level einer Belagerungsbasis
+settlement-name: Siedlung
+settlement-desc: Das erste Level einer Stadt.
+town-name: Stadt
+town-desc: Das 4te Level einer Stadt. Benötigt 20 Population.
+village-name: Dorf
+village-desc: Das 3te Level einer Stadt. Benötigt 10 Population.
+bank-name: Bank
+bank-desc: Produziert 192 Macht am Tag. Wechselt 64 Smaragde zu 640 $ und umgekehrt.
+bath_house-name: Badehaus
+bath_house-desc: Produziert 192 Macht am Tag
+capitol-name: Kapitol
+capitol-desc: Die zentrale Struktur einer Stadt. Produziert 768 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+city_hall-name: Stadtverwaltung
+city_hall-desc: Die zentrale Struktur einer Stadt. Produziert 576 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+council_room-name: Ratszimmer
+council_room-desc: Die zentrale Struktur einer Stadt. Produziert 192 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+embassy-name: Botschaft
+embassy-desc: Produziert 192 Macht am Tag. Ist ausserdem ein Heimatpunkt.
+library-name: Bibliothek
+library-desc: Produziert 192 Macht am Tag. Generiert 2 Erfahrungsfläschchen alle 15 Minuten.
+purifier-name: Reiniger
+purifier-desc: Reinigt alle 15 Minuten verrottetes Fleisch zu Leder und giftige Kartoffeln zu
+  Kartoffeln.
+smithy-name: Schmiede
+smithy-desc: Rechtsklick auf den Eisenblock um Items zu reparieren. Erzeugt 192 Macht am Tag
+town_hall-name: Rathaus
+town_hall-desc: Die zentrale Struktur einer Stadt. Produziert 384 Macht am Tag. Ist ausserdem
+  der Heimatpunkt.
+warehouse-name: Warenhaus
+warehouse-desc: Verteilt Items aus seinen Kisten zu Regionen die sie benötigen.
+item-jade-name: Jade
+item-jade-desc: Tausche 16 Jade an einem Jadeshop zu 1000 $
+farms-name: Farmen
+farms-desc: Hier gibt es Gebäude für die Produktion von Essen, Tieren und sonstigen
+  natürlichen Ressourcen.
+towns-name: Städte
+towns-desc: Städte, Upgrades für Städte, Kriegscamps und Bergbaustädte
+shops-name: Shops
+shops-desc: Shops um verschiedenes zu verkaufen. Maximal 3 Stück pro Spieler.
+utilities-name: Nützliches
+utilities-desc: Alle öffentlichen Gebäude und Strukturen die Macht zum Schutze der Stadt
+  erzeugen.
+housing-name: Häuser
+housing-desc: Gebäude die der Stadt Population bringen. Die meisten Häuser verkaufen Essen.
+defense-name: Verteidigungsgebäude
+defense-desc: Gebäude, die zur Verteidigung einer Stadt beitragen. Einige
+  Verteidigungsgebäude erzeugen auch Energie.
+quarries-name: Gruben
+quarries-desc: Gebäude die erdiges Material fördern.
+factories-name: Fabriken
+factories-desc: Gebäude die Items effizient herstellen. Die meisten nutzen Loren und Schienen
+  um die Ware in andere Regionen zu liefern.
+offense-name: Kriegsgebäude
+offense-desc: Gebäude für den Krieg. Unter anderem Belagerungsmaschinen um feindlichen
+  Städten Macht zu nehmen.
+mines-name: Minen
+mines-desc: Gebäude die Erze und andere wertvolle Materialien abbauen.
+woodworks-name: Holzfarmen
+woodworks-desc: Verschiedene Baumschulen.
+animals-name: Tierfarmen
+animals-desc: Farmen die Tiere spawnen.
+npchousing-name: Dorfbewohner-Häuser
+npchousing-desc: Gebäude die Population in Form von Dorfbewohnern bringe. Diese Gebäude
+  erzeugen kein Einkommen und müssen als Upgrade für normale Häuser gekauft
+  werden.
+trading-name: Handel
+trading-desc: Gebäude die den Handel zwischen Städten fördern.
+fireworks_factory-name: Feuerwerksfabrik
+fireworks_factory-desc: Erzeugt Feuerwerksterne, ohne Schießpulver zu konsumieren
+admin-name: Admin
+admin-desc: Nur für Admin
+house-evolve-name: Haus entwickeln
+house-evolve-desc: Versteckte weiterentwickelte Formen von Wohngebäuden
+trade-mines-name: Handelsminen
+trade-mines-desc: Minen, die Gegenstände produzieren, die in anderen Städten verkauft werden
+  sollen.
+evolve-name: Entwickeln
+evolve-desc: Versteckte entwickelte Formen verschiedener Gebäude

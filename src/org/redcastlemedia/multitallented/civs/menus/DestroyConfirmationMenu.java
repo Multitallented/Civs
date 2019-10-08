@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -19,7 +18,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +33,9 @@ public class DestroyConfirmationMenu extends Menu {
     @Override
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getCurrentItem() == null) {
+            return;
+        }
 
         CivilianManager civilianManager = CivilianManager.getInstance();
 
@@ -59,11 +61,18 @@ public class DestroyConfirmationMenu extends Menu {
         if (event.getCurrentItem().getType().equals(Material.EMERALD)) {
             clearHistory(civilian.getUuid());
             if (region != null) {
-                if (doesntHavePermission(civilian, region.getPeople(), player)) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                boolean canOverride = !regionType.getEffects().containsKey("cant_override");
+                Town overrideTown = null;
+                if (canOverride) {
+                    overrideTown = TownManager.getInstance().getTownAt(region.getLocation());
+                }
+                boolean hasOverride = overrideTown != null && overrideTown.getRawPeople().containsKey(player.getUniqueId()) &&
+                        overrideTown.getRawPeople().get(player.getUniqueId()).contains("owner");
+                if (!hasOverride && doesntHavePermission(civilian, region.getPeople(), player)) {
                     return;
                 }
                 if (Civs.econ != null) {
-                    RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                     Civs.econ.depositPlayer(player, regionType.getPrice() / 2);
                 }
                 RegionManager.getInstance().removeRegion(region, true, true);

@@ -17,12 +17,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -61,8 +56,12 @@ public class CommonScheduler implements Runnable {
                     Player player = (Player) players.toArray()[j];
                     playerInRegion(player);
                     playerInTown(player);
-                    incrementMana(player);
-                    sendAnnouncement(player);
+                    if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                        incrementMana(player);
+                    }
+                    if (ConfigManager.getInstance().isUseAnnouncements()) {
+                        sendAnnouncement(player);
+                    }
                 } catch (Exception e) {
 
                 }
@@ -70,8 +69,6 @@ public class CommonScheduler implements Runnable {
             }
             if (i == MAX_TPS - 1) {
                 i = 0;
-                RegionTickTask regionTickTask = new RegionTickTask();
-                regionTickTask.run();
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
@@ -83,10 +80,8 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
+
     private void sendAnnouncement(Player player) {
-        if (!ConfigManager.getInstance().isUseAnnouncements()) {
-            return;
-        }
         long announcementCooldown = ConfigManager.getInstance().getAnnouncementPeriod() * 1000;
         if (!lastAnnouncment.containsKey(player.getUniqueId())) {
             lastAnnouncment.put(player.getUniqueId(), System.currentTimeMillis() + announcementCooldown);
@@ -169,6 +164,13 @@ public class CommonScheduler implements Runnable {
         } else if (town != null) {
             lastTown.put(player.getUniqueId(), town);
         }
+
+        if (town != null && town.getRawPeople().containsKey(player.getUniqueId()) &&
+                town.getRawPeople().get(player.getUniqueId()).contains("owner") &&
+                town.getLastActive() + 10000 < System.currentTimeMillis()) {
+            town.setLastActive(System.currentTimeMillis());
+            TownManager.getInstance().saveTown(town);
+        }
     }
 
     private void enterTown(Player player, Civilian civilian, Town town, TownType townType) {
@@ -178,10 +180,11 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getName().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "enter-town").replace("$1", town.getName())
+                "town-enter").replace("$1", town.getName())
                 .replace("$2", govName));
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
@@ -191,10 +194,11 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = government.getNames().get(civilian.getLocale());
+            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getName().toLowerCase() + "-name");
         }
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "exit-town").replace("$1", town.getName())
+                "town-exit").replace("$1", town.getName())
                 .replace("$2", govName));
     }
 

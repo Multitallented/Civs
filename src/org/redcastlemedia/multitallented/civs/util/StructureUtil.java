@@ -1,8 +1,15 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import org.bukkit.*;
+import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -26,6 +33,9 @@ public final class StructureUtil {
         HashSet<UUID> removeThese = new HashSet<>();
         for (UUID uuid : boundingBoxes.keySet()) {
             long createdTime = boundingBoxes.get(uuid).getCreationTime();
+            if (createdTime == -1) {
+                continue;
+            }
             if (createdTime + DURATION < System.currentTimeMillis()) {
                 removeThese.add(uuid);
             }
@@ -35,6 +45,9 @@ public final class StructureUtil {
         }
     }
     public static void showGuideBoundingBox(Player player, Location location, Region region) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         int[] radii = new int[6];
         radii[0] = region.getRadiusXP();
         radii[1] = region.getRadiusZP();
@@ -42,10 +55,16 @@ public final class StructureUtil {
         radii[3] = region.getRadiusZN();
         radii[4] = region.getRadiusYP();
         radii[5] = region.getRadiusYN();
-        showGuideBoundingBox(player, location, radii);
+        showGuideBoundingBox(player, location, radii, false);
     }
 
-    public static void showGuideBoundingBox(Player player, Location location, RegionType regionType) {
+    public static void showGuideBoundingBox(Player player,
+                                            Location location,
+                                            RegionType regionType,
+                                            boolean isInfinite) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         int[] radii = new int[6];
         radii[0] = regionType.getBuildRadiusX();
         radii[1] = regionType.getBuildRadiusZ();
@@ -53,16 +72,20 @@ public final class StructureUtil {
         radii[3] = regionType.getBuildRadiusZ();
         radii[4] = regionType.getBuildRadiusY();
         radii[5] = regionType.getBuildRadiusY();
-        showGuideBoundingBox(player, location, radii);
+        showGuideBoundingBox(player, location, radii, isInfinite);
     }
 
-    public static void showGuideBoundingBox(Player player, Location location, int[] radii) {
+    public static void showGuideBoundingBox(Player player, Location location, int[] radii, boolean isInfinite) {
+        if (!ConfigManager.getInstance().isUseBoundingBox()) {
+            return;
+        }
         if (location.getWorld() == null || Civs.getInstance() == null) {
             return;
         }
         if (boundingBoxes.containsKey(player.getUniqueId())) {
             BoundingBox boundingBox = boundingBoxes.get(player.getUniqueId());
-            if (boundingBox.getCreationTime() + COOLDOWN > System.currentTimeMillis()) {
+            if (boundingBox.getCreationTime() > -1 &&
+                    boundingBox.getCreationTime() + COOLDOWN > System.currentTimeMillis()) {
                 return;
             } else {
                 removeBoundingBox(player.getUniqueId());
@@ -77,6 +100,9 @@ public final class StructureUtil {
         double minZ = location.getZ() - radii[3] - 1;
 
         BoundingBox boundingBox = new BoundingBox();
+        if (isInfinite) {
+            boundingBox.setCreationTime(-1);
+        }
 
         boolean showParticles = ConfigManager.getInstance().isUseParticleBoundingBoxes();
         for (double x = minX; x <= maxX; x++) {
@@ -86,10 +112,10 @@ public final class StructureUtil {
                 spawnParticle(location.getWorld(), x, minY, maxZ, Color.RED);
                 spawnParticle(location.getWorld(), x, maxY, minZ, Color.RED);
             } else {
-                setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-                setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-                setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
-                setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS);
+                setGlass(location.getWorld(), x, minY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS, player);
+                setGlass(location.getWorld(), x, maxY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS, player);
+                setGlass(location.getWorld(), x, minY, maxZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS, player);
+                setGlass(location.getWorld(), x, maxY, minZ, boundingBox.getLocations(), Material.RED_STAINED_GLASS, player);
             }
         }
         for (double y = minY; y <= maxY; y++) {
@@ -99,10 +125,10 @@ public final class StructureUtil {
                 spawnParticle(location.getWorld(), minX, y, maxZ, Color.GREEN);
                 spawnParticle(location.getWorld(), maxX, y, minZ, Color.GREEN);
             } else {
-                setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-                setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-                setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
-                setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS);
+                setGlass(location.getWorld(), minX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS, player);
+                setGlass(location.getWorld(), maxX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS, player);
+                setGlass(location.getWorld(), minX, y, maxZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS, player);
+                setGlass(location.getWorld(), maxX, y, minZ, boundingBox.getLocations(), Material.LIME_STAINED_GLASS, player);
             }
         }
         for (double z = minZ; z <= maxZ; z++) {
@@ -112,10 +138,10 @@ public final class StructureUtil {
                 spawnParticle(location.getWorld(), minX, maxY, z, Color.BLUE);
                 spawnParticle(location.getWorld(), maxX, minY, z, Color.BLUE);
             } else {
-                setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-                setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-                setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
-                setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS);
+                setGlass(location.getWorld(), minX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS, player);
+                setGlass(location.getWorld(), maxX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS, player);
+                setGlass(location.getWorld(), minX, maxY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS, player);
+                setGlass(location.getWorld(), maxX, minY, z, boundingBox.getLocations(), Material.BLUE_STAINED_GLASS, player);
             }
         }
         boundingBoxes.put(player.getUniqueId(), boundingBox);
@@ -128,6 +154,10 @@ public final class StructureUtil {
     }
 
     public static void removeBoundingBox(UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null || !player.isOnline()) {
+            return;
+        }
         BoundingBox boundingBox = boundingBoxes.get(uuid);
         if (boundingBox == null) {
             return;
@@ -137,13 +167,10 @@ public final class StructureUtil {
             return;
         }
         for (Location location : locations) {
-            Block block = location.getBlock();
-            if (block.getType() != Material.RED_STAINED_GLASS &&
-                    block.getType() != Material.LIME_STAINED_GLASS &&
-                    block.getType() != Material.BLUE_STAINED_GLASS) {
+            if (!Util.isLocationWithinSightOfPlayer(location)) {
                 continue;
             }
-            block.setType(Material.AIR);
+            player.sendBlockChange(location, Material.AIR.createBlockData());
         }
         boundingBoxes.remove(uuid);
     }
@@ -157,7 +184,7 @@ public final class StructureUtil {
                 new Particle.DustOptions(color, 1), true);
     }
 
-    private static void setGlass(World world, double x, double y, double z, HashSet<Location> boundingBox, Material mat) {
+    private static void setGlass(World world, double x, double y, double z, HashSet<Location> boundingBox, Material mat, Player player) {
         if (y < 1 || y >= world.getMaxHeight()) {
             return;
         }
@@ -169,11 +196,13 @@ public final class StructureUtil {
                 block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
             return;
         }
+        BlockData blockData = mat.createBlockData();
         boundingBox.add(new Location(world, x, y, z));
-        block.setType(mat);
+        player.sendBlockChange(location, blockData);
     }
 
     private static class BoundingBox {
+        @Setter
         private long creationTime;
         private HashSet<Location> locations;
         public BoundingBox() {

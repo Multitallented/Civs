@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
@@ -43,6 +42,8 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
+        new GovernmentManager();
+        new ItemManager();
     }
 
     @Test
@@ -54,8 +55,8 @@ public class TownTests {
 
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
-        Government government = new Government(GovernmentType.CAPITALISM,
-                null, null, null, null);
+        Government government = new Government("CAPITALISM", GovernmentType.CAPITALISM,
+                null, null, new ArrayList<>());
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 
@@ -108,6 +109,19 @@ public class TownTests {
     }
 
     @Test
+    public void newTownShouldStartWithHousing() {
+        TownTests.loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("tribe");
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+
+        int housing = TownManager.getInstance().getHousingCount(location, townType);
+        assertEquals(2, housing);
+    }
+
+    @Test
     public void townShouldDestroyWhenCriticalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
@@ -115,6 +129,40 @@ public class TownTests {
         HashMap<String, String> effects = new HashMap<>();
         Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
         Region region = new Region("cobble", people,
+                regionLocation,
+                RegionsTests.getRadii(),
+                effects,0);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
+
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        loadTown("Sanmak-kol", "tribe", townLocation);
+        if (townManager.getTowns().isEmpty()) {
+            fail("No town found");
+        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Block block = mock(Block.class);
+        when(block.getLocation()).thenReturn(regionLocation);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        if (!blockBreakEvent.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(blockBreakEvent);
+        }
+//        regionManager.removeRegion(region, false);
+        assertTrue(townManager.getTowns().isEmpty());
+    }
+
+    @Test
+    public void townShouldDestroyWhenCriticalRegionDestroyed2() {
+        RegionsTests.loadRegionTypeCobbleGroup();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
+        Region region = new Region("town_hall", people,
                 regionLocation,
                 RegionsTests.getRadii(),
                 effects,0);
@@ -265,6 +313,79 @@ public class TownTests {
         assertFalse(blockBreakEvent.isCancelled());
     }
 
+    @Test
+    public void townTransitionTest() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(2);
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
+                GovernmentType.ANARCHY.name());
+        transitions.add(govTransition);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        Government anarchyGov = new Government("ANARCHY", GovernmentType.ANARCHY,
+                new HashSet<>(), null, transitions);
+        GovernmentManager.getInstance().addGovernment(anarchyGov);
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.ANARCHY.name(), town.getGovernmentType());
+    }
+
+    @Test
+    public void townShouldNotTransition() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(160);
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
+                GovernmentType.ANARCHY.name());
+        transitions.add(govTransition);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+                transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
+    }
+
+    @Test
+    public void townShouldNotInactiveTransition() {
+        TownTests.loadTownTypeHamlet();
+        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        town.setPower(160);
+        town.setLastActive(System.currentTimeMillis());
+        ArrayList<GovTransition> transitions = new ArrayList<>();
+        GovTransition govTransition = new GovTransition(-1, -1, -1, 50000,
+                GovernmentType.ANARCHY.name());
+        transitions.add(govTransition);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+                transitions);
+        GovernmentManager.getInstance().addGovernment(government);
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
+    }
+
+    @Test
+    public void townMaxPowerShouldBeAdjustedOnCreation() {
+        loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        HashSet<GovTypeBuff> buffs = new HashSet<>();
+        buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
+        GovernmentManager.getInstance().addGovernment(government);
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[2];
+        args[0] = "town";
+        args[1] = "test";
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException exception) {
+
+        }
+        assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());
+    }
+
     public static Town loadTown(String name, String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(TestUtil.player.getUniqueId(), "owner");
@@ -299,6 +420,7 @@ public class TownTests {
         config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
+        config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "tribe");
     }
     public static void loadTownTypeTribe2() {
@@ -315,5 +437,8 @@ public class TownTests {
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
         ItemManager.getInstance().loadTownType(config, "tribe");
+    }
+    public static void addGovernmentType(Government government) {
+        GovernmentManager.getInstance().addGovernment(government);
     }
 }

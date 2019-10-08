@@ -1,0 +1,33 @@
+type: region
+icon: CHEST
+shop-icon: TNT
+name: Siege_Machine
+price: 500
+groups:
+- offense
+- siegemachinegroup
+- townpowerreduce
+level: 1
+
+build-reqs:
+- TNT*5
+- SIGN*1,WALL_SIGN*1
+- OBSIDIAN*9
+- g:fence*12
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- charging_drain_power
+- evolve:siege_machine_active.2
+
+towns:
+- outpost
+- keep
+
+period: 240 # 4 minutes
+upkeep:
+  0:
+    exp: 1
+

@@ -6,22 +6,23 @@
 
 icon: "COBBLESTONE"
 enabled: true
-name:
-  en: "Feudalism"
-  de: "Feudalismus"
-  ru: "феодализм"
-  pt_br: "Feudalismo"
-  fr: "Féodalisme"
-  es: "Feudalismo"
-  hu: "Feudalizmus"
-description:
-  en: "Dictatorship + Town members can't build regions in town."
-  es: "Dictadura + Los miembros de la ciudad no pueden construir regiones en la ciudad."
-  fr: "Dictature + Les membres de la ville ne peuvent pas construire de régions en ville."
-  pt_br: "Ditadura + Os membros da cidade não podem construir regiões na cidade."
-  ru: "Диктатура + Городские жители не могут строить регионы в городе."
-  de: "Mitglieder von Diktatur + Stadt können keine Regionen in der Stadt errichten."
-  hu: "Diktatúra + Város lakói nem építhetnek a város területein."
+transition:
+  0:
+    money-gap: 66
+    to: OLIGARCHY
+  1:
+    revolt: 66
+    power: 30
+    to: KRATEROCRACY
+  2:
+    revolt: 75
+    to: LIBERTARIAN
+  3:
+    inactive: 1814400 #3 weeks
+    to: ANARCHY
+  4:
+    power: 20
+    to: TRIBALISM
 buffs:
   power:
     percent: 10
