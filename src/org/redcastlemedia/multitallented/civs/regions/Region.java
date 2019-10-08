@@ -756,6 +756,10 @@ public class Region {
         boolean hasItemUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            if (!hasUpkeepPerm(regionUpkeep)) {
+                continue;
+            }
+
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
 
@@ -858,6 +862,10 @@ public class Region {
             return;
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(i);
+        if (!hasUpkeepPerm(regionUpkeep)) {
+            return;
+        }
+
         boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                 !regionUpkeep.getInputs().isEmpty();
 
@@ -923,6 +931,23 @@ public class Region {
         }
 
         Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
+    }
+
+    private boolean hasUpkeepPerm(RegionUpkeep regionUpkeep) {
+        if (regionUpkeep.getPerm().isEmpty()) {
+            return true;
+        }
+        boolean allHavePerm = true;
+        for (UUID uuid : getOwners()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            World world = getLocation().getWorld();
+            if (!offlinePlayer.isOp() && (Civs.perm == null ||
+                    !Civs.perm.playerHas(world.getName(), offlinePlayer, regionUpkeep.getPerm()))) {
+                allHavePerm = false;
+                break;
+            }
+        }
+        return allHavePerm;
     }
 
     private boolean runRegionUpkeepPayout(RegionUpkeep regionUpkeep) {
