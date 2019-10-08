@@ -21,7 +21,7 @@ transition:
   2:
     revolt: 51
     power: 30
-    to: ANARCHY
+    to: KRATEROCRACY
   3:
     revolt: 51
     to: DEMOCRACY

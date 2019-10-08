@@ -6,7 +6,7 @@
 #  signs they place with their name on them and the number of fireworks they use
 
 
-icon: "BRICKS"
+icon: "DEAD_BUSH"
 enabled: true
 transition:
   0:
@@ -16,9 +16,6 @@ transition:
   2:
     revolt: 51
     to: LIBERTARIAN
-  4:
-    power: 20
-    to: ANARCHY
 buffs:
   cost:
     percent: 25
