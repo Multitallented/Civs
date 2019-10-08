@@ -788,8 +788,8 @@ public class TownManager {
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
 
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "town-created").replace("$1", newTown.getName()));
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                "town-created").replace("$1", newTown.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
             newTown.createRing();
         }
