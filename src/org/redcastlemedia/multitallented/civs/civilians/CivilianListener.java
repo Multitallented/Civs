@@ -299,8 +299,6 @@ public class CivilianListener implements Listener {
                 TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
             }
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
         CVItem cvItem = CVItem.createFromItemStack(is);
