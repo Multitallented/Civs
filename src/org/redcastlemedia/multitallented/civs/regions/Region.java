@@ -754,6 +754,7 @@ public class Region {
         boolean hadUpkeep = false;
         Inventory chestInventory = null;
         boolean hasItemUpkeep = false;
+        boolean chunkLoaded = Util.isChunkLoadedAt(getLocation());
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if (!hasUpkeepPerm(regionUpkeep)) {
@@ -769,7 +770,7 @@ public class Region {
 
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
-                if (!Util.isChunkLoadedAt(getLocation())) {
+                if (!chunkLoaded) {
                     UnloadedInventoryHandler.getInstance().addUpkeep(getLocation(), i);
                     continue;
                 }
@@ -847,9 +848,9 @@ public class Region {
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
         }
-        if (!hasItemUpkeep) {
+        if (!hasItemUpkeep && chunkLoaded) {
             RegionManager.getInstance().addCheckedRegion(this);
-        } else {
+        } else if (hasItemUpkeep) {
             RegionManager.getInstance().removeCheckedRegion(this);
         }
         return hadUpkeep;
