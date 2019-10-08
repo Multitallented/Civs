@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -74,7 +76,8 @@ public class SetRecruiterCommand implements CivCommand {
 //            return true;
 //        }
 
-        boolean hasPermission = civilian == null || town.getGovernmentType() == GovernmentType.ANARCHY ||
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
                 (town.getRawPeople().containsKey(civilian.getUuid()) &&
                         town.getRawPeople().get(civilian.getUuid()).contains("owner"));
 

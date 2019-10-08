@@ -30,12 +30,12 @@ public class SelectGovTypeMenu extends Menu {
         inventory.setItem(8, getBackButton(civilian));
 
         int i=9;
-        for (GovernmentType governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
-            if (governmentType == GovernmentType.COLONIALISM &&
+        for (String governmentType : GovernmentManager.getInstance().getGovermentTypes()) {
+            Government government = GovernmentManager.getInstance().getGovernment(governmentType);
+            if (government.getGovernmentType() == GovernmentType.COLONIALISM &&
                     TownManager.getInstance().getOwnedTowns(civilian).size() < 2) {
                 continue;
             }
-            Government government = GovernmentManager.getInstance().getGovernment(governmentType);
             inventory.setItem(i, government.getIcon(civilian.getLocale()).createItemStack());
             i++;
         }
@@ -67,13 +67,13 @@ public class SelectGovTypeMenu extends Menu {
         }
 
         String govName = event.getCurrentItem().getItemMeta().getLore().get(0).replace("Gov Type: ", "");
-        GovernmentType governmentType = GovernmentType.valueOf(govName);
 
 
-        GovernmentManager.getInstance().transitionGovernment(town, governmentType, false);
+        GovernmentManager.getInstance().transitionGovernment(town, govName, false);
         Town owningTown = null;
         for (Town cTown : TownManager.getInstance().getOwnedTowns(civilian)) {
-            if (cTown.equals(town) || cTown.getGovernmentType() == GovernmentType.COLONIALISM) {
+            Government cGovernment = GovernmentManager.getInstance().getGovernment(cTown.getGovernmentType());
+            if (cTown.equals(town) || cGovernment.getGovernmentType() == GovernmentType.COLONIALISM) {
                 continue;
             }
             owningTown = cTown;

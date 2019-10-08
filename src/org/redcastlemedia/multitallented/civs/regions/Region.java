@@ -967,17 +967,18 @@ public class Region {
                 }
             }
 
-            if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (payout > 0 && town != null && (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                 double size = town.getRawPeople().size();
-                if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
+                if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
                     payout = payout / size;
                     for (UUID uuid : town.getRawPeople().keySet()) {
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                         Civs.econ.depositPlayer(offlinePlayer, payout);
                         hasMoney = true;
                     }
-                } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
+                } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
                     double coopCut = payout * 0.1;
                     town.setBankAccount(town.getBankAccount() + coopCut);
                     HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);

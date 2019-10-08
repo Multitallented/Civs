@@ -13,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -97,8 +99,9 @@ public class SetOwnerCommand implements CivCommand {
             return true;
         }
         if (town != null) {
-            if (!isAdmin && (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
-                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (!isAdmin && (government.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                    government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
                 if (player != null) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                             "no-permission"));
@@ -106,11 +109,11 @@ public class SetOwnerCommand implements CivCommand {
                 return true;
             }
 
-            boolean hasPermission = civilian == null || town.getGovernmentType() == GovernmentType.ANARCHY ||
+            boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
                     (town.getRawPeople().containsKey(civilian.getUuid()) &&
                             town.getRawPeople().get(civilian.getUuid()).contains("owner"));
 
-            boolean oligarchyOverride = !hasPermission && Civs.econ != null && town.getGovernmentType() == GovernmentType.OLIGARCHY;
+            boolean oligarchyOverride = !hasPermission && Civs.econ != null && government.getGovernmentType() == GovernmentType.OLIGARCHY;
 
             boolean colonialOverride = town.getColonialTown() != null;
             if (colonialOverride) {

@@ -26,6 +26,8 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -92,10 +94,11 @@ public final class AnnouncementUtil {
             for (Town town : towns) {
 
                 // Vote
-                boolean isVotingTown = town.getGovernmentType() == GovernmentType.DEMOCRACY ||
-                        town.getGovernmentType() == GovernmentType.COOPERATIVE ||
-                        town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                        town.getGovernmentType() == GovernmentType.CAPITALISM;
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+                boolean isVotingTown = government.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                        government.getGovernmentType() == GovernmentType.COOPERATIVE ||
+                        government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                        government.getGovernmentType() == GovernmentType.CAPITALISM;
                 if (isVotingTown && !town.getVotes().containsKey(civilian.getUuid()) && town.getRawPeople().size() > 1 &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-vote-" + town.getName())) {
                     keys.add("ann-vote-" + town.getName());
@@ -104,7 +107,7 @@ public final class AnnouncementUtil {
                 }
 
                 // Power
-                if (town.getPower() < town.getMaxPower() / 3 && town.getGovernmentType() != GovernmentType.FEUDALISM &&
+                if (town.getPower() < town.getMaxPower() / 3 && government.getGovernmentType() != GovernmentType.FEUDALISM &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-town-low-power-" + town.getName())) {
                     keys.add("ann-town-low-power-" + town.getName());
                     messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-low-power")
@@ -114,7 +117,7 @@ public final class AnnouncementUtil {
                 }
 
                 // Housing
-                if (town.getPopulation() >= town.getHousing() && town.getGovernmentType() != GovernmentType.FEUDALISM &&
+                if (town.getPopulation() >= town.getHousing() && government.getGovernmentType() != GovernmentType.FEUDALISM &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-town-housing-" + town.getName())) {
                     keys.add("ann-town-housing-" + town.getName());
                     messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-housing")

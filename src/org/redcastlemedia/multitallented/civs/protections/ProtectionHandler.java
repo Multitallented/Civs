@@ -28,6 +28,8 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -571,8 +573,9 @@ public class ProtectionHandler implements Listener {
             }
             String role = region.getPeople().get(player.getUniqueId());
             if (town != null && role.contains("member")) {
-                if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                        town.getGovernmentType() == GovernmentType.ANARCHY) {
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+                if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        government.getGovernmentType() == GovernmentType.ANARCHY) {
                     role = "owner";
                 }
             }
@@ -683,12 +686,13 @@ public class ProtectionHandler implements Listener {
         }
         if (town != null && !role.contains("foreign")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    town.getGovernmentType() == GovernmentType.ANARCHY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = "owner";
-            } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+            } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
                     (regionType.getGroups().contains("mine") ||
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||
