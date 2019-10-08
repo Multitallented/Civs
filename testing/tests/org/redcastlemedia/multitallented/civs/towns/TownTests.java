@@ -2,20 +2,13 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -25,8 +18,6 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +25,6 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -65,7 +55,8 @@ public class TownTests {
 
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
-        Government government = new Government(GovernmentType.CAPITALISM,null, null, new ArrayList<>());
+        Government government = new Government("CAPITALISM", GovernmentType.CAPITALISM,
+                null, null, new ArrayList<>());
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 
@@ -118,6 +109,19 @@ public class TownTests {
     }
 
     @Test
+    public void newTownShouldStartWithHousing() {
+        TownTests.loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("tribe");
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+
+        int housing = TownManager.getInstance().getHousingCount(location, townType);
+        assertEquals(2, housing);
+    }
+
+    @Test
     public void townShouldDestroyWhenCriticalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
@@ -125,6 +129,40 @@ public class TownTests {
         HashMap<String, String> effects = new HashMap<>();
         Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
         Region region = new Region("cobble", people,
+                regionLocation,
+                RegionsTests.getRadii(),
+                effects,0);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
+
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        loadTown("Sanmak-kol", "tribe", townLocation);
+        if (townManager.getTowns().isEmpty()) {
+            fail("No town found");
+        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Block block = mock(Block.class);
+        when(block.getLocation()).thenReturn(regionLocation);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        if (!blockBreakEvent.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(blockBreakEvent);
+        }
+//        regionManager.removeRegion(region, false);
+        assertTrue(townManager.getTowns().isEmpty());
+    }
+
+    @Test
+    public void townShouldDestroyWhenCriticalRegionDestroyed2() {
+        RegionsTests.loadRegionTypeCobbleGroup();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
+        Region region = new Region("town_hall", people,
                 regionLocation,
                 RegionsTests.getRadii(),
                 effects,0);
@@ -285,16 +323,16 @@ public class TownTests {
         town.setPower(2);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
-                transitions);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
-        assertEquals(GovernmentType.ANARCHY, town.getGovernmentType());
+        Government anarchyGov = new Government("ANARCHY", GovernmentType.ANARCHY,
+                new HashSet<>(), null, transitions);
+        GovernmentManager.getInstance().addGovernment(anarchyGov);
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.ANARCHY.name(), town.getGovernmentType());
     }
 
     @Test
@@ -307,16 +345,13 @@ public class TownTests {
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
-        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
     }
 
     @Test
@@ -330,16 +365,13 @@ public class TownTests {
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, -1, 50000,
-                GovernmentType.ANARCHY);
+                GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
-        Government government = new Government(GovernmentType.DICTATORSHIP, new HashSet<>(), null,
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
                 transitions);
         GovernmentManager.getInstance().addGovernment(government);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        for (int i=0; i<8; i++) {
-            commonScheduler.run();
-        }
-        assertEquals(GovernmentType.DICTATORSHIP, town.getGovernmentType());
+        TownTransitionUtil.checkTown(town);
+        assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
     }
 
     @Test
@@ -349,7 +381,7 @@ public class TownTests {
         RegionsTests.createNewRegion("cobble");
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
-        Government government = new Government(GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
         GovernmentManager.getInstance().addGovernment(government);
         TownCommand townCommand = new TownCommand();
         String[] args = new String[2];
@@ -414,5 +446,8 @@ public class TownTests {
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);
         ItemManager.getInstance().loadTownType(config, "tribe");
+    }
+    public static void addGovernmentType(Government government) {
+        GovernmentManager.getInstance().addGovernment(government);
     }
 }

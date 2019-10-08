@@ -1,8 +1,10 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.List;
+
+import lombok.Getter;
 
 public class RegionUpkeep {
     private final List<List<CVItem>> reagents;
@@ -13,6 +15,8 @@ public class RegionUpkeep {
     private int powerReagent;
     private int powerInput;
     private int powerOutput;
+    @Getter
+    private String perm;
 
     public int getPowerReagent() {
         return powerReagent;
@@ -42,12 +46,14 @@ public class RegionUpkeep {
                         List<List<CVItem>> inputs,
                         List<List<CVItem>> outputs,
                         double payout,
-                        double exp) {
+                        double exp,
+                        String perm) {
         this.reagents = reagents;
         this.inputs = inputs;
         this.outputs = outputs;
         this.payout = payout;
         this.exp = exp;
+        this.perm = perm;
     }
 
     public List<List<CVItem>> getReagents() {

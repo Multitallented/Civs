@@ -1,0 +1,21 @@
+type: region
+icon: REDSTONE_BLOCK
+name: Raid_Porter_Active
+max: 1
+is-in-shop: false
+groups:
+- offense
+- raidport
+
+build-reqs:
+  - TNT*5
+  - g:sign*1
+  - OBSIDIAN*9
+  - g:fence*12
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- raid_port
+

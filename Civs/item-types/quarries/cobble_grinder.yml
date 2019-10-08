@@ -1,0 +1,54 @@
+type: region
+icon: CHEST
+shop-icon: COBBLESTONE
+name: Cobble_Grinder
+price: 40
+groups:
+- raw
+- quarry
+level: 2
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- FURNACE*2
+- LAVA
+- WATER
+- IRON_BARS*2
+
+build-radius: 2
+rebuild: cobble_quarry
+rebuild-required: true
+effects:
+- block_break
+- block_build
+- conveyor:COBBLESTONE
+
+period: 300
+upkeep:
+  0:
+    reagents:
+    - STONE_PICKAXE
+    output:
+    - COBBLESTONE*24
+  1:
+    reagents:
+    - IRON_PICKAXE
+    output:
+    - COBBLESTONE*48
+  2:
+    reagents:
+    - DIAMOND_PICKAXE
+    output:
+    - COBBLESTONE*64
+    - COBBLESTONE*8
+

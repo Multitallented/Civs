@@ -1,0 +1,43 @@
+type: region
+icon: CHEST
+shop-icon: CLAY_BALL
+name: Clay_Quarry
+price: 100
+groups:
+- raw
+- quarry
+level: 2
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+build-reqs:
+- CLAY*24
+- FURNACE*2
+- CHEST*2
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-radius: 3
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 300 #5 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_SHOVEL
+    output:
+    - CLAY_BALL*64
+    - CLAY_BALL*16
+

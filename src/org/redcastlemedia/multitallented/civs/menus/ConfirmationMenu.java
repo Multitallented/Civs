@@ -12,13 +12,12 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ConfirmationMenu extends Menu {
@@ -77,7 +76,7 @@ public class ConfirmationMenu extends Menu {
                 lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else if (isRegion) {
-                lore.addAll(Util.textWrap("", Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                lore.addAll(Util.textWrap(Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         civItem.getProcessedName() + "-desc"))));
             }
             purchasedItem.setLore(lore);

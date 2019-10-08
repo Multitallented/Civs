@@ -1,21 +1,29 @@
 type: town
 icon: GLOWSTONE
+shop-icon: OAK_LOG
 name: Settlement
 max: 1
-price: 2000
-group: town
+price: 500
+groups:
+- superregion
+level: 2
 
 build-reqs:
-- councilroom:1
+- council_room:1
 
 critical-build-reqs:
-- councilroom
+- town_center
 
 limits:
-- shack:5
-- studio:1
+- npchousing:4
+- allshack:4
+- allhovel:1
+- arrowtrapgroup:2
+- church:1
+- smithy:1
+- purifier:1
 
-build-radius: 16
+build-radius: 40
 build-radius-y: 500
 effects:
 - block_break
@@ -24,10 +32,8 @@ effects:
 - block_fire
 - deny_mob_spawn
 - control_override
-- claim_at_zero #TODO create this
+- block_explosion
+- anticamp:4.1800 #4 damage for 30 minutes
 
-power: 1000
-max-power: 1000
-
-description:
-  en: "The first level of a town"
+power: 300
+max-power: 2040

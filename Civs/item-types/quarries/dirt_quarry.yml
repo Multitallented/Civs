@@ -1,0 +1,43 @@
+type: region
+icon: CHEST
+shop-icon: DIRT
+name: Dirt_Quarry
+price: 25
+groups:
+- raw
+- quarry
+level: 2
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+build-reqs:
+- DIRT*24,GRASS_BLOCK*24,COARSE_DIRT*24,PODZOL*24
+- FURNACE*2
+- CHEST*2
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-radius: 3
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 300 # 5 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_SHOVEL
+    output:
+    - DIRT*80%50,PODZOL*40%25,COARSE_DIRT*40%25
+    - DIRT*20%93,GRASS_BLOCK*20%5,MYCELIUM*20%2
+

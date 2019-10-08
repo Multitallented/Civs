@@ -45,7 +45,7 @@ public class Town {
 
     @Getter
     @Setter
-    private GovernmentType governmentType;
+    private String governmentType;
 
     @Getter
     @Setter
@@ -82,7 +82,7 @@ public class Town {
         this.villagers = villagers;
         this.lastDisable = lastDisable;
         TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
-        governmentType = GovernmentType.valueOf(townType.getDefaultGovType());
+        governmentType = townType.getDefaultGovType();
     }
 
     public long getLastDisable() {
@@ -126,23 +126,36 @@ public class Town {
         people.put(uuid, role);
     }
     public HashMap<UUID, String> getPeople() {
-        HashSet<Alliance> allies = AllianceManager.getInstance().getAlliances(this);
+        HashSet<Alliance> allies = new HashSet<>(AllianceManager.getInstance().getAlliances(this));
         if (allies.isEmpty()) {
             return people;
         }
         HashMap<UUID, String> newPeople = new HashMap<>(people);
         for (Alliance alliance : allies) {
+            HashSet<String> removeMembers = new HashSet<>();
             for (String townName : alliance.getMembers()) {
                 if (townName.equals(name)) {
                     continue;
                 }
                 Town town = TownManager.getInstance().getTown(townName);
+                if (town == null) {
+                    removeMembers.add(townName);
+                    continue;
+                }
                 for (UUID uuid : town.getRawPeople().keySet()) {
                     if (!newPeople.containsKey(uuid) &&
                             !town.getRawPeople().get(uuid).contains("ally")) {
-                        newPeople.put(uuid, "ally");
+                        newPeople.put(uuid, "allyforeign");
                     }
                 }
+            }
+            boolean needsSaving = false;
+            for (String townName : removeMembers) {
+                alliance.getMembers().remove(townName);
+                needsSaving = true;
+            }
+            if (needsSaving) {
+                AllianceManager.getInstance().saveAlliance(alliance);
             }
         }
         return newPeople;

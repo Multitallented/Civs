@@ -10,7 +10,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class SpellTypeInfoMenu extends Menu {
         //0 Icon
         CVItem cvItem = spellType.clone();
         List<String> lore = new ArrayList<>();
-        lore.addAll(Util.textWrap("", Util.parseColors(spellType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(spellType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

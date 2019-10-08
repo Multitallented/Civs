@@ -20,22 +20,6 @@ transition:
   vacate:
     inactive: 1814400 #3 weeks
     to: ANARCHY
-name:
-  en: "Tribalism"
-  fr: "Tribalisme"
-  ru: "Трайбализм"
-  de: "Tribalismus"
-  pt_br: "Tribalismo"
-  es: "Tribalismo"
-  hu: "Törzsközösség"
-description:
-  en: "Dictatorship + Members can't join non-allied towns."
-  es: "Dictadura + Los miembros no pueden unirse a las ciudades no aliadas."
-  pt_br: "Ditadura + Os membros não podem participar de cidades não aliadas."
-  de: "Diktatur + Mitglieder können nicht verbündeten Städten nicht beitreten."
-  ru: "диктатура + Члены не могут присоединиться к не союзным городам."
-  fr: "Dictature + Les membres ne peuvent pas rejoindre des villes non alliées."
-  hu: "Diktatúra + Tagok nem csatlakozhatnak nem szövetséges városokba."
 buffs:
   max_power:
     percent: 10

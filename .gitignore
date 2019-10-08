@@ -53,6 +53,7 @@ hs_err_pid*
 .idea/
 out/
 *.iml
+target
 mavenVersion.xml
 
 _windows/*

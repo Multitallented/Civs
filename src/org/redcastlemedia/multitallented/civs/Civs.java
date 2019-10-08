@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
@@ -25,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -41,6 +44,7 @@ public class Civs extends JavaPlugin {
     public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
+    public static MMOItems mmoItems;
     private static Civs civs;
     public static Logger logger;
 
@@ -48,7 +52,7 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
-        setupPlaceholders();
+        setupDependencies();
         setupEconomy();
         setupPermissions();
 
@@ -78,8 +82,11 @@ public class Civs extends JavaPlugin {
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
         StructureUtil.removeAllBoundingBoxes();
+        RegionManager.getInstance().saveAllUnsavedRegions();
+        TownManager.getInstance().saveAllUnsavedTowns();
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
 
@@ -130,8 +137,20 @@ public class Civs extends JavaPlugin {
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
+        if (ConfigManager.getInstance().isDebugLog()) {
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, DebugLogger.timedDebugTask(), 600L, 600L);
+        }
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
+
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+
+            @Override
+            public void run() {
+                RegionManager.getInstance().saveNextRegion();
+                TownManager.getInstance().saveNextTown();
+            }
+        }, 20L, 20L);
     }
 
     private void initCommands() {
@@ -160,6 +179,7 @@ public class Civs extends JavaPlugin {
         commandList.put("reload", new ReloadCommand());
         commandList.put("toggleann", new ToggleAnnouncementCommand());
         commandList.put("setrecruiter", new SetRecruiterCommand());
+        commandList.put("advancetut", new TutorialAdvanceCommand());
     }
 
     private void initListeners() {
@@ -222,6 +242,8 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
         Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
+        Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
@@ -239,9 +261,12 @@ public class Civs extends JavaPlugin {
             perm = permissionProvider.getProvider();
         }
     }
-    public void setupPlaceholders() {
+    public void setupDependencies() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
+            mmoItems = MMOItems.plugin;
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {

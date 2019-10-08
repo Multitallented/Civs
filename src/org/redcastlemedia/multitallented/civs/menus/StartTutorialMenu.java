@@ -12,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class StartTutorialMenu extends Menu {
     static String MENU_NAME = "CivStartTut";
@@ -27,7 +27,7 @@ public class StartTutorialMenu extends Menu {
         CivilianManager civilianManager = CivilianManager.getInstance();
         Civilian civilian = civilianManager.getCivilian(event.getWhoClicked().getUniqueId());
 
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (event.getCurrentItem() == null || !(event.getWhoClicked() instanceof Player)) {
             return;
         }
 

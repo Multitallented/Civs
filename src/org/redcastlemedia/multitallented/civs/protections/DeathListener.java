@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -24,6 +23,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -33,7 +34,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -450,11 +450,12 @@ public class DeathListener implements Listener {
         CivilianManager.getInstance().saveCivilian(damagerCiv);
 
         for (Town town : TownManager.getInstance().getOwnedTowns(dyingCiv)) {
-            if (town.getGovernmentType() == GovernmentType.MERITOCRACY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.MERITOCRACY) {
                 Util.checkMerit(town, damager);
                 continue;
             }
-            if (town.getGovernmentType() != GovernmentType.KRATEROCRACY) {
+            if (government.getGovernmentType() != GovernmentType.KRATEROCRACY) {
                 continue;
             }
             if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&

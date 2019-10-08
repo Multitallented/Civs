@@ -15,10 +15,9 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class TownListMenu extends Menu {
@@ -189,8 +188,7 @@ public class TownListMenu extends Menu {
                     .replace("$1", town.getPopulation() + "")
                     .replace("$2", town.getHousing() + "")
                     .replace("$3", town.getVillagers() + ""));
-            lore.addAll(Util.textWrap("",
-                    Util.parseColors(townType.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
 
             CVItem cycleItem = null;
             boolean govTypesAllowed = ConfigManager.getInstance().isAllowChangingOfGovType();

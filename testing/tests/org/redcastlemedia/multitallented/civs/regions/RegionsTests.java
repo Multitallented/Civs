@@ -32,6 +32,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -42,7 +43,7 @@ import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class RegionsTests {
     private RegionManager regionManager;
@@ -72,7 +73,7 @@ public class RegionsTests {
                 10, new HashSet<>(), regions);
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
-        Government government = new Government(GovernmentType.ANARCHY,
+        Government government = new Government("ANARCHY", GovernmentType.ANARCHY,
                 buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
@@ -749,7 +750,7 @@ public class RegionsTests {
     public void regionShouldConsiderAlliesAsGuests() {
         UUID uuid1 = new UUID(1, 3);
         Region region = load2TownsWith1Region(uuid1, true);
-        assertEquals("ally", region.getPeople().get(uuid1));
+        assertEquals("allyforeign", region.getPeople().get(uuid1));
     }
 
     @Test
@@ -771,7 +772,11 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new DailyScheduler().run();
+        try {
+            new DailyScheduler().run();
+        } catch (SuccessException se) {
+
+        }
         assertEquals(302, town.getPower());
     }
 
@@ -787,7 +792,7 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new RegionTickTask().run();
+        new RegionTickTask().onTwoSecondEvent(null);
         assertEquals(300, town.getPower());
     }
 

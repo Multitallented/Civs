@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import org.redcastlemedia.multitallented.civs.util.CVItem;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class FolderType extends CivItem {
@@ -29,7 +26,6 @@ public class FolderType extends CivItem {
                 1,
                 price,
                 permission,
-                new HashMap<String, String>(),
                 new ArrayList<String>(),
                 true,
                 level);

@@ -1,0 +1,36 @@
+type: region
+icon: CHEST
+shop-icon: INK_SAC
+name: Dye_Works
+price: 20
+groups:
+- factory
+level: 1
+
+build-reqs:
+- g:window*4
+- g:door*1
+- g:roof*20
+- g:wool*6
+- g:primary*45
+- g:secondary*12
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 300 #5 minutes
+upkeep:
+  0:
+    reagents:
+    - RED_DYE
+    - BLACK_DYE
+    - LAPIS_LAZULI
+    - BONE_MEAL
+    - YELLOW_DYE
+    output:
+    - RED_DYE*20%7,BLACK_DYE*20%6,LAPIS_LAZULI*20%7,COCOA_BEANS*20%6,CYAN_DYE*20%6,GRAY_DYE*20%6,GREEN_DYE*20%7,LIGHT_BLUE_DYE*20%6,LIGHT_GRAY_DYE*20%6,LIME_DYE*20%6,MAGENTA_DYE*20%6,ORANGE_DYE*20%6,PINK_DYE*20%6,PURPLE_DYE*20%6,BONE_MEAL*20%6,YELLOW_DYE*20%7

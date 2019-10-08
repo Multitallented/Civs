@@ -16,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.*;
 
@@ -80,6 +80,9 @@ public class PortMenu extends Menu {
         List<Region> returnSet = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
         for (Region region : regionSet) {
+            if (returnSet.contains(region)) {
+                continue;
+            }
             if (!region.getEffects().containsKey("port")) {
                 continue;
             }
@@ -124,9 +127,15 @@ public class PortMenu extends Menu {
             inventory.setItem(8, cvItem1.createItemStack());
         }
 
+        HashSet<Region> regionsAdded = new HashSet<>();
         int i=9;
         for (int k=startIndex; k<returnSet.size() && k<startIndex+36; k++) {
             Region region = returnSet.get(k);
+            if (regionsAdded.contains(region)) {
+                continue;
+            } else {
+                regionsAdded.add(region);
+            }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem1 = regionType.clone();
             cvItem1.setDisplayName(region.getId());

@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.*;
 
@@ -182,7 +182,8 @@ public class RecipeMenu extends Menu {
         }
 
 
-        Inventory inv = Bukkit.createInventory(null, getInventorySize(index) + 9, MENU_NAME);
+        int inventorySize = getInventorySize(index + 9);
+        Inventory inv = Bukkit.createInventory(null, inventorySize, MENU_NAME);
 
         inv.setItem(0, icon);
         inv.setItem(8, getBackButton(CivilianManager.getInstance().getCivilian(uuid)));
@@ -201,8 +202,10 @@ public class RecipeMenu extends Menu {
                 itemMeta.setLore(lore);
                 is.setItemMeta(itemMeta);
             }
-            if (pIndex < 45) {
+            if (pIndex + 9 < inventorySize) {
                 inv.setItem(pIndex + 9, is);
+            } else {
+                break;
             }
         }
 

@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -16,13 +15,13 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
@@ -231,7 +230,7 @@ public class MemberActionMenu extends Menu {
         }
 
         //14 set recruiter
-        if (isTown && (isAdmin || ((!viewingSelf || isOwner) &&
+        if (isTown && (isAdmin || (isOwner &&
                 !isVoteOnly && !role.contains("recruiter") && !cantAddOwners))) {
             CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_INGOT");
             cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-recruiter"));
@@ -273,7 +272,8 @@ public class MemberActionMenu extends Menu {
         boolean alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
                 !town.getVotes().get(civilian.getUuid()).isEmpty();
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted, true);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        addItems(inventory, civilian, role, viewingSelf, government.getGovernmentType(), price, isOwner, alreadyVoted, true);
 
         return inventory;
     }

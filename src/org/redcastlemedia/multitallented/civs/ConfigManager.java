@@ -5,7 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -92,7 +92,7 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
-    GovernmentType defaultGovernmentType;
+    String defaultGovernmentType;
 
     @Getter
     boolean allowChangingOfGovType;
@@ -116,6 +116,12 @@ public class ConfigManager {
     long announcementPeriod;
     @Getter
     String revoltCost;
+    @Getter
+    boolean useBoundingBox;
+    @Getter
+    boolean mobsDropItemsWhenKilledInDenyDamage;
+    @Getter
+    boolean debugLog;
 
     public ConfigManager() {
         loadDefaults();
@@ -243,7 +249,7 @@ public class ConfigManager {
             }
             config.load(configFile);
 
-            blackListWorlds = config.getStringList("blacklist-worlds");
+            blackListWorlds = config.getStringList("black-list-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             explosionOverride = config.getBoolean("explosion-override", false);
@@ -331,9 +337,9 @@ public class ConfigManager {
             levelList = config.getStringList("levels");
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
-                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+                defaultGovernmentType = defaultGovTypeString.toUpperCase();
             } else {
-                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+                defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             maxTax = config.getDouble("max-town-tax", 50);
@@ -350,6 +356,9 @@ public class ConfigManager {
             revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
+            useBoundingBox = config.getBoolean("use-region-bounding-box", true);
+            mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
+            debugLog = config.getBoolean("debug-log", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -367,7 +376,7 @@ public class ConfigManager {
             if (returnList.isEmpty()) {
                 returnList.add(key);
             } else if (returnList.size() == 1) {
-                returnMap.put(key, Util.textWrap("", Util.parseColors(returnList.get(0))));
+                returnMap.put(key, Util.textWrap(Util.parseColors(returnList.get(0))));
             }
             returnMap.put(key, returnList);
         }
@@ -375,6 +384,9 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        debugLog = false;
+        mobsDropItemsWhenKilledInDenyDamage = false;
+        useBoundingBox = true;
         revoltCost = "GUNPOWDER*64";
         announcementPeriod = 240;
         useAnnouncements = true;
@@ -437,7 +449,7 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
-        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
     }
 
