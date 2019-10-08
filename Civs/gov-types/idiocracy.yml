@@ -7,7 +7,7 @@
 
 
 icon: "BRICKS"
-enabled: false
+enabled: true
 transition:
   0:
     revolt: 51
