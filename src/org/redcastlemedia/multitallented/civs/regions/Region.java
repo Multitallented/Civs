@@ -779,10 +779,8 @@ public class Region {
             if (needsItems && chestInventory == null) {
                 continue;
             }
-            boolean containsReagents = chestInventory != null &&
-                    Util.containsItems(regionUpkeep.getReagents(), chestInventory);
-            boolean containsInputs = chestInventory != null &&
-                    Util.containsItems(regionUpkeep.getInputs(), chestInventory);
+            boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+            boolean containsInputs = !needsItems || Util.containsItems(regionUpkeep.getInputs(), chestInventory);
             boolean hasReagents = !needsItems || (containsReagents && containsInputs);
             if (!hasReagents) {
                 i++;
@@ -796,7 +794,14 @@ public class Region {
                 continue;
             }
             hasItemUpkeep = true;
-            failingUpkeeps.remove(i);
+            containsReagents = !needsItems || (chestInventory != null &&
+                    Util.containsItems(regionUpkeep.getReagents(), chestInventory));
+            containsInputs = !needsItems || (chestInventory != null &&
+                    Util.containsItems(regionUpkeep.getInputs(), chestInventory));
+            hasReagents = !needsItems || (containsReagents && containsInputs);
+            if (hasReagents) {
+                failingUpkeeps.remove(i);
+            }
             if (!runRegionUpkeepPayout(regionUpkeep)) {
                 i++;
                 continue;
