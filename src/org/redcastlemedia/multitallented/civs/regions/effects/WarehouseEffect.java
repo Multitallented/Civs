@@ -432,25 +432,22 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
         HashMap<InventoryLocation, HashMap<Integer, ItemStack>> itemsToMove = new HashMap<>();
 
-
+        HashSet<String> removeTheseChests = new HashSet<>();
         HashSet<HashSet<CVItem>> req = convertToHashSet(neededItems);
-        outer2: for (HashSet<CVItem> orReqs : req) {
-            HashSet<CVItem> removeTheseCVItems = new HashSet<>();
-            outer1: for (CVItem orReq : orReqs) {
-                HashSet<String> removeTheseChests = new HashSet<>();
-                for (String locationString : availableItems.get(region).keySet()) {
-                    Inventory inv = availableItems.get(region).get(locationString);
-                    InventoryLocation inventoryLocation = new InventoryLocation(Region.idToLocation(locationString), inv);
-                    if (Util.isChestEmpty(inv)) {
-                        removeTheseChests.add(locationString);
-                        continue;
-                    }
-                    try {
-
-                        int i = 0;
-                        HashSet<ItemStack> removeTheseItems = new HashSet<>();
-                        for (ItemStack is : inv.getContents()) {
-                            if (is != null && is.getType() != Material.AIR && orReq.equivalentItem(is, orReq.getDisplayName() != null)) {
+        try {
+            nextItem: for (String locationString : availableItems.get(region).keySet()) {
+                Inventory inv = availableItems.get(region).get(locationString);
+                InventoryLocation inventoryLocation = new InventoryLocation(Region.idToLocation(locationString), inv);
+                if (Util.isChestEmpty(inv)) {
+                    removeTheseChests.add(locationString);
+                    continue;
+                }
+                int i = 0;
+                for (ItemStack is : inv.getContents()) {
+                    outer: for (HashSet<CVItem> orReqs : new HashSet<>(req)) {
+                        for (CVItem orReq : new HashSet<>(orReqs)) {
+                            if (is != null && is.getType() != Material.AIR &&
+                                    orReq.equivalentItem(is, orReq.getDisplayName() != null)) {
 
                                 if (!itemsToMove.containsKey(inventoryLocation)) {
                                     itemsToMove.put(inventoryLocation, new HashMap<>());
@@ -471,22 +468,20 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                                     orReqs.remove(orReq);
                                     if (orReqs.isEmpty()) {
                                         req.remove(orReqs);
-                                        continue outer2;
                                     }
-
-                                    continue outer1;
                                 }
+                                continue nextItem;
                             }
                             i++;
                         }
-                    } catch (Exception e) {
-                        Civs.logger.warning("error moving items from warehouse");
                     }
                 }
-                for (String locationString : removeTheseChests) {
-                    availableItems.get(region).remove(locationString);
-                }
             }
+        } catch (Exception e) {
+            Civs.logger.warning("error moving items from warehouse");
+        }
+        for (String locationString : removeTheseChests) {
+            availableItems.get(region).remove(locationString);
         }
 
 //        System.out.println("items to move length " + itemsToMove.size());
