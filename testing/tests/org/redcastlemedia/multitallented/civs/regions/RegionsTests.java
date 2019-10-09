@@ -1113,6 +1113,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("chest_use");
         effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
@@ -1133,7 +1134,7 @@ public class RegionsTests {
     public static Region createNewRegion(String type) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
-        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);

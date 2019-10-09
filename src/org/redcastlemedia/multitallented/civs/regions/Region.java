@@ -968,7 +968,10 @@ public class Region {
                 }
             }
 
-            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            Government government = null;
+            if (town != null) {
+                government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            }
             if (payout > 0 && town != null && (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                     government.getGovernmentType() == GovernmentType.COOPERATIVE)) {
                 double size = town.getRawPeople().size();

@@ -92,6 +92,9 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
+    boolean useParticleBoundingBoxes;
+
+    @Getter
     String defaultGovernmentType;
 
     @Getter
@@ -335,6 +338,7 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
                 defaultGovernmentType = defaultGovTypeString.toUpperCase();
@@ -397,6 +401,7 @@ public class ConfigManager {
         daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        useParticleBoundingBoxes = false;
         maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;

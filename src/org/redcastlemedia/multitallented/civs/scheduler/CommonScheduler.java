@@ -37,6 +37,7 @@ public class CommonScheduler implements Runnable {
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
+    private int particleCounter = 0;
     private boolean notTwoSecond = true;
     public static boolean run = true;
 
@@ -75,6 +76,14 @@ public class CommonScheduler implements Runnable {
                 }
             } else {
                 i++;
+            }
+            if (ConfigManager.getInstance().isUseParticleBoundingBoxes()) {
+                if (particleCounter == (MAX_TPS - 1) * 5) {
+                    particleCounter = 0;
+                    StructureUtil.refreshAllBoundingBoxes();
+                } else {
+                    particleCounter++;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
