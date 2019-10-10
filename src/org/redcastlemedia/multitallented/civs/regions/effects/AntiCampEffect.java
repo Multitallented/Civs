@@ -31,14 +31,8 @@ public class AntiCampEffect implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-
-        if (lastDeathTown.containsKey(event.getPlayer().getUniqueId())) {
-            lastDeathTown.remove(event.getPlayer().getUniqueId());
-        }
-
-        if (lastDeath.containsKey(event.getPlayer().getUniqueId())) {
-            lastDeath.remove(event.getPlayer().getUniqueId());
-        }
+        lastDeathTown.remove(event.getPlayer().getUniqueId());
+        lastDeath.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -59,7 +53,7 @@ public class AntiCampEffect implements Listener {
 //                return;
 //            }
 
-        //If they died outside of a super region then I don't care
+        //If they died outside of a town then I don't care
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (town == null) {
             return;
@@ -70,12 +64,14 @@ public class AntiCampEffect implements Listener {
             return;
         }
 
-        if (!townType.getEffects().containsKey("anticamp")) {
+        if (!townType.getEffects().containsKey(KEY)) {
             return;
         }
 
         //If the person dying was a member, then increment their deathCount
         if (town.getPeople().containsKey(player.getUniqueId())) {
+
+            sendReminderMessage(player);
 
             //Don't count deaths in a previous town
             if (lastDeathTown.containsKey(player.getUniqueId()) &&
@@ -102,6 +98,10 @@ public class AntiCampEffect implements Listener {
 //                    }
             lastDeathTown.put(player.getUniqueId(), town.getName());
         }
+    }
+
+    private void sendReminderMessage(Player player) {
+        // TODO send a clickable message to activate anti-camp for a price
     }
 
     @EventHandler
