@@ -44,7 +44,7 @@ public class PortCommand implements CivCommand {
 
         if (cooldowns.containsKey(player.getUniqueId())) {
             long cooldown = System.currentTimeMillis() - cooldowns.get(player.getUniqueId());
-            if (cooldown < ConfigManager.getInstance().getPortCooldown() * 1000) {
+            if (cooldown > 0) {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "cooldown")
                                 .replace("$1", ((int) cooldown / 1000) + ""));
@@ -206,6 +206,7 @@ public class PortCommand implements CivCommand {
 //                for (ItemStack is : reagents) {
 //                    p.getInventory().removeItem(is);
 //                }
+                cooldowns.put(p.getUniqueId(), System.currentTimeMillis() + ConfigManager.getInstance().getPortCooldown() * 1000);
                 p.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
                 p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "teleported"));
