@@ -1,10 +1,6 @@
 size: 18
 name: Language
 items:
-  icon:
-    index: 0
-    icon: GRASS_BLOCK
-    name: language-menu
   prev:
     index: 3
   next:

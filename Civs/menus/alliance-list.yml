@@ -1,10 +1,6 @@
 name: AllianceList
 size: 36
 items:
-  icon:
-    index: 0
-    icon: GOLDEN_SWORD
-    name: alliances
   prev:
     index: 3
   next:

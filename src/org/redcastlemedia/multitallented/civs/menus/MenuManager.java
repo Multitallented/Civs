@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
@@ -176,6 +177,11 @@ public class MenuManager implements Listener {
             loadConfig(allianceListMenu);
             menus.put(allianceListMenu.getFileName(), allianceListMenu);
         }
+        {
+            ShopMenu shopMenu = new ShopMenu();
+            loadConfig(shopMenu);
+            menus.put(shopMenu.getFileName(), shopMenu);
+        }
     }
 
     private void loadConfig(CustomMenu customMenu) {
@@ -233,6 +239,11 @@ public class MenuManager implements Listener {
         }
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
+        if (redirectMenu != null) {
+            openMenu(player, redirectMenu, params);
+            return;
+        }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());

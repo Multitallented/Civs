@@ -6,12 +6,8 @@ name: Shop
 # custom actions:
 #  view-item: opens the category/level/item for viewing
 items:
-  icon:
-    index: 0
-    icon: EMERALD
-    name: shop
   parent:
-    index: 1
+    index: 0
     # icon: parent icon
     # name: parent name
     # desc: parent desc

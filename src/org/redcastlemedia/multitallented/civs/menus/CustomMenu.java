@@ -32,6 +32,11 @@ public abstract class CustomMenu {
 
     public abstract Map<String, Object> createData(Civilian civilian, Map<String, String> params);
 
+    public String beforeOpenMenu(Civilian civilian) {
+        // optional override
+        return null;
+    }
+
     public Inventory createMenu(Civilian civilian, Map<String, String> params) {
         MenuManager.clearData(civilian.getUuid());
         Map<String, Object> newData = createData(civilian, params);
