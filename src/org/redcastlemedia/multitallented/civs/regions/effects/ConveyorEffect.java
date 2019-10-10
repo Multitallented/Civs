@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -113,6 +114,13 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     }
 
     @EventHandler
+    public void onTwoSecond(TwoSecondEvent event) {
+        for (Region r : new HashSet<>(carts.keySet())) {
+            handleExistingCarts(r);
+        }
+    }
+
+    @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
         if (disabled || !event.getRegion().getEffects().containsKey(KEY) ||
                 !cacheSpawnPoints.containsKey(event.getRegion())) {
@@ -128,8 +136,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
         String conveyorString = r.getEffects().get(KEY);
         Material conveyor = Material.valueOf(conveyorString);
-
-        handleExistingCarts(r);
 
         //Check if has reagents
         if (!RegionManager.getInstance().hasRegionChestChanged(r)) {
