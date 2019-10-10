@@ -30,6 +30,8 @@ stop-mobs-from-dropping-items-in-safe-zones: false
 death-grace-period-seconds: 60
 #how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
+#how much damage should a player receive if they log out during combat
+combat-log-out-percent-damage: 80
 #should food heal in combat?
 allow-food-heal-in-combat: true
 #should players be able to teleport while in combat?
