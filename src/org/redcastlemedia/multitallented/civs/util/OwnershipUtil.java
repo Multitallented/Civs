@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -102,11 +103,24 @@ public final class OwnershipUtil {
                     "invalid-target"));
             return 0;
         }
-        boolean isTax = "tax".equals(args[0]);
-        if (!isTax && amount > town.getBankAccount()) {
+        if ("withdraw".equals(args[0]) && amount > town.getBankAccount()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "not-enough-money").replace("$1", args[2]));
             return 0;
+        }
+        if ("deposit".equals(args[0])) {
+            double maxDeposit = ConfigManager.getInstance().getMaxBankDeposit();
+            if (!Civs.econ.has(player, amount)) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "not-enough-money").replace("$1", args[2]));
+                return 0;
+            }
+
+            if (maxDeposit > 0 && amount + town.getBankAccount() > maxDeposit) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "too-much-money").replace("$1", Util.getNumberFormat(maxDeposit, civilian.getLocale())));
+                return 0;
+            }
         }
 
         boolean colonialOverride = hasColonialOverride(town, civilian);
