@@ -127,6 +127,8 @@ public class ConfigManager {
     boolean debugLog;
     @Getter
     double maxBankDeposit;
+    @Getter
+    double antiCampCost;
 
     public ConfigManager() {
         loadDefaults();

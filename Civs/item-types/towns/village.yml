@@ -51,7 +51,7 @@ effects:
 - deny_mob_spawn
 - block_explosion
 - control_override
-- anticamp:2.1500 #2 damage for 25 minutes
+- anticamp:2.1500.400 #2 damage for 25 minutes costs $400
 
 power: 1000
 max-power: 3120

@@ -11,16 +11,21 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class AntiCampEffect implements Listener {
     private final HashMap<UUID, String> lastDeathTown = new HashMap<>();
@@ -71,7 +76,7 @@ public class AntiCampEffect implements Listener {
         //If the person dying was a member, then increment their deathCount
         if (town.getPeople().containsKey(player.getUniqueId())) {
 
-            sendReminderMessage(player);
+            sendReminderMessage(player, town);
 
             //Don't count deaths in a previous town
             if (lastDeathTown.containsKey(player.getUniqueId()) &&
@@ -100,8 +105,26 @@ public class AntiCampEffect implements Listener {
         }
     }
 
-    private void sendReminderMessage(Player player) {
-        // TODO send a clickable message to activate anti-camp for a price
+    private void sendReminderMessage(Player player, Town town) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        double antiCampCost = 0;
+
+        // TODO find the cost of the anti camp
+
+        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(civilian.getLocale(),
+                "activate-anticamp-question").replace("$1", player.getDisplayName())
+                .replace("$2", town.getName())
+                .replace("$3", "" + antiCampCost) + " ";
+        TextComponent component = Util.parseColorsComponent(activateMessage);
+
+        TextComponent acceptComponent = new TextComponent("[✓]");
+        acceptComponent.setColor(net.md_5.bungee.api.ChatColor.GREEN);
+        acceptComponent.setUnderlined(true);
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv anticamp"));
+        component.addExtra(acceptComponent);
+
+        player.spigot().sendMessage(component);
     }
 
     @EventHandler
@@ -161,8 +184,8 @@ public class AntiCampEffect implements Listener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() + ChatColor.RED +
                         LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "anti-camp-active"
-                ).replace("$1", town.getName()));
+                                civilian.getLocale(), "anti-camp-active"
+                        ).replace("$1", town.getName()));
             }
             lastPoison.put(town.getName(), System.currentTimeMillis() + (period * 1000));
         }
