@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -25,6 +26,7 @@ public class ReloadCommand implements CivCommand {
             RegionManager.getInstance().reload();
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
+            new LocaleManager();
             CommonScheduler.run = true;
             commandSender.sendMessage(Civs.getPrefix() + "reloaded");
             return true;

@@ -426,7 +426,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
         Inventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(destination.getLocation());
 
-        if (destinationInventory.firstEmpty() < 0) {
+        if (destinationInventory.firstEmpty() < 0 || destinationInventory.firstEmpty() > destinationInventory.getSize() - 4) {
             return;
         }
 
@@ -524,6 +524,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         for (Integer index : failingUpkeeps) {
             RegionUpkeep regionUpkeep = rt.getUpkeeps().get(index);
             req.addAll(cloneLists(regionUpkeep.getInputs()));
+            req.addAll(cloneLists(regionUpkeep.getReagents()));
         }
         return req;
     }
