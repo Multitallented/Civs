@@ -113,7 +113,7 @@ public class PotionAreaEffect implements Listener {
                 cooldowns.put(key, System.currentTimeMillis() + (cooldown * 1000));
             }
 
-            PotionEffect potionEffect = new PotionEffect(potionType, duration, amplifier);
+            PotionEffect potionEffect = new PotionEffect(potionType, duration * 20, amplifier);
 
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
