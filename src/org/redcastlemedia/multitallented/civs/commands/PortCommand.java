@@ -43,7 +43,7 @@ public class PortCommand implements CivCommand {
         }
 
         if (cooldowns.containsKey(player.getUniqueId())) {
-            long cooldown = System.currentTimeMillis() - cooldowns.get(player.getUniqueId());
+            long cooldown = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
             if (cooldown > 0) {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "cooldown")
