@@ -43,7 +43,7 @@ public class PortCommand implements CivCommand {
         }
 
         if (cooldowns.containsKey(player.getUniqueId())) {
-            long cooldown = System.currentTimeMillis() - cooldowns.get(player.getUniqueId());
+            long cooldown = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
             if (cooldown > 0) {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "cooldown")
@@ -87,7 +87,7 @@ public class PortCommand implements CivCommand {
         if (args[0].equalsIgnoreCase("port") && args.length > 1) {
             //Check if region is a port
             r = RegionManager.getInstance().getRegionAt(Region.idToLocation(args[1]));
-            if (r == null || !canPort(r, player, civilian, null)) {
+            if (r == null || !canPort(r, player.getUniqueId(), null)) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "port-not-found"));
                 return true;
@@ -101,7 +101,7 @@ public class PortCommand implements CivCommand {
                 return true;
             }
             for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
-                if (canPort(region, player, civilian, town)) {
+                if (canPort(region, player.getUniqueId(), town)) {
                     r = region;
                     break;
                 }
@@ -191,8 +191,7 @@ public class PortCommand implements CivCommand {
     }
 
 
-    private boolean canPort(Region r, Player player, Civilian civilian, Town town) {
-        LocaleManager localeManager = LocaleManager.getInstance();
+    public static boolean canPort(Region r, UUID uuid, Town town) {
         try {
             if (!r.getEffects().containsKey("port")) {
                 return false;
@@ -203,18 +202,18 @@ public class PortCommand implements CivCommand {
                 town = TownManager.getInstance().getTownAt(r.getLocation());
             }
             boolean townPrivatePort = privatePort && r.getEffects().get("port").equals("town");
-            boolean memberPrivatePort = townPrivatePort || (privatePort && r.getEffects().get("port").equals("member"));
-            boolean ownerPrivatePort = memberPrivatePort || (privatePort && r.getEffects().get("port").equals("owner"));
-            if (!r.getPeople().containsKey(player.getUniqueId())) {
+            boolean memberPrivatePort = privatePort && r.getEffects().get("port").equals("member");
+            boolean ownerPrivatePort = privatePort && r.getEffects().get("port").equals("owner");
+            if (!r.getPeople().containsKey(uuid)) {
                 return false;
             } else if (privatePort) {
-                if (townPrivatePort && (town == null || !town.getPeople().containsKey(player.getUniqueId()) ||
-                        town.getPeople().get(player.getUniqueId()).contains("ally"))) {
+                if (townPrivatePort && (town == null || !town.getPeople().containsKey(uuid) ||
+                        town.getPeople().get(uuid).contains("ally"))) {
                     return false;
-                } else if (memberPrivatePort && r.getPeople().get(player.getUniqueId()).contains("ally")) {
+                } else if (memberPrivatePort && r.getPeople().get(uuid).contains("ally")) {
                     return false;
-                } else if (ownerPrivatePort && (r.getPeople().get(player.getUniqueId()).contains("ally") ||
-                        r.getPeople().get(player.getUniqueId()).contains("member"))) {
+                } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains("ally") ||
+                        r.getPeople().get(uuid).contains("member"))) {
                     return false;
                 }
             }
