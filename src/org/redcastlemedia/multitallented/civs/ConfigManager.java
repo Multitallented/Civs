@@ -125,6 +125,10 @@ public class ConfigManager {
     boolean mobsDropItemsWhenKilledInDenyDamage;
     @Getter
     boolean debugLog;
+    @Getter
+    double maxBankDeposit;
+    @Getter
+    double antiCampCost;
 
     public ConfigManager() {
         loadDefaults();
@@ -363,6 +367,7 @@ public class ConfigManager {
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
+            maxBankDeposit = config.getDouble("max-bank-deposit", -1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -388,6 +393,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        maxBankDeposit = -1;
         debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;
         useBoundingBox = true;

@@ -173,6 +173,7 @@ public class Civs extends JavaPlugin {
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
         commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("deposit", new DepositBankCommand());
         commandList.put("tax", new TaxCommand());
         commandList.put("colony", new ColonyCommand());
         commandList.put("newday", new DayCommand());
