@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -86,13 +87,8 @@ public class PortMenu extends Menu {
             if (!region.getEffects().containsKey("port")) {
                 continue;
             }
-            if (!region.getPeople().containsKey(civilian.getUuid())) {
-                continue;
-            }
             //Don't show private ports
-            if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+            if (!PortCommand.canPort(region, civilian.getUuid(), null)) {
                 continue;
             }
             returnSet.add(region);
