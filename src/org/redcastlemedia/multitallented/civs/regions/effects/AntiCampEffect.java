@@ -28,11 +28,25 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class AntiCampEffect implements Listener {
-    private final HashMap<UUID, String> lastDeathTown = new HashMap<>();
-    private final HashMap<String, Long> lastPoison = new HashMap<>();
-    private final HashMap<UUID, ArrayList<Long>> lastDeath = new HashMap<>();
-    private final String KEY = "anticamp";
+    private static final HashMap<UUID, String> lastDeathTown = new HashMap<>();
+    private static final HashMap<String, Long> lastPoison = new HashMap<>();
+    private static final HashMap<UUID, ArrayList<Long>> lastDeath = new HashMap<>();
+    public static final String KEY = "anticamp";
 
+    public static boolean canActivateAntiCamp(UUID uuid, Town town) {
+        if (!lastDeathTown.containsKey(uuid) || !lastDeathTown.get(uuid).equals(town.getName())) {
+            return false;
+        }
+        return lastDeath.containsKey(uuid);
+    }
+
+    public static void activateAntiCamp(UUID uuid, Town town) {
+        lastDeathTown.remove(uuid);
+        lastDeath.remove(uuid);
+        lastPoison.put(town.getName(), System.currentTimeMillis() + getPeriod(town.getEffects().get(KEY)) * 1000);
+    }
+
+    // TODO listen for town rename?
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -106,11 +120,19 @@ public class AntiCampEffect implements Listener {
     }
 
     private void sendReminderMessage(Player player, Town town) {
+        if (!town.getEffects().containsKey(KEY)) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         double antiCampCost = 0;
-
-        // TODO find the cost of the anti camp
+        if (town.getEffects().get(AntiCampEffect.KEY) != null) {
+            String antiCampString = town.getEffects().get(AntiCampEffect.KEY);
+            String[] splitString = antiCampString.split("\\.");
+            if (splitString.length > 2) {
+                antiCampCost = Double.parseDouble(splitString[2]);
+            }
+        }
 
         String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(civilian.getLocale(),
                 "activate-anticamp-question").replace("$1", player.getDisplayName())
@@ -247,5 +269,16 @@ public class AntiCampEffect implements Listener {
             }
             lastPoison.remove(s);
         }
+    }
+
+    private static long getPeriod(String antiCampString) {
+        long period = 2;
+        if (antiCampString != null) {
+            String[] antiCampSplit = antiCampString.split("\\.");
+            if (antiCampSplit.length > 1) {
+                period = Long.parseLong(antiCampSplit[1]);
+            }
+        }
+        return period;
     }
 }

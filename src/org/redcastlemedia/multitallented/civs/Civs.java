@@ -181,6 +181,7 @@ public class Civs extends JavaPlugin {
         commandList.put("toggleann", new ToggleAnnouncementCommand());
         commandList.put("setrecruiter", new SetRecruiterCommand());
         commandList.put("advancetut", new TutorialAdvanceCommand());
+        commandList.put("anticamp", new AntiCampCommand());
     }
 
     private void initListeners() {
