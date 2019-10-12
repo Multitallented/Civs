@@ -31,6 +31,8 @@ public class Town {
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
+    @Getter @Setter
+    private HashMap<String, String> effects = new HashMap<>();
     private long lastDisable;
     private final int Y_LEVEL = 80;
     private int villagers;
