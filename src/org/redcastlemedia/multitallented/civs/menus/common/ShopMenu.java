@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -34,10 +36,47 @@ public class ShopMenu extends CustomMenu {
             parent = ItemManager.getInstance().getItemType(params.get("parent"));
             data.put("parent", parent);
         }
-        List<CivItem> shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
-        int maxPage = (int) Math.ceil((double) shopItems.size() / (double) itemsPerPage.get("items"));
-        maxPage = maxPage > 0 ? maxPage - 1 : 0;
-        data.put("maxPage", maxPage);
+        String sortType = params.get("sort");
+        if (sortType == null) {
+            sortType = "category";
+        }
+        int level = -1;
+        if (params.containsKey("level")) {
+            level = Integer.parseInt(params.get("level"));
+        }
+        List<CivItem> shopItems = null;
+        ArrayList<CVItem> levelList = new ArrayList<>();
+        if (sortType.equals("catergory")) {
+            shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
+        } else {
+            if (level < 0) {
+                int currentLevel = 0;
+                for (String matString : ConfigManager.getInstance().getLevelList()) {
+                    CVItem cvItem = CVItem.createCVItemFromString(matString);
+                    cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "level").replace("$1", "" + currentLevel));
+                    ArrayList<String> lore = new ArrayList<>();
+                    lore.add("" + level);
+                    cvItem.setLore(lore);
+                    levelList.add(cvItem);
+                    currentLevel++;
+                }
+
+            } else {
+                shopItems = ItemManager.getInstance().getItemsByLevel(level);
+            }
+        }
+        if (shopItems != null) {
+            data.put("shopItems", shopItems);
+            int maxPage = (int) Math.ceil((double) shopItems.size() / (double) itemsPerPage.get("items"));
+            maxPage = maxPage > 0 ? maxPage - 1 : 0;
+            data.put("maxPage", maxPage);
+        } else if (!levelList.isEmpty()) {
+            data.put("levelList", levelList);
+            int maxPage = (int) Math.ceil((double) levelList.size() / (double) itemsPerPage.get("items"));
+            maxPage = maxPage > 0 ? maxPage - 1 : 0;
+            data.put("maxPage", maxPage);
+        }
 
         for (String key : params.keySet()) {
             if (key.equals("page") || key.equals("maxPage") ||
@@ -67,7 +106,15 @@ public class ShopMenu extends CustomMenu {
                     parent.getProcessedName() + "-desc")));
             return icon.createItemStack();
         } else if (menuIcon.getKey().equals("items")) {
-            // TODO fill items from parent or level
+            ArrayList<CivItem> shopItems = (ArrayList<CivItem>) MenuManager.getData(civilian.getUuid(), "shopItems");
+            ArrayList<CVItem> levelList = (ArrayList<CVItem>) MenuManager.getData(civilian.getUuid(), "levelList");
+            if (shopItems != null) {
+
+            } else if (levelList != null) {
+
+            } else {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
@@ -83,6 +130,8 @@ public class ShopMenu extends CustomMenu {
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
         for (String actionString : actionStrings) {
             if (actionString.equals("view-item")) {
+                String key = clickedItem.getItemMeta().getLore().get(0);
+
                 // TODO open folder, town-type, or region-type menu
                 return true;
             }
