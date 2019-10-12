@@ -32,7 +32,10 @@ public class ForSaleMenu extends Menu {
         List<Region> regions = new ArrayList<>();
         for (Region r : RegionManager.getInstance().getAllRegions()) {
             if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
-                regions.add(r);
+                Town town = TownManager.getInstance().getTownAt(r.getLocation());
+                if (town == null || town.getPeople().containsKey(civilian.getUuid())) {
+                    regions.add(r);
+                }
             }
         }
         Inventory inventory = Bukkit.createInventory(null, 45, MENU_NAME);
