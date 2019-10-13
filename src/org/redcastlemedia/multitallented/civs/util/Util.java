@@ -544,6 +544,11 @@ public final class Util {
 
     public static boolean hasOverride(Region region, Civilian civilian, Town town) {
         boolean override = false;
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        if (isAdmin) {
+            return true;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         if (town != null && civilian != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
