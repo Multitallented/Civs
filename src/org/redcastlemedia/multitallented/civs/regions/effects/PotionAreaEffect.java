@@ -38,7 +38,7 @@ public class PotionAreaEffect implements Listener {
 
     @EventHandler
     public void onPlayerInTown(PlayerInTownEvent event) {
-        if (!event.getTownType().getEffects().containsKey(KEY)) {
+        if (!event.getTown().getEffects().containsKey(KEY)) {
             return;
         }
         String key = event.getTown().getName();
@@ -47,7 +47,7 @@ public class PotionAreaEffect implements Listener {
         } else {
             cooldowns.remove(key);
         }
-        String potionString = event.getTownType().getEffects().get(KEY);
+        String potionString = event.getTown().getEffects().get(KEY);
         boolean isMember = event.getTown().getPeople().containsKey(event.getUuid());
         applyPotion(potionString, event.getUuid(), event.getTownType().getProcessedName(), isMember, key);
     }
