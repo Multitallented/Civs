@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -41,9 +42,12 @@ public class AntiCampEffect implements Listener {
     }
 
     public static void activateAntiCamp(UUID uuid, Town town) {
-        lastDeathTown.remove(uuid);
-        lastDeath.remove(uuid);
-        lastPoison.put(town.getName(), System.currentTimeMillis() + getPeriod(town.getEffects().get(KEY)) * 1000);
+        lastDeathTown.put(uuid, town.getName());
+        ArrayList<Long> lastDeaths = new ArrayList<>();
+        lastDeaths.add(System.currentTimeMillis() + getPeriod(town.getEffects().get(KEY)) * 1000);
+        lastDeaths.add(System.currentTimeMillis() + getPeriod(town.getEffects().get(KEY)) * 1000);
+        lastDeaths.add(System.currentTimeMillis() + getPeriod(town.getEffects().get(KEY)) * 1000);
+        lastDeath.put(uuid, lastDeaths);
     }
 
     // TODO listen for town rename?
@@ -54,7 +58,7 @@ public class AntiCampEffect implements Listener {
         lastDeath.remove(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -67,56 +71,42 @@ public class AntiCampEffect implements Listener {
         //remove the killer from deathCounts
         lastDeath.remove(civilian.getLastDamager());
 
-        //if the person who's dying has died more than twice, then I don't care
-//            if (lastDeath.containsKey(player.getName()) && lastDeath.get(player.getName()).size() > 2) {
-//                return;
-//            }
-
         //If they died outside of a town then I don't care
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (town == null) {
             return;
         }
 
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        if (townType == null) {
-            return;
-        }
-
-        if (!townType.getEffects().containsKey(KEY)) {
+        if (!town.getEffects().containsKey(KEY)) {
             return;
         }
 
         //If the person dying was a member, then increment their deathCount
-        if (town.getPeople().containsKey(player.getUniqueId())) {
-
-            sendReminderMessage(player, town);
-
-            //Don't count deaths in a previous town
-            if (lastDeathTown.containsKey(player.getUniqueId()) &&
-                    lastDeathTown.get(player.getUniqueId()) != null &&
-                    !lastDeathTown.get(player.getUniqueId()).equals(town.getName())) {
-                lastDeath.remove(player.getUniqueId());
-            }
-
-            //if the person hasn't died yet then add to lastDeath
-            if (!lastDeath.containsKey(player.getUniqueId())) {
-                lastDeath.put(player.getUniqueId(), new ArrayList<Long>());
-                lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());
-            } else {
-                lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());
-            }
-            if (lastDeath.get(player.getUniqueId()).size() > 3) {
-                lastDeath.get(player.getUniqueId()).remove(0);
-            }
-
-//                    if (deathCounts.containsKey(player.getName())) {
-//                        deathCounts.put(player.getName(), deathCounts.get(player.getName()) + 1);
-//                    } else {
-//                        deathCounts.put(player.getName(), 1);
-//                    }
-            lastDeathTown.put(player.getUniqueId(), town.getName());
+        if (!town.getPeople().containsKey(player.getUniqueId())) {
+            return;
         }
+
+        sendReminderMessage(player, town);
+
+        //Don't count deaths in a previous town
+        if (lastDeathTown.containsKey(player.getUniqueId()) &&
+                lastDeathTown.get(player.getUniqueId()) != null &&
+                !lastDeathTown.get(player.getUniqueId()).equals(town.getName())) {
+            lastDeath.remove(player.getUniqueId());
+        }
+
+        //if the person hasn't died yet then add to lastDeath
+        if (!lastDeath.containsKey(player.getUniqueId())) {
+            lastDeath.put(player.getUniqueId(), new ArrayList<Long>());
+            lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());
+        } else {
+            lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());
+        }
+        if (lastDeath.get(player.getUniqueId()).size() > 3) {
+            lastDeath.get(player.getUniqueId()).remove(0);
+        }
+
+        lastDeathTown.put(player.getUniqueId(), town.getName());
     }
 
     private void sendReminderMessage(Player player, Town town) {
@@ -143,7 +133,7 @@ public class AntiCampEffect implements Listener {
         TextComponent acceptComponent = new TextComponent("[✓]");
         acceptComponent.setColor(net.md_5.bungee.api.ChatColor.GREEN);
         acceptComponent.setUnderlined(true);
-        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv anticamp"));
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv anticamp " + town.getName()));
         component.addExtra(acceptComponent);
 
         player.spigot().sendMessage(component);
@@ -159,7 +149,7 @@ public class AntiCampEffect implements Listener {
 
             //Cleanup
             {
-                ArrayList<Integer> removeIndexes = new ArrayList<Integer>();
+                ArrayList<Integer> removeIndexes = new ArrayList<>();
                 int i = 0;
                 for (Long deathTime : lastDeath.get(name)) {
                     if (deathTime + 600000 < System.currentTimeMillis()) {
@@ -183,24 +173,11 @@ public class AntiCampEffect implements Listener {
             if (town == null) {
                 continue;
             }
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (townType == null) {
-                continue;
-            }
-            if (!townType.getEffects().containsKey(KEY)) {
+            if (!town.getEffects().containsKey(KEY)) {
                 continue;
             }
 
-            long period = 2;
-            {
-                String antiCampString = townType.getEffects().get(KEY);
-                if (antiCampString != null) {
-                    String[] antiCampSplit = antiCampString.split("\\.");
-                    if (antiCampSplit.length > 1) {
-                        period = Long.parseLong(antiCampSplit[1]);
-                    }
-                }
-            }
+            long period = getPeriod(town.getEffects().get(KEY));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -230,17 +207,13 @@ public class AntiCampEffect implements Listener {
             if (town == null) {
                 continue;
             }
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (townType == null) {
-                continue;
-            }
 
-            if (!townType.getEffects().containsKey(KEY)) {
+            if (!town.getEffects().containsKey(KEY)) {
                 continue;
             }
             int damage = 1;
             {
-                String antiCampString = townType.getEffects().get(KEY);
+                String antiCampString = town.getEffects().get(KEY);
                 if (antiCampString != null) {
                     String[] antiCampSplit = antiCampString.split("\\.");
                     damage = Integer.parseInt(antiCampSplit[0]);

@@ -17,11 +17,19 @@ public class AntiCampCommand implements CivCommand {
         if (!(commandSender instanceof Player)) {
             return true;
         }
+
+        // 0 anticamp
+        // 1 town name
         Player player = (Player) commandSender;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        Town town = TownManager.getInstance().getTownAt(player.getLocation());
+        Town town;
+        if (args.length > 1) {
+            town = TownManager.getInstance().getTown(args[1]);
+        } else {
+            town = TownManager.getInstance().getTownAt(player.getLocation());
+        }
         if (town == null) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "invalid-target"));
@@ -56,6 +64,7 @@ public class AntiCampCommand implements CivCommand {
         if (antiCampCost > 0 && Civs.econ != null) {
             Civs.econ.withdrawPlayer(player, antiCampCost);
         }
+        AntiCampEffect.activateAntiCamp(civilian.getUuid(), town);
         return true;
     }
 }

@@ -313,7 +313,7 @@ public class ConfigManager {
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
-            portWarmup = config.getInt("port.warmpup", 5);
+            portWarmup = config.getInt("port.warmup", 5);
             portCooldown = config.getInt("port.cooldown", 60);
             portMoney = config.getDouble("port.money", 0);
             portDamage = config.getInt("port.damage", 0);
