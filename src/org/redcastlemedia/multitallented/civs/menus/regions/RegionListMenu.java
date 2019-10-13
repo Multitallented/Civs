@@ -69,10 +69,15 @@ public class RegionListMenu extends CustomMenu {
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("regions")) {
-            List<Region> regions = new ArrayList<>();
-            for (Region region : RegionManager.getInstance().getAllRegions()) {
-                if (region.getRawPeople().containsKey(civilian.getUuid())) {
-                    regions.add(region);
+            List<Region> regions;
+            if (MenuManager.getData(civilian.getUuid(), "regions") != null) {
+                regions = (ArrayList<Region>) MenuManager.getData(civilian.getUuid(), "regions");
+            } else {
+                regions = new ArrayList<>();
+                for (Region region : RegionManager.getInstance().getAllRegions()) {
+                    if (region.getRawPeople().containsKey(civilian.getUuid())) {
+                        regions.add(region);
+                    }
                 }
             }
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");

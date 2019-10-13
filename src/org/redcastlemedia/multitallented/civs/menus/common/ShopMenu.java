@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ShopMenu extends CustomMenu {
@@ -137,9 +138,10 @@ public class ShopMenu extends CustomMenu {
         for (String actionString : actionStrings) {
             if (actionString.equals("view-item")) {
                 String key = clickedItem.getItemMeta().getLore().get(0);
+                Player player = Bukkit.getPlayer(civilian.getUuid());
                 if ("level".equals(MenuManager.getData(civilian.getUuid(), "sort"))) {
                     int level = Integer.parseInt(key);
-                    HashMap<String, Integer> returnMap = new HashMap<>();
+                    ArrayList<CivItem> levelList = new ArrayList<>();
                     for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level)) {
                         if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
                                 !civItem.getInShop()) {
@@ -148,10 +150,15 @@ public class ShopMenu extends CustomMenu {
                         if (civilian.isAtMax(civItem) != null) {
                             continue;
                         }
-                        returnMap.put(civItem.getProcessedName(), 1);
+                        levelList.add(civItem);
                     }
-                    // TODO set data
-                    // TODO open region list menu
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("items", levelList);
+                    data.put("page", 0);
+                    int maxPage = (int) Math.ceil((double) levelList.size() / (double) itemsPerPage.get("regions"));
+                    maxPage = maxPage > 0 ? maxPage - 1 : 0;
+                    data.put("maxPage", maxPage);
+                    // TODO open a menu from history
                 } else {
 
                 }
