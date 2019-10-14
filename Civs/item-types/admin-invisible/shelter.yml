@@ -17,7 +17,7 @@ effects:
 - block_fire
 - block_explosion
 - deny_damage
-- port:private
+- port:owner
 - active:1209600 #2 weeks
 
 period: 1800 # 30 minutes
