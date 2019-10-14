@@ -21,7 +21,6 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ShopMenu extends CustomMenu {
@@ -51,9 +50,7 @@ public class ShopMenu extends CustomMenu {
         }
         List<CivItem> shopItems = null;
         ArrayList<CVItem> levelList = new ArrayList<>();
-        if (sortType.equals("catergory")) {
-            shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
-        } else {
+        if (sortType.equals("level")) {
             if (level < 0) {
                 int currentLevel = 0;
                 for (String matString : ConfigManager.getInstance().getLevelList()) {
@@ -68,8 +65,10 @@ public class ShopMenu extends CustomMenu {
                 }
 
             } else {
-                shopItems = ItemManager.getInstance().getItemsByLevel(level);
+                shopItems = createLevelList(civilian, level);
             }
+        } else {
+            shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
         }
         if (shopItems != null) {
             data.put("shopItems", shopItems);
@@ -139,30 +138,31 @@ public class ShopMenu extends CustomMenu {
             if (actionString.equals("view-item")) {
                 String key = clickedItem.getItemMeta().getLore().get(0);
                 Player player = Bukkit.getPlayer(civilian.getUuid());
-                if ("level".equals(MenuManager.getData(civilian.getUuid(), "sort"))) {
+                String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
+                HashMap<String, String> params = new HashMap<>();
+                if ("level".equals(sortType)) {
                     int level = Integer.parseInt(key);
-                    ArrayList<CivItem> levelList = new ArrayList<>();
-                    for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level)) {
-                        if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
-                                !civItem.getInShop()) {
-                            continue;
-                        }
-                        if (civilian.isAtMax(civItem) != null) {
-                            continue;
-                        }
-                        levelList.add(civItem);
+                    params.put("level", "" + level);
+                    params.put("sort", "level");
+                    MenuManager.getInstance().openMenu(player, "shop", params);
+                } else if ("category".equals(sortType)) {
+                    String name = ChatColor.stripColor(key).toLowerCase();
+                    CivItem civItem = ItemManager.getInstance().getItemType(name);
+                    if (civItem == null) {
+                        return true;
                     }
-                    HashMap<String, Object> data = new HashMap<>();
-                    data.put("items", levelList);
-                    data.put("page", 0);
-                    int maxPage = (int) Math.ceil((double) levelList.size() / (double) itemsPerPage.get("regions"));
-                    maxPage = maxPage > 0 ? maxPage - 1 : 0;
-                    data.put("maxPage", maxPage);
-                    // TODO open a menu from history
-                } else {
-
+                    if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
+                        params.put("sort", "category");
+                        params.put("parent", ChatColor.stripColor(key).toLowerCase());
+                        MenuManager.getInstance().openMenu(player, "shop", params);
+                    } else if (civItem.getItemType() == CivItem.ItemType.REGION) {
+                        params.put("region", name);
+                        MenuManager.getInstance().openMenu(player, "region-type", params);
+                    } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
+                        params.put("town", name);
+                        MenuManager.getInstance().openMenu(player, "town-type", params);
+                    }
                 }
-                // TODO open folder, town-type, or region-type menu
                 return true;
             }
         }
@@ -211,6 +211,21 @@ public class ShopMenu extends CustomMenu {
             lore.add(0, ChatColor.BLACK + civItem.getProcessedName());
         }
         return itemStack;
+    }
+
+    private ArrayList<CivItem> createLevelList(Civilian civilian, int level) {
+        ArrayList<CivItem> levelList = new ArrayList<>();
+        for (CivItem civItem : ItemManager.getInstance().getItemsByLevel(level)) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
+                    !civItem.getInShop()) {
+                continue;
+            }
+            if (civilian.isAtMax(civItem) != null) {
+                continue;
+            }
+            levelList.add(civItem);
+        }
+        return levelList;
     }
 
     @Override
