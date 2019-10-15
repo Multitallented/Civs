@@ -291,7 +291,7 @@ public class RegionManager {
                 regionConfig.set("last-active", null);
             }
             regionConfig.save(regionFile);
-            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
+//            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;

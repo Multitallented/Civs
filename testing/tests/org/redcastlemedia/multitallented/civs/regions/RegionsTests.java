@@ -400,12 +400,12 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location5, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location6, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location7, getRadii(), new HashMap<>(),0));
-        assertSame(location5, regionManager.getRegionAt(location5).getLocation());
-        assertSame(location2, regionManager.getRegionAt(location2).getLocation());
-        assertSame(location1, regionManager.getRegionAt(location1).getLocation());
-        assertSame(location7, regionManager.getRegionAt(location7).getLocation());
+        assertEquals(location5.getX(), regionManager.getRegionAt(location5).getLocation().getX(), 0.1);
+        assertEquals(location2.getX(), regionManager.getRegionAt(location2).getLocation().getX(), 0.1);
+        assertEquals(location1.getX(), regionManager.getRegionAt(location1).getLocation().getX(), 0.1);
+        assertEquals(location7.getX(), regionManager.getRegionAt(location7).getLocation().getX(), 0.1);
         regionManager.addRegion(new Region("cobble", owners, location8, getRadii(), new HashMap<>(),0));
-        assertSame(location8, regionManager.getRegionAt(location8).getLocation());
+        assertEquals(location8.getX(), regionManager.getRegionAt(location8).getLocation().getX(), 0.1);
     }
 
     @Test

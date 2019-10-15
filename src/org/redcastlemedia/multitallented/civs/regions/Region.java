@@ -29,7 +29,10 @@ public class Region {
 
     private String type;
     private final HashMap<UUID, String> people;
-    private Location location;
+    private final World world;
+    private final double x;
+    private final double y;
+    private final double z;
     private final int radiusXP;
     private final int radiusZP;
     private final int radiusXN;
@@ -59,7 +62,10 @@ public class Region {
                   double exp) {
         this.type = type;
         this.people = people;
-        this.location = location;
+        this.world = location.getWorld();
+        this.x = location.getX();
+        this.y = location.getY();
+        this.z = location.getZ();
         radiusXP = buildRadius[0];
         radiusZP = buildRadius[1];
         radiusXN = buildRadius[2];
@@ -70,9 +76,6 @@ public class Region {
         this.exp = exp;
     }
 
-    protected void setLocation(Location location) {
-        this.location = location;
-    }
     public double getExp() {
         return exp;
     }
@@ -96,7 +99,7 @@ public class Region {
     }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
-        Town town = townManager.getTownAt(location);
+        Town town = townManager.getTownAt(getLocation());
         if (town == null) {
             return people;
         }
@@ -137,7 +140,7 @@ public class Region {
         return owners;
     }
     public Location getLocation() {
-        return location;
+        return new Location(world, x, y, z);
     }
     public int getRadiusXP() {
         return radiusXP;
@@ -173,7 +176,7 @@ public class Region {
     }
 
     public String getId() {
-        return locationToString(location);
+        return locationToString(getLocation());
     }
     public static String blockLocationToString(Location location) {
 //        double x = location.getX();
@@ -248,6 +251,7 @@ public class Region {
     }
 
     private boolean addItemCheck(List<HashMap<Material, Integer>> itemCheck) {
+        Location location = getLocation();
         World currentWorld = location.getWorld();
         int xMax = (int) location.getX() + radiusXP;
         int xMin = (int) location.getX() - radiusXN;
@@ -649,7 +653,7 @@ public class Region {
             return false;
         }
 
-        Town town = TownManager.getInstance().getTownAt(location);
+        Town town = TownManager.getInstance().getTownAt(getLocation());
         long period = regionType.getPeriod();
         if (town != null && town.getGovernmentType() != null) {
             period = regionType.getPeriod(GovernmentManager.getInstance()
@@ -670,6 +674,7 @@ public class Region {
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
         }
+        Location location = getLocation();
         Block block = location.getBlock();
         BlockState state = null;
         try {
@@ -709,7 +714,7 @@ public class Region {
             return false;
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
-        Block block = location.getBlock();
+        Block block = getLocation().getBlock();
         BlockState state = block.getState();
         if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
@@ -751,6 +756,7 @@ public class Region {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
+        Location location = getLocation();
         boolean hadUpkeep = false;
         Inventory chestInventory = null;
         boolean hasItemUpkeep = false;
@@ -860,6 +866,7 @@ public class Region {
     }
 
     public void runUpkeep(int i) {
+        Location location = getLocation();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(getType());
         if (regionType.getUpkeeps().size() <= i) {
             return;
@@ -957,7 +964,7 @@ public class Region {
         boolean hasMoney = false;
         if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
             double payout = regionUpkeep.getPayout();
-            Town town = TownManager.getInstance().getTownAt(location);
+            Town town = TownManager.getInstance().getTownAt(getLocation());
             if (town != null && town.getGovernmentType() != null) {
                 Government government = GovernmentManager.getInstance()
                         .getGovernment(town.getGovernmentType());
