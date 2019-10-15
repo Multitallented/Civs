@@ -20,7 +20,7 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public int getSize() {
-        return contents.size();
+        return 27;
     }
 
     @Override
