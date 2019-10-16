@@ -19,6 +19,7 @@ effects:
 - block_build
 - block_break
 - drain_power:1 # 960 / day
+- chest_use
 
 towns:
 - outpost

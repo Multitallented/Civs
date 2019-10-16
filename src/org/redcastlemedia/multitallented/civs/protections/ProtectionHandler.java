@@ -333,7 +333,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
@@ -364,12 +364,13 @@ public class ProtectionHandler implements Listener {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
                     int powerReduce = 1;
-                    TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-                    if (townType.getEffects().get("power_shield") != null) {
-                        powerReduce = Integer.parseInt(townType.getEffects().get("power_shield"));
+                    if (town.getEffects().get("power_shield") != null) {
+                        powerReduce = Integer.parseInt(town.getEffects().get("power_shield"));
                     }
-                    TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
-                    setCancelled = true;
+                    if (town.getPower() > 0) {
+                        TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
+                        setCancelled = true;
+                    }
                 }
             }
         }

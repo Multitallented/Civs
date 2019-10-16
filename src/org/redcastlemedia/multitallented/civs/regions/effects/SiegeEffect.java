@@ -194,11 +194,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         //Find target Super-region
         Sign sign = (Sign) state;
         String townName = sign.getLine(0);
-        Town town = null;
-        for (Town cTown : TownManager.getInstance().getTowns()) {
-            if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
-                town = cTown;
-                break;
+        Town town = TownManager.getInstance().getTown(townName);
+        if (town == null) {
+            for (Town cTown : TownManager.getInstance().getTowns()) {
+                if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
+                    town = cTown;
+                    break;
+                }
             }
         }
         if (town == null) {
