@@ -357,13 +357,8 @@ public class ProtectionHandler implements Listener {
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), player, "block_tnt", 5);
-            if (setCancelled && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            }
-            if (shouldBlockActionEffect(event.getLocation(), player, "power_shield", 0)) {
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_tnt", 5);
+            if (shouldBlockActionEffect(event.getLocation(), null, "power_shield", 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
                     int powerReduce = 1;
@@ -375,6 +370,11 @@ public class ProtectionHandler implements Listener {
                         setCancelled = true;
                     }
                 }
+            }
+            if (setCancelled && player != null) {
+                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
             }
         }
         if (setCancelled) {

@@ -9,7 +9,7 @@ api-version: 1.14
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
-- MultiverseCore
+- DiscordSRV
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']

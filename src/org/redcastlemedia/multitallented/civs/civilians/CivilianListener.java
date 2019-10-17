@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -338,10 +339,17 @@ public class CivilianListener implements Listener {
         if ("PlaceholderAPI".equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+            return;
         }
         if ("MMOItems".equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = MMOItems.plugin;
+            return;
+        }
+        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Civs.discordSRV = DiscordSRV.getPlugin();
+            return;
         }
     }
 
@@ -350,6 +358,12 @@ public class CivilianListener implements Listener {
         if ("MMOItems".equals(event.getPlugin().getName()) &&
                 !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = null;
+            return;
+        }
+        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Civs.discordSRV = DiscordSRV.getPlugin();
+            return;
         }
     }
 

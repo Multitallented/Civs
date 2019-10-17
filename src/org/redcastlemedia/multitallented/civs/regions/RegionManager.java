@@ -80,7 +80,7 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
-        saveRegion(region);
+        saveRegionNow(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
             regions.put(worldUuid, new ArrayList<>());

@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.api.events.DiscordGuildMessageSentEvent;
+import github.scarsz.discordsrv.dependencies.jda.core.MessageBuilder;
+import github.scarsz.discordsrv.dependencies.jda.core.entities.impl.JDAImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -225,6 +229,12 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
+        }
+        String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
+                .replace("$2", regionType.getName()).replace("$3", town.getName());
+        if (Civs.discordSRV != null) {
+            DiscordSRV.getPlugin().broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(), defaultMessage, DiscordSRV.getPlugin().getJda().getSelfUser());
         }
         return true;
     }

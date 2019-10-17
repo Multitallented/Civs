@@ -147,6 +147,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
         File dataFile = new File(dataFolder, r.getId() + ".yml");
         if (!dataFile.exists()) {
+            System.out.println("warehouse region file does not exist");
+            System.out.println(r.getId() + ".yml");
             return;
         }
         FileConfiguration config = new YamlConfiguration();
@@ -159,6 +161,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             config.set("chests", locationList);
             config.save(dataFile);
         } catch (Exception e) {
+            e.printStackTrace();
             Civs.logger.warning("Unable to save new chest for " + r.getId() + ".yml");
             return;
         }
@@ -220,11 +223,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         //declarations
         Region r            = event.getRegion();
         Location l          = r.getLocation();
-        RegionType rt       = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-
-        if (rt == null) {
-            return;
-        }
 
         checkExcessChests(r);
 
