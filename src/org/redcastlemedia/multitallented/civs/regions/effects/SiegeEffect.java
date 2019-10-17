@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -30,9 +31,11 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
@@ -231,11 +234,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
                     civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", regionType.getName()).replace("$3", town.getName()));
         }
-        String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
-                .replace("$2", regionType.getName()).replace("$3", town.getName());
         if (Civs.discordSRV != null) {
-            DiscordSRV.getPlugin().broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(), defaultMessage, DiscordSRV.getPlugin().getJda().getSelfUser());
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
+                    .replace("$2", regionType.getName()).replace("$3", town.getName());
+            defaultMessage += DiscordUtil.atAllTownOwners(town);
+            Civs.discordSRV.broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(),
+                    defaultMessage, Civs.discordSRV.getJda().getSelfUser());
         }
         return true;
     }
