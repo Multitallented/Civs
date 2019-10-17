@@ -22,7 +22,8 @@ limits:
 - powercapacitorgroup:6
 
 child: outpost
-build-radius: 36 # 73x73x73
+build-radius: 36 # 73x1000x73
+build-radius-y: 500
 effects:
 - exempt-housing
 - block_break

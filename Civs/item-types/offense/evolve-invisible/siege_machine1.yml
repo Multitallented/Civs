@@ -20,6 +20,7 @@ effects:
 - block_break
 - drain_power:1
 - evolve:siege_machine2.3
+- chest_use
 
 towns:
 - outpost
