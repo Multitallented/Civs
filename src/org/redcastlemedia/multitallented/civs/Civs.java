@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -45,6 +46,7 @@ public class Civs extends JavaPlugin {
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
+    public static DiscordSRV discordSRV;
     private static Civs civs;
     public static Logger logger;
 
@@ -269,6 +271,9 @@ public class Civs extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            discordSRV = DiscordSRV.getPlugin();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {

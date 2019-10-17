@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -55,11 +57,22 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        Bukkit.broadcastMessage(Civs.getPrefix() + ChatColor.RED +
-                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-porter-warning")
-                .replace("$1", player.getDisplayName())
-                .replace("$2", rt.getName())
-                .replace("$3", town.getName()));
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
+            player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
+                    LocaleManager.getInstance().getTranslation(civilian1.getLocale(), "raid-porter-warning")
+                            .replace("$1", player.getDisplayName())
+                            .replace("$2", rt.getName())
+                            .replace("$3", town.getName()));
+        }
+        String defaultMessage = Civs.getPrefix() + ChatColor.RED +
+                LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
+                        .replace("$1", player.getDisplayName())
+                        .replace("$2", rt.getName())
+                        .replace("$3", town.getName());
+        if (Civs.discordSRV != null) {
+            DiscordSRV.getPlugin().broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(), defaultMessage, DiscordSRV.getPlugin().getJda().getSelfUser());
+        }
         CVItem raidRemote = CVItem.createCVItemFromString("STICK");
         raidRemote.setDisplayName("Controller " + rt.getName() + " " + Region.locationToString(l));
 
