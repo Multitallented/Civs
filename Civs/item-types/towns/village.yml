@@ -35,6 +35,7 @@ limits:
 - warehouse:1
 - barracks:1
 - inn:1
+- embassy:2
 
 critical-build-reqs:
 - town_center

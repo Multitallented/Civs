@@ -40,7 +40,7 @@ limits:
 - jail:1
 - alchemical_lab:1
 - power_capacitor:4
-- embassy:4
+- embassy:5
 - diamond_mine:1
 - idolgroup:4
 

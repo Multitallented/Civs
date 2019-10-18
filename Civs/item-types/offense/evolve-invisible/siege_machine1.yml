@@ -26,15 +26,15 @@ towns:
 - outpost
 - keep
 
-period: 150
+period: 150 # 2.5 minutes
 upkeep:
   0:
     input:
     - TNT*1
-    - REDSTONE*4
-    - COAL*1
+    - REDSTONE*3
+    - COAL*3
     output:
-    - GRAVEL*1
-    - DIRT*1
+    - GRAVEL*1%90,TNT*1%10
+    - DIRT*1%80,COAL*1%10,REDSTONE*1%10
     exp: 1
 
