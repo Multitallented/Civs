@@ -2,7 +2,9 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.util.UUID;
 
+import github.scarsz.discordsrv.dependencies.jda.core.entities.Member;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -25,14 +27,23 @@ public final class DiscordUtil {
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             if (offlinePlayer.getName() != null) {
-                defaultMessage += " @" + offlinePlayer.getName();
+                String mention = "";
+                for (Member member : Civs.discordSRV.getMainTextChannel().getMembers()) {
+                    if (offlinePlayer.getName().startsWith(member.getUser().getName())) {
+                        mention = " " + member.getUser().getAsMention();
+                        break;
+                    }
+                }
+                if (mention.isEmpty()) {
+                    mention = " @" + offlinePlayer.getName();
+                }
+                defaultMessage += mention;
             }
         }
         return defaultMessage;
     }
 
     public static void sendMessageToMainChannel(String message) {
-        Civs.discordSRV.broadcastMessageToMinecraftServer(Civs.discordSRV.getMainChatChannel(),
-                message, Civs.discordSRV.getJda().getSelfUser());
+        Civs.discordSRV.getMainTextChannel().sendMessage(ChatColor.stripColor(message)).submit();
     }
 }
