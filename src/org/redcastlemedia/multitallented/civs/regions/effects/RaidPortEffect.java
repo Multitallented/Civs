@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -65,13 +66,14 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
                             .replace("$2", rt.getName())
                             .replace("$3", town.getName()));
         }
-        String defaultMessage = Civs.getPrefix() + ChatColor.RED +
-                LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
-                        .replace("$1", player.getDisplayName())
-                        .replace("$2", rt.getName())
-                        .replace("$3", town.getName());
         if (Civs.discordSRV != null) {
-            DiscordSRV.getPlugin().broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(), defaultMessage, DiscordSRV.getPlugin().getJda().getSelfUser());
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED +
+                    LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
+                            .replace("$1", player.getDisplayName())
+                            .replace("$2", rt.getName())
+                            .replace("$3", town.getName());
+            defaultMessage += DiscordUtil.atAllTownOwners(town);
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         CVItem raidRemote = CVItem.createCVItemFromString("STICK");
         raidRemote.setDisplayName("Controller " + rt.getName() + " " + Region.locationToString(l));

@@ -1,13 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.api.events.DiscordGuildMessageSentEvent;
-import github.scarsz.discordsrv.dependencies.jda.core.MessageBuilder;
-import github.scarsz.discordsrv.dependencies.jda.core.entities.impl.JDAImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -30,9 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-
-import java.util.Date;
-import java.util.HashMap;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
@@ -230,11 +223,12 @@ public class SiegeEffect implements Listener, CreateRegionListener {
                     civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
-        String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
-                .replace("$2", regionType.getName()).replace("$3", town.getName());
         if (Civs.discordSRV != null) {
-            DiscordSRV.getPlugin().broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(), defaultMessage, DiscordSRV.getPlugin().getJda().getSelfUser());
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
+                    .replace("$2", regionType.getName()).replace("$3", town.getName());
+            defaultMessage += DiscordUtil.atAllTownOwners(town);
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         return true;
     }
