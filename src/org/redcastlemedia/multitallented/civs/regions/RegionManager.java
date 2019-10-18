@@ -656,7 +656,11 @@ public class RegionManager {
         if (rebuildTransition) {
             event.setCancelled(true);
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.getInventory().setItemInMainHand(null);
+            if (itemStack.getAmount() > 1) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+            } else {
+                player.getInventory().setItemInMainHand(null);
+            }
             location.getBlock().setType(itemStack.getType());
         }
 
