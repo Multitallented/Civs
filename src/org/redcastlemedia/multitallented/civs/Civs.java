@@ -42,7 +42,6 @@ public class Civs extends JavaPlugin {
 
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static String NAME = "Civs";
-    public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
@@ -115,12 +114,20 @@ public class Civs extends JavaPlugin {
         logger.info(LogInfo.PH_VOID);
 
         logger.info(LogInfo.PH_INFO);
-        if (econ != null)
+        if (econ != null) {
             logger.info(LogInfo.HOOKECON + econ.getName());
-        if (perm != null)
+        }
+        if (perm != null) {
             logger.info(LogInfo.HOOKPERM + perm.getName());
+        }
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        if (mmoItems != null) {
+            logger.info(LogInfo.HOOKCHAT + "MMOItems");
+        }
+        if (discordSRV != null) {
+            logger.info(LogInfo.HOOKCHAT + "DiscordSRV");
         }
         logger.info(LogInfo.PH_INFO);
 
