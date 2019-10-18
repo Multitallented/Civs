@@ -1,14 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.api.events.DiscordGuildMessageSentEvent;
-import github.scarsz.discordsrv.dependencies.jda.core.MessageBuilder;
-import github.scarsz.discordsrv.dependencies.jda.core.entities.impl.JDAImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -32,10 +26,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
@@ -239,8 +229,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
                     ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", regionType.getName()).replace("$3", town.getName());
             defaultMessage += DiscordUtil.atAllTownOwners(town);
-            Civs.discordSRV.broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(),
-                    defaultMessage, Civs.discordSRV.getJda().getSelfUser());
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         return true;
     }

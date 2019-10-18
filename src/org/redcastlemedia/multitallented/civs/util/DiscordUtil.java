@@ -30,4 +30,9 @@ public final class DiscordUtil {
         }
         return defaultMessage;
     }
+
+    public static void sendMessageToMainChannel(String message) {
+        Civs.discordSRV.broadcastMessageToMinecraftServer(Civs.discordSRV.getMainChatChannel(),
+                message, Civs.discordSRV.getJda().getSelfUser());
+    }
 }

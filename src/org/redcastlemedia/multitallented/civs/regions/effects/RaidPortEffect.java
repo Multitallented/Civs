@@ -73,8 +73,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
                             .replace("$2", rt.getName())
                             .replace("$3", town.getName());
             defaultMessage += DiscordUtil.atAllTownOwners(town);
-            Civs.discordSRV.broadcastMessageToMinecraftServer(DiscordSRV.getPlugin().getMainChatChannel(),
-                    defaultMessage, Civs.discordSRV.getJda().getSelfUser());
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         CVItem raidRemote = CVItem.createCVItemFromString("STICK");
         raidRemote.setDisplayName("Controller " + rt.getName() + " " + Region.locationToString(l));

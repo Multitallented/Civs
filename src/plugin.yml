@@ -10,6 +10,7 @@ depend: [Vault]
 softdepend:
 - PlaceholderAPI
 - DiscordSRV
+- MMOItems
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
@@ -28,4 +29,4 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-loadafter: [Vault, PlaceholderAPI]
+loadafter: [Vault, PlaceholderAPI, MMOItems]
