@@ -194,7 +194,8 @@ public class RecipeMenu extends Menu {
         for (Integer pIndex : proxyInv.keySet()) {
             CVItem nextItem = proxyInv.get(pIndex);
             ItemStack is;
-            is = new ItemStack(nextItem.getMat(), nextItem.getQty());
+            is = nextItem.createItemStack();
+            is.setAmount(nextItem.getQty());
             if (nextItem.getGroup() != null) {
                 ItemMeta itemMeta = is.getItemMeta();
                 ArrayList<String> lore = new ArrayList<>();
