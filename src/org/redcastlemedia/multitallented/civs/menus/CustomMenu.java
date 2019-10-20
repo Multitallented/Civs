@@ -75,7 +75,7 @@ public abstract class CustomMenu {
         if (menuIcon.getKey().equals("prev")) {
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
 
-            if (page < 2) {
+            if (page < 1) {
                 return new ItemStack(Material.AIR);
             }
         }

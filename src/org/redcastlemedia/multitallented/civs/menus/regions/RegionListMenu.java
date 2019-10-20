@@ -84,8 +84,11 @@ public class RegionListMenu extends CustomMenu {
             int startIndex = page * menuIcon.getIndex().size();
             Region[] regionArray = new Region[regions.size()];
             regionArray = regions.toArray(regionArray);
+            if (regionArray.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             Region region = regionArray[startIndex + count];
-            CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).clone();
+            CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).getShopIcon().clone();
             cvItem.getLore().add(0, ChatColor.BLACK + region.getId());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack);

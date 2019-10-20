@@ -90,10 +90,10 @@ public class MenuManager implements Listener {
                 refreshMenu(civilian);
                 event.setCancelled(true);
                 return;
-            } else if (backButton.createCVItem(civilian.getLocale())
+            } else if (nextButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
-                int maxPage = (Integer) getData(civilian.getUuid(), "max-page");
+                int maxPage = (Integer) getData(civilian.getUuid(), "maxPage");
                 putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
                 refreshMenu(civilian);
                 event.setCancelled(true);
@@ -128,7 +128,7 @@ public class MenuManager implements Listener {
                     config.getString("prev.icon", "REDSTONE"),
                     config.getString("prev.name", "prev-button"),
                     config.getString("prev.desc", ""));
-            prevButton = new MenuIcon("next",
+            nextButton = new MenuIcon("next",
                     config.getString("next.icon", "EMERALD"),
                     config.getString("next.name", "next-button"),
                     config.getString("next.desc", ""));
@@ -229,9 +229,9 @@ public class MenuManager implements Listener {
         if (!menus.containsKey(menuName)) {
             return;
         }
-        openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
+        openMenus.put(player.getUniqueId(), menuName);
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());
         }
@@ -243,7 +243,6 @@ public class MenuManager implements Listener {
         if (!menus.containsKey(menuName)) {
             return;
         }
-        openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
         if (redirectMenu != null) {
@@ -251,6 +250,7 @@ public class MenuManager implements Listener {
             return;
         }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
+        openMenus.put(player.getUniqueId(), menuName);
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());
         }
@@ -262,7 +262,9 @@ public class MenuManager implements Listener {
             return;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        player.openInventory(menus.get(openMenus.get(civilian.getUuid())).createMenu(civilian));
+        String menuName = openMenus.get(civilian.getUuid());
+        player.openInventory(menus.get(menuName).createMenu(civilian));
+        openMenus.put(civilian.getUuid(), menuName);
     }
 
     public static int getInventorySize(int count) {

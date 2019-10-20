@@ -37,15 +37,15 @@ public class MenuIcon {
                 this.name = backIcon.getName();
                 this.desc = backIcon.getDesc();
             } else if (key.equals("prev")) {
-                MenuIcon backIcon = MenuManager.getInstance().getPrevButton();
-                this.icon = backIcon.getIcon();
-                this.name = backIcon.getName();
-                this.desc = backIcon.getDesc();
+                MenuIcon prevButton = MenuManager.getInstance().getPrevButton();
+                this.icon = prevButton.getIcon();
+                this.name = prevButton.getName();
+                this.desc = prevButton.getDesc();
             } else if (key.equals("next")) {
-                MenuIcon backIcon = MenuManager.getInstance().getBackButton();
-                this.icon = backIcon.getIcon();
-                this.name = backIcon.getName();
-                this.desc = backIcon.getDesc();
+                MenuIcon nextButton = MenuManager.getInstance().getNextButton();
+                this.icon = nextButton.getIcon();
+                this.name = nextButton.getName();
+                this.desc = nextButton.getDesc();
             } else {
                 this.icon = section.getString("icon", "STONE");
                 this.name = section.getString("name", "");
@@ -97,7 +97,7 @@ public class MenuIcon {
                 String[] currentSplit = currentIndexString.split("-");
                 int startIndex = Integer.parseInt(currentSplit[0]);
                 int endIndex = Integer.parseInt(currentSplit[1]);
-                for (int i = startIndex; i < endIndex; i++) {
+                for (int i = startIndex; i <= endIndex; i++) {
                     indexList.add(i);
                 }
             } else {

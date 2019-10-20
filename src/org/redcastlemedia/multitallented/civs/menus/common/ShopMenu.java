@@ -26,6 +26,9 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 public class ShopMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+        for (String param : params.keySet()) {
+            System.out.println(param + ":" + params.get(param));
+        }
         Map<String, Object> data = new HashMap<>();
 
         if (params.containsKey("page")) {
@@ -52,13 +55,13 @@ public class ShopMenu extends CustomMenu {
         ArrayList<CVItem> levelList = new ArrayList<>();
         if (sortType.equals("level")) {
             if (level < 0) {
-                int currentLevel = 0;
+                int currentLevel = 1;
                 for (String matString : ConfigManager.getInstance().getLevelList()) {
                     CVItem cvItem = CVItem.createCVItemFromString(matString);
                     cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                             "level").replace("$1", "" + currentLevel));
                     ArrayList<String> lore = new ArrayList<>();
-                    lore.add("" + level);
+                    lore.add("" + currentLevel);
                     cvItem.setLore(lore);
                     levelList.add(cvItem);
                     currentLevel++;
@@ -90,6 +93,11 @@ public class ShopMenu extends CustomMenu {
             data.put(key, params.get(key));
         }
 
+        System.out.println("-----data------");
+        for (String key : data.keySet()) {
+            System.out.println(key + ":" + data.get(key));
+        }
+        System.out.println("---------------");
         return data;
     }
 
@@ -100,7 +108,7 @@ public class ShopMenu extends CustomMenu {
             if (parent == null) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem icon = parent.clone();
+            CVItem icon = parent.getShopIcon().clone();
             icon.setDisplayName(LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(), parent.getProcessedName() + "-name"));
             icon.getLore().clear();
@@ -108,6 +116,7 @@ public class ShopMenu extends CustomMenu {
             icon.getLore().addAll(Util.textWrap(LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(),
                     parent.getProcessedName() + "-desc")));
+            putActions(civilian, menuIcon, icon.createItemStack());
             return icon.createItemStack();
         } else if (menuIcon.getKey().equals("items")) {
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
@@ -115,9 +124,19 @@ public class ShopMenu extends CustomMenu {
             ArrayList<CivItem> shopItems = (ArrayList<CivItem>) MenuManager.getData(civilian.getUuid(), "shopItems");
             ArrayList<CVItem> levelList = (ArrayList<CVItem>) MenuManager.getData(civilian.getUuid(), "levelList");
             if (shopItems != null) {
-                return createShopItem(shopItems.get(index), civilian);
+                if (shopItems.size() <= index) {
+                    return new ItemStack(Material.AIR);
+                }
+                ItemStack itemStack = createShopItem(shopItems.get(index), civilian);
+                putActions(civilian, menuIcon, itemStack);
+                return itemStack;
             } else if (levelList != null) {
-                return levelList.get(index).createItemStack();
+                if (levelList.size() <= index) {
+                    return new ItemStack(Material.AIR);
+                }
+                ItemStack itemStack = levelList.get(index).createItemStack();
+                putActions(civilian, menuIcon, itemStack);
+                return itemStack;
             } else {
                 return new ItemStack(Material.AIR);
             }
@@ -134,34 +153,41 @@ public class ShopMenu extends CustomMenu {
             return true;
         }
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
+        if (actionStrings == null) {
+            return true;
+        }
         for (String actionString : actionStrings) {
             if (actionString.equals("view-item")) {
                 String key = clickedItem.getItemMeta().getLore().get(0);
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
                 HashMap<String, String> params = new HashMap<>();
-                if ("level".equals(sortType)) {
-                    int level = Integer.parseInt(key);
-                    params.put("level", "" + level);
-                    params.put("sort", "level");
-                    MenuManager.getInstance().openMenu(player, "shop", params);
-                } else if ("category".equals(sortType)) {
-                    String name = ChatColor.stripColor(key).toLowerCase();
-                    CivItem civItem = ItemManager.getInstance().getItemType(name);
-                    if (civItem == null) {
-                        return true;
-                    }
-                    if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
-                        params.put("sort", "category");
-                        params.put("parent", ChatColor.stripColor(key).toLowerCase());
-                        MenuManager.getInstance().openMenu(player, "shop", params);
-                    } else if (civItem.getItemType() == CivItem.ItemType.REGION) {
+                String name = ChatColor.stripColor(key).toLowerCase();
+                CivItem civItem = ItemManager.getInstance().getItemType(name);
+                if (civItem != null) {
+                    if (civItem.getItemType() == CivItem.ItemType.REGION) {
                         params.put("regionType", name);
                         MenuManager.getInstance().openMenu(player, "region-type", params);
+                        return true;
                     } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
                         params.put("townType", name);
                         MenuManager.getInstance().openMenu(player, "town-type", params);
+                        return true;
                     }
+                } else if (clickedItem.getType() == Material.BARRIER) {
+                    return true;
+                }
+                if ("level".equals(sortType)) {
+                    int level = Integer.parseInt(name);
+                    params.put("level", "" + level);
+                    params.put("sort", "level");
+                    MenuManager.getInstance().openMenu(player, "shop", params);
+                    return true;
+                } else if ("category".equals(sortType)) {
+                    params.put("sort", "category");
+                    params.put("parent", ChatColor.stripColor(key).toLowerCase());
+                    MenuManager.getInstance().openMenu(player, "shop", params);
+                    return true;
                 }
                 return true;
             }
@@ -180,7 +206,7 @@ public class ShopMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             civItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-name"));
-            civItem1.getLore().add(ChatColor.BLACK + folderType.getDisplayName());
+            civItem1.getLore().add(ChatColor.BLACK + folderType.getProcessedName());
             civItem1.getLore().addAll(Util.textWrap(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-desc")));
         }
         String maxLimit = civilian.isAtMax(civItem);
