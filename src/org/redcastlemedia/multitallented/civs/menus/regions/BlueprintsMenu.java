@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -31,7 +32,7 @@ public class BlueprintsMenu extends CustomMenu {
             data.put("page", 0);
         }
 
-        int maxPage = (int) Math.ceil((double) civilian.getStashItems().keySet().size() / (double) itemsPerPage.get("regions"));
+        int maxPage = (int) Math.ceil((double) civilian.getStashItems().keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 
@@ -78,10 +79,16 @@ public class BlueprintsMenu extends CustomMenu {
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("blueprints")) {
             HashMap<String, Integer> stashItems = civilian.getStashItems();
+            if (stashItems.isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
             String[] stashArray = new String[stashItems.size()];
             stashArray = stashItems.keySet().toArray(stashArray);
+            if (stashArray.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             String currentStashItemName = stashArray[startIndex + count];
             CivItem civItem = ItemManager.getInstance().getItemType(currentStashItemName);
             if (civItem == null) {

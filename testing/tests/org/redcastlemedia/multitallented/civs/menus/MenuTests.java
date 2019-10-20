@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuTests {
@@ -28,6 +29,13 @@ public class MenuTests {
         assertEquals(54, Menu.getInventorySize(56));
         assertEquals(18, Menu.getInventorySize(10));
         assertEquals(9, Menu.getInventorySize(1));
+    }
+
+    @Test
+    public void parseIndexShouldWork() {
+        ArrayList<Integer> indexes = MenuIcon.parseIndexArrayFromString("9-35");
+        assertEquals(9, (int) indexes.get(0));
+        assertEquals(35, (int) indexes.get(indexes.size() - 1));
     }
 
     @Test
