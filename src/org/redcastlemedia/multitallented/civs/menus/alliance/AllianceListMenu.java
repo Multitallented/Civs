@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.alliance;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -47,6 +48,9 @@ public class AllianceListMenu extends CustomMenu {
             int startIndex = page * menuIcon.getIndex().size();
             Alliance[] allianceArray = new Alliance[alliances.size()];
             allianceArray = alliances.toArray(allianceArray);
+            if (allianceArray.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             Alliance alliance = allianceArray[startIndex + count];
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
             cvItem.setDisplayName(alliance.getName());

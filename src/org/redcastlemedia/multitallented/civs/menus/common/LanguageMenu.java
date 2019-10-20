@@ -27,6 +27,9 @@ public class LanguageMenu extends CustomMenu {
             int startIndex = page * menuIcon.getIndex().size();
             String[] languages = new String[LocaleManager.getInstance().getAllLanguages().size()];
             languages = LocaleManager.getInstance().getAllLanguages().toArray(languages);
+            if (languages.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             String language = languages[startIndex + count];
             CVItem cvItem = CVItem.createCVItemFromString(ChatColor.stripColor(LocaleManager.getInstance()
                     .getTranslation(language, "icon")));

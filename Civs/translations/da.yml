@@ -50,7 +50,7 @@ max_power-buff-desc: $1% maksimal effektforøgelse
 cost-buff-desc: $ 1% refusion på alle $ 2
 shop: Butik
 buy-item: Til salg
-price: Pris
+price: Pris $1
 buy: Køb $1
 cancel: Cancel
 item-bought: Tillykke! Du har lige købt $1 for $2

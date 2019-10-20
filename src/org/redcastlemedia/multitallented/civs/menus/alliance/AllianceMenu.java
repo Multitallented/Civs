@@ -34,6 +34,9 @@ public class AllianceMenu extends CustomMenu {
             int startIndex = page * menuIcon.getIndex().size();
             String[] memberNames = new String[alliance.getMembers().size()];
             memberNames = alliance.getMembers().toArray(memberNames);
+            if (memberNames.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             String townName = memberNames[startIndex + count];
             Town town = TownManager.getInstance().getTown(townName);
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -47,6 +48,9 @@ public class SelectTownMenu extends CustomMenu {
             int startIndex = page * menuIcon.getIndex().size();
             Town[] townArray = new Town[towns.size()];
             townArray = towns.toArray(townArray);
+            if (townArray.length <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
             Town town = townArray[startIndex + count];
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
             cvItem.setDisplayName(town.getName());
