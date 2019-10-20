@@ -130,7 +130,7 @@ public class ConfigManager {
     @Getter
     double antiCampCost;
     @Getter
-    long raidportCooldown;
+    boolean allowOfflineRaiding;
 
     public ConfigManager() {
         loadDefaults();
@@ -370,7 +370,7 @@ public class ConfigManager {
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
             maxBankDeposit = config.getDouble("max-bank-deposit", -1);
-            raidportCooldown = config.getLong("raidport-cooldown", 20);
+            allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -396,7 +396,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
-        raidportCooldown = 20;
+        allowOfflineRaiding = true;
         maxBankDeposit = -1;
         debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;
