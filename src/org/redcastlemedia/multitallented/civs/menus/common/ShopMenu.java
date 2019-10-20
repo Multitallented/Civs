@@ -156,10 +156,10 @@ public class ShopMenu extends CustomMenu {
                         params.put("parent", ChatColor.stripColor(key).toLowerCase());
                         MenuManager.getInstance().openMenu(player, "shop", params);
                     } else if (civItem.getItemType() == CivItem.ItemType.REGION) {
-                        params.put("region", name);
+                        params.put("regionType", name);
                         MenuManager.getInstance().openMenu(player, "region-type", params);
                     } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-                        params.put("town", name);
+                        params.put("townType", name);
                         MenuManager.getInstance().openMenu(player, "town-type", params);
                     }
                 }

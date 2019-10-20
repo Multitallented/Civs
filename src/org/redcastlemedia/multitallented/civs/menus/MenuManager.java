@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
+import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
 import lombok.Getter;
@@ -181,6 +182,11 @@ public class MenuManager implements Listener {
             ShopMenu shopMenu = new ShopMenu();
             loadConfig(shopMenu);
             menus.put(shopMenu.getFileName(), shopMenu);
+        }
+        {
+            RegionTypeMenu regionTypeMenu = new RegionTypeMenu();
+            loadConfig(regionTypeMenu);
+            menus.put(regionTypeMenu.getFileName(), regionTypeMenu);
         }
     }
 
