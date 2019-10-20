@@ -50,7 +50,7 @@ max_power-buff-desc: $1% maximum erőpont növekedés
 cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
 shop: Bolt
 buy-item: Eladó
-price: Ár
+price: Ár $1
 buy: Vásárlás $$1-ért
 cancel: Mégsem
 item-bought: Gratulálok! Megvásároltad $1-t $2-ért
