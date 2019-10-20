@@ -39,6 +39,8 @@ combat-log-out-percent-damage: 80
 allow-food-heal-in-combat: true
 #should players be able to teleport while in combat?
 allow-teleporting-during-combat: false
+#raid porter cooldown
+raidport-cooldown: 20
 #use the class and spell system from Civs
 use-classes-and-spells: false
 #whether or not the glass box should appear to show the region's boundaries

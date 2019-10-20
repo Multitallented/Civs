@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,7 +17,9 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -26,7 +27,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.HashMap;
@@ -37,6 +37,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     public static String KEY = "raid_port";
     public static String CHARGING_KEY = "charging_raid_port";
     private HashMap<Region, Location> raidLocations = new HashMap<>();
+    private HashMap<Region, Long> cooldowns = new HashMap<>();
 
     public RaidPortEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
@@ -152,16 +153,19 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return;
         }
         Location l =        r.getLocation();
-        RegionManager rm =  RegionManager.getInstance();
         RegionType rt =     (RegionType) ItemManager.getInstance().getItemType(r.getType());
-
-        //Check to see if the Townships has enough reagents
-        if (!r.hasUpkeepItems()) {
-            return;
-        }
 
         Town town = hasValidSign(l, rt, event.getUuid());
         if (town == null) {
+            return;
+        }
+
+        if (cooldowns.containsKey(r) &&
+                cooldowns.get(r) + ConfigManager.getInstance().getRaidportCooldown() * 1000 > System.currentTimeMillis()) {
+            return;
+        }
+
+        if (!r.hasUpkeepItems()) {
             return;
         }
 
@@ -191,6 +195,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         //Run upkeep but don't need to know if upkeep occured
         r.runUpkeep();
         player.teleport(targetLoc);
+        cooldowns.put(r, System.currentTimeMillis());
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "teleported"));
     }
@@ -437,5 +442,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
             sign.setLine(0, event.getNewName());
         }
+    }
+
+    @EventHandler
+    public void onRegionDestroyed(RegionDestroyedEvent event) {
+        cooldowns.remove(event.getRegion());
     }
 }
