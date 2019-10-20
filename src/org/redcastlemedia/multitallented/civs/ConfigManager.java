@@ -129,6 +129,8 @@ public class ConfigManager {
     double maxBankDeposit;
     @Getter
     double antiCampCost;
+    @Getter
+    long raidportCooldown;
 
     public ConfigManager() {
         loadDefaults();
@@ -368,6 +370,7 @@ public class ConfigManager {
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
             maxBankDeposit = config.getDouble("max-bank-deposit", -1);
+            raidportCooldown = config.getLong("raidport-cooldown", 20);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
