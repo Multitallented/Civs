@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -37,7 +38,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     public static String KEY = "raid_port";
     public static String CHARGING_KEY = "charging_raid_port";
     private HashMap<Region, Location> raidLocations = new HashMap<>();
-    private HashMap<Region, Long> cooldowns = new HashMap<>();
+    private HashMap<Town, Long> cooldowns = new HashMap<>();
 
     public RaidPortEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
@@ -58,6 +59,23 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (!ConfigManager.getInstance().isAllowOfflineRaiding()) {
+            boolean isOnline = false;
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                if (offlinePlayer.isOnline()) {
+                    isOnline = true;
+                    break;
+                }
+            }
+            if (!isOnline) {
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-porter-offline")
+                        .replace("$1", town.getName()));
+                return false;
+            }
+        }
 
         for (Player player1 : Bukkit.getOnlinePlayers()) {
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
@@ -160,8 +178,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return;
         }
 
-        if (cooldowns.containsKey(r) &&
-                cooldowns.get(r) + ConfigManager.getInstance().getRaidportCooldown() * 1000 > System.currentTimeMillis()) {
+        long cooldown = Long.parseLong(r.getEffects().get(KEY));
+
+        if (cooldowns.containsKey(town) &&
+                cooldowns.get(town) + cooldown * 1000 > System.currentTimeMillis()) {
             return;
         }
 
@@ -195,7 +215,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         //Run upkeep but don't need to know if upkeep occured
         r.runUpkeep();
         player.teleport(targetLoc);
-        cooldowns.put(r, System.currentTimeMillis());
+        cooldowns.put(town, System.currentTimeMillis());
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 "teleported"));
     }
@@ -445,7 +465,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     }
 
     @EventHandler
-    public void onRegionDestroyed(RegionDestroyedEvent event) {
-        cooldowns.remove(event.getRegion());
+    public void onTownDestroyed(TownDestroyedEvent event) {
+        cooldowns.remove(event.getTown());
     }
 }
