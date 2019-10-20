@@ -396,6 +396,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        raidportCooldown = 20;
         maxBankDeposit = -1;
         debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;
