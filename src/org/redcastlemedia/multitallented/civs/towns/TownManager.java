@@ -6,18 +6,27 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
+import org.redcastlemedia.multitallented.civs.menus.SelectGovTypeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -29,6 +38,7 @@ public class TownManager {
     private HashMap<String, Town> towns = new HashMap<>();
     private List<Town> sortedTowns = new ArrayList<>();
     private HashMap<UUID, Town> invites = new HashMap<>();
+    private ArrayList<Town> needsSaving = new ArrayList<>();
 
     public TownManager() {
         townManager = this;
@@ -52,7 +62,7 @@ public class TownManager {
                 try {
                     config.load(file);
 
-                    loadTown(config, file.getName().replace(".yml", ""));
+                    loadTown(config);
                 } catch (Exception e) {
                     Civs.logger.warning("Unable to read from towns/" + file.getName());
                     e.printStackTrace();
@@ -101,11 +111,11 @@ public class TownManager {
 
     public void checkCriticalRequirements(Region region) {
         Town town = getTownAt(region.getLocation());
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        RegionManager regionManager = RegionManager.getInstance();
         if (town == null) {
             return;
         }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        RegionManager regionManager = RegionManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             boolean containsReq = false;
@@ -187,7 +197,7 @@ public class TownManager {
         return towns;
     }
 
-    private void loadTown(FileConfiguration config, String name) {
+    private void loadTown(FileConfiguration config) {
 
         HashMap<UUID, String> people = new HashMap<>();
         for (String key : config.getConfigurationSection("people").getKeys(false)) {
@@ -198,8 +208,8 @@ public class TownManager {
         int housing = config.getInt("housing", 0);
         int villagers = config.getInt("villagers", 0);
         long lastDisable = config.getLong("last-disable", -1);
-        GovernmentType governmentType = GovernmentType.valueOf(config.getString("gov-type", "DICTATORSHIP"));
-        Town town = new Town(name,
+        String governmentType = config.getString("gov-type", GovernmentType.DICTATORSHIP.name());
+        Town town = new Town(config.getString("name", "NameNotFound"),
                 config.getString("type"),
                 Region.idToLocation(config.getString("location")),
                 people,
@@ -208,6 +218,8 @@ public class TownManager {
                 housing,
                 villagers,
                 lastDisable);
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
         if (config.isSet("gov-type-changed-today")) {
             town.setGovTypeChangedToday(true);
@@ -434,8 +446,40 @@ public class TownManager {
     }
 
     public void saveTown(Town town) {
+        needsSaving.add(town);
+    }
+
+    public void saveAllUnsavedTowns() {
+        for (Town town : needsSaving) {
+            saveTownNow(town);
+        }
+        needsSaving.clear();
+    }
+
+    public int getCountOfPendingSaves() {
+        return needsSaving.size();
+    }
+
+    public void saveNextTown() {
+        Town t = null;
+        for (Town town : needsSaving) {
+            t = town;
+            saveTownNow(t);
+            break;
+        }
+        if (t != null) {
+            while (needsSaving.contains(t)) {
+                needsSaving.remove(t);
+            }
+        }
+    }
+
+    private void saveTownNow(Town town) {
         if (Civs.getInstance() == null) {
             return;
+        }
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.saves++;
         }
         File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
         if (!townFolder.exists()) {
@@ -486,7 +530,7 @@ public class TownManager {
             config.set("last-disable", town.getLastDisable());
             config.set("power", town.getPower());
             config.set("max-power", town.getMaxPower());
-            config.set("gov-type", town.getGovernmentType().name());
+            config.set("gov-type", town.getGovernmentType());
             config.set("taxes", town.getTaxes());
             config.set("bank", town.getBankAccount());
             config.set("last-vote", town.getLastVote());
@@ -567,5 +611,198 @@ public class TownManager {
             }
         }
         return false;
+    }
+
+    public void placeTown(Player player, String name, Town town) {
+        LocaleManager localeManager = LocaleManager.getInstance();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (TownManager.getInstance().townNameExists(name) && (town == null ||
+                !town.getName().equalsIgnoreCase(name) ||
+                !town.getRawPeople().containsKey(civilian.getUuid()))) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "specify-town-name"));
+            return;
+        }
+
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "hold-town"));
+            return;
+        }
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
+
+        if (civItem == null || !(civItem instanceof TownType)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "hold-town"));
+            return;
+        }
+        TownType townType = (TownType) civItem;
+
+        TownManager townManager = TownManager.getInstance();
+        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType);
+        if (intersectTowns.size() > 1 ||
+                    (townType.getChild() != null &&
+                    !intersectTowns.isEmpty() &&
+                    !townType.getChild().equals(intersectTowns.get(0).getType()))) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "too-close-town").replace("$1", townType.getProcessedName()));
+            return;
+        }
+        if (intersectTowns.isEmpty() && townType.getChild() != null) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "must-be-built-on-top").replace("$1", townType.getProcessedName())
+                    .replace("$2", townType.getChild()));
+            return;
+        }
+
+        if (!townType.getReqs().isEmpty()) {
+            HashMap<String, Integer> checkList = (HashMap<String, Integer>) townType.getReqs().clone();
+            Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
+                    townType.getBuildRadiusY(), townType.getBuildRadius(), false);
+            regionCheck: for (Region region : regions) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                String regionTypeName = regionType.getProcessedName();
+                if (checkList.containsKey(regionTypeName)) {
+                    if (checkList.get(regionTypeName) < 2) {
+                        checkList.remove(regionTypeName);
+                    } else {
+                        checkList.put(regionTypeName, checkList.get(regionTypeName) - 1);
+                    }
+                    continue;
+                }
+                for (String groupType : regionType.getGroups()) {
+                    String groupName = groupType.toLowerCase();
+                    if (checkList.containsKey(groupName)) {
+                        if (checkList.get(groupName) < 2) {
+                            checkList.remove(groupName);
+                        } else {
+                            checkList.put(groupName, checkList.get(groupName) - 1);
+                        }
+                        continue regionCheck;
+                    }
+                }
+            }
+            if (!checkList.isEmpty()) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "missing-region-requirements").replace("$1", townType.getDisplayName()));
+                player.openInventory(RegionListMenu.createMenu(civilian, checkList, 0));
+                return;
+            }
+        }
+
+
+
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(player.getUniqueId(), "owner");
+        Location newTownLocation = player.getLocation();
+        List<Location> childLocations = new ArrayList<>();
+        TownType childTownType = null;
+        String governmentType = null;
+        int villagerCount = 0;
+        if (townType.getChild() != null) {
+            Town intersectTown = intersectTowns.get(0);
+            if (intersectTown.getPopulation() < townType.getChildPopulation()) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(), "population-req")
+                        .replace("$1", intersectTown.getType())
+                        .replace("$2", "" + townType.getChildPopulation()));
+                return;
+            }
+            people = intersectTown.getPeople();
+            newTownLocation = intersectTown.getLocation();
+            childLocations.add(newTownLocation);
+            name = intersectTown.getName();
+            governmentType = intersectTown.getGovernmentType();
+            childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
+            TownManager.getInstance().removeTown(intersectTown, false, false);
+            // Don't destroy the ring on upgrade
+    //            if (ConfigManager.getInstance().getTownRings()) {
+    //                intersectTown.destroyRing(false);
+    //            }
+            villagerCount = intersectTown.getVillagers();
+        }
+
+        int housingCount = getHousingCount(newTownLocation, townType);
+        Town newTown = new Town(name,
+                townType.getProcessedName(),
+                newTownLocation,
+                people,
+                townType.getPower(),
+                townType.getMaxPower(), housingCount, villagerCount, -1);
+            newTown.setChildLocations(childLocations);
+        if (governmentType != null) {
+            newTown.setGovernmentType(governmentType);
+        } else {
+            newTown.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(newTown.getGovernmentType());
+        if (government != null) {
+            for (GovTypeBuff buff : government.getBuffs()) {
+                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
+                    continue;
+                }
+                newTown.setMaxPower((int) Math.round((double) newTown.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
+                break;
+            }
+        } else {
+            government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
+        }
+        townManager.saveTown(newTown);
+        townManager.addTown(newTown);
+        player.getInventory().remove(itemStack);
+
+        if (childTownType != null) {
+            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
+            Bukkit.getPluginManager().callEvent(townEvolveEvent);
+
+            if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
+                    newTown.getBankAccount() > 0) {
+                double price = townType.getPrice();
+                price = Math.min(price, newTown.getBankAccount());
+                Civs.econ.depositPlayer(player, price);
+                newTown.setBankAccount(newTown.getBankAccount() - price);
+                String priceString = Util.getNumberFormat(price, civilian.getLocale());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "town-assist-price").replace("$1", priceString)
+                        .replace("$2", townType.getDisplayName()));
+            }
+
+        } else {
+            TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
+            newTown.setLastVote(System.currentTimeMillis());
+            Bukkit.getPluginManager().callEvent(townCreatedEvent);
+        }
+
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                "town-created").replace("$1", newTown.getName()));
+        if (ConfigManager.getInstance().getTownRings()) {
+            newTown.createRing();
+        }
+        if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
+            player.openInventory(SelectGovTypeMenu.createMenu(civilian, newTown));
+        }
+        return;
+    }
+
+    int getHousingCount(Location newTownLocation, TownType townType) {
+        int housingCount = 0;
+        for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (regionType.getEffects().containsKey(HousingEffect.KEY)) {
+                housingCount += Integer.parseInt(regionType.getEffects().get(HousingEffect.KEY));
+            }
+        }
+        return housingCount;
+    }
+
+    public Set<Region> getRegionsInTown(Town town) {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        return getRegionsInTown(town.getLocation(), townType.getBuildRadius(), townType.getBuildRadiusY());
+    }
+
+    private Set<Region> getRegionsInTown(Location location, int radius, int radiusY) {
+        //TODO fix this to account for vertical radius being different
+        return RegionManager.getInstance().getContainingRegions(location, radius);
     }
 }

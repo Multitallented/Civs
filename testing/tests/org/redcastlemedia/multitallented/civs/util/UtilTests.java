@@ -199,20 +199,20 @@ public class UtilTests {
     @Test
     public void textWrapSpaces() {
         String wrapThis = "0123456789 0123456789 0123456789 0123456789 01234567890 1234567890";
-        assertEquals("§r0123456789 0123456789 0123456789", Util.textWrap(wrapThis).get(0));
+        assertEquals("§r0123456789 0123456789", Util.textWrap(wrapThis).get(0));
     }
 
     @Test
     public void textWrapLongNoSpaces() {
         String wrapThis = "0123456789012345678901234567890123456789012345678901234567890";
-        assertEquals("§r012345678901234567890123456789012345678", Util.textWrap(wrapThis).get(0));
-        assertEquals("§r9012345678901234567890", Util.textWrap(wrapThis).get(1));
+        assertEquals("§r012345678901234567890123", Util.textWrap(wrapThis).get(0));
+        assertEquals("§r456789012345678901234567", Util.textWrap(wrapThis).get(1));
     }
 
     @Test
     public void textWrapWithColors() {
         String wrapThis = "§c0123456789 0123456789 0123456789 0123456789 01234567890 1234567890";
-        assertEquals("§c0123456789 0123456789 0123456789", Util.textWrap(wrapThis).get(0));
+        assertEquals("§c0123456789 0123456789", Util.textWrap(wrapThis).get(0));
         assertEquals("§c01", Util.textWrap(wrapThis).get(1).substring(0, 4));
     }
 }

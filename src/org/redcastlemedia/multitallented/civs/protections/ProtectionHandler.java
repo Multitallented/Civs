@@ -28,11 +28,14 @@ import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -48,6 +51,9 @@ public class ProtectionHandler implements Listener {
 //    }
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
+        if (ConfigManager.getInstance().isDebugLog()) {
+            DebugLogger.chunkLoads++;
+        }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
@@ -327,7 +333,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
@@ -348,23 +354,24 @@ public class ProtectionHandler implements Listener {
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), player, "block_tnt", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_tnt", 5);
+            if (shouldBlockActionEffect(event.getLocation(), null, "power_shield", 0)) {
+                Town town = TownManager.getInstance().getTownAt(event.getLocation());
+                if (town != null) {
+                    int powerReduce = 1;
+                    if (town.getEffects().get("power_shield") != null) {
+                        powerReduce = Integer.parseInt(town.getEffects().get("power_shield"));
+                    }
+                    if (town.getPower() > 0) {
+                        TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
+                        setCancelled = true;
+                    }
+                }
+            }
             if (setCancelled && player != null) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
-            }
-            if (shouldBlockActionEffect(event.getLocation(), player, "power_shield", 0)) {
-                Town town = TownManager.getInstance().getTownAt(event.getLocation());
-                if (town != null) {
-                    int powerReduce = 1;
-                    TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-                    if (townType.getEffects().get("power_shield") != null) {
-                        powerReduce = Integer.parseInt(townType.getEffects().get("power_shield"));
-                    }
-                    TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
-                    setCancelled = true;
-                }
             }
         }
         if (setCancelled) {
@@ -388,10 +395,11 @@ public class ProtectionHandler implements Listener {
             Set<Region> tempArray = new HashSet<>();
             for (Region region : regionManager.getContainingRegions(location, 5)) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
-                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-                    tempArray.add(region);
-                }
+//                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
+//                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
+//                    tempArray.add(region);
+//                }
+                tempArray.add(region);
             }
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
@@ -549,8 +557,9 @@ public class ProtectionHandler implements Listener {
             }
             String role = region.getPeople().get(player.getUniqueId());
             if (town != null && role.contains("member")) {
-                if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                        town.getGovernmentType() == GovernmentType.ANARCHY) {
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+                if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        government.getGovernmentType() == GovernmentType.ANARCHY) {
                     role = "owner";
                 }
             }
@@ -661,12 +670,13 @@ public class ProtectionHandler implements Listener {
         }
         if (town != null && !role.contains("foreign")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    town.getGovernmentType() == GovernmentType.ANARCHY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = "owner";
-            } else if ((town.getGovernmentType() == GovernmentType.SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                    town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+            } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
                     (regionType.getGroups().contains("mine") ||
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||

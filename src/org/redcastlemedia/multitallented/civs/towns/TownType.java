@@ -76,7 +76,7 @@ public class TownType extends CivItem {
                     boolean isInShop,
                     int level) {
         super(civReqs,
-                false,
+                true,
                 ItemType.TOWN,
                 name,
                 icon.getMat(),

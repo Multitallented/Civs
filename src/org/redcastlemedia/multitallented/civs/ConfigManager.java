@@ -92,7 +92,10 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
-    GovernmentType defaultGovernmentType;
+    boolean useParticleBoundingBoxes;
+
+    @Getter
+    String defaultGovernmentType;
 
     @Getter
     boolean allowChangingOfGovType;
@@ -120,6 +123,12 @@ public class ConfigManager {
     boolean useBoundingBox;
     @Getter
     boolean mobsDropItemsWhenKilledInDenyDamage;
+    @Getter
+    boolean debugLog;
+    @Getter
+    double maxBankDeposit;
+    @Getter
+    double antiCampCost;
 
     public ConfigManager() {
         loadDefaults();
@@ -304,7 +313,7 @@ public class ConfigManager {
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
-            portWarmup = config.getInt("port.warmpup", 5);
+            portWarmup = config.getInt("port.warmup", 5);
             portCooldown = config.getInt("port.cooldown", 60);
             portMoney = config.getDouble("port.money", 0);
             portDamage = config.getInt("port.damage", 0);
@@ -333,11 +342,12 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
-                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+                defaultGovernmentType = defaultGovTypeString.toUpperCase();
             } else {
-                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+                defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             maxTax = config.getDouble("max-town-tax", 50);
@@ -356,6 +366,8 @@ public class ConfigManager {
             announcementPeriod = config.getLong("announcement-period", 240);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
+            debugLog = config.getBoolean("debug-log", false);
+            maxBankDeposit = config.getDouble("max-bank-deposit", -1);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -381,6 +393,8 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        maxBankDeposit = -1;
+        debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;
         useBoundingBox = true;
         revoltCost = "GUNPOWDER*64";
@@ -393,6 +407,7 @@ public class ConfigManager {
         daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        useParticleBoundingBoxes = false;
         maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;
@@ -445,7 +460,7 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
-        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
     }
 

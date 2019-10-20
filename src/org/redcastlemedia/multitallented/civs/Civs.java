@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -27,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -40,10 +42,10 @@ public class Civs extends JavaPlugin {
 
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static String NAME = "Civs";
-    public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
+    public static DiscordSRV discordSRV;
     private static Civs civs;
     public static Logger logger;
 
@@ -82,6 +84,8 @@ public class Civs extends JavaPlugin {
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
         StructureUtil.removeAllBoundingBoxes();
+        RegionManager.getInstance().saveAllUnsavedRegions();
+        TownManager.getInstance().saveAllUnsavedTowns();
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
@@ -111,12 +115,20 @@ public class Civs extends JavaPlugin {
         logger.info(LogInfo.PH_VOID);
 
         logger.info(LogInfo.PH_INFO);
-        if (econ != null)
+        if (econ != null) {
             logger.info(LogInfo.HOOKECON + econ.getName());
-        if (perm != null)
+        }
+        if (perm != null) {
             logger.info(LogInfo.HOOKPERM + perm.getName());
+        }
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        if (mmoItems != null) {
+            logger.info(LogInfo.HOOKCHAT + "MMOItems");
+        }
+        if (discordSRV != null) {
+            logger.info(LogInfo.HOOKCHAT + "DiscordSRV");
         }
         logger.info(LogInfo.PH_INFO);
 
@@ -135,8 +147,20 @@ public class Civs extends JavaPlugin {
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
+        if (ConfigManager.getInstance().isDebugLog()) {
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, DebugLogger.timedDebugTask(), 600L, 600L);
+        }
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
+
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+
+            @Override
+            public void run() {
+                RegionManager.getInstance().saveNextRegion();
+                TownManager.getInstance().saveNextTown();
+            }
+        }, 20L, 20L);
     }
 
     private void initCommands() {
@@ -159,6 +183,7 @@ public class Civs extends JavaPlugin {
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
         commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("deposit", new DepositBankCommand());
         commandList.put("tax", new TaxCommand());
         commandList.put("colony", new ColonyCommand());
         commandList.put("newday", new DayCommand());
@@ -166,6 +191,7 @@ public class Civs extends JavaPlugin {
         commandList.put("toggleann", new ToggleAnnouncementCommand());
         commandList.put("setrecruiter", new SetRecruiterCommand());
         commandList.put("advancetut", new TutorialAdvanceCommand());
+        commandList.put("anticamp", new AntiCampCommand());
     }
 
     private void initListeners() {
@@ -253,6 +279,9 @@ public class Civs extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            discordSRV = DiscordSRV.getPlugin();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {

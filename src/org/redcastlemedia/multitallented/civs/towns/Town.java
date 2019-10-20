@@ -31,6 +31,8 @@ public class Town {
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
+    @Getter @Setter
+    private HashMap<String, String> effects = new HashMap<>();
     private long lastDisable;
     private final int Y_LEVEL = 80;
     private int villagers;
@@ -45,7 +47,7 @@ public class Town {
 
     @Getter
     @Setter
-    private GovernmentType governmentType;
+    private String governmentType;
 
     @Getter
     @Setter
@@ -82,7 +84,7 @@ public class Town {
         this.villagers = villagers;
         this.lastDisable = lastDisable;
         TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
-        governmentType = GovernmentType.valueOf(townType.getDefaultGovType());
+        governmentType = townType.getDefaultGovType();
     }
 
     public long getLastDisable() {

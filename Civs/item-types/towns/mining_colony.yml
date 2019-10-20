@@ -19,6 +19,7 @@ limits:
 build-radius: 40
 build-radius-y: 500
 effects:
+- exempt-housing
 - block_explosion
 - deny_mob_spawn
 - potion:FAST_DIGGING.160

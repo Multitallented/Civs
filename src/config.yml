@@ -12,8 +12,13 @@ town-grace-period: 43200 #12 hours
 #before reducing power
 explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
+# the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
+# the max amount that can be in a town bank (excluding taxes)
+max-bank-deposit: -1
 use-starter-book: true
+#should region dimensions be shown with particles instead of glass?
+use-particle-bounding-boxes: false
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
 exp-modifier: 0.2
@@ -24,10 +29,12 @@ villager-cooldown: 300
 disable-arrow-turret-shooting-at-mobs: false
 #mobs killed in safe zones will not drop items
 stop-mobs-from-dropping-items-in-safe-zones: false
-#cooldown before killing the same player reduces the town power
+#cooldown in seconds before killing the same player reduces the town power
 death-grace-period-seconds: 60
-#how long a player is considered in combat after taking or dealing damage
+#how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
+#how much damage should a player receive if they log out during combat
+combat-log-out-percent-damage: 80
 #should food heal in combat?
 allow-food-heal-in-combat: true
 #should players be able to teleport while in combat?
@@ -127,3 +134,6 @@ default-gov-type: "DICTATORSHIP"
 days-between-elections: 7
 use-announcements: true
 announcement-period: 240
+
+# do not turn this on unless you want to spam your console with potentially useless info
+debug-log: false

@@ -11,6 +11,8 @@ import java.util.HashSet;
 
 public class Government {
     @Getter
+    private final String name;
+    @Getter
     private final GovernmentType governmentType;
     @Getter
     private final HashSet<GovTypeBuff> buffs;
@@ -18,9 +20,10 @@ public class Government {
     private final ArrayList<GovTransition> transitions;
     private final CVItem icon;
 
-    public Government(GovernmentType governmentType,
+    public Government(String name, GovernmentType governmentType,
                       HashSet<GovTypeBuff> buffs, CVItem cvItem,
                       ArrayList<GovTransition> transitions) {
+        this.name = name;
         this.governmentType = governmentType;
         this.buffs = buffs;
         this.icon = cvItem;
@@ -34,11 +37,11 @@ public class Government {
     public CVItem getIcon(String locale, boolean isUseBuffs) {
         CVItem cvItem = icon.clone();
         cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale,
-                governmentType.name().toLowerCase() + "-name"));
+                name.toLowerCase() + "-name"));
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Gov Type: " + governmentType.name());
+        lore.add("Gov Type: " + name);
         lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(locale,
-                governmentType.name().toLowerCase() + "-desc")));
+                name.toLowerCase() + "-desc")));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(locale));
         }

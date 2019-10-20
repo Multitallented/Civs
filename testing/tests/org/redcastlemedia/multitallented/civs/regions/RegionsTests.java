@@ -72,7 +72,7 @@ public class RegionsTests {
                 10, new HashSet<>(), regions);
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
-        Government government = new Government(GovernmentType.ANARCHY,
+        Government government = new Government("ANARCHY", GovernmentType.ANARCHY,
                 buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
@@ -400,12 +400,12 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location5, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location6, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location7, getRadii(), new HashMap<>(),0));
-        assertSame(location5, regionManager.getRegionAt(location5).getLocation());
-        assertSame(location2, regionManager.getRegionAt(location2).getLocation());
-        assertSame(location1, regionManager.getRegionAt(location1).getLocation());
-        assertSame(location7, regionManager.getRegionAt(location7).getLocation());
+        assertEquals(location5.getX(), regionManager.getRegionAt(location5).getLocation().getX(), 0.1);
+        assertEquals(location2.getX(), regionManager.getRegionAt(location2).getLocation().getX(), 0.1);
+        assertEquals(location1.getX(), regionManager.getRegionAt(location1).getLocation().getX(), 0.1);
+        assertEquals(location7.getX(), regionManager.getRegionAt(location7).getLocation().getX(), 0.1);
         regionManager.addRegion(new Region("cobble", owners, location8, getRadii(), new HashMap<>(),0));
-        assertSame(location8, regionManager.getRegionAt(location8).getLocation());
+        assertEquals(location8.getX(), regionManager.getRegionAt(location8).getLocation().getX(), 0.1);
     }
 
     @Test
@@ -1112,6 +1112,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("chest_use");
         effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
@@ -1132,7 +1133,7 @@ public class RegionsTests {
     public static Region createNewRegion(String type) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
-        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);

@@ -9,7 +9,8 @@ api-version: 1.13
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
-- MultiverseCore
+- DiscordSRV
+- MMOItems
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
@@ -28,4 +29,4 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-loadafter: [Vault, PlaceholderAPI]
+loadafter: [Vault, PlaceholderAPI, MMOItems]

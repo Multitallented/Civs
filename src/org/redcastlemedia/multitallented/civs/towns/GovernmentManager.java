@@ -19,7 +19,7 @@ import java.util.*;
 
 public class GovernmentManager {
     private static GovernmentManager instance = null;
-    private HashMap<GovernmentType, Government> governments = new HashMap<>();
+    private HashMap<String, Government> governments = new HashMap<>();
 
     public static GovernmentManager getInstance() {
         if (instance == null) {
@@ -57,7 +57,8 @@ public class GovernmentManager {
             if (!config.getBoolean("enabled", false)) {
                 return;
             }
-            String govTypeString = govTypeFile.getName().replace(".yml", "");
+            String name = govTypeFile.getName().replace(".yml", "");
+            String govTypeString = config.getString("inherit", name);
             GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
             if (governmentType == GovernmentType.CYBERSYNACY) {
                 new AIManager();
@@ -65,9 +66,9 @@ public class GovernmentManager {
             CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
 
             ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
-            Government government = new Government(governmentType,
+            Government government = new Government(name, governmentType,
                     getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
-            governments.put(governmentType, government);
+            governments.put(name.toUpperCase(), government);
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + govTypeFile.getName());
         }
@@ -83,7 +84,7 @@ public class GovernmentManager {
             int moneyGap = -1;
             int revolt = -1;
             long inactive = -1;
-            GovernmentType governmentType = null;
+            String governmentType = null;
             for (String key : section.getConfigurationSection(index).getKeys(false)) {
                 if ("power".equals(key)) {
                     power = section.getInt(index + "." + key);
@@ -94,7 +95,7 @@ public class GovernmentManager {
                 } else if ("inactive".equals(key)) {
                     inactive = section.getLong(index + "." + key);
                 } else {
-                    governmentType = GovernmentType.valueOf(section.getString(index + "." + key));
+                    governmentType = section.getString(index + "." + key);
                 }
             }
             if (governmentType == null) {
@@ -106,10 +107,14 @@ public class GovernmentManager {
     }
 
     void addGovernment(Government government) {
-        governments.put(government.getGovernmentType(), government);
+        governments.put(government.getName().toUpperCase(), government);
     }
 
-    public void transitionGovernment(Town town, GovernmentType governmentType, boolean save) {
+    public void transitionGovernment(Town town, String governmentType, boolean save) {
+        Government government = GovernmentManager.getInstance().getGovernment(governmentType);
+        if (government == null) {
+            return;
+        }
         for (UUID uuid : town.getPeople().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null || !player.isOnline()) {
@@ -117,9 +122,9 @@ public class GovernmentManager {
             }
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
             String oldGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    town.getGovernmentType().name().toLowerCase() + "-name");
+                    town.getGovernmentType().toLowerCase() + "-name");
             String newGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    governmentType.name().toLowerCase() + "-name");
+                    governmentType.toLowerCase() + "-name");
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian1.getLocale(), "gov-type-change")
                     .replace("$1", town.getName())
@@ -139,43 +144,40 @@ public class GovernmentManager {
             }
         }
 
-        Government government = GovernmentManager.getInstance().getGovernment(governmentType);
-        if (government != null) {
-            for (GovTypeBuff buff : government.getBuffs()) {
-                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
-                    continue;
-                }
-                town.setMaxPower((int) Math.round((double) town.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
-                break;
+        for (GovTypeBuff buff : government.getBuffs()) {
+            if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
+                continue;
             }
+            town.setMaxPower((int) Math.round((double) town.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
+            break;
         }
 
 
 
-        if (governmentType == GovernmentType.MERITOCRACY) {
+        if (government.getGovernmentType() == GovernmentType.MERITOCRACY) {
             Util.promoteWhoeverHasMostMerit(town, false);
         }
 
-        if (governmentType == GovernmentType.COMMUNISM) {
+        if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
             HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
             for (UUID uuid : setThesePeople) {
                 town.setPeople(uuid, "owner");
             }
         }
 
-        if (governmentType == GovernmentType.LIBERTARIAN ||
-                governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                governmentType == GovernmentType.CYBERSYNACY) {
+        if (government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                government.getGovernmentType() == GovernmentType.CYBERSYNACY) {
             HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
             for (UUID uuid : setThesePeople) {
                 town.setPeople(uuid, "member");
             }
         }
         if (town.getBankAccount() > 0 && Civs.econ != null &&
-                (governmentType == GovernmentType.COMMUNISM ||
-                        governmentType == GovernmentType.ANARCHY ||
-                        governmentType == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                        governmentType == GovernmentType.LIBERTARIAN)) {
+                (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                        government.getGovernmentType() == GovernmentType.ANARCHY ||
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN)) {
             double size = town.getRawPeople().size();
             for (UUID uuid : town.getRawPeople().keySet()) {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -186,10 +188,10 @@ public class GovernmentManager {
             town.setBankAccount(0);
         }
 
-        if (governmentType == GovernmentType.COOPERATIVE ||
-                governmentType == GovernmentType.CAPITALISM ||
-                governmentType == GovernmentType.DEMOCRACY ||
-                governmentType == GovernmentType.DEMOCRATIC_SOCIALISM) {
+        if (government.getGovernmentType() == GovernmentType.COOPERATIVE ||
+                government.getGovernmentType() == GovernmentType.CAPITALISM ||
+                government.getGovernmentType() == GovernmentType.DEMOCRACY ||
+                government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM) {
             town.setLastVote(System.currentTimeMillis());
         }
 
@@ -234,11 +236,11 @@ public class GovernmentManager {
         return buffs;
     }
 
-    public Government getGovernment(GovernmentType governmentType) {
-        return governments.get(governmentType);
+    public Government getGovernment(String governmentType) {
+        return governments.get(governmentType.toUpperCase());
     }
 
-    public Set<GovernmentType> getGovermentTypes() {
+    public Set<String> getGovermentTypes() {
         return governments.keySet();
     }
 }
