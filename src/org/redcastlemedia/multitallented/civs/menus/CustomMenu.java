@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -89,15 +90,20 @@ public abstract class CustomMenu {
         }
 
         ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale()).createItemStack();
-        putActions(civilian, menuIcon, itemStack);
+        putActions(civilian, menuIcon, itemStack, count);
         return itemStack;
     }
-    protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack) {
+    protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack, int count) {
         List<String> currentActions = new ArrayList<>();
         if (menuIcon.getActions().isEmpty()) {
             currentActions.add(menuIcon.getKey());
         } else {
-            currentActions.addAll(menuIcon.getActions());
+            for (String action : menuIcon.getActions()) {
+                String newAction = action.replace("$count$", "" + count);
+                newAction = newAction.replace("$itemName$",
+                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                currentActions.add(newAction);
+            }
         }
         actions.get(civilian.getUuid()).put(itemStack, currentActions);
     }
@@ -158,8 +164,7 @@ public abstract class CustomMenu {
                                     }
                                 }
                             } else {
-                                params.put(splitParams[0], splitParams[1]
-                                        .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
+                                params.put(splitParams[0], splitParams[1]);
                             }
                         }
                     }

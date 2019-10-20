@@ -116,7 +116,7 @@ public class ShopMenu extends CustomMenu {
             icon.getLore().addAll(Util.textWrap(LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(),
                     parent.getProcessedName() + "-desc")));
-            putActions(civilian, menuIcon, icon.createItemStack());
+            putActions(civilian, menuIcon, icon.createItemStack(), count);
             return icon.createItemStack();
         } else if (menuIcon.getKey().equals("items")) {
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
@@ -128,14 +128,14 @@ public class ShopMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 ItemStack itemStack = createShopItem(shopItems.get(index), civilian);
-                putActions(civilian, menuIcon, itemStack);
+                putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             } else if (levelList != null) {
                 if (levelList.size() <= index) {
                     return new ItemStack(Material.AIR);
                 }
                 ItemStack itemStack = levelList.get(index).createItemStack();
-                putActions(civilian, menuIcon, itemStack);
+                putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             } else {
                 return new ItemStack(Material.AIR);

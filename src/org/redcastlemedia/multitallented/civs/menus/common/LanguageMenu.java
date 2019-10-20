@@ -42,7 +42,7 @@ public class LanguageMenu extends CustomMenu {
             lore.add(language);
             cvItem.setLore(lore);
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
