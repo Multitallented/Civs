@@ -17,7 +17,7 @@ items:
     icon: EMERALD
     name: shop
     actions:
-      - menu:shop
+      - menu:shop?sort=category
   blueprints:
     index: 2
     icon: MAP

@@ -20,20 +20,21 @@ effects:
 - block_break
 - drain_power:1
 - evolve:siege_machine3.4
+- chest_use
 
 towns:
 - outpost
 - keep
 
-period: 120
+period: 120 # 2 minutes
 upkeep:
   0:
     input:
     - TNT*1
-    - REDSTONE*4
-    - COAL*1
+    - REDSTONE*2
+    - COAL*2
     output:
-    - GRAVEL*1
-    - DIRT*1
+    - GRAVEL*1%80,TNT*1%20
+    - DIRT*1%60,COAL*1%20,REDSTONE*1%20
     exp: 1
 

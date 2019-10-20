@@ -25,15 +25,20 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 public class MainMenu extends CustomMenu {
     @Override
-    public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
-//        clearHistory(civilian.getUuid());
+    public String beforeOpenMenu(Civilian civilian) {
+        MenuManager.clearHistory(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
-//            return StartTutorialMenu.createMenu(civilian);
+            return "tutorial-start";
         }
         if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
-//            return TutorialChoosePathMenu.createMenu(civilian);
+            return "tutorial-choose-path";
         }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
@@ -70,10 +75,6 @@ public class MainMenu extends CustomMenu {
                 ItemStack itemStack = townIcon.createItemStack();
                 putActions(civilian, menuIcon, itemStack);
                 return itemStack;
-            }
-        } else if (menuIcon.getKey().equals("blueprints")) {
-            if (civilian.getStashItems().isEmpty()) {
-                return new ItemStack(Material.AIR);
             }
         } else if (menuIcon.getKey().equals("regions")) {
             boolean showBuiltRegions = false;

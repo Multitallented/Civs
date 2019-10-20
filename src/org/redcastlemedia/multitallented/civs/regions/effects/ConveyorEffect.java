@@ -16,11 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -118,6 +120,13 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     }
 
     @EventHandler
+    public void onTwoSecond(TwoSecondEvent event) {
+        for (Region r : new HashSet<>(carts.keySet())) {
+            handleExistingCarts(r);
+        }
+    }
+
+    @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
         if (disabled || !event.getRegion().getEffects().containsKey(KEY) ||
                 !cacheSpawnPoints.containsKey(event.getRegion())) {
@@ -134,12 +143,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         String conveyorString = r.getEffects().get(KEY);
         Material conveyor = Material.valueOf(conveyorString);
 
-        handleExistingCarts(r);
-
         //Check if has reagents
         if (!RegionManager.getInstance().hasRegionChestChanged(r)) {
             cacheDestinationRegions.remove(r);
-            returnCart(r, true);
             return;
         }
 
@@ -176,6 +182,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                     cInv.removeItem(is);
                 }
                 try {
+                    if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     for (ItemStack is : iss) {
                         cachedInventory.addItem(is);
                     }
@@ -193,6 +202,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
             StorageMinecart cart = loc.getWorld().spawn(loc, StorageMinecart.class);
 
+            if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
+                DebugLogger.inventoryModifications++;
+            }
             for (ItemStack is : iss) {
                 cart.getInventory().addItem(is);
             }
@@ -205,16 +217,25 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return;
         }
         StorageMinecart sm = carts.get(region);
-        sm.remove();
         try {
             Inventory returnInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
-            if (returnInventory.firstEmpty() > -1 ||
-                    returnInventory.firstEmpty() > returnInventory.getSize() - 3) {
+            if (returnInventory.firstEmpty() > -1) {
                 returnInventory.addItem(new ItemStack(Material.CHEST_MINECART));
             } else {
-                returnInventory.setItem(returnInventory.getSize() -1,
+                returnInventory.setItem(returnInventory.getSize() - 1,
                         new ItemStack(Material.CHEST_MINECART));
             }
+
+            for (ItemStack itemStack : sm.getInventory()) {
+                if (returnInventory.firstEmpty() < 0) {
+                    break;
+                }
+                if (itemStack == null || itemStack.getType() == Material.AIR) {
+                    continue;
+                }
+                returnInventory.addItem(itemStack);
+            }
+            sm.remove();
         } catch (Exception e) {
         }
         if (removeFromCarts) {
@@ -227,9 +248,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return false;
         }
         Region destinationRegion = cacheDestinationRegions.get(region);
+        if (destinationRegion == null) {
+            return true;
+        }
         Inventory destinationInventory = UnloadedInventoryHandler.getInstance()
                 .getChestInventory(destinationRegion.getLocation());
-        return destinationInventory.firstEmpty() < 0 ||
+        return destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 3;
     }
 
@@ -274,11 +298,17 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                             sm.getInventory().removeItem(is);
                         }
                     }
+                    if (ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     sm.getInventory().removeItem(is);
                     currentInventory.addItem(is);
                     RegionManager.getInstance().removeCheckedRegion(region);
                 } else {
                     sm.getInventory().removeItem(is);
+                    if (ConfigManager.getInstance().isDebugLog()) {
+                        DebugLogger.inventoryModifications++;
+                    }
                     originInv.addItem(is);
                 }
             } catch (NullPointerException npe) {

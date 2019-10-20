@@ -1,21 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.ConcurrentModificationException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -23,30 +10,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.*;
 
 public class Region {
 
     private String type;
     private final HashMap<UUID, String> people;
-    private Location location;
+    private final World world;
+    private final double x;
+    private final double y;
+    private final double z;
     private final int radiusXP;
     private final int radiusZP;
     private final int radiusXN;
@@ -76,7 +62,10 @@ public class Region {
                   double exp) {
         this.type = type;
         this.people = people;
-        this.location = location;
+        this.world = location.getWorld();
+        this.x = location.getX();
+        this.y = location.getY();
+        this.z = location.getZ();
         radiusXP = buildRadius[0];
         radiusZP = buildRadius[1];
         radiusXN = buildRadius[2];
@@ -87,9 +76,6 @@ public class Region {
         this.exp = exp;
     }
 
-    protected void setLocation(Location location) {
-        this.location = location;
-    }
     public double getExp() {
         return exp;
     }
@@ -113,7 +99,7 @@ public class Region {
     }
     public HashMap<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
-        Town town = townManager.getTownAt(location);
+        Town town = townManager.getTownAt(getLocation());
         if (town == null) {
             return people;
         }
@@ -154,7 +140,7 @@ public class Region {
         return owners;
     }
     public Location getLocation() {
-        return location;
+        return new Location(world, x, y, z);
     }
     public int getRadiusXP() {
         return radiusXP;
@@ -190,7 +176,7 @@ public class Region {
     }
 
     public String getId() {
-        return locationToString(location);
+        return locationToString(getLocation());
     }
     public static String blockLocationToString(Location location) {
 //        double x = location.getX();
@@ -265,6 +251,7 @@ public class Region {
     }
 
     private boolean addItemCheck(List<HashMap<Material, Integer>> itemCheck) {
+        Location location = getLocation();
         World currentWorld = location.getWorld();
         int xMax = (int) location.getX() + radiusXP;
         int xMin = (int) location.getX() - radiusXN;
@@ -666,7 +653,7 @@ public class Region {
             return false;
         }
 
-        Town town = TownManager.getInstance().getTownAt(location);
+        Town town = TownManager.getInstance().getTownAt(getLocation());
         long period = regionType.getPeriod();
         if (town != null && town.getGovernmentType() != null) {
             period = regionType.getPeriod(GovernmentManager.getInstance()
@@ -687,6 +674,7 @@ public class Region {
         if (regionType.getUpkeeps().isEmpty()) {
             return true;
         }
+        Location location = getLocation();
         Block block = location.getBlock();
         BlockState state = null;
         try {
@@ -726,7 +714,7 @@ public class Region {
             return false;
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
-        Block block = location.getBlock();
+        Block block = getLocation().getBlock();
         BlockState state = block.getState();
         if (!(state instanceof Chest)) {
             return needsReagentsOrInput();
@@ -768,11 +756,17 @@ public class Region {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
+        Location location = getLocation();
         boolean hadUpkeep = false;
         Inventory chestInventory = null;
         boolean hasItemUpkeep = false;
+        boolean chunkLoaded = Util.isChunkLoadedAt(getLocation());
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            if (!hasUpkeepPerm(regionUpkeep)) {
+                continue;
+            }
+
             boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
 
@@ -782,16 +776,18 @@ public class Region {
 
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
+                if (!chunkLoaded) {
+                    UnloadedInventoryHandler.getInstance().addUpkeep(getLocation(), i);
+                    continue;
+                }
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
                 RegionManager.getInstance().addCheckedRegion(this);
             }
             if (needsItems && chestInventory == null) {
                 continue;
             }
-            boolean containsReagents = chestInventory != null &&
-                    Util.containsItems(regionUpkeep.getReagents(), chestInventory);
-            boolean containsInputs = chestInventory != null &&
-                    Util.containsItems(regionUpkeep.getInputs(), chestInventory);
+            boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+            boolean containsInputs = !needsItems || Util.containsItems(regionUpkeep.getInputs(), chestInventory);
             boolean hasReagents = !needsItems || (containsReagents && containsInputs);
             if (!hasReagents) {
                 i++;
@@ -805,62 +801,7 @@ public class Region {
                 continue;
             }
             hasItemUpkeep = true;
-            failingUpkeeps.remove(i);
-            boolean hasMoney = false;
-            if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
-                double payout = regionUpkeep.getPayout();
-                Town town = TownManager.getInstance().getTownAt(location);
-                if (town != null && town.getGovernmentType() != null) {
-                    Government government = GovernmentManager.getInstance()
-                            .getGovernment(town.getGovernmentType());
-                    for (GovTypeBuff buff : government.getBuffs()) {
-                        if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
-                            continue;
-                        }
-                        payout = payout * (1 + (double) buff.getAmount() / 100);
-                        break;
-                    }
-                }
-
-                if (payout > 0 && town != null && (town.getGovernmentType() == GovernmentType.COMMUNISM ||
-                        town.getGovernmentType() == GovernmentType.COOPERATIVE)) {
-                    double size = (double) town.getRawPeople().size();
-                    if (town.getGovernmentType() == GovernmentType.COMMUNISM) {
-                        payout = payout / size;
-                        for (UUID uuid : town.getRawPeople().keySet()) {
-                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                            Civs.econ.depositPlayer(offlinePlayer, payout);
-                            hasMoney = true;
-                        }
-                    } else if (town.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                        double coopCut = payout * 0.1;
-                        town.setBankAccount(town.getBankAccount() + coopCut);
-                        HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
-                        for (UUID uuid : payouts.keySet()) {
-                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                            Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
-                            hasMoney = true;
-                        }
-                    }
-                } else {
-                    payout = payout / (double) getOwners().size();
-                    for (UUID uuid : getOwners()) {
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                        if (payout == 0) {
-                            hasMoney = true;
-                        } else if (payout > 0) {
-                            Civs.econ.depositPlayer(player, payout);
-                            hasMoney = true;
-                        } else if (Civs.econ.has(player, payout)) {
-                            Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                            hasMoney = true;
-                        }
-                    }
-                }
-            } else {
-                hasMoney = true;
-            }
-            if (!hasMoney) {
+            if (!runRegionUpkeepPayout(regionUpkeep)) {
                 i++;
                 continue;
             }
@@ -882,8 +823,18 @@ public class Region {
                 }
             }
             if (chestInventory != null) {
+                if (ConfigManager.getInstance().isDebugLog()) {
+                    DebugLogger.incrementRegion(this);
+                    DebugLogger.inventoryModifications++;
+                }
                 Util.removeItems(regionUpkeep.getInputs(), chestInventory);
                 Util.addItems(regionUpkeep.getOutputs(), chestInventory);
+
+                containsReagents = Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+                containsInputs = Util.containsItems(regionUpkeep.getInputs(), chestInventory);
+                if (containsReagents && containsInputs) {
+                    failingUpkeeps.remove(i);
+                }
             }
             if (regionUpkeep.getExp() > 0) {
                 exp += regionUpkeep.getExp();
@@ -907,11 +858,168 @@ public class Region {
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
         }
-        if (!hasItemUpkeep) {
+        if (!hasItemUpkeep && chunkLoaded) {
             RegionManager.getInstance().addCheckedRegion(this);
-        } else {
+        } else if (hasItemUpkeep) {
             RegionManager.getInstance().removeCheckedRegion(this);
         }
         return hadUpkeep;
+    }
+
+    public void runUpkeep(int i) {
+        Location location = getLocation();
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(getType());
+        if (regionType.getUpkeeps().size() <= i) {
+            return;
+        }
+        RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(i);
+        if (!hasUpkeepPerm(regionUpkeep)) {
+            return;
+        }
+
+        boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
+                !regionUpkeep.getInputs().isEmpty();
+
+        if (needsItems) {
+            failingUpkeeps.add(i);
+        }
+
+        Inventory chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
+        if (chestInventory == null && needsItems &&
+                RegionManager.getInstance().hasRegionChestChanged(this)) {
+
+            RegionManager.getInstance().addCheckedRegion(this);
+        }
+        if (needsItems && chestInventory == null) {
+            return;
+        }
+        boolean containsReagents = chestInventory != null &&
+                Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+        boolean containsInputs = chestInventory != null &&
+                Util.containsItems(regionUpkeep.getInputs(), chestInventory);
+        boolean hasReagents = !needsItems || (containsReagents && containsInputs);
+        if (!hasReagents) {
+            return;
+        }
+
+        boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
+        boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
+        if (!emptyOutput && fullChest) {
+            return;
+        }
+        failingUpkeeps.remove(i);
+
+        if (!runRegionUpkeepPayout(regionUpkeep)) {
+            return;
+        }
+        if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
+            Town town = TownManager.getInstance().getTownAt(location);
+            if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
+                return;
+            }
+            boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
+            if (regionUpkeep.getPowerInput() > 0) {
+                TownManager.getInstance().setTownPower(town, town.getPower() - regionUpkeep.getPowerInput());
+            }
+            if (regionUpkeep.getPowerOutput() > 0) {
+                TownManager.getInstance().setTownPower(town, town.getPower() + regionUpkeep.getPowerOutput());
+            }
+            if (powerMod) {
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+        if (chestInventory != null) {
+            if (ConfigManager.getInstance().isDebugLog()) {
+                DebugLogger.incrementRegion(this);
+                DebugLogger.inventoryModifications++;
+            }
+            Util.removeItems(regionUpkeep.getInputs(), chestInventory);
+            Util.addItems(regionUpkeep.getOutputs(), chestInventory);
+        }
+        if (regionUpkeep.getExp() > 0) {
+            exp += regionUpkeep.getExp();
+            RegionManager.getInstance().saveRegion(this);
+        }
+
+        Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
+    }
+
+    private boolean hasUpkeepPerm(RegionUpkeep regionUpkeep) {
+        if (regionUpkeep.getPerm().isEmpty()) {
+            return true;
+        }
+        boolean allHavePerm = true;
+        for (UUID uuid : getOwners()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            World world = getLocation().getWorld();
+            if (!offlinePlayer.isOp() && (Civs.perm == null ||
+                    !Civs.perm.playerHas(world.getName(), offlinePlayer, regionUpkeep.getPerm()))) {
+                allHavePerm = false;
+                break;
+            }
+        }
+        return allHavePerm;
+    }
+
+    private boolean runRegionUpkeepPayout(RegionUpkeep regionUpkeep) {
+        boolean hasMoney = false;
+        if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
+            double payout = regionUpkeep.getPayout();
+            Town town = TownManager.getInstance().getTownAt(getLocation());
+            if (town != null && town.getGovernmentType() != null) {
+                Government government = GovernmentManager.getInstance()
+                        .getGovernment(town.getGovernmentType());
+                for (GovTypeBuff buff : government.getBuffs()) {
+                    if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
+                        continue;
+                    }
+                    payout = payout * (1 + (double) buff.getAmount() / 100);
+                    break;
+                }
+            }
+
+            Government government = null;
+            if (town != null) {
+                government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            }
+            if (payout > 0 && town != null && (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.COOPERATIVE)) {
+                double size = town.getRawPeople().size();
+                if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
+                    payout = payout / size;
+                    for (UUID uuid : town.getRawPeople().keySet()) {
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                        Civs.econ.depositPlayer(offlinePlayer, payout);
+                        hasMoney = true;
+                    }
+                } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
+                    double coopCut = payout * 0.1;
+                    town.setBankAccount(town.getBankAccount() + coopCut);
+                    HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                    for (UUID uuid : payouts.keySet()) {
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                        Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
+                        hasMoney = true;
+                    }
+                }
+            } else {
+                payout = payout / (double) getOwners().size();
+                for (UUID uuid : getOwners()) {
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                    if (payout == 0) {
+                        hasMoney = true;
+                    } else if (payout > 0) {
+                        Civs.econ.depositPlayer(player, payout);
+                        hasMoney = true;
+                    } else if (Civs.econ.has(player, payout)) {
+                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                        hasMoney = true;
+                    }
+                }
+            }
+        } else {
+            hasMoney = true;
+        }
+        return hasMoney;
     }
 }

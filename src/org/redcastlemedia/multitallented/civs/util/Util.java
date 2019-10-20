@@ -77,7 +77,11 @@ public final class Util {
     }
 
     public static void checkMerit(Town town, Player player) {
-        if (town == null || town.getGovernmentType() != GovernmentType.MERITOCRACY) {
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.MERITOCRACY) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -547,6 +551,11 @@ public final class Util {
 
     public static boolean hasOverride(Region region, Civilian civilian, Town town) {
         boolean override = false;
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        if (isAdmin) {
+            return true;
+        }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         if (town != null && civilian != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());

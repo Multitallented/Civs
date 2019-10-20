@@ -20,6 +20,7 @@ effects:
 - block_break
 - drain_power:1
 - evolve:siege_machine1.3
+- chest_use
 
 towns:
 - outpost
@@ -31,9 +32,9 @@ upkeep:
     input:
     - TNT*1
     - REDSTONE*4
-    - COAL*1
+    - COAL*4
     output:
-    - GRAVEL*1
-    - DIRT*1
+    - GRAVEL*1%95,TNT*1%5
+    - DIRT*1%90,COAL*1%5,REDSTONE*1%5
     exp: 1
 

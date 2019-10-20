@@ -17,12 +17,15 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceListMenu;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
+import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 
 import lombok.Getter;
@@ -170,6 +173,21 @@ public class MenuManager implements Listener {
             loadConfig(communityMenu);
             menus.put(communityMenu.getFileName(), communityMenu);
         }
+        {
+            AllianceListMenu allianceListMenu = new AllianceListMenu();
+            loadConfig(allianceListMenu);
+            menus.put(allianceListMenu.getFileName(), allianceListMenu);
+        }
+        {
+            ShopMenu shopMenu = new ShopMenu();
+            loadConfig(shopMenu);
+            menus.put(shopMenu.getFileName(), shopMenu);
+        }
+        {
+            RegionTypeMenu regionTypeMenu = new RegionTypeMenu();
+            loadConfig(regionTypeMenu);
+            menus.put(regionTypeMenu.getFileName(), regionTypeMenu);
+        }
     }
 
     private void loadConfig(CustomMenu customMenu) {
@@ -227,6 +245,11 @@ public class MenuManager implements Listener {
         }
         openMenus.put(player.getUniqueId(), menuName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
+        if (redirectMenu != null) {
+            openMenu(player, redirectMenu, params);
+            return;
+        }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());

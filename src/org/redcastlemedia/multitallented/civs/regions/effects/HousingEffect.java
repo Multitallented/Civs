@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class HousingEffect implements RegionCreatedListener, DestroyRegionListener {
     public static String KEY = "housing";
+    public static String HOUSING_EXCEPT = "exempt-housing";
 
     public HousingEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);

@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -26,9 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-
-import java.util.Date;
-import java.util.HashMap;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
@@ -192,11 +189,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         //Find target Super-region
         Sign sign = (Sign) state;
         String townName = sign.getLine(0);
-        Town town = null;
-        for (Town cTown : TownManager.getInstance().getTowns()) {
-            if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
-                town = cTown;
-                break;
+        Town town = TownManager.getInstance().getTown(townName);
+        if (town == null) {
+            for (Town cTown : TownManager.getInstance().getTowns()) {
+                if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
+                    town = cTown;
+                    break;
+                }
             }
         }
         if (town == null) {
@@ -223,6 +222,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
+        }
+        if (Civs.discordSRV != null) {
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
+                    .replace("$2", regionType.getName()).replace("$3", town.getName());
+            defaultMessage += DiscordUtil.atAllTownOwners(town);
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         return true;
     }

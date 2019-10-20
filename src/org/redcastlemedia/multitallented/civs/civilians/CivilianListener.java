@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,7 +52,9 @@ import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
@@ -293,6 +296,14 @@ public class CivilianListener implements Listener {
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
+        if (civItem instanceof TownType) {
+            Town town = TownManager.getInstance().getTownAt(event.getBlockPlaced().getLocation());
+            if (town != null) {
+                TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
+            }
+            event.setCancelled(true);
+            return;
+        }
         CVItem cvItem = CVItem.createFromItemStack(is);
         if (cvItem.getLore() == null || cvItem.getLore().isEmpty()) {
             ArrayList<String> lore = new ArrayList<>();
@@ -330,10 +341,17 @@ public class CivilianListener implements Listener {
         if ("PlaceholderAPI".equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceHook().register();
+            return;
         }
         if ("MMOItems".equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = MMOItems.plugin;
+            return;
+        }
+        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Civs.discordSRV = DiscordSRV.getPlugin();
+            return;
         }
     }
 
@@ -342,6 +360,12 @@ public class CivilianListener implements Listener {
         if ("MMOItems".equals(event.getPlugin().getName()) &&
                 !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = null;
+            return;
+        }
+        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Civs.discordSRV = DiscordSRV.getPlugin();
+            return;
         }
     }
 

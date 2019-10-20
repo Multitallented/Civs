@@ -21,8 +21,10 @@ limits:
 - arrowtrapgroup:1
 - siegemachinegroup:2
 
-build-radius: 24 # 49x49x49
+build-radius: 24 # 49x1000x49
+build-radius-y: 500
 effects:
+- exempt-housing
 - block_break
 - block_build
 - block_liquid

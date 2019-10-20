@@ -1,0 +1,10 @@
+size: 36
+name: RegionType
+#variables:
+#
+items:
+  icon:
+    index: 0
+    # icon: region type shop-icon
+    # name: region type name
+    # desc: region type desc

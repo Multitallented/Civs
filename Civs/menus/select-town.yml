@@ -3,10 +3,6 @@ name: SelectTown
 # variables:
 #  $prevMenu$ name of last menu called
 items:
-  icon:
-    index: 0
-    icon: BLUE_BED
-    name: your-towns
   back:
     index: 8
   prev:

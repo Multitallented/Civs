@@ -15,6 +15,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -270,7 +272,8 @@ public class MemberActionMenu extends Menu {
         boolean alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
                 !town.getVotes().get(civilian.getUuid()).isEmpty();
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted, true);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        addItems(inventory, civilian, role, viewingSelf, government.getGovernmentType(), price, isOwner, alreadyVoted, true);
 
         return inventory;
     }
