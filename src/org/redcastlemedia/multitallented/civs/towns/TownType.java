@@ -50,7 +50,7 @@ public class TownType extends CivItem {
     }
     public String getChild() { return child; }
     public int getRegionLimit(String regionTypeName) {
-        return regionLimits.get(regionTypeName) == null ? 0 : regionLimits.get(regionTypeName);
+        return regionLimits.get(regionTypeName) == null ? -1 : regionLimits.get(regionTypeName);
     }
 
     public TownType(String name,

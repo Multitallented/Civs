@@ -55,10 +55,12 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         Town town = hasValidSign(l, rt, player.getUniqueId());
 
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (town == null) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "raid-sign"));
             return false;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!ConfigManager.getInstance().isAllowOfflineRaiding()) {
             boolean isOnline = false;
@@ -178,7 +180,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return;
         }
 
-        long cooldown = Long.parseLong(r.getEffects().get(KEY));
+        long cooldown = 20;
+        if (r.getEffects().get(KEY) != null) {
+            cooldown = Long.parseLong(r.getEffects().get(KEY));
+        }
 
         if (cooldowns.containsKey(town) &&
                 cooldowns.get(town) + cooldown * 1000 > System.currentTimeMillis()) {
