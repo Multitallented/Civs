@@ -164,7 +164,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             Civs.logger.warning("Unable to save new chest for " + r.getId() + ".yml");
             return;
         }
-        invs.put(r, chests);
+        checkExcessChests(r);
     }
 
     @EventHandler

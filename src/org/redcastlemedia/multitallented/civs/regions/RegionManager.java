@@ -547,8 +547,6 @@ public class RegionManager {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             String townLocalizedName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     townType.getProcessedName() + "-name");
-            String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    regionType.getProcessedName() + "-name");
             int limit = -1;
             if (townType.getRegionLimit(regionTypeName) > -1) {
                 limit = townType.getRegionLimit(regionTypeName);
