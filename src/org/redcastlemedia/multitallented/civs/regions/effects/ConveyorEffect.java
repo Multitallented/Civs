@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -136,10 +138,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Location l = r.getLocation();
 
         //Check if has effect conveyor
-        RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-        if (rt == null) {
-            return;
-        }
         String conveyorString = r.getEffects().get(KEY);
         Material conveyor = Material.valueOf(conveyorString);
 
@@ -172,24 +170,25 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
         //If chunk not loaded try using region cache to move directly
         if (!isLocationWithinSightOfPlayer(loc)) {
-            if (cacheDestinationRegions.containsKey(r)) {
-                Inventory cachedInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
-                if (cachedInventory.firstEmpty() < 0 ||
-                        cachedInventory.firstEmpty() > cachedInventory.getSize() - 3) {
-                    return;
+            if (!cacheDestinationRegions.containsKey(r)) {
+                return;
+            }
+            Inventory cachedInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
+            if (cachedInventory.firstEmpty() < 0 ||
+                    cachedInventory.firstEmpty() > cachedInventory.getSize() - 3) {
+                return;
+            }
+            for (ItemStack is : iss) {
+                cInv.removeItem(is);
+            }
+            try {
+                if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
+                    DebugLogger.inventoryModifications++;
                 }
                 for (ItemStack is : iss) {
-                    cInv.removeItem(is);
+                    cachedInventory.addItem(is);
                 }
-                try {
-                    if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
-                        DebugLogger.inventoryModifications++;
-                    }
-                    for (ItemStack is : iss) {
-                        cachedInventory.addItem(is);
-                    }
-                } catch (Exception e) {
-                }
+            } catch (Exception e) {
             }
             return;
         } else {
@@ -209,6 +208,17 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 cart.getInventory().addItem(is);
             }
             carts.put(r, cart);
+        }
+    }
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        Chunk chunk = event.getChunk();
+        for (Region r : new HashMap<>(carts).keySet()) {
+            StorageMinecart sm = carts.get(r);
+            if (chunk.equals(sm.getLocation().getChunk())) {
+                returnCart(r, true);
+            }
         }
     }
 
@@ -235,6 +245,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 }
                 returnInventory.addItem(itemStack);
             }
+            sm.getInventory().clear();
             sm.remove();
         } catch (Exception e) {
         }
@@ -263,8 +274,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
 
         StorageMinecart sm = carts.get(r);
-        if (!sm.isValid() || sm.isDead()) {
+        if (sm.isDead()) {
             carts.remove(r);
+            return;
+        }
+        if (!sm.isValid() && !Util.isChunkLoadedAt(sm.getLocation())) {
+            returnCart(r, true);
             return;
         }
 
