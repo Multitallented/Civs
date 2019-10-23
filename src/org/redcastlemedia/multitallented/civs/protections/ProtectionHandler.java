@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -245,18 +244,30 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        boolean allProtected = shouldBlockAction(event.getBlock(), null, "block_build");
+        Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
+        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
         for (Block block : event.getBlocks()) {
-            boolean checkLocation = shouldBlockAction(block, null, "block_build");
-            if (!checkLocation) {
-                allProtected = false;
-            }
-            if (checkLocation && !allProtected) {
+            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), "block_build", town, region);
+            if (checkLocation) {
                 event.setCancelled(true);
-                break;
+                return;
             }
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
+        Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
+        for (Block block : event.getBlocks()) {
+            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), "block_build", town, region);
+            if (checkLocation) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
         boolean setCancelled = event.isCancelled() ||
@@ -628,9 +639,6 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
-//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
-//            return false;
-//        }
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
@@ -698,5 +706,51 @@ public class ProtectionHandler implements Listener {
             return false;
         }
         return true;
+    }
+
+    private boolean shouldBlockActionInferFromOrigin(Location location, String type, Town town, Region region) {
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        Town currentTown = townManager.getTownAt(location);
+        outer: if (currentTown != null) {
+            if (!currentTown.getEffects().containsKey(type)) {
+                break outer;
+            }
+            boolean hasPower = currentTown.getPower() > 0;
+            boolean hasGrace = hasPower || TownManager.getInstance().hasGrace(currentTown, true);
+            if (!hasGrace) {
+                break outer;
+            }
+
+            if (town == null || !town.equals(currentTown)) {
+                return true;
+            }
+        }
+        Region currentRegion = regionManager.getRegionAt(location);
+        if (currentRegion == null ||
+                !currentRegion.getEffects().containsKey(type)) {
+            return false;
+        }
+        if (currentTown != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
+            Government government = GovernmentManager.getInstance().getGovernment(currentTown.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
+                    government.getGovernmentType() == GovernmentType.ANARCHY) {
+                return false;
+            } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
+                    government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
+                    (regionType.getGroups().contains("mine") ||
+                            regionType.getGroups().contains("quarry") ||
+                            regionType.getGroups().contains("farm") ||
+                            regionType.getGroups().contains("factory"))) {
+                return false;
+            }
+        }
+        if (Util.equivalentLocations(location, currentRegion.getLocation()) &&
+                type.equals("block_break")) {
+            return true;
+        }
+        return !currentRegion.equals(region);
     }
 }
