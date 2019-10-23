@@ -46,6 +46,11 @@ public class IntruderEffect implements Listener {
             return;
         }
 
+        Player player = Bukkit.getPlayer(event.getUuid());
+        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+            return;
+        }
+
         Region r = getIntruderRegion(town);
 
         if (r == null) {
@@ -58,15 +63,17 @@ public class IntruderEffect implements Listener {
 
         r.runUpkeep(true);
 
-        Player player = Bukkit.getPlayer(event.getUuid());
         broadcastMessageToAllTownMembers(town, true, player.getDisplayName());
     }
 
     @EventHandler
     public void onSRegionExit(PlayerExitTownEvent event) {
-        RegionManager rm = RegionManager.getInstance();
         Town town = event.getTown();
         if (town.getPeople().containsKey(event.getUuid())) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(event.getUuid());
+        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
             return;
         }
 
@@ -82,7 +89,6 @@ public class IntruderEffect implements Listener {
 
         r.runUpkeep(true);
 
-        Player player = Bukkit.getPlayer(event.getUuid());
         broadcastMessageToAllTownMembers(town, false, player.getDisplayName());
     }
 
