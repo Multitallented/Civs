@@ -522,7 +522,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         for (Integer index : failingUpkeeps) {
             RegionUpkeep regionUpkeep = rt.getUpkeeps().get(index);
             req.addAll(cloneLists(regionUpkeep.getInputs()));
-            req.addAll(cloneLists(regionUpkeep.getReagents()));
         }
         return req;
     }
