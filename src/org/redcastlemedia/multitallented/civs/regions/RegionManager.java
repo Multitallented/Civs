@@ -643,9 +643,6 @@ public class RegionManager {
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
-                    //                for (String message : generateMissingReqsMessage(missingBlocks)) {
-                    //                    player.sendMessage(message);
-                    //                }
                     player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
                 }
                 return false;
