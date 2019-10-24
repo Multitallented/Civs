@@ -8,7 +8,7 @@ items:
     index: 0
     # icon: region type shop-icon
     # name: region type name
-    # desc: region type desc
+    # desc: region type desc + size
   price:
     index: 1
     icon: EMERALD
