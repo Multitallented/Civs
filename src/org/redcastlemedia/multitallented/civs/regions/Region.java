@@ -796,6 +796,9 @@ public class Region {
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
             boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
+            if (fullChest) {
+                failingUpkeeps.remove(i);
+            }
             if (!emptyOutput && fullChest) {
                 i++;
                 continue;
@@ -904,6 +907,9 @@ public class Region {
 
         boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
         boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
+        if (fullChest) {
+            failingUpkeeps.remove(i);
+        }
         if (!emptyOutput && fullChest) {
             return;
         }

@@ -41,6 +41,8 @@ allow-food-heal-in-combat: true
 allow-teleporting-during-combat: false
 #can a raidporter be built to raid a town with no online members
 allow-offline-raiding: true
+#can non-allied players teleport out of towns?
+allow-teleporting-out-of-hostile-towns: true
 #use the class and spell system from Civs
 use-classes-and-spells: false
 #whether or not the glass box should appear to show the region's boundaries

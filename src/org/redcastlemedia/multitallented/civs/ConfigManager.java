@@ -131,6 +131,8 @@ public class ConfigManager {
     double antiCampCost;
     @Getter
     boolean allowOfflineRaiding;
+    @Getter
+    boolean allowTeleportingOutOfHostileTowns;
 
     public ConfigManager() {
         loadDefaults();
@@ -371,6 +373,7 @@ public class ConfigManager {
             debugLog = config.getBoolean("debug-log", false);
             maxBankDeposit = config.getDouble("max-bank-deposit", -1);
             allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
+            allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -396,6 +399,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        allowTeleportingOutOfHostileTowns = true;
         allowOfflineRaiding = true;
         maxBankDeposit = -1;
         debugLog = false;

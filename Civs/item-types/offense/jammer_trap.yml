@@ -1,0 +1,20 @@
+type: region
+icon: SOUL_SAND
+name: Jammer_Trap
+max: 1
+groups:
+  - offense
+
+build-reqs:
+  - TNT*4
+  - OBSIDIAN*2
+  - g:fence*12
+
+build-radius: 3 #7x7x7
+effects:
+  - block_break
+  - block_build
+  - jammer:20.30 # redirect someone 20 blocks away and 30 second cooldown before they can port
+  - temporary:1800 # 30 minutes
+  - port:member
+
