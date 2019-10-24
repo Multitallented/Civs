@@ -4,13 +4,16 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 
@@ -21,6 +24,11 @@ public class JammerEffect implements Listener {
 
     public static String KEY = "jammer";
     private static HashMap<UUID, Long> cooldowns = new HashMap<>();
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        cooldowns.remove(event.getPlayer().getUniqueId());
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -60,13 +68,17 @@ public class JammerEffect implements Listener {
         for (Location location : jammers.keySet()) {
             Region region = jammers.get(location);
             String effectString = region.getEffects().get(KEY);
-            int radius = 20;
+            int radius = 100;
             long cooldown = 30000;
+            int landingRadius = 20;
             if (effectString != null) {
                 String[] splitString = effectString.split("\\.");
                 radius = Integer.parseInt(splitString[0]);
                 if (splitString.length > 1) {
                     cooldown = 1000 * Long.parseLong(splitString[1]);
+                }
+                if (splitString.length > 2) {
+                    landingRadius = Integer.parseInt(splitString[2]);
                 }
             }
 
@@ -76,8 +88,17 @@ public class JammerEffect implements Listener {
 
             if (Vector3D.hasIntersection(observerStart, observerEnd, minimum, maximum)) {
                 cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + cooldown);
-                // TODO teleport them nearby
+                Location targetLocation = HuntEffect.findNearbyLocationForTeleport(region.getLocation(), landingRadius, player);
+                if (targetLocation != null) {
+                    event.setTo(targetLocation);
+                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                    RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                    String localizedRegionName = LocaleManager.getInstance().getTranslation(
+                            civilian.getLocale(), regionType.getProcessedName() + "-name");
+                    HuntEffect.messageNearbyPlayers(player, "jammer-redirect", localizedRegionName);
+                }
             }
+            return;
         }
 
     }

@@ -2,8 +2,10 @@ type: region
 icon: SOUL_SAND
 name: Jammer_Trap
 max: 1
+price: 400
 groups:
   - offense
+level: 1
 
 build-reqs:
   - TNT*4
@@ -14,7 +16,9 @@ build-radius: 3 #7x7x7
 effects:
   - block_break
   - block_build
-  - jammer:20.30 # redirect someone 20 blocks away and 30 second cooldown before they can port
+  # if someone's teleport path comes within 100 blocks of this building
+  # redirect them 20 blocks away and 30 second cooldown before they can port again
+  - jammer:100.30.20
   - temporary:1800 # 30 minutes
   - port:member
 
