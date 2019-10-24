@@ -13,6 +13,8 @@ items:
     icon: EMERALD
     name: buy-item
     desc: price
+    actions:
+      - menu:buy-confirmation?item=$regionType$
   rebuild:
     index: 2
     # icon: rebuild icon
@@ -58,7 +60,7 @@ items:
     desc: reagents
     actions:
       - menu:recipe?regionType=$regionType$&recipe=reagent$count$
-  upkeep:
+  input:
     index: 10,19,28,37,46
     icon: HOPPER
     name: upkeep-title

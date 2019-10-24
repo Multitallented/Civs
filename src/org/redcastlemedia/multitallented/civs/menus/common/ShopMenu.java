@@ -26,9 +26,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 public class ShopMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
-        for (String param : params.keySet()) {
-            System.out.println(param + ":" + params.get(param));
-        }
         Map<String, Object> data = new HashMap<>();
 
         if (params.containsKey("page")) {
@@ -93,11 +90,6 @@ public class ShopMenu extends CustomMenu {
             data.put(key, params.get(key));
         }
 
-        System.out.println("-----data------");
-        for (String key : data.keySet()) {
-            System.out.println(key + ":" + data.get(key));
-        }
-        System.out.println("---------------");
         return data;
     }
 
