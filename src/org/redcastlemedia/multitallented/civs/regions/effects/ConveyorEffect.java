@@ -242,6 +242,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             sm.getInventory().clear();
             sm.remove();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         if (removeFromCarts) {
             carts.remove(region);
@@ -283,23 +284,23 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
 
         Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
-        if (region == null || r.equals(region)) {
+        if (region == null || region.equals(r)) {
             return;
         }
 
-        Inventory currentInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
+        Inventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
         HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
 
         Inventory originInv = UnloadedInventoryHandler.getInstance().getChestInventory(carts.get(r).getLocation());
-        boolean isFull = false;
+        boolean isDestinationChestFull = false;
         for (ItemStack is : cartInventory) {
             if (is == null || is.getType() == Material.AIR) {
                 continue;
             }
             try {
-                if (!isFull) {
-                    if (currentInventory.firstEmpty() < 0) {
-                        isFull = true;
+                if (!isDestinationChestFull) {
+                    if (destinationInventory.firstEmpty() < 0) {
+                        isDestinationChestFull = true;
                         if (originInv == null || originInv.firstEmpty() < 0) {
                             break;
                         } else {
@@ -311,7 +312,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                         DebugLogger.inventoryModifications++;
                     }
                     sm.getInventory().removeItem(is);
-                    currentInventory.addItem(is);
+                    destinationInventory.addItem(is);
                     RegionManager.getInstance().removeCheckedRegion(region);
                 } else {
                     sm.getInventory().removeItem(is);
@@ -321,6 +322,8 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                     originInv.addItem(is);
                 }
             } catch (NullPointerException npe) {
+                npe.printStackTrace();
+                break;
             }
         }
         returnCart(r, false);
