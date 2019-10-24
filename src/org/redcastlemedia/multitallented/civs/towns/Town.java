@@ -300,6 +300,10 @@ public class Town {
         if (Civs.getInstance() == null) {
             return;
         }
+        if (!ConfigManager.getInstance().isTownRingsCrumbleToGravel()) {
+            useGravel = false;
+        }
+        final boolean finalUseGravel = useGravel;
         removeOuterRing(useGravel);
 
         if (!destroyAll) {
@@ -330,7 +334,7 @@ public class Town {
 
                         @Override
                         public void run() {
-                            removeRing(loc, srType.getBuildRadius(), useGravel);
+                            removeRing(loc, srType.getBuildRadius(), finalUseGravel);
                         }
 
                     }, delay);
