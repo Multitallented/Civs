@@ -67,6 +67,10 @@ public class JammerEffect implements Listener {
 
         for (Location location : jammers.keySet()) {
             Region region = jammers.get(location);
+            if (region.getPeople().containsKey(player.getUniqueId())) {
+                continue;
+            }
+
             String effectString = region.getEffects().get(KEY);
             int radius = 100;
             long cooldown = 30000;

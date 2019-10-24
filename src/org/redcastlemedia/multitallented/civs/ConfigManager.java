@@ -133,6 +133,8 @@ public class ConfigManager {
     boolean allowOfflineRaiding;
     @Getter
     boolean allowTeleportingOutOfHostileTowns;
+    @Getter
+    boolean townRingsCrumbleToGravel;
 
     public ConfigManager() {
         loadDefaults();
@@ -374,6 +376,7 @@ public class ConfigManager {
             maxBankDeposit = config.getDouble("max-bank-deposit", -1);
             allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
             allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
+            townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -399,6 +402,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        townRingsCrumbleToGravel = true;
         allowTeleportingOutOfHostileTowns = true;
         allowOfflineRaiding = true;
         maxBankDeposit = -1;
