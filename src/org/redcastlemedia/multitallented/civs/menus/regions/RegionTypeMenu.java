@@ -1,8 +1,12 @@
 package org.redcastlemedia.multitallented.civs.menus.regions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -28,6 +32,11 @@ public class RegionTypeMenu extends CustomMenu {
             CivItem regionType = ItemManager.getInstance().getItemType(params.get("regionType"));
             data.put("regionType", regionType);
         }
+        if (params.containsKey("showPrice") && "true".equals(params.get("showPrice"))) {
+            data.put("showPrice", true);
+        } else {
+            data.put("showPrice", false);
+        }
         return data;
     }
 
@@ -48,9 +57,44 @@ public class RegionTypeMenu extends CustomMenu {
 
             lore.addAll(Util.textWrap(regionType.getDescription(civilian.getLocale())));
             shopIcon.setLore(lore);
-            return shopIcon.createItemStack();
+            ItemStack itemStack = shopIcon.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
-            // TODO lock item conditionally
+            boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), "showPrice");
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
+            String maxLimit = civilian.isAtMax(regionType);
+            boolean isInShop = regionType.getInShop();
+            ArrayList<String> lore = new ArrayList<>();
+            boolean hasItemUnlocked = ItemManager.getInstance().hasItemUnlocked(civilian, regionType);
+            if (showPrice && (isCivsAdmin || (hasShopPerms && maxLimit == null && isInShop))) {
+                CVItem priceItem;
+                if (hasItemUnlocked || isCivsAdmin) {
+                    priceItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+                } else {
+                    priceItem = CVItem.createCVItemFromString("IRON_BARS");
+                    lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "item-locked"));
+                }
+                priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), menuIcon.getName()));
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
+                priceItem.setLore(lore);
+                ItemStack itemStack = priceItem.createItemStack();
+                if (hasItemUnlocked || isCivsAdmin) {
+                    putActions(civilian, menuIcon, itemStack, count);
+                }
+                return itemStack;
+            } else if (showPrice && hasShopPerms && isInShop) {
+                CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
+                priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "buy-item"));
+                int max = maxLimit.equals(regionType.getProcessedName()) ? regionType.getCivMax() :
+                        ConfigManager.getInstance().getGroups().get(maxLimit);
+                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "max-item")
+                        .replace("$1", maxLimit)
+                        .replace("$2", "" + max));
+                return priceItem.createItemStack();
+            }
         } else if ("rebuild".equals(menuIcon.getKey())) {
             // TODO handle either 1 rebuild or multiple
         } else if ("evolve".equals(menuIcon.getKey())) {
@@ -62,7 +106,9 @@ public class RegionTypeMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem shopItem = ItemManager.getInstance().getItemType(evolveName.split("\\.")[0]).getShopIcon();
-            return shopItem.createItemStack();
+            ItemStack itemStack = shopItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("biome".equals(menuIcon.getKey())) {
             ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
             ArrayList<String> lore = new ArrayList<>();
@@ -70,6 +116,7 @@ public class RegionTypeMenu extends CustomMenu {
                 lore.add(biome.name());
             }
             itemStack.getItemMeta().setLore(lore);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("towns".equals(menuIcon.getKey())) {
             ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
@@ -78,10 +125,12 @@ public class RegionTypeMenu extends CustomMenu {
                         townTypeName + "-name");
                 itemStack.getItemMeta().getLore().add(localizedTownTypeName);
             }
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("effects".equals(menuIcon.getKey())) {
             ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
             itemStack.getItemMeta().getLore().addAll(regionType.getEffects().keySet());
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("reagents".equals(menuIcon.getKey()) ||
                    "output".equals(menuIcon.getKey()) ||

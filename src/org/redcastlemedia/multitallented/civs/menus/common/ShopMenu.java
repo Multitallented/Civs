@@ -159,10 +159,12 @@ public class ShopMenu extends CustomMenu {
                 if (civItem != null) {
                     if (civItem.getItemType() == CivItem.ItemType.REGION) {
                         params.put("regionType", name);
+                        params.put("showPrice", "true");
                         MenuManager.getInstance().openMenu(player, "region-type", params);
                         return true;
                     } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
                         params.put("townType", name);
+                        params.put("showPrice", "true");
                         MenuManager.getInstance().openMenu(player, "town-type", params);
                         return true;
                     }
