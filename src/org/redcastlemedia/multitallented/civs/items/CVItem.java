@@ -294,8 +294,7 @@ public class CVItem {
             if (!nbtItem.hasType()) {
                 return false;
             }
-            Type mmoType = nbtItem.getType();
-            if (!mmoItemType.equalsIgnoreCase(mmoType.getName())) {
+            if (!mmoItemType.equalsIgnoreCase(nbtItem.getString("MMOITEMS_ITEM_TYPE"))) {
                 return false;
             }
             if (!mmoItemName.equalsIgnoreCase(nbtItem.getString("MMOITEMS_ITEM_ID"))) {

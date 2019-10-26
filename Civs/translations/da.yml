@@ -228,6 +228,7 @@ raid-target-lost: Der er ingen by opkaldt $1 inden for $2 blokke
 searching-for-target: Searching for raid teleport destination ...
 raid-target-blocked: Raid teleport destination blokeret.
 raid-porter-warning: ADVARSEL! $1 har oprettet $2 rettet imod $ 3
+siege-built: ADVARSEL! $1 har oprettet $2 rettet imod $ 3
 raid-remote: Du har fået en vare til at kontrollere denne $1
 raid-sign: Du skal bruge et skilt på kisten med navnet på byen
 invalid-target: Ugyldigt mål

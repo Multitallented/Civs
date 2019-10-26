@@ -233,6 +233,7 @@ raid-target-lost: Keine Stadt mit Namen $1 innerhalb von $2 Blöcken
 searching-for-target: Suche nach Ziel für Überfall
 raid-target-blocked: Teleport zum Ziel des Überfalls nicht möglich
 raid-porter-warning: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
+siege-built: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
 raid-remote: Dir wurde das Kontroll-Item für $1 gegeben
 raid-sign: Über der Hauptkiste muss ein Schild mit dem Stadtnamen deines Ziel hängen
 no-blocks-above-chest: Über der mittleren Brust dürfen sich keine Blöcke befinden

@@ -222,7 +222,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
             String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
+                    civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
