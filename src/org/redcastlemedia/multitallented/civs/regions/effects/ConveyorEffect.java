@@ -136,10 +136,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Material conveyor = Material.valueOf(conveyorString);
 
         //Check if has reagents
-        if (!RegionManager.getInstance().hasRegionChestChanged(r)) {
-            cacheDestinationRegions.remove(r);
-            return;
-        }
+//        if (!RegionManager.getInstance().hasRegionChestChanged(r)) {
+//            cacheDestinationRegions.remove(r);
+//            return;
+//        }
 
         Location loc = cacheSpawnPoints.get(r);
 
