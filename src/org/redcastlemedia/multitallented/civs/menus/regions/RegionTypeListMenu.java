@@ -43,7 +43,7 @@ public class RegionTypeListMenu extends CustomMenu {
         }
         data.put("regionTypes", regionTypes);
 
-        int maxPage = (int) Math.ceil((double) regionTypes.size() / (double) itemsPerPage.get("regions"));
+        int maxPage = (int) Math.ceil((double) regionTypes.size() / (double) itemsPerPage.get("regionTypes"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 
