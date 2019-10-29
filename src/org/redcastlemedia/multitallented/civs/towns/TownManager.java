@@ -218,6 +218,8 @@ public class TownManager {
                 housing,
                 villagers,
                 lastDisable);
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
         if (config.isSet("idiocracy-score")) {
             HashMap<UUID, Integer> idiocracyScores = new HashMap<>();

@@ -22,6 +22,8 @@ limits:
 - church:1
 - smithy:1
 - purifier:1
+- embassy:1
+- jammer_trap:0
 
 build-radius: 40
 build-radius-y: 500
@@ -33,7 +35,7 @@ effects:
 - deny_mob_spawn
 - control_override
 - block_explosion
-- anticamp:4.1800 #4 damage for 30 minutes
+- anticamp:4.1800.100 #4 damage for 30 minutes costs $100
 
 power: 300
 max-power: 2040

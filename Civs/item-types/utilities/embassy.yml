@@ -6,12 +6,15 @@ price: 500
 max: 1
 groups:
 - utility
-level: 5
+level: 3
 
 pre-reqs:
-- member=town:city:metropolis
+- member=settlement:hamlet:village:town:city:metropolis
 
 towns:
+- settlement
+- hamlet
+- village
 - town
 - city
 - metropolis

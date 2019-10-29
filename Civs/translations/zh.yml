@@ -229,6 +229,7 @@ raid-target-lost: 在$2 格内没有名为 $1 的城镇
 searching-for-target: 搜寻侵略传送点中...
 raid-target-blocked: 侵略传送点被封锁.
 raid-porter-warning: 警告! $1 创建了一个朝向 $3 的 $2
+siege-built: 警告! $1 创建了一个朝向 $3 的 $2
 raid-remote: 你获得了控制这个 $1 的物品
 raid-sign: 你需要在箱子上面放写有目标城镇名的牌子
 no-blocks-above-chest: 中央箱子上方不能有任何物品。

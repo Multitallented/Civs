@@ -48,6 +48,9 @@ public class CommonScheduler implements Runnable {
             }
             depreciateKarma();
             StructureUtil.cleanUpExpiredBoundingBoxes();
+            if (ConfigManager.getInstance().isUseParticleBoundingBoxes()) {
+                StructureUtil.refreshAllBoundingBoxes();
+            }
 
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
             int chunk = players.size() / MAX_TPS;

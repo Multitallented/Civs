@@ -31,6 +31,8 @@ public class Town {
     private ArrayList<Bounty> bounties = new ArrayList<>();
     private List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
+    @Getter @Setter
+    private HashMap<String, String> effects = new HashMap<>();
     private long lastDisable;
     private final int Y_LEVEL = 80;
     private int villagers;
@@ -300,6 +302,10 @@ public class Town {
         if (Civs.getInstance() == null) {
             return;
         }
+        if (!ConfigManager.getInstance().isTownRingsCrumbleToGravel()) {
+            useGravel = false;
+        }
+        final boolean finalUseGravel = useGravel;
         removeOuterRing(useGravel);
 
         if (!destroyAll) {
@@ -330,7 +336,7 @@ public class Town {
 
                         @Override
                         public void run() {
-                            removeRing(loc, srType.getBuildRadius(), useGravel);
+                            removeRing(loc, srType.getBuildRadius(), finalUseGravel);
                         }
 
                     }, delay);

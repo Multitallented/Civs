@@ -313,4 +313,20 @@ public class ProtectionsTests {
         Location location = TestUtil.block.getLocation();
         assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
     }
+
+    @Test
+    public void chestAccessAtFourCornersShouldBeBlocked() {
+        RegionsTests.loadRegionTypeShelter();
+        Region shelter = RegionsTests.createNewRegion("shelter"); // 4.5 0.5 0.5
+        Location location1 = new Location(Bukkit.getWorld("world"), 10, 0,6);
+        Location location2 = new Location(Bukkit.getWorld("world"), 10, 0,-5);
+        Location location3 = new Location(Bukkit.getWorld("world"), -1, 0,6);
+        Location location4 = new Location(Bukkit.getWorld("world"), -1, 0,-5);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        assertEquals(location1.getWorld().getUID() + "~4.5~0.5~0.5", shelter.getId());
+        assertTrue(ProtectionHandler.shouldBlockAction(location1,null, "chest_use"));
+        assertTrue(ProtectionHandler.shouldBlockAction(location2,null, "chest_use"));
+        assertTrue(ProtectionHandler.shouldBlockAction(location3,null, "chest_use"));
+        assertTrue(ProtectionHandler.shouldBlockAction(location4,null, "chest_use"));
+    }
 }

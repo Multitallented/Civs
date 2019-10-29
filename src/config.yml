@@ -5,6 +5,7 @@ allow-civ-item-sharing: false
 #put rings above towns
 town-rings: true
 town-ring-material: "GLOWSTONE"
+town-rings-crumble-to-gravel: true
 #how long a town sits at zero before protection ends
 #if destroy towns at zero is on, then this does nothing
 town-grace-period: 43200 #12 hours
@@ -12,8 +13,13 @@ town-grace-period: 43200 #12 hours
 #before reducing power
 explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
+# the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
+# the max amount that can be in a town bank (excluding taxes)
+max-bank-deposit: -1
 use-starter-book: true
+#should region dimensions be shown with particles instead of glass?
+use-particle-bounding-boxes: false
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
 exp-modifier: 0.2
@@ -28,10 +34,16 @@ stop-mobs-from-dropping-items-in-safe-zones: false
 death-grace-period-seconds: 60
 #how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
+#how much damage should a player receive if they log out during combat
+combat-log-out-percent-damage: 80
 #should food heal in combat?
 allow-food-heal-in-combat: true
 #should players be able to teleport while in combat?
 allow-teleporting-during-combat: false
+#can a raidporter be built to raid a town with no online members
+allow-offline-raiding: true
+#can non-allied players teleport out of towns?
+allow-teleporting-out-of-hostile-towns: true
 #use the class and spell system from Civs
 use-classes-and-spells: false
 #whether or not the glass box should appear to show the region's boundaries

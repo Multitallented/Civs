@@ -43,8 +43,8 @@ public class PortCommand implements CivCommand {
         }
 
         if (cooldowns.containsKey(player.getUniqueId())) {
-            long cooldown = System.currentTimeMillis() - cooldowns.get(player.getUniqueId());
-            if (cooldown < ConfigManager.getInstance().getPortCooldown() * 1000) {
+            long cooldown = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
+            if (cooldown > 0) {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(civilian.getLocale(), "cooldown")
                                 .replace("$1", ((int) cooldown / 1000) + ""));
@@ -86,30 +86,8 @@ public class PortCommand implements CivCommand {
         Location destination;
         if (args[0].equalsIgnoreCase("port") && args.length > 1) {
             //Check if region is a port
-            try {
-                r = RegionManager.getInstance().getRegionAt(Region.idToLocation(args[1]));
-                if (r == null) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                            "port-not-found"));
-                    return true;
-                }
-                if (!r.getEffects().containsKey("port")) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                            "port-not-found"));
-                    return true;
-                }
-                boolean privatePort = r.getEffects().get("port") != null &&
-                        !r.getEffects().get("port").equals("");
-                if (!r.getPeople().containsKey(player.getUniqueId()) || (privatePort &&
-                        !r.getPeople().get(player.getUniqueId()).contains("member") &&
-                        !r.getPeople().get(player.getUniqueId()).contains("owner"))) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                            "not-member-port"));
-                    return true;
-                }
-            } catch (Exception e) {
-                Civs.logger.severe("Exception when trying to execute port command");
-                e.printStackTrace();
+            r = RegionManager.getInstance().getRegionAt(Region.idToLocation(args[1]));
+            if (r == null || !canPort(r, player.getUniqueId(), null)) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "port-not-found"));
                 return true;
@@ -123,13 +101,10 @@ public class PortCommand implements CivCommand {
                 return true;
             }
             for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
-                if (!region.getEffects().containsKey("port") ||
-                        region.getEffects().get("port") == null ||
-                        !region.getPeople().containsKey(player.getUniqueId())) {
-                    continue;
+                if (canPort(region, player.getUniqueId(), town)) {
+                    r = region;
+                    break;
                 }
-                r = region;
-                break;
             }
             if (r == null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
@@ -206,6 +181,7 @@ public class PortCommand implements CivCommand {
 //                for (ItemStack is : reagents) {
 //                    p.getInventory().removeItem(is);
 //                }
+                cooldowns.put(p.getUniqueId(), System.currentTimeMillis() + ConfigManager.getInstance().getPortCooldown() * 1000);
                 p.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
                 p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "teleported"));
@@ -215,4 +191,37 @@ public class PortCommand implements CivCommand {
     }
 
 
+    public static boolean canPort(Region r, UUID uuid, Town town) {
+        try {
+            if (!r.getEffects().containsKey("port")) {
+                return false;
+            }
+            boolean privatePort = r.getEffects().get("port") != null &&
+                    !r.getEffects().get("port").equals("");
+            if (town == null) {
+                town = TownManager.getInstance().getTownAt(r.getLocation());
+            }
+            boolean townPrivatePort = privatePort && r.getEffects().get("port").equals("town");
+            boolean memberPrivatePort = privatePort && r.getEffects().get("port").equals("member");
+            boolean ownerPrivatePort = privatePort && r.getEffects().get("port").equals("owner");
+            if (!r.getPeople().containsKey(uuid)) {
+                return false;
+            } else if (privatePort) {
+                if (townPrivatePort && (town == null || !town.getPeople().containsKey(uuid) ||
+                        town.getPeople().get(uuid).contains("ally"))) {
+                    return false;
+                } else if (memberPrivatePort && r.getPeople().get(uuid).contains("ally")) {
+                    return false;
+                } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains("ally") ||
+                        r.getPeople().get(uuid).contains("member"))) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            Civs.logger.severe("Exception when trying to execute port command");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

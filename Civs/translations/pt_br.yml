@@ -230,6 +230,7 @@ raid-target-lost: Não existe vila com nome de $1 na área de $2 blocos
 searching-for-target: Procurando por alvo de teletransportador de ataque...
 raid-target-blocked: Teletransportador de ataque bloqueado
 raid-porter-warning: ALERTA! $1 criou um $2 atacando $3
+siege-built: ALERTA! $1 criou um $2 atacando $3
 raid-remote: Foi dado a você um item para controlar $1
 raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
 no-blocks-above-chest: Não deve haver blocos acima do tórax central

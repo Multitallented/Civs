@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -41,10 +42,10 @@ public class Civs extends JavaPlugin {
 
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static String NAME = "Civs";
-    public static String VERSION = "0.0.1";
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
+    public static DiscordSRV discordSRV;
     private static Civs civs;
     public static Logger logger;
 
@@ -113,12 +114,20 @@ public class Civs extends JavaPlugin {
         logger.info(LogInfo.PH_VOID);
 
         logger.info(LogInfo.PH_INFO);
-        if (econ != null)
+        if (econ != null) {
             logger.info(LogInfo.HOOKECON + econ.getName());
-        if (perm != null)
+        }
+        if (perm != null) {
             logger.info(LogInfo.HOOKPERM + perm.getName());
+        }
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        }
+        if (mmoItems != null) {
+            logger.info(LogInfo.HOOKCHAT + "MMOItems");
+        }
+        if (discordSRV != null) {
+            logger.info(LogInfo.HOOKCHAT + "DiscordSRV");
         }
         logger.info(LogInfo.PH_INFO);
 
@@ -173,6 +182,7 @@ public class Civs extends JavaPlugin {
         commandList.put("sell", new SellRegionCommand());
         commandList.put("really", new ReallyCommand());
         commandList.put("withdraw", new WithdrawBankCommand());
+        commandList.put("deposit", new DepositBankCommand());
         commandList.put("tax", new TaxCommand());
         commandList.put("colony", new ColonyCommand());
         commandList.put("newday", new DayCommand());
@@ -180,6 +190,7 @@ public class Civs extends JavaPlugin {
         commandList.put("toggleann", new ToggleAnnouncementCommand());
         commandList.put("setrecruiter", new SetRecruiterCommand());
         commandList.put("advancetut", new TutorialAdvanceCommand());
+        commandList.put("anticamp", new AntiCampCommand());
     }
 
     private void initListeners() {
@@ -244,6 +255,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new JammerEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
@@ -267,6 +279,9 @@ public class Civs extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            discordSRV = DiscordSRV.getPlugin();
         }
 //        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 //        if (chatProvider != null) {

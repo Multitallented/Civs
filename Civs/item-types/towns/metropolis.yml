@@ -37,6 +37,7 @@ limits:
 - ender_pearl_farm:1
 - blaze_sifter:1
 - idolgroup:6
+- jammer_trap:0
 
 critical-build-reqs:
 - town_center
@@ -54,7 +55,7 @@ effects:
 - block_explosion
 - control_override
 - potion:SATURATION.80
-- anticamp:2.1500 #2 damage for 25 minutes
+- anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000
 
 power: 6500
 max-power: 15000

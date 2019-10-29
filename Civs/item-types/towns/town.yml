@@ -39,8 +39,9 @@ limits:
 - jail:1
 - alchemical_lab:1
 - power_capacitor:2
-- embassy:3
+- embassy:5
 - idolgroup:2
+- jammer_trap:0
 
 critical-build-reqs:
 - town_center
@@ -57,7 +58,7 @@ effects:
 - deny_mob_spawn
 - block_explosion
 - control_override
-- anticamp:2.1500 #2 damage for 25 minutes
+- anticamp:2.1500.600 #2 damage for 25 minutes costs $600
 
 power: 1500
 max-power: 5100

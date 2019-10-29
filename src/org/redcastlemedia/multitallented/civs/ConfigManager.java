@@ -92,6 +92,9 @@ public class ConfigManager {
     boolean allowTeleportInCombat;
 
     @Getter
+    boolean useParticleBoundingBoxes;
+
+    @Getter
     String defaultGovernmentType;
 
     @Getter
@@ -122,6 +125,16 @@ public class ConfigManager {
     boolean mobsDropItemsWhenKilledInDenyDamage;
     @Getter
     boolean debugLog;
+    @Getter
+    double maxBankDeposit;
+    @Getter
+    double antiCampCost;
+    @Getter
+    boolean allowOfflineRaiding;
+    @Getter
+    boolean allowTeleportingOutOfHostileTowns;
+    @Getter
+    boolean townRingsCrumbleToGravel;
 
     public ConfigManager() {
         loadDefaults();
@@ -306,7 +319,7 @@ public class ConfigManager {
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
-            portWarmup = config.getInt("port.warmpup", 5);
+            portWarmup = config.getInt("port.warmup", 5);
             portCooldown = config.getInt("port.cooldown", 60);
             portMoney = config.getDouble("port.money", 0);
             portDamage = config.getInt("port.damage", 0);
@@ -335,6 +348,7 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
                 defaultGovernmentType = defaultGovTypeString.toUpperCase();
@@ -359,6 +373,10 @@ public class ConfigManager {
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
+            maxBankDeposit = config.getDouble("max-bank-deposit", -1);
+            allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
+            allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
+            townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -384,6 +402,10 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        townRingsCrumbleToGravel = true;
+        allowTeleportingOutOfHostileTowns = true;
+        allowOfflineRaiding = true;
+        maxBankDeposit = -1;
         debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;
         useBoundingBox = true;
@@ -397,6 +419,7 @@ public class ConfigManager {
         daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        useParticleBoundingBoxes = false;
         maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;

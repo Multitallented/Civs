@@ -103,6 +103,13 @@ public class BountyCommand implements CivCommand {
             }
             return true;
         }
+        if (Civs.perm != null && Civs.perm.has(target, "civs.bypasspvp")) {
+            if (player != null) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                        "invalid-target"));
+            }
+            return true;
+        }
 
         Civilian targetCiv = CivilianManager.getInstance().getCivilian(target.getUniqueId());
         if (civilian != null) {
