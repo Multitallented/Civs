@@ -8,22 +8,21 @@
 
 icon: "LIME_STAINED_GLASS"
 enabled: true
-name:
-  en: "Capitalism"
-  de: "Kapitalismus"
-  ru: "Капитализм"
-  pt_br: "Capitalismo"
-  es: "Capitalismo"
-  fr: "Capitalisme"
-  hu: "Kapitalizmus"
-description:
-  en: "Democracy + Town members can buy extra votes."
-  fr: "Les membres de Démocratie + Ville peuvent acheter des votes supplémentaires."
-  es: "Los miembros de Democracy + Town pueden comprar votos extra."
-  pt_br: "Democracia + os membros da cidade podem comprar votos extras."
-  ru: "Члены Демократии + Город могут купить дополнительные голоса."
-  de: "Demokratie + Stadt-Mitglieder können zusätzliche Stimmen kaufen."
-  hu: "Demokrácia + Város tagjai vehetnek extra szavazatokat."
+transition:
+  0:
+    money-gap: 70
+    to: OLIGARCHY
+  1:
+    revolt: 58
+    money-gap: 40
+    to: COMMUNISM
+  2:
+    revolt: 51
+    power: 30
+    to: KRATEROCRACY
+  3:
+    revolt: 61
+    to: LIBERTARIAN
 buffs:
   payout:
     percent: 10

@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -16,13 +15,13 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.NumberFormat;
@@ -66,6 +65,11 @@ public class MemberActionMenu extends Menu {
 
         if (event.getCurrentItem().getType().equals(Material.GOLD_BLOCK)) {
             cPlayer.performCommand("cv setowner " + player.getUniqueId() + " " + locationString);
+            clickBackButton(cPlayer);
+            return;
+        }
+        if (event.getCurrentItem().getType().equals(Material.GOLD_INGOT)) {
+            cPlayer.performCommand("cv setrecruiter " + player.getUniqueId() + " " + locationString);
             clickBackButton(cPlayer);
             return;
         }
@@ -121,11 +125,11 @@ public class MemberActionMenu extends Menu {
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf) {
-        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true, true);
+        addItems(inventory, civilian, role, viewingSelf, GovernmentType.DICTATORSHIP, 0, true, true, false);
     }
 
     private static void addItems(Inventory inventory, Civilian civilian, String role, boolean viewingSelf,
-                                 GovernmentType governmentType, double price, boolean isOwner, boolean alreadyVoted) {
+                                 GovernmentType governmentType, double price, boolean isOwner, boolean alreadyVoted, boolean isTown) {
         //8 Back Button
         inventory.setItem(8, getBackButton(civilian));
         LocaleManager localeManager = LocaleManager.getInstance();
@@ -224,6 +228,17 @@ public class MemberActionMenu extends Menu {
             }
             inventory.setItem(13, cvItem.createItemStack());
         }
+
+        //14 set recruiter
+        if (isTown && (isAdmin || (isOwner &&
+                !isVoteOnly && !role.contains("recruiter") && !cantAddOwners))) {
+            CVItem cvItem1 = CVItem.createCVItemFromString("GOLD_INGOT");
+            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), "set-recruiter"));
+            lore = new ArrayList<>();
+            lore.add(localeManager.getTranslation(civilian.getLocale(), "recruiter-description"));
+            cvItem1.setLore(lore);
+            inventory.setItem(14, cvItem1.createItemStack());
+        }
     }
 
     public static Inventory createMenu(Civilian civilian, Town town, UUID uuid, boolean viewingSelf, boolean isOwner) {
@@ -257,7 +272,8 @@ public class MemberActionMenu extends Menu {
         boolean alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
                 !town.getVotes().get(civilian.getUuid()).isEmpty();
 
-        addItems(inventory, civilian, role, viewingSelf, town.getGovernmentType(), price, isOwner, alreadyVoted);
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        addItems(inventory, civilian, role, viewingSelf, government.getGovernmentType(), price, isOwner, alreadyVoted, true);
 
         return inventory;
     }

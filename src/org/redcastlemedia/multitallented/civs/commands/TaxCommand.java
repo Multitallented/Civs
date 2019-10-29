@@ -36,20 +36,16 @@ public class TaxCommand implements CivCommand {
 
         Town town = TownManager.getInstance().getTown(args[1]);
 
-        if (town.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                town.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                town.getGovernmentType() == GovernmentType.ANARCHY ||
-                town.getGovernmentType() == GovernmentType.COOPERATIVE ||
-                town.getGovernmentType() == GovernmentType.COMMUNISM) {
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                government.getGovernmentType() == GovernmentType.ANARCHY ||
+                government.getGovernmentType() == GovernmentType.COOPERATIVE ||
+                government.getGovernmentType() == GovernmentType.COMMUNISM) {
 
-            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-            if (government != null) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "town-tax-gov-type").replace("$1", government.getNames().get(civilian.getLocale())));
-            } else {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "no-permission"));
-            }
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-tax-gov-type").replace("$1", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getName().toLowerCase() + "-name")));
 
             return true;
         }

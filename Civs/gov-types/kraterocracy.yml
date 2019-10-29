@@ -6,22 +6,10 @@
 
 icon: "BLACK_GLAZED_TERRACOTTA"
 enabled: true
-name:
-  en: "Kraterocracy"
-  es: "Kraterocracia"
-  fr: "Cratérocratie"
-  pt_br: "Kraterocracia"
-  ru: "Kraterocracy"
-  de: "Kraterokratie"
-  hu: "Kraterocrácia"
-description:
-  en: "Dictatorship + When a town member kills an owner, the two switch places."
-  de: "Diktatur + Wenn ein Stadtmitglied einen Besitzer tötet, tauschen die beiden Orte."
-  ru: "Диктатура + Когда член города убивает хозяина, два места сменяются"
-  pt_br: "Ditadura + Quando um membro da cidade mata um dono, os dois trocam de lugar."
-  fr: "Dictature + Lorsqu'un membre de la ville tue un propriétaire, les deux personnes changent de place."
-  es: "Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos cambian de lugar."
-  hu: "Diktatúra + Ha a város tagja megöli a város vezetőjét, helyet cserélnek."
+transition:
+  0:
+    inactive: 1209600 # 2 weeks
+    to: ANARCHY
 buffs:
   max_power:
     percent: 10

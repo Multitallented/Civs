@@ -19,11 +19,9 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.towns.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -87,7 +85,7 @@ public class SchedulerTests {
         regionManager.addRegion(region);
 
         RegionTickTask regionTickTask = new RegionTickTask();
-        regionTickTask.run();
+        regionTickTask.onTwoSecondEvent(null);
     }
 
     @Test(expected = SuccessException.class)

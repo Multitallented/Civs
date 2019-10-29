@@ -1,14 +1,12 @@
 package org.redcastlemedia.multitallented.civs;
 
-import org.bukkit.configuration.InvalidConfigurationException;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Set;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Set;
 
 public class LocaleManager {
 
@@ -18,15 +16,27 @@ public class LocaleManager {
     public String getTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
-                !languageMap.get(language).containsKey(key)) {
-            return Util.parseColors(textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key));
+                !languageMap.get(language).containsKey(key) ||
+                languageMap.get(language).get(key).isEmpty()) {
+            HashMap<String, String> map = languageMap.get(ConfigManager.getInstance().getDefaultLanguage());
+            if (map == null) {
+                Civs.logger.severe("Unable to find default language for " + ConfigManager.getInstance().getDefaultLanguage());
+                return "";
+            }
+            String translation = map.get(key);
+            if (translation == null) {
+                Civs.logger.severe("Unable to find any translation for " + key);
+                return "";
+            }
+            return Util.parseColors(textPrefix + translation);
         }
         return Util.parseColors(textPrefix + languageMap.get(language).get(key));
     }
     public String getRawTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||
-                !languageMap.get(language).containsKey(key)) {
+                !languageMap.get(language).containsKey(key) ||
+                languageMap.get(language).get(key).isEmpty()) {
             return textPrefix + languageMap.get(ConfigManager.getInstance().getDefaultLanguage()).get(key);
         }
         return textPrefix + languageMap.get(language).get(key);
@@ -36,569 +46,35 @@ public class LocaleManager {
     }
 
     public LocaleManager() {
-        if (Civs.getInstance() == null) {
-            loadConfig(new YamlConfiguration());
-            localeManager = this;
-        } else {
-            localeManager = new LocaleManager(new File(Civs.getInstance().getDataFolder(), "locale.yml"));
+        if (Civs.getInstance() != null) {
+            loadAllConfigs();
         }
+        localeManager = this;
     }
 
-    public LocaleManager(File localeFile) {
-        localeManager = this;
-        try {
-            if (!localeFile.exists()) {
-                Civs.logger.severe("No locale.yml found");
+    private void loadAllConfigs() {
+        File translationFolder = new File(Civs.getInstance().getDataFolder(), "translations");
+        if (!translationFolder.exists()) {
+            if (!translationFolder.mkdir()) {
+                Civs.logger.severe("Unable to load any translations!");
                 return;
             }
-            FileConfiguration localeConfig = new YamlConfiguration();
-            localeConfig.load(localeFile);
-            loadConfig(localeConfig);
-        } catch (IOException | InvalidConfigurationException invalidConfigurationException) {
-            invalidConfigurationException.printStackTrace();
         }
-    }
+        for (File currentTranslationFile : translationFolder.listFiles()) {
+            FileConfiguration config = new YamlConfiguration();
+            try {
+                config.load(currentTranslationFile);
+                HashMap<String, String> currentLanguage = new HashMap<>();
 
-    private void loadConfig(FileConfiguration localeConfig) {
-        Set<String> configKeys = localeConfig.getKeys(false);
-        if (!configKeys.contains("en")) {
-            configKeys.add("en");
-        }
+                for (String translationKey : config.getKeys(false)) {
+                    currentLanguage.put(translationKey, config.getString(translationKey));
+                }
 
-        for (String langKey : configKeys) {
-            HashMap<String, String> currentLanguage = new HashMap<>();
-            currentLanguage.put("name",
-                    localeConfig.getString(langKey + ".name", "Unnamed"));
-            currentLanguage.put("icon",
-                    localeConfig.getString(langKey + ".icon", "WOOL.14"));
-            currentLanguage.put("back-button",
-                    localeConfig.getString(langKey + ".back-button", "Back"));
-            currentLanguage.put("language-menu",
-                    localeConfig.getString(langKey + ".language-menu", "Select Language"));
-            currentLanguage.put("language-set",
-                    localeConfig.getString(langKey + ".language-set", "Your language has been set to $1"));
-            currentLanguage.put("shop",
-                    localeConfig.getString(langKey + ".shop", "Shop"));
-            currentLanguage.put("price",
-                    localeConfig.getString(langKey + ".price", "Price"));
-            currentLanguage.put("buy-item",
-                    localeConfig.getString(langKey + ".buy-item", "For Sale"));
-            currentLanguage.put("buy",
-                    localeConfig.getString(langKey + ".buy", "Buy $1"));
-            currentLanguage.put("cancel",
-                    localeConfig.getString(langKey + ".cancel", "Cancel"));
-            currentLanguage.put("item-bought",
-                    localeConfig.getString(langKey + ".item-bought", "Congrats! You just bought $1 for $2"));
-            currentLanguage.put("items",
-                    localeConfig.getString(langKey + ".items", "Items"));
-            currentLanguage.put("community",
-                    localeConfig.getString(langKey + ".community", "Community"));
-            currentLanguage.put("size",
-                    localeConfig.getString(langKey + ".size", "Size"));
-            currentLanguage.put("range",
-                    localeConfig.getString(langKey + ".range", "Range"));
-            currentLanguage.put("build-reqs",
-                    localeConfig.getString(langKey + ".build-reqs", "All the blocks you need to place to build a $1"));
-            currentLanguage.put("too-close-region",
-                    localeConfig.getString(langKey + ".too-close-region", "Your $1 would be too close to a $2"));
-            currentLanguage.put("too-close-town",
-                    localeConfig.getString(langKey + ".too-close-town", "Your $1 would be too close to another town"));
-            currentLanguage.put("region-built",
-                    localeConfig.getString(langKey + ".region-built", "You have successfully built a $1"));
-
-            currentLanguage.put("cant-place-town",
-                    localeConfig.getString(langKey + "cant-place-town", "Type /cv town townNameHere"));
-            currentLanguage.put("no-region-type-found",
-                    localeConfig.getString(langKey + ".no-region-type-found", "No region type found for $1"));
-            currentLanguage.put("building-too-big",
-                    localeConfig.getString(langKey + ".building-too-big", "You're building is too big to be a $1"));
-            currentLanguage.put("no-required-blocks",
-                    localeConfig.getString(langKey + ".no-required-blocks", "You haven't placed the required blocks to make a $1"));
-            currentLanguage.put("cant-build-on-region",
-                    localeConfig.getString(langKey + ".cant-build-on-region", "You can't build a $1 on top of a $2"));
-            currentLanguage.put("rebuild-required",
-                    localeConfig.getString(langKey + ".rebuild-required", "You need to build this $1 on top of a $2"));
-            currentLanguage.put("prevent-civs-item-share",
-                    localeConfig.getString(langKey + ".prevent-civs-item-share", "You are not allowed to share Civ items"));
-            currentLanguage.put("region-protected",
-                    localeConfig.getString(langKey + ".region-protected", "This region is protected"));
-            currentLanguage.put("region-destroyed",
-                    localeConfig.getString(langKey + ".region-destroyed", "Region $1 has been destroyed!"));
-            currentLanguage.put("specify-player-town",
-                    localeConfig.getString(langKey + ".specify-player-town", "Please specify a player and town"));
-            currentLanguage.put("specify-player-region",
-                    localeConfig.getString(langKey + ".specify-player-region", "Please specify a player and region"));
-            currentLanguage.put("town-not-exist",
-                    localeConfig.getString(langKey + ".town-not-exist", "$1 is not a town"));
-            currentLanguage.put("no-permission-invite",
-                    localeConfig.getString(langKey + ".no-permission-invite", "You don't have permission to invite people to $1"));
-            currentLanguage.put("player-not-online",
-                    localeConfig.getString(langKey + ".player-not-online", "$1 is not online"));
-            currentLanguage.put("invite-player",
-                    localeConfig.getString(langKey + ".invite-player", "$1 would like to invite you to join $2 $3."));
-            currentLanguage.put("already-member",
-                    localeConfig.getString(langKey + ".already-member", "$1 is already a member of $2"));
-            currentLanguage.put("broke-own-region",
-                    localeConfig.getString(langKey + ".broke-own-region", "Your $1 is missing blocks"));
-            currentLanguage.put("no-permission",
-                    localeConfig.getString(langKey + ".no-permission", "Permission denied"));
-            currentLanguage.put("max-item",
-                    localeConfig.getString(langKey + ".max-item", "You cant buy more than $2 $1"));
-            currentLanguage.put("class-changed",
-                    localeConfig.getString(langKey + ".class-changed", "Your class has changed to $1"));
-            currentLanguage.put("classes",
-                    localeConfig.getString(langKey + ".classes", "Classes"));
-            currentLanguage.put("regions",
-                    localeConfig.getString(langKey + ".regions", "Regions"));
-            currentLanguage.put("blueprints",
-                    localeConfig.getString(langKey + ".blueprints", "Blueprints"));
-            currentLanguage.put("spells",
-                    localeConfig.getString(langKey + ".spells", "Spells"));
-            currentLanguage.put("not-enough-money",
-                    localeConfig.getString(langKey + ".not-enough-money", "You dont have $$1"));
-            currentLanguage.put("reagents",
-                    localeConfig.getString(langKey + ".reagents", "All the items you need in the $1 chest"));
-            currentLanguage.put("upkeep",
-                    localeConfig.getString(langKey + ".upkeep", "All the items consumed by the $1"));
-            currentLanguage.put("output",
-                    localeConfig.getString(langKey + ".output", "All the items created by the $1"));
-            currentLanguage.put("region-in-town",
-                    localeConfig.getString(langKey + ".region-in-town", "Your region is in $1"));
-            currentLanguage.put("view-members",
-                    localeConfig.getString(langKey + ".view-members", "View members"));
-            currentLanguage.put("add-member",
-                    localeConfig.getString(langKey + ".add-member", "Add member"));
-            currentLanguage.put("operation",
-                    localeConfig.getString(langKey + ".operation", "Operation"));
-            currentLanguage.put("region-working",
-                    localeConfig.getString(langKey + ".region-working", "Your region is running smoothly"));
-            currentLanguage.put("region-not-working",
-                    localeConfig.getString(langKey + ".region-not-working", "Your region is missing something"));
-            currentLanguage.put("owner",
-                    localeConfig.getString(langKey + ".owner", "Owner"));
-            currentLanguage.put("member",
-                    localeConfig.getString(langKey + ".member", "Member"));
-            currentLanguage.put("guest",
-                    localeConfig.getString(langKey + ".guest", "Guest"));
-            currentLanguage.put("recruiter",
-                    localeConfig.getString(langKey + ".recruiter", "Recruiter"));
-            currentLanguage.put("not-allowed-place",
-                    localeConfig.getString(langKey + ".not-allowed-place", "$1 can not be placed"));
-            currentLanguage.put("starter-book",
-                    localeConfig.getString(langKey + ".starter-book", "Menu for Civs"));
-            currentLanguage.put("set-owner",
-                    localeConfig.getString(langKey + ".set-owner", "Set Owner"));
-            currentLanguage.put("set-member",
-                    localeConfig.getString(langKey + ".set-member", "Set Member"));
-            currentLanguage.put("set-guest",
-                    localeConfig.getString(langKey + ".set-guest", "Set Guest"));
-            currentLanguage.put("remove-member",
-                    localeConfig.getString(langKey + ".remove-member", "Remove Member"));
-            currentLanguage.put("member-added-region",
-                    localeConfig.getString(langKey + ".member-added-region", "$1 is now a member of your $2"));
-            currentLanguage.put("add-member-region",
-                    localeConfig.getString(langKey + ".add-member-region", "You have been made a member of $1"));
-            currentLanguage.put("member-description",
-                    localeConfig.getString(langKey + ".member-description", "Members can build and use the region"));
-            currentLanguage.put("guest-description",
-                    localeConfig.getString(langKey + ".guest-description", "Guests can use doors and buttons in the region"));
-            currentLanguage.put("owner-description",
-                    localeConfig.getString(langKey + ".owner-description", "Owners can do anything in the region"));
-            currentLanguage.put("remove-member-region",
-                    localeConfig.getString(langKey + ".remove-member-region", "You are no longer a member of $1"));
-            currentLanguage.put("member-removed-region",
-                    localeConfig.getString(langKey + ".member-removed-region", "$1 is no longer a member of $2"));
-            currentLanguage.put("add-owner-region",
-                    localeConfig.getString(langKey + ".add-owner-region", "You have been made an owner of $1"));
-            currentLanguage.put("owner-added-region",
-                    localeConfig.getString(langKey + ".owner-added-region", "$1 is now an owner of your $2"));
-            currentLanguage.put("add-guest-region",
-                    localeConfig.getString(langKey + ".add-guest-region", "You have been made a guest of $1"));
-            currentLanguage.put("guest-added-region",
-                    localeConfig.getString(langKey + ".guest-added-region", "$1 is now a guest of your $2"));
-            currentLanguage.put("invite-member-region",
-                    localeConfig.getString(langKey + ".invite-member-region", "You have been become a member of $1"));
-            currentLanguage.put("member-invited-region",
-                    localeConfig.getString(langKey + ".member-invited-region", "$1 has been added to your $2"));
-            currentLanguage.put("stand-in-region",
-                    localeConfig.getString(langKey + ".stand-in-region", "Please have $1 stand in the region"));
-            currentLanguage.put("prev-button",
-                    localeConfig.getString(langKey + ".prev-button", "Previous"));
-            currentLanguage.put("next-button",
-                    localeConfig.getString(langKey + ".next-button", "Next"));
-            currentLanguage.put("town-instructions",
-                    localeConfig.getString(langKey + ".town-instructions", "To create a $1, use /cv town MyTownName"));
-            currentLanguage.put("specify-town-name",
-                    localeConfig.getString(langKey + ".specify-town-name", "Please specify a town name"));
-            currentLanguage.put("hold-town",
-                    localeConfig.getString(langKey + ".hold-town", "Please hold a town item"));
-            currentLanguage.put("players",
-                    localeConfig.getString(langKey + ".players", "Players"));
-            currentLanguage.put("towns",
-                    localeConfig.getString(langKey + ".towns", "Towns"));
-            currentLanguage.put("your-towns",
-                    localeConfig.getString(langKey + ".your-towns", "Your towns"));
-            currentLanguage.put("wars",
-                    localeConfig.getString(langKey + ".wars", "Wars"));
-            currentLanguage.put("leaderboard",
-                    localeConfig.getString(langKey + ".leaderboard", "Leaderboard"));
-            currentLanguage.put("enter-town",
-                    localeConfig.getString(langKey + ".enter-town", "You have entered $1 ($2)"));
-            currentLanguage.put("exit-town",
-                    localeConfig.getString(langKey + ".exit-town", "You have exited $1 ($2)"));
-            currentLanguage.put("town-created",
-                    localeConfig.getString(langKey + ".town-created", "$1 has been created!"));
-            currentLanguage.put("town-destroyed",
-                    localeConfig.getString(langKey + ".town-destroyed", "$1 has been destroyed!"));
-            currentLanguage.put("new-town-member",
-                    localeConfig.getString(langKey + ".new-town-member", "$1 has joined $2"));
-            currentLanguage.put("no-commands-in-jail",
-                    localeConfig.getString(langKey + ".no-commands-in-jail", "You cant use commands in jail for another $1"));
-            currentLanguage.put("repeat-kill",
-                    localeConfig.getString(langKey + ".repeat-kill", "$1 was killed too recently. No points awarded."));
-            currentLanguage.put("kill-streak",
-                    localeConfig.getString(langKey + ".kill-streak", "$1 is on a killstreak of $2"));
-            currentLanguage.put("kill-joy",
-                    localeConfig.getString(langKey + ".kill-joy", "$1 ended $2's killstreak of $3"));
-            currentLanguage.put("death",
-                    localeConfig.getString(langKey + ".death", "You lost $1 points for dying"));
-            currentLanguage.put("kill",
-                    localeConfig.getString(langKey + ".kill", "Kill: $1"));
-            currentLanguage.put("low-health",
-                    localeConfig.getString(langKey + ".low-health", "Low health bonus: $1"));
-            currentLanguage.put("killstreak-points",
-                    localeConfig.getString(langKey + ".killstreak-points", "Killstreak bonus: $1"));
-            currentLanguage.put("killjoy-points",
-                    localeConfig.getString(langKey + ".killjoy-points", "Killjoy bonus: $1"));
-            currentLanguage.put("total-points",
-                    localeConfig.getString(langKey + ".total-points", "Total points: $1"));
-            currentLanguage.put("karma",
-                    localeConfig.getString(langKey + ".karma", "Karma: $1"));
-            currentLanguage.put("karma-gained",
-                    localeConfig.getString(langKey + ".karma-gained", "Karma: +$1, $2 money gained"));
-            currentLanguage.put("karma-lost",
-                    localeConfig.getString(langKey + ".karma-lost", "Karma: -$1, $2 money lost"));
-            currentLanguage.put("must-be-built-on-top",
-                    localeConfig.getString(langKey + ".must-be-built-on-top", "A $1 must be built on top of a $2"));
-            currentLanguage.put("mana-use-exp",
-                    localeConfig.getString(langKey + ".mana-use-exp", "You cant use this unless you have full mana"));
-            currentLanguage.put("region-type",
-                    localeConfig.getString(langKey + ".region-type", "Region Type"));
-            currentLanguage.put("destroy",
-                    localeConfig.getString(langKey + ".destroy", "Destroy"));
-            currentLanguage.put("town-power",
-                    localeConfig.getString(langKey + ".town-power", "Power: $1/$2"));
-            currentLanguage.put("building-requires-2space",
-                    localeConfig.getString(langKey + ".building-requires-2space", "This building requires 2 empty spaces above the central chest"));
-            currentLanguage.put("missing-blocks-build",
-                    localeConfig.getString(langKey + ".missing-blocks-build", "You need to place these missing blocks to build a $1"));
-            currentLanguage.put("payout",
-                    localeConfig.getString(langKey + ".payout", "This region earns $$1"));
-            currentLanguage.put("power-input",
-                    localeConfig.getString(langKey + ".power-input", "This region consumes $1 power"));
-            currentLanguage.put("power-output",
-                    localeConfig.getString(langKey + ".power-output", "This region generates $1 power"));
-            currentLanguage.put("in-combat",
-                    localeConfig.getString(langKey + ".in-combat", "You can't do that in combat"));
-            currentLanguage.put("cooldown",
-                    localeConfig.getString(langKey + ".cooldown", "That is on cooldown for $1s"));
-            currentLanguage.put("need-more-health",
-                    localeConfig.getString(langKey + ".need-more-health", "You need $1 more health to do that"));
-            currentLanguage.put("need-more-stamina",
-                    localeConfig.getString(langKey + ".need-more-stamina", "You need $1 more stamina to do that"));
-            currentLanguage.put("need-more-mana",
-                    localeConfig.getString(langKey + ".need-more-mana", "You need $1 more mana to do that"));
-            currentLanguage.put("port-not-found",
-                    localeConfig.getString(langKey + ".port-not-found", "No port found"));
-            currentLanguage.put("region-missing-upkeep-items",
-                    localeConfig.getString(langKey + ".region-missing-upkeep-items", "Region does not have required items"));
-            currentLanguage.put("port-warmup",
-                    localeConfig.getString(langKey + ".port-warmup", "You will be teleported in $1s"));
-            currentLanguage.put("teleported",
-                    localeConfig.getString(langKey + ".teleported", "You have been teleported!"));
-            currentLanguage.put("ports",
-                    localeConfig.getString(langKey + ".ports", "Ports"));
-            currentLanguage.put("raid-target-lost",
-                    localeConfig.getString(langKey + ".raid-target-lost", "There is no town named $1 within $2 blocks"));
-            currentLanguage.put("searching-for-target",
-                    localeConfig.getString(langKey + ".searching-for-target", "Searching for raid teleport destination..."));
-            currentLanguage.put("raid-target-blocked",
-                    localeConfig.getString(langKey + ".raid-target-blocked", "Raid teleport destination blocked."));
-            currentLanguage.put("raid-porter-warning",
-                    localeConfig.getString(langKey + ".raid-porter-warning", "WARNING! $1 has created a $2 targeting $3"));
-            currentLanguage.put("raid-remote",
-                    localeConfig.getString(langKey + ".raid-remote", "You have been given an item to control this $1"));
-            currentLanguage.put("raid-sign",
-                    localeConfig.getString(langKey + ".raid-sign", "You need a sign above the chest with the name of the target town"));
-            currentLanguage.put("invalid-target",
-                    localeConfig.getString(langKey + ".invalid-target", "Invalid target"));
-            currentLanguage.put("raid-target-inside-region",
-                    localeConfig.getString(langKey + ".raid-target-inside-region", "You can't set a location inside a region"));
-            currentLanguage.put("location-set",
-                    localeConfig.getString(langKey + ".location-set", "$1 location set"));
-            currentLanguage.put("req-build-inside-town",
-                    localeConfig.getString(langKey + ".req-build-inside-town", "This $1 must be built inside $2"));
-            currentLanguage.put("rename-town",
-                    localeConfig.getString(langKey + ".rename-town", "Rename town"));
-            currentLanguage.put("rename-desc",
-                    localeConfig.getString(langKey + ".rename-desc", "Use /cv rename oldName newName"));
-            currentLanguage.put("town-renamed",
-                    localeConfig.getString(langKey + ".town-renamed", "Your town has been renamed from $1 to $2"));
-            currentLanguage.put("missing-region-requirements",
-                    localeConfig.getString(langKey + ".missing-region-requirements", "Your $1 is missing required regions"));
-            currentLanguage.put("money",
-                    localeConfig.getString(langKey + ".money", "Money: $$1"));
-            currentLanguage.put("points",
-                    localeConfig.getString(langKey + ".points", "Points: $1"));
-            currentLanguage.put("killstreak",
-                    localeConfig.getString(langKey + ".killstreak", "Killstreak: $1"));
-            currentLanguage.put("highest-killstreak",
-                    localeConfig.getString(langKey + ".highest-killstreak", "Highest Killstreak: $1"));
-            currentLanguage.put("kills",
-                    localeConfig.getString(langKey + ".kills", "Kills: $1"));
-            currentLanguage.put("deaths",
-                    localeConfig.getString(langKey + ".deaths", "Deaths: $1"));
-            currentLanguage.put("bounty-set",
-                    localeConfig.getString(langKey + ".bounty-set", "A bounty has been set on $1 for $2"));
-            currentLanguage.put("bounty-bonus",
-                    localeConfig.getString(langKey + ".bounty-bonus", "You collected a bounty of $1"));
-            currentLanguage.put("friends",
-                    localeConfig.getString(langKey + ".friends", "Friends"));
-            currentLanguage.put("add-friend",
-                    localeConfig.getString(langKey + ".add-friend", "Add Friend"));
-            currentLanguage.put("remove-friend",
-                    localeConfig.getString(langKey + ".remove-friend", "Remove Friend"));
-            currentLanguage.put("friend-added",
-                    localeConfig.getString(langKey + ".friend-added", "$1 has been added to your friends list"));
-            currentLanguage.put("friend-removed",
-                    localeConfig.getString(langKey + ".friend-removed", "$1 has been removed from your friends list"));
-            currentLanguage.put("friendly-fire",
-                    localeConfig.getString(langKey + ".friendly-fire", "You cant damage someone on your friends list"));
-            currentLanguage.put("region-limit-reached",
-                    localeConfig.getString(langKey + ".region-limit-reached", "A $1 can only have $2 $3"));
-            currentLanguage.put("bounty",
-                    localeConfig.getString(langKey + ".bounty", "Set a bounty /cv bounty $1 amount"));
-            currentLanguage.put("town-ally",
-                    localeConfig.getString(langKey + ".town-ally", "Set $1 as allies"));
-            currentLanguage.put("town-unally",
-                    localeConfig.getString(langKey + ".town-unally", "Set $1 as enemies"));
-            currentLanguage.put("town-ally-request-sent",
-                    localeConfig.getString(langKey + ".town-ally-request-sent", "An alliance has been proposed to $1"));
-            currentLanguage.put("town-ally-request-accepted",
-                    localeConfig.getString(langKey + ".town-ally-request-accepted", "Alliance has been formed between $1 and $2"));
-            currentLanguage.put("town-ally-removed",
-                    localeConfig.getString(langKey + ".town-ally-removed", "Alliance between $1 and $2 has dissolved"));
-            currentLanguage.put("town-ally-invites",
-                    localeConfig.getString(langKey + ".town-ally-invites", "You have town ally invites"));
-            currentLanguage.put("alliances",
-                    localeConfig.getString(langKey + ".alliances", "Alliances"));
-            currentLanguage.put("confirm",
-                    localeConfig.getString(langKey + ".confirm", "Confirm"));
-            currentLanguage.put("reject",
-                    localeConfig.getString(langKey + ".reject", "Reject"));
-            currentLanguage.put("town-ally-request-denied",
-                    localeConfig.getString(langKey + ".town-ally-request-denied", "Alliance request with $1 has been denied"));
-            currentLanguage.put("population",
-                    localeConfig.getString(langKey + ".population", "Population"));
-            currentLanguage.put("pop-desc",
-                    localeConfig.getString(langKey + ".pop-desc", "$1 Population / $2 Housing / $3 Villagers"));
-            currentLanguage.put("create",
-                    localeConfig.getString(langKey + ".create", "Create"));
-            currentLanguage.put("region-in-biome",
-                    localeConfig.getString(langKey + ".region-in-biome", "You cant build a $1 in a $2"));
-            currentLanguage.put("biomes",
-                    localeConfig.getString(langKey + ".biomes", "Biomes"));
-            currentLanguage.put("leave-town",
-                    localeConfig.getString(langKey + ".leave-town", "Leave Town"));
-            currentLanguage.put("you-left-town",
-                    localeConfig.getString(langKey + ".you-left-town", "You have left $1"));
-            currentLanguage.put("not-enough-housing",
-                    localeConfig.getString(langKey + ".not-enough-housing", "You need to build more housing before inviting people"));
-            currentLanguage.put("region-evolved",
-                    localeConfig.getString(langKey + ".region-evolved", "Your $1 evolved into a $2"));
-            currentLanguage.put("anti-camp-activated",
-                    localeConfig.getString(langKey + ".anti-camp-activated", "$1's anti-camp has been activated"));
-            currentLanguage.put("anti-camp-expired",
-                    localeConfig.getString(langKey + ".anti-camp-expired", "$1's anti-camp has expired"));
-            currentLanguage.put("no-blocks-above-chest",
-                    localeConfig.getString(langKey + ".no-blocks-above-chest", "There must not be any blocks above the $1 center"));
-            currentLanguage.put("siege-built",
-                    localeConfig.getString(langKey + ".siege-built", "$1 has created a $2 targeting $3"));
-            currentLanguage.put("grace-period",
-                    localeConfig.getString(langKey + ".grace-period", "Time until defenses drop: $1s"));
-            currentLanguage.put("exclusive",
-                    localeConfig.getString(langKey + ".exclusive", "You cant build a $1 in a town that already has a $2"));
-            currentLanguage.put("intruder-enter",
-                    localeConfig.getString(langKey + ".intruder-enter", "$1 has entered $2"));
-            currentLanguage.put("intruder-exit",
-                    localeConfig.getString(langKey + ".intruder-exit", "$1 has exited $2"));
-            currentLanguage.put("target-inside-town",
-                    localeConfig.getString(langKey + ".target-inside-town", "Target must be inside $1"));
-            currentLanguage.put("raid-target-set",
-                    localeConfig.getString(langKey + ".raid-target-set", "New location set for raid port target"));
-            currentLanguage.put("hold-repair-item",
-                    localeConfig.getString(langKey + ".hold-repair-item", "You must hold the item you wish to repair"));
-            currentLanguage.put("cant-repair-item",
-                    localeConfig.getString(langKey + ".cant-repair-item", "That item isn't something you can repair here"));
-            currentLanguage.put("not-member-port",
-                    localeConfig.getString(langKey + ".not-member-port", "You are not a member of this port"));
-            currentLanguage.put("tutorial-click",
-                    localeConfig.getString(langKey + ".tutorial-click", "Please watch the Civs guide"));
-            currentLanguage.put("tutorial-wiki",
-                    localeConfig.getString(langKey + ".tutorial-wiki", "Civs wiki"));
-            currentLanguage.put("click-info",
-                    localeConfig.getString(langKey + ".click-info", "Click for more info"));
-            currentLanguage.put("guide",
-                    localeConfig.getString(langKey + ".guide", "Guide"));
-            currentLanguage.put("more-repair-items",
-                    localeConfig.getString(langKey + ".more-repair-items", "You need more $1 to repair that item"));
-            currentLanguage.put("start-tutorial",
-                    localeConfig.getString(langKey + ".start-tutorial", "Achievements On"));
-            currentLanguage.put("start-tutorial-desc",
-                    localeConfig.getString(langKey + ".start-tutorial-desc", "Receive money and items for completing achievements"));
-            currentLanguage.put("choose-path",
-                    localeConfig.getString(langKey + ".choose-path", "Choose your path"));
-            currentLanguage.put("skip",
-                    localeConfig.getString(langKey + ".skip", "Achievements Off"));
-            currentLanguage.put("player-not-found",
-                    localeConfig.getString(langKey + ".player-not-found", "Player $1 not found"));
-            currentLanguage.put("devolve-town",
-                    localeConfig.getString(langKey + ".devolve-town", "$1 has run out of power and has been downgraded to a $2!"));
-            currentLanguage.put("population-req",
-                    localeConfig.getString(langKey + ".population-req", "Requires a $1 with $2 population"));
-            currentLanguage.put("limits",
-                    localeConfig.getString(langKey + ".limits", "Limits"));
-            currentLanguage.put("click-for-req-regions",
-                    localeConfig.getString(langKey + ".click-for-req-regions", "Click here for a list of required regions"));
-            currentLanguage.put("click-for-region-limits",
-                    localeConfig.getString(langKey + ".click-for-region-limits", "Click here for a list of region limits"));
-            currentLanguage.put("region-sale-set",
-                    localeConfig.getString(langKey + ".region-sale-set", "$1 is for sale for $2"));
-            currentLanguage.put("sell-region",
-                    localeConfig.getString(langKey + ".sell-region", "Sell Region"));
-            currentLanguage.put("cancel-sale",
-                    localeConfig.getString(langKey + ".cancel-sale", "Cancel Sale"));
-            currentLanguage.put("use-sell-command",
-                    localeConfig.getString(langKey + ".use-sell-command", "Type /cv sell priceGoesHere"));
-            currentLanguage.put("buy-region",
-                    localeConfig.getString(langKey + ".buy-region", "Buy this $1 for $2"));
-            currentLanguage.put("region-bought",
-                    localeConfig.getString(langKey + ".region-bought", "You have bought this $1 for $2"));
-            currentLanguage.put("guide-desc",
-                    localeConfig.getString(langKey + ".guide-desc", "Click here to see your next goal."));
-            currentLanguage.put("regions-for-sale",
-                    localeConfig.getString(langKey + ".regions-for-sale", "Regions For Sale"));
-            currentLanguage.put("sort-by-level",
-                    localeConfig.getString(langKey + ".sort-by-level", "Sort Regions by Level"));
-            currentLanguage.put("level",
-                    localeConfig.getString(langKey + ".level", "Level $1"));
-            currentLanguage.put("effects",
-                    localeConfig.getString(langKey + ".effects", "Effects"));
-            currentLanguage.put("click-for-item-group",
-                    localeConfig.getString(langKey + ".click-for-item-group", "Click to see all items in this group"));
-            currentLanguage.put("rename-alliance",
-                    localeConfig.getString(langKey + ".rename-alliance", "Rename Alliance"));
-            currentLanguage.put("rename-alliance-desc",
-                    localeConfig.getString(langKey + ".rename-alliance-desc", "Type /cv really $1 newAllianceNameHere"));
-            currentLanguage.put("alliance-renamed",
-                    localeConfig.getString(langKey + ".alliance-renamed", "$1 has been renamed to $2"));
-            currentLanguage.put("invalid-name",
-                    localeConfig.getString(langKey + ".invalid-name", "Invalid name"));
-            currentLanguage.put("last-renamed-by",
-                    localeConfig.getString(langKey + ".last-renamed-by", "Last renamed by: $1"));
-            currentLanguage.put("leave-alliance",
-                    localeConfig.getString(langKey + ".leave-alliance", "Leave alliance"));
-            currentLanguage.put("new-owner-town",
-                    localeConfig.getString(langKey + ".new-owner-town", "$1 has replaced $2 as an owner of $3"));
-            currentLanguage.put("town-bank-desc",
-                    localeConfig.getString(langKey + ".town-bank-desc", "Withdraw using /cv withdraw $1 amount"));
-            currentLanguage.put("town-bank-balance",
-                    localeConfig.getString(langKey + ".town-bank-balance", "Bank balance $$1"));
-            currentLanguage.put("withdrawn-money",
-                    localeConfig.getString(langKey + ".withdrawn-money", "You've withdrawn $$1 from $2's bank"));
-            currentLanguage.put("town-tax",
-                    localeConfig.getString(langKey + ".town-tax", "Town taxes: $1"));
-            currentLanguage.put("town-tax-desc",
-                    localeConfig.getString(langKey + ".town-tax-desc", "Set tax using /cv tax $1 amount"));
-            currentLanguage.put("town-tax-set",
-                    localeConfig.getString(langKey + ".town-tax-set", "$1 tax set to $2"));
-            currentLanguage.put("tax-too-high",
-                    localeConfig.getString(langKey + ".tax-too-high", "You can't set taxes higher than $1"));
-            currentLanguage.put("town-assist-price",
-                    localeConfig.getString(langKey + ".town-assist-price", "Your town bank paid $1 to thank you for the construction of your $2"));
-            currentLanguage.put("colony-town-set",
-                    localeConfig.getString(langKey + ".colony-town-set", "You've set $1 as a colony of $2"));
-            currentLanguage.put("cant-build-feudal",
-                    localeConfig.getString(langKey + ".cant-build-feudal", "You can't build a region in a feudal town unless you own that town."));
-            currentLanguage.put("tribalism-no-invite",
-                    localeConfig.getString(langKey + ".tribalism-no-invite", "Your tribalism town forbids you to invite $1 of non-allied town $2"));
-            currentLanguage.put("vote-member",
-                    localeConfig.getString(langKey + ".vote-member", "Vote to be next owner"));
-            currentLanguage.put("capitalism-voting-cost",
-                    localeConfig.getString(langKey + ".capitalism-voting-cost", "Extra votes cost $1"));
-            currentLanguage.put("voted",
-                    localeConfig.getString(langKey + ".voted", "You have cast your vote for $1"));
-            currentLanguage.put("gov-type-change",
-                    localeConfig.getString(langKey + ".gov-type-change", "$1 changed from $2 to $3"));
-            currentLanguage.put("cost-buff",
-                    localeConfig.getString(langKey + ".cost-buff", "You have been refunded $1 for buildings a $2 in a $3 town."));
-            currentLanguage.put("cooldown-buff-desc",
-                    localeConfig.getString(langKey + ".cooldown-buff-desc", "$1% cooldown reduction for all $2"));
-            currentLanguage.put("payout-buff-desc",
-                    localeConfig.getString(langKey + ".payout-buff-desc", "$1% region payout increase for all $2"));
-            currentLanguage.put("power-buff-desc",
-                    localeConfig.getString(langKey + ".power-buff-desc", "$1% daily power increase"));
-            currentLanguage.put("max_power-buff-desc",
-                    localeConfig.getString(langKey + ".max_power-buff-desc", "$1% max-power increase"));
-            currentLanguage.put("cost-buff-desc",
-                    localeConfig.getString(langKey + ".cost-buff-desc", "$1% cost refund on all $2"));
-            currentLanguage.put("merit-new-owner",
-                    localeConfig.getString(langKey + ".merit-new-owner", "Congratulations! You have surpased $1. You are the new town owner!"));
-            currentLanguage.put("hunting-players",
-                    localeConfig.getString(langKey + ".hunting-players", "Caution! Someone is hunting players in your area."));
-            currentLanguage.put("cant-build-in-nation",
-                    localeConfig.getString(langKey + ".cant-build-in-nation", "You can't build inside $1 claimed land."));
-            currentLanguage.put("neutralized-claim",
-                    localeConfig.getString(langKey + ".neutralized-claim", "$1's protections on this land have been removed."));
-            currentLanguage.put("item-locked",
-                    localeConfig.getString(langKey + ".item-locked", "You have not yet unlocked this item."));
-            currentLanguage.put("max-qty",
-                    localeConfig.getString(langKey + ".max-qty", "$1 has too many $2 and can't own more"));
-            currentLanguage.put("ai-invite",
-                    localeConfig.getString(langKey + ".ai-invite", "Hey, @$1 would you like to join my town?"));
-            currentLanguage.put("ai-help",
-                    localeConfig.getString(langKey + ".ai-help", "$1 can give you a tour of the place."));
-            currentLanguage.put("town-tax-gov-type",
-                    localeConfig.getString(langKey + ".town-tax-gov-type", "$1 can't set taxes"));
-            currentLanguage.put("target-not-in-world",
-                    localeConfig.getString(langKey + ".target-not-in-world", "$1 is not in the same world as you."));
-            currentLanguage.put("ann-limit",
-                    localeConfig.getString(langKey + ".ann-limit", "[Info] You have $1 of $2 $3 buildings."));
-            currentLanguage.put("ann-achievement",
-                    localeConfig.getString(langKey + ".ann-achievement", "[Info] Check the guide to see your next available achievement."));
-            currentLanguage.put("ann-town-join",
-                    localeConfig.getString(langKey + ".ann-town-join", "[Info] You can be a member of multiple towns. Usually towns love to people."));
-            currentLanguage.put("ann-town-protection",
-                    localeConfig.getString(langKey + ".ann-town-protection", "[Info] Towns protect lots of land unlock new buildings in the shop."));
-            currentLanguage.put("ann-town-housing",
-                    localeConfig.getString(langKey + ".ann-town-housing", "[Info] $1 has $2 of $3 housing filled. Build more housing if you want to grow your town."));
-            currentLanguage.put("ann-make-allies",
-                    localeConfig.getString(langKey + ".ann-make-allies", "[Info] Consider joining an alliance. Under community > towns > town you can set towns as allies."));
-            currentLanguage.put("ann-town-low-power",
-                    localeConfig.getString(langKey + ".ann-town-low-power", "[Warning] $1 has only $2 of $3 power. Consider building more structures that output power."));
-            currentLanguage.put("ann-bank",
-                    localeConfig.getString(langKey + ".ann-bank", "[Info] $1 has $$2 sitting in the bank. You can withdraw that money using /cv withdraw $1 amount"));
-            currentLanguage.put("ann-vote",
-                    localeConfig.getString(langKey + ".ann-vote", "[Info] Don't forget to vote for the next owner of $1. Community > Your towns > $1 > View Members > player > Vote"));
-            currentLanguage.put("ann-karma",
-                    localeConfig.getString(langKey + ".ann-karma", "[Caution] $1 is online. If you can kill $1, then you will be rewarded."));
-            currentLanguage.put("ann-missing-input",
-                    localeConfig.getString(langKey + ".ann-missing-input", "[Info] Your $1 needs items. Use the Civs book on it to check which reagents/inputs it needs."));
-            currentLanguage.put("ann-bounty",
-                    localeConfig.getString(langKey + ".ann-bounty", "[Info] $1 has a bounty of $2 on his head."));
-            currentLanguage.put("alliance-chunk-claimed",
-                    localeConfig.getString(langKey + ".alliance-chunk-claimed", "This land has been claimed for the alliance $1"));
-            languageMap.put(langKey, currentLanguage);
+                String langKey = currentTranslationFile.getName().replace(".yml", "");
+                languageMap.put(langKey, currentLanguage);
+            } catch (Exception e) {
+                Civs.logger.severe("Unable to load " + currentTranslationFile.getName());
+            }
         }
     }
 
@@ -607,5 +83,10 @@ public class LocaleManager {
             localeManager = new LocaleManager();
         }
         return localeManager;
+    }
+
+    public boolean hasTranslation(String language, String key) {
+        return languageMap.get(language) != null &&
+                languageMap.get(language).get(key) != null;
     }
 }

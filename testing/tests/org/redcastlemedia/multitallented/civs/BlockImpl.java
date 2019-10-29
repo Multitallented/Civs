@@ -49,7 +49,16 @@ public class BlockImpl implements Block {
 
     @Override
     public Block getRelative(BlockFace blockFace) {
-        return null;
+        if (blockFace == BlockFace.NORTH) {
+            return new BlockImpl(new Location(location.getWorld(), location.getX() + 1, location.getY(), location.getZ()));
+        } else if (blockFace == BlockFace.EAST) {
+            return new BlockImpl(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ() + 1));
+        } else if (blockFace == BlockFace.SOUTH) {
+            return new BlockImpl(new Location(location.getWorld(), location.getX() - 1, location.getY(), location.getZ()));
+        } else if (blockFace == BlockFace.WEST) {
+            return new BlockImpl(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ() - 1));
+        }
+        return new BlockImpl(new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ()));
     }
 
     @Override

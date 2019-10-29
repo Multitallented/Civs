@@ -7,6 +7,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -26,8 +28,14 @@ public class ColonyCommand implements CivCommand {
 
         Town colonyTown = TownManager.getInstance().getTown(args[1]);
         Town owningTown = TownManager.getInstance().getTown(args[2]);
-        if (colonyTown == null || owningTown == null || colonyTown.getColonialTown() != null ||
-                colonyTown.getGovernmentType() != GovernmentType.COLONIALISM) {
+        if (colonyTown == null || owningTown == null) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "invalid-target"));
+            return true;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(colonyTown.getGovernmentType());
+        if (colonyTown.getColonialTown() != null ||
+                government.getGovernmentType() != GovernmentType.COLONIALISM) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "invalid-target"));
             return true;

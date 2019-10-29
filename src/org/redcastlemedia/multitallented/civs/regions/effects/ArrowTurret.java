@@ -14,14 +14,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
-import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;

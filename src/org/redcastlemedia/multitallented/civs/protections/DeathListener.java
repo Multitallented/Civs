@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -24,6 +23,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -33,7 +34,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -52,6 +52,19 @@ public class DeathListener implements Listener {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "in-combat"));
+            return;
+        }
+        if (!ConfigManager.getInstance().isAllowTeleportingOutOfHostileTowns()) {
+            Town town = TownManager.getInstance().getTownAt(event.getFrom());
+            if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
+                Region region = RegionManager.getInstance().getRegionAt(event.getTo());
+                if (region == null || !region.getEffects().containsKey("bypass_hostile_port")) {
+                    event.setCancelled(true);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "no-tp-out-of-town"));
+                    return;
+                }
+            }
         }
     }
 
@@ -432,6 +445,9 @@ public class DeathListener implements Listener {
                 }
                 bountyBonus += town.getBounties().remove(town.getBounties().size() -1).getAmount();
             }
+        } else if (!dyingCiv.getBounties().isEmpty()) {
+            damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                    "allied-bounty"));
         }
         final double BOUNTY_BONUS = bountyBonus;
 
@@ -447,11 +463,12 @@ public class DeathListener implements Listener {
         CivilianManager.getInstance().saveCivilian(damagerCiv);
 
         for (Town town : TownManager.getInstance().getOwnedTowns(dyingCiv)) {
-            if (town.getGovernmentType() == GovernmentType.MERITOCRACY) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() == GovernmentType.MERITOCRACY) {
                 Util.checkMerit(town, damager);
                 continue;
             }
-            if (town.getGovernmentType() != GovernmentType.KRATEROCRACY) {
+            if (government.getGovernmentType() != GovernmentType.KRATEROCRACY) {
                 continue;
             }
             if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&

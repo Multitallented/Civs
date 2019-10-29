@@ -8,22 +8,7 @@
 
 icon: "NETHERRACK"
 enabled: true
-name:
-  en: "Anarchy"
-  de: "Anarchie"
-  ru: "анархия"
-  pt_br: "Anarquia"
-  es: "Anarquía"
-  fr: "Anarchie"
-  hu: "Anarchia"
-description:
-  en: "Anyone can manage town and region membership. No taxes. No alliances."
-  fr: "Tout le monde peut gérer l'appartenance à une ville ou une région. Pas d'impôts. Pas d'alliances."
-  es: "Cualquiera puede gestionar la membresía de la ciudad y la región. Sin impuestos. No hay alianzas."
-  pt_br: "Qualquer pessoa pode gerenciar a associação à cidade e região. Sem impostos. Sem alianças."
-  ru: "Любой может управлять городским и районным членством. Нет налогов. Нет альянсов."
-  de: "Jeder kann die Mitgliedschaft in einer Stadt oder Region verwalten. Keine Steuern. Keine Allianzen."
-  hu: "Bárki a városban tudja kezelni a területek tagságait. Nincsenek adók, nincsenek szövetségek."
+transition: {}
 buffs:
   cost:
     percent: 35

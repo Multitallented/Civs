@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -93,6 +94,11 @@ public class AllianceManager implements Listener {
             Alliance alliance = new Alliance();
             alliance.setName(allianceFile.getName().replace(".yml", ""));
             alliance.setMembers(new HashSet<String>(config.getStringList("members")));
+            for (String townName : new ArrayList<>(alliance.getMembers())) {
+                if (TownManager.getInstance().getTown(townName) == null) {
+                    alliance.getMembers().remove(townName);
+                }
+            }
             String uuidString = config.getString("last-rename", null);
             if (uuidString != null) {
                 alliance.setLastRenamedBy(UUID.fromString(uuidString));
@@ -491,6 +497,9 @@ public class AllianceManager implements Listener {
     }
 
     public void unAlly(Town town1, Town town2) {
+        if (!isAllied(town1, town2)) {
+            return;
+        }
         HashSet<Alliance> saveThese = new HashSet<>();
         HashSet<Alliance> removeThese = new HashSet<>();
 
@@ -550,6 +559,19 @@ public class AllianceManager implements Listener {
         }
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
+        }
+    }
+
+    @EventHandler
+    public void onTownDestroyed(TownDestroyedEvent event) {
+        Town town = event.getTown();
+        for (Town currentTown : TownManager.getInstance().getTowns()) {
+            if (currentTown.equals(town)) {
+                continue;
+            }
+            if (isAllied(town, currentTown)) {
+                unAlly(town, currentTown);
+            }
         }
     }
 

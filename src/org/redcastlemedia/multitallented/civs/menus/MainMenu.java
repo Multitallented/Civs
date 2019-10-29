@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,10 +14,16 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -32,7 +39,7 @@ public class MainMenu extends Menu {
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack.getItemMeta() == null) {
+        if (clickedStack == null || clickedStack.getItemMeta() == null) {
             return;
         }
         if (clickedStack.getItemMeta().getDisplayName() == null) {
@@ -49,7 +56,7 @@ public class MainMenu extends Menu {
             event.getWhoClicked().openInventory(LanguageMenu.createMenu(locale));
             return;
         }
-        if (Material.ENCHANTED_BOOK == clickedStack.getType()) {
+        if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "guide")))) {
             event.getWhoClicked().closeInventory();
             printTutorial(event.getWhoClicked(), civilian);
         }
@@ -89,9 +96,30 @@ public class MainMenu extends Menu {
             event.getWhoClicked().openInventory(CommunityMenu.createMenu(civilian));
             return;
         }
+        if (im.getLore() != null && !im.getLore().isEmpty()) {
+            if (ChatColor.stripColor(im.getLore().get(0)).equals("town") &&
+                    TownManager.getInstance().getTown(itemName) != null) {
+                appendHistory(civilian.getUuid(), MENU_NAME);
+                event.getWhoClicked().closeInventory();
+                event.getWhoClicked().openInventory(TownActionMenu.createMenu(civilian,
+                        TownManager.getInstance().getTown(itemName)));
+                return;
+            } else if (ChatColor.stripColor(im.getLore().get(0)).equals("region")) {
+                appendHistory(civilian.getUuid(), MENU_NAME);
+                event.getWhoClicked().closeInventory();
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+                if (region != null) {
+                    event.getWhoClicked().openInventory(RegionActionMenu.createMenu(civilian, region));
+                }
+                return;
+            }
+        }
     }
 
     public static Inventory createMenu(Civilian civilian) {
+        clearHistory(civilian.getUuid());
+        StructureUtil.removeBoundingBox(civilian.getUuid());
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
         }
@@ -99,9 +127,8 @@ public class MainMenu extends Menu {
             return TutorialChoosePathMenu.createMenu(civilian);
         }
 
-        Inventory inventory = Bukkit.createInventory(null, 9, MENU_NAME);
+        Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
         String locale = civilian.getLocale();
-        clearHistory(civilian.getUuid());
         boolean useClassesAndSpells = ConfigManager.getInstance().getUseClassesAndSpells();
 
         int i=0;
@@ -175,6 +202,36 @@ public class MainMenu extends Menu {
         i++;
         CVItem cvItem3 = new CVItem(Material.BOOKSHELF, 1, 100, localeManager.getTranslation(locale, "community"));
         inventory.setItem(i, cvItem3.createItemStack());
+
+        //9
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        Town town = TownManager.getInstance().getTownAt(player.getLocation());
+        if (town != null) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            CVItem townIcon = townType.getShopIcon().clone();
+            townIcon.setDisplayName(town.getName());
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(ChatColor.BLACK + "town");
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    townType.getProcessedName() + "-desc")));
+            townIcon.setLore(lore);
+            inventory.setItem(9, townIcon.createItemStack());
+        }
+
+        //10
+        Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+        if (region != null) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            CVItem regionIcon = regionType.getShopIcon().clone();
+            regionIcon.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    regionType.getProcessedName() + "-name"));
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(ChatColor.BLACK + "region");
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    regionType.getProcessedName() + "-desc")));
+            regionIcon.setLore(lore);
+            inventory.setItem(10, regionIcon.createItemStack());
+        }
 
         return inventory;
     }

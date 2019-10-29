@@ -1,22 +1,54 @@
 type: town
 icon: GLOWSTONE
+shop-icon: GOLD_BLOCK
 name: Town
 max: 1
-price: 6000
-group: town
+price: 20000
+groups:
+- superregion
+level: 5
 
 pre-reqs:
-- village:population=15
+- village:population=10
 
 build-reqs:
-- councilroom:1
+- town_hall:1
+- quarry:1
 - farm:3
+- utility:4
+- allhousing:16
+
+limits:
+- allshack:8
+- allhovel:7
+- alldwelling:6
+- allhouse:5
+- allchalet:4
+- allmansion:3
+- allmanor:2
+- arrowtrapgroup:10
+- npchousing:25
+- library:1
+- smithy:1
+- purifier:1
+- church:1
+- bank:1
+- warehouse:1
+- barracks:1
+- inn:1
+- jail:1
+- alchemical_lab:1
+- power_capacitor:2
+- embassy:5
+- idolgroup:2
+- jammer_trap:0
 
 critical-build-reqs:
-- councilroom
+- town_center
 
 child: village
-build-radius: 36
+child-population: 20
+build-radius: 110
 build-radius-y: 500
 effects:
 - block_break
@@ -24,11 +56,10 @@ effects:
 - block_liquid
 - block_fire
 - deny_mob_spawn
+- block_explosion
 - control_override
+- anticamp:2.1500.600 #2 damage for 25 minutes costs $600
 
-power: 1000
-max-power: 1000
+power: 1500
+max-power: 5100
 
-
-description:
-  en: "The third level of a town"

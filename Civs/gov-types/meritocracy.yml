@@ -6,22 +6,23 @@
 
 icon: "PURPLE_GLAZED_TERRACOTTA"
 enabled: true
-name:
-  en: "Meritocracy"
-  fr: "Méritocratie"
-  es: "Meritocracia"
-  ru: "высокоинтеллектуальные люди"
-  de: "Meritokratie"
-  pt_br: "Meritocracia"
-  hu: "Meritokrácia"
-description:
-  en: "Dictatorship + Whoever has the best buildings and most kill points becomes the town owner."
-  es: "Dictadura + Quien tenga los mejores edificios y la mayoría de los puntos de muerte se convierte en el dueño de la ciudad."
-  pt_br: "Ditadura + Quem quer que tenha os melhores prédios e a maioria dos pontos de morte se torna o dono da cidade."
-  de: "Diktatur + Wer die besten Gebäude und die meisten Abschusspunkte hat, wird Stadtbesitzer."
-  ru: "диктатура + Кто бы ни имел лучшие здания и большинство очков убийства, становится владельцем города."
-  fr: "Dictature + Quiconque a les meilleurs bâtiments et la plupart des points de destruction devient le propriétaire de la ville."
-  hu: "Diktatúra + A város tulajdonosa az lesz, akinek a legtöbb és legfejlettebb épülete van és a legtöbb embert ölte meg. "
+transition:
+  0:
+    inactive: 2419200 #4 weeks
+    to: ANARCHY
+  1:
+    money-gap: 70
+    to: OLIGARCHY
+  2:
+    revolt: 51
+    money-gap: 40
+    to: COMMUNISM
+  3:
+    revolt: 51
+    to: ANARCHY
+  4:
+    power: 20
+    to: TRIBALISM
 buffs:
   max_power:
     percent: 15

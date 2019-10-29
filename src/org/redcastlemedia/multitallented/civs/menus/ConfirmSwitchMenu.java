@@ -12,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.*;
 

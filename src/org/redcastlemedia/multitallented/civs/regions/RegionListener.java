@@ -1,12 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,9 +14,8 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
@@ -32,7 +25,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class RegionListener implements Listener {
@@ -58,7 +51,7 @@ public class RegionListener implements Listener {
         if (!CVItem.isCivsItem(heldItem)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        CivItem civItem = CivItem.getFromItemStack(heldItem);
 
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(blockPlaceEvent.getPlayer().getUniqueId());
@@ -84,7 +77,7 @@ public class RegionListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_AIR || !CVItem.isCivsItem(heldItem)) {
             return;
         }
-        CivItem civItem = ItemManager.getInstance().getItemType(heldItem.getItemMeta().getDisplayName());
+        CivItem civItem = CivItem.getFromItemStack(heldItem);
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
             TownType townType = (TownType) civItem;
@@ -96,7 +89,8 @@ public class RegionListener implements Listener {
             return;
         }
         RegionType regionType = (RegionType) civItem;
-        player.openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType));
+        Menu.clearHistory(player.getUniqueId());
+        player.openInventory(RegionTypeInfoMenu.createMenuInfinite(civilian, regionType));
     }
 
     @EventHandler
@@ -111,7 +105,8 @@ public class RegionListener implements Listener {
             return;
         }
         applyCostBuff(event, town);
-        if (town.getGovernmentType() != GovernmentType.COOPERATIVE ||
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.COOPERATIVE ||
                 !event.getRegionType().getGroups().contains("utility")) {
             return;
         }
@@ -168,6 +163,7 @@ public class RegionListener implements Listener {
                 civilian.getLocale(), "cost-buff"
         ).replace("$1", amountString)
                 .replace("$2", event.getRegionType().getDisplayName())
-                .replace("$3", government.getNames().get(civilian.getLocale())));
+                .replace("$3", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        government.getName().toLowerCase() + "-name")));
     }
 }

@@ -9,10 +9,11 @@ api-version: 1.13
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
-- MultiverseCore
+- DiscordSRV
+- MMOItems
 commands:
    cv:
-      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'cv', 'towny', 'fa', 'f', 'faction']
+      aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
       description: Civs commands
       usage: /<command>
 permissions:
@@ -28,4 +29,7 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-loadafter: [Vault, PlaceholderAPI]
+   civs.bypasspvp:
+      description: Lets you bypass war machines, bounties, and other combat features
+      default: op
+loadafter: [Vault, PlaceholderAPI, MMOItems]

@@ -12,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class ClassTypeInfoMenu extends Menu {
 
         //TODO write info about the class
 
-        lore.addAll(Util.textWrap("", Util.parseColors(classType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(classType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 
