@@ -81,26 +81,33 @@ public class RecipeMenu extends CustomMenu {
             List<List<CVItem>> items;
             if (MenuManager.getData(civilian.getUuid(), "items") != null) {
                 items = (List<List<CVItem>>) MenuManager.getData(civilian.getUuid(), "items");
+                if (items == null) {
+                    return new ItemStack(Material.AIR);
+                }
             } else {
                 return new ItemStack(Material.AIR);
             }
-            // TODO set item and cycle items and actions
-//            ArrayList<CVItem> fullListRegionTypes = new ArrayList<>();
-//            for (String regionTypeName : items.keySet()) {
-//                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-//                CVItem currentItem = regionType.getShopIcon().clone();
-//                currentItem.setQty(items.get(regionTypeName));
-//                fullListRegionTypes.add(currentItem);
-//            }
-//            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
-//            int startIndex = page * menuIcon.getIndex().size();
-//            if (fullListRegionTypes.size() <= startIndex + count) {
-//                return new ItemStack(Material.AIR);
-//            }
-//            CVItem cvItem = fullListRegionTypes.get(startIndex + count);
-//            ItemStack itemStack = cvItem.createItemStack();
-//            putActions(civilian, menuIcon, itemStack, count); // TODO set this for each cycle item
-//            return itemStack;
+            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+            int startIndex = page * menuIcon.getIndex().size();
+            if (items.size() <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
+            ItemStack firstStack = null;
+            for (CVItem cvItem : items.get(startIndex + count)) {
+                ItemStack itemStack = cvItem.createItemStack();
+                if (firstStack == null) {
+                    firstStack = itemStack;
+                }
+                if (cvItem.getGroup() != null) {
+                    ArrayList<String> actionList = new ArrayList<>();
+                    actionList.add("menu:recipe?category=g:" + cvItem.getGroup());
+                    actions.get(civilian.getUuid()).put(itemStack, actionList);
+                }
+            }
+            // TODO cycle items
+            if (firstStack != null) {
+                return firstStack;
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
