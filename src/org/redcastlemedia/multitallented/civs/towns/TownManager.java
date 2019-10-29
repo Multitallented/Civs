@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
@@ -655,6 +658,20 @@ public class TownManager {
                     "must-be-built-on-top").replace("$1", townType.getProcessedName())
                     .replace("$2", townType.getChild()));
             return;
+        }
+
+        for (Chunk chunk : AllianceManager.getInstance().getContainingChunks(player.getLocation(),
+                townType.getBuildRadius(), townType.getBuildRadius(),
+                townType.getBuildRadius(), townType.getBuildRadius())) {
+            ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
+            if (chunkClaim != null &&
+                    !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), chunkClaim.getAlliance())) {
+
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(), "cant-build-in-nation"
+                ).replace("$1", chunkClaim.getAlliance().getName()));
+                return;
+            }
         }
 
         if (!townType.getReqs().isEmpty()) {

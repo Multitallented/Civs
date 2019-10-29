@@ -263,6 +263,7 @@ total-points: "Punkte gesamt: $1"
 karma: "Karma: $1"
 karma-gained: "Karma: +$1, $2 Geld erhalten"
 karma-lost: "Karma: -$1, $2 Geld verloren"
+claims: "Ansprüche"
 ann-limit: "[Info] Du hast $1 von $2 $3 Bauwerken"
 ann-achievement: "[Info] Schaue im Guide nach den Schritten für die nächste Belohnung"
 ann-town-join: "[Info] Du kannst in mehreren Städten Mitglied sein. Normalerweise lieben
