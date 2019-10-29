@@ -80,7 +80,7 @@ public class RecipeMenu extends CustomMenu {
         if (menuIcon.getKey().equals("items")) {
             List<List<CVItem>> items;
             if (MenuManager.getData(civilian.getUuid(), "items") != null) {
-                items = (List<List<CVItem>>) MenuManager.getData(civilian.getUuid(), "regionTypes");
+                items = (List<List<CVItem>>) MenuManager.getData(civilian.getUuid(), "items");
             } else {
                 return new ItemStack(Material.AIR);
             }
