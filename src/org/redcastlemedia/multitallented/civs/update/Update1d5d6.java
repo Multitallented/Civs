@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.update;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +28,34 @@ public final class Update1d5d6 {
         upgradeTowns(itemTypesFolder);
         addJammerTrap(itemTypesFolder);
         updateEmbassy(itemTypesFolder);
-        // TODO update translations
+        updateTranslations();
+    }
+
+    private static void updateTranslations() {
+        File translationsFolder = new File(Civs.getInstance().getDataFolder(), "translations");
+        if (!translationsFolder.exists()) {
+            return;
+        }
+        File enFile = new File(translationsFolder, "en.yml");
+        if (enFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(enFile);
+                config.set("siege-built", "WARNING! $1 has created a $2 targeting $3");
+                config.set("jammer_trap-name", "Jammer Trap");
+                config.set("jammer_trap-desc", "A building that intercepts teleports that would travel within 100. Redirects the destination to nearby the jammer.");
+                config.set("jammer-redirect", "@{RED}[ALERT] Your teleport was intercepted by a $1");
+                config.set("no-tp-out-of-town", "You can't teleport out of a non-allied town");
+                config.set("intruder-enter", "@{RED}[WARNING] $1 has entered $2");
+                config.set("intruder-exit", "$1 has exited $2");
+                config.set("raid-porter-offline", "You cant raid $1 when none of their members are online.");
+                config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
+                config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
+                config.save(enFile);
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     private static void updateEmbassy(File itemTypesFolder) {
@@ -64,6 +92,20 @@ public final class Update1d5d6 {
         if (!offenseFolder.exists()) {
             return;
         }
+        File blindnessTrapFile = new File(offenseFolder, "blindness_trap.yml");
+        if (blindnessTrapFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(blindnessTrapFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(blindnessTrapFile);
+            } catch (Exception e) {
+
+            }
+        }
+
         File jammerFile = new File(offenseFolder, "jammer_trap.yml");
         if (jammerFile.exists()) {
             return;
@@ -104,118 +146,168 @@ public final class Update1d5d6 {
             return;
         }
         File settlementFile = new File(townsFolder, "settlement.yml");
-        if (!settlementFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(settlementFile);
-            List<String> limitList =  config.getStringList("limits");
-            int embassyLimit = removeEmbassy(limitList);
-            if (embassyLimit > 1) {
-                limitList.add("embassy:" + embassyLimit);
-            } else {
-                limitList.add("embassy:1");
-            }
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(settlementFile);
-        } catch (Exception e) {
+        if (settlementFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(settlementFile);
+                List<String> limitList =  config.getStringList("limits");
+                int embassyLimit = removeEmbassy(limitList);
+                if (embassyLimit > 1) {
+                    limitList.add("embassy:" + embassyLimit);
+                } else {
+                    limitList.add("embassy:1");
+                }
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(settlementFile);
+            } catch (Exception e) {
 
+            }
         }
+
         File hamletFile = new File(townsFolder, "hamlet.yml");
-        if (!hamletFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(hamletFile);
-            List<String> limitList =  config.getStringList("limits");
-            int embassyLimit = removeEmbassy(limitList);
-            if (embassyLimit > 2) {
-                limitList.add("embassy:" + embassyLimit);
-            } else {
-                limitList.add("embassy:2");
-            }
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(hamletFile);
-        } catch (Exception e) {
+        if (hamletFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(hamletFile);
+                List<String> limitList =  config.getStringList("limits");
+                int embassyLimit = removeEmbassy(limitList);
+                if (embassyLimit > 2) {
+                    limitList.add("embassy:" + embassyLimit);
+                } else {
+                    limitList.add("embassy:2");
+                }
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(hamletFile);
+            } catch (Exception e) {
 
+            }
         }
+
         File villageFile = new File(townsFolder, "village.yml");
-        if (!villageFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(villageFile);
-            List<String> limitList =  config.getStringList("limits");
-            int embassyLimit = removeEmbassy(limitList);
-            if (embassyLimit > 3) {
-                limitList.add("embassy:" + embassyLimit);
-            } else {
-                limitList.add("embassy:3");
-            }
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(villageFile);
-        } catch (Exception e) {
+        if (villageFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(villageFile);
+                List<String> limitList =  config.getStringList("limits");
+                int embassyLimit = removeEmbassy(limitList);
+                if (embassyLimit > 3) {
+                    limitList.add("embassy:" + embassyLimit);
+                } else {
+                    limitList.add("embassy:3");
+                }
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(villageFile);
+            } catch (Exception e) {
 
+            }
         }
+
         File townFile = new File(townsFolder, "town.yml");
-        if (!townFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(townFile);
-            List<String> limitList =  config.getStringList("limits");
-            int embassyLimit = removeEmbassy(limitList);
-            if (embassyLimit > 5) {
-                limitList.add("embassy:" + embassyLimit);
-            } else {
-                limitList.add("embassy:5");
-            }
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(townFile);
-        } catch (Exception e) {
+        if (townFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(townFile);
+                List<String> limitList =  config.getStringList("limits");
+                int embassyLimit = removeEmbassy(limitList);
+                if (embassyLimit > 5) {
+                    limitList.add("embassy:" + embassyLimit);
+                } else {
+                    limitList.add("embassy:5");
+                }
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(townFile);
+            } catch (Exception e) {
 
+            }
         }
+
         File cityFile = new File(townsFolder, "city.yml");
-        if (!cityFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(cityFile);
-            List<String> limitList =  config.getStringList("limits");
-            int embassyLimit = removeEmbassy(limitList);
-            if (embassyLimit > 8) {
-                limitList.add("embassy:" + embassyLimit);
-            } else {
-                limitList.add("embassy:8");
+        if (cityFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(cityFile);
+                List<String> limitList =  config.getStringList("limits");
+                int embassyLimit = removeEmbassy(limitList);
+                if (embassyLimit > 8) {
+                    limitList.add("embassy:" + embassyLimit);
+                } else {
+                    limitList.add("embassy:8");
+                }
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(cityFile);
+            } catch (Exception e) {
+
             }
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(cityFile);
-        } catch (Exception e) {
-
         }
+
         File metropolisFile = new File(townsFolder, "metropolis.yml");
-        if (!metropolisFile.exists()) {
-            return;
-        }
-        try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(metropolisFile);
-            List<String> limitList =  config.getStringList("limits");
-            limitList.add("jammer_trap:0");
-            config.set("limits", limitList);
-            config.save(metropolisFile);
-        } catch (Exception e) {
+        if (metropolisFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(metropolisFile);
+                List<String> limitList =  config.getStringList("limits");
+                limitList.add("jammer_trap:0");
+                config.set("limits", limitList);
+                config.save(metropolisFile);
+            } catch (Exception e) {
 
+            }
+        }
+        File miningColonyFile = new File(townsFolder, "mining-colony.yml");
+        if (miningColonyFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(miningColonyFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(miningColonyFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File keepFile = new File(townsFolder, "keep.yml");
+        if (keepFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(keepFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(keepFile);
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
+
+    static void fixPotionDuration(List<String> effectList) {
+        for (String effect : new HashSet<>(effectList)) {
+            if (effect.startsWith("potion:")) {
+                effectList.remove(effect);
+                String potionString = "potion:";
+                String[] potionSplit = effect.split(":")[1].split(",");
+                for (String durationString : potionSplit) {
+                    if (!"potion:".equals(potionString)) {
+                        potionString += ",";
+                    }
+                    String[] currentSplit = durationString.split("\\.");
+                    int duration = Integer.parseInt(currentSplit[1]);
+                    duration = duration / 20;
+                    currentSplit[1] = "" + duration;
+                    for (String thisSplit : currentSplit) {
+                        potionString += thisSplit + ".";
+                    }
+                    potionString = potionString.substring(0, potionString.length() - 1);
+                }
+                effectList.add(potionString);
+            }
         }
     }
     private static int removeEmbassy(List<String> limitList) {
