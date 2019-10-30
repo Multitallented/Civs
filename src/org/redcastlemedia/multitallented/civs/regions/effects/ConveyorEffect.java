@@ -221,7 +221,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        System.out.println("Chunk loaded " + event.getChunk().getX() + "x " + event.getChunk().getZ() + "z");
         Chunk chunk = event.getChunk();
         for (Region r : new HashMap<>(orphanCarts).keySet()) {
             StorageMinecart sm = orphanCarts.get(r);
@@ -234,7 +233,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        System.out.println("Chunk unloaded " + event.getChunk().getX() + "x " + event.getChunk().getZ() + "z");
         Chunk chunk = event.getChunk();
         for (Region r : new HashMap<>(carts).keySet()) {
             StorageMinecart sm = carts.get(r);
