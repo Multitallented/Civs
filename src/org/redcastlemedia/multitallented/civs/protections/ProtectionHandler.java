@@ -98,9 +98,7 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Player player = event.getPlayer();
-            boolean isNotMember = player == null ||
-                    (!region.getOwners().contains(player.getUniqueId()) &&
-                    !region.getPeople().containsKey(player.getUniqueId()));
+            boolean isNotMember = !region.getPeople().containsKey(player.getUniqueId());
             if (isNotMember && !region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }

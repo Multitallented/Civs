@@ -259,6 +259,7 @@ public class Civs extends JavaPlugin {
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
+        new BedEffect();
     }
 
     private void setupEconomy() {

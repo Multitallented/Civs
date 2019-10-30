@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -34,6 +35,7 @@ import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinS
 public class ConveyorEffect implements Listener, RegionCreatedListener {
     private static ConveyorEffect instance = null;
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
+    private HashMap<Region, StorageMinecart> orphanCarts = new HashMap<>();
     private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
     private HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
     private boolean disabled = false;
@@ -149,9 +151,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
         Location loc = cacheSpawnPoints.get(r);
 
-        Inventory cInv = UnloadedInventoryHandler.getInstance().getChestInventory(l);
+        Inventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
         HashSet<ItemStack> iss = new HashSet<>();
-        if (!cInv.contains(Material.CHEST_MINECART) || !cInv.contains(conveyor)) {
+        if ((!orphanCarts.containsKey(r) && !regionInventory.contains(Material.CHEST_MINECART)) ||
+                !regionInventory.contains(conveyor)) {
             return;
         }
 
@@ -159,7 +162,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        for (ItemStack is : cInv.getContents()) {
+        for (ItemStack is : regionInventory.getContents()) {
             if (is != null && is.getType() == conveyor) {
                 iss.add(is);
             }
@@ -169,35 +172,46 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
 
         //If chunk not loaded try using region cache to move directly
-        if (!isLocationWithinSightOfPlayer(loc)) {
+        if (!Util.isChunkLoadedAt(loc)) {
             if (!cacheDestinationRegions.containsKey(r)) {
                 return;
             }
-            Inventory cachedInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
-            if (cachedInventory.firstEmpty() < 0 ||
-                    cachedInventory.firstEmpty() > cachedInventory.getSize() - 3) {
+            Inventory cachedDestinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
+            if (cachedDestinationInventory.firstEmpty() < 0 ||
+                    cachedDestinationInventory.firstEmpty() > cachedDestinationInventory.getSize() - 3) {
                 return;
             }
+
             for (ItemStack is : iss) {
-                cInv.removeItem(is);
+                regionInventory.removeItem(is);
             }
             try {
                 if (!iss.isEmpty() && ConfigManager.getInstance().isDebugLog()) {
                     DebugLogger.inventoryModifications++;
                 }
                 for (ItemStack is : iss) {
-                    cachedInventory.addItem(is);
+                    cachedDestinationInventory.addItem(is);
                 }
             } catch (Exception e) {
             }
             return;
         } else {
+            if (orphanCarts.containsKey(r)) {
+                StorageMinecart sm = orphanCarts.get(r);
+                if (Util.isChunkLoadedAt(sm.getLocation())) {
+                    orphanCarts.remove(r);
+                    carts.put(r, sm);
+                    returnCart(r, true);
+                } else {
+                    return;
+                }
+            }
             for (ItemStack is : iss) {
-                cInv.removeItem(is);
+                regionInventory.removeItem(is);
             }
 
             ItemStack tempCart = new ItemStack(Material.CHEST_MINECART, 1);
-            cInv.removeItem(tempCart);
+            regionInventory.removeItem(tempCart);
 
             StorageMinecart cart = loc.getWorld().spawn(loc, StorageMinecart.class);
 
@@ -212,12 +226,25 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     }
 
     @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+        Chunk chunk = event.getChunk();
+        for (Region r : new HashMap<>(orphanCarts).keySet()) {
+            StorageMinecart sm = orphanCarts.get(r);
+            if (Util.isWithinChunk(chunk, sm.getLocation())) {
+                carts.put(r, sm);
+                orphanCarts.remove(r);
+            }
+        }
+    }
+
+    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
         for (Region r : new HashMap<>(carts).keySet()) {
             StorageMinecart sm = carts.get(r);
-            if (chunk.equals(sm.getLocation().getChunk())) {
-                returnCart(r, true);
+            if (Util.isWithinChunk(chunk, sm.getLocation())) {
+                carts.remove(r);
+                orphanCarts.put(r, sm);
             }
         }
     }
@@ -280,14 +307,15 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return;
         }
         if (!sm.isValid() && !Util.isChunkLoadedAt(sm.getLocation())) {
-            returnCart(r, true);
+            carts.remove(r);
+            orphanCarts.put(r, sm);
             return;
         }
 
-        if (!Util.isLocationWithinSightOfPlayer(sm.getLocation())) {
-            returnCart(r, true);
-            return;
-        }
+//        if (!Util.isLocationWithinSightOfPlayer(sm.getLocation())) {
+//            returnCart(r, true);
+//            return;
+//        }
 
         Region region = RegionManager.getInstance().getRegionAt(sm.getLocation());
         if (region == null || region.equals(r)) {

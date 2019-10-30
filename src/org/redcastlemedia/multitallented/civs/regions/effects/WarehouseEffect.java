@@ -455,13 +455,11 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                                 ItemStack nIS = CVItem.createFromItemStack(is).createItemStack();
                                 if (orReq.getQty() > is.getAmount()) {
                                     orReq.setQty(orReq.getQty() - is.getAmount());
-//                                    System.out.println("putting " + nIS.getAmount() + " " + nIS.getType().name());
                                     itemsToMove.get(inventoryLocation).put(i, nIS);
                                 } else {
                                     if (orReq.getQty() < is.getAmount()) {
                                         nIS.setAmount(is.getAmount() - orReq.getQty());
                                     }
-//                                    System.out.println("putting " + nIS.getAmount() + " " + nIS.getType().name());
                                     itemsToMove.get(inventoryLocation).put(i, nIS);
 
                                     orReqs.remove(orReq);
@@ -483,7 +481,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             availableItems.get(region).remove(locationString);
         }
 
-//        System.out.println("items to move length " + itemsToMove.size());
 
         //move items from warehouse to needed region
         outerNew: for (InventoryLocation inventoryLocation : itemsToMove.keySet()) {
@@ -491,12 +488,16 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 ItemStack moveMe = itemsToMove.get(inventoryLocation).get(i);
                 inventoryLocation.getInventory().removeItem(moveMe);
                 refreshChest(region, inventoryLocation.getLocation());
-//                System.out.println("adding item " + moveMe.getType().name());
                 if (ConfigManager.getInstance().isDebugLog()) {
                     DebugLogger.inventoryModifications++;
                 }
                 destinationInventory.addItem(moveMe);
                 RegionManager.getInstance().removeCheckedRegion(destination);
+                for (Integer failingUpkeepIndex : new HashSet<>(destination.getFailingUpkeeps())) {
+                    if (destination.hasUpkeepItems(failingUpkeepIndex, false)) {
+                        destination.getFailingUpkeeps().remove(failingUpkeepIndex);
+                    }
+                }
 
                 if (destinationInventory.firstEmpty() < 0) {
                     break outerNew;

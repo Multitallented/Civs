@@ -117,37 +117,37 @@ public class TownManager {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         RegionManager regionManager = RegionManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        HashSet<String> critReqs = new HashSet<>();
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             boolean containsReq = false;
             for (String currentReq : regionType.getGroups()) {
                 if (townType.getCriticalReqs().contains(currentReq)) {
+                    critReqs.add(currentReq);
                     containsReq = true;
-                    break;
                 }
             }
             if (!containsReq) {
                 return;
             }
+        } else {
+            critReqs.add(region.getType().toLowerCase());
         }
-        boolean hasReq = false;
         outer: for (Region containedRegion :
                 regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
             if (region.equals(containedRegion)) {
                 continue;
             }
-            if (containedRegion.getType().equalsIgnoreCase(region.getType())) {
-                hasReq = true;
-                break;
+            if (critReqs.contains(region.getType().toLowerCase())) {
+                critReqs.remove(region.getType().toLowerCase());
             }
             RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
             for (String currentReq : containedType.getGroups()) {
-                if (regionType.getGroups().contains(currentReq)) {
-                    hasReq = true;
-                    break outer;
+                if (critReqs.contains(currentReq)) {
+                    critReqs.remove(currentReq);
                 }
             }
         }
-        if (!hasReq) {
+        if (!critReqs.isEmpty()) {
             removeTown(town, true);
         }
     }

@@ -11,13 +11,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -203,6 +197,13 @@ public final class Util {
         int x = (int) Math.floor(location.getX() / 16);
         int z = (int) Math.floor(location.getZ() / 16);
         return location.getWorld().isChunkLoaded(x, z);
+    }
+
+    public static boolean isWithinChunk(Chunk chunk, Location location) {
+        return chunk.getX() * 16 <= location.getX() &&
+                chunk.getX() * 16 + 16 >= location.getX() &&
+                chunk.getZ() * 16 <= location.getZ() &&
+                chunk.getZ() * 16 + 16 >= location.getZ();
     }
 
     public static String getDefaultColor(String message) {
