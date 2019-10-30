@@ -37,6 +37,7 @@ limits:
 - ender_pearl_farm:1
 - blaze_sifter:1
 - idolgroup:6
+- jammer_trap:0
 
 critical-build-reqs:
 - town_center

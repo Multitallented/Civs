@@ -25,5 +25,5 @@ effects:
 - block_fire
 - door_use
 - potion:HEAL.80
-- temporary:1800 # 30 minutes
+- temporary:7200 # 2 hours
 

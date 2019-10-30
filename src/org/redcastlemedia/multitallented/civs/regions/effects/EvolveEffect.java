@@ -66,6 +66,10 @@ public class EvolveEffect implements Listener {
         }
 
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(evolveTarget);
+        if (regionType == null) {
+            Civs.logger.severe("Invalid evolveTarget " + evolveTarget);
+            return;
+        }
         r.setExp(0);
         r.setType(regionType.getName());
         r.setEffects((HashMap<String, String>) regionType.getEffects().clone());
