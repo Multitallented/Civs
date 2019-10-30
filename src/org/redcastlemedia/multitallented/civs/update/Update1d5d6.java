@@ -28,6 +28,7 @@ public final class Update1d5d6 {
         upgradeTowns(itemTypesFolder);
         addJammerTrap(itemTypesFolder);
         updateEmbassy(itemTypesFolder);
+        updateDefenses(itemTypesFolder);
         updateTranslations();
     }
 
@@ -138,6 +139,64 @@ public final class Update1d5d6 {
             config.save(jammerFile);
         } catch (Exception e) {
 
+        }
+    }
+    private static void updateDefenses(File itemTypesFolder) {
+        File defenseFolder = new File(itemTypesFolder, "defense");
+        if (!defenseFolder.exists()) {
+            return;
+        }
+        File idolFile = new File(defenseFolder, "idol.yml");
+        if (idolFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(idolFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(idolFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File monumentFile = new File(defenseFolder, "monument.yml");
+        if (monumentFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(monumentFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(monumentFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File statueFile = new File(defenseFolder, "statue.yml");
+        if (statueFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(statueFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(statueFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File hospitalFile = new File(defenseFolder, "hospital.yml");
+        if (hospitalFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(hospitalFile);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(hospitalFile);
+            } catch (Exception e) {
+
+            }
         }
     }
     private static void upgradeTowns(File itemTypesFolder) {
