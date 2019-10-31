@@ -27,7 +27,9 @@ build-reqs:
 - g:secondary*30
 - g:primary*100
 
-rebuild: basedwelling
+rebuild:
+- basedwelling
+- npc_hovel
 rebuild-required: true
 build-radius: 5 #11x11x11
 effects:
