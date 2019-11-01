@@ -26,7 +26,7 @@ public class RegionType extends CivItem {
     private final int buildRadiusY;
     private final int buildRadiusZ;
     private final int effectRadius;
-    private final String rebuild;
+    private final List<String> rebuild;
     private final boolean dailyPeriod;
     private final HashSet<String> towns;
     private List<RegionUpkeep> upkeeps;
@@ -55,7 +55,7 @@ public class RegionType extends CivItem {
                       int buildRadiusY,
                       int buildRadiusZ,
                       int effectRadius,
-                      String rebuild,
+                      List<String> rebuild,
                       HashSet<String> towns,
                       Set<Biome> biomes,
                       long period,
@@ -119,7 +119,7 @@ public class RegionType extends CivItem {
     public int getEffectRadius() {
         return effectRadius;
     }
-    public String getRebuild() { return rebuild; }
+    public List<String> getRebuild() { return rebuild; }
     public List<RegionUpkeep> getUpkeeps() { return upkeeps; }
     public long getPeriod() {
         return period;

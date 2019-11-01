@@ -26,7 +26,9 @@ build-reqs:
 - g:secondary*55
 - g:primary*175
 
-rebuild: basehouse
+rebuild:
+- basehouse
+- npc_dwelling
 rebuild-required: true
 build-radius: 5 #11x11x11
 effects:

@@ -29,6 +29,7 @@ public final class Update1d5d6 {
         addJammerTrap(itemTypesFolder);
         updateEmbassy(itemTypesFolder);
         updateDefenses(itemTypesFolder);
+        updateNPCHousing(itemTypesFolder);
         updateTranslations();
 
         File adminFolder = new File(itemTypesFolder, "admin-invisible");
@@ -71,6 +72,83 @@ public final class Update1d5d6 {
                 config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
                 config.save(enFile);
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    private static void updateNPCHousing(File itemTypesFolder) {
+        File npchousingFolder = new File(itemTypesFolder, "npchousing");
+        if (!npchousingFolder.exists()) {
+            return;
+        }
+        File npcChaletFile = new File(npchousingFolder, "npc_chalet.yml");
+        if (npcChaletFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(npcChaletFile);
+                List<String> rebuildList = new ArrayList<>();
+                rebuildList.add("basechalet");
+                rebuildList.add("npc_house");
+                config.set("rebuild", rebuildList);
+                config.save(npcChaletFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File npcDwellingFile = new File(npchousingFolder, "npc_dwelling.yml");
+        if (npcDwellingFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(npcDwellingFile);
+                List<String> rebuildList = new ArrayList<>();
+                rebuildList.add("basedwelling");
+                rebuildList.add("npc_hovel");
+                config.set("rebuild", rebuildList);
+                config.save(npcDwellingFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File npcHouseFile = new File(npchousingFolder, "npc_house.yml");
+        if (npcHouseFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(npcHouseFile);
+                List<String> rebuildList = new ArrayList<>();
+                rebuildList.add("basehouse");
+                rebuildList.add("npc_dwelling");
+                config.set("rebuild", rebuildList);
+                config.save(npcHouseFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File npcHovelFile = new File(npchousingFolder, "npc_hovel.yml");
+        if (npcHovelFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(npcHovelFile);
+                List<String> rebuildList = new ArrayList<>();
+                rebuildList.add("basehovel");
+                rebuildList.add("npc_shack");
+                config.set("rebuild", rebuildList);
+                config.save(npcHovelFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File npcMansionFile = new File(npchousingFolder, "npc_mansion.yml");
+        if (npcMansionFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(npcMansionFile);
+                List<String> rebuildList = new ArrayList<>();
+                rebuildList.add("basemansion");
+                rebuildList.add("npc_chalet");
+                config.set("rebuild", rebuildList);
+                config.save(npcMansionFile);
             } catch (Exception e) {
 
             }
