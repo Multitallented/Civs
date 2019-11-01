@@ -13,12 +13,12 @@ transition:
     money-gap: 40
     to: COMMUNISM
   corruption:
-    money-gap: 60
+    money-gap: 70
     to: CAPITALISM
   chaos:
     power: 33
     revolt: 51
-    to: KRATEROCRACY
+    to: IDIOCRACY
   socialize:
     revolt: 51
     to: DEMOCRATIC_SOCIALISM

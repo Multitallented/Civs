@@ -19,7 +19,7 @@ transition:
     to: COMMUNISM
   chaos:
     revolt: 51
-    to: KRATEROCRACY
+    to: IDIOCRACY
   devolve:
     power: 20
     to: TRIBALISM

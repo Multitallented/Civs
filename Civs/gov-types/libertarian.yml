@@ -13,7 +13,7 @@ transition:
   chaos:
     power: 30
     revolt: 51
-    to: ANARCHY
+    to: IDIOCRACY
   takeover:
     revolt: 51
     money-gap: 60
