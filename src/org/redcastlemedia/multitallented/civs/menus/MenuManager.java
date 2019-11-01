@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,9 +15,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceListMenu;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
@@ -35,6 +38,8 @@ import lombok.Getter;
 
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
+    private static boolean cycleItemsRunning = false;
+    public static HashMap<UUID, CycleGUI> cycleGuis = new HashMap<>();
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
@@ -60,9 +65,21 @@ public class MenuManager implements Listener {
         return instance;
     }
 
+    @EventHandler
+    public void onTwoSecondEvent(TwoSecondEvent event) {
+        try {
+            for (CycleGUI gui : cycleGuis.values()) {
+                gui.advanceItemPositions();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
+        clearCycleItems(uuid);
         if (!openMenus.containsKey(uuid)) {
             return;
         }
@@ -208,6 +225,29 @@ public class MenuManager implements Listener {
         }
     }
 
+    public synchronized static void addCycleItem(UUID uuid, int index, ItemStack is) {
+        if (cycleGuis.containsKey(uuid)) {
+            cycleGuis.get(uuid).addCycleItem(index, is);
+        } else {
+            CycleGUI currentGUI = new CycleGUI(uuid);
+            currentGUI.addCycleItem(index, is);
+            cycleGuis.put(uuid, currentGUI);
+        }
+    }
+
+    public synchronized static void addCycleItems(UUID uuid, int index, List<ItemStack> items) {
+        if (cycleGuis.containsKey(uuid)) {
+            cycleGuis.get(uuid).putCycleItems(index, items);
+        } else {
+            CycleGUI currentGUI = new CycleGUI(uuid);
+            currentGUI.putCycleItems(index, items);
+            cycleGuis.put(uuid, currentGUI);
+        }
+    }
+    private synchronized static void clearCycleItems(UUID uuid) {
+        cycleGuis.remove(uuid);
+    }
+
     private void loadConfig(CustomMenu customMenu) {
         File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
         if (menuFolder.exists()) {
@@ -225,9 +265,8 @@ public class MenuManager implements Listener {
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
         }
-        int size = -1;
         int newSize = config.getInt("size", 36);
-        size = getInventorySize(newSize);
+        int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");
         HashMap<Integer, MenuIcon> items = new HashMap<>();
         for (String key : config.getConfigurationSection("items").getKeys(false)) {
@@ -285,16 +324,6 @@ public class MenuManager implements Listener {
         openMenus.put(civilian.getUuid(), menuName);
     }
 
-    public static int getInventorySize(int count) {
-        int size = 9;
-        if (count > size) {
-            size = count + 9 - (count % 9);
-            if (count % 9 == 0) {
-                size -= 9;
-            }
-        }
-        return Math.min(size, 54);
-    }
     public static void addHistory(UUID uuid, CustomMenu customMenu, Map<String, Object> data) {
         if (!history.containsKey(uuid)) {
             history.put(uuid, new ArrayList<>());

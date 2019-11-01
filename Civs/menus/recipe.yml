@@ -16,4 +16,4 @@ items:
     # icon: item
     # name: material name
     # desc: group name
-    # actions = menu:recipe?category=$groupName$
+    # actions = menu:recipe?category=g:$groupName$

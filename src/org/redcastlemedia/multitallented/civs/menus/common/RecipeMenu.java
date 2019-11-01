@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.common;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 public class RecipeMenu extends CustomMenu {
@@ -96,7 +96,8 @@ public class RecipeMenu extends CustomMenu {
             ItemStack firstStack = null;
             for (CVItem cvItem : items.get(startIndex + count)) {
                 ItemStack itemStack = cvItem.createItemStack();
-                sanitizeItems(itemStack);
+                MenuUtil.sanitizeItem(itemStack);
+                MenuManager.addCycleItem(civilian.getUuid(), menuIcon.getIndex().get(count), itemStack);
                 if (firstStack == null) {
                     firstStack = itemStack;
                 }
@@ -106,43 +107,11 @@ public class RecipeMenu extends CustomMenu {
                     actions.get(civilian.getUuid()).put(itemStack, actionList);
                 }
             }
-            // TODO cycle items
             if (firstStack != null) {
                 return firstStack;
             }
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    private void sanitizeItems(ItemStack item) {
-        Material mat = item.getType();
-        if (mat == Material.RED_BED || mat == Material.BLACK_BED || mat == Material.BLUE_BED
-                || mat == Material.BROWN_BED || mat == Material.CYAN_BED
-                || mat == Material.GRAY_BED || mat == Material.GREEN_BED || mat == Material.LIGHT_BLUE_BED
-                || mat == Material.LIGHT_GRAY_BED || mat == Material.LIME_BED || mat == Material.MAGENTA_BED
-                || mat == Material.ORANGE_BED || mat == Material.PINK_BED || mat == Material.PURPLE_BED
-                || mat == Material.WHITE_BED || mat == Material.YELLOW_BED) {
-            divideByTwo(item);
-        } else if (mat == Material.OAK_DOOR || mat == Material.IRON_DOOR || mat == Material.DARK_OAK_DOOR
-                || mat == Material.BIRCH_DOOR || mat == Material.ACACIA_DOOR || mat == Material.SPRUCE_DOOR
-                || mat == Material.JUNGLE_DOOR) {
-            divideByTwo(item);
-        } else if (mat == Material.REDSTONE_WIRE) {
-            item.setType(Material.REDSTONE);
-        } else if (mat == Material.WALL_SIGN) {
-            item.setType(Material.SIGN);
-        } else if (mat == Material.WATER) {
-            item.setType(Material.WATER_BUCKET);
-        } else if (mat == Material.LAVA) {
-            item.setType(Material.LAVA_BUCKET);
-        } else if (mat == Material.POTATOES) {
-            item.setType(Material.POTATO);
-        }
-    }
-    private void divideByTwo(ItemStack item) {
-        if (item.getAmount() > 1) {
-            item.setAmount(Math.round(item.getAmount() / 2));
-        }
     }
 
     @Override
