@@ -206,6 +206,7 @@ public class CivilianListener implements Listener {
             return;
         }
         changeAdvertising(event.getBlock(), town, false);
+        Util.checkNoise(town, event.getPlayer());
     }
 
     private void changeAdvertising(Block block, Town town, boolean increment) {
@@ -264,6 +265,7 @@ public class CivilianListener implements Listener {
         }
         changeAdvertising(event.getBlock(), town, false);
         changeAdvertising(event.getLines(), town, true);
+        Util.checkNoise(town, event.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -288,6 +290,7 @@ public class CivilianListener implements Listener {
             town.getIdiocracyScore().put(civilian.getUuid(),
                     town.getIdiocracyScore().get(civilian.getUuid()) + 1);
         }
+        Util.checkNoise(town, event.getPlayer());
         TownManager.getInstance().saveTown(town);
     }
 
