@@ -482,6 +482,8 @@ public class RegionManager {
                             }
                         }
                     }
+                } else {
+                    break;
                 }
             }
         }

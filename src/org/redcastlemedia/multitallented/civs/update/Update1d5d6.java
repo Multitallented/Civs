@@ -92,6 +92,11 @@ public final class Update1d5d6 {
                 rebuildList.add("basechalet");
                 rebuildList.add("npc_house");
                 config.set("rebuild", rebuildList);
+                List<String> preReqs = config.getStringList("pre-reqs");
+                if (preReqs.remove("basechalet:built=1")) {
+                    preReqs.add("basechalet:built=1|npc_house:built=1");
+                    config.set("pre-reqs", preReqs);
+                }
                 config.save(npcChaletFile);
             } catch (Exception e) {
 
@@ -106,6 +111,11 @@ public final class Update1d5d6 {
                 rebuildList.add("basedwelling");
                 rebuildList.add("npc_hovel");
                 config.set("rebuild", rebuildList);
+                List<String> preReqs = config.getStringList("pre-reqs");
+                if (preReqs.remove("basedwelling:built=1")) {
+                    preReqs.add("basedwelling:built=1|npc_hovel:built=1");
+                    config.set("pre-reqs", preReqs);
+                }
                 config.save(npcDwellingFile);
             } catch (Exception e) {
 
@@ -120,6 +130,11 @@ public final class Update1d5d6 {
                 rebuildList.add("basehouse");
                 rebuildList.add("npc_dwelling");
                 config.set("rebuild", rebuildList);
+                List<String> preReqs = config.getStringList("pre-reqs");
+                if (preReqs.remove("basehouse:built=1")) {
+                    preReqs.add("basehouse:built=1|npc_dwelling:built=1");
+                    config.set("pre-reqs", preReqs);
+                }
                 config.save(npcHouseFile);
             } catch (Exception e) {
 
@@ -134,6 +149,11 @@ public final class Update1d5d6 {
                 rebuildList.add("basehovel");
                 rebuildList.add("npc_shack");
                 config.set("rebuild", rebuildList);
+                List<String> preReqs = config.getStringList("pre-reqs");
+                if (preReqs.remove("basehovel:built=1")) {
+                    preReqs.add("basehovel:built=1|npc_shack:built=1");
+                    config.set("pre-reqs", preReqs);
+                }
                 config.save(npcHovelFile);
             } catch (Exception e) {
 
@@ -148,6 +168,11 @@ public final class Update1d5d6 {
                 rebuildList.add("basemansion");
                 rebuildList.add("npc_chalet");
                 config.set("rebuild", rebuildList);
+                List<String> preReqs = config.getStringList("pre-reqs");
+                if (preReqs.remove("basemansion:built=1")) {
+                    preReqs.add("basemansion:built=1|npc_chalet:built=1");
+                    config.set("pre-reqs", preReqs);
+                }
                 config.save(npcMansionFile);
             } catch (Exception e) {
 
@@ -190,18 +215,7 @@ public final class Update1d5d6 {
             return;
         }
         File blindnessTrapFile = new File(offenseFolder, "blindness_trap.yml");
-        if (blindnessTrapFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(blindnessTrapFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(blindnessTrapFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(blindnessTrapFile);
 
         File jammerFile = new File(offenseFolder, "jammer_trap.yml");
         if (jammerFile.exists()) {
@@ -237,63 +251,35 @@ public final class Update1d5d6 {
 
         }
     }
+
+    private static void fixPotionForFile(File file) {
+        if (file.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(file);
+                List<String> effects = config.getStringList("effects");
+                fixPotionDuration(effects);
+                config.set("effects", effects);
+                config.save(file);
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
     private static void updateDefenses(File itemTypesFolder) {
         File defenseFolder = new File(itemTypesFolder, "defense");
         if (!defenseFolder.exists()) {
             return;
         }
         File idolFile = new File(defenseFolder, "idol.yml");
-        if (idolFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(idolFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(idolFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(idolFile);
         File monumentFile = new File(defenseFolder, "monument.yml");
-        if (monumentFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(monumentFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(monumentFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(monumentFile);
         File statueFile = new File(defenseFolder, "statue.yml");
-        if (statueFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(statueFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(statueFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(statueFile);
         File hospitalFile = new File(defenseFolder, "hospital.yml");
-        if (hospitalFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(hospitalFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(hospitalFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(hospitalFile);
     }
     private static void upgradeTowns(File itemTypesFolder) {
         File townsFolder = new File(itemTypesFolder, "towns");
@@ -414,31 +400,9 @@ public final class Update1d5d6 {
             }
         }
         File miningColonyFile = new File(townsFolder, "mining-colony.yml");
-        if (miningColonyFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(miningColonyFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(miningColonyFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(miningColonyFile);
         File keepFile = new File(townsFolder, "keep.yml");
-        if (keepFile.exists()) {
-            try {
-                FileConfiguration config = new YamlConfiguration();
-                config.load(keepFile);
-                List<String> effects = config.getStringList("effects");
-                fixPotionDuration(effects);
-                config.set("effects", effects);
-                config.save(keepFile);
-            } catch (Exception e) {
-
-            }
-        }
+        fixPotionForFile(keepFile);
 
     }
 
