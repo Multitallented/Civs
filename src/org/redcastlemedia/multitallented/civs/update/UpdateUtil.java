@@ -36,7 +36,13 @@ public final class UpdateUtil {
         switch (lastVersion) {
             case "1.5.5":
                 Civs.logger.info("Updating configs from 1.5.5 to 1.5.6");
-                Update1d5d6.update();
+                try {
+                    Update1d5d6.update();
+                } catch (Exception e) {
+                    Civs.logger.severe("[Error] Update to 1.5.6 interrupted");
+                    e.printStackTrace();
+                    return;
+                }
         }
     }
 }

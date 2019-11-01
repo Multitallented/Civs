@@ -12,7 +12,7 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- basechalet:built=1
+- basechalet:built=1|npc_house:built=1
 
 build-reqs:
 - CHEST*8
