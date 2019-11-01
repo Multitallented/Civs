@@ -13,7 +13,7 @@ transition:
   1:
     power: 30
     revolt: 51
-    to: ANARCHY
+    to: IDIOCRACY
   2:
     revolt: 51
     money-gap: 60

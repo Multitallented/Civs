@@ -10,16 +10,16 @@ icon: "LIME_STAINED_GLASS"
 enabled: true
 transition:
   0:
-    money-gap: 70
+    money-gap: 85
     to: OLIGARCHY
   1:
     revolt: 58
-    money-gap: 40
+    money-gap: 50
     to: COMMUNISM
   2:
     revolt: 51
     power: 30
-    to: KRATEROCRACY
+    to: IDIOCRACY
   3:
     revolt: 61
     to: LIBERTARIAN
