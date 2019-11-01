@@ -30,6 +30,24 @@ public final class Update1d5d6 {
         updateEmbassy(itemTypesFolder);
         updateDefenses(itemTypesFolder);
         updateTranslations();
+
+        File adminFolder = new File(itemTypesFolder, "admin-invisible");
+        if (adminFolder.exists()) {
+            File shelterFile = new File(adminFolder, "shelter.yml");
+            if (shelterFile.exists()) {
+                try {
+                    FileConfiguration config = new YamlConfiguration();
+                    config.load(shelterFile);
+                    List<String> effects = config.getStringList("effects");
+                    effects.add("bed");
+                    config.set("effects", effects);
+                    config.save(shelterFile);
+                } catch (Exception e) {
+
+                }
+            }
+        }
+
     }
 
     private static void updateTranslations() {
