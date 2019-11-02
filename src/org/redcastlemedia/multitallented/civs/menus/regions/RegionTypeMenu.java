@@ -95,8 +95,14 @@ public class RegionTypeMenu extends CustomMenu {
                         .replace("$2", "" + max));
                 return priceItem.createItemStack();
             }
-        } else if ("rebuild".equals(menuIcon.getKey())) {
-            // TODO handle either 1 rebuild or multiple
+        } else if ("rebuild-required-single".equals(menuIcon.getKey())) {
+
+        } else if ("rebuild-required-multiple".equals(menuIcon.getKey())) {
+
+        } else if ("rebuild-optional-single".equals(menuIcon.getKey())) {
+
+        } else if ("rebuild-optional-multiple".equals(menuIcon.getKey())) {
+
         } else if ("evolve".equals(menuIcon.getKey())) {
             if (!regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 return new ItemStack(Material.AIR);

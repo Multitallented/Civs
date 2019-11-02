@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -29,8 +30,15 @@ public class RegionTypeListMenu extends CustomMenu {
         }
         String category = params.get("category");
         String townName = params.get("town");
+        String regionList = params.get("regionList");
         HashMap<String, Integer> regionTypes;
-        if (category == null || townName == null) {
+        if (regionList != null) {
+            String[] regionListSplit = regionList.split(",");
+            regionTypes = new HashMap<>();
+            for (String region : regionListSplit) {
+                regionTypes.put(region, 1);
+            }
+        } else if (category == null || townName == null) {
             regionTypes = new HashMap<>();
         } else if (category.equals("reqs")) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(townName);
@@ -69,7 +77,13 @@ public class RegionTypeListMenu extends CustomMenu {
             ArrayList<CVItem> fullListRegionTypes = new ArrayList<>();
             for (String regionTypeName : regionTypes.keySet()) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-                CVItem currentItem = regionType.getShopIcon().clone();
+                CVItem currentItem;
+                if (regionType == null) {
+                    currentItem = CVItem.createCVItemFromString("CHEST");
+                    currentItem.setDisplayName("g:" + regionTypeName); // TODO translate group names
+                } else {
+                    currentItem = regionType.getShopIcon().clone();
+                }
                 currentItem.setQty(regionTypes.get(regionTypeName));
                 fullListRegionTypes.add(currentItem);
             }
@@ -79,8 +93,23 @@ public class RegionTypeListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = fullListRegionTypes.get(startIndex + count);
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
+            ItemStack itemStack;
+            if (cvItem.getDisplayName().startsWith("g:")) {
+                cvItem.setDisplayName(cvItem.getDisplayName().replace("g:", ""));
+                itemStack = cvItem.createItemStack();
+                ArrayList<String> actionList = new ArrayList<>();
+                List<CivItem> group = ItemManager.getInstance().getItemGroup(cvItem.getDisplayName());
+                StringBuilder action = new StringBuilder("menu:region-type-list?regionList=");
+                for (CivItem item : group) {
+                    action.append(item.getProcessedName()).append(",");
+                }
+                action = new StringBuilder(action.substring(0, action.length() - 1));
+                actionList.add(action.toString());
+                actions.get(civilian.getUuid()).put(itemStack, actionList);
+            } else {
+                itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+            }
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);

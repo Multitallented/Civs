@@ -16,11 +16,32 @@ items:
     # desc: price | item-locked
     actions:
       - menu:buy-confirmation?item=$regionType$
-  rebuild:
+  rebuild-required-single:
     index: 2
-    # icon: rebuild icon
-    # name: rebuild name
-    # desc: rebuild desc
+    # icon: region icon
+    # name: region name
+    desc: rebuild-req-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-required-multiple:
+    index: 2
+    icon: GOLD_AXE
+    name: rebuild
+    desc: rebuild-req-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-optional-single:
+    index: 2
+    # icon: region icon
+    # name: region icon
+    desc: rebuild-opt-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-optional-multiple:
+    index: 2
+    icon: GOLD_AXE
+    name: rebuild
+    desc: rebuild-opt-desc
     actions:
       - menu:region-type?regionType=$itemName$
   evolve:

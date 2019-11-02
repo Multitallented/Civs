@@ -1,5 +1,7 @@
 size: 54
 name: RegionTypeList
+# variables
+#  regionList comma separate list of region types
 items:
   prev:
     index: 4
