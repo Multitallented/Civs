@@ -96,13 +96,25 @@ public class RegionTypeMenu extends CustomMenu {
                 return priceItem.createItemStack();
             }
         } else if ("rebuild-required-single".equals(menuIcon.getKey())) {
-
+            if (regionType.getRebuild().size() != 1) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO finish
         } else if ("rebuild-required-multiple".equals(menuIcon.getKey())) {
-
+            if (regionType.getRebuild().size() < 2) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO finish
         } else if ("rebuild-optional-single".equals(menuIcon.getKey())) {
-
+            if (regionType.getRebuild().size() != 1) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO finish
         } else if ("rebuild-optional-multiple".equals(menuIcon.getKey())) {
-
+            if (regionType.getRebuild().size() < 2) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO finish
         } else if ("evolve".equals(menuIcon.getKey())) {
             if (!regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 return new ItemStack(Material.AIR);
