@@ -29,4 +29,7 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
+   civs.bypasspvp:
+      description: Lets you bypass war machines, bounties, and other combat features
+      default: op
 loadafter: [Vault, PlaceholderAPI, MMOItems]

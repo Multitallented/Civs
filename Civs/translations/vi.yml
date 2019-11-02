@@ -230,6 +230,7 @@ raid-target-lost: Không có thị trấn nào tên $1 trong $2 khối
 searching-for-target: Tìm kiếm điểm đột kích đến..
 raid-target-blocked: Điểm đột kích đến đã bị chặn
 raid-porter-warning: Cảnh báo! $1 đã tạo ra $2 nhắm mục tiêu $3
+siege-built: Cảnh báo! $1 đã tạo ra $2 nhắm mục tiêu $3
 raid-remote: Bạn đã nhận được vật phẩm để điều khiển $1
 raid-sign: Bạn cần đặt tấm bảng phía trên rương với tên là thị trấn được nhắm đến
 no-blocks-above-chest: Không được có khối phía trên rương trung tâm

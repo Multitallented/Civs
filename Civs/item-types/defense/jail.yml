@@ -33,7 +33,6 @@ effects:
 - block_fire
 - door_use
 - jail
-- block_command # TODO make this
 
 period: 900 #15 minutes
 upkeep:

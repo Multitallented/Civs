@@ -68,6 +68,8 @@ public class Town {
     @Getter
     @Setter
     private long lastActive;
+    @Getter @Setter
+    private HashMap<UUID, Integer> idiocracyScore = new HashMap<>();
 
     @Getter
     private HashSet<UUID> revolt = new HashSet<>();
@@ -300,6 +302,10 @@ public class Town {
         if (Civs.getInstance() == null) {
             return;
         }
+        if (!ConfigManager.getInstance().isTownRingsCrumbleToGravel()) {
+            useGravel = false;
+        }
+        final boolean finalUseGravel = useGravel;
         removeOuterRing(useGravel);
 
         if (!destroyAll) {
@@ -330,7 +336,7 @@ public class Town {
 
                         @Override
                         public void run() {
-                            removeRing(loc, srType.getBuildRadius(), useGravel);
+                            removeRing(loc, srType.getBuildRadius(), finalUseGravel);
                         }
 
                     }, delay);

@@ -32,6 +32,7 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
 
 import java.io.File;
 import java.util.Calendar;
@@ -53,6 +54,7 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
+        UpdateUtil.checkUpdate();
         setupDependencies();
         setupEconomy();
         setupPermissions();
@@ -256,9 +258,11 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
+        Bukkit.getPluginManager().registerEvents(new JammerEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 
         new HousingEffect();
+        new BedEffect();
     }
 
     private void setupEconomy() {

@@ -12,7 +12,7 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- basehouse:built=1
+- basehouse:built=1|npc_dwelling:built=1
 
 build-reqs:
 - CHEST*4
@@ -26,7 +26,9 @@ build-reqs:
 - g:secondary*55
 - g:primary*175
 
-rebuild: basehouse
+rebuild:
+- basehouse
+- npc_dwelling
 rebuild-required: true
 build-radius: 5 #11x11x11
 effects:

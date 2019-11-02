@@ -222,6 +222,10 @@ public class RepairEffect implements Listener {
     protected boolean hasReagentCost(Player player, ItemStack itemStack) {
         int amount = 0;
         for (ItemStack stack : player.getInventory().all(itemStack.getType()).values()) {
+            if (stack.getItemMeta() != null && stack.getItemMeta().getLore() != null &&
+                    !stack.getItemMeta().getLore().isEmpty()) {
+                continue;
+            }
             amount += stack.getAmount();
             if (amount >= itemStack.getAmount()) {
                 return true;

@@ -52,6 +52,19 @@ public class DeathListener implements Listener {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "in-combat"));
+            return;
+        }
+        if (!ConfigManager.getInstance().isAllowTeleportingOutOfHostileTowns()) {
+            Town town = TownManager.getInstance().getTownAt(event.getFrom());
+            if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
+                Region region = RegionManager.getInstance().getRegionAt(event.getTo());
+                if (region == null || !region.getEffects().containsKey("bypass_hostile_port")) {
+                    event.setCancelled(true);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            "no-tp-out-of-town"));
+                    return;
+                }
+            }
         }
     }
 
