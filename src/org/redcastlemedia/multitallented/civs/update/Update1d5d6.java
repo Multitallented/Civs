@@ -127,6 +127,8 @@ public final class Update1d5d6 {
                 config.set("raid-porter-offline", "You cant raid $1 when none of their members are online.");
                 config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
+                config.set("idiocracy-name", "Idiocracy");
+                config.set("idiocracy-desc", "Whoever shoots the most fireworks, and spams the most signs with their name on them becomes the owner.");
                 config.save(enFile);
             } catch (Exception e) {
 
