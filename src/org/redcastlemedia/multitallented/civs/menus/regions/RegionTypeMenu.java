@@ -95,26 +95,25 @@ public class RegionTypeMenu extends CustomMenu {
                         .replace("$2", "" + max));
                 return priceItem.createItemStack();
             }
-        } else if ("rebuild-required-single".equals(menuIcon.getKey())) {
+        } else if ("rebuild-required-single".equals(menuIcon.getKey()) ||
+                "rebuild-optional-single".equals(menuIcon.getKey())) {
             if (regionType.getRebuild().size() != 1) {
                 return new ItemStack(Material.AIR);
             }
-            // TODO finish
-        } else if ("rebuild-required-multiple".equals(menuIcon.getKey())) {
+            RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(regionType.getRebuild().get(0));
+            CVItem shopIcon = rebuildType.getShopIcon().clone();
+            shopIcon.getLore().clear();
+            shopIcon.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc())));
+            ItemStack itemStack = shopIcon.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("rebuild-required-multiple".equals(menuIcon.getKey()) ||
+                "rebuild-optional-multiple".equals(menuIcon.getKey())) {
             if (regionType.getRebuild().size() < 2) {
                 return new ItemStack(Material.AIR);
             }
-            // TODO finish
-        } else if ("rebuild-optional-single".equals(menuIcon.getKey())) {
-            if (regionType.getRebuild().size() != 1) {
-                return new ItemStack(Material.AIR);
-            }
-            // TODO finish
-        } else if ("rebuild-optional-multiple".equals(menuIcon.getKey())) {
-            if (regionType.getRebuild().size() < 2) {
-                return new ItemStack(Material.AIR);
-            }
-            // TODO finish
+            return super.createItemStack(civilian, menuIcon, count);
         } else if ("evolve".equals(menuIcon.getKey())) {
             if (!regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 return new ItemStack(Material.AIR);
