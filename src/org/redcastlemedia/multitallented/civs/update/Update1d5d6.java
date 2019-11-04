@@ -58,18 +58,26 @@ public final class Update1d5d6 {
             return;
         }
         for (File file : govTypesFolder.listFiles()) {
+            if ("tribalism.yml".equals(file.getName()) ||
+                    "dictatorship.yml".equals(file.getName()) ||
+                    "socialism.yml".equals(file.getName()) ||
+                    "feudalism.yml".equals(file.getName())) {
+                continue;
+            }
             FileConfiguration config = new YamlConfiguration();
             try {
                 config.load(file);
                 if (config.isSet("transition")) {
                     for (String key : config.getConfigurationSection("transition").getKeys(false)) {
-                        if ("ANARCHY".equals(config.getString("transition." + key + ".to"))) {
+                        if (!"ANARCHY".equals(config.getString("transition." + key + ".to")) &&
+                                !"KRATEROCRACY".equals(config.getString("transition." + key + ".to"))) {
                             continue;
                         }
                         if (config.isSet("transition." + key + ".inactive")) {
                             continue;
                         }
                         config.set("transition." + key + ".to", "IDIOCRACY");
+                        break;
                     }
                 }
                 config.save(file);
@@ -509,6 +517,7 @@ public final class Update1d5d6 {
             config.set("allow-offline-raiding", true);
             config.save(configFile);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return;
         }
     }
