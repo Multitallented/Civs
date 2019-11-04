@@ -60,6 +60,8 @@ public class RegionTypeMenu extends CustomMenu {
             ItemStack itemStack = shopIcon.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("limits".equals(menuIcon.getKey())) {
+            // TODO finish limits
         } else if ("price".equals(menuIcon.getKey())) {
             boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), "showPrice");
             Player player = Bukkit.getPlayer(civilian.getUuid());

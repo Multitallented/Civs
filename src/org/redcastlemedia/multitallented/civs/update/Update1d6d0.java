@@ -25,6 +25,9 @@ public final class Update1d6d0 {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(enFile);
                 config.set("region-evolve", "$1 evolves into $2");
+                config.set("income", "Income");
+                config.set("income-desc", "Your $1 has earned $2 in the past day and $2 past week");
+                config.set("item-limit", "You have $1 of $2 $3");
                 config.save(enFile);
             } catch (Exception e) {
 

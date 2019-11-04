@@ -278,10 +278,11 @@ public class RegionManager {
             }
 
             for (UUID uuid : region.getRawPeople().keySet()) {
-//                if ("ally".equals(region.getPeople().get(uuid))) {
-//                    continue;
-//                }
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
+            }
+            region.cleanUpkeepHistory();
+            for (Long time : region.getUpkeepHistory().keySet()) {
+                regionConfig.set("upkeep-history." + time, region.getUpkeepHistory().get(time));
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
@@ -333,6 +334,12 @@ public class RegionManager {
             long lastActive = regionConfig.getLong("last-active", -1);
             if (lastActive > -1) {
                 region.setLastActive(lastActive);
+            }
+            if (regionConfig.isSet("upkeep-history")) {
+                for (String timeString : regionConfig.getKeys(false)) {
+                    Long time = Long.parseLong(timeString);
+                    region.getUpkeepHistory().put(time, regionConfig.getInt("upkeep-history." + timeString));
+                }
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());

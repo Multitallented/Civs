@@ -17,7 +17,7 @@ items:
   region-type:
     index: 1
     icon: WRITABLE_BOOK
-    name: region-type
+    # name: region type name
     desc: click-info
     actions:
       - menu:region-type?regionType=$regionType$
@@ -44,7 +44,9 @@ items:
   income:
     index: 4
     icon: WRITABLE_BOOK
-    name:
+    name: income
+    desc: income-desc
+    actions: []
   destroy:
     index: 6
     icon: BARRIER

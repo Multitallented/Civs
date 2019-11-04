@@ -75,6 +75,12 @@ items:
     #desc: list of region type effects
   back:
     index: 8
+  limits:
+    index: 17
+    icon: RED_WOOL
+    name: limits
+    desc: item-limit
+    actions: []
   reagents:
     index: 9,18,27,36,45
     icon: CHEST
