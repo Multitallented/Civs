@@ -72,14 +72,15 @@ items:
     icon: EMERALD_BLOCK
     name: sell-region
     desc: region-sale-set
-    actions: []
+    actions:
+      - message:use-sell-command #TODO
   cancel-sale:
     index: 12
     icon: EMERALD_ORE
     name: cancel-sale
     actions:
       - cancel-sale
-      - close
+      - menu:region?region=$region$
   buy-region:
     index: 12
     icon: EMERALD

@@ -1,11 +1,13 @@
 package org.redcastlemedia.multitallented.civs.menus.regions;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -111,6 +113,28 @@ public class RegionMenu extends CustomMenu {
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    @Override
+    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
+        if (!actions.containsKey(civilian.getUuid())) {
+            return false;
+        }
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+            return true;
+        }
+        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
+        if (actionStrings == null) {
+            return true;
+        }
+        for (String actionString : actionStrings) {
+            if (actionString.equals("cancel-sale")) {
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                player.performCommand("cv sell");
+                return true;
+            }
+        }
+        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
     }
 
     @Override
