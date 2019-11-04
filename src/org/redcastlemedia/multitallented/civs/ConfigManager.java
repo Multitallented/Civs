@@ -135,6 +135,8 @@ public class ConfigManager {
     boolean allowTeleportingOutOfHostileTowns;
     @Getter
     boolean townRingsCrumbleToGravel;
+    @Getter
+    boolean enterExitMessagesUseTitles;
 
     public ConfigManager() {
         loadDefaults();
@@ -377,6 +379,7 @@ public class ConfigManager {
             allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
             allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
             townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
+            enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -402,6 +405,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        enterExitMessagesUseTitles = true;
         townRingsCrumbleToGravel = true;
         allowTeleportingOutOfHostileTowns = true;
         allowOfflineRaiding = true;

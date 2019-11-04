@@ -137,6 +137,7 @@ public final class Update1d5d6 {
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
                 config.set("idiocracy-name", "Idiocracy");
                 config.set("idiocracy-desc", "Whoever shoots the most fireworks, and spams the most signs with their name on them becomes the owner.");
+                config.set("wild", "Wild");
                 config.save(enFile);
             } catch (Exception e) {
 
@@ -517,6 +518,7 @@ public final class Update1d5d6 {
             config.set("town-rings-crumble-to-gravel", true);
             config.set("allow-teleporting-out-of-hostile-towns", true);
             config.set("allow-offline-raiding", true);
+            config.set("enter-exit-messages-use-titles", true);
             config.save(configFile);
         } catch (Exception exception) {
             exception.printStackTrace();
