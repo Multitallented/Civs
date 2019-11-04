@@ -199,6 +199,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAdvertisementBreak(BlockBreakEvent event) {
+        if (!(event.getBlock().getState() instanceof Sign)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
         if (town == null) {
             return;
@@ -212,10 +215,7 @@ public class CivilianListener implements Listener {
     }
 
     private void changeAdvertising(Block block, Town town, boolean increment) {
-        if (!(block instanceof Sign)) {
-            return;
-        }
-        Sign sign = (Sign) block;
+        Sign sign = (Sign) block.getState();
         changeAdvertising(sign.getLines(), town, increment);
     }
     private void changeAdvertising(String[] lines, Town town, boolean increment) {

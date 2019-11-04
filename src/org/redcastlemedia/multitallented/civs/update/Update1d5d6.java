@@ -58,18 +58,26 @@ public final class Update1d5d6 {
             return;
         }
         for (File file : govTypesFolder.listFiles()) {
+            if ("tribalism.yml".equals(file.getName()) ||
+                    "dictatorship.yml".equals(file.getName()) ||
+                    "socialism.yml".equals(file.getName()) ||
+                    "feudalism.yml".equals(file.getName())) {
+                continue;
+            }
             FileConfiguration config = new YamlConfiguration();
             try {
                 config.load(file);
                 if (config.isSet("transition")) {
                     for (String key : config.getConfigurationSection("transition").getKeys(false)) {
-                        if ("ANARCHY".equals(config.getString("transition." + key + ".to"))) {
+                        if (!"ANARCHY".equals(config.getString("transition." + key + ".to")) &&
+                                !"KRATEROCRACY".equals(config.getString("transition." + key + ".to"))) {
                             continue;
                         }
                         if (config.isSet("transition." + key + ".inactive")) {
                             continue;
                         }
                         config.set("transition." + key + ".to", "IDIOCRACY");
+                        break;
                     }
                 }
                 config.save(file);
@@ -127,6 +135,9 @@ public final class Update1d5d6 {
                 config.set("raid-porter-offline", "You cant raid $1 when none of their members are online.");
                 config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
+                config.set("idiocracy-name", "Idiocracy");
+                config.set("idiocracy-desc", "Whoever shoots the most fireworks, and spams the most signs with their name on them becomes the owner.");
+                config.set("wild", "Wild");
                 config.save(enFile);
             } catch (Exception e) {
 
@@ -507,8 +518,10 @@ public final class Update1d5d6 {
             config.set("town-rings-crumble-to-gravel", true);
             config.set("allow-teleporting-out-of-hostile-towns", true);
             config.set("allow-offline-raiding", true);
+            config.set("enter-exit-messages-use-titles", true);
             config.save(configFile);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return;
         }
     }

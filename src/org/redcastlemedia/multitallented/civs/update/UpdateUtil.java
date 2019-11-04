@@ -17,32 +17,42 @@ public final class UpdateUtil {
         if (!configFile.exists()) {
             return;
         }
+        String lastVersion = "1.5.5";
         try {
             FileConfiguration config = new YamlConfiguration();
             config.load(configFile);
-            String lastVersion = config.getString("last-version", "1.5.5");
+            lastVersion = config.getString("last-version", "1.5.5");
             if (currentVersion.equals(lastVersion)) {
                 return;
             }
-            upgrade(lastVersion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        currentVersion = upgrade(lastVersion);
+        try {
+            FileConfiguration config = new YamlConfiguration();
             config.load(configFile);
             config.set("last-version", currentVersion);
+            config.save(configFile);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return;
         }
     }
 
-    private static void upgrade(String lastVersion) {
+    private static String upgrade(String lastVersion) {
+        String newVersion = lastVersion;
         switch (lastVersion) {
             case "1.5.5":
                 Civs.logger.info("Updating configs from 1.5.5 to 1.5.6");
                 try {
-                    Update1d5d6.update();
+                    newVersion = Update1d5d6.update();
                 } catch (Exception e) {
                     Civs.logger.severe("[Error] Update to 1.5.6 interrupted");
                     e.printStackTrace();
-                    return;
+                    return newVersion;
                 }
         }
+        return newVersion;
     }
 }
