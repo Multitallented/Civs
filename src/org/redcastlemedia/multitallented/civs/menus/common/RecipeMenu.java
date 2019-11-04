@@ -27,11 +27,18 @@ public class RecipeMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
-        String category = params.get("category");
+        String category = params.get("recipe");
         String regionTypeName = params.get("regionType");
         List<List<CVItem>> items;
         if (category == null || regionTypeName == null) {
             items = new ArrayList<>();
+        } else if (category.startsWith("failing:")) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
+            items = new ArrayList<>();
+            String[] failingUpkeeps = category.replace("failing:", "").split(",");
+            for (String index : failingUpkeeps) {
+                items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+            }
         } else if (category.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getReqs();

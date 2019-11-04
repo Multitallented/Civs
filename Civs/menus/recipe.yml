@@ -2,7 +2,7 @@ size: 54
 name: Recipe
 # variables
 #  regionType = region type to check
-#  category = reqs | reagents0 | input0 | output0 | g:groupName
+#  category = reqs | reagents0 | input0 | output0 | failing | g:groupName
 #  $groupName$ the name of the group the item belongs to
 items:
   prev:

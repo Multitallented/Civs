@@ -1,0 +1,88 @@
+size: 18
+name: Region
+# variables:
+#  region: region id
+#  regionType: region type name
+#  failingUpkeeps: list of failing upkeeps
+# actions:
+#  cancel-sale: cancels the sale of this region
+#  buy-region: buys the region
+items:
+  icon:
+    index: 0
+    # icon: region shop-icon
+    # name: region name
+    # desc: region desc
+    actions: []
+  region-type:
+    index: 1
+    icon: WRITABLE_BOOK
+    name: region-type
+    desc: click-info
+    actions:
+      - menu:region-type?regionType=$regionType$
+  upkeep-working:
+    index: 2
+    icon: GREEN_WOOL
+    name: operation
+    desc: region-working
+    actions: []
+  upkeep-not-working:
+    index: 2
+    icon: RED_WOOL
+    name: operation
+    desc: region-not-working
+    actions:
+      - menu:recipe?regionType=$regionType$&recipe=failing:$failingUpkeeps$
+  location:
+    index: 3
+    icon: OAK_DOOR
+    #name: location coords
+    desc: region-in-town
+    actions:
+      - menu:port
+  income:
+    index: 4
+    icon: WRITABLE_BOOK
+    name:
+  destroy:
+    index: 6
+    icon: BARRIER
+    name: destroy
+    actions:
+      - menu:confirmation&region=$region$&type=destroy
+  back:
+    index: 8
+  people:
+    index: 9
+    icon: PLAYER_HEAD
+    name: view-members
+    actions:
+      - menu:people?region=$region$
+  add-person:
+    index: 10
+    icon: PLAYER_HEAD
+    name: add-member
+    actions:
+      - menu:people?region=$region$&type=add
+  sale:
+    index: 11
+    icon: EMERALD_BLOCK
+    name: sell-region
+    desc: region-sale-set
+    actions: []
+  cancel-sale:
+    index: 12
+    icon: EMERALD_ORE
+    name: cancel-sale
+    actions:
+      - cancel-sale
+      - close
+  buy-region:
+    index: 12
+    icon: EMERALD
+    name: buy-region
+    actions:
+      - buy-region
+      - close
+

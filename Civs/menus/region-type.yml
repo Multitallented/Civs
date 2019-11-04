@@ -15,7 +15,7 @@ items:
     name: buy-item
     # desc: price | item-locked
     actions:
-      - menu:buy-confirmation?item=$regionType$
+      - menu:confirmation?item=$regionType$&type=buy
   rebuild-required-single:
     index: 2
     # icon: region icon
