@@ -31,6 +31,7 @@ public final class Update1d5d6 {
         updateDefenses(itemTypesFolder);
         updateNPCHousing(itemTypesFolder);
         updateTranslations();
+        updateGovTypes();
 
         File adminFolder = new File(itemTypesFolder, "admin-invisible");
         if (adminFolder.exists()) {
@@ -49,6 +50,61 @@ public final class Update1d5d6 {
             }
         }
 
+    }
+
+    private static void updateGovTypes() {
+        File govTypesFolder = new File(Civs.getInstance().getDataFolder(), "gov-types");
+        if (!govTypesFolder.exists()) {
+            return;
+        }
+        for (File file : govTypesFolder.listFiles()) {
+            FileConfiguration config = new YamlConfiguration();
+            try {
+                config.load(file);
+                if (config.isSet("transition")) {
+                    for (String key : config.getConfigurationSection("transition").getKeys(false)) {
+                        if ("ANARCHY".equals(config.getString("transition." + key + ".to"))) {
+                            continue;
+                        }
+                        if (config.isSet("transition." + key + ".inactive")) {
+                            continue;
+                        }
+                        config.set("transition." + key + ".to", "IDIOCRACY");
+                    }
+                }
+                config.save(file);
+            } catch (Exception e) {
+
+            }
+        }
+        File idiocracyFile = new File(govTypesFolder, "idiocracy.yml");
+        if (!idiocracyFile.exists()) {
+            try {
+                idiocracyFile.createNewFile();
+                FileConfiguration config = new YamlConfiguration();
+                config.set("icon", "DEAD_BUSH");
+                config.set("enabled", true);
+                config.set("transition.0.revolt", 51);
+                config.set("transition.0.power", 30);
+                config.set("transition.0.to", "KRATEROCRACY");
+                config.set("transition.1.to", "LIBERTARIAN");
+                config.set("transition.1.revolt", 51);
+
+                config.set("buffs.cost.percent", 25);
+                List<String> groups = new ArrayList<>();
+                groups.add("allhousing");
+                groups.add("utility");
+                groups.add("mine");
+                groups.add("quarry");
+                groups.add("factory");
+                groups.add("farm");
+                config.set("buffs.cost.groups", groups);
+                config.save(idiocracyFile);
+
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     private static void updateTranslations() {
@@ -71,6 +127,8 @@ public final class Update1d5d6 {
                 config.set("raid-porter-offline", "You cant raid $1 when none of their members are online.");
                 config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
+                config.set("idiocracy-name", "Idiocracy");
+                config.set("idiocracy-desc", "Whoever shoots the most fireworks, and spams the most signs with their name on them becomes the owner.");
                 config.save(enFile);
             } catch (Exception e) {
 

@@ -13,7 +13,7 @@ transition:
     revolt: 51
     power: 30
     to: KRATEROCRACY
-  2:
+  1:
     revolt: 51
     to: LIBERTARIAN
 buffs:
