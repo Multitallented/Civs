@@ -48,13 +48,7 @@ public class RegionListMenu extends CustomMenu {
     }
 
     @Override
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!actions.containsKey(civilian.getUuid())) {
-            return false;
-        }
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return true;
-        }
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (clickedItem.getItemMeta() != null && clickedItem.getItemMeta().getLore() != null &&
                 !clickedItem.getItemMeta().getLore().isEmpty()) {
             String regionId = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
@@ -63,7 +57,7 @@ public class RegionListMenu extends CustomMenu {
                 MenuManager.putData(civilian.getUuid(), "region", region);
             }
         }
-        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
     @Override

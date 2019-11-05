@@ -136,57 +136,45 @@ public class ShopMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-        @Override
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!actions.containsKey(civilian.getUuid())) {
-            return false;
-        }
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return true;
-        }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
-        if (actionStrings == null) {
-            return true;
-        }
-        for (String actionString : actionStrings) {
-            if (actionString.equals("view-item")) {
-                String key = clickedItem.getItemMeta().getLore().get(0);
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
-                HashMap<String, String> params = new HashMap<>();
-                String name = ChatColor.stripColor(key).toLowerCase();
-                CivItem civItem = ItemManager.getInstance().getItemType(name);
-                if (civItem != null) {
-                    if (civItem.getItemType() == CivItem.ItemType.REGION) {
-                        params.put("regionType", name);
-                        params.put("showPrice", "true");
-                        MenuManager.getInstance().openMenu(player, "region-type", params);
-                        return true;
-                    } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-                        params.put("townType", name);
-                        params.put("showPrice", "true");
-                        MenuManager.getInstance().openMenu(player, "town-type", params);
-                        return true;
-                    }
-                } else if (clickedItem.getType() == Material.BARRIER) {
+    @Override
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
+        if (actionString.equals("view-item")) {
+            String key = clickedItem.getItemMeta().getLore().get(0);
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
+            HashMap<String, String> params = new HashMap<>();
+            String name = ChatColor.stripColor(key).toLowerCase();
+            CivItem civItem = ItemManager.getInstance().getItemType(name);
+            if (civItem != null) {
+                if (civItem.getItemType() == CivItem.ItemType.REGION) {
+                    params.put("regionType", name);
+                    params.put("showPrice", "true");
+                    MenuManager.getInstance().openMenu(player, "region-type", params);
+                    return true;
+                } else if (civItem.getItemType() == CivItem.ItemType.TOWN) {
+                    params.put("townType", name);
+                    params.put("showPrice", "true");
+                    MenuManager.getInstance().openMenu(player, "town-type", params);
                     return true;
                 }
-                if ("level".equals(sortType)) {
-                    int level = Integer.parseInt(name);
-                    params.put("level", "" + level);
-                    params.put("sort", "level");
-                    MenuManager.getInstance().openMenu(player, "shop", params);
-                    return true;
-                } else if ("category".equals(sortType)) {
-                    params.put("sort", "category");
-                    params.put("parent", ChatColor.stripColor(key).toLowerCase());
-                    MenuManager.getInstance().openMenu(player, "shop", params);
-                    return true;
-                }
+            } else if (clickedItem.getType() == Material.BARRIER) {
                 return true;
             }
+            if ("level".equals(sortType)) {
+                int level = Integer.parseInt(name);
+                params.put("level", "" + level);
+                params.put("sort", "level");
+                MenuManager.getInstance().openMenu(player, "shop", params);
+                return true;
+            } else if ("category".equals(sortType)) {
+                params.put("sort", "category");
+                params.put("parent", ChatColor.stripColor(key).toLowerCase());
+                MenuManager.getInstance().openMenu(player, "shop", params);
+                return true;
+            }
+            return true;
         }
-        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
     private ItemStack createShopItem(CivItem civItem, Civilian civilian) {

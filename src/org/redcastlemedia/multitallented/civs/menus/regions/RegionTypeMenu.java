@@ -61,7 +61,51 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("limits".equals(menuIcon.getKey())) {
-            // TODO finish limits
+            int lowestDiff = 99999;
+            int amount = -1;
+            int limit = -1;
+            String limitType = null;
+            if (regionType.getCivMax() != -1) {
+                int currentAmount = civilian.getCountRegions(regionType.getProcessedName());
+                int currentDiff = regionType.getCivMax() - currentAmount;
+                if (lowestDiff > currentDiff) {
+                    lowestDiff = currentDiff;
+                    limitType = regionType.getProcessedName();
+                    amount = currentAmount;
+                    limit = regionType.getCivMax();
+                }
+            }
+            for (String groupName : regionType.getGroups()) {
+                if (!ConfigManager.getInstance().getGroups().containsKey(groupName)) {
+                    continue;
+                }
+                int currentLimit = ConfigManager.getInstance().getGroups().get(groupName);
+                int currentAmount = civilian.getCountGroup(groupName);
+                int currentDiff = currentLimit - currentAmount;
+                if (lowestDiff > currentDiff) {
+                    lowestDiff = currentDiff;
+                    limitType = groupName;
+                    amount = currentAmount;
+                    limit = currentLimit;
+                }
+            }
+            if (limitType == null) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()));
+            if (regionType.getProcessedName().equals(limitType)) { // TODO translate group names
+                limitType = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        limitType + "-name");
+            }
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc()).replace("$1", "" + amount)
+                    .replace("$2", "" + limit).replace("$3", limitType)));
+
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
             boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), "showPrice");
             Player player = Bukkit.getPlayer(civilian.getUuid());

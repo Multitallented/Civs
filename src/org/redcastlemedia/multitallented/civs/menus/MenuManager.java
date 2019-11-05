@@ -122,7 +122,7 @@ public class MenuManager implements Listener {
             }
         }
 
-        boolean shouldCancel = menus.get(openMenus.get(uuid)).doActionAndCancel(civilian, event.getCursor(), event.getCurrentItem());
+        boolean shouldCancel = menus.get(openMenus.get(uuid)).doActionsAndCancel(civilian, event.getCursor(), event.getCurrentItem());
         if (shouldCancel) {
             event.setCancelled(true);
         }
