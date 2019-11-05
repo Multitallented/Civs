@@ -125,6 +125,9 @@ public final class Update1d5d6 {
             try {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(enFile);
+                config.set("deposit-money", "You've deposited $1 into $2's bank");
+                config.set("too-much-money", "You can't deposit more than $1 in a bank");
+                config.set("wild", "Wilderness");
                 config.set("siege-built", "WARNING! $1 has created a $2 targeting $3");
                 config.set("jammer_trap-name", "Jammer Trap");
                 config.set("jammer_trap-desc", "A building that intercepts teleports that would travel within 100. Redirects the destination to nearby the jammer.");
@@ -137,8 +140,57 @@ public final class Update1d5d6 {
                 config.set("activate-anticamp-question", "$1 has died in $2. Would you like to activate anti-camping defenses for $3?");
                 config.set("idiocracy-name", "Idiocracy");
                 config.set("idiocracy-desc", "Whoever shoots the most fireworks, and spams the most signs with their name on them becomes the owner.");
-                config.set("wild", "Wild");
                 config.save(enFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File deFile = new File(translationsFolder, "de.yml");
+        if (deFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(deFile);
+                config.set("deposit-money", "Sie haben $1 auf $2s Bank eingezahlt");
+                config.set("too-much-money", "Sie können nicht mehr als $1 auf eine Bank einzahlen");
+                config.set("wild", "Wildnis");
+                config.set("siege-built", "@{RED}[WARNUNG] $1 hat ein $2 erstellt, das auf $3 abzielt");
+                config.set("jammer_trap-name", "Abfangjäger-Falle");
+                config.set("jammer_trap-desc", "Ein Gebäude, das Teleports abfängt, die sich innerhalb von 100 Blöcken bewegen würden. Leiten Sie das Ziel zur nahe gelegenen Falle um.");
+                config.set("jammer-redirect", "@{RED}[WARNEN] Dein Teleport wurde von einem $1 abgefangen");
+                config.set("no-tp-out-of-town", "Sie können nicht teleportieren, um einer unfreundlichen Stadt zu entkommen");
+                config.set("intruder-enter", "@{RED}[WARNUNG] $1 ist in $2 angekommen");
+                config.set("intruder-exit", "$1 hat $2 verlassen");
+                config.set("raid-porter-offline", "Sie können nicht in $1 marschieren, es sei denn, Ihre Mitglieder sind online.");
+                config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
+                config.set("activate-anticamp-question", "$1 ist in $2 gestorben. Möchten Sie die Verteidigung von Campern für $3 aktivieren?");
+                config.set("idiocracy-name", "Idiokratie");
+                config.set("idiocracy-desc", "Wenn Sie die meisten Feuerwerke schießen und die meisten Zeichen mit Ihrem Namen setzen, werden Sie der Inhaber.");
+                config.save(deFile);
+            } catch (Exception e) {
+
+            }
+        }
+        File esFile = new File(translationsFolder, "es.yml");
+        if (esFile.exists()) {
+            try {
+                FileConfiguration config = new YamlConfiguration();
+                config.load(esFile);
+                config.set("deposit-money", "Has depositado $1 en el banco de $2");
+                config.set("too-much-money", "No puede depositar más de $1 en un banco");
+                config.set("wild", "Desierto");
+                config.set("siege-built", "@{RED}[ALERTA] $1 ha creado una $2 dirigida a $3");
+                config.set("jammer_trap-name", "Trampa de Interceptador");
+                config.set("jammer_trap-desc", "Un edificio que intercepta telepuertos que viajarían dentro de 100 cuadras. Redirige el destino a la trampa cercana.");
+                config.set("jammer-redirect", "@{RED}[ALERTA] Su teletransporte fue interceptado por un $1");
+                config.set("no-tp-out-of-town", "No puedes teletransportarte para escapar de una ciudad no aliada");
+                config.set("intruder-enter", "@{RED}[ADVERTENCIA]$1 ha entrado en $2");
+                config.set("intruder-exit", "$1 ha salido de $2");
+                config.set("raid-porter-offline", "No puede invadir $1 cuando ninguno de sus miembros está en línea.");
+                config.set("no-blocks-above-chest", "There must be no blocks above the center chest of a $1");
+                config.set("activate-anticamp-question", "$1 ha muerto en $2. ¿Te gustaría activar las defensas contra el camping en $3?");
+                config.set("idiocracy-name", "Idiocracia");
+                config.set("idiocracy-desc", "Quien arroja la mayor cantidad de fuegos artificiales y coloca la mayor cantidad de letreros con su nombre se convierte en el propietario.");
+                config.save(esFile);
             } catch (Exception e) {
 
             }

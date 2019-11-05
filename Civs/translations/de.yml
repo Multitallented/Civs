@@ -19,6 +19,8 @@ new-owner-town: $1 wurde als Besitzer von $3 abgelöst. Neuer Besitzer ist $2
 town-bank-balance: "Stadtkasse: $1"
 town-bank-desc: Benutze > /cv withdraw $1 amount < um Geld aus der Stadtkasse zu nehmen.
 withdrawn-money: Du hast $1 aus der Stadtkasse von $2 herausgenommen.
+deposit-money: Sie haben $1 auf $2s Bank eingezahlt
+too-much-money: Sie können nicht mehr als $1 auf eine Bank einzahlen
 town-tax: "Steuern: $1"
 town-tax-desc: Erhebe Steuern mit > /cv tax $1 amount <
 town-tax-gov-type: Der Regierungstyp $1 kann keine Steuern erheben.
@@ -150,6 +152,7 @@ click-for-req-regions: Klicke für alle benötigten Regionen
 town-instructions: Erstelle die Stadtregion $1 mit /cv town Stadtname
 town-enter: Du hast die Stadt $1 ($2) betreten.
 town-exit: Du hast die Stadt $1 ($2) verlassen.
+wild: Wildnis
 new-town-member: $1 ist $2 beigetreten
 must-be-built-on-top: $1 muss auf $2 aufgebaut werden
 town-power: "Macht: $1/$2"
@@ -177,6 +180,8 @@ town-ally-removed: Das Bündnis zwischen $1 und $2 wurde aufgelöst
 region-evolved: $1 hat sich zu $1 entwickelt
 anti-camp-active: Das Anti-Camp von $1 wurde aktiviert
 anti-camp-expired: Das Anti-Camp von $1 ist ausgelaufen
+activate-anticamp-question: $1 ist in $2 gestorben. Möchten Sie die Verteidigung von Campern für $3
+  aktivieren?
 region-sale-set: $1 steht für $2 zum verkauf
 sell-region: Region verkaufen
 cancel-sale: Verkauf abbrechen
@@ -222,6 +227,8 @@ no-commands-in-jail: Du bist im Gefängnis. Keine Commands für $1
 mana-use-exp: Du kannst das nur mit vollem Mana benutzen
 building-requires-2space: Dieses Bauwerk benötigt 2 freie Blöcke über der Hauptkiste
 missing-blocks-build: Du musst die fehlenden Blöcke setzen um die Region $1 zu bauen
+intruder-enter: "@{RED}[WARNUNG] $1 ist in $2 angekommen"
+intruder-exit: $1 hat $2 verlassen
 in-combat: Das kannst du nicht im kampf
 cooldown: Das hat noch $1s Abklingzeit
 need-more-health: Dafür brauchst du $1 Leben mehr
@@ -229,15 +236,18 @@ need-more-stamina: Dafür brauchst du $1 Ausdauer mehr
 need-more-mana: Dafür brauchst du $1 Mana mehr
 port-not-found: Kein Heimatpunkt gefunden
 region-missing-upkeep-items: Der Region fehlen benötigte Items
+raid-porter-offline: Sie können nicht in $1 marschieren, es sei denn, Ihre Mitglieder sind online.
 raid-target-lost: Keine Stadt mit Namen $1 innerhalb von $2 Blöcken
 searching-for-target: Suche nach Ziel für Überfall
 raid-target-blocked: Teleport zum Ziel des Überfalls nicht möglich
 raid-porter-warning: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
-siege-built: WARNING! $1 hat die Region $2 mit Ziel auf $3 erstellt
+siege-built: "@{RED}[WARNUNG] $1 hat ein $2 erstellt, das auf $3 abzielt"
 raid-remote: Dir wurde das Kontroll-Item für $1 gegeben
 raid-sign: Über der Hauptkiste muss ein Schild mit dem Stadtnamen deines Ziel hängen
 no-blocks-above-chest: Über der mittleren Brust dürfen sich keine Blöcke befinden
 invalid-target: Ungültiges Ziel
+no-tp-out-of-town: Sie können nicht teleportieren, um einer unfreundlichen Stadt zu entkommen
+jammer-redirect: "@{RED}[WARNEN] Dein Teleport wurde von einem $1 abgefangen"
 raid-target-inside-region: Du kannst kein Ziel innerhalb einer Region auswählen
 req-build-inside-town: Die Region $1 muss innerhalb der Region $2 gebaut werden
 missing-region-requirements: Deine Region $1 hat nicht mehr die benötigte Hauptregion
@@ -393,6 +403,9 @@ dictatorship-name: Diktatur
 dictatorship-desc: Diktatoren regeln in ihrer Stadt alles.
 feudalism-name: Feudalismus
 feudalism-desc: Diktatur + Stadtmitglieder können keine Regionen innerhalb der Stadt bauen.
+idiocracy-name: Idiokratie
+idiocracy-desc: Wenn Sie die meisten Feuerwerke schießen und die meisten Zeichen mit Ihrem
+  Namen setzen, werden Sie der Inhaber.
 kraterocracy-name: Kraterogratie
 kraterocracy-desc: Diktatur + Wenn ein Stadtmitglied einen Besitzer tötet wechselt der Besitz.
 libertarian-name: Liberalismus
@@ -484,6 +497,9 @@ stone_works-desc: Erzeugt SteinwerkzeugeGib eine Güterlore in die Hauptkiste un
   Antriebsschiene am Startpunkt.
 weapons_factory-name: Waffenfabrik
 weapons_factory-desc: Erzeugt TNT aus 3 Schwarzpulver und 5 Sand.
+jammer_trap-name: Abfangjäger-Falle
+jammer_trap-desc: Ein Gebäude, das Teleports abfängt, die sich innerhalb von 100 Blöcken bewegen
+  würden. Leiten Sie das Ziel zur nahe gelegenen Falle um.
 chicken_coop-name: Hühnerstall
 chicken_coop-desc: Automatische Hühnerfarm. Gib eine Güterlore in die Hauptkiste und baue danach
   eine Lorenstrecke zu einer Zielregion. Platziere danach eine geneigte
@@ -745,8 +761,8 @@ sand_pit-desc: Erzeugt Sand alle 30 Sekunden.
 sifter-name: Siebstation
 sifter-desc: Siebt Erde um nützliche Items zu finden.
 jade_shop-name: Jadeshop
-jade_shop-desc: Verkauft 16 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer
-  Jademine gebaut werden. Jade ist ein Handelsgut.
+jade_shop-desc: Verkauft 16 Jade für 1000 am Tag. Kann nicht in einer Stadt mit einer Jademine
+  gebaut werden. Jade ist ein Handelsgut.
 coal_shop-name: Kohlenshop
 coal_shop-desc: Verkauft 144 Kohle für 432 $ am Tag
 diamond_shop-name: Diamantenshop
