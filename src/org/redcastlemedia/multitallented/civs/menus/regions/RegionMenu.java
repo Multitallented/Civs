@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -48,6 +49,7 @@ public class RegionMenu extends CustomMenu {
         Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
                 (String) MenuManager.getData(civilian.getUuid(), "regionType"));
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = regionType.getShopIcon().clone();
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -57,6 +59,30 @@ public class RegionMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("upkeep-not-working".equals(menuIcon.getKey()) &&
+                region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+            return new ItemStack(Material.AIR);
+        } else if ("upkeep-working".equals(menuIcon.getKey()) &&
+                region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+            return new ItemStack(Material.AIR);
+        } else if ("destroy".equals(menuIcon.getKey())) {
+            boolean isIndestrucible = region.getEffects().containsKey("indestructible");
+            boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
+                    region.getRawPeople().get(civilian.getUuid()).contains("owner");
+            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            if (!isAdmin || isIndestrucible || !isOwner) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("people".equals(menuIcon.getKey())) {
+            // TODO
+        } else if ("add-person".equals(menuIcon.getKey())) {
+            // TODO
+        } else if ("sale".equals(menuIcon.getKey())) {
+            // TODO
+        } else if ("cancel-sale".equals(menuIcon.getKey())) {
+            // TODO
+        } else if ("buy-region".equals(menuIcon.getKey())) {
+            // TODO
         } else if ("location".equals(menuIcon.getKey())) {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(region.getLocation().getWorld().getName() + " " +
@@ -81,6 +107,12 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("income".equals(menuIcon.getKey())) {
+            boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
+                    region.getRawPeople().get(civilian.getUuid()).contains("owner");
+            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            if (!isAdmin && !isOwner) {
+                return new ItemStack(Material.AIR);
+            }
             String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-name");
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
