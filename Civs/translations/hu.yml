@@ -19,6 +19,8 @@ new-owner-town: $1 leváltotta $2-t $3 város élén
 town-bank-balance: "Város egyenlege: $1"
 town-bank-desc: "Pénz felvétele: /cv withdraw $1 összeg"
 withdrawn-money: Felvettél $$1-t $2 város bankjából
+deposit-money: A $1-at $2 bankjába helyezték
+too-much-money: A betét limit $1
 town-tax: "Város adói: $1"
 town-tax-desc: "Adók beállítása: /cv tax $1 összeg"
 town-tax-gov-type: $1 nem állíthat be adót.
@@ -51,7 +53,7 @@ cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
 shop: Bolt
 buy-item: Eladó
 price: Ár
-buy: Vásárlás $$1-ért
+buy: $1 megvásárlása
 cancel: Mégsem
 item-bought: Gratulálok! Megvásároltad $1-t $2-ért
 max-item: Nem vásárolhatsz többet, mint $2 $1
@@ -146,6 +148,7 @@ click-for-req-regions: Kattints ide a szükséges területek listájához
 town-instructions: Hozz létre egy $1-t, a /cv town VárosNév parancs használatával
 town-enter: Megérkeztél $1 ($2) városába
 town-exit: Elhagytad $1 ($2) városát
+wild: Vadon
 new-town-member: $1 csatlakozott $2-ba/be
 must-be-built-on-top: A $1-t $2 tetejére kell építeni
 town-power: "Erőpontok: $1/$2"
@@ -173,6 +176,7 @@ town-ally-removed: A szövetség $1 és $2 között felbomlott
 region-evolved: $1 felfejlődött $2-ra/re
 anti-camp-active: $1 anti-camp beállítás bekapcsolva
 anti-camp-expired: $1 anti-camp beállítás lejárt
+activate-anticamp-question: $1 meghalt az $2-n. Bekapcsolja az $3 kempingvédelmet?
 region-sale-set: $1 eladó $2-ért
 sell-region: Terület eladása
 cancel-sale: Eladás visszavonása
@@ -219,6 +223,8 @@ no-commands-in-jail: "Nem tudsz használni parancsokat a börtönbe még ennyi i
 mana-use-exp: Nem használhatod, míg nincs a mana teljesen feltöltődve
 building-requires-2space: Ennek az épületnek szükséges 2 üres blokk a központi láda felett
 missing-blocks-build: Le kell tenned a hiányzó blokkokat egy $1 építéséhez
+intruder-enter: "@{RED}[FIGYELEM] $1 belépett az $2-be"
+intruder-exit: $1 elhagyta az $2-t
 in-combat: Harc közben nem használhatod ezt a funkciót
 cooldown: "Várakozási idő: $1 másodperc"
 need-more-health: Szükséged van még $1-val/vel több életre
@@ -226,15 +232,18 @@ need-more-stamina: Szükséged van még $1-val/vel több állóképességre
 need-more-mana: Szükséged van még $1-val/vel több manára
 port-not-found: Nem található teleport
 region-missing-upkeep-items: A területnek nincs elég tárgya.
+raid-porter-offline: Nem támadhatja meg az $1-t, ha egyetlen tag sem online.
 raid-target-lost: Nincs $1 nevű város $2 blokkos környezetben
 searching-for-target: Rajtaütés helyének keresése...
 raid-target-blocked: Rajtaütés teleport helye blokkolva van.
 raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
-siege-built: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
+siege-built: "@{RED}FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3"
 raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
 raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
 no-blocks-above-chest: A középső mellkas felett nem lehetnek blokkok
 invalid-target: Érvénytelen célpont
+no-tp-out-of-town: Nem lehet teleportálni nem szövetséges városból.
+jammer-redirect: "@{RED}[FIGYELEM] Teleportját az $1 módosította"
 raid-target-inside-region: Nem állíthatsz be célpontot területen belül
 req-build-inside-town: $1-t csak $2-n belül lehet építeni
 missing-region-requirements: $1-nak/nek hiányzik szükséges terület
@@ -384,6 +393,9 @@ dictatorship-desc: A város tulajdonosai kezelik a szövetségeket, felül tudj�
   tagokat tudnak hozzá adni, adókat állítani.
 feudalism-name: Feudalizmus
 feudalism-desc: Diktatúra + Város lakói nem építhetnek a város területein.
+idiocracy-name: Idiocracy
+idiocracy-desc: Aki egy rögzített tűzijátékot tartalmaz, és egy további hirdetést készített
+  egy nevükkel, az lesz a tulajdonos.
 kraterocracy-name: Kraterocrácia
 kraterocracy-desc: Diktatúra + Ha a város tagja megöli a város vezetőjét, helyet cserélnek.
 libertarian-name: Liberalizmus
@@ -477,6 +489,8 @@ stone_works-desc: Kőszerszámokat gyárt automatikusan. Helyezz egy minecart-ot
   kezdőpontba.
 weapons_factory-name: Fegyvergyár
 weapons_factory-desc: 3 puskaporból és 5 homokból robbanószereket gyárt
+jammer_trap-name: Fogócsapda
+jammer_trap-desc: Egy épület, amely megváltoztatja a teleport célállomását.
 chicken_coop-name: Csirkeól
 chicken_coop-desc: Automatikus csirke farm. Helyezz egy minecart-ot a ládába, építs sínekből utat
   a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.

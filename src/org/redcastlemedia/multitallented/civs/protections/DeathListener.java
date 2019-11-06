@@ -43,17 +43,18 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (ConfigManager.getInstance().isAllowTeleportInCombat()) {
-            return;
-        }
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (civilian.isInCombat()) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "in-combat"));
-            return;
+
+        if (!ConfigManager.getInstance().isAllowTeleportInCombat()) {
+            if (civilian.isInCombat()) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "in-combat"));
+                return;
+            }
         }
+
         if (!ConfigManager.getInstance().isAllowTeleportingOutOfHostileTowns()) {
             Town town = TownManager.getInstance().getTownAt(event.getFrom());
             if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {

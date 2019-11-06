@@ -19,6 +19,8 @@ new-owner-town: $1 đã thay thế $2 với tư cách là chủ sở hữu của
 town-bank-balance: Ngân khố $1
 town-bank-desc: Để rút tiền dùng /cv withdraw $1 số_lượng
 withdrawn-money: Bạn đã rút $1 từ ngân khố của $2
+deposit-money: Bạn đã gửi $1 vào ngân hàng $2
+too-much-money: Bạn không thể gửi nhiều hơn $1 trong một ngân hàng
 town-tax: "Thuế: $1"
 town-tax-desc: Để áp thuế dùng /cv tax $1 số_lượng
 town-tax-gov-type: Không thể đặt thuế thành $1
@@ -147,6 +149,7 @@ click-for-req-regions: Nhấn vào đây để xem danh sách các khu vực c�
 town-instructions: Tạo $1, bằng cách sử dụng /cv town Tên
 town-enter: Bạn đã tiến vào $1 ($2)
 town-exit: Bạn dđ4 ra khỏi $1 ($2)
+wild: đất bỏ hoang
 new-town-member: $1 đã tham gia $2
 must-be-built-on-top: $1 phải được xây ở trên $2
 town-power: "Năng lượng: $1/$2"
@@ -174,6 +177,7 @@ town-ally-removed: Liên minh giữa $1 và $2 đã bị tan rã
 region-evolved: $1 đã phát triển thành $2
 anti-camp-active: $1 đã được kích hoạt
 anti-camp-expired: $1 đã hết hiệu lực
+activate-anticamp-question: $1 đã chết trong $2. Bạn có muốn kích hoạt hệ thống phòng thủ cắm trại cho $2?
 region-sale-set: $1 được rao bán với giá $2
 sell-region: Bán khu vực
 cancel-sale: Huỷ bỏ rao bán
@@ -219,6 +223,8 @@ no-commands-in-jail: Bạn không thể dùng lệnh trong tù ngoài $1
 mana-use-exp: Bạn không thể dùng cái này trừ khi bạn đầy năng lượng
 building-requires-2space: Bạn cần khoảng trống 2 ô phía trên
 missing-blocks-build: Bạn cần đặt thêm các khối vật liệu bị thiếu để xây $1
+intruder-enter: "@{RED}[CẢNH BÁO] $1 đã vào $2"
+intruder-exit: $1 đã thoát $2
 in-combat: Bạn không thể làm điều đó khi đang trong trạng thái chiến đấu
 cooldown: Đó là thời gian hồi chiêu trong $1
 need-more-health: Bạn cần thêm $1 để làm điều đó
@@ -226,6 +232,7 @@ need-more-stamina: Bạn cần thêm $1 thể lực để làm điều đó
 need-more-mana: Bạn cần thêm $1 năng lượng để làm điều đó
 port-not-found: Không tìm thấy cổng
 region-missing-upkeep-items: Khu vực bị thiếu vật phẩm cần thiết
+raid-porter-offline: Bạn không thể xâm chiếm $1 mà không có bất kỳ thành viên nào của họ trực tuyến.
 raid-target-lost: Không có thị trấn nào tên $1 trong $2 khối
 searching-for-target: Tìm kiếm điểm đột kích đến..
 raid-target-blocked: Điểm đột kích đến đã bị chặn
@@ -235,6 +242,8 @@ raid-remote: Bạn đã nhận được vật phẩm để điều khiển $1
 raid-sign: Bạn cần đặt tấm bảng phía trên rương với tên là thị trấn được nhắm đến
 no-blocks-above-chest: Không được có khối phía trên rương trung tâm
 invalid-target: Mục tiêu không hợp lệ
+no-tp-out-of-town: Bạn không thể dịch chuyển ra khỏi một thị trấn không liên minh
+jammer-redirect: "@{RED}[CẢNH BÁO] Dịch chuyển tức thời của bạn đã bị chặn bởi $1"
 raid-target-inside-region: Bạn không thể đặt vị trí trong khu vực
 req-build-inside-town: $1 cần được xây dựng trong $2
 missing-region-requirements: $1 của bạn bị thiếu các khu vực bắt buộc
@@ -380,6 +389,9 @@ dictatorship-desc: Chủ sở hữu thị trấn quản lý các liên minh, có
 feudalism-name: Chế độ phong kiến
 feudalism-desc: Chế độ độc tài + Thành viên thị trấn không thể xây dựng các khu vực trong thị
   trấn
+idiocracy-name: Dân chủ
+idiocracy-desc: Bất cứ ai bắn nhiều pháo hoa nhất, và tạo ra nhiều dấu hiệu nhất với tên của
+  họ trên đó, sẽ trở thành chủ sở hữu.
 kraterocracy-name: Dân tộc
 kraterocracy-desc: Chế độ độc tài + Khi một thành viên trong thị trấn giết chết một chủ sở hữu,
   hai vị trí chuyển đổi
@@ -470,6 +482,9 @@ stone_works-desc: Tự động chế tạo các công cụ bằng sắt. Bỏ v�
   tốc dựng ngang ở diểm bắt đầu
 weapons_factory-name: Nhà máy vũ khí
 weapons_factory-desc: Biến 5 cát và 3 thuốc súng thành thuốc nổ
+jammer_trap-name: Đánh chặn bẩy
+jammer_trap-desc: Chuyển hướng nếu di chuyển trong vòng 100 khối của tòa nhà. Chuyển hướng đến
+  một nơi nào đó gần đánh chặn.
 chicken_coop-name: Chuồng gà
 chicken_coop-desc: Tự động chăm sóc gà. Bỏ vào rương một chiếc xe mỏ có rương, sau đó đặt đường
   ray nối từ Chuồng gà qua một khu vực khác.Đặt đường ray tăng tốc dựng ngang ở
