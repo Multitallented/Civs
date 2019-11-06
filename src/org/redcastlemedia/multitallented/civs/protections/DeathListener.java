@@ -423,11 +423,13 @@ public class DeathListener implements Listener {
         if (Civs.econ != null) {
             double totalExchange = Math.max(econBonus, 0) + karmaEcon;
             double dyingBalance = Civs.econ.getBalance(player);
-            totalExchange = Math.min(totalExchange, dyingBalance);
+            if (!ConfigManager.getInstance().isDropMoneyIfZeroBalance()) {
+                totalExchange = Math.min(totalExchange, dyingBalance);
+            }
 
             if (totalExchange > 0) {
                 Civs.econ.depositPlayer(damager, totalExchange);
-                Civs.econ.withdrawPlayer(player, totalExchange);
+                Civs.econ.withdrawPlayer(player, Math.min(totalExchange, dyingBalance));
             }
         }
 

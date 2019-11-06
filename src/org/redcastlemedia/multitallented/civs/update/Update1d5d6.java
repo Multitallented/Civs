@@ -571,6 +571,7 @@ public final class Update1d5d6 {
             config.set("allow-teleporting-out-of-hostile-towns", true);
             config.set("allow-offline-raiding", true);
             config.set("enter-exit-messages-use-titles", true);
+            config.set("always-drop-money-if-no-balance", false);
             config.save(configFile);
         } catch (Exception exception) {
             exception.printStackTrace();

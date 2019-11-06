@@ -137,6 +137,8 @@ public class ConfigManager {
     boolean townRingsCrumbleToGravel;
     @Getter
     boolean enterExitMessagesUseTitles;
+    @Getter
+    boolean dropMoneyIfZeroBalance;
 
     public ConfigManager() {
         loadDefaults();
@@ -380,6 +382,7 @@ public class ConfigManager {
             allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
             townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
+            dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -405,6 +408,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;
         townRingsCrumbleToGravel = true;
         allowTeleportingOutOfHostileTowns = true;
