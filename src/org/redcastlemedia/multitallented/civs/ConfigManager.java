@@ -72,31 +72,22 @@ public class ConfigManager {
     Map<String, List<String>> customItemDescriptions;
     @Getter
     Material townRingMat;
-
     @Getter
     boolean checkWaterSpread;
-
     @Getter
     boolean useTutorial;
-
     @Getter
     boolean useGuide;
-
     @Getter
     String tutorialUrl;
-
     @Getter
     List<String> levelList;
-
     @Getter
     boolean allowTeleportInCombat;
-
     @Getter
     boolean useParticleBoundingBoxes;
-
     @Getter
     String defaultGovernmentType;
-
     @Getter
     boolean allowChangingOfGovType;
     @Getter
@@ -139,6 +130,8 @@ public class ConfigManager {
     boolean enterExitMessagesUseTitles;
     @Getter
     boolean dropMoneyIfZeroBalance;
+    @Getter
+    int minDistanceBetweenTowns;
 
     public ConfigManager() {
         loadDefaults();
@@ -383,6 +376,7 @@ public class ConfigManager {
             townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
+            minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -408,6 +402,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;
         townRingsCrumbleToGravel = true;
