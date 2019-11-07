@@ -163,7 +163,7 @@ public class TownManager {
             TownType currentTownType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             if (location.getX() + buildRadius >= town.getLocation().getX() - currentTownType.getBuildRadius() &&
                     location.getX() - buildRadius <= town.getLocation().getX() + currentTownType.getBuildRadius() &&
-                    location.getX() + buildRadius >= town.getLocation().getZ() - currentTownType.getBuildRadius() &&
+                    location.getZ() + buildRadius >= town.getLocation().getZ() - currentTownType.getBuildRadius() &&
                     location.getZ() - buildRadius <= town.getLocation().getZ() + currentTownType.getBuildRadius() &&
                     Math.max(location.getY() - buildRadiusY, 0) <=
                             Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), 0) &&
