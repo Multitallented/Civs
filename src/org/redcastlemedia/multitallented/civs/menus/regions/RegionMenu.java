@@ -97,7 +97,7 @@ public class RegionMenu extends CustomMenu {
             if (!canSeeSellOptions) {
                 return new ItemStack(Material.AIR);
             }
-            // TODO custom desc
+            return createSellItem(civilian, menuIcon, region, count);
         } else if ("cancel-sale".equals(menuIcon.getKey())) {
             if (!canSeeSellOptions || region.getForSale() == -1) {
                 return new ItemStack(Material.AIR);
@@ -107,7 +107,7 @@ public class RegionMenu extends CustomMenu {
                     civilian.isAtMax(regionType) != null) {
                 return new ItemStack(Material.AIR);
             }
-            // TODO custom desc
+            return createSellItem(civilian, menuIcon, region, count);
         } else if ("location".equals(menuIcon.getKey())) {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(region.getLocation().getWorld().getName() + " " +
@@ -169,6 +169,20 @@ public class RegionMenu extends CustomMenu {
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    private ItemStack createSellItem(Civilian civilian, MenuIcon menuIcon, Region region, int count) {
+        String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                region.getType() + "-name");
+        CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                menuIcon.getName()));
+        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                menuIcon.getDesc()).replace("$1", localizedRegionName)
+                .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()))));
+        ItemStack itemStack = cvItem.createItemStack();
+        putActions(civilian, menuIcon, itemStack, count);
+        return itemStack;
     }
 
     @Override
