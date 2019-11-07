@@ -598,13 +598,22 @@ public class RegionManager {
                 for (String groupType : regionType1.getGroups()) {
                     if (groupLimits.containsKey(groupType)) {
                         if (groupLimits.get(groupType) < 2) {
-                            player.sendMessage(Civs.getPrefix() +
-                                    localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                            .replace("$1", townLocalizedName)
-                                            .replace("$2", townType.getRegionLimit(groupType) + "")
-                                            .replace("$3", groupType));
-                            event.setCancelled(true);
-                            return false;
+                            boolean rebuildWithinSameGroup = false;
+                            if (rebuildRegion != null) {
+                                RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+                                if (!rebuildType.getGroups().contains(groupType)) {
+                                    rebuildWithinSameGroup = true;
+                                }
+                            }
+                            if (!rebuildWithinSameGroup) {
+                                player.sendMessage(Civs.getPrefix() +
+                                        localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                                .replace("$1", townLocalizedName)
+                                                .replace("$2", townType.getRegionLimit(groupType) + "")
+                                                .replace("$3", groupType));
+                                event.setCancelled(true);
+                                return false;
+                            }
                         } else {
                             groupLimits.put(groupType, groupLimits.get(groupType) - 1);
                         }
