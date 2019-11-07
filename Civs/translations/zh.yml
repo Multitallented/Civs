@@ -236,7 +236,7 @@ raid-target-lost: 在$2 格内没有名为 $1 的城镇
 searching-for-target: 搜寻侵略传送点中...
 raid-target-blocked: 侵略传送点被封锁.
 raid-porter-warning: 警告! $1 创建了一个朝向 $3 的 $2
-siege-built: 警告! $1 创建了一个朝向 $3 的 $2
+siege-built: "@{RED}[警报] $1建造$2以摧毁$3"
 raid-remote: 你获得了控制这个 $1 的物品
 raid-sign: 你需要在箱子上面放写有目标城镇名的牌子
 no-blocks-above-chest: 中央箱子上方不能有任何物品。
@@ -344,8 +344,8 @@ dictatorship-name: 专政体制
 dictatorship-desc: 城主可以管理联盟、区域和城镇居民并设置税收。
 feudalism-name: 封建主义
 feudalism-desc: 专政体制 + 城镇居民不能在城镇内建造区域。
-idiocracy-name: 专制
-idiocracy-desc: 发射最多烟火并产生最多广告的人将成为该城市的所有者。 广告中必须包含您的姓名。
+idiocracy-name: 制杖主义
+idiocracy-desc: 发射最多烟花火箭并放置最多含有自己名字的告示牌的人将成为城主。
 kraterocracy-name: 末日主义
 kraterocracy-desc: 专政体制 +  当城镇居民杀死城主后，这名城镇居民就可以当上城主。
 libertarian-name: 自由意志
@@ -413,7 +413,7 @@ stone_works-desc: 自动合成石质工具。请在箱子内放置一个箱子�
 weapons_factory-name: 武器工厂
 weapons_factory-desc: 将3个火药和5个沙子合成为爆破物。
 jammer_trap-name: 拦截陷阱
-jammer_trap-desc: 拦截传输端口的建筑物，该端口将在100个街区内移动。 将目标重定向到附近的位置。
+jammer_trap-desc: 该建筑物可拦截100格范围内的传送，并将目标传送到其他地点。
 chicken_coop-name: 鸡舍
 chicken_coop-desc: 自动养鸡农场。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 donkey_farm-name: 驴舍
