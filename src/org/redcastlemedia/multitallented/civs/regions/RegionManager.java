@@ -286,6 +286,7 @@ public class RegionManager {
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
+            regionConfig.set("warehouse-enabled", region.isWarehouseEnabled());
             if (region.getLastActive() > 0) {
                 regionConfig.set("last-active", region.getLastActive());
             } else {
@@ -327,6 +328,7 @@ public class RegionManager {
                     radii,
                     (HashMap<String, String>) regionType.getEffects().clone(),
                     exp);
+            region.setWarehouseEnabled(regionConfig.getBoolean("warehouse-enabled", true));
             double forSale = regionConfig.getDouble("sale", -1);
             if (forSale != -1) {
                 region.setForSale(forSale);

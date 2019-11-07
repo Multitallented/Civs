@@ -51,7 +51,7 @@ public class Region {
     @Getter @Setter
     private double forSale = -1;
     @Getter @Setter
-    private boolean warehouseEnabled;
+    private boolean warehouseEnabled = true;
 
     public Region(String type,
                   HashMap<UUID, String> people,
