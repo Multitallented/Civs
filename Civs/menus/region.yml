@@ -73,7 +73,7 @@ items:
     name: sell-region
     desc: region-sale-set
     actions:
-      - message:use-sell-command #TODO
+      - message:use-sell-command
   cancel-sale:
     index: 12
     icon: EMERALD_ORE

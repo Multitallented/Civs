@@ -44,17 +44,14 @@ public class Region {
     private double exp;
     public HashMap<String, String> effects;
     long lastTick = 0;
-    @Getter
-    @Setter
+    @Getter @Setter
     private HashSet<Integer> failingUpkeeps = new HashSet<>();
-
-    @Getter
-    @Setter
+    @Getter @Setter
     private long lastActive = 0;
-
-    @Getter
-    @Setter
+    @Getter @Setter
     private double forSale = -1;
+    @Getter @Setter
+    private boolean warehouseEnabled;
 
     public Region(String type,
                   HashMap<UUID, String> people,

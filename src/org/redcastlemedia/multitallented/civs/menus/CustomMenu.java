@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -149,6 +150,11 @@ public abstract class CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             MenuManager.clearHistory(civilian.getUuid());
             player.closeInventory();
+        } else if (actionString.startsWith("message:")) {
+            String messageKey = actionString.split(":")[1];
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    messageKey));
         } else if (actionString.startsWith("menu:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");

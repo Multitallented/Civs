@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
+import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -50,6 +51,17 @@ public class RegionMenu extends CustomMenu {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
                 (String) MenuManager.getData(civilian.getUuid(), "regionType"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        Town town = TownManager.getInstance().getTownAt(region.getLocation());
+        boolean viewMembers = Util.hasOverride(region, civilian, town) ||
+                (region.getPeople().get(civilian.getUuid()) != null &&
+                region.getPeople().get(civilian.getUuid()).contains("owner"));
+        int personCount = 0;
+        for (String role : region.getRawPeople().values()) {
+            if (role.contains("owner") || role.contains("member")) {
+                personCount++;
+            }
+        }
+        boolean canSeeSellOptions = personCount == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY);
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = regionType.getShopIcon().clone();
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -74,22 +86,34 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {
-            // TODO
+            if (!viewMembers) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("add-person".equals(menuIcon.getKey())) {
-            // TODO
+            if (!viewMembers) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("sale".equals(menuIcon.getKey())) {
-            // TODO
+            if (!canSeeSellOptions) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO custom desc
         } else if ("cancel-sale".equals(menuIcon.getKey())) {
-            // TODO
+            if (!canSeeSellOptions || region.getForSale() == -1) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("buy-region".equals(menuIcon.getKey())) {
-            // TODO
+            if (region.getRawPeople().containsKey(civilian.getUuid()) || region.getForSale() == -1 ||
+                    civilian.isAtMax(regionType) != null) {
+                return new ItemStack(Material.AIR);
+            }
+            // TODO custom desc
         } else if ("location".equals(menuIcon.getKey())) {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(region.getLocation().getWorld().getName() + " " +
                     (int) region.getLocation().getX() + "x, " +
                     (int) region.getLocation().getY() + "y, " +
                     (int) region.getLocation().getZ() + "z");
-            Town town = TownManager.getInstance().getTownAt(region.getLocation());
             if (town != null) {
                 cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         menuIcon.getDesc()).replace("$1", town.getName())));
@@ -154,7 +178,9 @@ public class RegionMenu extends CustomMenu {
             player.performCommand("cv sell");
             return true;
         } else if (actionString.equals("toggle-warehouse")) {
-            // TODO
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+            region.setWarehouseEnabled(!region.isWarehouseEnabled());
+            RegionManager.getInstance().saveRegion(region);
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
