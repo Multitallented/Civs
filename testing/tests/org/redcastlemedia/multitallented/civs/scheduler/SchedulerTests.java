@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -98,7 +99,8 @@ public class SchedulerTests {
         UUID uuid = new UUID(1, 8);
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 1000,0,0));
-        doThrow(new SuccessException()).when(player).sendMessage(Matchers.anyString());
+        doThrow(new SuccessException()).when(player).sendTitle(Matchers.anyString(), Matchers.anyString(),
+                Matchers.anyInt(), Matchers.anyInt(), Matchers.anyInt());
         commonScheduler.playerInTown(player);
 
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));

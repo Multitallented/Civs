@@ -18,6 +18,7 @@ destroy-towns-at-zero: false #should towns be destroyed if at zero power
 max-town-tax: 100.0
 # the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
+min-distance-between-towns: 10
 use-starter-book: true
 #should region dimensions be shown with particles instead of glass?
 use-particle-bounding-boxes: false
