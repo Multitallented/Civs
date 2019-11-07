@@ -167,12 +167,6 @@ public class TownTypeInfoMenu extends Menu {
             inventory.setItem(9, cvItem1.createItemStack());
         }
 
-        //11 Expenses
-        //TODO expenses?
-
-        //12 taxes
-        //TODO taxes?
-
         //16 Limits
         {
             CVItem cvItem1 = CVItem.createCVItemFromString("RED_WOOL");

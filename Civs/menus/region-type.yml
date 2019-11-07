@@ -2,22 +2,46 @@ size: 54
 name: RegionType
 #variables:
 # regionType: regionType name
+# showPrice: defaults to false
 items:
   icon:
     index: 0
     # icon: region type shop-icon
     # name: region type name
-    # desc: region type desc
+    # desc: region type desc + size
   price:
     index: 1
     icon: EMERALD
     name: buy-item
-    desc: price
-  rebuild:
+    # desc: price | item-locked
+    actions:
+      - menu:confirmation?item=$regionType$&type=buy
+  rebuild-required-single:
     index: 2
-    # icon: rebuild icon
-    # name: rebuild name
-    # desc: rebuild desc
+    # icon: region icon
+    # name: region name
+    desc: rebuild-req-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-required-multiple:
+    index: 2
+    icon: GOLD_AXE
+    name: rebuild
+    desc: rebuild-req-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-optional-single:
+    index: 2
+    # icon: region icon
+    # name: region icon
+    desc: rebuild-opt-desc
+    actions:
+      - menu:region-type?regionType=$itemName$
+  rebuild-optional-multiple:
+    index: 2
+    icon: GOLD_AXE
+    name: rebuild
+    desc: rebuild-opt-desc
     actions:
       - menu:region-type?regionType=$itemName$
   evolve:
@@ -51,6 +75,12 @@ items:
     #desc: list of region type effects
   back:
     index: 8
+  limits:
+    index: 17
+    icon: RED_WOOL
+    name: limits
+    desc: item-limit
+    actions: []
   reagents:
     index: 9,18,27,36,45
     icon: CHEST
@@ -58,7 +88,7 @@ items:
     desc: reagents
     actions:
       - menu:recipe?regionType=$regionType$&recipe=reagent$count$
-  upkeep:
+  input:
     index: 10,19,28,37,46
     icon: HOPPER
     name: upkeep-title

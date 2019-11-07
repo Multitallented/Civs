@@ -1,3 +1,4 @@
+last-version: 1.5.6
 black-list-worlds:
 - Hub
 default-language: en
@@ -5,6 +6,7 @@ allow-civ-item-sharing: false
 #put rings above towns
 town-rings: true
 town-ring-material: "GLOWSTONE"
+town-rings-crumble-to-gravel: true
 #how long a town sits at zero before protection ends
 #if destroy towns at zero is on, then this does nothing
 town-grace-period: 43200 #12 hours
@@ -39,10 +41,16 @@ combat-log-out-percent-damage: 80
 allow-food-heal-in-combat: true
 #should players be able to teleport while in combat?
 allow-teleporting-during-combat: false
+#can a raidporter be built to raid a town with no online members
+allow-offline-raiding: true
+#can non-allied players teleport out of towns?
+allow-teleporting-out-of-hostile-towns: true
 #use the class and spell system from Civs
 use-classes-and-spells: false
 #whether or not the glass box should appear to show the region's boundaries
 use-region-bounding-box: true
+#Should the town enter and exit messages be titles (or chat)
+enter-exit-messages-use-titles: true
 points:
   killstreak: 0.1
   killjoy: 0.2

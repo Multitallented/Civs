@@ -62,7 +62,7 @@ public class MainMenu extends CustomMenu {
                 CVItem regionIcon = menuIcon.createCVItem(civilian.getLocale());
                 regionIcon.setDisplayName(region.getType());
                 ItemStack itemStack = regionIcon.createItemStack();
-                putActions(civilian, menuIcon, itemStack);
+                putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
         } else if (menuIcon.getKey().equals("town")) {
@@ -73,7 +73,7 @@ public class MainMenu extends CustomMenu {
                 CVItem townIcon = menuIcon.createCVItem(civilian.getLocale());
                 townIcon.setDisplayName(town.getName());
                 ItemStack itemStack = townIcon.createItemStack();
-                putActions(civilian, menuIcon, itemStack);
+                putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
         } else if (menuIcon.getKey().equals("regions")) {

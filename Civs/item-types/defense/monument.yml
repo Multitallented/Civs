@@ -21,7 +21,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- potion:DAMAGE_RESISTANCE.4800,INCREASE_DAMAGE.2400,SPEED.3600,GLOWING.3600
+- potion:DAMAGE_RESISTANCE.240,INCREASE_DAMAGE.120,SPEED.180,GLOWING.180
 
 pre-reqs:
 - member=town:city:metropolis

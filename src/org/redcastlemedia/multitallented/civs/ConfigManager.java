@@ -129,6 +129,14 @@ public class ConfigManager {
     double maxBankDeposit;
     @Getter
     double antiCampCost;
+    @Getter
+    boolean allowOfflineRaiding;
+    @Getter
+    boolean allowTeleportingOutOfHostileTowns;
+    @Getter
+    boolean townRingsCrumbleToGravel;
+    @Getter
+    boolean enterExitMessagesUseTitles;
 
     public ConfigManager() {
         loadDefaults();
@@ -368,6 +376,10 @@ public class ConfigManager {
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
             maxBankDeposit = config.getDouble("max-bank-deposit", -1);
+            allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
+            allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
+            townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
+            enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -393,6 +405,10 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        enterExitMessagesUseTitles = true;
+        townRingsCrumbleToGravel = true;
+        allowTeleportingOutOfHostileTowns = true;
+        allowOfflineRaiding = true;
         maxBankDeposit = -1;
         debugLog = false;
         mobsDropItemsWhenKilledInDenyDamage = false;

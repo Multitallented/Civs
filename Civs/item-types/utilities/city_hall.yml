@@ -27,7 +27,8 @@ build-reqs:
 - g:sign*10
 - g:secondary*55
 - g:primary*175
-build-radius: 7 # 15x15x15
+build-radius: 5 # 11x19x11
+build-radius-y: 9
 effects:
 - block_break
 - block_build

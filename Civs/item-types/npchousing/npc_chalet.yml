@@ -12,7 +12,7 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- basechalet:built=1
+- basechalet:built=1|npc_house:built=1
 
 build-reqs:
 - CHEST*8
@@ -27,7 +27,9 @@ build-reqs:
 - g:secondary*65
 - g:primary*200
 
-rebuild: basechalet
+rebuild:
+- basechalet
+- npc_house
 rebuild-required: true
 build-radius: 8 #17x17x17
 effects:

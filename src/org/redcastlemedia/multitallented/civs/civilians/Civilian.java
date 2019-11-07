@@ -187,8 +187,8 @@ public class Civilian {
             lastDamage = -1;
             return false;
         }
-        if (lastDamager == null || Bukkit.getPlayer(lastDamager) == null ||
-                Bukkit.getPlayer(lastDamager).isDead()) {
+        if (lastDamager != null && (Bukkit.getPlayer(lastDamager) == null ||
+                Bukkit.getPlayer(lastDamager).isDead())) {
             lastDamager = null;
             lastDamage = -1;
             return false;

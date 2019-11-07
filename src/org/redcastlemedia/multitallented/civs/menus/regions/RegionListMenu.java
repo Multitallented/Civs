@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class RegionListMenu extends CustomMenu {
     @Override
@@ -28,11 +30,23 @@ public class RegionListMenu extends CustomMenu {
             data.put("page", 0);
         }
         List<Region> regions = new ArrayList<>();
-        for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (region.getRawPeople().containsKey(civilian.getUuid())) {
-                regions.add(region);
+        if (params.containsKey("sell")) {
+            for (Region r : RegionManager.getInstance().getAllRegions()) {
+                if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
+                    Town town = TownManager.getInstance().getTownAt(r.getLocation());
+                    if (town == null || town.getPeople().containsKey(civilian.getUuid())) {
+                        regions.add(r);
+                    }
+                }
+            }
+        } else {
+            for (Region region : RegionManager.getInstance().getAllRegions()) {
+                if (region.getRawPeople().containsKey(civilian.getUuid())) {
+                    regions.add(region);
+                }
             }
         }
+        data.put("region", regions);
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("regions"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -48,13 +62,7 @@ public class RegionListMenu extends CustomMenu {
     }
 
     @Override
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!actions.containsKey(civilian.getUuid())) {
-            return false;
-        }
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return true;
-        }
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (clickedItem.getItemMeta() != null && clickedItem.getItemMeta().getLore() != null &&
                 !clickedItem.getItemMeta().getLore().isEmpty()) {
             String regionId = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
@@ -63,7 +71,7 @@ public class RegionListMenu extends CustomMenu {
                 MenuManager.putData(civilian.getUuid(), "region", region);
             }
         }
-        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
     @Override
@@ -91,7 +99,7 @@ public class RegionListMenu extends CustomMenu {
             CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).getShopIcon().clone();
             cvItem.getLore().add(0, ChatColor.BLACK + region.getId());
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);

@@ -43,7 +43,7 @@ public class AllianceMenu extends CustomMenu {
             cvItem.setDisplayName(town.getName());
             cvItem.getLore().clear();
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         if (menuIcon.getKey().equals("last-rename")) {
@@ -61,7 +61,7 @@ public class AllianceMenu extends CustomMenu {
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
-                putActions(civilian, menuIcon, is);
+                putActions(civilian, menuIcon, is, count);
                 return is;
             }
         }
@@ -69,7 +69,7 @@ public class AllianceMenu extends CustomMenu {
             CVItem icon = menuIcon.createCVItem(civilian.getLocale());
             icon.setDisplayName(alliance.getName());
             ItemStack itemStack = icon.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
 
@@ -124,30 +124,22 @@ public class AllianceMenu extends CustomMenu {
     }
 
     @Override
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!actions.containsKey(civilian.getUuid())) {
-            return false;
-        }
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return true;
-        }
-        Town town = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
-        if (town == null) {
-            return true;
-        }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
-        for (String actionString : actionStrings) {
-            if (actionString.equals("leave-alliance")) {
-                Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
-                for (String townName : new HashSet<>(alliance.getMembers())) {
-                    if (townName.equals(town.getName())) {
-                        continue;
-                    }
-                    Town currentTown = TownManager.getInstance().getTown(townName);
-                    AllianceManager.getInstance().unAlly(town, currentTown);
-                }
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
+        if ("leave-alliance".equals(actionString)) {
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+            if (town == null) {
+                return true;
             }
+            Alliance alliance = (Alliance) MenuManager.getData(civilian.getUuid(), "alliance");
+            for (String townName : new HashSet<>(alliance.getMembers())) {
+                if (townName.equals(town.getName())) {
+                    continue;
+                }
+                Town currentTown = TownManager.getInstance().getTown(townName);
+                AllianceManager.getInstance().unAlly(town, currentTown);
+            }
+            return true;
         }
-        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 }

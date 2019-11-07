@@ -230,6 +230,7 @@ raid-target-lost: Nincs $1 nevű város $2 blokkos környezetben
 searching-for-target: Rajtaütés helyének keresése...
 raid-target-blocked: Rajtaütés teleport helye blokkolva van.
 raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
+siege-built: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
 raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
 raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
 no-blocks-above-chest: A középső mellkas felett nem lehetnek blokkok

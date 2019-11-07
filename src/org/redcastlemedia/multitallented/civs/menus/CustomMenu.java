@@ -7,12 +7,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -89,15 +91,20 @@ public abstract class CustomMenu {
         }
 
         ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale()).createItemStack();
-        putActions(civilian, menuIcon, itemStack);
+        putActions(civilian, menuIcon, itemStack, count);
         return itemStack;
     }
-    protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack) {
+    protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack, int count) {
         List<String> currentActions = new ArrayList<>();
         if (menuIcon.getActions().isEmpty()) {
             currentActions.add(menuIcon.getKey());
         } else {
-            currentActions.addAll(menuIcon.getActions());
+            for (String action : menuIcon.getActions()) {
+                String newAction = action.replace("$count$", "" + count);
+                newAction = newAction.replace("$itemName$",
+                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                currentActions.add(newAction);
+            }
         }
         actions.get(civilian.getUuid()).put(itemStack, currentActions);
     }
@@ -117,7 +124,7 @@ public abstract class CustomMenu {
     }
     public abstract String getFileName();
 
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
+    public boolean doActionsAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
         if (!actions.containsKey(civilian.getUuid())) {
             return false;
         }
@@ -128,54 +135,64 @@ public abstract class CustomMenu {
         if (actionStrings == null || actionStrings.isEmpty()) {
             return true;
         }
+        boolean shouldCancel = false;
         for (String actionString : actionStrings) {
-            if (actionString.equals("print-tutorial")) {
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                TutorialManager.getInstance().printTutorial(player, civilian);
-            } else if (actionString.equals("close")) {
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                MenuManager.clearHistory(civilian.getUuid());
-                player.closeInventory();
-            } else if (actionString.startsWith("menu:")) {
-                actionString = replaceVariables(civilian, clickedItem, actionString);
-                String menuString = actionString.replace("menu:", "");
-                String[] menuSplit = menuString.split("\\?");
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                Map<String, String> params = new HashMap<>();
-                if (menuSplit.length > 1) {
-                    String[] queryString = menuSplit[1].split("&");
-                    for (String queryParams : queryString) {
-                        String[] splitParams = queryParams.split("=");
-                        if (clickedItem.getItemMeta() == null) {
-                            params.put(splitParams[0], splitParams[1]);
-                        } else {
-                            if (splitParams[0].equals("preserveData")) {
-                                Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
-                                for (String key : data.keySet()) {
-                                    String dataString = stringifyData(key, data.get(key));
-                                    if (dataString != null) {
-                                        params.put(key, dataString);
-                                    }
+            shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) | shouldCancel;
+        }
+        return shouldCancel;
+    }
+
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        if (actionString.equals("print-tutorial")) {
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            TutorialManager.getInstance().printTutorial(player, civilian);
+        } else if (actionString.equals("close")) {
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            MenuManager.clearHistory(civilian.getUuid());
+            player.closeInventory();
+        } else if (actionString.startsWith("message:")) {
+            String messageKey = actionString.split(":")[1];
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    messageKey));
+        } else if (actionString.startsWith("menu:")) {
+            actionString = replaceVariables(civilian, itemStack, actionString);
+            String menuString = actionString.replace("menu:", "");
+            String[] menuSplit = menuString.split("\\?");
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            Map<String, String> params = new HashMap<>();
+            if (menuSplit.length > 1) {
+                String[] queryString = menuSplit[1].split("&");
+                for (String queryParams : queryString) {
+                    String[] splitParams = queryParams.split("=");
+                    if (itemStack.getItemMeta() == null) {
+                        params.put(splitParams[0], splitParams[1]);
+                    } else {
+                        if (splitParams[0].equals("preserveData")) {
+                            Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
+                            for (String key : data.keySet()) {
+                                String dataString = stringifyData(key, data.get(key));
+                                if (dataString != null) {
+                                    params.put(key, dataString);
                                 }
-                            } else {
-                                params.put(splitParams[0], splitParams[1]
-                                        .replace("$itemName$", clickedItem.getItemMeta().getDisplayName()));
                             }
+                        } else {
+                            params.put(splitParams[0], splitParams[1]);
                         }
                     }
                 }
-                MenuManager.getInstance().openMenu(player, menuSplit[0], params);
-            } else if (actionString.startsWith("command:")) {
-                actionString = replaceVariables(civilian, clickedItem, actionString);
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
-                CommandUtil.performCommand(offlinePlayer, actionString
-                        .replace("command:", ""));
-            } else if (actionString.startsWith("permission:")) {
-                actionString = replaceVariables(civilian, clickedItem, actionString);
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
-                PermissionUtil.applyPermission(offlinePlayer, actionString
-                        .replace("permission:", ""));
             }
+            MenuManager.getInstance().openMenu(player, menuSplit[0], params);
+        } else if (actionString.startsWith("command:")) {
+            actionString = replaceVariables(civilian, itemStack, actionString);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
+            CommandUtil.performCommand(offlinePlayer, actionString
+                    .replace("command:", ""));
+        } else if (actionString.startsWith("permission:")) {
+            actionString = replaceVariables(civilian, itemStack, actionString);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
+            PermissionUtil.applyPermission(offlinePlayer, actionString
+                    .replace("permission:", ""));
         }
         return true;
     }

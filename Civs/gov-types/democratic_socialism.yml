@@ -16,7 +16,7 @@ transition:
   chaos:
     revolt: 51
     power: 33
-    to: KRATEROCRACY
+    to: IDIOCRACY
   overthrow:
     revolt: 75
     to: LIBERTARIAN_SOCIALISM

@@ -231,6 +231,8 @@ public class AntiCampEffect implements Listener {
                 }
 
                 p.damage(damage);
+                Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+                civilian.setLastDamage(System.currentTimeMillis());
             }
         }
         for (String s : removeMePoison) {

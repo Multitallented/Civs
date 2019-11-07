@@ -11,13 +11,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -44,6 +38,31 @@ public final class Util {
 
     private Util() {
 
+    }
+
+    public static void promoteWhoeverHasMostNoise(Town town, boolean save) {
+        int highestScore = 0;
+        UUID newOwner = null;
+        for (UUID uuid : town.getIdiocracyScore().keySet()) {
+            if (town.getIdiocracyScore().get(uuid) > highestScore) {
+                highestScore = town.getIdiocracyScore().get(uuid);
+                newOwner = uuid;
+            }
+        }
+        if (newOwner == null) {
+            return;
+        }
+        HashMap<UUID, String> people = new HashMap<>(town.getRawPeople());
+        for (UUID uuid : people.keySet()) {
+            if (people.get(uuid).contains("owner")) {
+                town.getRawPeople().put(uuid, "member");
+            }
+        }
+        town.getRawPeople().put(newOwner, "owner");
+        town.getIdiocracyScore().clear();
+        if (save) {
+            TownManager.getInstance().saveTown(town);
+        }
     }
 
     public static void promoteWhoeverHasMostMerit(Town town, boolean save) {
@@ -73,6 +92,38 @@ public final class Util {
             if (save) {
                 TownManager.getInstance().saveTown(town);
             }
+        }
+    }
+
+    public static void checkNoise(Town town, Player player) {
+        if (town == null) {
+            return;
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+        if (government.getGovernmentType() != GovernmentType.IDIOCRACY) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        int score = town.getIdiocracyScore().getOrDefault(civilian.getUuid(), 0);
+        UUID demoteMe = null;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            if (town.getRawPeople().get(uuid).contains("owner")) {
+                if (town.getIdiocracyScore().getOrDefault(uuid, 0) < score) {
+                    demoteMe = uuid;
+                    break;
+                }
+            }
+        }
+        if (demoteMe != null) {
+            town.setPeople(demoteMe, "member");
+            town.setPeople(player.getUniqueId(), "owner");
+            TownManager.getInstance().saveTown(town);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
+            String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), "merit-new-owner"
+            ).replace("$1", name));
+            spawnRandomFirework(player);
         }
     }
 
@@ -203,6 +254,13 @@ public final class Util {
         int x = (int) Math.floor(location.getX() / 16);
         int z = (int) Math.floor(location.getZ() / 16);
         return location.getWorld().isChunkLoaded(x, z);
+    }
+
+    public static boolean isWithinChunk(Chunk chunk, Location location) {
+        return chunk.getX() * 16 <= location.getX() &&
+                chunk.getX() * 16 + 16 >= location.getX() &&
+                chunk.getZ() * 16 <= location.getZ() &&
+                chunk.getZ() * 16 + 16 >= location.getZ();
     }
 
     public static String getDefaultColor(String message) {

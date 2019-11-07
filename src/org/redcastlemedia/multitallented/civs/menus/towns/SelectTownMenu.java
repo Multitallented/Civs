@@ -56,7 +56,7 @@ public class SelectTownMenu extends CustomMenu {
             cvItem.setDisplayName(town.getName());
             cvItem.getLore().clear();
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);

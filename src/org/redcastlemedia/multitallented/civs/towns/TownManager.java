@@ -117,37 +117,37 @@ public class TownManager {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         RegionManager regionManager = RegionManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        HashSet<String> critReqs = new HashSet<>();
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             boolean containsReq = false;
             for (String currentReq : regionType.getGroups()) {
                 if (townType.getCriticalReqs().contains(currentReq)) {
+                    critReqs.add(currentReq);
                     containsReq = true;
-                    break;
                 }
             }
             if (!containsReq) {
                 return;
             }
+        } else {
+            critReqs.add(region.getType().toLowerCase());
         }
-        boolean hasReq = false;
         outer: for (Region containedRegion :
                 regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
             if (region.equals(containedRegion)) {
                 continue;
             }
-            if (containedRegion.getType().equalsIgnoreCase(region.getType())) {
-                hasReq = true;
-                break;
+            if (critReqs.contains(region.getType().toLowerCase())) {
+                critReqs.remove(region.getType().toLowerCase());
             }
             RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
             for (String currentReq : containedType.getGroups()) {
-                if (regionType.getGroups().contains(currentReq)) {
-                    hasReq = true;
-                    break outer;
+                if (critReqs.contains(currentReq)) {
+                    critReqs.remove(currentReq);
                 }
             }
         }
-        if (!hasReq) {
+        if (!critReqs.isEmpty()) {
             removeTown(town, true);
         }
     }
@@ -221,6 +221,15 @@ public class TownManager {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
+        if (config.isSet("idiocracy-score")) {
+            HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
+            for (String uuidString : config.getConfigurationSection("idiocracy-score").getKeys(false)) {
+                UUID cUuid = UUID.fromString(uuidString);
+                int score = config.getInt("idiocracy-score." + uuidString, 0);
+                idiocracyScores.put(cUuid, score);
+            }
+            town.setIdiocracyScore(idiocracyScores);
+        }
         if (config.isSet("gov-type-changed-today")) {
             town.setGovTypeChangedToday(true);
         }
@@ -541,6 +550,13 @@ public class TownManager {
                         config.set("votes." + uuid.toString() + "." + cUuid.toString(),
                                 town.getVotes().get(uuid).get(cUuid));
                     }
+                }
+            }
+            config.set("idiocracy-score", null);
+            if (!town.getIdiocracyScore().isEmpty()) {
+                for (UUID uuid : town.getIdiocracyScore().keySet()) {
+                    config.set("idiocracy-score." + uuid.toString(),
+                            town.getIdiocracyScore().get(uuid));
                 }
             }
 

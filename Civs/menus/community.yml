@@ -36,7 +36,7 @@ items:
     icon: ENDER_PEARL
     name: ports
     actions:
-      - menu:port-list
+      - menu:port
   gov-leaderboard:
     index: 6
     icon: JUKEBOX

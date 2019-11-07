@@ -3,6 +3,8 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -105,29 +107,29 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
         final Location loc2 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 25, spawnLoc.getZ());
         final Location loc3 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 30, spawnLoc.getZ());
-        TNTPrimed tnt = l.getWorld().spawn(loc, TNTPrimed.class);
-        tnt.setFuseTicks(1);
+        l.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 2);
+        l.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc1.getWorld().spawn(loc1, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc1.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc1, 2);
+                loc1.getWorld().playSound(loc1, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 5L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc2.getWorld().spawn(loc2, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc2.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc2, 2);
+                loc2.getWorld().playSound(loc2, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 10L);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc3.getWorld().spawn(loc3, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc3.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc3, 2);
+                loc3.getWorld().playSound(loc3, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 15L);
 
@@ -220,7 +222,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
             String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
+                    civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {

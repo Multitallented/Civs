@@ -232,6 +232,7 @@ raid-target-lost: No hay ninguna ciudad llamada $1 en un radio de $2 bloques
 searching-for-target: Buscando un teletransporte de invasión.
 raid-target-blocked: Teletransporte de invasión bloqueado.
 raid-porter-warning: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
+siege-built: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
 raid-remote: Te han dado un objeto para controlar este/a $1
 raid-sign: Necesitas un letrero sobre el cofre con el nombre de la ciudad objetivo
 no-blocks-above-chest: No debe haber bloques encima del cofre central

@@ -174,16 +174,17 @@ public class RegionTypeInfoMenu extends Menu {
         }
 
         //2 Rebuild
-        if (regionType.getRebuild() != null) {
-            String rebuildType = regionType.getRebuild();
-            List<CivItem> rebuildGroup = ItemManager.getInstance().getItemGroup(rebuildType);
-            if (!rebuildGroup.isEmpty()) {
-                CivItem baseRebuildItem = rebuildGroup.get(0);
-                CVItem rebuildItem = baseRebuildItem.clone();
-                lore = new ArrayList<>();
-//              lore.add();
-                rebuildItem.setLore(lore);
-                inventory.setItem(2, rebuildItem.createItemStack());
+        if (!regionType.getRebuild().isEmpty()) {
+            for (String rebuildType : regionType.getRebuild()) {
+                List<CivItem> rebuildGroup = ItemManager.getInstance().getItemGroup(rebuildType);
+                if (!rebuildGroup.isEmpty()) {
+                    CivItem baseRebuildItem = rebuildGroup.get(0);
+                    CVItem rebuildItem = baseRebuildItem.clone();
+                    lore = new ArrayList<>();
+                    rebuildItem.setLore(lore);
+                    inventory.setItem(2, rebuildItem.createItemStack());
+                    break; // TODO make this a list of types
+                }
             }
         }
 

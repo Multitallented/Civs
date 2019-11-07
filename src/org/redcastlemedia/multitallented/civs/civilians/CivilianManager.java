@@ -243,7 +243,7 @@ public class CivilianManager {
         }
         File civilianFolder = new File(civs.getDataFolder(), "players");
         if (!civilianFolder.exists()) {
-            if (civilianFolder.mkdir()) {
+            if (!civilianFolder.mkdir()) {
                 Civs.logger.severe("Unable to create players folder");
                 return;
             }

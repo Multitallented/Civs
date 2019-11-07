@@ -42,33 +42,25 @@ public class LanguageMenu extends CustomMenu {
             lore.add(language);
             cvItem.setLore(lore);
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack);
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
 
     @Override
-    public boolean doActionAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!actions.containsKey(civilian.getUuid())) {
-            return false;
-        }
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
+        if (actionString.equals("select-lang")) {
+            String itemName = clickedItem.getItemMeta().getDisplayName();
+            String langKey = clickedItem.getItemMeta().getLore().get(0);
+            civilian.setLocale(langKey);
+            CivilianManager.getInstance().saveCivilian(civilian);
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslation(langKey, "language-set").replace("$1", itemName));
             return true;
         }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
-        for (String actionString : actionStrings) {
-            if (actionString.equals("select-lang")) {
-                String itemName = clickedItem.getItemMeta().getDisplayName();
-                String langKey = clickedItem.getItemMeta().getLore().get(0);
-                civilian.setLocale(langKey);
-                CivilianManager.getInstance().saveCivilian(civilian);
-                Player player = Bukkit.getPlayer(civilian.getUuid());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslation(langKey, "language-set").replace("$1", itemName));
-            }
-        }
-        return super.doActionAndCancel(civilian, cursorItem, clickedItem);
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
         @Override

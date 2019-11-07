@@ -10,11 +10,11 @@ icon: "LIME_STAINED_GLASS"
 enabled: true
 transition:
   corruption:
-    money-gap: 70
+    money-gap: 85
     to: OLIGARCHY
   takeover:
     revolt: 58
-    money-gap: 40
+    money-gap: 50
     to: COMMUNISM
   chaos:
     revolt: 51

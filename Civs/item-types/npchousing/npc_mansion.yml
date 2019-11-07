@@ -12,7 +12,7 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- basemansion:built=1
+- basemansion:built=1|npc_chalet:built=1
 
 build-reqs:
 - CHEST*8
@@ -27,7 +27,9 @@ build-reqs:
 - g:secondary*65
 - g:primary*200
 
-rebuild: basemansion
+rebuild:
+- basemansion
+- npc_chalet
 rebuild-required: true
 build-radius: 10 #21x21x21
 effects:
