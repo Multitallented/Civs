@@ -638,9 +638,8 @@ public class TownManager {
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
         List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType, modifier);
         if (intersectTowns.size() > 1 ||
-                    (townType.getChild() != null &&
-                    !intersectTowns.isEmpty() &&
-                    !townType.getChild().equals(intersectTowns.get(0).getType()))) {
+                    (!intersectTowns.isEmpty() &&
+                    (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return;

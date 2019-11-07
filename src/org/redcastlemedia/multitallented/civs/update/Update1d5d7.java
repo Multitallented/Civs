@@ -6,14 +6,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 
-public final class Update1d6d0 {
-    private Update1d6d0() {
+public final class Update1d5d7 {
+    private Update1d5d7() {
 
     }
 
     public static String update() {
         updateConfig();
-        return "1.6.0";
+        return "1.5.7";
     }
 
     private static void updateConfig() {

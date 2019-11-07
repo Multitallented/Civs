@@ -152,6 +152,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Location loc = cacheSpawnPoints.get(r);
 
         Inventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
+        if (regionInventory == null) {
+            return;
+        }
         HashSet<ItemStack> iss = new HashSet<>();
         if ((!orphanCarts.containsKey(r) && !regionInventory.contains(Material.CHEST_MINECART)) ||
                 !regionInventory.contains(conveyor)) {
