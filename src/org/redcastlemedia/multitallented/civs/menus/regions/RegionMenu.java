@@ -153,6 +153,9 @@ public class RegionMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             player.performCommand("cv sell");
             return true;
+        } else if (actionString.equals("toggle-warehouse")) {
+            // TODO
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
     }

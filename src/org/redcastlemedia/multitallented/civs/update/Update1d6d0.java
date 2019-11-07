@@ -28,6 +28,9 @@ public final class Update1d6d0 {
                 config.set("income", "Income");
                 config.set("income-desc", "Your $1 has earned $2 in the past day and $2 past week");
                 config.set("item-limit", "You have $1 of $2 $3");
+                config.set("warehouse-toggle-on", "Warehouse Supplies On");
+                config.set("warehouse-toggle-off", "Warehouse Supplies Off");
+                config.set("warehouse-toggle-desc", "Click to toggle warehouse supplies for this region");
                 config.save(enFile);
             } catch (Exception e) {
 

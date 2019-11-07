@@ -88,4 +88,18 @@ items:
     actions:
       - buy-region
       - close
+  warehouse-enabled:
+    index: 14
+    icon: GREEN_WOOL
+    name: warehouse-toggle-on
+    desc: warehouse-toggle-desc
+    actions:
+      - toggle-warehouse
+  warehouse-disabled:
+    index: 14
+    icon: RED_WOOL
+    name: warehouse-toggle-off
+    desc: warehouse-toggle-desc
+    actions:
+      - toggle-warehouse
 
