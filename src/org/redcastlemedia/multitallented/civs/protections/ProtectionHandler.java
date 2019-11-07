@@ -73,6 +73,9 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
         if (!event.isCancelled()) {
+            if (event.getBlock().getType() == Material.CHEST) {
+                UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
+            }
             Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;
