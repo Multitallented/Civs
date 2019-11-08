@@ -49,7 +49,7 @@ items:
       - menu:region-type-list?regionList=$rebuildRegions$
   evolve:
     index: 3
-    # icon: evolve icon
+    # icon: evolve shop icon
     # name: evolve name
     # desc: evolve desc
     actions:
