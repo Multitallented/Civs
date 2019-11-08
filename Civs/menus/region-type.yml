@@ -22,35 +22,35 @@ items:
     # name: region name
     desc: rebuild-req-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$itemName$ #TODO
   rebuild-required-multiple:
     index: 2
-    icon: GOLD_AXE
+    icon: GOLDEN_AXE
     name: rebuild
     desc: rebuild-req-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$itemName$ #TODO
   rebuild-optional-single:
     index: 2
     # icon: region icon
     # name: region icon
     desc: rebuild-opt-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$itemName$ #TODO
   rebuild-optional-multiple:
     index: 2
-    icon: GOLD_AXE
+    icon: GOLDEN_AXE
     name: rebuild
     desc: rebuild-opt-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$itemName$ #TODO
   evolve:
     index: 3
     # icon: evolve icon
     # name: evolve name
     # desc: evolve desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$itemName$ #TODO
   biome:
     index: 4
     icon: GRASS_BLOCK

@@ -67,6 +67,7 @@ public class RecipeMenu extends CustomMenu {
         } else {
             items = new ArrayList<>();
         }
+        System.out.println(items.size());
         data.put("items", items);
 
         int maxPage = (int) Math.ceil((double) items.size() / (double) itemsPerPage.get("items"));
@@ -115,8 +116,10 @@ public class RecipeMenu extends CustomMenu {
                 }
             }
             if (firstStack != null) {
+                System.out.println("Added: " + firstStack.getType().name());
                 return firstStack;
             }
+            return new ItemStack(Material.AIR);
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

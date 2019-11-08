@@ -155,6 +155,8 @@ public abstract class CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     messageKey));
+        } else if ("refresh".equals(actionString)) {
+            MenuManager.getInstance().refreshMenu(civilian);
         } else if (actionString.startsWith("menu:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");

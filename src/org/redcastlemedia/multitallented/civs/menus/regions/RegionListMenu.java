@@ -97,9 +97,18 @@ public class RegionListMenu extends CustomMenu {
             }
             Region region = regionArray[startIndex + count];
             CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).getShopIcon(civilian.getLocale());
-            cvItem.getLore().add(0, ChatColor.BLACK + region.getId());
+            Town town = TownManager.getInstance().getTownAt(region.getLocation());
+            if (town != null) {
+                cvItem.getLore().add(town.getName());
+            }
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
+            if (actions.get(civilian.getUuid()).get(itemStack).contains("view-region")) {
+                int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-region");
+                actions.get(civilian.getUuid()).get(itemStack).set(index,
+                        "menu:region?region=" + region.getId() + "&preserveData=true");
+            }
+
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
