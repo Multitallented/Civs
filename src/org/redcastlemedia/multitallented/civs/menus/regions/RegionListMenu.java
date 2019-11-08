@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class RegionListMenu extends CustomMenu {
     @Override
@@ -28,11 +30,23 @@ public class RegionListMenu extends CustomMenu {
             data.put("page", 0);
         }
         List<Region> regions = new ArrayList<>();
-        for (Region region : RegionManager.getInstance().getAllRegions()) {
-            if (region.getRawPeople().containsKey(civilian.getUuid())) {
-                regions.add(region);
+        if (params.containsKey("sell")) {
+            for (Region r : RegionManager.getInstance().getAllRegions()) {
+                if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
+                    Town town = TownManager.getInstance().getTownAt(r.getLocation());
+                    if (town == null || town.getPeople().containsKey(civilian.getUuid())) {
+                        regions.add(r);
+                    }
+                }
+            }
+        } else {
+            for (Region region : RegionManager.getInstance().getAllRegions()) {
+                if (region.getRawPeople().containsKey(civilian.getUuid())) {
+                    regions.add(region);
+                }
             }
         }
+        data.put("region", regions);
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("regions"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
