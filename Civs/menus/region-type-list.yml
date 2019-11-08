@@ -2,6 +2,8 @@ size: 54
 name: RegionTypeList
 # variables
 #  regionList comma separate list of region types
+# actions:
+#  view-type: opens the region-type menu for that region type
 items:
   prev:
     index: 4
@@ -15,4 +17,4 @@ items:
     # name region type name
     # desc region type desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - view-type

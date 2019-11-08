@@ -27,36 +27,36 @@ public class RecipeMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
-        String category = params.get("recipe");
+        String recipe = params.get("recipe");
         String regionTypeName = params.get("regionType");
         List<List<CVItem>> items;
-        if (category == null || regionTypeName == null) {
+        if (recipe == null || regionTypeName == null) {
             items = new ArrayList<>();
-        } else if (category.startsWith("failing:")) {
+        } else if (recipe.startsWith("failing:")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = new ArrayList<>();
-            String[] failingUpkeeps = category.replace("failing:", "").split(",");
+            String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
             for (String index : failingUpkeeps) {
                 items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
             }
-        } else if (category.equals("reqs")) {
+        } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getReqs();
-        } else if (category.startsWith("reagents")) {
-            int index = Integer.parseInt(category.replace("reagents", ""));
+        } else if (recipe.startsWith("reagents")) {
+            int index = Integer.parseInt(recipe.replace("reagents", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getReagents();
-        } else if (category.startsWith("input")) {
-            int index = Integer.parseInt(category.replace("input", ""));
+        } else if (recipe.startsWith("input")) {
+            int index = Integer.parseInt(recipe.replace("input", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getInputs();
-        } else if (category.startsWith("output")) {
-            int index = Integer.parseInt(category.replace("output", ""));
+        } else if (recipe.startsWith("output")) {
+            int index = Integer.parseInt(recipe.replace("output", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getOutputs();
-        } else if (category.startsWith("g:")) {
+        } else if (recipe.startsWith("g:")) {
             items = new ArrayList<>();
-            String groupName = category.replace("g:", "");
+            String groupName = recipe.replace("g:", "");
             String groupString = ConfigManager.getInstance().getItemGroups().get(groupName);
             for (String matString : groupString.split(",")) {
                 List<CVItem> tempMap = new ArrayList<>();
