@@ -1,0 +1,25 @@
+size: 54
+name: People
+# variables
+#  region
+#  town
+# actions:
+#  take-action: depends on the previous menu
+#    region menu will show region member actions
+#    town menu will show town member actions
+#    invite will invite them to the town|region and close
+#    anything else will show the profile
+items:
+  prev:
+    index: 4
+  next:
+    index: 6
+  back:
+    index: 8
+  people:
+    index: 9-53
+    # icon player head (skin if they're online)
+    # name name
+    # desc rank
+    actions:
+      - take-action
