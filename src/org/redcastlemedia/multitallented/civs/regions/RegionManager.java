@@ -338,7 +338,7 @@ public class RegionManager {
                 region.setLastActive(lastActive);
             }
             if (regionConfig.isSet("upkeep-history")) {
-                for (String timeString : regionConfig.getKeys(false)) {
+                for (String timeString : regionConfig.getConfigurationSection("upkeep-history").getKeys(false)) {
                     Long time = Long.parseLong(timeString);
                     region.getUpkeepHistory().put(time, regionConfig.getInt("upkeep-history." + timeString));
                 }

@@ -69,7 +69,7 @@ public class BuiltRegionMenu extends Menu {
         int i=9;
         for (Region region : regions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem cvItem = regionType.getShopIcon().clone();
+            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             cvItem.setDisplayName(region.getType() + "@" + region.getLocation().getWorld().getName() + ":" +
                     (int) region.getLocation().getX() + "x, " +
                     (int) region.getLocation().getY() + "y, " +

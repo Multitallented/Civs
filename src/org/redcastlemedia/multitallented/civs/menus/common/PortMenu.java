@@ -72,7 +72,7 @@ public class PortMenu extends CustomMenu {
             }
             Region region = regionArray[startIndex + count];
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem cvItem = regionType.getShopIcon().clone();
+            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     region.getType() + "-name"));
             cvItem.getLore().clear();
@@ -102,8 +102,9 @@ public class PortMenu extends CustomMenu {
             if (!commandPreprocessEvent.isCancelled()) {
                 player.performCommand("cv port " + id);
             }
+            return true;
         }
-        return true;
+        return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
     @Override

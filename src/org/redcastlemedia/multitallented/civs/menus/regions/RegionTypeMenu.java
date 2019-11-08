@@ -45,7 +45,7 @@ public class RegionTypeMenu extends CustomMenu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), "regionType");
         if ("icon".equals(menuIcon.getKey())) {
-            CVItem shopIcon = regionType.getShopIcon().clone();
+            CVItem shopIcon = regionType.getShopIcon(civilian.getLocale());
             List<String> lore = new ArrayList<>();
             shopIcon.setDisplayName(localeManager.getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name"));
             lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
@@ -147,7 +147,7 @@ public class RegionTypeMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(regionType.getRebuild().get(0));
-            CVItem shopIcon = rebuildType.getShopIcon().clone();
+            CVItem shopIcon = rebuildType.getShopIcon(civilian.getLocale());
             shopIcon.getLore().clear();
             shopIcon.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getDesc())));
@@ -168,17 +168,18 @@ public class RegionTypeMenu extends CustomMenu {
             if (evolveName == null) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem shopItem = ItemManager.getInstance().getItemType(evolveName.split("\\.")[0]).getShopIcon();
+            CVItem shopItem = ItemManager.getInstance().getItemType(evolveName.split("\\.")[0]).getShopIcon(civilian.getLocale());
             ItemStack itemStack = shopItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("biome".equals(menuIcon.getKey())) {
-            ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
-            ArrayList<String> lore = new ArrayList<>();
+            CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()));
             for (Biome biome : regionType.getBiomes()) {
-                lore.add(biome.name());
+                cvItem.getLore().add(biome.name());
             }
-            itemStack.getItemMeta().setLore(lore);
+            ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("towns".equals(menuIcon.getKey())) {
@@ -191,8 +192,11 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("effects".equals(menuIcon.getKey())) {
-            ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
-            itemStack.getItemMeta().getLore().addAll(regionType.getEffects().keySet());
+            CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()));
+            cvItem.getLore().addAll(regionType.getEffects().keySet());
+            ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("reagents".equals(menuIcon.getKey()) ||

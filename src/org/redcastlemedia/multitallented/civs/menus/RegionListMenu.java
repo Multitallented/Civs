@@ -111,7 +111,7 @@ public class RegionListMenu extends Menu {
                 CVItem cvItem = new CVItem(Material.CHEST, regionTypeNames.get(regionTypeName), 0, regionTypeName);
                 inventory.setItem(index, cvItem.createItemStack());
             } else {
-                ItemStack is = civItem.getShopIcon().clone().createItemStack();
+                ItemStack is = civItem.getShopIcon(civilian.getLocale()).createItemStack();
                 is.setAmount(regionTypeNames.get(regionTypeName));
                 inventory.setItem(index, is);
             }

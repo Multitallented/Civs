@@ -129,7 +129,7 @@ public class RegionTypeInfoMenu extends Menu {
         setNewData(civilian.getUuid(), data);
 
         //0 Icon
-        CVItem cvItem = regionType.getShopIcon().clone();
+        CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
         List<String> lore = new ArrayList<>();
         cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name"));
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
