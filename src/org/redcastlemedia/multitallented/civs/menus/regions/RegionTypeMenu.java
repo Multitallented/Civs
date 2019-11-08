@@ -29,8 +29,21 @@ public class RegionTypeMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
         if (params.containsKey("regionType")) {
-            CivItem regionType = ItemManager.getInstance().getItemType(params.get("regionType"));
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(params.get("regionType"));
             data.put("regionType", regionType);
+            if (!regionType.getRebuild().isEmpty()) {
+                data.put("rebuildRegion", regionType.getRebuild().get(0));
+                StringBuilder regionList = new StringBuilder();
+                for (String rebuildRegionString : regionType.getRebuild()) {
+                    regionList.append(rebuildRegionString);
+                    regionList.append(",");
+                }
+                data.put("rebuildRegions", regionList.substring(0, regionList.length() - 1));
+            }
+            if (regionType.getEffects().containsKey(EvolveEffect.KEY)) {
+                data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY)
+                        .split(":")[1].split("\\.")[0]);
+            }
         }
         if (params.containsKey("showPrice") && "true".equals(params.get("showPrice"))) {
             data.put("showPrice", true);
