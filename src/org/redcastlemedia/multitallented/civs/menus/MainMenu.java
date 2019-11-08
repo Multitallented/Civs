@@ -208,7 +208,7 @@ public class MainMenu extends Menu {
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            CVItem townIcon = townType.getShopIcon().clone();
+            CVItem townIcon = townType.getShopIcon(civilian.getLocale());
             townIcon.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "town");
@@ -222,7 +222,7 @@ public class MainMenu extends Menu {
         Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
         if (region != null) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem regionIcon = regionType.getShopIcon().clone();
+            CVItem regionIcon = regionType.getShopIcon(civilian.getLocale());
             regionIcon.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-name"));
             ArrayList<String> lore = new ArrayList<>();

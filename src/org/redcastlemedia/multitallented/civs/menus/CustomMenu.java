@@ -227,7 +227,7 @@ public abstract class CustomMenu {
         }
         Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
         for (String key : data.keySet()) {
-            if (!actionString.contains("\\$" + key + "\\$")) {
+            if (!actionString.contains("$" + key + "$")) {
                 continue;
             }
             String replaceString = stringifyData(key, data.get(key));

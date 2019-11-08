@@ -22,8 +22,8 @@ public final class MenuUtil {
             divideByTwo(item);
         } else if (mat == Material.REDSTONE_WIRE) {
             item.setType(Material.REDSTONE);
-        } else if (mat == Material.WALL_SIGN) {
-            item.setType(Material.SIGN);
+//        } else if (mat == Material.WALL_SIGN) {
+//            item.setType(Material.SIGN);
         } else if (mat == Material.WATER) {
             item.setType(Material.WATER_BUCKET);
         } else if (mat == Material.LAVA) {

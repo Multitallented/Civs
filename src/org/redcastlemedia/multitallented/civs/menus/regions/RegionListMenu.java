@@ -96,7 +96,7 @@ public class RegionListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             Region region = regionArray[startIndex + count];
-            CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).getShopIcon().clone();
+            CVItem cvItem = ItemManager.getInstance().getItemType(region.getType()).getShopIcon(civilian.getLocale());
             cvItem.getLore().add(0, ChatColor.BLACK + region.getId());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

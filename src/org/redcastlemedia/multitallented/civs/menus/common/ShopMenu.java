@@ -100,7 +100,7 @@ public class ShopMenu extends CustomMenu {
             if (parent == null) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem icon = parent.getShopIcon().clone();
+            CVItem icon = parent.getShopIcon(civilian.getLocale());
             icon.setDisplayName(LocaleManager.getInstance()
                     .getTranslation(civilian.getLocale(), parent.getProcessedName() + "-name"));
             icon.getLore().clear();
@@ -180,7 +180,7 @@ public class ShopMenu extends CustomMenu {
     private ItemStack createShopItem(CivItem civItem, Civilian civilian) {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        CVItem civItem1 = civItem.getShopIcon().clone();
+        CVItem civItem1 = civItem.getShopIcon(civilian.getLocale());
         if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
             FolderType folderType = (FolderType) civItem;
             if (!folderType.getVisible() &&

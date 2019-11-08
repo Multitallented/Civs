@@ -1,4 +1,4 @@
-size: 36
+size: 54
 name: SelectTown
 # variables:
 #  $prevMenu$ name of last menu called
@@ -6,14 +6,11 @@ items:
   back:
     index: 8
   prev:
-    index: 9
-  spacer:
-    index: 10-16
-    icon: LIGHT_BLUE_STAINED_GLASS
+    index: 3
   next:
-    index: 17
+    index: 5
   towns:
-    index: 18-35
+    index: 9-53
     # name: town name
     # icon: town icon
     actions:

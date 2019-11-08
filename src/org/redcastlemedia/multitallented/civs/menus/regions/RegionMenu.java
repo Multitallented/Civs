@@ -39,9 +39,11 @@ public class RegionMenu extends CustomMenu {
         for (Integer i : region.getFailingUpkeeps()) {
             failingUpkeeps.append(i).append(",");
         }
-        failingUpkeeps.substring(0, failingUpkeeps.length() - 1);
-        data.put("failingUpkeeps", failingUpkeeps.toString());
-        data.put("regionType", region.getType());
+        if (!region.getFailingUpkeeps().isEmpty()) {
+            failingUpkeeps.substring(0, failingUpkeeps.length() - 1);
+            data.put("failingUpkeeps", failingUpkeeps.toString());
+        }
+        data.put("regionTypeName", region.getType());
         return data;
     }
 
@@ -49,7 +51,7 @@ public class RegionMenu extends CustomMenu {
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
-                (String) MenuManager.getData(civilian.getUuid(), "regionType"));
+                (String) MenuManager.getData(civilian.getUuid(), "regionTypeName"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
@@ -63,7 +65,7 @@ public class RegionMenu extends CustomMenu {
         }
         boolean canSeeSellOptions = personCount == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY);
         if ("icon".equals(menuIcon.getKey())) {
-            CVItem cvItem = regionType.getShopIcon().clone();
+            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-name"));
             cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -97,7 +99,6 @@ public class RegionMenu extends CustomMenu {
             if (!canSeeSellOptions) {
                 return new ItemStack(Material.AIR);
             }
-            return createSellItem(civilian, menuIcon, region, count);
         } else if ("cancel-sale".equals(menuIcon.getKey())) {
             if (!canSeeSellOptions || region.getForSale() == -1) {
                 return new ItemStack(Material.AIR);
@@ -107,7 +108,17 @@ public class RegionMenu extends CustomMenu {
                     civilian.isAtMax(regionType) != null) {
                 return new ItemStack(Material.AIR);
             }
-            return createSellItem(civilian, menuIcon, region, count);
+            String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    region.getType().toLowerCase() + "-name");
+            CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()));
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc()).replace("$1", localizedRegionName)
+                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()))));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("location".equals(menuIcon.getKey())) {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(region.getLocation().getWorld().getName() + " " +
@@ -169,20 +180,6 @@ public class RegionMenu extends CustomMenu {
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    private ItemStack createSellItem(Civilian civilian, MenuIcon menuIcon, Region region, int count) {
-        String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                region.getType() + "-name");
-        CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
-        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                menuIcon.getName()));
-        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                menuIcon.getDesc()).replace("$1", localizedRegionName)
-                .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()))));
-        ItemStack itemStack = cvItem.createItemStack();
-        putActions(civilian, menuIcon, itemStack, count);
-        return itemStack;
     }
 
     @Override

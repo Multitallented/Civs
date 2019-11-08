@@ -82,7 +82,7 @@ public class RegionTypeListMenu extends CustomMenu {
                     currentItem = CVItem.createCVItemFromString("CHEST");
                     currentItem.setDisplayName("g:" + regionTypeName); // TODO translate group names
                 } else {
-                    currentItem = regionType.getShopIcon().clone();
+                    currentItem = regionType.getShopIcon(civilian.getLocale());
                 }
                 currentItem.setQty(regionTypes.get(regionTypeName));
                 fullListRegionTypes.add(currentItem);

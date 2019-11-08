@@ -2,7 +2,7 @@ size: 18
 name: Region
 # variables:
 #  region: region id
-#  regionType: region type name
+#  regionTypeName: region type name
 #  failingUpkeeps: list of failing upkeeps
 # actions:
 #  cancel-sale: cancels the sale of this region
@@ -20,7 +20,7 @@ items:
     # name: region type name
     desc: click-info
     actions:
-      - menu:region-type?regionType=$regionType$
+      - menu:region-type?regionType=$regionTypeName$
   upkeep-working:
     index: 2
     icon: GREEN_WOOL
@@ -33,7 +33,7 @@ items:
     name: operation
     desc: region-not-working
     actions:
-      - menu:recipe?regionType=$regionType$&recipe=failing:$failingUpkeeps$
+      - menu:recipe?regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
   location:
     index: 3
     icon: OAK_DOOR
@@ -71,7 +71,7 @@ items:
     index: 11
     icon: EMERALD_BLOCK
     name: sell-region
-    desc: region-sale-set
+    desc: use-sell-command
     actions:
       - message:use-sell-command
   cancel-sale:
@@ -95,6 +95,7 @@ items:
     desc: warehouse-toggle-desc
     actions:
       - toggle-warehouse
+      - menu:region?region=$region$
   warehouse-disabled:
     index: 14
     icon: RED_WOOL
@@ -102,4 +103,5 @@ items:
     desc: warehouse-toggle-desc
     actions:
       - toggle-warehouse
+      - menu:region?region=$region$
 

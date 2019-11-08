@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -18,8 +19,10 @@ import org.redcastlemedia.multitallented.civs.menus.StartTutorialMenu;
 import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
@@ -59,8 +62,8 @@ public class MainMenu extends CustomMenu {
             if (region == null) {
                 return new ItemStack(Material.AIR);
             } else {
-                CVItem regionIcon = menuIcon.createCVItem(civilian.getLocale());
-                regionIcon.setDisplayName(region.getType());
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                CVItem regionIcon = regionType.getShopIcon(civilian.getLocale());
                 ItemStack itemStack = regionIcon.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
@@ -70,7 +73,8 @@ public class MainMenu extends CustomMenu {
             if (town == null) {
                 return new ItemStack(Material.AIR);
             } else {
-                CVItem townIcon = menuIcon.createCVItem(civilian.getLocale());
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                CVItem townIcon = townType.getShopIcon(civilian.getLocale());
                 townIcon.setDisplayName(town.getName());
                 ItemStack itemStack = townIcon.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
