@@ -352,7 +352,7 @@ public class TownManager {
         town.destroyRing(false, true);
         TownType childTownType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
         town.setType(childTownType.getProcessedName());
-        town.setPower(childTownType.getPower());
+        town.setPower(childTownType.getMaxPower());
         town.setMaxPower(childTownType.getMaxPower());
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {

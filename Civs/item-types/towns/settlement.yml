@@ -16,8 +16,8 @@ critical-build-reqs:
 
 limits:
 - npchousing:4
-- allshack:4
-- allhovel:1
+- allshack:5
+- allhovel:2
 - arrowtrapgroup:2
 - church:1
 - smithy:1
