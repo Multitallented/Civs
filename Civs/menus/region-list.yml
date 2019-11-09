@@ -2,6 +2,8 @@ size: 45
 name: RegionList
 # variables:
 #  region: the region you click on
+# actions:
+#  view-region: opens the region menu for that region
 items:
   prev:
     index: 3
@@ -15,4 +17,4 @@ items:
     # name: region name
     # desc: region key + desc
     actions:
-      - menu:region?region=$region$&preserveData=true
+      - view-region

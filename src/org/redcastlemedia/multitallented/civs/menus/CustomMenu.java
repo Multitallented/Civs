@@ -1,10 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -26,9 +23,10 @@ import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
 public abstract class CustomMenu {
-    protected HashMap<Integer, MenuIcon> itemIndexes;
+    protected HashSet<MenuIcon> itemIndexes;
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
     protected HashMap<UUID, HashMap<ItemStack, List<String>>> actions = new HashMap<>();
+    protected HashMap<UUID, CycleGUI> cycleItems = new HashMap<>();
     protected int size;
     private String name;
 
@@ -53,16 +51,17 @@ public abstract class CustomMenu {
         actions.put(civilian.getUuid(), new HashMap<>());
         Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getName());
         HashMap<String, Integer> duplicateCount = new HashMap<>();
-        for (Integer i : itemIndexes.keySet()) {
-            MenuIcon menuIcon = itemIndexes.get(i);
-            if (duplicateCount.containsKey(menuIcon.getKey())) {
-                duplicateCount.put(menuIcon.getKey(), duplicateCount.get(menuIcon.getKey()) + 1);
-            } else {
-                duplicateCount.put(menuIcon.getKey(), 0);
-            }
-            ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
-            if (itemStack.getType() != Material.AIR) {
-                inventory.setItem(i, itemStack);
+        for (MenuIcon menuIcon : itemIndexes) {
+            for (Integer i : menuIcon.getIndex()) {
+                if (duplicateCount.containsKey(menuIcon.getKey())) {
+                    duplicateCount.put(menuIcon.getKey(), duplicateCount.get(menuIcon.getKey()) + 1);
+                } else {
+                    duplicateCount.put(menuIcon.getKey(), 0);
+                }
+                ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
+                if (itemStack.getType() != Material.AIR) {
+                    inventory.setItem(i, itemStack);
+                }
             }
         }
         return inventory;
@@ -108,12 +107,23 @@ public abstract class CustomMenu {
         }
         actions.get(civilian.getUuid()).put(itemStack, currentActions);
     }
-    public void loadConfig(HashMap<Integer, MenuIcon> itemIndexes,
+
+    public void addCycleItem(UUID uuid, int index, ItemStack is) {
+        if (cycleItems.containsKey(uuid)) {
+            cycleItems.get(uuid).addCycleItem(index, is);
+        } else {
+            CycleGUI currentGUI = new CycleGUI(uuid);
+            currentGUI.addCycleItem(index, is);
+            cycleItems.put(uuid, currentGUI);
+        }
+    }
+
+    public void loadConfig(HashSet<MenuIcon> itemIndexes,
                     int size, String name) {
         this.itemIndexes = itemIndexes;
         this.size = size;
         this.name = name;
-        for (MenuIcon menuIcon : itemIndexes.values()) {
+        for (MenuIcon menuIcon : itemIndexes) {
             if (menuIcon.getIndex().size() > 1) {
                 itemsPerPage.put(menuIcon.getKey(), menuIcon.getIndex().size());
             }
@@ -155,6 +165,8 @@ public abstract class CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     messageKey));
+        } else if ("refresh".equals(actionString)) {
+            MenuManager.getInstance().refreshMenu(civilian);
         } else if (actionString.startsWith("menu:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");

@@ -245,7 +245,7 @@ public class ItemManager {
         if (config.isSet("towns")) {
             townSet = new HashSet<>(config.getStringList("towns"));
         } else {
-            townSet = null;
+            townSet = new HashSet<>();
         }
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {

@@ -178,6 +178,14 @@ public class RegionMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("warehouse-enabled".equals(menuIcon.getKey())) {
+            if (!region.isWarehouseEnabled()) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("warehouse-disabled".equals(menuIcon.getKey())) {
+            if (region.isWarehouseEnabled()) {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

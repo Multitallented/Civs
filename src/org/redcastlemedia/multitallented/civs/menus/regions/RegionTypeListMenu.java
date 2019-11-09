@@ -74,14 +74,17 @@ public class RegionTypeListMenu extends CustomMenu {
             } else {
                 return new ItemStack(Material.AIR);
             }
+            ArrayList<String> regionTypeNames = new ArrayList<>();
             ArrayList<CVItem> fullListRegionTypes = new ArrayList<>();
             for (String regionTypeName : regionTypes.keySet()) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
                 CVItem currentItem;
                 if (regionType == null) {
+                    regionTypeNames.add("g:" + regionTypeName);
                     currentItem = CVItem.createCVItemFromString("CHEST");
                     currentItem.setDisplayName("g:" + regionTypeName); // TODO translate group names
                 } else {
+                    regionTypeNames.add(regionType.getProcessedName());
                     currentItem = regionType.getShopIcon(civilian.getLocale());
                 }
                 currentItem.setQty(regionTypes.get(regionTypeName));
@@ -109,6 +112,11 @@ public class RegionTypeListMenu extends CustomMenu {
             } else {
                 itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
+                if (actions.get(civilian.getUuid()).get(itemStack).contains("view-type")) {
+                    int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-type");
+                    actions.get(civilian.getUuid()).get(itemStack).set(index,
+                            "menu:region-type?regionType=" + regionTypeNames.get(startIndex + count));
+                }
             }
             return itemStack;
         }

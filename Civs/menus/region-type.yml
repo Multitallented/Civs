@@ -3,6 +3,9 @@ name: RegionType
 #variables:
 # regionType: regionType name
 # showPrice: defaults to false
+# rebuildRegion: rebuild region type
+# rebuildRegions: list of rebuild regions
+# evolveRegion: evolve region type
 items:
   icon:
     index: 0
@@ -22,35 +25,35 @@ items:
     # name: region name
     desc: rebuild-req-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$rebuildRegion$
   rebuild-required-multiple:
     index: 2
-    icon: GOLD_AXE
+    icon: GOLDEN_AXE
     name: rebuild
     desc: rebuild-req-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type-list?regionList=$rebuildRegions$
   rebuild-optional-single:
     index: 2
     # icon: region icon
     # name: region icon
     desc: rebuild-opt-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$rebuildRegion$
   rebuild-optional-multiple:
     index: 2
-    icon: GOLD_AXE
+    icon: GOLDEN_AXE
     name: rebuild
     desc: rebuild-opt-desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type-list?regionList=$rebuildRegions$
   evolve:
     index: 3
-    # icon: evolve icon
+    # icon: evolve shop icon
     # name: evolve name
     # desc: evolve desc
     actions:
-      - menu:region-type?regionType=$itemName$
+      - menu:region-type?regionType=$evolveRegion$
   biome:
     index: 4
     icon: GRASS_BLOCK
@@ -67,7 +70,7 @@ items:
     name: build-reqs-title
     desc: build-reqs
     actions:
-      - menu:recipe?regionType=$regionType$&recipe=req
+      - menu:recipe?regionType=$regionType$&recipe=reqs
   effects:
     index: 7
     icon: POTION
@@ -94,7 +97,7 @@ items:
     name: upkeep-title
     desc: upkeep
     actions:
-      - menu:recipe?regionType=$regionType$&recipe=upkeep$count$
+      - menu:recipe?regionType=$regionType$&recipe=input$count$
   output:
     index: 11,20,29,38,47
     icon: DISPENSER

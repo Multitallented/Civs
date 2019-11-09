@@ -265,7 +265,14 @@ public class CVItem {
         if (mmoItemType != null && mmoItemName != null && Civs.mmoItems != null) {
             Type mmoType = Civs.mmoItems.getTypes().get(mmoItemType);
             MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoType, mmoItemName);
-            return mmoItem.newBuilder().build();
+            ItemStack itemStack = mmoItem.newBuilder().build();
+            if (displayName != null) {
+                itemStack.getItemMeta().setDisplayName(displayName);
+            }
+            if (!lore.isEmpty()) {
+                itemStack.getItemMeta().setLore(lore);
+            }
+            return itemStack;
         }
 
         ItemStack is = new ItemStack(mat, qty);

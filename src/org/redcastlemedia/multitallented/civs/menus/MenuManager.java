@@ -1,11 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -71,21 +67,21 @@ public class MenuManager implements Listener {
     @EventHandler
     public void onTwoSecondEvent(TwoSecondEvent event) {
         try {
-            for (CycleGUI gui : cycleGuis.values()) {
+            for (CycleGUI gui : new HashSet<>(cycleGuis.values())) {
                 gui.advanceItemPositions();
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        clearCycleItems(uuid);
         if (!openMenus.containsKey(uuid)) {
             return;
         }
+        clearCycleItems(uuid);
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         menus.get(openMenus.get(uuid)).onCloseMenu(civilian, event.getInventory());
         openMenus.remove(uuid);
@@ -243,7 +239,7 @@ public class MenuManager implements Listener {
         }
     }
 
-    public synchronized static void addCycleItem(UUID uuid, int index, ItemStack is) {
+    public static void addCycleItem(UUID uuid, int index, ItemStack is) {
         if (cycleGuis.containsKey(uuid)) {
             cycleGuis.get(uuid).addCycleItem(index, is);
         } else {
@@ -253,7 +249,7 @@ public class MenuManager implements Listener {
         }
     }
 
-    public synchronized static void addCycleItems(UUID uuid, int index, List<ItemStack> items) {
+    public static void addCycleItems(UUID uuid, int index, List<ItemStack> items) {
         if (cycleGuis.containsKey(uuid)) {
             cycleGuis.get(uuid).putCycleItems(index, items);
         } else {
@@ -286,16 +282,14 @@ public class MenuManager implements Listener {
         int newSize = config.getInt("size", 36);
         int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");
-        HashMap<Integer, MenuIcon> items = new HashMap<>();
+        HashSet<MenuIcon> items = new HashSet<>();
         for (String key : config.getConfigurationSection("items").getKeys(false)) {
             MenuIcon menuIcon = new MenuIcon(key, config.getConfigurationSection("items." + key));
             if (menuIcon.getIndex().isEmpty() ||
                     menuIcon.getIndex().get(0) < 0) {
                 continue;
             }
-            for (Integer i : menuIcon.getIndex()) {
-                items.put(i, menuIcon);
-            }
+            items.add(menuIcon);
         }
         customMenu.loadConfig(items, size, name);
     }
@@ -306,6 +300,10 @@ public class MenuManager implements Listener {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
+        if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
+            cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
+            menus.get(menuName).cycleItems.remove(civilian.getUuid());
+        }
         openMenus.put(player.getUniqueId(), menuName);
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());
@@ -325,6 +323,10 @@ public class MenuManager implements Listener {
             return;
         }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
+        if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
+            cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
+            menus.get(menuName).cycleItems.remove(civilian.getUuid());
+        }
         openMenus.put(player.getUniqueId(), menuName);
         if (!history.containsKey(player.getUniqueId())) {
             history.put(player.getUniqueId(), new ArrayList<>());

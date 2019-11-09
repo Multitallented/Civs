@@ -80,7 +80,7 @@ items:
     name: cancel-sale
     actions:
       - cancel-sale
-      - menu:region?region=$region$
+      - refresh
   buy-region:
     index: 12
     icon: EMERALD
@@ -95,7 +95,7 @@ items:
     desc: warehouse-toggle-desc
     actions:
       - toggle-warehouse
-      - menu:region?region=$region$
+      - refresh
   warehouse-disabled:
     index: 14
     icon: RED_WOOL
@@ -103,5 +103,5 @@ items:
     desc: warehouse-toggle-desc
     actions:
       - toggle-warehouse
-      - menu:region?region=$region$
+      - refresh
 

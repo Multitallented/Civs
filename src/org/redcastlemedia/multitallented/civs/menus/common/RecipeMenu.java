@@ -27,36 +27,36 @@ public class RecipeMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
-        String category = params.get("recipe");
+        String recipe = params.get("recipe");
         String regionTypeName = params.get("regionType");
         List<List<CVItem>> items;
-        if (category == null || regionTypeName == null) {
+        if (recipe == null || regionTypeName == null) {
             items = new ArrayList<>();
-        } else if (category.startsWith("failing:")) {
+        } else if (recipe.startsWith("failing:")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = new ArrayList<>();
-            String[] failingUpkeeps = category.replace("failing:", "").split(",");
+            String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
             for (String index : failingUpkeeps) {
                 items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
             }
-        } else if (category.equals("reqs")) {
+        } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getReqs();
-        } else if (category.startsWith("reagents")) {
-            int index = Integer.parseInt(category.replace("reagents", ""));
+        } else if (recipe.startsWith("reagents")) {
+            int index = Integer.parseInt(recipe.replace("reagents", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getReagents();
-        } else if (category.startsWith("input")) {
-            int index = Integer.parseInt(category.replace("input", ""));
+        } else if (recipe.startsWith("input")) {
+            int index = Integer.parseInt(recipe.replace("input", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getInputs();
-        } else if (category.startsWith("output")) {
-            int index = Integer.parseInt(category.replace("output", ""));
+        } else if (recipe.startsWith("output")) {
+            int index = Integer.parseInt(recipe.replace("output", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getOutputs();
-        } else if (category.startsWith("g:")) {
+        } else if (recipe.startsWith("g:")) {
             items = new ArrayList<>();
-            String groupName = category.replace("g:", "");
+            String groupName = recipe.replace("g:", "");
             String groupString = ConfigManager.getInstance().getItemGroups().get(groupName);
             for (String matString : groupString.split(",")) {
                 List<CVItem> tempMap = new ArrayList<>();
@@ -67,6 +67,7 @@ public class RecipeMenu extends CustomMenu {
         } else {
             items = new ArrayList<>();
         }
+        System.out.println(items.size());
         data.put("items", items);
 
         int maxPage = (int) Math.ceil((double) items.size() / (double) itemsPerPage.get("items"));
@@ -104,19 +105,21 @@ public class RecipeMenu extends CustomMenu {
             for (CVItem cvItem : items.get(startIndex + count)) {
                 ItemStack itemStack = cvItem.createItemStack();
                 MenuUtil.sanitizeItem(itemStack);
-                MenuManager.addCycleItem(civilian.getUuid(), menuIcon.getIndex().get(count), itemStack);
+                super.addCycleItem(civilian.getUuid(), menuIcon.getIndex().get(count), itemStack);
                 if (firstStack == null) {
                     firstStack = itemStack;
                 }
                 if (cvItem.getGroup() != null) {
                     ArrayList<String> actionList = new ArrayList<>();
-                    actionList.add("menu:recipe?category=g:" + cvItem.getGroup());
+                    actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup());
                     actions.get(civilian.getUuid()).put(itemStack, actionList);
                 }
             }
             if (firstStack != null) {
+                System.out.println("Added: " + firstStack.getType().name());
                 return firstStack;
             }
+            return new ItemStack(Material.AIR);
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
