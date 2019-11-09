@@ -105,13 +105,13 @@ public class RecipeMenu extends CustomMenu {
             for (CVItem cvItem : items.get(startIndex + count)) {
                 ItemStack itemStack = cvItem.createItemStack();
                 MenuUtil.sanitizeItem(itemStack);
-                MenuManager.addCycleItem(civilian.getUuid(), menuIcon.getIndex().get(count), itemStack);
+                super.addCycleItem(civilian.getUuid(), menuIcon.getIndex().get(count), itemStack);
                 if (firstStack == null) {
                     firstStack = itemStack;
                 }
                 if (cvItem.getGroup() != null) {
                     ArrayList<String> actionList = new ArrayList<>();
-                    actionList.add("menu:recipe?category=g:" + cvItem.getGroup());
+                    actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup());
                     actions.get(civilian.getUuid()).put(itemStack, actionList);
                 }
             }

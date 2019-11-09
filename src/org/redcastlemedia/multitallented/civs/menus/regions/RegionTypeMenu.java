@@ -194,6 +194,9 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("biome".equals(menuIcon.getKey())) {
+            if (regionType.getBiomes().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
             for (Biome biome : regionType.getBiomes()) {
                 cvItem.getLore().add(biome.name());
@@ -202,6 +205,9 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("towns".equals(menuIcon.getKey())) {
+            if (regionType.getTowns().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
             for (String townTypeName : regionType.getTowns()) {
                 String localizedTownTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),

@@ -70,7 +70,7 @@ items:
     name: build-reqs-title
     desc: build-reqs
     actions:
-      - menu:recipe?regionType=$regionType$&recipe=req
+      - menu:recipe?regionType=$regionType$&recipe=reqs
   effects:
     index: 7
     icon: POTION
@@ -97,7 +97,7 @@ items:
     name: upkeep-title
     desc: upkeep
     actions:
-      - menu:recipe?regionType=$regionType$&recipe=upkeep$count$
+      - menu:recipe?regionType=$regionType$&recipe=input$count$
   output:
     index: 11,20,29,38,47
     icon: DISPENSER
