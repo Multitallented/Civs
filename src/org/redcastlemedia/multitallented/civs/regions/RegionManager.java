@@ -104,19 +104,24 @@ public class RegionManager {
         }
         try {
             for (File file : regionFolder.listFiles()) {
-                Region region = loadRegion(file);
-                if (region == null || regionLocations.containsKey(region.getId())) {
-                    continue;
+                try {
+                    Region region = loadRegion(file);
+                    if (region == null || regionLocations.containsKey(region.getId())) {
+                        continue;
+                    }
+                    UUID worldName = region.getLocation().getWorld().getUID();
+                    if (!regions.containsKey(worldName)) {
+                        regions.put(worldName, new ArrayList<Region>());
+                    }
+                    regions.get(worldName).add(region);
+                    sortRegions(worldName);
+                    regionLocations.put(region.getId(), region);
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to load invalid region file " + file.getName());
                 }
-                UUID worldName = region.getLocation().getWorld().getUID();
-                if (!regions.containsKey(worldName)) {
-                    regions.put(worldName, new ArrayList<Region>());
-                }
-                regions.get(worldName).add(region);
-                sortRegions(worldName);
-                regionLocations.put(region.getId(), region);
             }
         } catch (NullPointerException npe) {
+            npe.printStackTrace();
             Civs.logger.warning("No region files found to load");
             return;
         }
