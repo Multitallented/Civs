@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceListMenu;
 import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.ConfirmationMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.PeopleMenu;
@@ -97,9 +98,7 @@ public class MenuManager implements Listener {
         if (event.getCurrentItem() != null) {
             if (backButton.createCVItem(civilian.getLocale())
                     .equivalentItem(event.getCurrentItem(), true, true)) {
-                popLastMenu(civilian.getUuid());
-                MenuHistoryState menuHistoryState = popLastMenu(civilian.getUuid());
-                openMenuFromHistory((Player) event.getWhoClicked(), menuHistoryState.getMenuName(), menuHistoryState.getData());
+                goBack(civilian.getUuid());
                 event.setCancelled(true);
                 return;
             } else if (prevButton.createCVItem(civilian.getLocale())
@@ -124,6 +123,13 @@ public class MenuManager implements Listener {
         if (shouldCancel) {
             event.setCancelled(true);
         }
+    }
+
+    public void goBack(UUID uuid) {
+        popLastMenu(uuid);
+        MenuHistoryState menuHistoryState = popLastMenu(uuid);
+        Player player = Bukkit.getPlayer(uuid);
+        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
     }
 
     public void loadMenuConfigs() {
@@ -236,6 +242,11 @@ public class MenuManager implements Listener {
             PeopleMenu peopleMenu = new PeopleMenu();
             loadConfig(peopleMenu);
             menus.put(peopleMenu.getFileName(), peopleMenu);
+        }
+        {
+            ConfirmationMenu confirmationMenu = new ConfirmationMenu();
+            loadConfig(confirmationMenu);
+            menus.put(confirmationMenu.getFileName(), confirmationMenu);
         }
     }
 

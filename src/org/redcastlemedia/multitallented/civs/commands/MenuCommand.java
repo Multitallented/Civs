@@ -17,7 +17,19 @@ public class MenuCommand implements CivCommand {
         }
         Player player = (Player) commandSender;
 
-        MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
+        String menuName;
+        HashMap<String, String> params = new HashMap<>();
+        if (strings.length < 2) {
+            menuName = "main";
+        } else {
+            menuName = strings[1].split("\\?")[0];
+            if (strings[1].contains("?")) {
+                for (String param : strings[1].split("\\?")[1].split("&")) {
+                    params.put(param.split("=")[0], param.split("=")[1]);
+                }
+            }
+        }
+        MenuManager.getInstance().openMenu(player, menuName, params);
         return true;
     }
 }
