@@ -167,6 +167,8 @@ public abstract class CustomMenu {
                     messageKey));
         } else if ("refresh".equals(actionString)) {
             MenuManager.getInstance().refreshMenu(civilian);
+        } else if ("back".equals(actionString)) {
+            MenuManager.getInstance().goBack(civilian.getUuid());
         } else if (actionString.startsWith("menu:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");
