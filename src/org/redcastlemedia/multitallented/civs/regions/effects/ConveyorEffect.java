@@ -189,6 +189,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 for (ItemStack is : iss) {
                     cachedDestinationInventory.addItem(is);
                 }
+                RegionManager.getInstance().removeCheckedRegion(cacheDestinationRegions.get(r));
             } catch (Exception e) {
             }
             return;

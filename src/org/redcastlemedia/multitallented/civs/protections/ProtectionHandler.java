@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -44,16 +45,16 @@ import java.util.Set;
 
 public class ProtectionHandler implements Listener {
 
-//    @EventHandler
-//    public void onChunkUnload(ChunkUnloadEvent event) {
-//        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-//    }
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+    }
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.chunkLoads++;
         }
-//        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
 
