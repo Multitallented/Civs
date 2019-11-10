@@ -122,6 +122,10 @@ add-member: "Add member"
 operation: "Operation"
 region-working: "Your region is running smoothly"
 region-not-working: "Your region is missing something"
+filter-online: "Filter for only online players"
+sort-alphabetical: "Sort alphabetical"
+sort-points: "Sort by kill points"
+sort-rank: "Sort by rank"
 owner: Owner
 member: Member
 guest: Guest

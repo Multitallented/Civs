@@ -9,7 +9,6 @@ items:
     name: confirm
     actions:
       - confirm
-      - close
   reject:
     index: 4
     icon: BARRIER
