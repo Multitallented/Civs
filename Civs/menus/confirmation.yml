@@ -16,3 +16,5 @@ items:
     name: reject
     actions:
       - back
+  back:
+    index: 8
