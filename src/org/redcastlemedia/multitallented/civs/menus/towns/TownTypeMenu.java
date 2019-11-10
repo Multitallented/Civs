@@ -26,7 +26,7 @@ public class TownTypeMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
         if (params.containsKey("townType")) {
-            CivItem regionType = ItemManager.getInstance().getItemType(params.get("regionType"));
+            CivItem regionType = ItemManager.getInstance().getItemType(params.get("townType"));
             data.put("townType", regionType);
         }
         if (params.containsKey("showPrice") && "true".equals(params.get("showPrice"))) {

@@ -145,7 +145,8 @@ public class RegionTypeMenu extends CustomMenu {
                     lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "item-locked"));
                 }
                 priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), menuIcon.getName()));
-                lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + regionType.getPrice());
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "price")
+                        .replace("$1", Util.getNumberFormat(regionType.getPrice(), civilian.getLocale())));
                 priceItem.setLore(lore);
                 ItemStack itemStack = priceItem.createItemStack();
                 if (hasItemUnlocked || isCivsAdmin) {
@@ -161,6 +162,8 @@ public class RegionTypeMenu extends CustomMenu {
                         .replace("$1", maxLimit)
                         .replace("$2", "" + max));
                 return priceItem.createItemStack();
+            } else {
+                return new ItemStack(Material.AIR);
             }
         } else if ("rebuild-required-single".equals(menuIcon.getKey()) ||
                 "rebuild-optional-single".equals(menuIcon.getKey())) {
