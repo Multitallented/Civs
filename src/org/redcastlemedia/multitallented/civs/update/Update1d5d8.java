@@ -28,6 +28,7 @@ public final class Update1d5d8 {
             FileConfiguration config = new YamlConfiguration();
             config.load(configFile);
             config.set("use-delayed-region-upkeep-in-unloaded-chunks", true);
+            config.set("disable-regions-in-unloaded-chunks", false);
             config.save(configFile);
         } catch (Exception exception) {
             exception.printStackTrace();
