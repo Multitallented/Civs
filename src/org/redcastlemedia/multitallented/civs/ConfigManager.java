@@ -132,6 +132,8 @@ public class ConfigManager {
     boolean dropMoneyIfZeroBalance;
     @Getter
     int minDistanceBetweenTowns;
+    @Getter
+    boolean useAsyncUpkeeps;
 
     public ConfigManager() {
         loadDefaults();
@@ -377,6 +379,7 @@ public class ConfigManager {
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
+            useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -402,6 +405,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;
