@@ -13,6 +13,7 @@ town-grace-period: 43200 #12 hours
 #ignore other plugins when checking if an explosion is cancelled
 #before reducing power
 explosion-override: false
+use-delayed-region-upkeep-in-unloaded-chunks: true
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 # the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
