@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
+import org.redcastlemedia.multitallented.civs.scheduler.RegionTickUtil;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.commands.*;
@@ -255,7 +255,6 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
         Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
         Bukkit.getPluginManager().registerEvents(new JammerEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);

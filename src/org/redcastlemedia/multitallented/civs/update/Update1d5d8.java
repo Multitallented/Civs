@@ -8,14 +8,31 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 
-public final class Update1d6d0 {
-    private Update1d6d0() {
+public final class Update1d5d8 {
+    private Update1d5d8() {
 
     }
 
     public static String update() {
+        updateConfig();
         updateItemTypes();
-        return "1.6.0";
+        return "1.5.8";
+    }
+
+    private static void updateConfig() {
+        File configFile = new File(Civs.getInstance().getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            return;
+        }
+        try {
+            FileConfiguration config = new YamlConfiguration();
+            config.load(configFile);
+            config.set("use-delayed-region-upkeep-in-unloaded-chunks", true);
+            config.save(configFile);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return;
+        }
     }
 
     private static void updateItemTypes() {

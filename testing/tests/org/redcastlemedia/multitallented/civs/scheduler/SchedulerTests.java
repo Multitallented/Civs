@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -51,6 +50,20 @@ public class SchedulerTests {
     }*/
 
     @Test
+    public void shouldGetCorrectChunksOfTheArray() {
+        int numberOfChunks = 10;
+        int listSize = 199;
+        int chunk = listSize / numberOfChunks;
+        for (int i = 0; i < numberOfChunks; i++) {
+            int start = chunk * i;
+            int end = (i == numberOfChunks - 1 ? listSize : chunk * (i + 1));
+            System.out.println(start + "/" + end);
+//            assertEquals(i * 2, start);
+//            assertEquals(i * 2 + 2, end);
+        }
+    }
+
+    @Test
     public void regionShouldTickWhenZeroPlayersAreOnline() {
         CommonScheduler commonScheduler = new CommonScheduler();
         RegionsTests.loadRegionTypeCobble();
@@ -85,8 +98,7 @@ public class SchedulerTests {
                 RegionsTests.getRadii(), effects, 0);
         regionManager.addRegion(region);
 
-        RegionTickTask regionTickTask = new RegionTickTask();
-        regionTickTask.onTwoSecondEvent(null);
+        RegionTickUtil.runUpkeeps();
     }
 
     @Test(expected = SuccessException.class)

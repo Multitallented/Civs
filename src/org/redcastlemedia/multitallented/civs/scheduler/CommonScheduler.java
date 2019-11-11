@@ -33,7 +33,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class CommonScheduler implements Runnable {
-    private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
@@ -54,8 +53,9 @@ public class CommonScheduler implements Runnable {
             }
 
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-            int chunk = players.size() / MAX_TPS;
-            for (int j = chunk * i; j < (i == MAX_TPS - 1 ? players.size() : chunk * (i + 1)); j++) {
+            int maxTPS = 5;
+            int chunk = players.size() / maxTPS;
+            for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
                 try {
                     Player player = (Player) players.toArray()[j];
                     playerInRegion(player);
@@ -69,9 +69,9 @@ public class CommonScheduler implements Runnable {
                 } catch (Exception e) {
 
                 }
-                //            Thread.yield();
             }
-            if (i == MAX_TPS - 1) {
+            RegionTickUtil.runUpkeeps();
+            if (i == maxTPS - 1) {
                 i = 0;
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {

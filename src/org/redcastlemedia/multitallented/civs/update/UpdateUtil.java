@@ -62,11 +62,11 @@ public final class UpdateUtil {
                     return newVersion;
                 }
             case "1.5.7":
-                Civs.logger.info("Updating configs from " + newVersion + " to 1.6.0");
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.5.8");
                 try {
-                    newVersion = Update1d6d0.update();
+                    newVersion = Update1d5d8.update();
                 } catch (Exception e) {
-                    Civs.logger.severe("[Error] Update to 1.6.0 interrupted");
+                    Civs.logger.severe("[Error] Update to 1.5.8 interrupted");
                     e.printStackTrace();
                     return newVersion;
                 }
