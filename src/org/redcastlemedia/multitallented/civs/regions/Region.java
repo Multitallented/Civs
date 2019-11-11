@@ -752,6 +752,9 @@ public class Region {
         if (checkTick && !shouldTick()) {
             return false;
         }
+        if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
+            return false;
+        }
 
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());

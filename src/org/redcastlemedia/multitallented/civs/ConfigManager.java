@@ -134,6 +134,8 @@ public class ConfigManager {
     int minDistanceBetweenTowns;
     @Getter
     boolean useAsyncUpkeeps;
+    @Getter
+    boolean disableRegionsInUnloadedChunks;
 
     public ConfigManager() {
         loadDefaults();
@@ -380,6 +382,7 @@ public class ConfigManager {
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
             useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
+            disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -405,6 +408,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        disableRegionsInUnloadedChunks = false;
         useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
