@@ -45,16 +45,16 @@ import java.util.Set;
 
 public class ProtectionHandler implements Listener {
 
-    @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-    }
+//    @EventHandler
+//    public void onChunkUnload(ChunkUnloadEvent event) {
+//        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+//    }
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.chunkLoads++;
         }
-        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+//        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
 
@@ -557,7 +557,10 @@ public class ProtectionHandler implements Listener {
     public void onMobSpawn(CreatureSpawnEvent event) {
         if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
-                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG) {
             return;
         }
         boolean cancel = event.isCancelled() || shouldBlockAction(event.getLocation(), null, "deny_mob_spawn");
