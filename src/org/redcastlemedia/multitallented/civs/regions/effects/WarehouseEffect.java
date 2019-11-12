@@ -352,10 +352,12 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
     private void tidyCentralChest(Region r, Inventory inventory, Location l) {
         if (inventory == null) {
+            RegionManager.getInstance().addCheckedRegion(r);
             return;
         }
         int firstEmpty = inventory.firstEmpty();
         if (firstEmpty < 9) {
+            RegionManager.getInstance().addCheckedRegion(r);
             return;
         }
 
