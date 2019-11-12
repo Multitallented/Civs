@@ -22,10 +22,11 @@ import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.ConfirmationMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.PeopleMenu;
+import org.redcastlemedia.multitallented.civs.menus.people.PeopleMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.PortMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
+import org.redcastlemedia.multitallented.civs.menus.people.PlayerMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionMenu;
@@ -247,6 +248,11 @@ public class MenuManager implements Listener {
             ConfirmationMenu confirmationMenu = new ConfirmationMenu();
             loadConfig(confirmationMenu);
             menus.put(confirmationMenu.getFileName(), confirmationMenu);
+        }
+        {
+            PlayerMenu playerMenu = new PlayerMenu();
+            loadConfig(playerMenu);
+            menus.put(playerMenu.getFileName(), playerMenu);
         }
     }
 

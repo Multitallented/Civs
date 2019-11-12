@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.menus.common;
+package org.redcastlemedia.multitallented.civs.menus.people;
 
 import java.util.*;
 import java.util.function.Predicate;
