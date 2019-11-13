@@ -32,6 +32,7 @@ import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeListMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeMenu;
+import org.redcastlemedia.multitallented.civs.menus.towns.GovListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.TownTypeMenu;
 
@@ -253,6 +254,11 @@ public class MenuManager implements Listener {
             PlayerMenu playerMenu = new PlayerMenu();
             loadConfig(playerMenu);
             menus.put(playerMenu.getFileName(), playerMenu);
+        }
+        {
+            GovListMenu govListMenu = new GovListMenu();
+            loadConfig(govListMenu);
+            menus.put(govListMenu.getFileName(), govListMenu);
         }
     }
 
