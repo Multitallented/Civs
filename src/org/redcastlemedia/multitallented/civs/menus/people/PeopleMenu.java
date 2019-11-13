@@ -63,6 +63,14 @@ public class PeopleMenu extends CustomMenu {
                     civilians.add(CivilianManager.getInstance().getCivilian(uuid));
                 }
             }
+        } else if (params.containsKey("uuid")) {
+            boolean filterOnline = params.containsKey("online");
+            for (UUID uuid : civilian.getFriends()) {
+                if (filterOnline && Bukkit.getPlayer(uuid) == null) {
+                    continue;
+                }
+                civilians.add(CivilianManager.getInstance().getCivilian(uuid));
+            }
         } else {
             alreadyOnlineFiltered = true;
             if (params.containsKey("online")) {
@@ -93,6 +101,7 @@ public class PeopleMenu extends CustomMenu {
             data.put("sort", "alphabetical");
         }
         data.put("civilians", civilians);
+        data.put("civMap", new HashMap<ItemStack, UUID>());
         int maxPage = (int) Math.ceil((double) civilians.size() / (double) itemsPerPage.get("people"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -176,6 +185,7 @@ public class PeopleMenu extends CustomMenu {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
                 skullMeta.setOwningPlayer(player);
             }
+            ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).put(itemStack, offlinePlayer.getUniqueId());
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
@@ -185,6 +195,7 @@ public class PeopleMenu extends CustomMenu {
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if ("take-action".equals(actionString)) {
+            UUID uuid = ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).get(clickedItem);
             Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
             Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
             Player player = Bukkit.getPlayer(civilian.getUuid());
@@ -195,6 +206,7 @@ public class PeopleMenu extends CustomMenu {
                 } else {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("region", region.getId());
+                    params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else if (town != null) {
@@ -203,10 +215,13 @@ public class PeopleMenu extends CustomMenu {
                 } else {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("town", town.getName());
+                    params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else {
-                MenuManager.getInstance().openMenu(player, "player", new HashMap<>());
+                HashMap<String, String> params = new HashMap<>();
+                params.put("uuid", uuid.toString());
+                MenuManager.getInstance().openMenu(player, "player", params);
             }
             return true;
         }

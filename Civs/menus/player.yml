@@ -20,7 +20,7 @@ items:
   money:
     index: 2
     icon: EMERALD
-    name: money # TODO
+    name: money
     actions: []
   towns:
     index: 3
@@ -28,11 +28,11 @@ items:
     name: towns
     # desc list of towns
     actions:
-      - menu:town-list?uuid=$uuid$
+      - menu:town-list?uuid=$uuid$ # TODO
   bounty:
     index: 4
     icon: SKELETON_SKULL
-    name: bounty # TODO
+    name: bounty
     # desc list of bounties
     actions: []
   add-friend:
@@ -54,31 +54,31 @@ items:
   points:
     index: 9
     icon: DIAMOND
-    name: points # TODO
+    name: points
     actions: []
   karma:
     index: 10
     icon: CREEPER_HEAD
-    name: karma # TODO
-    desc: karma-desc # TODO
+    name: karma
+    desc: karma-desc
     actions: []
   kills:
     index: 11
     icon: PLAYER_HEAD
-    name: kills # TODO
+    name: kills
     actions: []
   deaths:
     index: 12
     icon: SKELETON_SKULL
-    name: deaths # TODO
+    name: deaths
     actions: []
   killstreak:
     index: 13
     icon: IRON_SWORD
-    name: killstreak # TODO
+    name: killstreak
     actions: []
   highest-killstreak:
     index: 14
     icon: DIAMOND_SWORD
-    name: highest-killstreak # TODO
+    name: highest-killstreak
     actions: []
