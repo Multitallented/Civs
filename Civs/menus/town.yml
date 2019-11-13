@@ -68,28 +68,34 @@ items:
     name: destroy
     actions:
       - menu:confirmation?town=$town$
+  rename:
+    index: 7
+    icon: PAPER
+    name: rename-town
+    desc: rename-desc
+    actions: []
   back:
     index: 8
-  people: #TODO
+  people:
     index: 9
     icon: PLAYER_HEAD
     name: view-members
     actions:
       - menu:people?town=$town$
-  add-person: #TODO
+  add-person:
     index: 10
     icon: PLAYER_HEAD
     name: add-member
     actions:
       - menu:people?town=$town$&invite=true
-  leave-town: #TODO
+  leave-town:
     index: 11
     icon: OAK_DOOR
     name: leave-town
     actions:
       - leave-town
       - close
-  alliance-invites: #TODO
+  alliance-invites:
     index: 12
     icon: GOLDEN_SWORD
     name: town-ally-invites
@@ -105,14 +111,14 @@ items:
   bank:
     index: 14
     icon: EMERALD_BLOCK
-    name: town-bank-balance #TODO
+    name: town-bank-balance
     # desc bank balance, town tax, and town bank desc
     actions: []
-  join-revolt: #TODO
+  join-revolt:
     index: 15
     icon: TORCH
     name: revolt
-    # desc revolt-desc and revolt-display
+    desc: revolt-desc
     actions:
       - join-revolt
       - refresh
