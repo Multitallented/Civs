@@ -1,0 +1,126 @@
+size: 18
+name: Town
+# variables
+#  town
+#  selectedTown
+# actions
+#  ally: send an alliance invite
+#  unally: break alliance
+#  leave-town
+#  join-revolt
+#  leave-revolt
+items:
+  icon:
+    index: 0
+    # icon: town shop-icon
+    # name: town name
+    # desc: town desc
+    actions: []
+  power-protected:
+    index: 1
+    icon: GREEN_WOOL
+    name: town-power #TODO
+    desc: power-history #TODO
+    actions: []
+  power-unprotected:
+    index: 1
+    icon: RED_WOOL
+    name: town-power #TODO
+    desc: grace-period #TODO
+    actions: []
+  location: #TODO
+    index: 2
+    icon: COMPASS
+    # name location
+    actions: []
+  set-ally: #TODO
+    index: 3
+    icon: GOLDEN_SWORD
+    name: town-ally #TODO
+    # desc which towns will be allied
+    actions:
+      - ally
+      - refresh
+  remove-ally: #TODO
+    index: 3
+    icon: CREEPER_HEAD
+    name: town-unally #TODO
+    # desc which towns will be allied
+    actions:
+      - unally
+      - refresh
+  population:
+    index: 4
+    icon: PLAYER_HEAD
+    name: population
+    desc: pop-desc # TODO
+    actions:
+      - menu:people?town=$town$
+  bounty:
+    index: 5
+    icon: SKELETON_SKULL
+    name: bounty # TODO
+    # desc top 5 list of bounties
+    actions: []
+  destroy: # TODO
+    index: 6
+    icon: BARRIER
+    name: destroy
+    actions:
+      - menu:confirmation?town=$town$
+  back:
+    index: 8
+  people: #TODO
+    index: 9
+    icon: PLAYER_HEAD
+    name: view-members
+    actions:
+      - menu:people?town=$town$
+  add-person: #TODO
+    index: 10
+    icon: PLAYER_HEAD
+    name: add-member
+    actions:
+      - menu:people?town=$town$&invite=true
+  leave-town: #TODO
+    index: 11
+    icon: OAK_DOOR
+    name: leave-town
+    actions:
+      - leave-town
+      - close
+  alliance-invites: #TODO
+    index: 12
+    icon: GOLDEN_SWORD
+    name: town-ally-invites
+    actions:
+      - menu:town-invites?town=$town$
+  government-type:
+    index: 13
+    # icon: gov icon
+    # name: gov name
+    # desc: gov desc
+    actions:
+      - menu:gov-list?town=$town$
+  bank:
+    index: 14
+    icon: EMERALD_BLOCK
+    name: town-bank-balance #TODO
+    # desc bank balance, town tax, and town bank desc
+    actions: []
+  join-revolt: #TODO
+    index: 15
+    icon: TORCH
+    name: revolt
+    # desc revolt-desc and revolt-display
+    actions:
+      - join-revolt
+      - refresh
+  leave-revolt:
+    index: 15
+    icon: CHARCOAL
+    name: revolt
+    # desc cancel-revolt & revolt-display
+    actions:
+      - leave-revolt
+      - refresh

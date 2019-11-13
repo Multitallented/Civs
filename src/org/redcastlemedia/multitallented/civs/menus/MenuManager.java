@@ -34,6 +34,7 @@ import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeListMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.GovListMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
+import org.redcastlemedia.multitallented.civs.menus.towns.TownMenu;
 import org.redcastlemedia.multitallented.civs.menus.towns.TownTypeMenu;
 
 import lombok.Getter;
@@ -259,6 +260,11 @@ public class MenuManager implements Listener {
             GovListMenu govListMenu = new GovListMenu();
             loadConfig(govListMenu);
             menus.put(govListMenu.getFileName(), govListMenu);
+        }
+        {
+            TownMenu townMenu = new TownMenu();
+            loadConfig(townMenu);
+            menus.put(townMenu.getFileName(), townMenu);
         }
     }
 
