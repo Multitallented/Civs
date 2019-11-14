@@ -6,7 +6,6 @@ name: Town
 # actions
 #  ally: send an alliance invite
 #  unally: break alliance
-#  leave-town
 #  join-revolt
 #  leave-revolt
 items:
@@ -93,7 +92,7 @@ items:
     icon: OAK_DOOR
     name: leave-town
     actions:
-      - leave-town
+      - menu:confirmation?town=$town$&type=leave
       - close
   alliance-invites:
     index: 12
