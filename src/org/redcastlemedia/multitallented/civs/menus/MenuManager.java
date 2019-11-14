@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.menus.people.PeopleMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.PortMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
+import org.redcastlemedia.multitallented.civs.menus.common.TutorialChoosePathMenu;
 import org.redcastlemedia.multitallented.civs.menus.people.PlayerMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
@@ -271,6 +272,11 @@ public class MenuManager implements Listener {
             MemberActionMenu memberActionMenu = new MemberActionMenu();
             loadConfig(memberActionMenu);
             menus.put(memberActionMenu.getFileName(), memberActionMenu);
+        }
+        {
+            TutorialChoosePathMenu tutorialChoosePathMenu = new TutorialChoosePathMenu();
+            loadConfig(tutorialChoosePathMenu);
+            menus.put(tutorialChoosePathMenu.getFileName(), tutorialChoosePathMenu);
         }
     }
 
