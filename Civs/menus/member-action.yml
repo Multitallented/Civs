@@ -8,7 +8,7 @@ name: MemberAction
 # actions
 #  vote
 items:
-  icon: #TODO
+  icon:
     index: 0
     # icon: player head
     # name: player name
@@ -21,7 +21,7 @@ items:
     index: 9
     icon: GOLD_BLOCk
     name: set-owner
-    desc: owner-description # TODO
+    desc: owner-description
     actions:
       - command:cv setowner $uuid$ $key$
       - refresh
