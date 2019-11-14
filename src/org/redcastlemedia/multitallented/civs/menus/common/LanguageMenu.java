@@ -15,10 +15,12 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
+@CivsMenu(name = "language")
 public class LanguageMenu extends CustomMenu {
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
@@ -77,10 +79,5 @@ public class LanguageMenu extends CustomMenu {
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
         return data;
-    }
-
-    @Override
-    public String getFileName() {
-        return "language";
     }
 }

@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -20,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+@CivsMenu(name = "people")
 public class PeopleMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -226,10 +228,5 @@ public class PeopleMenu extends CustomMenu {
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
-    }
-
-    @Override
-    public String getFileName() {
-        return "people";
     }
 }

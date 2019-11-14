@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -26,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
+@CivsMenu(name = "main")
 public class MainMenu extends CustomMenu {
     @Override
     public String beforeOpenMenu(Civilian civilian) {
@@ -103,10 +105,5 @@ public class MainMenu extends CustomMenu {
             }
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    @Override
-    public String getFileName() {
-        return "main";
     }
 }

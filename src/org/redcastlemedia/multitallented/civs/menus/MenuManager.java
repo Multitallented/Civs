@@ -1,7 +1,13 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,28 +22,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
-import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceListMenu;
-import org.redcastlemedia.multitallented.civs.menus.alliance.AllianceMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.CommunityMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.ConfirmationMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.LanguageMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.MainMenu;
-import org.redcastlemedia.multitallented.civs.menus.people.MemberActionMenu;
-import org.redcastlemedia.multitallented.civs.menus.people.PeopleMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.PortMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.RecipeMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.ShopMenu;
-import org.redcastlemedia.multitallented.civs.menus.common.TutorialChoosePathMenu;
-import org.redcastlemedia.multitallented.civs.menus.people.PlayerMenu;
-import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
-import org.redcastlemedia.multitallented.civs.menus.regions.RegionListMenu;
-import org.redcastlemedia.multitallented.civs.menus.regions.RegionMenu;
-import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeListMenu;
-import org.redcastlemedia.multitallented.civs.menus.regions.RegionTypeMenu;
-import org.redcastlemedia.multitallented.civs.menus.towns.GovListMenu;
-import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
-import org.redcastlemedia.multitallented.civs.menus.towns.TownMenu;
-import org.redcastlemedia.multitallented.civs.menus.towns.TownTypeMenu;
+import org.reflections.Reflections;
 
 import lombok.Getter;
 
@@ -168,115 +153,16 @@ public class MenuManager implements Listener {
             return;
         }
 
-        {
-            AllianceMenu allianceMenu = new AllianceMenu();
-            loadConfig(allianceMenu);
-            menus.put(allianceMenu.getFileName(), allianceMenu);
-        }
-        {
-            SelectTownMenu selectTownMenu = new SelectTownMenu();
-            loadConfig(selectTownMenu);
-            menus.put(selectTownMenu.getFileName(), selectTownMenu);
-        }
-        {
-            MainMenu mainMenu = new MainMenu();
-            loadConfig(mainMenu);
-            menus.put(mainMenu.getFileName(), mainMenu);
-        }
-        {
-            LanguageMenu languageMenu = new LanguageMenu();
-            loadConfig(languageMenu);
-            menus.put(languageMenu.getFileName(), languageMenu);
-        }
-        {
-            RegionListMenu regionListMenu = new RegionListMenu();
-            loadConfig(regionListMenu);
-            menus.put(regionListMenu.getFileName(), regionListMenu);
-        }
-        {
-            BlueprintsMenu blueprintsMenu = new BlueprintsMenu();
-            loadConfig(blueprintsMenu);
-            menus.put(blueprintsMenu.getFileName(), blueprintsMenu);
-        }
-        {
-            CommunityMenu communityMenu = new CommunityMenu();
-            loadConfig(communityMenu);
-            menus.put(communityMenu.getFileName(), communityMenu);
-        }
-        {
-            AllianceListMenu allianceListMenu = new AllianceListMenu();
-            loadConfig(allianceListMenu);
-            menus.put(allianceListMenu.getFileName(), allianceListMenu);
-        }
-        {
-            ShopMenu shopMenu = new ShopMenu();
-            loadConfig(shopMenu);
-            menus.put(shopMenu.getFileName(), shopMenu);
-        }
-        {
-            RegionTypeMenu regionTypeMenu = new RegionTypeMenu();
-            loadConfig(regionTypeMenu);
-            menus.put(regionTypeMenu.getFileName(), regionTypeMenu);
-        }
-        {
-            TownTypeMenu townTypeMenu = new TownTypeMenu();
-            loadConfig(townTypeMenu);
-            menus.put(townTypeMenu.getFileName(), townTypeMenu);
-        }
-        {
-            RegionTypeListMenu regionTypeListMenu = new RegionTypeListMenu();
-            loadConfig(regionTypeListMenu);
-            menus.put(regionTypeListMenu.getFileName(), regionTypeListMenu);
-        }
-        {
-            RecipeMenu recipeMenu = new RecipeMenu();
-            loadConfig(recipeMenu);
-            menus.put(recipeMenu.getFileName(), recipeMenu);
-        }
-        {
-            RegionMenu regionMenu = new RegionMenu();
-            loadConfig(regionMenu);
-            menus.put(regionMenu.getFileName(), regionMenu);
-        }
-        {
-            PortMenu portMenu = new PortMenu();
-            loadConfig(portMenu);
-            menus.put(portMenu.getFileName(), portMenu);
-        }
-        {
-            PeopleMenu peopleMenu = new PeopleMenu();
-            loadConfig(peopleMenu);
-            menus.put(peopleMenu.getFileName(), peopleMenu);
-        }
-        {
-            ConfirmationMenu confirmationMenu = new ConfirmationMenu();
-            loadConfig(confirmationMenu);
-            menus.put(confirmationMenu.getFileName(), confirmationMenu);
-        }
-        {
-            PlayerMenu playerMenu = new PlayerMenu();
-            loadConfig(playerMenu);
-            menus.put(playerMenu.getFileName(), playerMenu);
-        }
-        {
-            GovListMenu govListMenu = new GovListMenu();
-            loadConfig(govListMenu);
-            menus.put(govListMenu.getFileName(), govListMenu);
-        }
-        {
-            TownMenu townMenu = new TownMenu();
-            loadConfig(townMenu);
-            menus.put(townMenu.getFileName(), townMenu);
-        }
-        {
-            MemberActionMenu memberActionMenu = new MemberActionMenu();
-            loadConfig(memberActionMenu);
-            menus.put(memberActionMenu.getFileName(), memberActionMenu);
-        }
-        {
-            TutorialChoosePathMenu tutorialChoosePathMenu = new TutorialChoosePathMenu();
-            loadConfig(tutorialChoosePathMenu);
-            menus.put(tutorialChoosePathMenu.getFileName(), tutorialChoosePathMenu);
+        Reflections reflections = new Reflections("org.redcastlemedia.multitallented.civs.menus");
+        Set<Class<? extends CustomMenu>> menuClasses = reflections.getSubTypesOf(CustomMenu.class);
+        for (Class<? extends CustomMenu> menuClass : menuClasses) {
+            try {
+                CustomMenu currentMenu = menuClass.newInstance();
+                loadConfig(currentMenu);
+                menus.put(menuClass.getAnnotation(CivsMenu.class).name(), currentMenu);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -308,9 +194,10 @@ public class MenuManager implements Listener {
         if (menuFolder.exists()) {
             menuFolder.mkdir();
         }
-        File menuFile = new File(menuFolder, customMenu.getFileName() + ".yml");
+        String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
+        File menuFile = new File(menuFolder, menuName + ".yml");
         if (!menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
+            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
             return;
         }
 
@@ -318,7 +205,7 @@ public class MenuManager implements Listener {
         try {
             config.load(menuFile);
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + customMenu.getFileName());
+            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
         }
         int newSize = config.getInt("size", 36);
         int size = MenuUtil.getInventorySize(newSize);
@@ -389,7 +276,8 @@ public class MenuManager implements Listener {
         if (!history.containsKey(uuid)) {
             history.put(uuid, new ArrayList<>());
         }
-        MenuHistoryState menuHistoryState = new MenuHistoryState(customMenu.getFileName(), data);
+        String name = customMenu.getClass().getAnnotation(CivsMenu.class).name();
+        MenuHistoryState menuHistoryState = new MenuHistoryState(name, data);
         history.get(uuid).add(menuHistoryState);
     }
     public static MenuHistoryState popLastMenu(UUID uuid) {

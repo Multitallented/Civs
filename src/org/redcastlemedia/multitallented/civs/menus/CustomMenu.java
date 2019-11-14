@@ -132,7 +132,6 @@ public abstract class CustomMenu {
     public String getName() {
         return this.name;
     }
-    public abstract String getFileName();
 
     public boolean doActionsAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
         if (!actions.containsKey(civilian.getUuid())) {

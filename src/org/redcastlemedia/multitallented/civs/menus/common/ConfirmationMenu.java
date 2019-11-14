@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -26,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
+@CivsMenu(name = "confirmation")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -183,10 +185,5 @@ public class ConfirmationMenu extends CustomMenu {
         }
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUY, civItem.getProcessedName());
         CivilianManager.getInstance().saveCivilian(civilian);
-    }
-
-    @Override
-    public String getFileName() {
-        return "confirmation";
     }
 }

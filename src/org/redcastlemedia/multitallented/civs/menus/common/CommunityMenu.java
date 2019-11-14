@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -14,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import java.util.HashMap;
 import java.util.Map;
 
+@CivsMenu(name = "community")
 public class CommunityMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -72,11 +74,5 @@ public class CommunityMenu extends CustomMenu {
             }
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-
-    @Override
-    public String getFileName() {
-        return "community";
     }
 }
