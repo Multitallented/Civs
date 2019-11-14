@@ -19,32 +19,32 @@ items:
   power-protected:
     index: 1
     icon: GREEN_WOOL
-    name: town-power #TODO
+    name: town-power
     desc: power-history #TODO
     actions: []
   power-unprotected:
     index: 1
     icon: RED_WOOL
-    name: town-power #TODO
-    desc: grace-period #TODO
+    name: town-power
+    desc: grace-period
     actions: []
-  location: #TODO
+  location:
     index: 2
     icon: COMPASS
     # name location
     actions: []
-  set-ally: #TODO
+  set-ally:
     index: 3
     icon: GOLDEN_SWORD
-    name: town-ally #TODO
+    name: town-ally
     # desc which towns will be allied
     actions:
       - ally
       - refresh
-  remove-ally: #TODO
+  remove-ally:
     index: 3
     icon: CREEPER_HEAD
-    name: town-unally #TODO
+    name: town-unally
     # desc which towns will be allied
     actions:
       - unally
@@ -53,16 +53,16 @@ items:
     index: 4
     icon: PLAYER_HEAD
     name: population
-    desc: pop-desc # TODO
+    desc: pop-desc
     actions:
       - menu:people?town=$town$
   bounty:
     index: 5
     icon: SKELETON_SKULL
-    name: bounty # TODO
+    name: bounty
     # desc top 5 list of bounties
     actions: []
-  destroy: # TODO
+  destroy:
     index: 6
     icon: BARRIER
     name: destroy

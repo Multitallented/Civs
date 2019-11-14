@@ -36,6 +36,7 @@ public final class Update1d6d0 {
                 config.set("sort-points", "Sort by kill points");
                 config.set("sort-rank", "Sort by rank");
                 config.set("karma-desc", "Karma is a measure of infamy. The lower the karma, the higher the reward for your death.");
+                config.set("power-history", "Power history over the last $1 days:");
                 config.save(enFile);
             } catch (Exception e) {
 

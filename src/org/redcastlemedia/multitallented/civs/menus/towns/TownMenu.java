@@ -2,11 +2,15 @@ package org.redcastlemedia.multitallented.civs.menus.towns;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -36,6 +40,15 @@ public class TownMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        Town selectedTown = null;
+        if (selectedTownName != null) {
+            selectedTown = TownManager.getInstance().getTown(selectedTownName);
+        } else {
+            selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
+        }
+        boolean isAllied = selectedTown != null && selectedTown != town &&
+                AllianceManager.getInstance().isAllied(selectedTown, town);
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
                 town.getPeople().get(civilian.getUuid()).contains("owner");
@@ -65,37 +78,96 @@ public class TownMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("power-protected".equals(menuIcon.getKey())) {
+            if (town.getPower() < 1) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", "" + town.getPower())
+                    .replace("$2", "" + town.getMaxPower()));
+            // TODO power history
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("power-unprotected".equals(menuIcon.getKey())) {
+            if (town.getPower() > 0) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", "" + town.getPower())
+                    .replace("$2", "" + town.getMaxPower()));
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc()).replace("$1",
+                    (TownManager.getInstance().getRemainingGracePeriod(town) / 1000) + ""));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("location".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
+            if (town.getPeople().containsKey(civilian.getUuid())) {
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                World world = town.getLocation().getWorld();
+                String worldName = world == null ? "null" : world.getName();
+                cvItem.getLore().add(worldName + " " +
+                        (int) town.getLocation().getX() + "x " +
+                        (int) town.getLocation().getY() + "y " +
+                        (int) town.getLocation().getZ() + "z");
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("set-ally".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
+            if (selectedTown != null && selectedTown != town && !isAllied) {
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        menuIcon.getName()).replace("$1", town.getName()));
+                cvItem.getLore().clear();
+                cvItem.getLore().add(selectedTown.getName());
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("remove-ally".equals(menuIcon.getKey())) {
+            if (!isAllied) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", town.getName()));
+            cvItem.getLore().clear();
+            cvItem.getLore().add(selectedTown.getName());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("population".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            cvItem.getLore().clear();
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc())
+                    .replace("$1", town.getPopulation() + "")
+                    .replace("$2", town.getHousing() + "")
+                    .replace("$3", town.getVillagers() + ""));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", town.getName()));
+            cvItem.getLore().clear();
+            int i=0;
+            for (Bounty bounty : town.getBounties()) {
+                OfflinePlayer op = Bukkit.getOfflinePlayer(bounty.getIssuer());
+                cvItem.getLore().add(op.getName() + ": " + Util.getNumberFormat(bounty.getAmount(), civilian.getLocale()));
+                if (i>5) {
+                    break;
+                }
+                i++;
+            }
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
