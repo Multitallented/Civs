@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.towns;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -17,12 +14,14 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.TownActionMenu;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class TownMenu extends CustomMenu {
     @Override
@@ -299,16 +298,65 @@ public class TownMenu extends CustomMenu {
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
+        Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+        String townName = town.getName();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        Town selectedTown = null;
+        if (selectedTownName != null) {
+            selectedTown = TownManager.getInstance().getTown(selectedTownName);
+        } else {
+            selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
+        }
         if (actionString.equals("ally")) {
-
+            if (selectedTown == null) {
+                return true;
+            }
+            town.getAllyInvites().add(selectedTown.getName());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-ally-request-sent").replace("$1", townName));
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                if (town.getRawPeople().get(uuid).contains("owner")) {
+                    Player pSend = Bukkit.getPlayer(uuid);
+                    if (pSend != null && pSend.isOnline()) {
+                        pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                                "town-ally-request-sent").replace("$1", townName));
+                    }
+                }
+            }
+            return true;
         } else if (actionString.equals("unally")) {
-
+            if (selectedTown == null) {
+                return true;
+            }
+            AllianceManager.getInstance().unAlly(selectedTown, town);
+            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance()
+                        .getTranslation(civilian.getLocale(), "town-ally-removed")
+                        .replace("$1", selectedTown.getName())
+                        .replace("$2", townName));
+            }
+            return true;
         } else if (actionString.equals("leave-town")) {
-
+            // TODO leave confirmation menu
         } else if (actionString.equals("join-revolt")) {
+            CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
+            if (!player.getInventory().contains(costItem.createItemStack())) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        civilian.getLocale(),
+                        "item-cost").replace("$1", "" + costItem.getQty())
+                        .replace("$2", costItem.getMat().name()));
+                return true;
+            }
 
+            player.getInventory().removeItem(costItem.createItemStack());
+            town.getRevolt().add(civilian.getUuid());
+            TownManager.getInstance().saveTown(town);
+            return true;
         } else if (actionString.equals("leave-revolt")) {
-
+            town.getRevolt().remove(civilian.getUuid());
+            TownManager.getInstance().saveTown(town);
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
     }

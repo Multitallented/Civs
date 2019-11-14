@@ -20,7 +20,7 @@ items:
     index: 1
     icon: GREEN_WOOL
     name: town-power
-    desc: power-history #TODO
+    # desc: power-history #TODO
     actions: []
   power-unprotected:
     index: 1
