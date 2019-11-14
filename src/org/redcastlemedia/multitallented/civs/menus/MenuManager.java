@@ -28,7 +28,6 @@ import lombok.Getter;
 
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
-    private static boolean cycleItemsRunning = false;
     public static HashMap<UUID, CycleGUI> cycleGuis = new HashMap<>();
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
@@ -166,25 +165,6 @@ public class MenuManager implements Listener {
         }
     }
 
-    public static void addCycleItem(UUID uuid, int index, ItemStack is) {
-        if (cycleGuis.containsKey(uuid)) {
-            cycleGuis.get(uuid).addCycleItem(index, is);
-        } else {
-            CycleGUI currentGUI = new CycleGUI(uuid);
-            currentGUI.addCycleItem(index, is);
-            cycleGuis.put(uuid, currentGUI);
-        }
-    }
-
-    public static void addCycleItems(UUID uuid, int index, List<ItemStack> items) {
-        if (cycleGuis.containsKey(uuid)) {
-            cycleGuis.get(uuid).putCycleItems(index, items);
-        } else {
-            CycleGUI currentGUI = new CycleGUI(uuid);
-            currentGUI.putCycleItems(index, items);
-            cycleGuis.put(uuid, currentGUI);
-        }
-    }
     private synchronized static void clearCycleItems(UUID uuid) {
         cycleGuis.remove(uuid);
     }
