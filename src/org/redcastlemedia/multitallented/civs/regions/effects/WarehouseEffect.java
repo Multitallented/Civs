@@ -232,7 +232,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             return;
         }
         for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
-            if (re.getFailingUpkeeps().isEmpty()) {
+            if (re.getFailingUpkeeps().isEmpty() || !re.isWarehouseEnabled()) {
                 continue;
             }
             boolean hasMember = false;

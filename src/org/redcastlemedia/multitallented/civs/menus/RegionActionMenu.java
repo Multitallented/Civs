@@ -167,7 +167,7 @@ public class RegionActionMenu extends Menu {
 
         //0 Icon
         {
-            CVItem cvItem = regionType.getShopIcon().clone();
+            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             lore = new ArrayList<>(Util.textWrap(regionType.getDescription(civilian.getLocale())));
             cvItem.setLore(lore);
             inventory.setItem(0, cvItem.createItemStack());
@@ -175,7 +175,7 @@ public class RegionActionMenu extends Menu {
 
         //1 Region Type button
         {
-            CVItem cvItemType = regionType.getShopIcon().clone();
+            CVItem cvItemType = regionType.getShopIcon(civilian.getLocale());
             cvItemType.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "region-type"));
             lore = new ArrayList<>();

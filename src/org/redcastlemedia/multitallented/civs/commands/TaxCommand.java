@@ -30,7 +30,7 @@ public class TaxCommand implements CivCommand {
         //2 amount
 
         double amount = OwnershipUtil.invalidAmountOrTown(player, args, civilian);
-        if (amount < 1) {
+        if (amount < 0) {
             return true;
         }
 

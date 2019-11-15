@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ public abstract class CivItem extends CVItem {
     private final boolean isInShop;
     private boolean isPlaceable = false;
     private final List<String> groups;
-    @Getter
     private final CVItem shopIcon;
     @Getter
     private final int level;
@@ -38,6 +38,12 @@ public abstract class CivItem extends CVItem {
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
     public boolean getInShop() { return isInShop; }
+    public CVItem getShopIcon(String locale) {
+        CVItem returnItem =  shopIcon.clone();
+        returnItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale,
+                this.getProcessedName() + "-name"));
+        return returnItem;
+    }
 
     public double getPrice() {
         ConfigManager configManager = ConfigManager.getInstance();

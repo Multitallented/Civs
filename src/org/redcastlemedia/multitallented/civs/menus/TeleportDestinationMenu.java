@@ -72,7 +72,7 @@ public class TeleportDestinationMenu extends Menu {
                 break;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
-            CVItem regionIcon = regionType.getShopIcon().clone();
+            CVItem regionIcon = regionType.getShopIcon(civilian.getLocale());
             regionIcon.getLore().clear();
             regionIcon.getLore().add(currentRegion.getId());
             inventory.setItem(index, regionIcon.createItemStack());

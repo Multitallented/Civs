@@ -13,7 +13,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-public class AllianceTests {
+public class AllianceMenuTests {
     private Town town1;
     private Town town2;
     private Town town3;

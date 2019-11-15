@@ -141,7 +141,7 @@ public class ShopMenu extends Menu {
 
         int i=9;
         for (CivItem civItem : shopItems) {
-            CVItem civItem1 = civItem.getShopIcon().clone();
+            CVItem civItem1 = civItem.getShopIcon(civilian.getLocale());
             if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                 FolderType folderType = (FolderType) civItem;
                 if (!folderType.getVisible() &&

@@ -52,7 +52,7 @@ max_power-buff-desc: 最大能量增加$1%
 cost-buff-desc: 所有$2的偿还消耗减少$1%
 shop: 商店
 buy-item: 点击购买
-price: 价格
+price: 价格 $1
 buy: 购买 $1
 cancel: 取消
 item-bought: 恭喜你! 你用 $2 购买了 $1

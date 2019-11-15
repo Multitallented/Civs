@@ -245,7 +245,7 @@ public class ItemManager {
         if (config.isSet("towns")) {
             townSet = new HashSet<>(config.getStringList("towns"));
         } else {
-            townSet = null;
+            townSet = new HashSet<>();
         }
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {
@@ -543,8 +543,8 @@ public class ItemManager {
         CivilianManager.getInstance().saveCivilian(civilian);
     }
 
-    public HashSet<CivItem> getItemsByLevel(int level) {
-        HashSet<CivItem> itemSet = new HashSet<>();
+    public ArrayList<CivItem> getItemsByLevel(int level) {
+        ArrayList<CivItem> itemSet = new ArrayList<>();
         for (CivItem civItem : this.itemTypes.values()) {
             if (civItem.getLevel() == level && civItem.getInShop()) {
                 itemSet.add(civItem);

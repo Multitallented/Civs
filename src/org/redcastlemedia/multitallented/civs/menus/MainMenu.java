@@ -58,7 +58,7 @@ public class MainMenu extends Menu {
         }
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "guide")))) {
             event.getWhoClicked().closeInventory();
-            printTutorial(event.getWhoClicked(), civilian);
+            TutorialManager.getInstance().printTutorial(event.getWhoClicked(), civilian);
         }
         if (itemName.equals(ChatColor.stripColor(localeManager.getTranslation(locale, "shop")))) {
             appendHistory(civilian.getUuid(), MENU_NAME);
@@ -208,7 +208,7 @@ public class MainMenu extends Menu {
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            CVItem townIcon = townType.getShopIcon().clone();
+            CVItem townIcon = townType.getShopIcon(civilian.getLocale());
             townIcon.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "town");
@@ -222,7 +222,7 @@ public class MainMenu extends Menu {
         Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
         if (region != null) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem regionIcon = regionType.getShopIcon().clone();
+            CVItem regionIcon = regionType.getShopIcon(civilian.getLocale());
             regionIcon.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-name"));
             ArrayList<String> lore = new ArrayList<>();
@@ -235,14 +235,4 @@ public class MainMenu extends Menu {
 
         return inventory;
     }
-
-    private void printTutorial(HumanEntity player, Civilian civilian) {
-        String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
-        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
-        TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
-        player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));
-        player.sendMessage(tutorialUrl);
-        player.sendMessage(Util.parseColors(ConfigManager.getInstance().getBottomGuideSpacer()));
-    }
-
 }

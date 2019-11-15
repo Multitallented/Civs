@@ -179,7 +179,7 @@ public class TownListMenu extends Menu {
         for (int k=startIndex; k<towns.size() && k<startIndex+36; k++) {
             Town town = towns.get(k);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            CVItem cvItem1 = townType.getShopIcon().clone();
+            CVItem cvItem1 = townType.getShopIcon(civilian.getLocale());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "town-power").replace("$1", "" + town.getPower())
