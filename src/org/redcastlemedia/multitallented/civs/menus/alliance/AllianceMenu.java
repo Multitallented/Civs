@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -24,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsMenu(name = "alliance")
 public class AllianceMenu extends CustomMenu {
 
     @Override
@@ -82,11 +84,6 @@ public class AllianceMenu extends CustomMenu {
             return super.createItemStack(civilian, menuIcon, count);
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    @Override
-    public String getFileName() {
-        return "alliance";
     }
 
     @Override

@@ -13,7 +13,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
+import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -25,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
+@CivsMenu(name = "confirmation")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -47,21 +50,21 @@ public class ConfirmationMenu extends CustomMenu {
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        String type = (String) MenuManager.getData(civilian.getUuid(), "type");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("confirm".equals(actionString)) {
-            String type = (String) MenuManager.getData(civilian.getUuid(), "type");
             CivItem civItem = (CivItem) MenuManager.getData(civilian.getUuid(), "item");
             Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
             Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             if (type == null) {
                 return true;
             }
             if ("buy".equals(type) && civItem != null) {
                 buyItem(civItem, player, civilian);
-                return true;
+                player.closeInventory();
             } else if ("destroy".equals(type)) {
                 destroyRegionOrTown(region, town, civilian, player);
-                return true;
+                player.closeInventory();
             } else if ("leave".equals(type)) {
                 if (town != null) {
                     town.getRawPeople().remove(civilian.getUuid());
@@ -69,8 +72,23 @@ public class ConfirmationMenu extends CustomMenu {
                             "you-left-town").replace("$1", town.getName()));
                     TownManager.getInstance().saveTown(town);
                 }
+                player.closeInventory();
+            } else if ("tutorial".equals(type)) {
+                civilian.setTutorialIndex(0);
+                civilian.setTutorialProgress(0);
+                civilian.setAskForTutorial(false);
+                CivilianManager.getInstance().saveCivilian(civilian);
+                TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
+                player.openInventory(MainMenu.createMenu(civilian));
             }
             return true;
+        } else if ("reject".equals(actionString)) {
+            if ("tutorial".equals(type)) {
+                civilian.setAskForTutorial(false);
+                CivilianManager.getInstance().saveCivilian(civilian);
+                player.openInventory(MainMenu.createMenu(civilian));
+                return true;
+            }
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }
@@ -167,10 +185,5 @@ public class ConfirmationMenu extends CustomMenu {
         }
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUY, civItem.getProcessedName());
         CivilianManager.getInstance().saveCivilian(civilian);
-    }
-
-    @Override
-    public String getFileName() {
-        return "confirmation";
     }
 }

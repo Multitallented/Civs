@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus.towns;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,12 +10,14 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+@CivsMenu(name = "select-town")
 public class SelectTownMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -25,7 +28,15 @@ public class SelectTownMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
-        Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+        Set<Town> towns;
+        if (params.containsKey("townList")) {
+            towns = TownManager.getInstance().getOwnedTowns(civilian);
+        } else {
+            towns = new HashSet<>();
+            for (String townName : params.get("townList").split(",")) {
+                towns.add(TownManager.getInstance().getTown(townName));
+            }
+        }
         int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("towns"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -60,10 +71,5 @@ public class SelectTownMenu extends CustomMenu {
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    @Override
-    public String getFileName() {
-        return "select-town";
     }
 }

@@ -108,6 +108,7 @@ power-input-title: Power Input
 power-input: "This region consumes $1 power"
 power-output-title: Power Output
 power-output: "This region generates $1 power"
+power-history: "Power history over the last $1 days:"
 too-close-region: "Your $1 would be too close to a $2"
 too-close-town: "Your $1 would be too close to another town"
 town-created: "$1 has been created!"
@@ -122,6 +123,10 @@ add-member: "Add member"
 operation: "Operation"
 region-working: "Your region is running smoothly"
 region-not-working: "Your region is missing something"
+filter-online: "Filter for only online players"
+sort-alphabetical: "Sort alphabetical"
+sort-points: "Sort by kill points"
+sort-rank: "Sort by rank"
 owner: Owner
 member: Member
 guest: Guest
@@ -278,6 +283,7 @@ killstreak-points: "Killstreak bonus: $1"
 killjoy-points: "Killjoy bonus: $1"
 total-points: "Total points: $1"
 karma: "Karma: $1"
+karma-desc: "Karma is a measure of infamy. The lower the karma, the higher the reward for your death."
 karma-gained: "Karma: +$1, $2 money gained"
 karma-lost: "Karma: -$1, $2 money lost"
 ann-limit: "[Info] You have $1 of $2 $3 buildings."
