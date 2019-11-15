@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.text.ParseException;
 
+@CivsCommand(keys = { "bounty" })
 public class BountyCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {

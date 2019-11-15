@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.UUID;
 
+@CivsCommand(keys = { "setguest" })
 public class SetGuestCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {

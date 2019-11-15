@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 
+@CivsCommand(keys = { "advancetut" })
 public class TutorialAdvanceCommand implements CivCommand {
 
     @Override

@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+@CivsCommand(keys = { "anticamp" })
 public class AntiCampCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
