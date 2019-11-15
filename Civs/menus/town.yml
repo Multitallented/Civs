@@ -30,7 +30,8 @@ items:
   location:
     index: 2
     icon: COMPASS
-    # name location
+    name: location
+    # desc location world x y z
     actions: []
   set-ally:
     index: 3

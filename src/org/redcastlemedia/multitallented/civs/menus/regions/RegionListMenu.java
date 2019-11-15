@@ -48,6 +48,7 @@ public class RegionListMenu extends CustomMenu {
                 }
             }
         }
+        data.put("regionMap", new HashMap<ItemStack, Region>());
         data.put("region", regions);
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("regions"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
@@ -67,8 +68,7 @@ public class RegionListMenu extends CustomMenu {
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (clickedItem.getItemMeta() != null && clickedItem.getItemMeta().getLore() != null &&
                 !clickedItem.getItemMeta().getLore().isEmpty()) {
-            String regionId = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
-            Region region = RegionManager.getInstance().getRegionById(regionId);
+            Region region = ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).get(clickedItem);
             if (region != null) {
                 MenuManager.putData(civilian.getUuid(), "region", region);
             }
@@ -104,6 +104,7 @@ public class RegionListMenu extends CustomMenu {
                 cvItem.getLore().add(town.getName());
             }
             ItemStack itemStack = cvItem.createItemStack();
+            ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).put(itemStack, region);
             putActions(civilian, menuIcon, itemStack, count);
             if (actions.get(civilian.getUuid()).get(itemStack).contains("view-region")) {
                 int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-region");
