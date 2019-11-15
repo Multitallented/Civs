@@ -48,6 +48,7 @@ public final class Update1d6d0 {
                 config.set("plot15x15-desc", "A placeholder for regions 15x15 and smaller");
                 config.set("plot19x19-name", "Plot19x19");
                 config.set("plot19x19-desc", "A placeholder for regions 19x19 and smaller");
+                config.set("jammer-built", "@{RED}[WARNING] A $1 has been built somewhere. Use caution when teleporting.");
                 config.save(enFile);
             } catch (Exception e) {
 
