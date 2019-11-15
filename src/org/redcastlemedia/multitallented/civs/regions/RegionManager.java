@@ -503,13 +503,18 @@ public class RegionManager {
         }
 
         boolean rebuildTransition = false;
-        if (rebuildRegion != null && regionType.getRebuild().isEmpty()) {
+        boolean isPlot = false;
+        if (rebuildRegion != null) {
+            RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+            isPlot = rebuildType.getEffects().containsKey("plot") && rebuildType.getBuildRadius() <= regionType.getBuildRadius();
+        }
+        if (!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", localizedRegionName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion != null && !hasType) {
+        } else if (!isPlot && rebuildRegion != null && !hasType) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
