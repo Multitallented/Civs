@@ -1,3 +1,4 @@
+last-version: 1.5.6
 black-list-worlds:
 - Hub
 default-language: en
@@ -12,11 +13,14 @@ town-grace-period: 43200 #12 hours
 #ignore other plugins when checking if an explosion is cancelled
 #before reducing power
 explosion-override: false
+use-delayed-region-upkeep-in-unloaded-chunks: true
+disable-regions-in-unloaded-chunks: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 # the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
 # the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
+min-distance-between-towns: 10
 use-starter-book: true
 #should region dimensions be shown with particles instead of glass?
 use-particle-bounding-boxes: false
@@ -48,6 +52,8 @@ allow-teleporting-out-of-hostile-towns: true
 use-classes-and-spells: false
 #whether or not the glass box should appear to show the region's boundaries
 use-region-bounding-box: true
+#Should the town enter and exit messages be titles (or chat)
+enter-exit-messages-use-titles: true
 points:
   killstreak: 0.1
   killjoy: 0.2
@@ -64,6 +70,8 @@ karma-per-kill: 1
 karma-per-kill-streak: 1
 #How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
+#Should money be created if it can't be taken from the victim
+always-drop-money-if-no-balance: false
 power-per-kill: 12
 power-per-npc-kill: 4
 folders:

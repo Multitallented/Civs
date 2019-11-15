@@ -120,80 +120,58 @@ public class TownManager {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         RegionManager regionManager = RegionManager.getInstance();
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        HashSet<String> critReqs = new HashSet<>();
         if (!townType.getCriticalReqs().contains(region.getType().toLowerCase())) {
             boolean containsReq = false;
             for (String currentReq : regionType.getGroups()) {
                 if (townType.getCriticalReqs().contains(currentReq)) {
+                    critReqs.add(currentReq);
                     containsReq = true;
-                    break;
                 }
             }
             if (!containsReq) {
                 return;
             }
+        } else {
+            critReqs.add(region.getType().toLowerCase());
         }
-        boolean hasReq = false;
         outer: for (Region containedRegion :
                 regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
             if (region.equals(containedRegion)) {
                 continue;
             }
-            if (containedRegion.getType().equalsIgnoreCase(region.getType())) {
-                hasReq = true;
-                break;
+            if (critReqs.contains(region.getType().toLowerCase())) {
+                critReqs.remove(region.getType().toLowerCase());
             }
             RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
             for (String currentReq : containedType.getGroups()) {
-                if (regionType.getGroups().contains(currentReq)) {
-                    hasReq = true;
-                    break outer;
+                if (critReqs.contains(currentReq)) {
+                    critReqs.remove(currentReq);
                 }
             }
         }
-        if (!hasReq) {
+        if (!critReqs.isEmpty()) {
             removeTown(town, true);
         }
     }
 
-    public List<Town> checkIntersect(Location location, TownType townType) {
-        Location[] locationCheck = new Location[9];
-        locationCheck[0] = location;
+    public List<Town> checkIntersect(Location location, TownType townType, int modifier) {
+        int buildRadius = townType.getBuildRadius() + modifier;
+        int buildRadiusY = townType.getBuildRadiusY() + modifier;
         List<Town> towns = new ArrayList<>();
-        locationCheck[1] = new Location(location.getWorld(),
-                location.getX() + townType.getBuildRadius(),
-                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
-                location.getZ() + townType.getBuildRadius());
-        locationCheck[2] = new Location(location.getWorld(),
-                location.getX() - townType.getBuildRadius(),
-                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
-                location.getZ() + townType.getBuildRadius());
-        locationCheck[3] = new Location(location.getWorld(),
-                location.getX() + townType.getBuildRadius(),
-                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
-                location.getZ() - townType.getBuildRadius());
-        locationCheck[4] = new Location(location.getWorld(),
-                location.getX() - townType.getBuildRadius(),
-                Math.min(location.getY() + townType.getBuildRadiusY(), location.getWorld().getMaxHeight()),
-                location.getZ() - townType.getBuildRadius());
-        locationCheck[5] = new Location(location.getWorld(),
-                location.getX() + townType.getBuildRadius(),
-                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
-                location.getZ() + townType.getBuildRadius());
-        locationCheck[6] = new Location(location.getWorld(),
-                location.getX() - townType.getBuildRadius(),
-                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
-                location.getZ() + townType.getBuildRadius());
-        locationCheck[7] = new Location(location.getWorld(),
-                location.getX() + townType.getBuildRadius(),
-                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
-                location.getZ() - townType.getBuildRadius());
-        locationCheck[8] = new Location(location.getWorld(),
-                location.getX() - townType.getBuildRadius(),
-                Math.max(location.getY() - townType.getBuildRadiusY(), 0),
-                location.getZ() - townType.getBuildRadius());
-        for (Location currentLocation : locationCheck) {
-            Town town = getTownAt(currentLocation);
-            if (town != null && !towns.contains(town)) {
+        for (Town town : getTowns()) {
+            if (!location.getWorld().equals(town.getLocation().getWorld())) {
+                continue;
+            }
+            TownType currentTownType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (location.getX() + buildRadius >= town.getLocation().getX() - currentTownType.getBuildRadius() &&
+                    location.getX() - buildRadius <= town.getLocation().getX() + currentTownType.getBuildRadius() &&
+                    location.getZ() + buildRadius >= town.getLocation().getZ() - currentTownType.getBuildRadius() &&
+                    location.getZ() - buildRadius <= town.getLocation().getZ() + currentTownType.getBuildRadius() &&
+                    Math.max(location.getY() - buildRadiusY, 0) <=
+                            Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), 0) &&
+                    Math.min(location.getY() + buildRadiusY, location.getWorld().getMaxHeight()) >=
+                            Math.min(town.getLocation().getY() - currentTownType.getBuildRadiusY(), town.getLocation().getWorld().getMaxHeight())) {
                 towns.add(town);
             }
         }
@@ -224,6 +202,15 @@ public class TownManager {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
+        if (config.isSet("idiocracy-score")) {
+            HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
+            for (String uuidString : config.getConfigurationSection("idiocracy-score").getKeys(false)) {
+                UUID cUuid = UUID.fromString(uuidString);
+                int score = config.getInt("idiocracy-score." + uuidString, 0);
+                idiocracyScores.put(cUuid, score);
+            }
+            town.setIdiocracyScore(idiocracyScores);
+        }
         if (config.isSet("gov-type-changed-today")) {
             town.setGovTypeChangedToday(true);
         }
@@ -368,7 +355,7 @@ public class TownManager {
         town.destroyRing(false, true);
         TownType childTownType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
         town.setType(childTownType.getProcessedName());
-        town.setPower(childTownType.getPower());
+        town.setPower(childTownType.getMaxPower());
         town.setMaxPower(childTownType.getMaxPower());
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -546,6 +533,13 @@ public class TownManager {
                     }
                 }
             }
+            config.set("idiocracy-score", null);
+            if (!town.getIdiocracyScore().isEmpty()) {
+                for (UUID uuid : town.getIdiocracyScore().keySet()) {
+                    config.set("idiocracy-score." + uuid.toString(),
+                            town.getIdiocracyScore().get(uuid));
+                }
+            }
 
             config.set("bounties", null);
             if (town.getBounties() != null && !town.getBounties().isEmpty()) {
@@ -644,11 +638,11 @@ public class TownManager {
         TownType townType = (TownType) civItem;
 
         TownManager townManager = TownManager.getInstance();
-        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType);
+        int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
+        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType, modifier);
         if (intersectTowns.size() > 1 ||
-                    (townType.getChild() != null &&
-                    !intersectTowns.isEmpty() &&
-                    !townType.getChild().equals(intersectTowns.get(0).getType()))) {
+                    (!intersectTowns.isEmpty() &&
+                    (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return;

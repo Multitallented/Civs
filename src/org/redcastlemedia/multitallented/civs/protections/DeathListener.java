@@ -43,17 +43,18 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (ConfigManager.getInstance().isAllowTeleportInCombat()) {
-            return;
-        }
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (civilian.isInCombat()) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "in-combat"));
-            return;
+
+        if (!ConfigManager.getInstance().isAllowTeleportInCombat()) {
+            if (civilian.isInCombat()) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "in-combat"));
+                return;
+            }
         }
+
         if (!ConfigManager.getInstance().isAllowTeleportingOutOfHostileTowns()) {
             Town town = TownManager.getInstance().getTownAt(event.getFrom());
             if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
@@ -423,11 +424,13 @@ public class DeathListener implements Listener {
         if (Civs.econ != null) {
             double totalExchange = Math.max(econBonus, 0) + karmaEcon;
             double dyingBalance = Civs.econ.getBalance(player);
-            totalExchange = Math.min(totalExchange, dyingBalance);
+            if (!ConfigManager.getInstance().isDropMoneyIfZeroBalance()) {
+                totalExchange = Math.min(totalExchange, dyingBalance);
+            }
 
             if (totalExchange > 0) {
                 Civs.econ.depositPlayer(damager, totalExchange);
-                Civs.econ.withdrawPlayer(player, totalExchange);
+                Civs.econ.withdrawPlayer(player, Math.min(totalExchange, dyingBalance));
             }
         }
 

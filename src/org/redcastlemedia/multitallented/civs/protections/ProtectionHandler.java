@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -75,6 +76,9 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
         }
         if (!event.isCancelled()) {
+            if (event.getBlock().getType() == Material.CHEST) {
+                UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
+            }
             Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;
@@ -97,9 +101,7 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Player player = event.getPlayer();
-            boolean isNotMember = player == null ||
-                    (!region.getOwners().contains(player.getUniqueId()) &&
-                    !region.getPeople().containsKey(player.getUniqueId()));
+            boolean isNotMember = !region.getPeople().containsKey(player.getUniqueId());
             if (isNotMember && !region.hasRequiredBlocks()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
@@ -543,7 +545,10 @@ public class ProtectionHandler implements Listener {
     public void onMobSpawn(CreatureSpawnEvent event) {
         if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
-                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT) {
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG ||
+                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG) {
             return;
         }
         boolean cancel = event.isCancelled() || shouldBlockAction(event.getLocation(), null, "deny_mob_spawn");

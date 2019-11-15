@@ -271,7 +271,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
         // To avoid cluttering the center chest, move items to available chests
-        tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
+        if (RegionManager.getInstance().hasRegionChestChanged(r)) {
+            tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
+        }
     }
 
     @EventHandler
@@ -349,8 +351,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     }
 
     private void tidyCentralChest(Region r, Inventory inventory, Location l) {
+        if (inventory == null) {
+            RegionManager.getInstance().addCheckedRegion(r);
+            return;
+        }
         int firstEmpty = inventory.firstEmpty();
         if (firstEmpty < 9) {
+            RegionManager.getInstance().addCheckedRegion(r);
             return;
         }
 
@@ -424,7 +431,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
         Inventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(destination.getLocation());
 
-        if (destinationInventory.firstEmpty() < 0 || destinationInventory.firstEmpty() > destinationInventory.getSize() - 4) {
+        if (destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
+                destinationInventory.firstEmpty() > destinationInventory.getSize() - 4) {
             return;
         }
 

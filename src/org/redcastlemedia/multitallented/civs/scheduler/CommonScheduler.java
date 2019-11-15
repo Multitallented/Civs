@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -37,7 +38,6 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class CommonScheduler implements Runnable {
-    private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
@@ -59,8 +59,9 @@ public class CommonScheduler implements Runnable {
             }
 
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-            int chunk = players.size() / MAX_TPS;
-            for (int j = chunk * i; j < (i == MAX_TPS - 1 ? players.size() : chunk * (i + 1)); j++) {
+            int maxTPS = 5;
+            int chunk = players.size() / maxTPS;
+            for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
                 try {
                     Player player = (Player) players.toArray()[j];
                     playerInRegion(player);
@@ -75,9 +76,9 @@ public class CommonScheduler implements Runnable {
                 } catch (Exception e) {
 
                 }
-                //            Thread.yield();
             }
-            if (i == MAX_TPS - 1) {
+            RegionTickUtil.runUpkeeps();
+            if (i == maxTPS - 1) {
                 i = 0;
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
@@ -310,9 +311,13 @@ public class CommonScheduler implements Runnable {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     government.getName().toLowerCase() + "-name");
         }
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "town-enter").replace("$1", town.getName())
-                .replace("$2", govName));
+        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+            player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
+        } else {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-enter").replace("$1", town.getName())
+                    .replace("$2", govName));
+        }
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
         PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
@@ -324,9 +329,14 @@ public class CommonScheduler implements Runnable {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     government.getName().toLowerCase() + "-name");
         }
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "town-exit").replace("$1", town.getName())
-                .replace("$2", govName));
+        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+            String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
+            player.sendTitle(ChatColor.GREEN + wild, "", 5, 40, 5);
+        } else {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-exit").replace("$1", town.getName())
+                    .replace("$2", govName));
+        }
     }
 
     private void playerInRegion(Player player) {

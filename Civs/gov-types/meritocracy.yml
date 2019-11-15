@@ -19,7 +19,7 @@ transition:
     to: COMMUNISM
   3:
     revolt: 51
-    to: ANARCHY
+    to: IDIOCRACY
   4:
     power: 20
     to: TRIBALISM

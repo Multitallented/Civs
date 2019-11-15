@@ -19,6 +19,8 @@ new-owner-town: $1 substituiu $2 como dono de $3
 town-bank-balance: Balanço do banco $1
 town-bank-desc: Saque com /cv withdraw $1 <quantidade>
 withdrawn-money: Você sacou &$1 do banco de $2
+deposit-money: Você depositou $1 no banco de $2
+too-much-money: Você não pode depositar mais que $1 em um banco
 town-tax: "Impostos da vila: $1"
 town-tax-desc: Estabeleça os impostos usando /cv tax $1 <quantidade>
 town-tax-gov-type: $1 não pode ter impostos
@@ -147,6 +149,7 @@ click-for-req-regions: Clique aqui para ver a lista de regiões requeridas
 town-instructions: Para criar $1, use /cv town NomeDaVila
 town-enter: Você entrou em $1 ($2)
 town-exit: Você saiu de $1 ($2)
+wild: Selvagem
 new-town-member: $1 se juntou a $2
 must-be-built-on-top: Uma $1 precisa ser construída em cima de uma $2
 town-power: "Poder: $1/$2"
@@ -174,6 +177,7 @@ town-ally-removed: A aliança entre $1 e $2 foi dissolvida
 region-evolved: Sua $1 evoluiu para uma $2
 anti-camp-active: O anti-camp de $1 foi ativado
 anti-camp-expired: O anti-camp de $1 acabou
+activate-anticamp-question: $1 morreu em $2. Você gostaria de ativar as defesas anti-camp por $3?
 region-sale-set: $1 a venda por $2
 sell-region: Vender região
 cancel-sale: Cancelar venda
@@ -219,6 +223,8 @@ no-commands-in-jail: Você não pode usar comandos na prisão por mais $1
 mana-use-exp: Você não pode usar isso sem estar com a mana cheia
 building-requires-2space: Essa construção requer 2 blocos de ar em cima do baú central
 missing-blocks-build: Você precisa colocar esses blocos que faltam para construir uma $1
+intruder-enter: "@{RED[ALERTA] $1 entrou em $2"
+intruder-exit: $1 saiu de $2
 in-combat: Você não pode fazer isso em combate
 cooldown: Isso esta em recarga por mais $1s
 need-more-health: Você precisa de mais $1 de vida para fazer isso
@@ -226,6 +232,7 @@ need-more-stamina: Você precisa de mais $1 de energia para fazer isso
 need-more-mana: Você precisa de mais $1 de mana para fazer isso
 port-not-found: Teletransportador não encontrado
 region-missing-upkeep-items: Região não tem os itens necessários
+raid-porter-offline: Você não pode saquear $1 enquanto nenhum de seus membros esta online.
 raid-target-lost: Não existe vila com nome de $1 na área de $2 blocos
 searching-for-target: Procurando por alvo de teletransportador de ataque...
 raid-target-blocked: Teletransportador de ataque bloqueado
@@ -235,6 +242,8 @@ raid-remote: Foi dado a você um item para controlar $1
 raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
 no-blocks-above-chest: Não deve haver blocos acima do tórax central
 invalid-target: Alvo inválido
+no-tp-out-of-town: Você não pode teletransportar fora de uma vila aliada
+jammer-redirect: "@{RED}[ALERTA] Seu teletransporte foi interceptado por $1"
 raid-target-inside-region: Você não pode definir um local dentro de uma região
 req-build-inside-town: Essa $1 precisa ser construída dentro de uma $2
 missing-region-requirements: Sua $1 esta com falta de construções requeridas
@@ -388,6 +397,9 @@ dictatorship-desc: Proprietários da cidade gerenciam alianças, podem sobrescre
   filiação e definir impostos.
 feudalism-name: Feudalismo
 feudalism-desc: Ditadura + Membros da cidade não podem construir regiões dentro da cidade.
+idiocracy-name: Idiocracia
+idiocracy-desc: Qualquer um que atire mais fogos de artificio e faça mais placas com seu nome
+  vira o dono.
 kraterocracy-name: Kraterocracia
 kraterocracy-desc: Ditadura + Quando um membro da cidade mata um proprietário, os dois trocam de
   lugar.
@@ -479,6 +491,9 @@ stone_works-desc: Criação automática de ferramentas de pedra. Coloque um carr
   um trilho elétrico inclinado no começo da linha.
 weapons_factory-name: Fábrica de Armas
 weapons_factory-desc: Transforma 3 pólvoras e 5 areias em explosivos.
+jammer_trap-name: Armadilha de Disrupção
+jammer_trap-desc: Uma construção que intercepta teletransportes que viajariam em um raio de 100
+  blocos. Redireciona o destino para perto da armadilha.
 chicken_coop-name: Galinheiro
 chicken_coop-desc: Criação automática de galinhas. Coloque um carrinho com baú no baú. Construa
   trilhos do Galinheiro até a região de destino. Coloque um trilho elétrico
@@ -738,8 +753,8 @@ sand_pit-desc: Cria areia a cada 30 segundos.
 sifter-name: Peneira
 sifter-desc: Peneire terra para encontrar itens valiosos.
 jade_shop-name: Loja de Jade
-jade_shop-desc: Vende 16 jades para o servidor por $1000 por dia. Não pode ser construída
-  numa cidade com uma Mina de Jade.
+jade_shop-desc: Vende 16 jades para o servidor por $1000 por dia. Não pode ser construída numa
+  cidade com uma Mina de Jade.
 coal_shop-name: Loja de Carvão
 coal_shop-desc: Vende 144 carvões para o servidor por $432 por dia
 diamond_shop-name: Loja de Diamantes

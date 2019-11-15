@@ -19,6 +19,8 @@ new-owner-town: $1 继承了 $2 的衣钵成为了 $3 的城主
 town-bank-balance: 银行储蓄 $1
 town-bank-desc: 使用/cv withdraw $1 量 来取款
 withdrawn-money: "你从$2的银行取出了 $$1 "
+deposit-money: 您将$1存入$2的银行
+too-much-money: 您在银行的存款不能超过$1
 town-tax: "城镇税收: $1"
 town-tax-desc: 使用/cv tax $1 [数量] 来设置税收
 town-tax-gov-type: $1 无法设置税收
@@ -146,6 +148,7 @@ click-for-req-regions: 点击这里查看所需区域列表
 town-instructions: 输入/cv town [城镇名] 来创建 $1
 town-enter: 你进入了 $1
 town-exit: 你退出了 $1
+wild: 荒原
 new-town-member: $1 加入了 $2
 must-be-built-on-top: $1 必须造在 $2 的上面
 town-power: "能量: $1/$2"
@@ -173,6 +176,7 @@ town-ally-removed: $1 和 $2 的联盟破灭了
 region-evolved: 你的 $1 加入到了 $2
 anti-camp-active: $1的PVP保护已激活
 anti-camp-expired: $1的PVP保护已失效
+activate-anticamp-question: $1已在$2内部死亡。 您要激活$3的野营防御吗？
 region-sale-set: $1 现以 $2 的价格出售
 sell-region: 出售区域
 cancel-sale: 取消出售
@@ -218,6 +222,8 @@ no-commands-in-jail: 你不能在 $1 的监狱里使用指令
 mana-use-exp: 魔法值未满前你不能使用这个
 building-requires-2space: 这个建筑需要在中心箱子上面留两格空间
 missing-blocks-build: 你需要放置这些方块来建造 $1
+intruder-enter: "@{RED}[警报] $1已进入$2"
+intruder-exit: $1已退出$2
 in-combat: 你不能在战斗时这么做
 cooldown: 冷却中：$1
 need-more-health: 你需要更多的 $1 生命值才能这么做
@@ -225,15 +231,18 @@ need-more-stamina: 你需要更多的 $1 耐力才能这么做
 need-more-mana: 你需要更多的 $1 魔法才能这么做
 port-not-found: 找不到港口
 region-missing-upkeep-items: 区域不需要物品
+raid-porter-offline: 当成员不在线时，您无法突袭$1
 raid-target-lost: 在$2 格内没有名为 $1 的城镇
 searching-for-target: 搜寻侵略传送点中...
 raid-target-blocked: 侵略传送点被封锁.
 raid-porter-warning: 警告! $1 创建了一个朝向 $3 的 $2
-siege-built: 警告! $1 创建了一个朝向 $3 的 $2
+siege-built: "@{RED}[警报] $1建造$2以摧毁$3"
 raid-remote: 你获得了控制这个 $1 的物品
 raid-sign: 你需要在箱子上面放写有目标城镇名的牌子
 no-blocks-above-chest: 中央箱子上方不能有任何物品。
 invalid-target: 无效的目标
+no-tp-out-of-town: 您无法将自己转移出敌人的城镇
+jammer-redirect: "@{RED}[警报] 您的转帐由$1重定向"
 raid-target-inside-region: 你不能在区域内设置地点
 req-build-inside-town: 这个 $1 只能在 $2 里建
 missing-region-requirements: 你的 $1 缺少所需的区域
@@ -335,6 +344,8 @@ dictatorship-name: 专政体制
 dictatorship-desc: 城主可以管理联盟、区域和城镇居民并设置税收。
 feudalism-name: 封建主义
 feudalism-desc: 专政体制 + 城镇居民不能在城镇内建造区域。
+idiocracy-name: 制杖主义
+idiocracy-desc: 发射最多烟花火箭并放置最多含有自己名字的告示牌的人将成为城主。
 kraterocracy-name: 末日主义
 kraterocracy-desc: 专政体制 +  当城镇居民杀死城主后，这名城镇居民就可以当上城主。
 libertarian-name: 自由意志
@@ -401,6 +412,8 @@ stone_works-name: 磨石坊
 stone_works-desc: 自动合成石质工具。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 weapons_factory-name: 武器工厂
 weapons_factory-desc: 将3个火药和5个沙子合成为爆破物。
+jammer_trap-name: 拦截陷阱
+jammer_trap-desc: 该建筑物可拦截100格范围内的传送，并将目标传送到其他地点。
 chicken_coop-name: 鸡舍
 chicken_coop-desc: 自动养鸡农场。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 donkey_farm-name: 驴舍

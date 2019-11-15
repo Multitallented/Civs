@@ -261,7 +261,14 @@ public class ItemManager {
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
-        String rebuild = config.getString("rebuild", null);
+        List<String> rebuild = config.getStringList("rebuild");
+        if (rebuild.isEmpty()) {
+            rebuild = new ArrayList<>();
+            String onlyRebuild = config.getString("rebuild");
+            if (onlyRebuild != null && !onlyRebuild.isEmpty()) {
+                rebuild.add(onlyRebuild);
+            }
+        }
         Set<Biome> biomes = new HashSet<>();
         if (config.isSet("biomes")) {
             for (String s : config.getStringList("biomes")) {

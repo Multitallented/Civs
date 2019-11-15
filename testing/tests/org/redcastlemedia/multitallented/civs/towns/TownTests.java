@@ -98,14 +98,21 @@ public class TownTests {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType).size());
+        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType, 0).size());
     }
     @Test
     public void townShouldNotIntersect() {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertEquals(0, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType).size());
+        assertEquals(0, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 0).size());
+    }
+    @Test
+    public void townShouldNotIntersectWithModifer() {
+        loadTownTypeHamlet();
+        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 27).size());
     }
 
     @Test
@@ -151,7 +158,7 @@ public class TownTests {
         if (!blockBreakEvent.isCancelled()) {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
-//        regionManager.removeRegion(region, false);
+        assertNull(regionManager.getRegionAt(regionLocation));
         assertTrue(townManager.getTowns().isEmpty());
     }
 
@@ -185,7 +192,44 @@ public class TownTests {
         if (!blockBreakEvent.isCancelled()) {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
-//        regionManager.removeRegion(region, false);
+        assertNull(regionManager.getRegionAt(regionLocation));
+        assertTrue(townManager.getTowns().isEmpty());
+    }
+
+    @Test
+    public void townShouldDestroyWhenCriticalRegionDestroyed3() {
+        RegionsTests.loadRegionTypeCobbleGroup();
+        RegionsTests.loadRegionTypeCobbleGroup2();
+        HashMap<UUID, String> people = new HashMap<>();
+        people.put(TestUtil.player.getUniqueId(), "owner");
+        HashMap<String, String> effects = new HashMap<>();
+        Location regionLocation = new Location(Bukkit.getWorld("world2"), 0,0,0);
+        Location regionLocation2 = new Location(Bukkit.getWorld("world2"), 0,20,0);
+        Region region = new Region("town_hall", people,
+                regionLocation,
+                RegionsTests.getRadii(),
+                effects,0);
+        loadTownTypeTribe();
+        Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
+
+        RegionsTests.createNewRegion("purifier", regionLocation2);
+        RegionManager regionManager = RegionManager.getInstance();
+        TownManager townManager = TownManager.getInstance();
+        regionManager.addRegion(region);
+        loadTown("Sanmak-kol", "tribe", townLocation);
+        if (townManager.getTowns().isEmpty()) {
+            fail("No town found");
+        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Block block = mock(Block.class);
+        when(block.getLocation()).thenReturn(regionLocation);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, TestUtil.player);
+        CivilianListener civilianListener = new CivilianListener();
+        protectionHandler.onBlockBreak(blockBreakEvent);
+        if (!blockBreakEvent.isCancelled()) {
+            civilianListener.onCivilianBlockBreak(blockBreakEvent);
+        }
+        assertNull(regionManager.getRegionAt(regionLocation));
         assertTrue(townManager.getTowns().isEmpty());
     }
 
