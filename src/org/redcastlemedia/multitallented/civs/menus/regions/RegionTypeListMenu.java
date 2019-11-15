@@ -38,7 +38,12 @@ public class RegionTypeListMenu extends CustomMenu {
             String[] regionListSplit = regionList.split(",");
             regionTypes = new HashMap<>();
             for (String region : regionListSplit) {
-                regionTypes.put(region, 1);
+                String[] regionSplit = region.split(":");
+                if (regionSplit.length < 2) {
+                    regionTypes.put(region, 1);
+                } else {
+                    regionTypes.put(regionSplit[0], Integer.parseInt(regionSplit[1]));
+                }
             }
         } else if (category == null || townName == null) {
             regionTypes = new HashMap<>();

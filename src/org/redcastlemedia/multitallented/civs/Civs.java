@@ -197,38 +197,11 @@ public class Civs extends JavaPlugin {
     }
 
     private void initListeners() {
-        Bukkit.getPluginManager().registerEvents(new MainMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LanguageMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new BlueprintsMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new CommunityMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ShopMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RecipeMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new BuiltRegionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ClassTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new MemberActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new SpellsMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ListAllPlayersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TownListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownInviteMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownInviteConfirmationMenu(), this);
         Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TownTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new DestroyConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LeaderboardMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LeaveConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new PortMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerProfileMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
         Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
@@ -243,19 +216,11 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), this);
         Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new StartTutorialMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PermissionEffect(), this);
         Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
         Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
         Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
         Bukkit.getPluginManager().registerEvents(new JammerEffect(), this);

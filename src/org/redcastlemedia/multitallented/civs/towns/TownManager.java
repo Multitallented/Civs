@@ -6,12 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
@@ -20,8 +18,7 @@ import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
-import org.redcastlemedia.multitallented.civs.menus.SelectGovTypeMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -703,7 +700,14 @@ public class TownManager {
             if (!checkList.isEmpty()) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "missing-region-requirements").replace("$1", townType.getDisplayName()));
-                player.openInventory(RegionListMenu.createMenu(civilian, checkList, 0));
+                HashMap<String, String> params = new HashMap<>();
+                StringBuilder regionString = new StringBuilder();
+                for (String regionName : checkList.keySet()) {
+                    regionString.append(regionName).append(":").append(checkList.get(regionName));
+                }
+                regionString.substring(0, regionString.length() - 1);
+                params.put("regionList", regionString.toString());
+                MenuManager.getInstance().openMenu(player, "region-type-list", params);
                 return;
             }
         }
@@ -796,7 +800,9 @@ public class TownManager {
             newTown.createRing();
         }
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
-            player.openInventory(SelectGovTypeMenu.createMenu(civilian, newTown));
+            HashMap<String, String> params = new HashMap<>();
+            params.put("town", newTown.getName());
+            MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
         return;
     }

@@ -48,6 +48,13 @@ public class MenuManager implements Listener {
         return instance;
     }
 
+    public boolean hasMenuOpen(UUID uuid) {
+        return openMenus.containsKey(uuid);
+    }
+    public boolean hasMenuOpen(UUID uuid, String menuName) {
+        return menuName.equals(openMenus.get(uuid));
+    }
+
     @EventHandler
     public void onTwoSecondEvent(TwoSecondEvent event) {
         try {

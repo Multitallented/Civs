@@ -31,9 +31,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
@@ -656,7 +657,18 @@ public class RegionManager {
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
-                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                    List<List<CVItem>> missingList = new ArrayList<>();
+                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                        List<CVItem> tempList = new ArrayList<>();
+                        for (Material mat : missingMap.keySet()) {
+                            tempList.add(new CVItem(mat, missingMap.get(mat)));
+                        }
+                        missingList.add(tempList);
+                    }
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("items", missingList);
+                    data.put("page", 0);
+                    MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return false;
             }

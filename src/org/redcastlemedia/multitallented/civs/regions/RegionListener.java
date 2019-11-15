@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,9 +17,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
-import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
-import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -81,7 +81,10 @@ public class RegionListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
             TownType townType = (TownType) civItem;
-            player.openInventory(TownTypeInfoMenu.createMenu(civilian, townType));
+            MenuManager.clearHistory(civilian.getUuid());
+            HashMap<String, String> params = new HashMap<>();
+            params.put("townType", townType.getProcessedName());
+            MenuManager.getInstance().openMenu(player, "town-type", params);
             return;
         }
 
@@ -89,8 +92,11 @@ public class RegionListener implements Listener {
             return;
         }
         RegionType regionType = (RegionType) civItem;
-        Menu.clearHistory(player.getUniqueId());
-        player.openInventory(RegionTypeInfoMenu.createMenuInfinite(civilian, regionType));
+        MenuManager.clearHistory(player.getUniqueId());
+        MenuManager.clearHistory(civilian.getUuid());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("regionType", regionType.getProcessedName());
+        MenuManager.getInstance().openMenu(player, "region-type", params);
     }
 
     @EventHandler

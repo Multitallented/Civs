@@ -120,6 +120,9 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override
     public boolean doActionsAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
+        if (!CVItem.isCivsItem(clickedItem)) {
+            return true;
+        }
         return false;
     }
 

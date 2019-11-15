@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -47,12 +48,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.menus.BlueprintsMenu;
-import org.redcastlemedia.multitallented.civs.menus.ClassMenu;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
-import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -127,7 +123,7 @@ public class CivilianListener implements Listener {
         CommonScheduler.lastRegion.remove(uuid);
         CommonScheduler.lastTown.remove(uuid);
         CommonScheduler.removeLastAnnouncement(uuid);
-        Menu.clearHistory(uuid);
+        MenuManager.clearHistory(uuid);
         MenuManager.clearData(uuid);
         TownManager.getInstance().clearInvite(uuid);
         AnnouncementUtil.clearPlayer(uuid);
@@ -327,8 +323,10 @@ public class CivilianListener implements Listener {
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
             for (Region r : regionSet) {
-                Menu.clearHistory(player.getUniqueId());
-                player.openInventory(RegionActionMenu.createMenu(civilian, r));
+                MenuManager.clearHistory(player.getUniqueId());
+                HashMap<String, String> params = new HashMap<>();
+                params.put("region", r.getId());
+                MenuManager.getInstance().openMenu(player, "region", params);
                 return;
             }
             player.performCommand("cv");
@@ -337,8 +335,10 @@ public class CivilianListener implements Listener {
         if (player.getGameMode() == GameMode.SURVIVAL) {
             StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         }
-        Menu.clearHistory(player.getUniqueId());
-        player.openInventory(RegionActionMenu.createMenu(civilian, region));
+        MenuManager.clearHistory(player.getUniqueId());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("region", region.getId());
+        MenuManager.getInstance().openMenu(player, "region", params);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -494,12 +494,8 @@ public class CivilianListener implements Listener {
         }
         ItemStack dragged = event.getOldCursor();
 
-//        if (checkMoveNormalItems(event)) {
-//            return;
-//        }
-
         if (!CVItem.isCivsItem(dragged) ||
-                event.getInventory().getTitle().startsWith("Civ")) {
+                MenuManager.getInstance().hasMenuOpen(event.getWhoClicked().getUniqueId())) {
             return;
         }
 
@@ -514,19 +510,6 @@ public class CivilianListener implements Listener {
                 return;
             }
         }
-    }
-
-    private boolean checkMoveNormalItems(InventoryDragEvent event) {
-        if (!event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(SpellsMenu.MENU_NAME) &&
-                !event.getView().getTitle().equals(ClassMenu.MENU_NAME)) {
-            return false;
-        }
-        if (CVItem.isCivsItem(event.getOldCursor())) {
-            return false;
-        }
-        event.setCancelled(true);
-        return true;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -562,11 +545,7 @@ public class CivilianListener implements Listener {
             return;
         }
 
-//        if (checkMoveNormalItems(event, stackInQuestion)) {
-//            return;
-//        }
-
-        if (!CVItem.isCivsItem(stackInQuestion) || event.getClickedInventory().getTitle().startsWith("Civ")) {
+        if (!CVItem.isCivsItem(stackInQuestion) || MenuManager.getInstance().hasMenuOpen(event.getWhoClicked().getUniqueId())) {
             return;
         }
         HumanEntity humanEntity = event.getWhoClicked();
@@ -582,18 +561,5 @@ public class CivilianListener implements Listener {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         CVItem.translateItem(civilian.getLocale(), itemStack);
-    }
-
-    private boolean checkMoveNormalItems(InventoryClickEvent event, ItemStack stackInQuestion) {
-        if (!(event.getView().getTitle().equals(BlueprintsMenu.MENU_NAME) ||
-                event.getView().getTitle().equals(SpellsMenu.MENU_NAME) ||
-                event.getView().getTitle().equals(ClassMenu.MENU_NAME))) {
-            return false;
-        }
-        if (CVItem.isCivsItem(stackInQuestion)) {
-            return false;
-        }
-        event.setCancelled(true);
-        return true;
     }
 }
