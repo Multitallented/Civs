@@ -37,11 +37,11 @@ items:
     name: ports
     actions:
       - menu:port
-#  gov-leaderboard:
-#    index: 6
-#    icon: JUKEBOX
-#    name: leaderboard
-#    actions:
-#      - menu:gov-leaderboard
+  gov-leaderboard:
+    index: 6
+    icon: JUKEBOX
+    name: leaderboard
+    actions:
+      - menu:gov-list?leaderboard=true
   back:
     index: 8
