@@ -227,9 +227,10 @@ public class CivilianManager {
         }
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
-                ItemManager.getInstance().getNewItems(),
+                new HashMap<>(),
                 classes,
                 new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+        civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);

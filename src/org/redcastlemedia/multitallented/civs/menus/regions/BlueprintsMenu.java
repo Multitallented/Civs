@@ -34,7 +34,16 @@ public class BlueprintsMenu extends CustomMenu {
             data.put("page", 0);
         }
 
-        int maxPage = (int) Math.ceil((double) civilian.getStashItems().keySet().size() / (double) itemsPerPage.get("blueprints"));
+        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        HashMap<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
+        for (String itemName : newItems.keySet()) {
+            if (stashItems.containsKey(itemName)) {
+                continue;
+            }
+            stashItems.put(itemName, newItems.get(itemName));
+        }
+        data.put("stashItems", stashItems);
+        int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 
@@ -80,7 +89,7 @@ public class BlueprintsMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("blueprints")) {
-            HashMap<String, Integer> stashItems = civilian.getStashItems();
+            HashMap<String, Integer> stashItems = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "stashItems");
             if (stashItems.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }

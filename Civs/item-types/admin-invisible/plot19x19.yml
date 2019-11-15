@@ -1,23 +1,21 @@
 type: region
 icon: GLASS
 shop-icon: GLASS
-name: Plot7x7
+name: Plot19x19
 qty: 1
 is-in-shop: false
 level: 1
 
 pre-reqs:
-- member=settlement:hamlet:village:town:city:metropolis
+- member=village:town:city:metropolis
 
 towns:
-- settlement
-- hamlet
 - village
 - town
 - city
 - metropolis
 
-build-radius: 3 # 7x7
+build-radius: 9 # 19x19
 effects:
 - block_break
 - block_build

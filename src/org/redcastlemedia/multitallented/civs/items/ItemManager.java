@@ -345,9 +345,12 @@ public class ItemManager {
         return returnList;
     }
 
-    public HashMap<String, Integer> getNewItems() {
+    public HashMap<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
+            if (!hasItemUnlocked(civilian, civItem)) {
+                continue;
+            }
             if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
             } else if (civItem.getCivReqs().isEmpty() && civItem.getCivMin() > 0) {
