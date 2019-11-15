@@ -7,7 +7,7 @@ is-in-shop: false
 level: 1
 
 pre-reqs:
-- member=village:town:city:metropolis
+- member=hamlet:village:town:city:metropolis
 
 towns:
 - hamlet
