@@ -1,0 +1,13 @@
+type: region
+icon: GLASS
+shop-icon: GLASS
+name: Plot7x7
+qty: 1
+is-in-shop: false
+level: 1
+
+build-radius: 3 # 7x7
+effects:
+- block_break
+- block_build
+- plot
