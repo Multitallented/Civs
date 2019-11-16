@@ -338,8 +338,6 @@ public class TownMenu extends CustomMenu {
                         .replace("$2", townName));
             }
             return true;
-        } else if (actionString.equals("leave-town")) {
-            // TODO leave confirmation menu
         } else if (actionString.equals("join-revolt")) {
             CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
             if (!player.getInventory().contains(costItem.createItemStack())) {
