@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 
+@CivsCommand(keys = { "newday" })
 public class DayCommand implements CivCommand {
 
     @Override

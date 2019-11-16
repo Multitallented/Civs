@@ -18,7 +18,7 @@ build-reqs:
 - allhousing:3
 
 limits:
-- allshack:5
+- allshack:6
 - allhovel:4
 - alldwelling:3
 - allhouse:1

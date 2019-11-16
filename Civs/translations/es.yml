@@ -19,6 +19,8 @@ new-owner-town: $1 ha sustituido a $2 como dueño de $3
 town-bank-balance: Dinero en el banco $1
 town-bank-desc: Retira dinero usando /cv withdraw $1 [cantidad]
 withdrawn-money: Has retirado $$1 del banco de $2
+deposit-money: Has depositado $1 en el banco de $2
+too-much-money: No puede depositar más de $1 en un banco
 town-tax: "Impuestos de la ciudad:  $1"
 town-tax-desc: Establece impuestos usando /cv tax $1 [cantidad]
 town-tax-gov-type: $1 no puede establecer impuestos
@@ -149,6 +151,7 @@ click-for-req-regions: Click aquí para obtener una lista de las regiones requer
 town-instructions: Crea una $1, usando  /cv town [NombreDeLaCiudad]
 town-enter: Has entrado a $1 ($2)
 town-exit: Has abandonado $1 ($2)
+wild: Desierto
 new-town-member: $1 se ha unido a $2
 must-be-built-on-top: Un/a $1 debe ser construido/a encima de un/a $ 2
 town-power: Poder $1/$2
@@ -176,6 +179,7 @@ town-ally-removed: Se ha disuelto la alianza entre $1 y $2
 region-evolved: Tu $1 evolucionó a $2
 anti-camp-active: El anti-camp de $1 ha sido activado
 anti-camp-expired: El anti-camp de $1 ha expirado
+activate-anticamp-question: $1 ha muerto en $2. ¿Te gustaría activar las defensas contra el camping en $3?
 region-sale-set: $1 esta a la venta por $2
 sell-region: Vender región
 cancel-sale: Cancelar venta
@@ -221,6 +225,8 @@ no-commands-in-jail: No puedes usar comandos en la cárcel durante otros $1
 mana-use-exp: No puedes usar esto a menos que tengas maná completo
 building-requires-2space: Este edificio requiere 2 espacios vacíos sobre el cofre central.
 missing-blocks-build: Necesitas colocar estos bloques faltantes para construir un/a $1
+intruder-enter: "@{RED}[ADVERTENCIA]$1 ha entrado en $2"
+intruder-exit: $1 ha salido de $2
 in-combat: No puedes hacer eso en combate
 cooldown: Eso esta en cooldown durante $1s
 need-more-health: Necesitas $1 más de salud para hacer eso.
@@ -228,15 +234,18 @@ need-more-stamina: Necesitas $ 1 más de estamina para hacer eso.
 need-more-mana: Necesitas $ 1 más de mana para hacer eso.
 port-not-found: No se han encontrado puertos
 region-missing-upkeep-items: La región no tiene los objetos requeridos
+raid-porter-offline: No puede invadir $1 cuando ninguno de sus miembros está en línea.
 raid-target-lost: No hay ninguna ciudad llamada $1 en un radio de $2 bloques
 searching-for-target: Buscando un teletransporte de invasión.
 raid-target-blocked: Teletransporte de invasión bloqueado.
 raid-porter-warning: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
-siege-built: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
+siege-built: $1 ha creado una $2 dirigida a $3
 raid-remote: Te han dado un objeto para controlar este/a $1
 raid-sign: Necesitas un letrero sobre el cofre con el nombre de la ciudad objetivo
 no-blocks-above-chest: No debe haber bloques encima del cofre central
 invalid-target: Objetivo inválido
+no-tp-out-of-town: No puedes teletransportarte para escapar de una ciudad no aliada
+jammer-redirect: "@{RED}[ALERTA] Su teletransporte fue interceptado por un $1"
 raid-target-inside-region: No se puede establecer una ubicación dentro de una región
 req-build-inside-town: Esta $1 debe ser construida dentro de $2
 missing-region-requirements: A tu $1 le faltan las regiones requeridas
@@ -394,6 +403,9 @@ dictatorship-desc: Los propietarios de las ciudades administran las alianzas, pu
   regiones y los miembros de la ciudad y establecer impuestos.
 feudalism-name: Feudalismo
 feudalism-desc: "Dictadura + "
+idiocracy-name: Idiocracia
+idiocracy-desc: Quien arroja la mayor cantidad de fuegos artificiales y coloca la mayor
+  cantidad de letreros con su nombre se convierte en el propietario.
 kraterocracy-name: Kraterocracia
 kraterocracy-desc: Dictadura + Cuando un miembro de la ciudad mata a un propietario, los dos
   intercambian puestos.
@@ -486,6 +498,9 @@ stone_works-desc: Creación automática de herramientas de piedra. Coloca una va
   destino. Coloca un rail propulsado inclinado al principio.
 weapons_factory-name: Fábrica de armas
 weapons_factory-desc: Convierte 3 pólvora y 5 arena en explosivos.
+jammer_trap-name: Trampa de Interceptador
+jammer_trap-desc: Un edificio que intercepta telepuertos que viajarían dentro de 100 cuadras.
+  Redirige el destino a la trampa cercana.
 chicken_coop-name: Gallinero
 chicken_coop-desc: Granja automática de pollos. Coloca una vagoneta con cofre en el cofre.
   Construye railes desde el gallinero hasta una región de destino. Coloca un

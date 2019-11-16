@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.util.UUID;
 
+@CivsCommand(keys = { "accept" })
 public class AcceptInviteCommand implements CivCommand {
 
     @Override

@@ -1,0 +1,24 @@
+type: region
+icon: GLASS
+shop-icon: GLASS
+name: Plot11x11
+qty: 1
+is-in-shop: false
+level: 1
+
+pre-reqs:
+- member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+- settlement
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+build-radius: 5 # 11x11
+effects:
+- block_break
+- block_build
+- plot

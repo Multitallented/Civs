@@ -50,6 +50,20 @@ public class SchedulerTests {
     }*/
 
     @Test
+    public void shouldGetCorrectChunksOfTheArray() {
+        int numberOfChunks = 10;
+        int listSize = 199;
+        int chunk = listSize / numberOfChunks;
+        for (int i = 0; i < numberOfChunks; i++) {
+            int start = chunk * i;
+            int end = (i == numberOfChunks - 1 ? listSize : chunk * (i + 1));
+            System.out.println(start + "/" + end);
+//            assertEquals(i * 2, start);
+//            assertEquals(i * 2 + 2, end);
+        }
+    }
+
+    @Test
     public void regionShouldTickWhenZeroPlayersAreOnline() {
         CommonScheduler commonScheduler = new CommonScheduler();
         RegionsTests.loadRegionTypeCobble();
@@ -84,8 +98,7 @@ public class SchedulerTests {
                 RegionsTests.getRadii(), effects, 0);
         regionManager.addRegion(region);
 
-        RegionTickTask regionTickTask = new RegionTickTask();
-        regionTickTask.onTwoSecondEvent(null);
+        RegionTickUtil.runUpkeeps();
     }
 
     @Test(expected = SuccessException.class)
@@ -98,7 +111,8 @@ public class SchedulerTests {
         UUID uuid = new UUID(1, 8);
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 1000,0,0));
-        doThrow(new SuccessException()).when(player).sendMessage(Matchers.anyString());
+        doThrow(new SuccessException()).when(player).sendTitle(Matchers.anyString(), Matchers.anyString(),
+                Matchers.anyInt(), Matchers.anyInt(), Matchers.anyInt());
         commonScheduler.playerInTown(player);
 
         when(player.getLocation()).thenReturn(new Location(world, 0,0,0));

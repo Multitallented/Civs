@@ -146,6 +146,9 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         Location loc = cacheSpawnPoints.get(r);
 
         Inventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
+        if (regionInventory == null) {
+            return;
+        }
         HashSet<ItemStack> iss = new HashSet<>();
         if ((!orphanCarts.containsKey(r) && !regionInventory.contains(Material.CHEST_MINECART)) ||
                 !regionInventory.contains(conveyor)) {
@@ -186,6 +189,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 for (ItemStack is : iss) {
                     cachedDestinationInventory.addItem(is);
                 }
+                RegionManager.getInstance().removeCheckedRegion(cacheDestinationRegions.get(r));
             } catch (Exception e) {
             }
             return;

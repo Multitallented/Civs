@@ -8,7 +8,7 @@ groups:
 level: 1
 
 pre-reqs:
-- cobble_quarry:built=1
+- cobble_grinder:built=1
 
 build-reqs:
 - g:window*2

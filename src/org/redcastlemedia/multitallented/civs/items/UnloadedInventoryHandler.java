@@ -120,7 +120,7 @@ public class UnloadedInventoryHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        deleteUnloadedChestInventory(Region.locationToString(location));
+        deleteUnloadedChestInventory(getChunkString(location), Region.locationToString(location));
         return null;
     }
 
@@ -134,8 +134,17 @@ public class UnloadedInventoryHandler {
         unloadedChestInventories.put(chunkString, tempMap);
     }
 
-    public void deleteUnloadedChestInventory(String locationString) {
-        unloadedChestInventories.remove(locationString);
+    public void deleteUnloadedChestInventory(Location location) {
+        deleteUnloadedChestInventory(getChunkString(location), Region.locationToString(location));
+    }
+
+    public void deleteUnloadedChestInventory(String chunkString, String locationString) {
+        if (unloadedChestInventories.containsKey(chunkString)) {
+            unloadedChestInventories.get(chunkString).remove(locationString);
+            if (unloadedChestInventories.get(chunkString).isEmpty()) {
+                unloadedChestInventories.remove(chunkString);
+            }
+        }
     }
 
     public static UnloadedInventoryHandler getInstance() {

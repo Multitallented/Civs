@@ -751,6 +751,9 @@ public class Region {
         if (checkTick && !shouldTick()) {
             return false;
         }
+        if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
+            return false;
+        }
 
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(getType());
@@ -775,7 +778,7 @@ public class Region {
 
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
-                if (!chunkLoaded) {
+                if (!chunkLoaded && ConfigManager.getInstance().isUseAsyncUpkeeps()) {
                     UnloadedInventoryHandler.getInstance().addUpkeep(getLocation(), i);
                     continue;
                 }

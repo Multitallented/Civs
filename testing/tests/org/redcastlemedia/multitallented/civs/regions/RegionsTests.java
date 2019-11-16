@@ -40,7 +40,7 @@ import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
+import org.redcastlemedia.multitallented.civs.scheduler.RegionTickUtil;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
@@ -791,7 +791,7 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new RegionTickTask().onTwoSecondEvent(null);
+        RegionTickUtil.runUpkeeps();
         assertEquals(300, town.getPower());
     }
 

@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import net.Indyuce.mmoitems.MMOItems;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
+import java.io.File;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,31 +15,114 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.commands.*;
+import org.redcastlemedia.multitallented.civs.commands.AcceptInviteCommand;
+import org.redcastlemedia.multitallented.civs.commands.AddMemberCommand;
+import org.redcastlemedia.multitallented.civs.commands.AntiCampCommand;
+import org.redcastlemedia.multitallented.civs.commands.BountyCommand;
+import org.redcastlemedia.multitallented.civs.commands.CivCommand;
+import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
+import org.redcastlemedia.multitallented.civs.commands.ColonyCommand;
+import org.redcastlemedia.multitallented.civs.commands.DayCommand;
+import org.redcastlemedia.multitallented.civs.commands.DepositBankCommand;
+import org.redcastlemedia.multitallented.civs.commands.InviteTownCommand;
+import org.redcastlemedia.multitallented.civs.commands.MenuCommand;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
+import org.redcastlemedia.multitallented.civs.commands.ReallyCommand;
+import org.redcastlemedia.multitallented.civs.commands.ReloadCommand;
+import org.redcastlemedia.multitallented.civs.commands.RemoveMemberCommand;
+import org.redcastlemedia.multitallented.civs.commands.RenameCommand;
+import org.redcastlemedia.multitallented.civs.commands.ResetCommand;
+import org.redcastlemedia.multitallented.civs.commands.SellRegionCommand;
+import org.redcastlemedia.multitallented.civs.commands.SetGuestCommand;
+import org.redcastlemedia.multitallented.civs.commands.SetMemberCommand;
+import org.redcastlemedia.multitallented.civs.commands.SetOwnerCommand;
+import org.redcastlemedia.multitallented.civs.commands.SetRecruiterCommand;
+import org.redcastlemedia.multitallented.civs.commands.TaxCommand;
+import org.redcastlemedia.multitallented.civs.commands.ToggleAnnouncementCommand;
+import org.redcastlemedia.multitallented.civs.commands.TownCommand;
+import org.redcastlemedia.multitallented.civs.commands.TutorialAdvanceCommand;
+import org.redcastlemedia.multitallented.civs.commands.WithdrawBankCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.*;
+import org.redcastlemedia.multitallented.civs.menus.AllianceListMenu;
+import org.redcastlemedia.multitallented.civs.menus.AllianceMenu;
+import org.redcastlemedia.multitallented.civs.menus.BlueprintsMenu;
+import org.redcastlemedia.multitallented.civs.menus.BuiltRegionMenu;
+import org.redcastlemedia.multitallented.civs.menus.ClassTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.CommunityMenu;
+import org.redcastlemedia.multitallented.civs.menus.ConfirmationMenu;
+import org.redcastlemedia.multitallented.civs.menus.DestroyConfirmationMenu;
+import org.redcastlemedia.multitallented.civs.menus.ForSaleMenu;
+import org.redcastlemedia.multitallented.civs.menus.GovLeaderBoardMenu;
+import org.redcastlemedia.multitallented.civs.menus.LanguageMenu;
+import org.redcastlemedia.multitallented.civs.menus.LeaderboardMenu;
+import org.redcastlemedia.multitallented.civs.menus.LeaveConfirmationMenu;
+import org.redcastlemedia.multitallented.civs.menus.ListAllPlayersMenu;
+import org.redcastlemedia.multitallented.civs.menus.MainMenu;
+import org.redcastlemedia.multitallented.civs.menus.MemberActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.PlayerProfileMenu;
+import org.redcastlemedia.multitallented.civs.menus.PortMenu;
+import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
+import org.redcastlemedia.multitallented.civs.menus.RegionActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
+import org.redcastlemedia.multitallented.civs.menus.RegionTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.SelectGovTypeMenu;
+import org.redcastlemedia.multitallented.civs.menus.ShopLevelMenu;
+import org.redcastlemedia.multitallented.civs.menus.ShopMenu;
+import org.redcastlemedia.multitallented.civs.menus.SpellTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.SpellsMenu;
+import org.redcastlemedia.multitallented.civs.menus.StartTutorialMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownActionMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownInviteConfirmationMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownInviteMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownListMenu;
+import org.redcastlemedia.multitallented.civs.menus.TownTypeInfoMenu;
+import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
+import org.redcastlemedia.multitallented.civs.menus.ViewMembersMenu;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.effects.*;
+import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
+import org.redcastlemedia.multitallented.civs.regions.effects.BedEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.CommandEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.HuntEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.IntruderEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.JammerEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.PermissionEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.PotionAreaEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.RaidPortEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.SiegeEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.SpawnEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.TNTCannon;
+import org.redcastlemedia.multitallented.civs.regions.effects.TeleportEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.TemporaryEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
-import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
+import org.reflections.Reflections;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import github.scarsz.discordsrv.DiscordSRV;
+import net.Indyuce.mmoitems.MMOItems;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 public class Civs extends JavaPlugin {
 
@@ -166,34 +251,18 @@ public class Civs extends JavaPlugin {
     }
 
     private void initCommands() {
-        commandList.put("menu", new MenuCommand());
-        commandList.put("invite", new InviteTownCommand());
-        commandList.put("accept", new AcceptInviteCommand());
-        commandList.put("setmember", new SetMemberCommand());
-        commandList.put("setowner", new SetOwnerCommand());
-        commandList.put("setguest", new SetGuestCommand());
-        commandList.put("removemember", new RemoveMemberCommand());
-        commandList.put("add", new AddMemberCommand());
-        commandList.put("town", new TownCommand());
-        PortCommand portCommand = new PortCommand();
-        commandList.put("port", portCommand);
-        commandList.put("spawn", portCommand);
-        commandList.put("home", portCommand);
-        commandList.put("rename", new RenameCommand());
-        commandList.put("bounty", new BountyCommand());
-        commandList.put("reset", new ResetCommand());
-        commandList.put("sell", new SellRegionCommand());
-        commandList.put("really", new ReallyCommand());
-        commandList.put("withdraw", new WithdrawBankCommand());
-        commandList.put("deposit", new DepositBankCommand());
-        commandList.put("tax", new TaxCommand());
-        commandList.put("colony", new ColonyCommand());
-        commandList.put("newday", new DayCommand());
-        commandList.put("reload", new ReloadCommand());
-        commandList.put("toggleann", new ToggleAnnouncementCommand());
-        commandList.put("setrecruiter", new SetRecruiterCommand());
-        commandList.put("advancetut", new TutorialAdvanceCommand());
-        commandList.put("anticamp", new AntiCampCommand());
+        Reflections reflections = new Reflections("org.redcastlemedia.civs.commands");
+        Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
+        for (Class<? extends CivCommand> currentCommandClass : commands) {
+            try {
+                CivCommand currentCommand = currentCommandClass.newInstance();
+                for (String key : currentCommandClass.getAnnotation(CivsCommand.class).keys()) {
+                    commandList.put(key, currentCommand);
+                }
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     private void initListeners() {
