@@ -15,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.TownActionMenu;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -339,8 +338,6 @@ public class TownMenu extends CustomMenu {
                         .replace("$2", townName));
             }
             return true;
-        } else if (actionString.equals("leave-town")) {
-            // TODO leave confirmation menu
         } else if (actionString.equals("join-revolt")) {
             CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
             if (!player.getInventory().contains(costItem.createItemStack())) {

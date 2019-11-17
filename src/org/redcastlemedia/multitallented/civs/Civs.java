@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import net.Indyuce.mmoitems.MMOItems;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
+import java.io.File;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,31 +15,54 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.commands.*;
+import org.redcastlemedia.multitallented.civs.commands.CivCommand;
+import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.*;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.effects.*;
+import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ArrowTurret;
+import org.redcastlemedia.multitallented.civs.regions.effects.BedEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.CommandEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.HuntEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.IntruderEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.JammerEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.PermissionEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.PotionAreaEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.RaidPortEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.SiegeEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.SpawnEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.TNTCannon;
+import org.redcastlemedia.multitallented.civs.regions.effects.TeleportEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.TemporaryEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.VillagerEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
-import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
+import org.reflections.Reflections;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import github.scarsz.discordsrv.DiscordSRV;
+import net.Indyuce.mmoitems.MMOItems;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 public class Civs extends JavaPlugin {
 
@@ -166,69 +191,26 @@ public class Civs extends JavaPlugin {
     }
 
     private void initCommands() {
-        commandList.put("menu", new MenuCommand());
-        commandList.put("invite", new InviteTownCommand());
-        commandList.put("accept", new AcceptInviteCommand());
-        commandList.put("setmember", new SetMemberCommand());
-        commandList.put("setowner", new SetOwnerCommand());
-        commandList.put("setguest", new SetGuestCommand());
-        commandList.put("removemember", new RemoveMemberCommand());
-        commandList.put("add", new AddMemberCommand());
-        commandList.put("town", new TownCommand());
-        PortCommand portCommand = new PortCommand();
-        commandList.put("port", portCommand);
-        commandList.put("spawn", portCommand);
-        commandList.put("home", portCommand);
-        commandList.put("rename", new RenameCommand());
-        commandList.put("bounty", new BountyCommand());
-        commandList.put("reset", new ResetCommand());
-        commandList.put("sell", new SellRegionCommand());
-        commandList.put("really", new ReallyCommand());
-        commandList.put("withdraw", new WithdrawBankCommand());
-        commandList.put("deposit", new DepositBankCommand());
-        commandList.put("tax", new TaxCommand());
-        commandList.put("colony", new ColonyCommand());
-        commandList.put("newday", new DayCommand());
-        commandList.put("reload", new ReloadCommand());
-        commandList.put("toggleann", new ToggleAnnouncementCommand());
-        commandList.put("setrecruiter", new SetRecruiterCommand());
-        commandList.put("advancetut", new TutorialAdvanceCommand());
-        commandList.put("anticamp", new AntiCampCommand());
+        Reflections reflections = new Reflections("org.redcastlemedia.civs.commands");
+        Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
+        for (Class<? extends CivCommand> currentCommandClass : commands) {
+            try {
+                CivCommand currentCommand = currentCommandClass.newInstance();
+                for (String key : currentCommandClass.getAnnotation(CivsCommand.class).keys()) {
+                    commandList.put(key, currentCommand);
+                }
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     private void initListeners() {
-        Bukkit.getPluginManager().registerEvents(new MainMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LanguageMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new BlueprintsMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new CommunityMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ShopMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RecipeMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new BuiltRegionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ClassTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new MemberActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new SpellsMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ViewMembersMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ListAllPlayersMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ProtectionHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RegionListener(), this);
         Bukkit.getPluginManager().registerEvents(new CivilianListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TownListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownActionMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownInviteMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TownInviteConfirmationMenu(), this);
         Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TownTypeInfoMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new DestroyConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LeaderboardMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new LeaveConfirmationMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new PortMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerProfileMenu(), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SpellTypeInfoMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ArrowTurret(), this);
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), this);
         Bukkit.getPluginManager().registerEvents(new VillagerEffect(), this);
@@ -243,20 +225,11 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), this);
         Bukkit.getPluginManager().registerEvents(new WarehouseEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new StartTutorialMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new TutorialChoosePathMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), this);
         Bukkit.getPluginManager().registerEvents(new PermissionEffect(), this);
         Bukkit.getPluginManager().registerEvents(new CommandEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new ForSaleMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new ShopLevelMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new AllianceListMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new AllianceMenu(), this);
         Bukkit.getPluginManager().registerEvents(new HuntEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new SelectGovTypeMenu(), this);
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), this);
-        Bukkit.getPluginManager().registerEvents(new GovLeaderBoardMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new RegionTickTask(), this);
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), this);
         Bukkit.getPluginManager().registerEvents(new JammerEffect(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);

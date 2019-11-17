@@ -29,7 +29,7 @@ public class SelectTownMenu extends CustomMenu {
             data.put("page", 0);
         }
         Set<Town> towns;
-        if (params.containsKey("townList")) {
+        if (!params.containsKey("townList")) {
             towns = TownManager.getInstance().getOwnedTowns(civilian);
         } else {
             towns = new HashSet<>();

@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.HashSet;
 import java.util.UUID;
 
+@CivsCommand(keys = { "setowner" })
 public class SetOwnerCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {

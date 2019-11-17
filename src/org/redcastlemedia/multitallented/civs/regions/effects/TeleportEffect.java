@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -10,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
-import org.redcastlemedia.multitallented.civs.menus.TeleportDestinationMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -44,7 +45,11 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
         if (locationString == null) {
             if (region.getOwners().contains(player.getUniqueId())) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.openInventory(TeleportDestinationMenu.createMenu(civilian, region));
+                if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "teleport-destination")) {
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("region", region.getId());
+                    MenuManager.getInstance().openMenu(player, "teleport-destination", params);
+                }
             }
             return;
         }
@@ -64,7 +69,11 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-            player.openInventory(TeleportDestinationMenu.createMenu(civilian, region));
+            if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "teleport-destination")) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("region", region.getId());
+                MenuManager.getInstance().openMenu(player, "teleport-destination", params);
+            }
             break;
         }
     }

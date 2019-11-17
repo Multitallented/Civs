@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -16,14 +19,19 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class JammerEffect implements Listener {
+public class JammerEffect implements Listener, RegionCreatedListener {
 
     public static String KEY = "jammer";
     private static HashMap<UUID, Long> cooldowns = new HashMap<>();
+
+    public JammerEffect() {
+        RegionManager.getInstance().addRegionCreatedListener(KEY, this);
+    }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -105,5 +113,24 @@ public class JammerEffect implements Listener {
             return;
         }
 
+    }
+
+    @Override
+    public void regionCreatedHandler(Region region) {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+            String jammerLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    civ.getLocale(), "jammer-built").replace("$1", jammerLocalName));
+        }
+        if (Civs.discordSRV != null) {
+            String jammerLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
+                    regionType.getProcessedName() + "-name");
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    ConfigManager.getInstance().getDefaultLanguage(), "jammer-built")
+                    .replace("$1", jammerLocalName);
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
+        }
     }
 }

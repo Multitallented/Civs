@@ -26,9 +26,9 @@ public class MenuTests {
 
     @Test
     public void inventorySizeTest() {
-        assertEquals(54, Menu.getInventorySize(56));
-        assertEquals(18, Menu.getInventorySize(10));
-        assertEquals(9, Menu.getInventorySize(1));
+        assertEquals(54, MenuUtil.getInventorySize(56));
+        assertEquals(18, MenuUtil.getInventorySize(10));
+        assertEquals(9, MenuUtil.getInventorySize(1));
     }
 
     @Test
@@ -36,19 +36,5 @@ public class MenuTests {
         ArrayList<Integer> indexes = MenuIcon.parseIndexArrayFromString("9-35");
         assertEquals(9, (int) indexes.get(0));
         assertEquals(35, (int) indexes.get(indexes.size() - 1));
-    }
-
-    @Test
-    public void cvItemShouldKeepGroup() {
-        RecipeMenuTests.loadRegionTypeCouncilRoom();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
-        List<List<CVItem>> reqs = regionType.getReqs();
-        assertNotNull(reqs.get(1).get(0).getGroup());
-        Inventory inventory = RecipeMenu.createMenuCVItem(reqs, TestUtil.player.getUniqueId(), regionType.createItemStack());
-        assertEquals(1, inventory.getItem(11).getItemMeta().getLore().size());
-        assertEquals("g:sign", inventory.getItem(11).getItemMeta().getLore().get(0));
-        Menu.GUI gui = Menu.getGuis().get(TestUtil.player.getUniqueId());
-        gui.advanceItemPositions();
-        assertEquals("g:sign", inventory.getItem(11).getItemMeta().getLore().get(0));
     }
 }

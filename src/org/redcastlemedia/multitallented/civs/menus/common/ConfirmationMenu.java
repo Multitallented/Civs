@@ -15,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
-import org.redcastlemedia.multitallented.civs.menus.MainMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -79,14 +78,14 @@ public class ConfirmationMenu extends CustomMenu {
                 civilian.setAskForTutorial(false);
                 CivilianManager.getInstance().saveCivilian(civilian);
                 TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
-                player.openInventory(MainMenu.createMenu(civilian));
+                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
             }
             return true;
         } else if ("reject".equals(actionString)) {
             if ("tutorial".equals(type)) {
                 civilian.setAskForTutorial(false);
                 CivilianManager.getInstance().saveCivilian(civilian);
-                player.openInventory(MainMenu.createMenu(civilian));
+                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
                 return true;
             }
         }

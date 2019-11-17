@@ -31,9 +31,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
@@ -104,19 +105,24 @@ public class RegionManager {
         }
         try {
             for (File file : regionFolder.listFiles()) {
-                Region region = loadRegion(file);
-                if (region == null || regionLocations.containsKey(region.getId())) {
-                    continue;
+                try {
+                    Region region = loadRegion(file);
+                    if (region == null || regionLocations.containsKey(region.getId())) {
+                        continue;
+                    }
+                    UUID worldName = region.getLocation().getWorld().getUID();
+                    if (!regions.containsKey(worldName)) {
+                        regions.put(worldName, new ArrayList<Region>());
+                    }
+                    regions.get(worldName).add(region);
+                    sortRegions(worldName);
+                    regionLocations.put(region.getId(), region);
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to load invalid region file " + file.getName());
                 }
-                UUID worldName = region.getLocation().getWorld().getUID();
-                if (!regions.containsKey(worldName)) {
-                    regions.put(worldName, new ArrayList<Region>());
-                }
-                regions.get(worldName).add(region);
-                sortRegions(worldName);
-                regionLocations.put(region.getId(), region);
             }
         } catch (NullPointerException npe) {
+            npe.printStackTrace();
             Civs.logger.warning("No region files found to load");
             return;
         }
@@ -498,13 +504,20 @@ public class RegionManager {
         }
 
         boolean rebuildTransition = false;
-        if (rebuildRegion != null && regionType.getRebuild().isEmpty()) {
+        boolean isPlot = false;
+        if (rebuildRegion != null) {
+            RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+            isPlot = rebuildType.getEffects().containsKey("plot") &&
+                    rebuildType.getBuildRadius() <= regionType.getBuildRadius() &&
+                    rebuildRegion.getRawPeople().containsKey(civilian.getUuid());
+        }
+        if (!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", localizedRegionName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion != null && !hasType) {
+        } else if (!isPlot && rebuildRegion != null && !hasType) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
@@ -607,13 +620,22 @@ public class RegionManager {
                 for (String groupType : regionType1.getGroups()) {
                     if (groupLimits.containsKey(groupType)) {
                         if (groupLimits.get(groupType) < 2) {
-                            player.sendMessage(Civs.getPrefix() +
-                                    localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                            .replace("$1", townLocalizedName)
-                                            .replace("$2", townType.getRegionLimit(groupType) + "")
-                                            .replace("$3", groupType));
-                            event.setCancelled(true);
-                            return false;
+                            boolean rebuildWithinSameGroup = false;
+                            if (rebuildRegion != null) {
+                                RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+                                if (!rebuildType.getGroups().contains(groupType)) {
+                                    rebuildWithinSameGroup = true;
+                                }
+                            }
+                            if (!rebuildWithinSameGroup) {
+                                player.sendMessage(Civs.getPrefix() +
+                                        localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                                .replace("$1", townLocalizedName)
+                                                .replace("$2", townType.getRegionLimit(groupType) + "")
+                                                .replace("$3", groupType));
+                                event.setCancelled(true);
+                                return false;
+                            }
                         } else {
                             groupLimits.put(groupType, groupLimits.get(groupType) - 1);
                         }
@@ -656,7 +678,18 @@ public class RegionManager {
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
-                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                    List<List<CVItem>> missingList = new ArrayList<>();
+                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                        List<CVItem> tempList = new ArrayList<>();
+                        for (Material mat : missingMap.keySet()) {
+                            tempList.add(new CVItem(mat, missingMap.get(mat)));
+                        }
+                        missingList.add(tempList);
+                    }
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("items", missingList);
+                    data.put("page", 0);
+                    MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return false;
             }

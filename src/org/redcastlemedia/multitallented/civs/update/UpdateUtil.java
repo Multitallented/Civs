@@ -44,7 +44,7 @@ public final class UpdateUtil {
         String newVersion = lastVersion;
         switch (lastVersion) {
             case "1.5.5":
-                Civs.logger.info("Updating configs from 1.5.5 to 1.5.6");
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.5.6");
                 try {
                     newVersion = Update1d5d6.update();
                 } catch (Exception e) {
@@ -53,7 +53,25 @@ public final class UpdateUtil {
                     return newVersion;
                 }
             case "1.5.6":
-                Civs.logger.info("Updating configs from 1.5.6 to 1.6.0");
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.5.7");
+                try {
+                    newVersion = Update1d5d7.update();
+                } catch (Exception e) {
+                    Civs.logger.severe("[Error] Update to 1.5.7 interrupted");
+                    e.printStackTrace();
+                    return newVersion;
+                }
+            case "1.5.7":
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.5.8");
+                try {
+                    newVersion = Update1d5d8.update();
+                } catch (Exception e) {
+                    Civs.logger.severe("[Error] Update to 1.5.8 interrupted");
+                    e.printStackTrace();
+                    return newVersion;
+                }
+            case "1.5.8":
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.6.0");
                 try {
                     newVersion = Update1d6d0.update();
                 } catch (Exception e) {
@@ -61,6 +79,8 @@ public final class UpdateUtil {
                     e.printStackTrace();
                     return newVersion;
                 }
+            default:
+                newVersion = Civs.getInstance().getDescription().getVersion();
         }
         return newVersion;
     }

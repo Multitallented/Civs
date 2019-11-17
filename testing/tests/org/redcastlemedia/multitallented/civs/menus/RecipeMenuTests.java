@@ -7,22 +7,29 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.common.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class RecipeMenuTests {
+    private RecipeMenu recipeMenu;
 
     private ArrayList<CVItem> subItems;
     private HashMap<Integer, List<CVItem>> cycleItems;
@@ -37,6 +44,8 @@ public class RecipeMenuTests {
 
     @Before
     public void setup() {
+        MenuManager.clearData(TestUtil.player.getUniqueId());
+        this.recipeMenu = new RecipeMenu();
         this.subItems = new ArrayList<>();
         this.cycleItems = new HashMap<>();
         this.proxyInv = new HashMap<>();
@@ -73,11 +82,22 @@ public class RecipeMenuTests {
 //        assertEquals(1, cycleItems.get(0).get(1).getQty());
 //    }
 
-    @Test
+    @Test @Ignore
     public void regionReqsShouldNeverChange() {
         loadRegionTypeCouncilRoom();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
-        Inventory inventory = RecipeMenu.createMenuCVItem(regionType.getReqs(), TestUtil.player.getUniqueId(), regionType.createItemStack());
+        UUID uuid = TestUtil.player.getUniqueId();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("recipe", "reqs");
+        params.put("regionType", regionType.getProcessedName());
+        recipeMenu.itemIndexes = new HashSet<>();
+        recipeMenu.itemIndexes.add(new MenuIcon("icon", 0, "", "", ""));
+        FileConfiguration config = new YamlConfiguration();
+        config.set("index", "9-48");
+        recipeMenu.itemIndexes.add(new MenuIcon("icon", 0, "", "", ""));
+        recipeMenu.itemsPerPage.put("items", 48);
+        Inventory inventory = recipeMenu.createMenu(civilian, params);
         assertEquals(Material.CHEST, regionType.getReqs().get(0).get(0).getMat());
         assertEquals(Material.OAK_SIGN, regionType.getReqs().get(8).get(0).getMat());
         assertEquals(Material.QUARTZ_BLOCK, regionType.getReqs().get(5).get(0).getMat());

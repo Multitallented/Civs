@@ -81,17 +81,21 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         for (Player player1 : Bukkit.getOnlinePlayers()) {
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
+            String raidLocalName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
+                    rt.getProcessedName() + "-name");
             player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
                     LocaleManager.getInstance().getTranslation(civilian1.getLocale(), "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
-                            .replace("$2", rt.getName())
+                            .replace("$2", raidLocalName)
                             .replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
+            String raidLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
+                    rt.getProcessedName() + "-name");
             String defaultMessage = Civs.getPrefix() + ChatColor.RED +
                     LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
-                            .replace("$2", rt.getName())
+                            .replace("$2", raidLocalName)
                             .replace("$3", town.getName());
             defaultMessage += DiscordUtil.atAllTownOwners(town);
             DiscordUtil.sendMessageToMainChannel(defaultMessage);
