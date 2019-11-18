@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -37,12 +40,10 @@ public class BlueprintsMenu extends CustomMenu {
         HashMap<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
         for (String itemName : newItems.keySet()) {
-            if (stashItems.containsKey(itemName)) {
-                continue;
-            }
             stashItems.put(itemName, newItems.get(itemName));
         }
         data.put("stashItems", stashItems);
+        data.put("itemsInView", new HashMap<String, Integer>());
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -59,18 +60,41 @@ public class BlueprintsMenu extends CustomMenu {
     @Override
     public void onCloseMenu(Civilian civilian, Inventory inventory) {
         HashMap<String, Integer> stashItems = civilian.getStashItems();
-        // TODO add items not on this page
-        stashItems.clear();
+        HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "itemsInView");
         for (ItemStack is : inventory) {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
             CivItem civItem = CivItem.getFromItemStack(is);
             String name = civItem.getProcessedName();
-            if (stashItems.containsKey(name)) {
-                stashItems.put(name, is.getAmount() + stashItems.get(name));
+            if (itemsInView.containsKey(name)) {
+                if (itemsInView.get(name) >= is.getAmount()) {
+                    itemsInView.put(name, itemsInView.get(name) - is.getAmount());
+                } else {
+                    if (itemsInView.get(name) < is.getAmount()) {
+                        int amount = is.getAmount() - itemsInView.get(name);
+                        if (stashItems.containsKey(name)) {
+                            stashItems.put(name, amount + stashItems.get(name));
+                        } else {
+                            stashItems.put(name, amount);
+                        }
+                    }
+                    itemsInView.remove(name);
+                }
             } else {
-                stashItems.put(name, is.getAmount());
+                if (stashItems.containsKey(name)) {
+                    stashItems.put(name, is.getAmount() + stashItems.get(name));
+                } else {
+                    stashItems.put(name, is.getAmount());
+                }
+            }
+        }
+        for (String name : itemsInView.keySet()) {
+            if (stashItems.get(name) <= itemsInView.get(name)) {
+                stashItems.remove(name);
+            } else {
+                int amount = stashItems.get(name) - itemsInView.get(name);
+                stashItems.put(name, amount);
             }
         }
         civilian.setStashItems(stashItems);
@@ -111,6 +135,8 @@ public class BlueprintsMenu extends CustomMenu {
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentStashItemName));
+            HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "itemsInView");
+            itemsInView.put(currentStashItemName, civilian.getStashItems().get(currentStashItemName));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -119,11 +145,12 @@ public class BlueprintsMenu extends CustomMenu {
     }
 
     @Override
-    public boolean doActionsAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
-        if (!CVItem.isCivsItem(clickedItem)) {
-            return true;
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!CVItem.isCivsItem(event.getCurrentItem())) {
+            if (!event.isCancelled()) {
+                event.setCancelled(true);
+            }
         }
-        return false;
     }
 
 }

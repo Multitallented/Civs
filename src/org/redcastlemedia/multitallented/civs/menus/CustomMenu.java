@@ -7,12 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -133,22 +136,36 @@ public abstract class CustomMenu {
         return this.name;
     }
 
-    public boolean doActionsAndCancel(Civilian civilian, ItemStack cursorItem, ItemStack clickedItem) {
+    public void onInventoryDrag(InventoryDragEvent event) {
+        // optional override
+    }
+
+    public void onInventoryClick(InventoryClickEvent event) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
+        ItemStack clickedItem = event.getCurrentItem();
         if (!actions.containsKey(civilian.getUuid())) {
-            return false;
+            return;
         }
         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
-            return true;
+            if (!event.isCancelled()) {
+                event.setCancelled(true);
+            }
+            return;
         }
         List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
         if (actionStrings == null || actionStrings.isEmpty()) {
-            return true;
+            if (!event.isCancelled()) {
+                event.setCancelled(true);
+            }
+            return;
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
             shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) | shouldCancel;
         }
-        return shouldCancel;
+        if (!event.isCancelled()) {
+            event.setCancelled(true);
+        }
     }
 
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
