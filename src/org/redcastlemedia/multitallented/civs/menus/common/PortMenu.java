@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.TeleportEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
@@ -38,20 +39,33 @@ public class PortMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
+        Region region = null;
+        if (params.containsKey("region")) {
+            region = RegionManager.getInstance().getRegionById(params.get("region"));
+            data.put("region", region);
+        }
         List<Region> regions = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
-        for (Region region : regionSet) {
-            if (regions.contains(region)) {
+
+        outer:
+        for (Region currentRegion : regionSet) {
+            if (regions.contains(currentRegion) || currentRegion.equals(region)) {
                 continue;
             }
-            if (!region.getEffects().containsKey("port")) {
+            if (!currentRegion.getEffects().containsKey("port")) {
                 continue;
             }
             //Don't show private ports
-            if (!PortCommand.canPort(region, civilian.getUuid(), null)) {
-                continue;
+            if (region == null) {
+                if (!PortCommand.canPort(currentRegion, civilian.getUuid(), null)) {
+                    continue;
+                }
+            } else {
+                if (!TeleportEffect.isPotentialTeleportDestination(region, currentRegion)) {
+                    continue;
+                }
             }
-            regions.add(region);
+            regions.add(currentRegion);
         }
         data.put("ports", regions);
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("ports"));
@@ -88,7 +102,13 @@ public class PortMenu extends CustomMenu {
                 cvItem.getLore().add(town.getName());
             }
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
+            if (MenuManager.getData(civilian.getUuid(), "region") != null) {
+                ArrayList<String> actionStrings = new ArrayList<>();
+                actionStrings.add("set-teleport");
+                actions.get(civilian.getUuid()).put(itemStack, actionStrings);
+            } else {
+                putActions(civilian, menuIcon, itemStack, count);
+            }
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
@@ -104,6 +124,12 @@ public class PortMenu extends CustomMenu {
             if (!commandPreprocessEvent.isCancelled()) {
                 player.performCommand("cv port " + id);
             }
+            return true;
+        } else if (actionString.equals("set-teleport")) {
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+            String id = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
+            region.getEffects().put(TeleportEffect.KEY, id);
+            RegionManager.getInstance().saveRegion(region);
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);

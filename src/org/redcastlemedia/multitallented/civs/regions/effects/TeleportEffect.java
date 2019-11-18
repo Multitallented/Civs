@@ -45,10 +45,11 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
         if (locationString == null) {
             if (region.getOwners().contains(player.getUniqueId())) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "teleport-destination")) {
+                if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "port") &&
+                        hasPotentialDestinations(region)) {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("region", region.getId());
-                    MenuManager.getInstance().openMenu(player, "teleport-destination", params);
+                    MenuManager.getInstance().openMenu(player, "port", params);
                 }
             }
             return;
@@ -69,12 +70,40 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-            if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "teleport-destination")) {
+            if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "port") &&
+                    hasPotentialDestinations(region)) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("region", region.getId());
-                MenuManager.getInstance().openMenu(player, "teleport-destination", params);
+                MenuManager.getInstance().openMenu(player, "port", params);
             }
             break;
         }
+    }
+
+    private static boolean hasPotentialDestinations(Region region) {
+        for (Region currentRegion : RegionManager.getInstance().getAllRegions()) {
+            if (isPotentialTeleportDestination(region, currentRegion)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPotentialTeleportDestination(Region region, Region currentRegion) {
+        if (!currentRegion.getEffects().containsKey(TeleportEffect.KEY) ||
+                !region.getEffects().containsKey(TeleportEffect.KEY)) {
+            return false;
+        }
+        for (UUID uuid : currentRegion.getRawPeople().keySet()) {
+            if (!currentRegion.getRawPeople().get(uuid).contains("owner")) {
+                continue;
+            }
+            if (!region.getRawPeople().containsKey(uuid) ||
+                    !region.getRawPeople().get(uuid).contains("owner")) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 }
