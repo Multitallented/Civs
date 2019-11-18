@@ -31,6 +31,9 @@ public class RecipeMenu extends CustomMenu {
         }
         String recipe = params.get("recipe");
         String regionTypeName = params.get("regionType");
+        if (regionTypeName != null) {
+            data.put("regionType", ItemManager.getInstance().getItemType(regionTypeName));
+        }
         List<List<CVItem>> items;
         if (recipe == null || regionTypeName == null) {
             items = new ArrayList<>();
@@ -87,6 +90,8 @@ public class RecipeMenu extends CustomMenu {
 
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
+                (String) MenuManager.getData(civilian.getUuid(), "regionType"));
         if (menuIcon.getKey().equals("items")) {
             List<List<CVItem>> items;
             if (MenuManager.getData(civilian.getUuid(), "items") != null) {
@@ -112,7 +117,7 @@ public class RecipeMenu extends CustomMenu {
                 }
                 if (cvItem.getGroup() != null) {
                     ArrayList<String> actionList = new ArrayList<>();
-                    actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup());
+                    actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup() + "&regionType=" + regionType.getProcessedName());
                     actions.get(civilian.getUuid()).put(itemStack, actionList);
                 }
             }

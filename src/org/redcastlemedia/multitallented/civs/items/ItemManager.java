@@ -348,7 +348,9 @@ public class ItemManager {
     public HashMap<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
-            if (!hasItemUnlocked(civilian, civItem)) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
+                    civilian.getStashItems().containsKey(civItem.getProcessedName()) ||
+                    !hasItemUnlocked(civilian, civItem)) {
                 continue;
             }
             if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {

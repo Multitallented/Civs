@@ -191,7 +191,7 @@ public class Civs extends JavaPlugin {
     }
 
     private void initCommands() {
-        Reflections reflections = new Reflections("org.redcastlemedia.civs.commands");
+        Reflections reflections = new Reflections("org.redcastlemedia.multitallented.civs.commands");
         Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
         for (Class<? extends CivCommand> currentCommandClass : commands) {
             try {

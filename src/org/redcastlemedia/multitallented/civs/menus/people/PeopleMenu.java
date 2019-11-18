@@ -46,6 +46,9 @@ public class PeopleMenu extends CustomMenu {
                 Town town = TownManager.getInstance().getTownAt(region.getLocation());
                 if (town != null) {
                     for (UUID uuid : town.getRawPeople().keySet()) {
+                        if (region.getRawPeople().containsKey(uuid)) {
+                            continue;
+                        }
                         civilians.add(CivilianManager.getInstance().getCivilian(uuid));
                     }
                 }
@@ -186,6 +189,7 @@ public class PeopleMenu extends CustomMenu {
             if (player != null) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
                 skullMeta.setOwningPlayer(player);
+                itemStack.setItemMeta(skullMeta);
             }
             ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).put(itemStack, offlinePlayer.getUniqueId());
             putActions(civilian, menuIcon, itemStack, count);

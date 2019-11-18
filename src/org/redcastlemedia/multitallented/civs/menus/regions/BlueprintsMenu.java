@@ -59,17 +59,8 @@ public class BlueprintsMenu extends CustomMenu {
     @Override
     public void onCloseMenu(Civilian civilian, Inventory inventory) {
         HashMap<String, Integer> stashItems = civilian.getStashItems();
-        HashSet<String> removeItems = new HashSet<>();
-        for (String currentName : stashItems.keySet()) {
-            CivItem item = ItemManager.getInstance().getItemType(currentName);
-            if (item.getItemType() == CivItem.ItemType.REGION ||
-                    item.getItemType() == CivItem.ItemType.TOWN) {
-                removeItems.add(currentName);
-            }
-        }
-        for (String currentName : removeItems) {
-            stashItems.remove(currentName);
-        }
+        // TODO add items not on this page
+        stashItems.clear();
         for (ItemStack is : inventory) {
             if (!CVItem.isCivsItem(is)) {
                 continue;
