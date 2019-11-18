@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -79,6 +80,16 @@ public class MenuManager implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onInventoryDrag(InventoryDragEvent event) {
+        UUID uuid = event.getWhoClicked().getUniqueId();
+        if (!openMenus.containsKey(uuid)) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        menus.get(openMenus.get(uuid)).onInventoryDrag(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
@@ -109,10 +120,7 @@ public class MenuManager implements Listener {
             }
         }
 
-        boolean shouldCancel = menus.get(openMenus.get(uuid)).doActionsAndCancel(civilian, event.getCursor(), event.getCurrentItem());
-        if (shouldCancel) {
-            event.setCancelled(true);
-        }
+        menus.get(openMenus.get(uuid)).onInventoryClick(event);
     }
 
     public void goBack(UUID uuid) {

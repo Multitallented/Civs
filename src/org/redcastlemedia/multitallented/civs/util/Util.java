@@ -196,7 +196,17 @@ public final class Util {
     }
 
     public static ArrayList<String> textWrap(String input) {
-        final int LINE_LENGTH = 25;
+        int lineLength = 40;
+        int longestSection = 0;
+        for (String subString : input.split(" ")) {
+            int length = subString.length();
+            if (longestSection < length) {
+                longestSection = length;
+            }
+        }
+        if (longestSection > 25) {
+            lineLength = 25;
+        }
         String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
@@ -204,8 +214,8 @@ public final class Util {
         String addMe = prefix.equals("§r") ? prefix : "";
         for (String s : sends) {
             do {
-                if (s.length() < LINE_LENGTH) {
-                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > LINE_LENGTH) {
+                if (s.length() < lineLength) {
+                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
                         lore.add("" + addMe.trim());
                         addMe = prefix;
                     }
@@ -216,8 +226,8 @@ public final class Util {
                         lore.add("" + addMe.trim());
                         addMe = prefix;
                     }
-                    addMe += s.substring(0, LINE_LENGTH - 1);
-                    s = s.substring(LINE_LENGTH - 1);
+                    addMe += s.substring(0, lineLength - 1);
+                    s = s.substring(lineLength - 1);
                 }
             } while (s.length() > 0);
         }

@@ -171,12 +171,14 @@ public class CivilianListener implements Listener {
         String processedName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
         String itemName = processedName.replace(
                 ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
-        if (civilian.getStashItems().containsKey(itemName)) {
-            civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
-        } else {
-            civilian.getStashItems().put(itemName, 1);
+        if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints")) {
+            if (civilian.getStashItems().containsKey(itemName)) {
+                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+            } else {
+                civilian.getStashItems().put(itemName, 1);
+            }
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
-        CivilianManager.getInstance().saveCivilian(civilian);
         return true;
     }
 
