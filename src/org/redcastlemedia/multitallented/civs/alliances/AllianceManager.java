@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.alliances;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -11,11 +10,9 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,23 +57,6 @@ public class AllianceManager implements Listener {
         }
     }
 
-    public ChunkClaim getClaimAt(Location location) {
-        Chunk chunk = location.getChunk();
-        String chunkKey = chunk.getX() + "," + chunk.getZ();
-        for (Alliance alliance : alliances.values()) {
-
-            if (!alliance.getNationClaims().containsKey(location.getWorld().getUID())) {
-                continue;
-            }
-            if (alliance.getNationClaims().get(location.getWorld().getUID())
-                    .containsKey(chunkKey)) {
-                return alliance.getNationClaims().get(location.getWorld().getUID())
-                        .get(chunkKey);
-            }
-        }
-        return null;
-    }
-
     public boolean isInAlliance(UUID uuid, Alliance alliance) {
         for (String townName : alliance.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
@@ -93,7 +73,7 @@ public class AllianceManager implements Listener {
             config.load(allianceFile);
             Alliance alliance = new Alliance();
             alliance.setName(allianceFile.getName().replace(".yml", ""));
-            alliance.setMembers(new HashSet<String>(config.getStringList("members")));
+            alliance.setMembers(new HashSet<>(config.getStringList("members")));
             for (String townName : new ArrayList<>(alliance.getMembers())) {
                 if (TownManager.getInstance().getTown(townName) == null) {
                     alliance.getMembers().remove(townName);
@@ -103,20 +83,8 @@ public class AllianceManager implements Listener {
             if (uuidString != null) {
                 alliance.setLastRenamedBy(UUID.fromString(uuidString));
             }
-            if (config.getConfigurationSection("claims") != null) {
-                HashMap<UUID, HashMap<String, ChunkClaim>> claims = new HashMap<>();
-                for (String worldUUID : config.getConfigurationSection("claims").getKeys(false)) {
-                    HashMap<String, ChunkClaim> chunkMap = new HashMap<>();
-                    for (String chunkString : config.getStringList("claims." + worldUUID)) {
-                        ChunkClaim chunkClaim = ChunkClaim.fromString(chunkString, alliance);
-                        chunkMap.put(chunkClaim.getX() + "," + chunkClaim.getZ(), chunkClaim);
-                    }
-                    claims.put(UUID.fromString(worldUUID), chunkMap);
-                }
-                alliance.setNationClaims(claims);
-            }
 
-            alliance.getEffects().addAll(ConfigManager.getInstance().getAllianceClaimEffects());
+            alliance.getEffects().addAll(ConfigManager.getInstance().getNationClaimEffects());
 
             alliances.put(alliance.getName(), alliance);
         } catch (Exception e) {
@@ -168,18 +136,7 @@ public class AllianceManager implements Listener {
             }
             FileConfiguration config = new YamlConfiguration();
 
-            if (alliance.getNationClaims().isEmpty()) {
-                config.set("claims", null);
-            } else {
-                for (UUID uuid : alliance.getNationClaims().keySet()) {
-                    ArrayList<String> claimList = new ArrayList<>();
-                    for (ChunkClaim chunk : alliance.getNationClaims().get(uuid).values()) {
-                        claimList.add(chunk.toString());
-                    }
-                    config.set("claims." + uuid.toString(), claimList);
-                }
-            }
-            config.set("members", new ArrayList<String>(alliance.getMembers()));
+            config.set("members", new ArrayList<>(alliance.getMembers()));
             if (alliance.getLastRenamedBy() != null) {
                 config.set("last-rename", alliance.getLastRenamedBy().toString());
             }
@@ -264,7 +221,6 @@ public class AllianceManager implements Listener {
             alliance.getMembers().add(town1.getName());
             alliance.getMembers().add(town2.getName());
             alliance.setName(town1.getName() + "-" + town2.getName());
-            fillClaims(alliance);
             alliances.put(alliance.getName(), alliance);
             saveAlliance(alliance);
         } else {
@@ -279,8 +235,6 @@ public class AllianceManager implements Listener {
                 }
                 removeThese.add(alliance);
             }
-            mergeClaims(mergeAlliance, removeThese);
-            fillClaims(mergeAlliance);
         }
 
         for (Alliance alliance : removeThese) {
@@ -289,210 +243,6 @@ public class AllianceManager implements Listener {
 
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
-        }
-    }
-
-    public int getMaxAllianceClaims(Alliance alliance) {
-        int numberOfClaims = 0;
-        for (String townName : alliance.getMembers()) {
-            Town town = TownManager.getInstance().getTown(townName);
-            numberOfClaims += town.getPower();
-        }
-        return (int) ((double) numberOfClaims / ConfigManager.getInstance().getPowerPerAllianceClaim());
-    }
-
-    public int getNumberOfClaims(Alliance alliance) {
-        int autoFilledClaims = 0;
-        for (UUID uuid : alliance.getNationClaims().keySet()) {
-            autoFilledClaims += alliance.getNationClaims().get(uuid).size();
-        }
-        return autoFilledClaims;
-    }
-
-    private void fillClaims(Alliance alliance) {
-        int numberOfClaims = getMaxAllianceClaims(alliance);
-        int autoFilledClaims = getNumberOfClaims(alliance);
-
-        if (autoFilledClaims >= numberOfClaims) {
-            return;
-        }
-
-        int claimsAvailable = numberOfClaims - autoFilledClaims;
-        claimsAvailable = surroundAllAlliedTowns(alliance, claimsAvailable);
-
-        if (claimsAvailable < 1) {
-            return;
-        }
-        HashSet<String> bridges = new HashSet<>();
-        for (String town1Name : alliance.getMembers()) {
-            for (String town2Name : alliance.getMembers()) {
-                if (town1Name.equals(town2Name)) {
-                    continue;
-                }
-
-                if (bridges.contains(town1Name + ":" + town2Name) ||
-                        bridges.contains(town2Name + ":" + town1Name)) {
-                    continue;
-                }
-                Town town1 = TownManager.getInstance().getTown(town1Name);
-                Town town2 = TownManager.getInstance().getTown(town2Name);
-                if (town1.getLocation().getWorld().equals(town2.getLocation().getWorld())) {
-                    bridges.add(town1Name + ":" + town2Name);
-                }
-            }
-        }
-        claimsAvailable = createBridgesBetweenAlliedTowns(alliance, bridges, claimsAvailable);
-
-        if (claimsAvailable < 1) {
-            return;
-        }
-
-        // TODO spiral outwards from connected towns
-    }
-
-    private int surroundAllAlliedTowns(Alliance alliance, int claimsAvailable) {
-        int i=0;
-        for (;;) {
-            int fullTowns = 0;
-            for (String townName : alliance.getMembers()) {
-                Town town = TownManager.getInstance().getTown(townName);
-                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-
-                int chunkRadius = (int) (Math.ceil((double) townType.getBuildRadius() / 16) + 2);
-                if (i > chunkRadius * 8 + 1) {
-                    fullTowns++;
-                    continue;
-                }
-
-                Chunk chunk = getSurroundTownClaim(i, town.getLocation());
-                ChunkClaim claim = ChunkClaim.fromChunk(chunk);
-                if (claim == null) {
-                    claim = new ChunkClaim(chunk.getX(), chunk.getZ(), town.getLocation().getWorld(), alliance);
-                    if (!alliance.getNationClaims().containsKey(town.getLocation().getWorld().getUID())) {
-                        alliance.getNationClaims().put(town.getLocation().getWorld().getUID(), new HashMap<>());
-                    }
-                    alliance.getNationClaims().get(town.getLocation().getWorld().getUID())
-                            .put(claim.getId(), claim);
-                    claimsAvailable--;
-
-                    if (claimsAvailable < 1) {
-                        return 0;
-                    }
-                }
-
-            }
-            if (fullTowns >= alliance.getMembers().size()) {
-                break;
-            }
-            i++;
-        }
-        return claimsAvailable;
-    }
-
-    private int createBridgesBetweenAlliedTowns(Alliance alliance, HashSet<String> bridges, int claimsAvailable) {
-        HashSet<ClaimBridge> claimBridges = new HashSet<>();
-        for (String bridgeString : bridges) {
-            claimBridges.add(getBridges(bridgeString));
-        }
-
-        int i=0;
-        while (claimsAvailable > 0 && !claimBridges.isEmpty()) {
-            HashSet<ClaimBridge> tempBridges = new HashSet<>(claimBridges);
-            for (ClaimBridge claimBridge : tempBridges) {
-                Chunk chunk = getBridgeChunk(i, claimBridge);
-                if (chunk == null) {
-                    claimBridges.remove(claimBridge);
-                }
-                // TODO add chunk to alliance claim
-            }
-        }
-
-        return claimsAvailable;
-    }
-
-    ClaimBridge getBridges(String bridgeName) {
-        Town town1 = TownManager.getInstance().getTown(bridgeName.split(":")[0]);
-        Town town2 = TownManager.getInstance().getTown(bridgeName.split(":")[1]);
-
-        double x1 = town1.getLocation().getX();
-        double x2 = town2.getLocation().getX();
-        double diffX = x2 - x1;
-
-        double z1 = town1.getLocation().getZ();
-        double z2 = town2.getLocation().getZ();
-        double diffZ = z2 - z1;
-
-        double slope = diffZ / diffX;
-
-        return new ClaimBridge(x1, x2, z1, z2, diffX, diffZ, slope, town1.getLocation().getWorld());
-    }
-
-    // TODO this is probably wrong and needs to be fixed and tested
-    Chunk getBridgeChunk(int index, ClaimBridge claimBridge) {
-        if (claimBridge.getDiffX() > 0 && claimBridge.getX1() + 16 * index > claimBridge.getX2()) {
-            return null;
-        } else if (claimBridge.getDiffX() < 0 && claimBridge.getX1() + 16 * index < claimBridge.getX2()) {
-            return null;
-        }
-        double x = claimBridge.getDiffX() > 0 ? claimBridge.getX1() + 16 * index : claimBridge.getX1() - 16 * index;
-        double z = claimBridge.getZ1() + claimBridge.getSlope() * x;
-
-        Location location = new Location(claimBridge.getWorld(), x, 60, z);
-        return location.getChunk();
-    }
-
-    Chunk getSurroundTownClaim(int index, Location location) {
-        if (0 == index) {
-            return location.getChunk();
-        }
-        int layer = 0;
-        int currentStep = 0;
-        int layerProgress = 0;
-        for (;;) {
-            layer++;
-            currentStep++;
-            layerProgress = index - currentStep;
-            currentStep += Math.min(layer * 8, layerProgress);
-            if (currentStep >= index) {
-                break;
-            }
-        }
-        // 1, 1, 1, 0, -1, -1, -1, 0
-        int side = (int) ((double) layer * 2) + 1;
-        int x = layer;
-        int z = layer;
-
-        if (layerProgress < side) {
-            z = z - layerProgress;
-        } else if (layerProgress < side * 2 - 2) {
-            z = -z;
-            x = x - layerProgress - 1 + side;
-        } else if (layerProgress < side * 3 - 2) {
-            x = -x;
-            z = -z + layerProgress + 2 - side * 2;
-        } else {
-            x = -x + layerProgress + 3 - side * 3;
-        }
-
-
-        Chunk chunk = location.getChunk();
-        x = chunk.getX() + x;
-        z = chunk.getZ() + z;
-        return location.getWorld().getChunkAt(x, z);
-    }
-
-    private void mergeClaims(Alliance rootAlliance, HashSet<Alliance> merges) {
-        for (Alliance merge : merges) {
-            for (UUID uuid : merge.getNationClaims().keySet()) {
-                if (!rootAlliance.getNationClaims().containsKey(uuid)) {
-                    rootAlliance.getNationClaims().put(uuid, new HashMap<>());
-                }
-                for (ChunkClaim claim : merge.getNationClaims().get(uuid).values()) {
-                    claim.setAlliance(rootAlliance);
-                    String claimId = claim.getX() + "," + claim.getZ();
-                    rootAlliance.getNationClaims().get(uuid).put(claimId, claim);
-                }
-            }
         }
     }
 

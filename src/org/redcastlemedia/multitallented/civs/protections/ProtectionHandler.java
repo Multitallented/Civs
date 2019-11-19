@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -567,8 +566,8 @@ public class ProtectionHandler implements Listener {
 
         // TODO Does not take mod into account
         ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
-        if (player != null && claim != null && claim.getAlliance().getEffects().contains(type) &&
-                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance())) {
+        if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
+                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation())) {
             return true;
         }
 
@@ -632,7 +631,7 @@ public class ProtectionHandler implements Listener {
 
     static boolean shouldBlockAction(Location location, String type) {
         ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
-        if (claim != null && claim.getAlliance().getEffects().contains(type)) {
+        if (claim != null && claim.getNation().getEffects().contains(type)) {
             return true;
         }
 
@@ -663,8 +662,8 @@ public class ProtectionHandler implements Listener {
             return false;
         }
         ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
-        if (player != null && claim != null && claim.getAlliance().getEffects().contains(type) &&
-                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance())) {
+        if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
+                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation())) {
             return true;
         }
 

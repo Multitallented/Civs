@@ -109,9 +109,9 @@ public class ConfigManager {
     String prefixAllText;
     String civsItemPrefix;
     @Getter
-    List<String> allianceClaimEffects;
+    List<String> nationClaimEffects;
     @Getter
-    double powerPerAllianceClaim;
+    double powerPerNationClaim;
     @Getter
     boolean useAnnouncements;
     @Getter
@@ -381,11 +381,11 @@ public class ConfigManager {
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
             claimMaterial = config.getString("claim-material", "REDSTONE*64");
-            allianceClaimEffects = config.getStringList("claim-effects");
-            if (allianceClaimEffects.isEmpty()) {
-                allianceClaimEffects = getDefaultAllianceEffects();
+            nationClaimEffects = config.getStringList("nation-claim-effects");
+            if (nationClaimEffects.isEmpty()) {
+                nationClaimEffects = getDefaultAllianceEffects();
             }
-            powerPerAllianceClaim = config.getDouble("power-per-alliance-claim", 1);
+            powerPerNationClaim = config.getDouble("power-per-nation-claim", 1);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
@@ -446,7 +446,7 @@ public class ConfigManager {
         announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
-        powerPerAllianceClaim = 1;
+        powerPerNationClaim = 1;
         claimMaterial = "REDSTONE*64";
         civsChatPrefix = "@{GREEN}[Civs]";
         civsItemPrefix = "Civs";

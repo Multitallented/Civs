@@ -678,11 +678,11 @@ public class RegionManager {
                 radii[0], radii[2], radii[1], radii[3])) {
             ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
-                    !AllianceManager.getInstance().isInAlliance(civilian.getUuid(), chunkClaim.getAlliance())) {
+                    !AllianceManager.getInstance().isInAlliance(civilian.getUuid(), chunkClaim.getNation())) {
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "cant-build-in-nation"
-                ).replace("$1", chunkClaim.getAlliance().getName()));
+                ).replace("$1", chunkClaim.getNation().getName()));
                 event.setCancelled(true);
                 return false;
             }

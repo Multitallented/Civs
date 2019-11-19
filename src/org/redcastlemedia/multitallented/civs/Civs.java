@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.scheduler.RegionTickUtil;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -71,6 +72,7 @@ public class Civs extends JavaPlugin {
         townManager.loadAllTowns();
         AllianceManager allianceManager = new AllianceManager();
         allianceManager.loadAllAlliances();
+        NationManager nationManager = new NationManager();
         new CivilianManager();
 
         initCommands();

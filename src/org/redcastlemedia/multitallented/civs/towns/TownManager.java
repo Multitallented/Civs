@@ -7,12 +7,10 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -659,11 +657,11 @@ public class TownManager {
                 townType.getBuildRadius(), townType.getBuildRadius())) {
             ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
-                    !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), chunkClaim.getAlliance())) {
+                    !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), chunkClaim.getNation())) {
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "cant-build-in-nation"
-                ).replace("$1", chunkClaim.getAlliance().getName()));
+                ).replace("$1", chunkClaim.getNation().getName()));
                 return;
             }
         }

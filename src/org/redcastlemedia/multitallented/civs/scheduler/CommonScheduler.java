@@ -10,30 +10,21 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.*;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -164,24 +155,24 @@ public class CommonScheduler implements Runnable {
     }
 
     private void stayInClaim(ChunkClaim claim, Player player) {
-        if (claim.getAlliance() == null) {
+        if (claim.getNation() == null) {
             claimNeutralChunk(claim, player);
             return;
         }
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         if (claim.getLastEnter() != -1 &&
                 claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
-            boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance());
+            boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation());
             if (!isInAlliance && TownManager.getInstance().getTownAt(player.getLocation()) == null) {
 
-                Alliance alliance = claim.getAlliance();
+                Alliance alliance = claim.getNation();
                 alliance.getNationClaims().get(player.getLocation().getWorld().getUID()).remove(claim.getId());
                 AllianceManager.getInstance().saveAlliance(alliance);
 
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "neutralized-claim"
-                ).replace("$1", claim.getAlliance().getName()));
+                ).replace("$1", claim.getNation().getName()));
             } else {
                 claim.setLastEnter(-1);
             }
@@ -190,11 +181,11 @@ public class CommonScheduler implements Runnable {
 
     private void exitClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaim.setLastEnter(-1);
-        if (claim != null && !claim.getAlliance().equals(lastClaim.getAlliance())) {
+        if (claim != null && !claim.getNation().equals(lastClaim.getNation())) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     civilian.getLocale(), "exit-town"
-            ).replace("$1", lastClaim.getAlliance().getName()));
+            ).replace("$1", lastClaim.getNation().getName()));
         }
         if (claim == null) {
             lastClaims.remove(player.getUniqueId());
@@ -233,7 +224,7 @@ public class CommonScheduler implements Runnable {
                     civilian.getLocale(), "alliance-chunk-claimed"
             ).replace("$1", saveAlliance.getName()));
 
-            claim.setAlliance(saveAlliance);
+            claim.setNation(saveAlliance);
             player.getInventory().removeItem(claimItemStack);
             saveAlliance.getNationClaims().get(claim.getWorld().getUID()).put(claim.getId(), claim);
             AllianceManager.getInstance().saveAlliance(saveAlliance);
@@ -242,21 +233,21 @@ public class CommonScheduler implements Runnable {
 
     private void enterClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaims.put(player.getUniqueId(), claim);
-        if (claim.getAlliance() == null) {
+        if (claim.getNation() == null) {
             claimNeutralChunk(claim, player);
             return;
         }
-        boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getAlliance());
+        boolean isInAlliance = AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation());
         if (claim.getLastEnter() == -1 && !isInAlliance) {
             claim.setLastEnter(System.currentTimeMillis());
         } else if (isInAlliance) {
             claim.setLastEnter(-1);
         }
-        if (lastClaim != null && !lastClaim.getAlliance().equals(claim.getAlliance())) {
+        if (lastClaim != null && !lastClaim.getNation().equals(claim.getNation())) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     civilian.getLocale(), "enter-town"
-            ).replace("$1", claim.getAlliance().getName()));
+            ).replace("$1", claim.getNation().getName()));
         }
     }
 

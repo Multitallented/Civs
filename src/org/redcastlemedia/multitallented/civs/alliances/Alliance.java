@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.alliances;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -14,7 +13,6 @@ public class Alliance {
     private HashSet<String> members;
     private UUID lastRenamedBy;
     private HashSet<String> effects = new HashSet<>();
-    private HashMap<UUID, HashMap<String, ChunkClaim>> nationClaims = new HashMap<>();
 
     public Alliance() {
         members = new HashSet<>();
