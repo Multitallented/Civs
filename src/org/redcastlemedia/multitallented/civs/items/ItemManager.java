@@ -353,9 +353,9 @@ public class ItemManager {
                     !hasItemUnlocked(civilian, civItem)) {
                 continue;
             }
-            if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
+            if (civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivReqs().isEmpty() && civItem.getCivMin() > 0) {
+            } else if (civItem.getCivMin() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
             }
         }

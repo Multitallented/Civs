@@ -13,6 +13,11 @@ tutorial-click: Civs útmutató - ajánlott megnézni
 tutorial-wiki: Civs wiki
 click-info: Kattints ide több információért
 guide: Útmutató
+income: Bevétel
+income-desc: $1 típúsú épületed $2 bevételt termelt előző nap és $3 bevételt a múlt héten
+rebuild: Újjáépítés
+rebuild-req-desc: Ez az épület ezeken épülete(ke)n KELL elhelyezkednie
+rebuild-opt-desc: Ez az épület ezeken épülete(ke)n helyezkedhet el
 guide-desc: Következő cél megtekintése
 choose-path: Válaszd ki a fejlődési utad
 new-owner-town: $1 leváltotta $2-t $3 város élén
@@ -52,8 +57,8 @@ max_power-buff-desc: $1% maximum erőpont növekedés
 cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
 shop: Bolt
 buy-item: Eladó
-price: Ár $1
-buy: Vásárlás $1-ért
+price: Ár
+buy: $1 megvásárlása
 cancel: Mégsem
 item-bought: Gratulálok! Megvásároltad $1-t $2-ért
 max-item: Nem vásárolhatsz többet, mint $2 $1
@@ -93,11 +98,17 @@ pop-desc: $1 Lakosság / $2 Ház / $3 Falusi
 build-reqs: Blokkok listája $1-hoz/höz
 reagents-title: Alapanyagok
 reagents: Szükséges tárgyak, amiket a $1 ládának tartalmaznia kell
+upkeep-title: Bevitel
 upkeep: $1 által elfogyasztott tárgyak
+output-title: Kimenet
 output: $1 által termelt tárgyak
+payout-title: Kifizetés
 payout: Ez a terület $$1-t termel
+power-input-title: Erőpont bevitel
 power-input: Ez a terület $1 erőpontot fogyaszt
+power-output-title: Erőpont kimenet
 power-output: Ez a terület $1 erőpontot generál
+power-history: Erőpont előzmények az előző $1 nap során
 too-close-region: A te $1 területed túl közel lenne $2-hoz/höz
 too-close-town: $1 túl közellenne egy másik városhoz
 town-created: $1 létre lett hozva!
@@ -112,6 +123,10 @@ add-member: Tag hozzáadása
 operation: Művelet
 region-working: A területed működőképes
 region-not-working: A területedből hiányzik valaki
+filter-online: Szűrés az elérhető játékosokra
+sort-alphabetical: ABC sorrendben rendezés
+sort-points: Ölési pontok sorrendjében rendezés
+sort-rank: Rang alapú rendezés
 owner: Tulajdonos
 member: Tag
 guest: Vendég
@@ -154,6 +169,7 @@ must-be-built-on-top: A $1-t $2 tetejére kell építeni
 town-power: "Erőpontok: $1/$2"
 port-warmup: Teleportálás $1 másodperc múlva
 teleported: Teleportálás sikeres volt!
+location: Elhelyezkedés
 location-set: $1 helye beállítva
 rename-town: Város átnevezése
 rename-desc: Használd a /cv rename régiNév újNév parancsot
@@ -173,6 +189,7 @@ town-ally-request-sent: Küldtél egy szövetségi kérelmet $1-nak/nek
 town-ally-request-accepted: Szövetség létrejött $1 és $2 között
 town-ally-request-denied: Szövetségi kérelem $1-val/vel el lett utasítva
 town-ally-removed: A szövetség $1 és $2 között felbomlott
+region-evolve: $1 területed fejlődött $2-ra/re
 region-evolved: $1 felfejlődött $2-ra/re
 anti-camp-active: $1 anti-camp beállítás bekapcsolva
 anti-camp-expired: $1 anti-camp beállítás lejárt
@@ -237,7 +254,8 @@ raid-target-lost: Nincs $1 nevű város $2 blokkos környezetben
 searching-for-target: Rajtaütés helyének keresése...
 raid-target-blocked: Rajtaütés teleport helye blokkolva van.
 raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
-siege-built: "@{RED}FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3"
+siege-built: "@{RED}[FIGYELEM] $1 létrehozott egy $2-t, amely a $3-et célozza meg"
+jammer-built: "@{RED}[FIGYELMEZTETÉS] Egy $1 épült valamerre. Figyelj, hová teleportálsz."
 raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
 raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
 no-blocks-above-chest: A középső mellkas felett nem lehetnek blokkok
@@ -249,6 +267,7 @@ req-build-inside-town: $1-t csak $2-n belül lehet építeni
 missing-region-requirements: $1-nak/nek hiányzik szükséges terület
 friendly-fire: Nem tudod megütni a barátaidat
 limits: Limitek
+item-limit: Van már $1/$2 $3 épületed
 region-limit-reached: Egy $1 csak $2 $3-t birtokolhat
 region-in-biome: Nem tudsz építeni $1-t egy $2 biomban
 not-enough-housing: Több házat kell építened, hogy meg tudj hívni még egy játékost
@@ -267,6 +286,8 @@ killstreak-points: "Ölési sorozat bónusz: $1"
 killjoy-points: "Ölési kedv bónusz: $1"
 total-points: "Pontszám: $1"
 karma: "Karma: $1"
+karma-desc: A karma a becstelenség mértéke. Minél alacsonyabb, annál nagyobb jutalom jár a
+  halálodért.
 karma-gained: "Karma: +$1, $2 hozzáadva"
 karma-lost: "Karma: -$1, $2 levonva"
 ann-limit: "[Info] Van $1/$2 (meglévő/max) $3 típusú épületed."
@@ -799,6 +820,9 @@ town_hall-desc: A város központja. 348 erőpontot generál naponta. Otthon tel
   használható.
 warehouse-name: Raktár
 warehouse-desc: Elosztja a régiók között a tárgyakat, ahol szükség keletkezik.
+warehouse-toggle-on: Raktár készletek bekapcsolva
+warehouse-toggle-off: Raktár készletek kikapcsolva
+warehouse-toggle-desc: Kattints rá, hogy átállítsd a raktár készletet
 item-jade-name: Jade
 item-jade-desc: Beváltható 16 db Jade a Jade boltban $1000-ért.
 farms-name: Farmok
@@ -839,9 +863,17 @@ fireworks_factory-name: Tüzijáték gyár
 fireworks_factory-desc: Tüzijátékokat készít puskapor felhasználása nélkül
 admin-name: Admin
 admin-desc: Tárgyak adminoknak
-house-evolve-name: Ház fejlesztést
+house-evolve-name: Ház fejlesztés
 house-evolve-desc: Rejtett fejlesztett formái a lakásoknak
 trade-mines-name: Bányák kereskedéshez
 trade-mines-desc: Bányák, amelyek tárgyakat gyártanak, amiket más városban adhatsz el.
 evolve-name: Fejlesztések
 evolve-desc: Rejtett fejlesztett formái bizonyos épületeknek
+plot7x7-name: 7x7 méretű telek
+plot7x7-desc: Egy helykitöltő 7x7-es és kisebb régióknak
+plot11x11-name: 11x11 méretű telek
+plot11x11-desc: Egy helykitöltő 11x11-es és kisebb régióknak
+plot15x15-name: 15x15 méretű telek
+plot15x15-desc: Egy helykitöltő 15x15-es és kisebb régióknak
+plot19x19-name: 19x19 méretű telek
+plot19x19-desc: Egy helykitöltő 19x19-es és kisebb régióknak
