@@ -38,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
@@ -702,11 +703,11 @@ public class RegionManager {
             }
         }
 
-        for (Chunk chunk : AllianceManager.getInstance().getContainingChunks(location,
+        for (Chunk chunk : NationManager.getInstance().getContainingChunks(location,
                 radii[0], radii[2], radii[1], radii[3])) {
             ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
-                    !AllianceManager.getInstance().isInAlliance(civilian.getUuid(), chunkClaim.getNation())) {
+                    !NationManager.getInstance().isInNation(civilian.getUuid(), chunkClaim.getNation())) {
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "cant-build-in-nation"

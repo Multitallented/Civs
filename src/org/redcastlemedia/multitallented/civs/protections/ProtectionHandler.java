@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -577,9 +578,9 @@ public class ProtectionHandler implements Listener {
         }
 
         // TODO Does not take mod into account
-        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
         if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
-                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation())) {
+                !NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation())) {
             return true;
         }
 
@@ -642,7 +643,7 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, String type) {
-        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
         if (claim != null && claim.getNation().getEffects().contains(type)) {
             return true;
         }
@@ -673,9 +674,9 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
-        ChunkClaim claim = AllianceManager.getInstance().getClaimAt(location);
+        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
         if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
-                !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), claim.getNation())) {
+                !NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation())) {
             return true;
         }
 

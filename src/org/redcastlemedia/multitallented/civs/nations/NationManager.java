@@ -391,4 +391,19 @@ public class NationManager implements Listener {
         }
         return false;
     }
+
+    public Nation getNation(UUID uniqueId) {
+        for (Nation nation : nations.values()) {
+            for (String townName : nation.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (town == null) {
+                    continue;
+                }
+                if (town.getRawPeople().containsKey(uniqueId)) {
+                    return nation;
+                }
+            }
+        }
+        return null;
+    }
 }
