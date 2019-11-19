@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -10,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
-import org.redcastlemedia.multitallented.civs.menus.TeleportDestinationMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -44,7 +45,12 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
         if (locationString == null) {
             if (region.getOwners().contains(player.getUniqueId())) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.openInventory(TeleportDestinationMenu.createMenu(civilian, region));
+                if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "port") &&
+                        hasPotentialDestinations(region)) {
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("region", region.getId());
+                    MenuManager.getInstance().openMenu(player, "port", params);
+                }
             }
             return;
         }
@@ -64,8 +70,40 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-            player.openInventory(TeleportDestinationMenu.createMenu(civilian, region));
+            if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "port") &&
+                    hasPotentialDestinations(region)) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("region", region.getId());
+                MenuManager.getInstance().openMenu(player, "port", params);
+            }
             break;
         }
+    }
+
+    private static boolean hasPotentialDestinations(Region region) {
+        for (Region currentRegion : RegionManager.getInstance().getAllRegions()) {
+            if (isPotentialTeleportDestination(region, currentRegion)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPotentialTeleportDestination(Region region, Region currentRegion) {
+        if (!currentRegion.getEffects().containsKey(TeleportEffect.KEY) ||
+                !region.getEffects().containsKey(TeleportEffect.KEY)) {
+            return false;
+        }
+        for (UUID uuid : currentRegion.getRawPeople().keySet()) {
+            if (!currentRegion.getRawPeople().get(uuid).contains("owner")) {
+                continue;
+            }
+            if (!region.getRawPeople().containsKey(uuid) ||
+                    !region.getRawPeople().get(uuid).contains("owner")) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 }

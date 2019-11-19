@@ -70,6 +70,15 @@ public final class UpdateUtil {
                     e.printStackTrace();
                     return newVersion;
                 }
+            case "1.5.8":
+                Civs.logger.info("Updating configs from " + newVersion + " to 1.6.0");
+                try {
+                    newVersion = Update1d6d0.update();
+                } catch (Exception e) {
+                    Civs.logger.severe("[Error] Update to 1.6.0 interrupted");
+                    e.printStackTrace();
+                    return newVersion;
+                }
             default:
                 newVersion = Civs.getInstance().getDescription().getVersion();
         }

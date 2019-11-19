@@ -39,20 +39,19 @@ public class Region {
     private final int radiusZN;
     private final int radiusYP;
     private final int radiusYN;
+    @Getter
+    private HashMap<Long, Integer> upkeepHistory = new HashMap<>();
     private double exp;
     public HashMap<String, String> effects;
     long lastTick = 0;
-    @Getter
-    @Setter
+    @Getter @Setter
     private HashSet<Integer> failingUpkeeps = new HashSet<>();
-
-    @Getter
-    @Setter
+    @Getter @Setter
     private long lastActive = 0;
-
-    @Getter
-    @Setter
+    @Getter @Setter
     private double forSale = -1;
+    @Getter @Setter
+    private boolean warehouseEnabled = true;
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -843,8 +842,8 @@ public class Region {
             }
             if (regionUpkeep.getExp() > 0) {
                 exp += regionUpkeep.getExp();
-                RegionManager.getInstance().saveRegion(this);
             }
+            upkeepHistory.put(System.currentTimeMillis(), i);
 
             if (checkTick) {
                 tick();
@@ -854,6 +853,7 @@ public class Region {
             i++;
         }
         if (hadUpkeep) {
+            RegionManager.getInstance().saveRegion(this);
             for (UUID uuid : getOwners()) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null || !player.isOnline()) {
@@ -1029,5 +1029,37 @@ public class Region {
             hasMoney = true;
         }
         return hasMoney;
+    }
+
+    public void cleanUpkeepHistory() {
+        for (Long time : new HashSet<>(upkeepHistory.keySet())) {
+            if (System.currentTimeMillis() - 604800000 > time) {
+                upkeepHistory.remove(time);
+            }
+        }
+    }
+
+    public HashMap<Integer, Integer> getNumberOfUpkeepsWithin24Hours() {
+        return getNumberOfUpkeeps(86400000);
+    }
+
+    public HashMap<Integer, Integer> getNumberOfUpkeepsWithin1Week() {
+        return getNumberOfUpkeeps(604800000);
+    }
+
+    private HashMap<Integer, Integer> getNumberOfUpkeeps(long cutoff) {
+        HashMap<Integer, Integer> upkeeps = new HashMap<>();
+        for (Long time : upkeepHistory.keySet()) {
+            if (System.currentTimeMillis() - cutoff > time) {
+                continue;
+            }
+            int upkeepIndex = upkeepHistory.get(time);
+            if (upkeeps.containsKey(upkeepIndex)) {
+                upkeeps.put(upkeepIndex, upkeeps.get(upkeepIndex) + 1);
+            } else {
+                upkeeps.put(upkeepIndex, 1);
+            }
+        }
+        return upkeeps;
     }
 }

@@ -13,6 +13,11 @@ tutorial-click: Xin hãy xem hướng dẫn
 tutorial-wiki: Wiki của Civs
 click-info: Nhấn để xem thêm thông tin
 guide: Hướng dẫn
+income: Đang tới
+income-desc: 1$ của bạn sẽ nhận 2$ vào cuối ngày và 3$ vào cuối tuần
+rebuild: Tái cấu trúc
+rebuild-req-desc: Tòa nhà này phải được xây dựng trên nóc của (các) tòa nhà sau
+rebuild-opt-desc: Tòa nhà này có thể được xây dựng trên nóc của (các) tòa nhà sau
 guide-desc: Nhấn vào đây để xem mục tiêu tiếp theo của bạn
 choose-path: Chọn lối chơi của bạn
 new-owner-town: $1 đã thay thế $2 với tư cách là chủ sở hữu của $3
@@ -94,11 +99,17 @@ pop-desc: Dân số $1 / Nhà cửa $2  / Dân làng $3
 build-reqs: Tất cả các khối mà bạn cần để xây dựng $1
 reagents-title: Thử nghiệm
 reagents: Tất cả đồ bạn cần ở trong rương $1
+upkeep-title: Đầu vào
 upkeep: Tất cả vật phẩm được dùng bởi $1
+output-title: Đầu ra
 output: Tất cả vật phẩm được chế tạo ra bởi $1
+payout-title: Xuất ra
 payout: Khu vực này nhận được $$1
+power-input-title: Năng lượng đầu vào
 power-input: Khu vực này sẽ tiêu tốn $1 năng lượng
+power-output-title: Năng lượng đầu ra
 power-output: Khu vực này sản xuất $1 năng lượng
+power-history: "Lịch sử năng lượng trong $ 1 ngày qua:"
 too-close-region: $1 sẽ quá gần khu vực $2
 too-close-town: $1 sẽ quá gần với thị trấn khác
 town-created: $1 được khởi tạo
@@ -113,6 +124,10 @@ add-member: Thêm thành viên
 operation: Hoạt động
 region-working: Khu vực này của bạn đang vận hành rất mượt
 region-not-working: Khu vực của bạn thiếu thứ gì đó
+filter-online: Lọc theo trạng thái trực tuyến
+sort-alphabetical: Lọc theo bảng chữ cái
+sort-points: Lọc theo số đồ sát
+sort-rank: Lọc theo cấp bậc
 owner: Chủ thị trấn
 member: Thành viên
 guest: Khách
@@ -155,6 +170,7 @@ must-be-built-on-top: $1 phải được xây ở trên $2
 town-power: "Năng lượng: $1/$2"
 port-warmup: Bạn sẽ được dịch chuyển trongn $1 giây
 teleported: Bạn đã được dịch chuyển
+location: Địa điểm
 location-set: Cài đặt vị trí $1
 rename-town: Sửa tên thị trấn
 rename-desc: Sử dụng /cv rename tên_cũ tên_mới
@@ -174,6 +190,7 @@ town-ally-request-sent: Một lời đề nghị kết đồng minh đã đượ
 town-ally-request-accepted: $1 và $2 đã trở thành đồng minh của nhau
 town-ally-request-denied: Đề nghị kết đồng minh của $1 đã bị từ chối
 town-ally-removed: Liên minh giữa $1 và $2 đã bị tan rã
+region-evolve: $1 phát triển thành $2
 region-evolved: $1 đã phát triển thành $2
 anti-camp-active: $1 đã được kích hoạt
 anti-camp-expired: $1 đã hết hiệu lực
@@ -237,7 +254,8 @@ raid-target-lost: Không có thị trấn nào tên $1 trong $2 khối
 searching-for-target: Tìm kiếm điểm đột kích đến..
 raid-target-blocked: Điểm đột kích đến đã bị chặn
 raid-porter-warning: Cảnh báo! $1 đã tạo ra $2 nhắm mục tiêu $3
-siege-built: Cảnh báo! $1 đã tạo ra $2 nhắm mục tiêu $3
+siege-built: "@{RED}[CẢNH BÁO] $1 đã tạo ra một $2 nhằm vào $3"
+jammer-built: "@{RED}[WARNING] $1 đã được xây ở đâu đó. Hãy dùng 'Cái vạc' khi dịch chuyển"
 raid-remote: Bạn đã nhận được vật phẩm để điều khiển $1
 raid-sign: Bạn cần đặt tấm bảng phía trên rương với tên là thị trấn được nhắm đến
 no-blocks-above-chest: Không được có khối phía trên rương trung tâm
@@ -249,6 +267,7 @@ req-build-inside-town: $1 cần được xây dựng trong $2
 missing-region-requirements: $1 của bạn bị thiếu các khu vực bắt buộc
 friendly-fire: Bạn không thể đánh người chơi trong danh sách bạn bè
 limits: Giới hạn
+item-limit: Bạn có $1 trong $2 $3
 region-limit-reached: " $1 chỉ được có $2 $3"
 region-in-biome: Bạn không thể xây $1 trong quần xã $2
 not-enough-housing: Bạn cần xây thêm Nhà trước khi mời ai đó
@@ -267,6 +286,8 @@ killstreak-points: "Tiền thưởng cho chuỗi tàn sát: $ 1"
 killjoy-points: "Tiền thưởng cho ngăn chặn chuỗi tàn sát: $ 1"
 total-points: Tổng tiền thưởng
 karma: Karma $1
+karma-desc: Karma là thước đo của sự bỉ ổi. Karma càng thấp, phần thưởng cho cái chết của
+  họ càng cao
 karma-gained: "Karma: +$1,nhận được $2$"
 karma-lost: "Karma: -$1,mất đi $2$"
 ann-limit: "[Thông tin] Bạn có $1 trong $2 $3 toà nhà"
@@ -810,6 +831,9 @@ town_hall-desc: Toà nhà chính của thị trấn. Tạo ra 384 năng lượng
   một Cổng
 warehouse-name: Kho chứa
 warehouse-desc: Phân phối các vật phẩm từ bất kỳ rương nào của nó đến các khu vực cần chúng
+warehouse-toggle-on: Bật tiếp tế kho chứa
+warehouse-toggle-off: Tắt tiếp tế kho chứa
+warehouse-toggle-desc: Nhấn để bật/tắt tiếp tế kho chứa trong khu vực này
 item-jade-name: Ngọc
 item-jade-desc: Đổi 16 Ngọc tại Cửa hàng ngọc với giá 1000$
 farms-name: Nông trại
@@ -855,3 +879,11 @@ trade-mines-name: Mỏ thương mại
 trade-mines-desc: Các mỏ sản xuất các mặt hàng sẽ được bán ở các thị trấn khác.
 evolve-name: Tiến hoá
 evolve-desc: Ẩn hình dạng tiến hoá của các toà nhà khác nhau
+plot7x7-name: Khu đất 7x7
+plot7x7-desc: Thông số thể hiện cho khu vực 7x7 và nhỏ hơn
+plot11x11-name: Khu đất 11x11
+plot11x11-desc: Thông số thể hiện cho khu vực 11x11 và nhỏ hơn
+plot15x15-name: Khu đất 15x15
+plot15x15-desc: Thông số thể hiện cho khu vực 15x15 và nhỏ hơn
+plot19x19-name: Khu đất 19x19
+plot19x19-desc: Thông số thể hiện cho khu vực 19x19 và nhỏ hơn

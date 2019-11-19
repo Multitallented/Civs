@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsCommand(keys = { "rename" })
 public class RenameCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {

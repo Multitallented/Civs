@@ -1,5 +1,15 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -11,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -21,17 +30,14 @@ import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.RegionListMenu;
-import org.redcastlemedia.multitallented.civs.menus.SelectGovTypeMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.util.*;
 
 public class TownManager {
 
@@ -652,12 +658,12 @@ public class TownManager {
             return;
         }
 
-        for (Chunk chunk : AllianceManager.getInstance().getContainingChunks(player.getLocation(),
+        for (Chunk chunk : NationManager.getInstance().getContainingChunks(player.getLocation(),
                 townType.getBuildRadius(), townType.getBuildRadius(),
                 townType.getBuildRadius(), townType.getBuildRadius())) {
             ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
-                    !AllianceManager.getInstance().isInAlliance(player.getUniqueId(), chunkClaim.getNation())) {
+                    !NationManager.getInstance().isInNation(player.getUniqueId(), chunkClaim.getNation())) {
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "cant-build-in-nation"
@@ -696,7 +702,14 @@ public class TownManager {
             if (!checkList.isEmpty()) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                         "missing-region-requirements").replace("$1", townType.getDisplayName()));
-                player.openInventory(RegionListMenu.createMenu(civilian, checkList, 0));
+                HashMap<String, String> params = new HashMap<>();
+                StringBuilder regionString = new StringBuilder();
+                for (String regionName : checkList.keySet()) {
+                    regionString.append(regionName).append(":").append(checkList.get(regionName));
+                }
+                regionString.substring(0, regionString.length() - 1);
+                params.put("regionList", regionString.toString());
+                MenuManager.getInstance().openMenu(player, "region-type-list", params);
                 return;
             }
         }
@@ -789,7 +802,9 @@ public class TownManager {
             newTown.createRing();
         }
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
-            player.openInventory(SelectGovTypeMenu.createMenu(civilian, newTown));
+            HashMap<String, String> params = new HashMap<>();
+            params.put("town", newTown.getName());
+            MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
         return;
     }

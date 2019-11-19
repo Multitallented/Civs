@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsCommand(keys = { "tax" })
 public class TaxCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -30,7 +31,7 @@ public class TaxCommand implements CivCommand {
         //2 amount
 
         double amount = OwnershipUtil.invalidAmountOrTown(player, args, civilian);
-        if (amount < 1) {
+        if (amount < 0) {
             return true;
         }
 

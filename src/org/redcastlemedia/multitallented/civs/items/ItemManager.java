@@ -245,7 +245,7 @@ public class ItemManager {
         if (config.isSet("towns")) {
             townSet = new HashSet<>(config.getStringList("towns"));
         } else {
-            townSet = null;
+            townSet = new HashSet<>();
         }
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {
@@ -345,12 +345,17 @@ public class ItemManager {
         return returnList;
     }
 
-    public HashMap<String, Integer> getNewItems() {
+    public HashMap<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
-            if (civItem.getCivReqs().isEmpty() && civItem.getCivQty() > 0) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
+                    civilian.getStashItems().containsKey(civItem.getProcessedName()) ||
+                    !hasItemUnlocked(civilian, civItem)) {
+                continue;
+            }
+            if (civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivReqs().isEmpty() && civItem.getCivMin() > 0) {
+            } else if (civItem.getCivMin() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
             }
         }
@@ -543,8 +548,8 @@ public class ItemManager {
         CivilianManager.getInstance().saveCivilian(civilian);
     }
 
-    public HashSet<CivItem> getItemsByLevel(int level) {
-        HashSet<CivItem> itemSet = new HashSet<>();
+    public ArrayList<CivItem> getItemsByLevel(int level) {
+        ArrayList<CivItem> itemSet = new ArrayList<>();
         for (CivItem civItem : this.itemTypes.values()) {
             if (civItem.getLevel() == level && civItem.getInShop()) {
                 itemSet.add(civItem);

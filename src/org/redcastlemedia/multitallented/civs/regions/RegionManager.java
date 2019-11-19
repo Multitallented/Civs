@@ -34,9 +34,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.RecipeMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
 import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
@@ -286,13 +287,15 @@ public class RegionManager {
             }
 
             for (UUID uuid : region.getRawPeople().keySet()) {
-//                if ("ally".equals(region.getPeople().get(uuid))) {
-//                    continue;
-//                }
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
+            }
+            region.cleanUpkeepHistory();
+            for (Long time : region.getUpkeepHistory().keySet()) {
+                regionConfig.set("upkeep-history." + time, region.getUpkeepHistory().get(time));
             }
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
+            regionConfig.set("warehouse-enabled", region.isWarehouseEnabled());
             if (region.getLastActive() > 0) {
                 regionConfig.set("last-active", region.getLastActive());
             } else {
@@ -334,6 +337,7 @@ public class RegionManager {
                     radii,
                     (HashMap<String, String>) regionType.getEffects().clone(),
                     exp);
+            region.setWarehouseEnabled(regionConfig.getBoolean("warehouse-enabled", true));
             double forSale = regionConfig.getDouble("sale", -1);
             if (forSale != -1) {
                 region.setForSale(forSale);
@@ -341,6 +345,12 @@ public class RegionManager {
             long lastActive = regionConfig.getLong("last-active", -1);
             if (lastActive > -1) {
                 region.setLastActive(lastActive);
+            }
+            if (regionConfig.isSet("upkeep-history")) {
+                for (String timeString : regionConfig.getConfigurationSection("upkeep-history").getKeys(false)) {
+                    Long time = Long.parseLong(timeString);
+                    region.getUpkeepHistory().put(time, regionConfig.getInt("upkeep-history." + timeString));
+                }
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to read " + regionFile.getName());
@@ -501,13 +511,20 @@ public class RegionManager {
         }
 
         boolean rebuildTransition = false;
-        if (rebuildRegion != null && regionType.getRebuild().isEmpty()) {
+        boolean isPlot = false;
+        if (rebuildRegion != null) {
+            RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
+            isPlot = rebuildType.getEffects().containsKey("plot") &&
+                    rebuildType.getBuildRadius() <= regionType.getBuildRadius() &&
+                    rebuildRegion.getRawPeople().containsKey(civilian.getUuid());
+        }
+        if (!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", localizedRegionName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion != null && !hasType) {
+        } else if (!isPlot && rebuildRegion != null && !hasType) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
@@ -668,7 +685,18 @@ public class RegionManager {
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
-                    player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
+                    List<List<CVItem>> missingList = new ArrayList<>();
+                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                        List<CVItem> tempList = new ArrayList<>();
+                        for (Material mat : missingMap.keySet()) {
+                            tempList.add(new CVItem(mat, missingMap.get(mat)));
+                        }
+                        missingList.add(tempList);
+                    }
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("items", missingList);
+                    data.put("page", 0);
+                    MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return false;
             }

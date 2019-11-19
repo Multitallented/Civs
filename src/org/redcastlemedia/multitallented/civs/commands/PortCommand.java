@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import java.util.HashMap;
 import java.util.UUID;
 
+@CivsCommand(keys = { "port", "spawn", "home" })
 public class PortCommand implements CivCommand {
     private HashMap<UUID, Long> cooldowns = new HashMap<>();
 

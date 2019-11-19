@@ -147,18 +147,6 @@ public class AllianceManager implements Listener {
         }
     }
 
-    public HashSet<Chunk> getContainingChunks(Location location,
-                                              int xp, int xn,
-                                              int zp, int zn) {
-        HashSet<Chunk> chunkClaims = new HashSet<>();
-        for (int x = (int) location.getX() - xn; x < location.getX() + xp; x += 16) {
-            for (int z = (int) location.getZ() - zn; z < location.getZ() + zp; z += 16) {
-                chunkClaims.add(location.getWorld().getChunkAt(x, z));
-            }
-        }
-        return chunkClaims;
-    }
-
     public Alliance getAlliance(String name) {
         return alliances.get(name);
     }

@@ -13,6 +13,11 @@ tutorial-click: Por favor, mira la guía de Civs
 tutorial-wiki: Wiki de Civs
 click-info: Click para más información
 guide: Guía
+income: Ingresos
+income-desc: Su $1 le ha pagado $2 ayer y $3 en la última semana
+rebuild: Reconstruir
+rebuild-req-desc: Este edificio debe construirse encima de los siguientes edificio(s)
+rebuild-opt-desc: Este edificio puede construirse encima de los siguientes edificio(s)
 guide-desc: Click aquí para ver tu siguiente objetivo
 choose-path: Elige tu camino
 new-owner-town: $1 ha sustituido a $2 como dueño de $3
@@ -96,11 +101,17 @@ pop-desc: $1 Población / $2 Alojamientos / $3 Aldeanos
 build-reqs: Todos los bloques que necesitas colocar para construir un/a $1
 reagents-title: Reactivos
 reagents: Todos los objetos que necesitas en el cofre de $1
+upkeep-title: Entrada
 upkeep: Todos los objetos consumidos por $1
+output-title: Producción
 output: Todos los objetos creados por $1
+payout-title: Pagar
 payout: Esta región gana $$1
+power-input-title: Entrada de Energía
 power-input: Esta región consume $1 de poder
+power-output-title: Salida de Energía
 power-output: Esta región genera $1 de poder
+power-history: "Historial de energía en los últimos $1 días:"
 too-close-region: Tu $1  estaría muy cerca de un/a $2
 too-close-town: Tu $1  estaría muy cerca de otra ciudad
 town-created: ¡$1 ha sido creada!
@@ -115,6 +126,10 @@ add-member: Añadir miembro
 operation: Operación
 region-working: "Mi region "
 region-not-working: A tu región le falta algo
+filter-online: Filtrar solo para jugadores en línea
+sort-alphabetical: Ordenar alfabéticamente
+sort-points: Ordenar por puntos de muerte
+sort-rank: Ordenar por rango
 owner: Dueño
 member: Miembro
 guest: Invitado
@@ -157,6 +172,7 @@ must-be-built-on-top: Un/a $1 debe ser construido/a encima de un/a $ 2
 town-power: Poder $1/$2
 port-warmup: Serás teletransportado en $1s
 teleported: ¡Has sido teletransportado!
+location: Posición
 location-set: Ubicación de $1 establecida
 rename-town: Renombra la ciudad
 rename-desc: Usa /cv rename [antiguoNombre] [nuevoNombre]
@@ -176,6 +192,7 @@ town-ally-request-sent: Se ha propuesto una alianza a $1
 town-ally-request-accepted: Se ha formado una alianza entre $1 y $2
 town-ally-request-denied: Solicitud de alianza con $1 denegada
 town-ally-removed: Se ha disuelto la alianza entre $1 y $2
+region-evolve: $1 evoluciona a $2
 region-evolved: Tu $1 evolucionó a $2
 anti-camp-active: El anti-camp de $1 ha sido activado
 anti-camp-expired: El anti-camp de $1 ha expirado
@@ -240,6 +257,8 @@ searching-for-target: Buscando un teletransporte de invasión.
 raid-target-blocked: Teletransporte de invasión bloqueado.
 raid-porter-warning: ¡ADVERTENCIA! $1 ha creado un $2 apuntando a $3
 siege-built: $1 ha creado una $2 dirigida a $3
+jammer-built: "@{RED}[ADVERTENCIA]Se ha construido un $1 en alguna parte. Tenga precaución
+  al teletransportarse"
 raid-remote: Te han dado un objeto para controlar este/a $1
 raid-sign: Necesitas un letrero sobre el cofre con el nombre de la ciudad objetivo
 no-blocks-above-chest: No debe haber bloques encima del cofre central
@@ -251,6 +270,7 @@ req-build-inside-town: Esta $1 debe ser construida dentro de $2
 missing-region-requirements: A tu $1 le faltan las regiones requeridas
 friendly-fire: No puedes dañar a alguien en tu lista de amigos
 limits: Límites
+item-limit: Tienes $1 de $2 $3
 region-limit-reached: Una $1 solo puede tener $2 $3
 region-in-biome: No puedes construir una $1 en una $2
 not-enough-housing: Necesitas construir más viviendas antes de invitar a gente.
@@ -269,6 +289,8 @@ killstreak-points: "Bonus de racha: $1"
 killjoy-points: "Bonus por aguafiestas: $1"
 total-points: "Puntos totales: $1"
 karma: "Karma: $1"
+karma-desc: El karma es una medida de infamia. Cuanto más bajo es el karma, mayor es la
+  recompensa por su muerte.
 karma-gained: "Karma: +$1, $2 de dinero ganado"
 karma-lost: "Karma: -$1, $2 de dinero perdido"
 ann-limit: "[Info] Tienes $1 de $2 $3 construcciones"
@@ -824,6 +846,9 @@ town_hall-desc: La estructura central de una ciudad. Produce 384 de poder por d�
 warehouse-name: Almacén
 warehouse-desc: Distribuye objetos de cualquiera de sus muchos cofres a las regiones que los
   necesitan.
+warehouse-toggle-on: Suministros de almacén encendido
+warehouse-toggle-off: Suministros de almacén apagado
+warehouse-toggle-desc: Haga clic para alternar los suministros de almacén para este edificio
 item-jade-name: Jade
 item-jade-desc: Canjea 16 de Jade en la tienda de Jade por $1000
 farms-name: Granjas
@@ -871,3 +896,11 @@ trade-mines-name: Minas Comerciales
 trade-mines-desc: Minas que producen artículos para vender en otras ciudades.
 evolve-name: Evolucionar
 evolve-desc: Formas evolucionadas ocultas de varios edificios.
+plot7x7-name: Parcela7x7
+plot7x7-desc: Un marcador de posición para edificios 7x7 y más pequeños
+plot11x11-name: Parcela11x11
+plot11x11-desc: Un marcador de posición para edificios 11x11 y más pequeños
+plot15x15-name: Parcela15x15
+plot15x15-desc: Un marcador de posición para edificios 15x15 y más pequeños
+plot19x19-name: Parcela19x19
+plot19x19-desc: Un marcador de posición para edificios 19x19 y más pequeños
