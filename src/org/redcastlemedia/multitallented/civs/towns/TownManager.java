@@ -801,12 +801,19 @@ public class TownManager {
         if (ConfigManager.getInstance().getTownRings()) {
             newTown.createRing();
         }
+
+        int nationFormedAtTownLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
+        int townLevel = townType.getLevel();
+        if (nationFormedAtTownLevel <= townLevel && NationManager.getInstance().getNation(town.getName()) == null) {
+            NationManager.getInstance().createNation(newTown);
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    "nation-created").replace("$1", newTown.getName()));
+        }
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
             HashMap<String, String> params = new HashMap<>();
             params.put("town", newTown.getName());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
-        return;
     }
 
     int getHousingCount(Location newTownLocation, TownType townType) {

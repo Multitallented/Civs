@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,6 +39,9 @@ public class NationManager implements Listener {
 
     public NationManager() {
         instance = this;
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+        }
     }
 
     public void loadAllNations() {
@@ -449,5 +453,23 @@ public class NationManager implements Listener {
             }
         }
         return null;
+    }
+
+    public Nation getNation(String townName) {
+        for (Nation nation : nations.values()) {
+            if (nation.getMembers().contains(townName)) {
+                return nation;
+            }
+        }
+        return null;
+    }
+
+    public void createNation(Town newTown) {
+        Nation nation = new Nation();
+        nation.setName(newTown.getName());
+        nation.setCapitol(newTown.getName());
+        // TODO create chunk claims
+        nation.getMembers().add(newTown.getName());
+        saveNation(nation);
     }
 }

@@ -144,6 +144,8 @@ public class ConfigManager {
     boolean useAsyncUpkeeps;
     @Getter
     boolean disableRegionsInUnloadedChunks;
+    @Getter
+    int nationFormedAtTownLevel;
 
     public ConfigManager() {
         loadDefaults();
@@ -386,6 +388,7 @@ public class ConfigManager {
                 nationClaimEffects = getDefaultAllianceEffects();
             }
             powerPerNationClaim = config.getDouble("power-per-nation-claim", 1);
+            nationFormedAtTownLevel = config.getInt("nation-formed-at-town-level", 3);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
             mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
             debugLog = config.getBoolean("debug-log", false);
@@ -430,6 +433,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        nationFormedAtTownLevel = 3;
         disableRegionsInUnloadedChunks = false;
         useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;

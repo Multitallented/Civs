@@ -32,6 +32,7 @@ public final class Update1d7d0 {
             claimEffects.add("block_fire");
             config.set("nation-claim-effects", claimEffects);
             config.set("power-per-nation-claim", 1);
+            config.set("nation-formed-at-town-level", 3);
             config.save(configFile);
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -53,6 +54,7 @@ public final class Update1d7d0 {
                 config.set("cant-build-in-nation", "You can't build inside $1 claimed land.");
                 config.set("neutralized-claim", "$1's protections on this land have been removed.");
                 config.set("alliance-chunk-claimed", "This land has been claimed for the alliance $1");
+                config.set("nation-created", "$1 has reached a high enough level that it has become a nation!");
                 config.save(enFile);
             } catch (Exception e) {
 
