@@ -84,8 +84,8 @@ public class Civs extends JavaPlugin {
         setupEconomy();
         setupPermissions();
 
-        new ConfigManager(new File(getDataFolder(), "config.yml"));
-        new LocaleManager();
+        ConfigManager.getInstance();
+        LocaleManager.getInstance();
         new ItemManager();
         new TutorialManager();
         new GovernmentManager();

@@ -49,7 +49,6 @@ public class LocaleManager {
         if (Civs.getInstance() != null) {
             loadAllConfigs();
         }
-        localeManager = this;
     }
 
     private void loadAllConfigs() {

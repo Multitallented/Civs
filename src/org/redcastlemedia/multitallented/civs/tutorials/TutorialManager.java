@@ -54,7 +54,7 @@ public class TutorialManager {
         }
 
         File dataFolder = Civs.getInstance().getDataFolder();
-        File tutorialFile = new File(dataFolder, "tutorial.yml");
+        File tutorialFile = new File(dataFolder, "Civs/tutorial.yml");
         FileConfiguration tutorialConfig = new YamlConfiguration();
 
         try {
