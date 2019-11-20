@@ -136,6 +136,8 @@ public class ConfigManager {
     boolean useAsyncUpkeeps;
     @Getter
     boolean disableRegionsInUnloadedChunks;
+    @Getter
+    String defaultConfigSet;
 
     public ConfigManager() {
         loadDefaults();
@@ -383,6 +385,7 @@ public class ConfigManager {
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
             useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
+            defaultConfigSet = config.getString("default-config-set", "hybrid");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -408,6 +411,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
         useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;

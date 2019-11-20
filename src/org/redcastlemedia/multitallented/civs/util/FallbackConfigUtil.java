@@ -2,22 +2,26 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public final class FallbackConfigUtil {
     private FallbackConfigUtil() {
 
     }
-    public static FileConfiguration getConfig(File originalFile) {
+    public static FileConfiguration getConfig(File originalFile, String filePath) {
         FileConfiguration config = new YamlConfiguration();
 
         try {
-            File defaultFile = new File(FallbackConfigUtil.class.getResource(originalFile.getName()).getFile());
-            if (defaultFile.exists()) {
-                config.load(originalFile);
-            }
-            if (originalFile.exists()) {
+            String url = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + filePath;
+            InputStream inputStream = FallbackConfigUtil.class.getResourceAsStream(url);
+            Reader reader = new InputStreamReader(inputStream);
+            config.load(reader);
+            if (originalFile != null && originalFile.exists()) {
                 FileConfiguration configOverride = new YamlConfiguration();
                 configOverride.load(originalFile);
                 for (String key : configOverride.getKeys(false)) {
@@ -25,7 +29,7 @@ public final class FallbackConfigUtil {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         return config;

@@ -1,0 +1,38 @@
+type: region
+icon: STONE
+name: Memorial
+max: 1
+price: 750
+groups:
+- offense
+level: 3
+
+pre-reqs:
+- member=keep
+
+towns:
+- keep
+
+build-reqs:
+- CHEST*8
+- COBBLESTONE_WALL*4
+- g:sign*4
+- IRON_BARS*24
+- g:primary*12
+
+build-radius: 5 #11x11x11
+
+effects:
+- graveyard
+- deny_damage
+- block_break
+- block_build
+- block_fire
+- deny_mob_spawn
+- door_use
+
+period: 900 # 15 minutes
+upkeep:
+  0:
+    power-output: 2
+

@@ -1,0 +1,53 @@
+type: region
+icon: CHEST
+shop-icon: PAPER
+name: Bank
+price: 200
+groups:
+- utility
+level: 4
+
+pre-reqs:
+- member=village:town:city:metropolis
+
+towns:
+- village
+- town
+- city
+- metropolis
+
+build-reqs:
+- g:roof*96
+- g:window*6
+- g:door*6
+- GOLD_BLOCK*4
+- g:fence*9
+- chest*12
+- g:primary*90
+- g:secondary*25
+build-radius: 5
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+  1:
+    reagents:
+    - PAPER*1
+    input:
+    - EMERALD*16
+    payout: 160
+  2:
+    reagents:
+      - CHEST*1
+    output:
+      - EMERALD*16
+    payout: -160

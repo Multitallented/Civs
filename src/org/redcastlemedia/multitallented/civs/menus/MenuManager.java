@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -142,13 +143,8 @@ public class MenuManager implements Listener {
             menuFolder.mkdir();
         }
         File menuFile = new File(menuFolder, "default.yml");
-        if (!menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to find menu default.yml");
-            return;
-        }
         try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(menuFile);
+            FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/default.yml");
             backButton = new MenuIcon("back",
                     config.getString("back.icon", "REDSTONE_BLOCK"),
                     config.getString("back.name", "back-button"),
@@ -188,22 +184,10 @@ public class MenuManager implements Listener {
 
     private void loadConfig(CustomMenu customMenu) {
         File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-        if (menuFolder.exists()) {
-            menuFolder.mkdir();
-        }
         String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
         File menuFile = new File(menuFolder, menuName + ".yml");
-        if (!menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
-            return;
-        }
 
-        FileConfiguration config = new YamlConfiguration();
-        try {
-            config.load(menuFile);
-        } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
-        }
+        FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/" + menuName + ".yml");
         int newSize = config.getInt("size", 36);
         int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");
