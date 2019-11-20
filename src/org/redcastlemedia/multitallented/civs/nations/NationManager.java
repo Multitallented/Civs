@@ -14,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
