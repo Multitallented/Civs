@@ -1,259 +1,259 @@
-default:
-  steps:
-  - type: build
-    region: shelter
-    rewards:
-#      commands:
-#        - ^!give DIRT 4
-#      permissions:
-#        - civs.shop
-      items:
-      - BEEF*32
-      - BREAD*4
-      - CARROT*32
-      - POTATO*32
-  - type: upkeep
-    region: shelter
-    rewards:
-      money: 200
-  - type: buy
-    region: coal_shop
-    rewards:
-      items:
-      - COAL_BLOCK
-      - WHITE_WOOL*25
-      - OAK_FENCE*14
-      - CHEST
-  - type: build
-    region: coal_shop
-    rewards:
-      items:
-      - COAL*36
-      - DIAMOND*3
-      money: 150
-  - type: choose
-    paths:
-    - warrior
-    - builder
-    - merchant
-
-warrior:
-  icon: DIAMOND_SWORD
-  steps:
-  - type: buy
-    region: altar
-    rewards:
-      items:
-      - IRON_BLOCK*3
-      - IRON_SWORD
-      money: 300
-  - type: upkeep
-    region: altar
-    rewards:
-      items:
-      - ENCHANTED_GOLDEN_APPLE
-  - type: kill
-    kill-type: player
-    rewards:
-      money: 250
-      items:
-      - DIAMOND*3
-      - OBSIDIAN*14
-      - FLINT_AND_STEEL
-  - type: build
-    region: raid_porter
-    rewards:
-      money: 350
-  - type: upkeep
-    region: raid_porter
-    rewards:
-      items:
-      - TNT*12
-  - type: build
-    region: command_tent
-    rewards:
-      items:
-      - DIAMOND*3
-      money: 1000
-  - type: build
-    region: siege_machine
-    rewards:
-      items:
-      - TNT*64
-  - type: build
-    region: castle
-    rewards:
-      items:
-      - TNT*64
-      - TNT*64
-      money: 750
-  - type: build
-    region: memorial
-    rewards:
-      items:
-      - DIAMOND*6
-      money: 1000
-  - type: end
-builder:
-  icon: DIAMOND_BLOCK
-  steps:
-  - type: buy
-    region: council_room
-    rewards:
-      items:
-      - SUGAR_CANE*8
-      - COW_SPAWN_EGG*2
-      - OAK_SAPLING*4
-  - type: build
-    region: council_room
-    rewards:
-      money: 500
-  - type: buy
-    region: settlement
-    rewards:
-      items:
-      - DIAMOND*3
-      - IRON_BLOCK*3
-      money: 250
-  - type: build
-    region: shack
-    rewards:
-      items:
-      - GLOWSTONE*32
-      money: 200
-  - type: build
-    region: npc_shack
-    rewards:
-      items:
-      - EMERALD*64
-      - QUARTZ_BLOCK*64
-      - QUARTZ_BLOCK*64
-      - QUARTZ_BLOCK*64
-  - type: build
-    region: church
-    rewards:
-      money: 350
-  - type: build
-    region: arrow_trap
-    rewards:
-      items:
-      - ARROW*64
-      - ARROW*64
-      - ARROW*64
-  - type: build
-    region: arrow_factory
-    rewards:
-      items:
-      - FLINT*64
-      - FLINT*64
-      - FEATHER*64
-      - FEATHER*64
-      - OAK_LOG*64
-  - type: build
-    region: hovel
-    rewards:
-      money: 400
-      items:
-      - ARROW*64
-      - ARROW*64
-      - REDSTONE*64
-      - OBSIDIAN*14
-  - type: build
-    region: catapult
-    rewards:
-      items:
-      - TNT*16
-  - type: build
-    region: dwelling
-    rewards:
-      money: 500
-      items:
-      - DIAMOND*3
-  - type: build
-    region: stables
-    rewards:
-      items:
-      - APPLE*64
-  - type: build
-    region: town_hall
-    rewards:
-      items:
-      - DIAMOND*3
-      money: 1000
-  - type: end
-
-merchant:
-  icon: DIAMOND*64
-  steps:
-  - type: upkeep
-    region: shack
-    rewards:
-      money: 400
-  - type: buy
-    region: hovel
-    rewards:
-      items:
-      - OAK_LOG*64
-      - OAK_LOG*64
-      - GLASS*16
-      - WHITE_WOOL*16
-      - COBBLESTONE*64
-      money: 200
-  - type: build
-    region: hovel
-    rewards:
-      items:
-      - POTATO*64
-      - POTATO*64
-      - POTATO*64
-  - type: upkeep
-    region: hovel1
-    rewards:
-      items:
-      - POWERED_RAIL*2
-      - REDSTONE*16
-      - RAIL*32
-      - CHEST_MINECART
-  - type: build
-    region: apple_orchard
-    rewards:
-      money: 500
-  - type: build
-    region: dwelling
-    rewards:
-      items:
-      - SALMON*36
-      - EMERALD*32
-  - type: build
-    region: house
-    rewards:
-      items:
-      - BREAD*64
-      - BREAD*64
-      - BREAD*16
-      money: 100
-  - type: upkeep
-    region: house1
-    rewards:
-      items:
-      - SALMON*64
-      - SALMON*64
-  - type: upkeep
-    region: house2
-    rewards:
-      money: 300
-  - type: build
-    region: iron_shop
-    rewards:
-      items:
-      - IRON_INGOT*64
-      - IRON_INGOT*64
-      - IRON_INGOT*64
-      money: 100
-  - type: build
-    region: jade_shop
-    rewards:
-      items:
-      - DIAMOND*3
-      money: 700
-  - type: end
+#default:
+#  steps:
+#  - type: build
+#    region: shelter
+#    rewards:
+#    # commands:
+#    #   - ^!give DIRT 4
+#    # permissions:
+#    #   - civs.shop
+#      items:
+#      - BEEF*32
+#      - BREAD*4
+#      - CARROT*32
+#      - POTATO*32
+#  - type: upkeep
+#    region: shelter
+#    rewards:
+#      money: 200
+#  - type: buy
+#    region: coal_shop
+#    rewards:
+#      items:
+#      - COAL_BLOCK
+#      - WHITE_WOOL*25
+#      - OAK_FENCE*14
+#      - CHEST
+#  - type: build
+#    region: coal_shop
+#    rewards:
+#      items:
+#      - COAL*36
+#      - DIAMOND*3
+#      money: 150
+#  - type: choose
+#    paths:
+#    - warrior
+#    - builder
+#    - merchant
+#
+#warrior:
+#  icon: DIAMOND_SWORD
+#  steps:
+#  - type: buy
+#    region: altar
+#    rewards:
+#      items:
+#      - IRON_BLOCK*3
+#      - IRON_SWORD
+#      money: 300
+#  - type: upkeep
+#    region: altar
+#    rewards:
+#      items:
+#      - ENCHANTED_GOLDEN_APPLE
+#  - type: kill
+#    kill-type: player
+#    rewards:
+#      money: 250
+#      items:
+#      - DIAMOND*3
+#      - OBSIDIAN*14
+#      - FLINT_AND_STEEL
+#  - type: build
+#    region: raid_porter
+#    rewards:
+#      money: 350
+#  - type: upkeep
+#    region: raid_porter
+#    rewards:
+#      items:
+#      - TNT*12
+#  - type: build
+#    region: command_tent
+#    rewards:
+#      items:
+#      - DIAMOND*3
+#      money: 1000
+#  - type: build
+#    region: siege_machine
+#    rewards:
+#      items:
+#      - TNT*64
+#  - type: build
+#    region: castle
+#    rewards:
+#      items:
+#      - TNT*64
+#      - TNT*64
+#      money: 750
+#  - type: build
+#    region: memorial
+#    rewards:
+#      items:
+#      - DIAMOND*6
+#      money: 1000
+#  - type: end
+#builder:
+#  icon: DIAMOND_BLOCK
+#  steps:
+#  - type: buy
+#    region: council_room
+#    rewards:
+#      items:
+#      - SUGAR_CANE*8
+#      - COW_SPAWN_EGG*2
+#      - OAK_SAPLING*4
+#  - type: build
+#    region: council_room
+#    rewards:
+#      money: 500
+#  - type: buy
+#    region: settlement
+#    rewards:
+#      items:
+#      - DIAMOND*3
+#      - IRON_BLOCK*3
+#      money: 250
+#  - type: build
+#    region: shack
+#    rewards:
+#      items:
+#      - GLOWSTONE*32
+#      money: 200
+#  - type: build
+#    region: npc_shack
+#    rewards:
+#      items:
+#      - EMERALD*64
+#      - QUARTZ_BLOCK*64
+#      - QUARTZ_BLOCK*64
+#      - QUARTZ_BLOCK*64
+#  - type: build
+#    region: church
+#    rewards:
+#      money: 350
+#  - type: build
+#    region: arrow_trap
+#    rewards:
+#      items:
+#      - ARROW*64
+#      - ARROW*64
+#      - ARROW*64
+#  - type: build
+#    region: arrow_factory
+#    rewards:
+#      items:
+#      - FLINT*64
+#      - FLINT*64
+#      - FEATHER*64
+#      - FEATHER*64
+#      - OAK_LOG*64
+#  - type: build
+#    region: hovel
+#    rewards:
+#      money: 400
+#      items:
+#      - ARROW*64
+#      - ARROW*64
+#      - REDSTONE*64
+#      - OBSIDIAN*14
+#  - type: build
+#    region: catapult
+#    rewards:
+#      items:
+#      - TNT*16
+#  - type: build
+#    region: dwelling
+#    rewards:
+#      money: 500
+#      items:
+#      - DIAMOND*3
+#  - type: build
+#    region: stables
+#    rewards:
+#      items:
+#      - APPLE*64
+#  - type: build
+#    region: town_hall
+#    rewards:
+#      items:
+#      - DIAMOND*3
+#      money: 1000
+#  - type: end
+#
+#merchant:
+#  icon: DIAMOND*64
+#  steps:
+#  - type: upkeep
+#    region: shack
+#    rewards:
+#      money: 400
+#  - type: buy
+#    region: hovel
+#    rewards:
+#      items:
+#      - OAK_LOG*64
+#      - OAK_LOG*64
+#      - GLASS*16
+#      - WHITE_WOOL*16
+#      - COBBLESTONE*64
+#      money: 200
+#  - type: build
+#    region: hovel
+#    rewards:
+#      items:
+#      - POTATO*64
+#      - POTATO*64
+#      - POTATO*64
+#  - type: upkeep
+#    region: hovel1
+#    rewards:
+#      items:
+#      - POWERED_RAIL*2
+#      - REDSTONE*16
+#      - RAIL*32
+#      - CHEST_MINECART
+#  - type: build
+#    region: apple_orchard
+#    rewards:
+#      money: 500
+#  - type: build
+#    region: dwelling
+#    rewards:
+#      items:
+#      - SALMON*36
+#      - EMERALD*32
+#  - type: build
+#    region: house
+#    rewards:
+#      items:
+#      - BREAD*64
+#      - BREAD*64
+#      - BREAD*16
+#      money: 100
+#  - type: upkeep
+#    region: house1
+#    rewards:
+#      items:
+#      - SALMON*64
+#      - SALMON*64
+#  - type: upkeep
+#    region: house2
+#    rewards:
+#      money: 300
+#  - type: build
+#    region: iron_shop
+#    rewards:
+#      items:
+#      - IRON_INGOT*64
+#      - IRON_INGOT*64
+#      - IRON_INGOT*64
+#      money: 100
+#  - type: build
+#    region: jade_shop
+#    rewards:
+#      items:
+#      - DIAMOND*3
+#      money: 700
+#  - type: end

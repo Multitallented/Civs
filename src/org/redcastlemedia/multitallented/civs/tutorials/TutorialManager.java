@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -31,14 +32,12 @@ public class TutorialManager {
     HashMap<String, TutorialPath> tutorials = new HashMap<>();
 
     public TutorialManager() {
-        tutorialManager = this;
-
         loadTutorialFile();
     }
 
     public static TutorialManager getInstance() {
         if (tutorialManager == null) {
-            new TutorialManager();
+            tutorialManager = new TutorialManager();
         }
         return tutorialManager;
     }
@@ -55,10 +54,9 @@ public class TutorialManager {
 
         File dataFolder = Civs.getInstance().getDataFolder();
         File tutorialFile = new File(dataFolder, "Civs/tutorial.yml");
-        FileConfiguration tutorialConfig = new YamlConfiguration();
+        FileConfiguration tutorialConfig = FallbackConfigUtil.getConfig(tutorialFile, "tutorial.yml");
 
         try {
-            tutorialConfig.load(tutorialFile);
             for (String key : tutorialConfig.getKeys(false)) {
                 TutorialPath path = new TutorialPath();
                 String iconString = tutorialConfig.getString(key + ".icon", "CHEST");

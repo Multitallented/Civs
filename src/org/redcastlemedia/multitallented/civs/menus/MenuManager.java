@@ -40,14 +40,18 @@ public class MenuManager implements Listener {
     public MenuManager() {
         if (Civs.getInstance() != null) {
             Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+            loadMenuConfigs();
         }
-        instance = this;
     }
     public static MenuManager getInstance() {
         if (instance == null) {
-            new MenuManager();
+            instance = new MenuManager();
         }
         return instance;
+    }
+    public void reload() {
+        menus.clear();
+        loadMenuConfigs();
     }
 
     public boolean hasMenuOpen(UUID uuid) {
