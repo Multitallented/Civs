@@ -42,7 +42,7 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
-        new GovernmentManager();
+        GovernmentManager.getInstance();
         new ItemManager();
     }
 
