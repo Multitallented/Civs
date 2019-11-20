@@ -83,15 +83,34 @@ public class LocaleManager {
             } else {
                 config = FallbackConfigUtil.getConfig(null, TRANSLATION_FOLDER_NAME + "/" + fileName);
             }
-            HashMap<String, String> currentLanguage = new HashMap<>();
-
-            for (String translationKey : config.getKeys(false)) {
-                currentLanguage.put(translationKey, config.getString(translationKey));
-            }
-
-            String langKey = fileName.replace(".yml", "");
-            languageMap.put(langKey, currentLanguage);
+            loadLanguageFromConfig(config, fileName.replace(".yml", ""));
         }
+        if (translationFolderExists) {
+            for (File file : translationFolder.listFiles()) {
+                String langKey = file.getName().replace(".yml", "");
+                if (languageMap.containsKey(langKey)) {
+                    continue;
+                }
+                FileConfiguration config = new YamlConfiguration();
+                try {
+                    config.load(file);
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to load " + file.getName());
+                    continue;
+                }
+                loadLanguageFromConfig(config, langKey);
+            }
+        }
+    }
+
+    private void loadLanguageFromConfig(FileConfiguration config, String name) {
+        HashMap<String, String> currentLanguage = new HashMap<>();
+
+        for (String translationKey : config.getKeys(false)) {
+            currentLanguage.put(translationKey, config.getString(translationKey));
+        }
+
+        languageMap.put(name, currentLanguage);
     }
 
     public static LocaleManager getInstance() {
