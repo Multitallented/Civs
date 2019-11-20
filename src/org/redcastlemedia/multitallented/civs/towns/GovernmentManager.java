@@ -7,17 +7,24 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class GovernmentManager {
+    private static String GOV_TYPE_FOLDER_NAME = "gov-types";
     private static GovernmentManager instance = null;
     private HashMap<String, Government> governments = new HashMap<>();
 
@@ -51,27 +58,64 @@ public class GovernmentManager {
     }
 
     private void loadGovType(File govTypeFile) {
-        FileConfiguration config = new YamlConfiguration();
+        File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);
+        boolean govTypeFolderExists = govTypeFolder.exists();
+        String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + GOV_TYPE_FOLDER_NAME;
+        InputStream in = getClass().getResourceAsStream(path);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        List<String> fileNames = new ArrayList<>();
+        String resource;
         try {
-            config.load(govTypeFile);
-            if (!config.getBoolean("enabled", false)) {
-                return;
+            while ((resource = reader.readLine()) != null) {
+                fileNames.add(resource);
             }
-            String name = govTypeFile.getName().replace(".yml", "");
-            String govTypeString = config.getString("inherit", name);
-            GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
-            if (governmentType == GovernmentType.CYBERSYNACY) {
-                new AIManager();
-            }
-            CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
-
-            ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
-            Government government = new Government(name, governmentType,
-                    getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
-            governments.put(name.toUpperCase(), government);
-        } catch (Exception e) {
-            Civs.logger.severe("Unable to load " + govTypeFile.getName());
+        } catch (IOException io) {
+            Civs.logger.severe("Unable to load any gov types!");
+            return;
         }
+        for (String fileName : fileNames) {
+            FileConfiguration config;
+            if (govTypeFolderExists) {
+                config = FallbackConfigUtil.getConfig(
+                        new File(govTypeFolder, fileName), GOV_TYPE_FOLDER_NAME + "/" + fileName);
+            } else {
+                config = FallbackConfigUtil.getConfig(null, GOV_TYPE_FOLDER_NAME + "/" + fileName);
+            }
+            loadGovType(config, fileName.replace(".yml", ""));
+        }
+        if (govTypeFolderExists) {
+            for (File file : govTypeFolder.listFiles()) {
+                String govName = file.getName().replace(".yml", "");
+                if (governments.containsKey(govName)) {
+                    continue;
+                }
+                FileConfiguration config = new YamlConfiguration();
+                try {
+                    config.load(file);
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to load " + file.getName());
+                    continue;
+                }
+                loadGovType(config, govName);
+            }
+        }
+    }
+
+    private void loadGovType(FileConfiguration config, String name) {
+        if (!config.getBoolean("enabled", false)) {
+            return;
+        }
+        String govTypeString = config.getString("inherit", name);
+        GovernmentType governmentType = GovernmentType.valueOf(govTypeString.toUpperCase());
+        if (governmentType == GovernmentType.CYBERSYNACY) {
+            new AIManager();
+        }
+        CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
+
+        ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
+        Government government = new Government(name, governmentType,
+                getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
+        governments.put(name.toUpperCase(), government);
     }
 
     private ArrayList<GovTransition> processTransitionList(ConfigurationSection section) {
