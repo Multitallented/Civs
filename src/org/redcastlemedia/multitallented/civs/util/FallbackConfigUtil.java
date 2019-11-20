@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,12 +20,12 @@ public final class FallbackConfigUtil {
         try {
             String url = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + filePath;
             InputStream inputStream = FallbackConfigUtil.class.getResourceAsStream(url);
-            Reader reader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             config.load(reader);
             if (originalFile != null && originalFile.exists()) {
                 FileConfiguration configOverride = new YamlConfiguration();
                 configOverride.load(originalFile);
-                for (String key : configOverride.getKeys(false)) {
+                for (String key : configOverride.getKeys(true)) {
                     config.set(key, configOverride.get(key));
                 }
             }

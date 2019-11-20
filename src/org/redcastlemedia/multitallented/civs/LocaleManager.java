@@ -73,6 +73,7 @@ public class LocaleManager {
                 fileNames.add(resource);
             }
         } catch (IOException io) {
+            io.printStackTrace();
             Civs.logger.severe("Unable to load any translations!");
             return;
         }
@@ -96,6 +97,7 @@ public class LocaleManager {
                 try {
                     config.load(file);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Civs.logger.severe("Unable to load " + file.getName());
                     continue;
                 }
