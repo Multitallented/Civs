@@ -123,6 +123,9 @@ public class ItemManager {
                 try {
                     File file = new File(Civs.getInstance().getDataFolder(), path);
                     FileConfiguration typeConfig = FallbackConfigUtil.getConfig(file, path);
+                    if (!typeConfig.getBoolean("enabled", true)) {
+                        return;
+                    }
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
                     if (type.equals("region")) {
