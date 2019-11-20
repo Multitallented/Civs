@@ -89,7 +89,7 @@ public class Civs extends JavaPlugin {
         new ItemManager();
         TutorialManager.getInstance();
         GovernmentManager.getInstance();
-        new BlockLogger();
+        BlockLogger.getInstance();
         MenuManager.getInstance();
         RegionManager regionManager = new RegionManager();
         regionManager.loadAllRegions();

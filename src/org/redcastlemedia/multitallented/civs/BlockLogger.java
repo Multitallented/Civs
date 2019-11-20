@@ -19,7 +19,6 @@ public class BlockLogger {
 //    private int intervalId = -1;
 
     public BlockLogger() {
-        blockLogger = this;
         loadBlocks();
     }
 
