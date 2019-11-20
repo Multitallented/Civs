@@ -59,7 +59,7 @@ public class RegionsTests {
     public void onBefore() {
         regionManager = new RegionManager();
         townManager = new TownManager();
-        new ItemManager();
+        ItemManager.getInstance().reload();
     }
 
     @Test

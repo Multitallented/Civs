@@ -28,7 +28,6 @@ public class ItemManager {
     private HashMap<String, CivItem> itemTypes = new HashMap<>();
 
     public ItemManager() {
-        itemManager = this;
         loadAllItemTypes();
     }
 

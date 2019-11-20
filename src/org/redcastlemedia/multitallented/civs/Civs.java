@@ -86,7 +86,7 @@ public class Civs extends JavaPlugin {
 
         ConfigManager.getInstance();
         LocaleManager.getInstance();
-        new ItemManager();
+        ItemManager.getInstance();
         TutorialManager.getInstance();
         GovernmentManager.getInstance();
         BlockLogger.getInstance();

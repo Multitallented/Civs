@@ -43,7 +43,7 @@ public class TownTests {
         townManager = new TownManager();
         new RegionManager();
         GovernmentManager.getInstance();
-        new ItemManager();
+        ItemManager.getInstance().reload();
     }
 
     @Test
