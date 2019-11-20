@@ -24,25 +24,24 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class GovernmentManager {
-    private static String GOV_TYPE_FOLDER_NAME = "gov-types";
     private static GovernmentManager instance = null;
     private HashMap<String, Government> governments = new HashMap<>();
 
     public static GovernmentManager getInstance() {
         if (instance == null) {
-            new GovernmentManager();
+            instance = new GovernmentManager();
         }
         return instance;
     }
 
     public GovernmentManager() {
-        instance = this;
         if (Civs.getInstance() != null) {
             loadAllGovTypes();
         }
     }
 
     private void loadAllGovTypes() {
+        final String GOV_TYPE_FOLDER_NAME = "gov-types";
         File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);
         boolean govTypeFolderExists = govTypeFolder.exists();
         String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + GOV_TYPE_FOLDER_NAME;

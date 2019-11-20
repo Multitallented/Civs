@@ -17,7 +17,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class LocaleManager {
 
-    private static String TRANSLATION_FOLDER_NAME = "translations";
     private static LocaleManager localeManager;
     HashMap<String, HashMap<String, String>> languageMap = new HashMap<>();
 
@@ -60,6 +59,7 @@ public class LocaleManager {
     }
 
     private void loadAllConfigs() {
+        final String TRANSLATION_FOLDER_NAME = "translations";
         File translationFolder = new File(Civs.getInstance().getDataFolder(), TRANSLATION_FOLDER_NAME);
         boolean translationFolderExists = translationFolder.exists();
         String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + TRANSLATION_FOLDER_NAME;
