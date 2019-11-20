@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -28,7 +29,15 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsSingleton
 public class RegionListener implements Listener {
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            RegionListener regionListener = new RegionListener();
+            Bukkit.getPluginManager().registerEvents(regionListener, Civs.getInstance());
+        }
+    }
 
     /**
      * If placing a region block, try to create a region

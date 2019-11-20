@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -22,6 +23,7 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class CivilianManager {
 
     private HashMap<UUID, Civilian> civilians = new HashMap<>();
@@ -33,18 +35,15 @@ public class CivilianManager {
     private static CivilianManager civilianManager = null;
 
     public CivilianManager() {
-        civilianManager = this;
-        loadAllCivilians();
+        if (Civs.getInstance() != null) {
+            loadAllCivilians();
+        }
     }
 
     public void reload() {
         civilians.clear();
         sortedCivilians.clear();
         loadAllCivilians();
-    }
-
-    protected CivilianManager(boolean load) {
-        civilianManager = this;
     }
 
     public Collection<Civilian> getCivilians() {

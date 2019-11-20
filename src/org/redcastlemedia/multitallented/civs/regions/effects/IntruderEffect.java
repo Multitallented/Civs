@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -22,10 +23,17 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.util.HashMap;
 
+@CivsSingleton
 public class IntruderEffect implements Listener {
 
     private final HashMap<String, Long> lastMessage = new HashMap<>();
     private final static String KEY = "intruder";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new IntruderEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {

@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -25,8 +26,15 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.UUID;
 
+@CivsSingleton
 public class HuntEffect implements Listener, CreateRegionListener {
     public static final String KEY = "hunt";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new HuntEffect(), Civs.getInstance());
+        }
+    }
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType rt) {

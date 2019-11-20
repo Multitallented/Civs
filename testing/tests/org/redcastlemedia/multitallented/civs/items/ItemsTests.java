@@ -51,7 +51,7 @@ public class ItemsTests {
     @Test
     public void newPlayerShouldRecieveAShelterItem() {
         loadRegionTypeShelter();
-        CivilianTests.skipLoadingFiles();
+        CivilianManager.getInstance();
         PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianJoin(event);

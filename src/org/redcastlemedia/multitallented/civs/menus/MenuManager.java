@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
@@ -22,6 +23,7 @@ import org.reflections.util.ConfigurationBuilder;
 import java.io.File;
 import java.util.*;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
     public static HashMap<UUID, CycleGUI> cycleGuis = new HashMap<>();

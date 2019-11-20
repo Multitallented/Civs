@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -30,9 +32,17 @@ import java.lang.ref.PhantomReference;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
+@CivsSingleton
 public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener, RegionCreatedListener {
     public static String KEY = "villager";
     protected static HashMap<String, Long> townCooldowns = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            VillagerEffect villagerEffect = new VillagerEffect();
+            Bukkit.getPluginManager().registerEvents(villagerEffect, Civs.getInstance());
+        }
+    }
 
     public VillagerEffect() {
         RegionManager regionManager = RegionManager.getInstance();

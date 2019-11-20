@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -29,6 +30,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.io.File;
 import java.util.*;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class TownManager {
 
     private static TownManager townManager = null;
@@ -38,7 +40,9 @@ public class TownManager {
     private ArrayList<Town> needsSaving = new ArrayList<>();
 
     public TownManager() {
-        townManager = this;
+        if (Civs.getInstance() != null) {
+            loadAllTowns();
+        }
     }
 
     public void reload() {
@@ -568,7 +572,7 @@ public class TownManager {
 
     public static TownManager getInstance() {
         if (townManager == null) {
-            new TownManager();
+            townManager = new TownManager();
         }
         return townManager;
     }

@@ -17,6 +17,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -44,7 +45,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@CivsSingleton
 public class ProtectionHandler implements Listener {
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            ProtectionHandler protectionHandler = new ProtectionHandler();
+            Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
+        }
+    }
 
 //    @EventHandler
 //    public void onChunkUnload(ChunkUnloadEvent event) {

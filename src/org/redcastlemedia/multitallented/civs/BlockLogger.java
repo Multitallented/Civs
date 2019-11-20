@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
     private HashMap<String, CVItem> blocks = new HashMap<>();

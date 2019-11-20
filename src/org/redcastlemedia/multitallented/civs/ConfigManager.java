@@ -17,6 +17,7 @@ import java.util.Map;
 
 import lombok.Getter;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.CRITICAL)
 public class ConfigManager {
 
 

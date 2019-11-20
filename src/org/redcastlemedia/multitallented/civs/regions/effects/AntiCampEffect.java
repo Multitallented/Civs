@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -28,11 +29,17 @@ import java.util.UUID;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+@CivsSingleton
 public class AntiCampEffect implements Listener {
     private static final HashMap<UUID, String> lastDeathTown = new HashMap<>();
     private static final HashMap<String, Long> lastPoison = new HashMap<>();
     private static final HashMap<UUID, ArrayList<Long>> lastDeath = new HashMap<>();
     public static final String KEY = "anticamp";
+
+    public static void getInstance() {
+        AntiCampEffect antiCampEffect = new AntiCampEffect();
+        Bukkit.getPluginManager().registerEvents(antiCampEffect, Civs.getInstance());
+    }
 
     public static boolean canActivateAntiCamp(UUID uuid, Town town) {
         if (!lastDeathTown.containsKey(uuid) || !lastDeathTown.get(uuid).equals(town.getName())) {

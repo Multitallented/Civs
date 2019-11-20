@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterTownEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
@@ -19,9 +20,16 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
+@CivsSingleton
 public class PermissionEffect implements Listener {
     private static final String KEY = "permission";
     private static final Map<UUID, HashSet<String>> permissionMap = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new PermissionEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onPlayerEnterRegion(PlayerEnterRegionEvent event) {

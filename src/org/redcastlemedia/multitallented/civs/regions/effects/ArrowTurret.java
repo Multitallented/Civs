@@ -14,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
@@ -27,9 +29,17 @@ import java.util.*;
 
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
+@CivsSingleton
 public class ArrowTurret implements Listener {
     public static String KEY = "arrow_turret";
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            ArrowTurret arrowTurret = new ArrowTurret();
+            Bukkit.getPluginManager().registerEvents(arrowTurret, Civs.getInstance());
+        }
+    }
 
     //Shoot arrows at mobs
     @EventHandler

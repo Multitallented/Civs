@@ -21,14 +21,23 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
+@CivsSingleton
 public class TNTCannon implements Listener, CreateRegionListener {
 //    private final HashMap<TNTPrimed, FiredTNT> firedTNT = new HashMap<>();
     private final String KEY = "tnt_cannon";
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            TNTCannon tntCannon = new TNTCannon();
+            Bukkit.getPluginManager().registerEvents(tntCannon, Civs.getInstance());
+        }
+    }
 
     public TNTCannon() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);

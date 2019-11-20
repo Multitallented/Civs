@@ -66,7 +66,7 @@ public class TestUtil {
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
 
-        CivilianTests.skipLoadingFiles();
+        CivilianManager.getInstance();
         Server server = mock(Server.class);
         Inventory inventory = new InventoryImpl();
         Logger logger = mock(Logger.class);

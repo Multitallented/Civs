@@ -29,6 +29,12 @@ public class JammerEffect implements Listener, RegionCreatedListener {
     public static String KEY = "jammer";
     private static HashMap<UUID, Long> cooldowns = new HashMap<>();
 
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new JammerEffect(), Civs.getInstance());
+        }
+    }
+
     public JammerEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
     }

@@ -1,7 +1,9 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -10,6 +12,12 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 public class ActiveEffect implements Listener {
 
     public final String KEY = "active";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new ActiveEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onRegionTick(RegionTickEvent event) {
