@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
@@ -40,7 +41,22 @@ public class NationManager implements Listener {
         instance = this;
     }
 
-    private void loadAlliance(File nationFile) {
+    public void loadAllNations() {
+        File nationFolder = new File(Civs.getInstance().getDataFolder(), "nations");
+        if (!nationFolder.exists()) {
+            nationFolder.mkdir();
+            return;
+        }
+        try {
+            for (File nationFile : nationFolder.listFiles()) {
+                loadNation(nationFile);
+            }
+        } catch (NullPointerException npe) {
+            // dont care
+        }
+    }
+
+    private void loadNation(File nationFile) {
         try {
             FileConfiguration config = new YamlConfiguration();
             config.load(nationFile);
@@ -112,6 +128,35 @@ public class NationManager implements Listener {
             e.printStackTrace();
             Civs.logger.severe("Unable to save alliance " + nation.getName());
         }
+    }
+
+    public boolean renameNation(String oldName, String newName) {
+        if (nations.get(newName) != null) {
+            return false;
+        }
+        Nation nation = nations.get(oldName);
+        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+        File allianceFile = new File(allianceFolder, oldName + ".yml");
+        if (!allianceFile.delete()) {
+            return false;
+        }
+        nations.remove(oldName);
+        nation.setName(newName);
+        nations.put(newName, nation);
+        saveNation(nation);
+        return true;
+    }
+
+    public boolean removeAlliance(Nation nation) {
+        if (Civs.getInstance() != null) {
+            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+            File allianceFile = new File(allianceFolder, nation.getName() + ".yml");
+            if (!allianceFile.delete()) {
+                return false;
+            }
+        }
+        nations.remove(nation.getName());
+        return true;
     }
 
     public ChunkClaim getClaimAt(Location location) {

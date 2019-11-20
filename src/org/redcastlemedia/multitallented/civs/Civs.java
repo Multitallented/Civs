@@ -99,6 +99,7 @@ public class Civs extends JavaPlugin {
         AllianceManager allianceManager = new AllianceManager();
         allianceManager.loadAllAlliances();
         NationManager nationManager = new NationManager();
+        nationManager.loadAllNations();
         new CivilianManager();
 
         initCommands();
