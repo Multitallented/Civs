@@ -1,0 +1,44 @@
+type: region
+name: Bell_Tower
+icon: GLOWSTONE
+price: 1000
+max: 1
+groups:
+- defense
+level: 3
+
+pre-reqs:
+- member=hamlet:village:town:city:metropolis
+
+build-reqs:
+- CHEST*2
+- g:door*1
+- GLOWSTONE*2
+- g:secondary*22
+- g:primary*70
+- g:roof*30
+- g:glass*4
+- g:window*4
+
+build-radius: 4 #9x15x9
+build-radius-y: 7
+
+towns:
+- hamlet
+- village
+- town
+- city
+- metropolis
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- intruder
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+

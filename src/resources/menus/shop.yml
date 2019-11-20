@@ -1,0 +1,32 @@
+size: 54
+name: Shop
+# variables
+#  sort: level | category
+#  parent: show what category/level. If empty it will show root
+# custom actions:
+#  view-item: opens the category/level/item for viewing
+items:
+  parent:
+    index: 0
+    # icon: parent icon
+    # name: parent name
+    # desc: parent desc
+  prev:
+    index: 3
+  sort-level:
+    index: 4
+    icon: BOOKSHELF
+    name: sort-by-level
+    actions:
+      - menu:shop?sort=level
+  next:
+    index: 5
+  back:
+    index: 8
+  items:
+    index: 9-35
+    # icon: item icon
+    # name: item name
+    # desc: item desc
+    actions:
+      - view-item

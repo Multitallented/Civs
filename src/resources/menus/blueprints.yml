@@ -1,0 +1,11 @@
+size: 36
+name: Blueprints
+items:
+  prev:
+    index: 3
+  next:
+    index: 5
+  back:
+    index: 8
+  blueprints:
+    index: 9-35
