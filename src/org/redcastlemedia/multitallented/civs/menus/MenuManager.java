@@ -73,9 +73,15 @@ public class MenuManager implements Listener {
         if (!openMenus.containsKey(uuid)) {
             return;
         }
-        clearCycleItems(uuid);
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         menus.get(openMenus.get(uuid)).onCloseMenu(civilian, event.getInventory());
+        clearCycleItems(uuid);
+        String dataMenuName = (String) getData(civilian.getUuid(), "menuName");
+        if (openMenus.get(uuid).equals(dataMenuName) &&
+                dataMenuName.equals(getData(civilian.getUuid(), "menuName"))) {
+            System.out.println("clearing data " + dataMenuName);
+            clearData(uuid);
+        }
         openMenus.remove(uuid);
     }
 

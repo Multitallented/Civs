@@ -89,7 +89,11 @@ public class BlueprintsMenu extends CustomMenu {
                 }
             }
         }
-        for (String name : itemsInView.keySet()) {
+        for (String name : itemsInView.keySet()) { // TODO fix the NPE here
+            if (!stashItems.containsKey(name)) {
+                stashItems.put(name, itemsInView.get(name));
+                continue;
+            }
             if (stashItems.get(name) <= itemsInView.get(name)) {
                 stashItems.remove(name);
             } else {
@@ -146,7 +150,7 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!CVItem.isCivsItem(event.getCurrentItem())) {
+        if (event.getCurrentItem() != null && !CVItem.isCivsItem(event.getCurrentItem())) {
             if (!event.isCancelled()) {
                 event.setCancelled(true);
             }

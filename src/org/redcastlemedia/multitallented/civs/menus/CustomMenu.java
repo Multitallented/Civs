@@ -44,10 +44,12 @@ public abstract class CustomMenu {
         MenuManager.clearData(civilian.getUuid());
         Map<String, Object> newData = createData(civilian, params);
         MenuManager.setNewData(civilian.getUuid(), newData);
+        MenuManager.putData(civilian.getUuid(), "menuName", name);
         return createMenu(civilian);
     }
     public Inventory createMenuFromHistory(Civilian civilian, Map<String, Object> data) {
         MenuManager.setNewData(civilian.getUuid(), data);
+        MenuManager.putData(civilian.getUuid(), "menuName", name);
         return createMenu(civilian);
     }
     public Inventory createMenu(Civilian civilian) {
