@@ -43,21 +43,6 @@ public class GovernmentManager {
     }
 
     private void loadAllGovTypes() {
-        File govTypeFolder = new File(Civs.getInstance().getDataFolder(), "gov-types");
-        if (!govTypeFolder.exists()) {
-            Civs.logger.info("No gov-types folder found");
-            return;
-        }
-        try {
-            for (File govTypeFile : govTypeFolder.listFiles()) {
-                loadGovType(govTypeFile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadGovType(File govTypeFile) {
         File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);
         boolean govTypeFolderExists = govTypeFolder.exists();
         String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + GOV_TYPE_FOLDER_NAME;
