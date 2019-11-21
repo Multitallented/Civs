@@ -49,7 +49,6 @@ public class Civs extends JavaPlugin {
     public void onEnable() {
         civs = this;
         logger = Logger.getLogger("Minecraft");
-        UpdateUtil.checkUpdate();
         setupDependencies();
         setupEconomy();
         setupPermissions();
