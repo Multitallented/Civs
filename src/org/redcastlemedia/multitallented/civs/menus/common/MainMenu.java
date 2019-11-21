@@ -32,9 +32,11 @@ public class MainMenu extends CustomMenu {
         MenuManager.clearHistory(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
+            System.out.println("redirect to confirmation");
             return "confirmation?type=tutorial";
         }
         if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+            System.out.println("redirect to tutorial choose path");
             return "tutorial-choose-path";
         }
         return null;

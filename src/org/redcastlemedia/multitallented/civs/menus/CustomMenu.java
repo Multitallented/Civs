@@ -191,31 +191,7 @@ public abstract class CustomMenu {
             System.out.println(actionString);
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");
-            String[] menuSplit = menuString.split("\\?");
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            Map<String, String> params = new HashMap<>();
-            if (menuSplit.length > 1) {
-                String[] queryString = menuSplit[1].split("&");
-                for (String queryParams : queryString) {
-                    String[] splitParams = queryParams.split("=");
-                    if (itemStack.getItemMeta() == null) {
-                        params.put(splitParams[0], splitParams[1]);
-                    } else {
-                        if (splitParams[0].equals("preserveData")) {
-                            Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
-                            for (String key : data.keySet()) {
-                                String dataString = stringifyData(key, data.get(key));
-                                if (dataString != null) {
-                                    params.put(key, dataString);
-                                }
-                            }
-                        } else {
-                            params.put(splitParams[0], splitParams[1]);
-                        }
-                    }
-                }
-            }
-            MenuManager.getInstance().openMenu(player, menuSplit[0], params);
+            MenuManager.openMenuFromString(civilian, menuString);
         } else if (actionString.startsWith("command:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());

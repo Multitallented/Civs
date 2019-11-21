@@ -34,12 +34,6 @@ public class CivilianManager {
 
     private static CivilianManager civilianManager = null;
 
-    public CivilianManager() {
-        if (Civs.getInstance() != null) {
-            loadAllCivilians();
-        }
-    }
-
     public void reload() {
         civilians.clear();
         sortedCivilians.clear();
@@ -78,10 +72,11 @@ public class CivilianManager {
     public static CivilianManager getInstance() {
         if (civilianManager == null) {
             civilianManager = new CivilianManager();
-            return civilianManager;
-        } else {
-            return civilianManager;
+            if (Civs.getInstance() != null) {
+                civilianManager.loadAllCivilians();
+            }
         }
+        return civilianManager;
     }
 
     void loadCivilian(Player player) {

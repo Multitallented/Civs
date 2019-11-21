@@ -1,23 +1,16 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.inventory.Inventory;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.menus.common.TutorialChoosePathMenu;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TutorialTests {
     private Civilian civilian;
@@ -53,13 +46,5 @@ public class TutorialTests {
         tutorials.put("merchant", merchantPath);
 
         TutorialManager.getInstance().tutorials = tutorials;
-    }
-
-    @Test @Ignore // TODO load the menu config
-    public void choosePathShouldNeverMutate() {
-        TutorialChoosePathMenu tutorialChoosePathMenu = new TutorialChoosePathMenu();
-        tutorialChoosePathMenu.createData(civilian, new HashMap<>());
-        Inventory inventory = tutorialChoosePathMenu.createMenu(civilian);
-        assertEquals(Material.DIAMOND, inventory.getItem(0).getType());
     }
 }

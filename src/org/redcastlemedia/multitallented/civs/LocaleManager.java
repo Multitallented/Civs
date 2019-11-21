@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
+import com.google.common.base.Predicate;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+
+import javax.annotation.Nullable;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHEST)
 public class LocaleManager {
@@ -57,29 +63,26 @@ public class LocaleManager {
         final String TRANSLATION_FOLDER_NAME = "translations";
         File translationFolder = new File(Civs.getInstance().getDataFolder(), TRANSLATION_FOLDER_NAME);
         boolean translationFolderExists = translationFolder.exists();
-        String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + TRANSLATION_FOLDER_NAME;
-        InputStream in = getClass().getResourceAsStream(path);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        List<String> fileNames = new ArrayList<>();
-        String resource;
-        try {
-            while ((resource = reader.readLine()) != null) {
-                fileNames.add(resource);
+        String path = "resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + TRANSLATION_FOLDER_NAME;
+        Reflections reflections = new Reflections(new ResourcesScanner());
+        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
+            if (!fileName.startsWith(path)) {
+                continue;
             }
-        } catch (IOException io) {
-            io.printStackTrace();
-            Civs.logger.severe("Unable to load any translations!");
-            return;
-        }
-        for (String fileName : fileNames) {
-            FileConfiguration config;
-            if (translationFolderExists) {
-                config = FallbackConfigUtil.getConfig(
-                        new File(translationFolder, fileName), TRANSLATION_FOLDER_NAME + "/" + fileName);
-            } else {
-                config = FallbackConfigUtil.getConfig(null, TRANSLATION_FOLDER_NAME + "/" + fileName);
+            try {
+                FileConfiguration config;
+                String name = fileName.substring(fileName.lastIndexOf("/") + 1);
+                String filePath = TRANSLATION_FOLDER_NAME + "/" + name;
+                if (translationFolderExists) {
+                    config = FallbackConfigUtil.getConfig(
+                            new File(translationFolder, name), filePath);
+                } else {
+                    config = FallbackConfigUtil.getConfig(null, filePath);
+                }
+                loadLanguageFromConfig(config, name.replace(".yml", ""));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            loadLanguageFromConfig(config, fileName.replace(".yml", ""));
         }
         if (translationFolderExists) {
             for (File file : translationFolder.listFiles()) {

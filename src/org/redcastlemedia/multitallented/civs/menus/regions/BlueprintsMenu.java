@@ -89,7 +89,7 @@ public class BlueprintsMenu extends CustomMenu {
                 }
             }
         }
-        for (String name : itemsInView.keySet()) { // TODO fix the NPE here
+        for (String name : itemsInView.keySet()) {
             if (!stashItems.containsKey(name)) {
                 stashItems.put(name, itemsInView.get(name));
                 continue;

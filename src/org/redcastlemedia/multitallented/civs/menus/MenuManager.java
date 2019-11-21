@@ -183,10 +183,6 @@ public class MenuManager implements Listener {
         }
     }
 
-    private synchronized static void clearCycleItems(UUID uuid) {
-        cycleGuis.remove(uuid);
-    }
-
     private void loadConfig(CustomMenu customMenu) {
         File menuFile = null;
         String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
@@ -209,6 +205,10 @@ public class MenuManager implements Listener {
             items.add(menuIcon);
         }
         customMenu.loadConfig(items, size, name);
+    }
+
+    private synchronized static void clearCycleItems(UUID uuid) {
+        cycleGuis.remove(uuid);
     }
 
     public void openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {
@@ -236,7 +236,7 @@ public class MenuManager implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
         if (redirectMenu != null) {
-            openMenu(player, redirectMenu, params);
+            openMenuFromString(civilian, redirectMenu);
             return;
         }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
@@ -251,6 +251,21 @@ public class MenuManager implements Listener {
         MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
         history.get(player.getUniqueId()).add(menuHistoryState);
     }
+
+    public static void openMenuFromString(Civilian civilian, String menuString) {
+        String[] menuSplit = menuString.split("\\?");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        Map<String, String> params = new HashMap<>();
+        if (menuSplit.length > 1) {
+            String[] queryString = menuSplit[1].split("&");
+            for (String queryParams : queryString) {
+                String[] splitParams = queryParams.split("=");
+                params.put(splitParams[0], splitParams[1]);
+            }
+        }
+        MenuManager.getInstance().openMenu(player, menuSplit[0], params);
+    }
+
     public void refreshMenu(Civilian civilian) {
         if (!openMenus.containsKey(civilian.getUuid())) {
             return;

@@ -145,11 +145,6 @@ public class ConfigManager {
         loadDefaults();
     }
 
-    public ConfigManager(File configFile) {
-        loadFile(configFile);
-    }
-
-
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -487,10 +482,9 @@ public class ConfigManager {
 
     public static ConfigManager getInstance() {
         if (configManager == null) {
+            configManager = new ConfigManager();
             if (Civs.getInstance() != null) {
-                configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
-            } else {
-                configManager = new ConfigManager();
+                configManager.loadFile(new File(Civs.getInstance().getDataFolder(), "config.yml"));
             }
         }
         return configManager;
