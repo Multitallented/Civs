@@ -133,7 +133,6 @@ public class RecipeMenuTests {
 
     public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "councilroom");
         config.set("icon", "SIGN");
         config.set("type", "region");
         ArrayList<String> reqs = new ArrayList<>();
@@ -159,6 +158,6 @@ public class RecipeMenuTests {
         config.set("period", "daily");
         config.set("upkeep.0.power-output", 50);
         config.set("description.en", "The central structure for a town");
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "councilroom");
     }
 }

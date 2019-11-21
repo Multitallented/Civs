@@ -299,8 +299,7 @@ public class TestUtil {
 
     public static void createDefaultClass() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "default");
-        ItemManager.getInstance().loadClassType(config);
+        ItemManager.getInstance().loadClassType(config, "default");
     }
 
     public static Block createBlock(Material mat, Location location) {

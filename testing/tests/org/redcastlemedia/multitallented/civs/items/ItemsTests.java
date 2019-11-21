@@ -162,65 +162,59 @@ public class ItemsTests {
     private void loadSpellTypeBackflip() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Backflip");
         config.set("icon", "SLIME_BLOCK");
         config.set("velocity", 2);
         config.set("qty", 1);
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("shelter");
         config.set("pre-reqs", preReqs);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "backflip");
     }
     private void loadSpellTypeRage() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Rage");
         config.set("icon", "NETHERRACK");
         config.set("qty", 1);
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("backflip:level=5|shelter:level=5");
         config.set("pre-reqs", preReqs);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "rage");
     }
 
     private void loadRegionTypeShelter() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Shelter");
         config.set("icon", "OAK_WOOD");
         config.set("build-radius", 5);
         config.set("qty", 1);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "shelter");
     }
 
     private void loadRegionTypeCityHall() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "CityHall");
         config.set("icon", "GOLD_BLOCK");
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("townhall:built=1");
         preReqs.add("town:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "cityhall");
     }
     private void loadRegionTypeCityHall2() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "CityHall");
         config.set("icon", "GOLD_BLOCK");
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("shack:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "cityhall");
     }
 
     private void loadRegionTypeShack() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Shack");
         ArrayList<String> groups = new ArrayList<>();
         groups.add("baseshack");
         config.set("groups", groups);
@@ -229,18 +223,17 @@ public class ItemsTests {
         preReqs.add("member=hamlet");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "shack");
     }
 
     private void loadRegionTypeNPCShack() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "NPC_Shack");
         config.set("icon", "CHEST");
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("baseshack:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config);
+        itemManager.loadRegionType(config, "npc_shack");
     }
 }
