@@ -94,9 +94,10 @@ public class BlueprintsMenuTests {
         assertEquals(0, civilian.getStashItems().size());
     }
 
-    @Test @Ignore // TODO load the menu config
+    @Test
     public void menuShouldNotDupeItems() {
         RegionsTests.loadRegionTypeCobble();
+        this.blueprintsMenu.createMenu(civilian, new HashMap<>());
         ItemStackImpl itemStack = new ItemStackImpl(Material.CHEST, 1);
         itemStack.getItemMeta().setDisplayName("Civs Shelter");
         ArrayList<String> lore = new ArrayList<>();
@@ -110,10 +111,6 @@ public class BlueprintsMenuTests {
         inventory.setItem(1, itemStack2);
         this.blueprintsMenu.onCloseMenu(this.civilian, this.inventory);
         assertEquals(3, (int) this.civilian.getStashItems().get("shelter"));
-        MenuManager.setNewData(civilian.getUuid(), new HashMap<>());
-        MenuManager.putData(this.civilian.getUuid(), "page", 0);
-        Inventory inventory = this.blueprintsMenu.createMenu(civilian);
-        assertEquals(3,inventory.getItem(0).getAmount());
     }
 
     @Test
