@@ -1,16 +1,14 @@
 #enabled: true
 #type: region
-#shop-icon: ARROW
+#name: Arrow_Trap_Fast
 #icon: CHEST
-#price: 500
+#shop-icon: ARROW
 #groups:
 #- defense
 #- trap
 #- arrowtrapgroup
+#is-in-shop: false
 #level: 2
-#
-#pre-reqs:
-#- member=settlement:hamlet:village:town:city:metropolis:outpost:base
 #
 #build-reqs:
 #- g:fence*4
@@ -18,7 +16,7 @@
 #- DISPENSER*1
 #
 #build-radius: 1 #3x3x3
-#effect-radius: 17
+#effect-radius: 19
 #
 #towns:
 #- settlement
@@ -36,8 +34,8 @@
 #- block_build
 #- block_liquid
 #- block_fire
-#- arrow_turret:30.38.3
-#- evolve:arrowtrapfast.150
+#- arrow_turret:34.38.4
+#- evolve:arrow_trap_fastest.150
 #
 #upkeep:
 #  0:
@@ -47,4 +45,3 @@
 #    input:
 #    - ARROW*1
 #    exp: 1
-#

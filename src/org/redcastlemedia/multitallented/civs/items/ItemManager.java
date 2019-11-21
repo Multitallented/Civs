@@ -128,14 +128,15 @@ public class ItemManager {
                     }
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
+                    String itemName = currentFileName.replace(".yml", "").toLowerCase();
                     if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig);
+                        civItem = loadRegionType(typeConfig, itemName);
                     } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig);
+                        civItem = loadSpellType(typeConfig, itemName);
                     } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig);
+                        civItem = loadClassType(typeConfig, itemName);
                     } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, currentFileName.replace(".yml", ""));
+                        civItem = loadTownType(typeConfig, itemName);
                     }
                     if (civItem != null && parentList != null) {
                         parentList.add(civItem);
@@ -190,14 +191,15 @@ public class ItemManager {
                     typeConfig.load(file);
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
+                    String itemName = file.getName().replace(".yml", "").toLowerCase();
                     if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig);
+                        civItem = loadRegionType(typeConfig, itemName);
                     } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig);
+                        civItem = loadSpellType(typeConfig, itemName);
                     } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig);
+                        civItem = loadClassType(typeConfig, itemName);
                     } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, file.getName().replace(".yml", ""));
+                        civItem = loadTownType(typeConfig, itemName);
                     }
                     if (civItem != null && parentList != null) {
                         parentList.add(civItem);
@@ -212,10 +214,9 @@ public class ItemManager {
             return;
         }
     }
-    public CivItem loadClassType(FileConfiguration config) throws NullPointerException {
+    public CivItem loadClassType(FileConfiguration config, String name) throws NullPointerException {
         //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
-        String name = config.getString("name");
         ClassType civItem = new ClassType(
                 config.getStringList("reqs"),
                 name,
@@ -234,9 +235,8 @@ public class ItemManager {
         return civItem;
     }
 
-    public CivItem loadSpellType(FileConfiguration config) throws NullPointerException {
+    public CivItem loadSpellType(FileConfiguration config, String name) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
-        String name = config.getString("name");
         SpellType spellType = new SpellType(
                 config.getStringList("reqs"),
                 name,
@@ -309,8 +309,7 @@ public class ItemManager {
         return townType;
     }
 
-    public RegionType loadRegionType(FileConfiguration config) throws NullPointerException {
-        String name = config.getString("name");
+    public RegionType loadRegionType(FileConfiguration config, String name) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         List<List<CVItem>> reqs = new ArrayList<>();
         for (String req : config.getStringList("build-reqs")) {

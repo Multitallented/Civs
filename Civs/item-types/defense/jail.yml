@@ -1,40 +1,40 @@
-type: region
-icon: IRON_BLOCK
-shop-icon: IRON_BARS
-name: Jail
-max: 1
-price: 600
-groups:
-- defense
-level: 5
-
-pre-reqs:
-- member=town:city:metropolis
-
-towns:
-- town
-- city
-- metropolis
-
-build-radius: 5 #11x11x11
-build-reqs:
-- OBSIDIAN*33
-- IRON_BARS*6
-- IRON_DOOR*1
-- g:sign*1
-- g:bed*2
-- DARK_OAK_STAIRS*30,DARK_PRISMARINE_STAIRS*30,DARK_OAK_SLAB*30
-- DARK_OAK_PLANKS*110,BLACK_WOOL*110,BLACK_TERRACOTTA*110,PRISMARINE*110
-
-effects:
-- block_break
-- block_build
-- deny_mob_spawn
-- block_fire
-- door_use
-- jail
-
-period: 900 #15 minutes
-upkeep:
-  0:
-    power-output: 2
+#enabled: true
+#type: region
+#icon: IRON_BLOCK
+#shop-icon: IRON_BARS
+#max: 1
+#price: 600
+#groups:
+#- defense
+#level: 5
+#
+#pre-reqs:
+#- member=town:city:metropolis
+#
+#towns:
+#- town
+#- city
+#- metropolis
+#
+#build-radius: 5 #11x11x11
+#build-reqs:
+#- OBSIDIAN*33
+#- IRON_BARS*6
+#- IRON_DOOR*1
+#- g:sign*1
+#- g:bed*2
+#- DARK_OAK_STAIRS*30,DARK_PRISMARINE_STAIRS*30,DARK_OAK_SLAB*30
+#- DARK_OAK_PLANKS*110,BLACK_WOOL*110,BLACK_TERRACOTTA*110,PRISMARINE*110
+#
+#effects:
+#- block_break
+#- block_build
+#- deny_mob_spawn
+#- block_fire
+#- door_use
+#- jail
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 2
