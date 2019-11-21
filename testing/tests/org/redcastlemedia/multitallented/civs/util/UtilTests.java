@@ -38,7 +38,7 @@ public class UtilTests {
 
     @Before
     public void setup() {
-        new TownManager();
+        TownManager.getInstance().reload();
     }
 
     @Test
@@ -199,7 +199,7 @@ public class UtilTests {
     @Test
     public void textWrapSpaces() {
         String wrapThis = "0123456789 0123456789 0123456789 0123456789 01234567890 1234567890";
-        assertEquals("§r0123456789 0123456789", Util.textWrap(wrapThis).get(0));
+        assertEquals("§r0123456789 0123456789 0123456789", Util.textWrap(wrapThis).get(0));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class UtilTests {
     @Test
     public void textWrapWithColors() {
         String wrapThis = "§c0123456789 0123456789 0123456789 0123456789 01234567890 1234567890";
-        assertEquals("§c0123456789 0123456789", Util.textWrap(wrapThis).get(0));
+        assertEquals("§c0123456789 0123456789 0123456789", Util.textWrap(wrapThis).get(0));
         assertEquals("§c01", Util.textWrap(wrapThis).get(1).substring(0, 4));
     }
 }

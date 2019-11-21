@@ -26,18 +26,19 @@ public class AllianceManager implements Listener {
     public static AllianceManager getInstance() {
         if (instance == null) {
             instance = new AllianceManager();
+            if (Civs.getInstance() != null) {
+                instance.loadAllAlliances();
+                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
+            }
         }
         return instance;
-    }
-    public AllianceManager() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
-        }
     }
 
     public void reload() {
         alliances.clear();
-        loadAllAlliances();
+        if (Civs.getInstance() != null) {
+            loadAllAlliances();
+        }
     }
 
     public void loadAllAlliances() {

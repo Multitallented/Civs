@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 
@@ -27,6 +28,7 @@ public class ReloadCommand implements CivCommand {
             CivilianManager.getInstance().reload();
             TownManager.getInstance().reload();
             RegionManager.getInstance().reload();
+            GovernmentManager.getInstance().reload();
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
             new LocaleManager();

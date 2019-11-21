@@ -48,9 +48,8 @@ public class ProtectionsTests {
 
     @Before
     public void onBefore() {
-        new RegionManager();
-        new TownManager();
-        new RegionManager();
+        RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
         block = mock(Block.class);
         when(block.getLocation()).thenReturn(new Location(TestUtil.world, 0, 0,0));
     }

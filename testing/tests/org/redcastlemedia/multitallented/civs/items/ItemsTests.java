@@ -34,8 +34,8 @@ public class ItemsTests {
 
     @Before
     public void onBefore() {
-        new TownManager();
-        new RegionManager();
+        TownManager.getInstance().reload();
+        RegionManager.getInstance().reload();
     }
 
     @Test

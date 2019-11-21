@@ -39,6 +39,13 @@ public class GovernmentManager {
         return instance;
     }
 
+    public void reload() {
+        governments.clear();
+        if (Civs.getInstance() != null) {
+            loadAllGovTypes();
+        }
+    }
+
     private void loadAllGovTypes() {
         final String GOV_TYPE_FOLDER_NAME = "gov-types";
         File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);

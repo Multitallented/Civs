@@ -66,18 +66,21 @@ public class BlueprintsMenuTests {
 
     @Test
     public void stashRegionItemsShouldBeEmpty() {
+        blueprintsMenu.createMenu(this.civilian, new HashMap<>());
         blueprintsMenu.onCloseMenu(this.civilian, this.inventory);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        assertEquals(1, civilian.getStashItems().size());
+        assertEquals(0, civilian.getStashItems().size());
     }
 
     @Test
     public void stashItemsShouldSaveShelter() {
+        RegionsTests.loadRegionTypeShelter();
         ItemStack itemStack = TestUtil.createUniqueItemStack(Material.CHEST, "Civs Shelter");
+        blueprintsMenu.createMenu(this.civilian, new HashMap<>());
         inventory.setItem(0,itemStack);
         blueprintsMenu.onCloseMenu(this.civilian, this.inventory);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        assertEquals(2, civilian.getStashItems().size());
+        assertEquals(1, civilian.getStashItems().size());
     }
 
     @Test
