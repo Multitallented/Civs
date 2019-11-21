@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class RecipeMenuTests {
-    private RecipeMenu recipeMenu;
+    private CustomMenu recipeMenu;
 
     private ArrayList<CVItem> subItems;
     private HashMap<Integer, List<CVItem>> cycleItems;
@@ -45,7 +45,7 @@ public class RecipeMenuTests {
     @Before
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
-        this.recipeMenu = new RecipeMenu();
+        this.recipeMenu = MenuManager.menus.get("recipe");
         this.subItems = new ArrayList<>();
         this.cycleItems = new HashMap<>();
         this.proxyInv = new HashMap<>();
@@ -99,7 +99,7 @@ public class RecipeMenuTests {
         recipeMenu.itemsPerPage.put("items", 48);
         Inventory inventory = recipeMenu.createMenu(civilian, params);
         assertEquals(Material.CHEST, regionType.getReqs().get(0).get(0).getMat());
-        assertEquals(Material.SIGN, regionType.getReqs().get(8).get(0).getMat());
+        assertEquals(Material.OAK_SIGN, regionType.getReqs().get(8).get(0).getMat());
         assertEquals(Material.QUARTZ_BLOCK, regionType.getReqs().get(5).get(0).getMat());
         assertEquals(Material.SPRUCE_PLANKS, regionType.getReqs().get(5).get(2).getMat());
         assertEquals(Material.BOOKSHELF, regionType.getReqs().get(7).get(0).getMat());
@@ -109,10 +109,10 @@ public class RecipeMenuTests {
 //                System.out.println(inventory.getItem(i).getType().name());
 //            }
 //        }
-        assertEquals(Material.SIGN, inventory.getItem(0).getType());
+        assertEquals(Material.OAK_SIGN, inventory.getItem(0).getType());
         assertEquals(Material.CHEST, inventory.getItem(9).getType());
         assertEquals(Material.BOOKSHELF, inventory.getItem(22).getType());
-        assertEquals(Material.SIGN, inventory.getItem(23).getType());
+        assertEquals(Material.OAK_SIGN, inventory.getItem(23).getType());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class RecipeMenuTests {
 
     public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("icon", "SIGN");
+        config.set("icon", "OAK_SIGN");
         config.set("type", "region");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*4");

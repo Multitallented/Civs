@@ -28,8 +28,8 @@ public class AllianceMenuTests {
 
     @Before
     public void setup() {
-        new TownManager();
-        new AllianceManager();
+        TownManager.getInstance().reload();
+        AllianceManager.getInstance().reload();
         TownTests.loadTownTypeHamlet();
         town1 = TownTests.loadTown("town1", "hamlet", TestUtil.block.getLocation());
         town2 = TownTests.loadTown("town2", "hamlet", TestUtil.block14.getLocation());

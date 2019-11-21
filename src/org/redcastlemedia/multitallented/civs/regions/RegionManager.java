@@ -61,14 +61,12 @@ public class RegionManager {
     private HashSet<Region> checkedRegions = new HashSet<>();
     private ArrayList<Region> needsSaving = new ArrayList<>();
 
-    public RegionManager() {
+    public void reload() {
+        regions.clear();
+        regionLocations.clear();
         if (Civs.getInstance() != null) {
             loadAllRegions();
         }
-    }
-
-    public void reload() {
-        loadAllRegions();
         checkedRegions.clear();
     }
 
@@ -693,6 +691,8 @@ public class RegionManager {
                     HashMap<String, Object> data = new HashMap<>();
                     data.put("items", missingList);
                     data.put("page", 0);
+                    data.put("maxPage", 1);
+                    data.put("regionType", regionType.getProcessedName());
                     MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return false;
@@ -835,6 +835,9 @@ public class RegionManager {
     public static synchronized RegionManager getInstance() {
         if (regionManager == null) {
             regionManager = new RegionManager();
+            if (Civs.getInstance() != null) {
+                regionManager.loadAllRegions();
+            }
         }
         return regionManager;
     }

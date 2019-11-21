@@ -39,17 +39,14 @@ public class TownManager {
     private HashMap<UUID, Town> invites = new HashMap<>();
     private ArrayList<Town> needsSaving = new ArrayList<>();
 
-    public TownManager() {
-        if (Civs.getInstance() != null) {
-            loadAllTowns();
-        }
-    }
 
     public void reload() {
         towns.clear();
         sortedTowns.clear();
         invites.clear();
-        loadAllTowns();
+        if (Civs.getInstance() != null) {
+            loadAllTowns();
+        }
     }
 
     public void loadAllTowns() {
@@ -573,6 +570,9 @@ public class TownManager {
     public static TownManager getInstance() {
         if (townManager == null) {
             townManager = new TownManager();
+            if (Civs.getInstance() != null) {
+                townManager.loadAllTowns();
+            }
         }
         return townManager;
     }

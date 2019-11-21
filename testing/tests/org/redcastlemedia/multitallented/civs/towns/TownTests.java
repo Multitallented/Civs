@@ -29,7 +29,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TownTests {
-    private TownManager townManager;
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -40,9 +39,9 @@ public class TownTests {
 
     @Before
     public void onBefore() {
-        townManager = new TownManager();
-        new RegionManager();
-        GovernmentManager.getInstance();
+        TownManager.getInstance().reload();
+        RegionManager.getInstance().reload();
+        GovernmentManager.getInstance().reload();
         ItemManager.getInstance().reload();
     }
 
@@ -67,20 +66,20 @@ public class TownTests {
         loadTown("Silverstone", "hamlet", new Location(Bukkit.getWorld("world"), 100, 0, 0));
         loadTown("Cupcake", "hamlet", new Location(Bukkit.getWorld("world"), -100, 0, 0));
 
-        assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
+        assertEquals(town, TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void shouldNotFindTown() {
         loadTownTypeHamlet();
         loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
-        assertNull(townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
+        assertNull(TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
     }
     @Test
     public void shouldFindTown() {
         loadTownTypeHamlet();
         Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
-        assertEquals(town, townManager.getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
+        assertEquals(town, TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
@@ -88,8 +87,8 @@ public class TownTests {
         loadTownTypeHamlet();
         Town town = loadTown("Aeria", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         UUID uuid = new UUID(1,5);
-        townManager.addInvite(uuid, town);
-        townManager.acceptInvite(uuid);
+        TownManager.getInstance().addInvite(uuid, town);
+        TownManager.getInstance().acceptInvite(uuid);
         assertEquals("member", town.getPeople().get(uuid));
     }
 
@@ -98,21 +97,21 @@ public class TownTests {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType, 0).size());
+        assertEquals(1, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType, 0).size());
     }
     @Test
     public void townShouldNotIntersect() {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertEquals(0, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 0).size());
+        assertEquals(0, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 0).size());
     }
     @Test
     public void townShouldNotIntersectWithModifer() {
         loadTownTypeHamlet();
         loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
         TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
-        assertEquals(1, townManager.checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 27).size());
+        assertEquals(1, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 27).size());
     }
 
     @Test
@@ -143,10 +142,9 @@ public class TownTests {
         Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
 
         RegionManager regionManager = RegionManager.getInstance();
-        TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         loadTown("Sanmak-kol", "tribe", townLocation);
-        if (townManager.getTowns().isEmpty()) {
+        if (TownManager.getInstance().getTowns().isEmpty()) {
             fail("No town found");
         }
         ProtectionHandler protectionHandler = new ProtectionHandler();
@@ -159,7 +157,7 @@ public class TownTests {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
         assertNull(regionManager.getRegionAt(regionLocation));
-        assertTrue(townManager.getTowns().isEmpty());
+        assertTrue(TownManager.getInstance().getTowns().isEmpty());
     }
 
     @Test
@@ -177,10 +175,9 @@ public class TownTests {
         Location townLocation = new Location(Bukkit.getWorld("world2"), 1,0,0);
 
         RegionManager regionManager = RegionManager.getInstance();
-        TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         loadTown("Sanmak-kol", "tribe", townLocation);
-        if (townManager.getTowns().isEmpty()) {
+        if (TownManager.getInstance().getTowns().isEmpty()) {
             fail("No town found");
         }
         ProtectionHandler protectionHandler = new ProtectionHandler();
@@ -193,7 +190,7 @@ public class TownTests {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
         assertNull(regionManager.getRegionAt(regionLocation));
-        assertTrue(townManager.getTowns().isEmpty());
+        assertTrue(TownManager.getInstance().getTowns().isEmpty());
     }
 
     @Test
@@ -214,10 +211,9 @@ public class TownTests {
 
         RegionsTests.createNewRegion("purifier", regionLocation2);
         RegionManager regionManager = RegionManager.getInstance();
-        TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         loadTown("Sanmak-kol", "tribe", townLocation);
-        if (townManager.getTowns().isEmpty()) {
+        if (TownManager.getInstance().getTowns().isEmpty()) {
             fail("No town found");
         }
         ProtectionHandler protectionHandler = new ProtectionHandler();
@@ -230,7 +226,7 @@ public class TownTests {
             civilianListener.onCivilianBlockBreak(blockBreakEvent);
         }
         assertNull(regionManager.getRegionAt(regionLocation));
-        assertTrue(townManager.getTowns().isEmpty());
+        assertTrue(TownManager.getInstance().getTowns().isEmpty());
     }
 
     @Test
@@ -249,11 +245,10 @@ public class TownTests {
         Location townLocation = new Location(Bukkit.getWorld("world"), 1,0,0);
 
         RegionManager regionManager = RegionManager.getInstance();
-        TownManager townManager = TownManager.getInstance();
         regionManager.addRegion(region);
         Town town = loadTown("Sanmak-kol", "tribe", townLocation);
         regionManager.removeRegion(region, false, true);
-        assertEquals(town, townManager.getTownAt(townLocation));
+        assertEquals(town, TownManager.getInstance().getTownAt(townLocation));
     }
 
     @Test

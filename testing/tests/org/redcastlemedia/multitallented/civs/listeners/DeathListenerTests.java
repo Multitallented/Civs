@@ -40,7 +40,7 @@ public class DeathListenerTests {
 
     @Before
     public void onBefore() {
-        new RegionManager();
+        RegionManager.getInstance().reload();
         CivilianManager.getInstance();
         this.player1 = mock(Player.class);
         when(player1.getUniqueId()).thenReturn(new UUID(1, 3));

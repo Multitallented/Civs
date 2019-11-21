@@ -46,7 +46,9 @@ public class ItemManager {
 
     public void reload() {
         itemTypes.clear();
-        loadAllItemTypes();
+        if (Civs.getInstance() != null) {
+            loadAllItemTypes();
+        }
     }
 
     private void loadAllItemTypes() {

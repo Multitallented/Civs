@@ -41,8 +41,8 @@ public class CommandTests {
 
     @Before
     public void setup() {
-        new RegionManager();
-        new TownManager();
+        RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
     }
 
     @Test(expected = SuccessException.class)

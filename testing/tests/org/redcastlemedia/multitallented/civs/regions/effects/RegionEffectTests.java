@@ -38,9 +38,7 @@ import static org.mockito.Mockito.when;
 public class RegionEffectTests {
 
     private Town town;
-    private RegionManager regionManager;
     private Location townLocation;
-    private TownManager townManager;
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -51,13 +49,13 @@ public class RegionEffectTests {
 
     @Before
     public void setup() {
-        this.regionManager = new RegionManager();
-        this.townManager = new TownManager();
+        RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
         TownTests.loadTownTypeHamlet();
         this.townLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         this.town = new Town("Hamlet1", "hamlet", townLocation, new HashMap<>(),
                 300, 300, 2, 0, -1);
-        townManager.addTown(town);
+        TownManager.getInstance().addTown(town);
     }
 
     @Test

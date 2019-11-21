@@ -32,7 +32,8 @@ public class TutorialTests {
 
     @Before
     public void onBefore() {
-        new RegionManager();
+        RegionManager.getInstance().reload();
+        TutorialManager.getInstance().reload();
         civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.setTutorialPath("default");
         tutorials = new HashMap<>();
