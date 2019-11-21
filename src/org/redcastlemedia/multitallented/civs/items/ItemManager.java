@@ -34,15 +34,12 @@ public class ItemManager {
     private static ItemManager itemManager;
     private HashMap<String, CivItem> itemTypes = new HashMap<>();
 
-    public ItemManager() {
-        if (Civs.getInstance() != null) {
-            loadAllItemTypes();
-        }
-    }
-
     public static ItemManager getInstance() {
         if (itemManager == null) {
             itemManager = new ItemManager();
+            if (Civs.getInstance() != null) {
+                itemManager.loadAllItemTypes();
+            }
         }
         return itemManager;
     }

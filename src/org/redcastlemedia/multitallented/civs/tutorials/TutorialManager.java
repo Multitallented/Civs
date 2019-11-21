@@ -33,13 +33,12 @@ public class TutorialManager {
 
     HashMap<String, TutorialPath> tutorials = new HashMap<>();
 
-    public TutorialManager() {
-        loadTutorialFile();
-    }
-
     public static TutorialManager getInstance() {
         if (tutorialManager == null) {
             tutorialManager = new TutorialManager();
+            if (Civs.getInstance() != null) {
+                tutorialManager.loadTutorialFile();
+            }
         }
         return tutorialManager;
     }

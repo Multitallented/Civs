@@ -32,14 +32,11 @@ public class GovernmentManager {
     public static GovernmentManager getInstance() {
         if (instance == null) {
             instance = new GovernmentManager();
+            if (Civs.getInstance() != null) {
+                instance.loadAllGovTypes();
+            }
         }
         return instance;
-    }
-
-    public GovernmentManager() {
-        if (Civs.getInstance() != null) {
-            loadAllGovTypes();
-        }
     }
 
     private void loadAllGovTypes() {

@@ -30,7 +30,7 @@ public class MenuManager implements Listener {
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
-    private static HashMap<String, CustomMenu> menus = new HashMap<>();
+    protected static HashMap<String, CustomMenu> menus = new HashMap<>();
 
     @Getter
     private MenuIcon backButton;
@@ -39,15 +39,13 @@ public class MenuManager implements Listener {
     @Getter
     private MenuIcon nextButton;
 
-    public MenuManager() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
-            loadMenuConfigs();
-        }
-    }
     public static MenuManager getInstance() {
         if (instance == null) {
             instance = new MenuManager();
+            instance.loadMenuConfigs();
+            if (Civs.getInstance() != null) {
+                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
+            }
         }
         return instance;
     }
@@ -144,11 +142,14 @@ public class MenuManager implements Listener {
     }
 
     public void loadMenuConfigs() {
-        File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-        if (menuFolder.exists()) {
-            menuFolder.mkdir();
+        File menuFile = null;
+        if (Civs.getInstance() != null) {
+            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
+            if (menuFolder.exists()) {
+                menuFolder.mkdir();
+            }
+            menuFile = new File(menuFolder, "default.yml");
         }
-        File menuFile = new File(menuFolder, "default.yml");
         try {
             FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/default.yml");
             backButton = new MenuIcon("back",
@@ -169,9 +170,7 @@ public class MenuManager implements Listener {
             return;
         }
 
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs.menus"));
-        Reflections reflections = new Reflections(configurationBuilder);
+        Reflections reflections = new Reflections("org.redcastlemedia.multitallented.civs.menus");
         Set<Class<? extends CustomMenu>> menuClasses = reflections.getSubTypesOf(CustomMenu.class);
         for (Class<? extends CustomMenu> menuClass : menuClasses) {
             try {
@@ -189,9 +188,12 @@ public class MenuManager implements Listener {
     }
 
     private void loadConfig(CustomMenu customMenu) {
-        File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
+        File menuFile = null;
         String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
-        File menuFile = new File(menuFolder, menuName + ".yml");
+        if (Civs.getInstance() != null) {
+            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
+            menuFile = new File(menuFolder, menuName + ".yml");
+        }
 
         FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/" + menuName + ".yml");
         int newSize = config.getInt("size", 36);

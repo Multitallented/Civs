@@ -26,6 +26,7 @@ import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
 import java.io.File;
 import java.util.*;
@@ -115,6 +116,7 @@ public class TestUtil {
         configManager.itemGroups.put("vertical", "LADDER,QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS");
         configManager.useStarterBook = false;
 
+        MenuManager.getInstance();
         LocaleManager localeManager = LocaleManager.getInstance();
         HashMap<String, String> mockLanguageMap = new HashMap<>();
         mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");

@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BlueprintsMenuTests {
-    private BlueprintsMenu blueprintsMenu;
+    private CustomMenu blueprintsMenu;
     private InventoryView inventoryView;
     private Civilian civilian;
     private InventoryImpl inventory;
@@ -52,7 +52,7 @@ public class BlueprintsMenuTests {
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         loadRegionTypeShelter();
-        blueprintsMenu = new BlueprintsMenu();
+        blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
         this.inventory.setTitle("CivsRegionStash");
         this.inventoryView = mock(InventoryView.class);
