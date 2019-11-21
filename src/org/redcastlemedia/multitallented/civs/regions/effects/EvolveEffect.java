@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -18,9 +19,17 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import java.util.HashMap;
 import java.util.UUID;
 
+@CivsSingleton
 public class EvolveEffect implements Listener {
 
     public static String KEY = "evolve";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            EvolveEffect evolveEffect = new EvolveEffect();
+            Bukkit.getPluginManager().registerEvents(evolveEffect, Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onRegionUpkeep(RegionUpkeepEvent event) {

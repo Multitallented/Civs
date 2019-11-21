@@ -1,14 +1,24 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 
 import java.util.HashMap;
 
+@CivsSingleton
 public class TemporaryEffect implements Listener {
     public static String KEY = "temporary";
     private HashMap<String, Long> created = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onRegionTick(RegionTickEvent event) {

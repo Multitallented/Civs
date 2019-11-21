@@ -1,0 +1,44 @@
+type: region
+icon: CHEST
+shop-icon: FIREWORK_ROCKET
+name: fireworks_factory
+price: 200
+groups:
+  - factory
+level: 4
+
+pre-reqs:
+  - member=village:town:city:metropolis
+
+towns:
+  - village
+  - town
+  - city
+  - metropolis
+
+build-reqs:
+  - g:window*6
+  - g:door*1
+  - g:roof*16
+  - BONE_BLOCK*3
+  - FURNACE*2
+  - g:primary*40
+  - g:secondary*8
+
+build-radius: 3 # 7x7x7
+
+effects:
+  - block_break
+  - block_build
+  - block_liquid
+  - block_fire
+
+period: 15 # 15 seconds
+upkeep:
+  0:
+    reagents:
+      - GUNPOWDER*32
+      - BONE_MEAL*32
+    output:
+      - FIREWORK_STAR*1
+

@@ -34,10 +34,6 @@ public class CivilianTests {
         }
     }
 
-    public static void skipLoadingFiles() {
-        new CivilianManager(false);
-    }
-
     @Test
     public void localeTestShouldReturnProperLanguageString() {
         LocaleManager localeManager = LocaleManager.getInstance();

@@ -122,6 +122,7 @@
                 <directory>${basedir}/src</directory>
                 <includes>
                     <include>plugin.yml</include>
+                    <include>resources/**</include>
                 </includes>
             </resource>
         </resources>

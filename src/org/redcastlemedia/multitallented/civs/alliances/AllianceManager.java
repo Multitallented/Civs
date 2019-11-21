@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -18,17 +19,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class AllianceManager implements Listener {
     private static AllianceManager instance = null;
     private final HashMap<String, Alliance> alliances = new HashMap<>();
     public static AllianceManager getInstance() {
         if (instance == null) {
-            new AllianceManager();
+            instance = new AllianceManager();
         }
         return instance;
     }
     public AllianceManager() {
-        instance = this;
         if (Civs.getInstance() != null) {
             Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
         }

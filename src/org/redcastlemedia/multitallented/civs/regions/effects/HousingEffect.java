@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -7,9 +8,14 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+@CivsSingleton
 public class HousingEffect implements RegionCreatedListener, DestroyRegionListener {
     public static String KEY = "housing";
     public static String HOUSING_EXCEPT = "exempt-housing";
+
+    public static void getInstance() {
+        new HousingEffect();
+    }
 
     public HousingEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);

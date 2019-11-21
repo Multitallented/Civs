@@ -53,7 +53,6 @@ public class PortMenuTests {
 
     private void loadRegionTypePPort() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "pport");
         config.set("icon", "IRON_BLOCK");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
@@ -65,7 +64,7 @@ public class PortMenuTests {
         config.set("effects", effects);
         config.set("upkeep.0.power-input", 2);
         config.set("period", "daily");
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "pport");
     }
     public static Region loadRegion(String type) {
         HashMap<UUID, String> peopleMap = new HashMap<>();

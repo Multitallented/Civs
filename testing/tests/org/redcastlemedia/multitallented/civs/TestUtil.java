@@ -26,6 +26,7 @@ import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
 import java.io.File;
 import java.util.*;
@@ -66,7 +67,7 @@ public class TestUtil {
     public static void serverSetup() {
         Civs.logger = mock(PluginLogger.class);
 
-        CivilianTests.skipLoadingFiles();
+        CivilianManager.getInstance();
         Server server = mock(Server.class);
         Inventory inventory = new InventoryImpl();
         Logger logger = mock(Logger.class);
@@ -95,9 +96,7 @@ public class TestUtil {
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
 
         createDefaultClass();
-        File file = mock(File.class);
-        when(file.exists()).thenReturn(false);
-        ConfigManager configManager = new ConfigManager(file);
+        ConfigManager configManager = ConfigManager.getInstance();
         configManager.blackListWorlds = new ArrayList<>();
         configManager.blackListWorlds.add("Hub");
         configManager.itemGroups = new HashMap<>();
@@ -117,7 +116,8 @@ public class TestUtil {
         configManager.itemGroups.put("vertical", "LADDER,QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS");
         configManager.useStarterBook = false;
 
-        LocaleManager localeManager = new LocaleManager();
+        MenuManager.getInstance();
+        LocaleManager localeManager = LocaleManager.getInstance();
         HashMap<String, String> mockLanguageMap = new HashMap<>();
         mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
         localeManager.languageMap.put("es", mockLanguageMap);
@@ -305,8 +305,7 @@ public class TestUtil {
 
     public static void createDefaultClass() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "default");
-        ItemManager.getInstance().loadClassType(config);
+        ItemManager.getInstance().loadClassType(config, "default");
     }
 
     public static Block createBlock(Material mat, Location location) {

@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
@@ -39,7 +40,15 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@CivsSingleton()
 public class DeathListener implements Listener {
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            DeathListener deathListener = new DeathListener();
+            Bukkit.getPluginManager().registerEvents(deathListener, Civs.getInstance());
+        }
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {

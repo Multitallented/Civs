@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BlueprintsMenuTests {
-    private BlueprintsMenu blueprintsMenu;
+    private CustomMenu blueprintsMenu;
     private InventoryView inventoryView;
     private Civilian civilian;
     private InventoryImpl inventory;
@@ -52,7 +52,7 @@ public class BlueprintsMenuTests {
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         loadRegionTypeShelter();
-        blueprintsMenu = new BlueprintsMenu();
+        blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
         InventoryView inventoryView = mock(InventoryView.class);
         when(inventoryView.getTopInventory()).thenReturn(inventory);
@@ -137,12 +137,11 @@ public class BlueprintsMenuTests {
 
     private void loadRegionTypeShelter() {
         FileConfiguration fileConfiguration = new YamlConfiguration();
-        fileConfiguration.set("name", "shelter");
         fileConfiguration.set("icon", "CHEST");
         fileConfiguration.set("min", 1);
         fileConfiguration.set("max", 1);
         fileConfiguration.set("type", "region");
         fileConfiguration.set("is-in-shop", false);
-        ItemManager.getInstance().loadRegionType(fileConfiguration);
+        ItemManager.getInstance().loadRegionType(fileConfiguration, "shelter");
     }
 }

@@ -1,48 +1,48 @@
-type: region
-icon: OBSIDIAN
-shop-icon: BIRCH_SIGN
-name: Capitol
-price: 16000
-max: 1
-groups:
-- utility
-- town_center
-level: 6
-
-pre-reqs:
-- member=city:metropolis
-
-towns:
-- city
-- metropolis
-
-build-reqs:
-- CHEST*16
-- g:door*3
-- g:window*16
-- g:stairs*8
-- g:roof*80
-- BOOKSHELF*14
-- g:sign*10
-- g:secondary*70
-- g:primary*200
-build-radius: 5 # 11x27x11
-build-radius-y: 13
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- door_use
-- chest_use
-- port:town
-- cant_override
-- housing:2
-
-rebuild: city_hall
-rebuild-required: true
-period: 900 #15 minutes
-upkeep:
-  0:
-    power-output: 8
-
+#enabled: true
+#type: region
+#icon: OBSIDIAN
+#shop-icon: SIGN
+#price: 16000
+#max: 1
+#groups:
+#- utility
+#- town_center
+#level: 6
+#
+#pre-reqs:
+#- member=city:metropolis
+#
+#towns:
+#- city
+#- metropolis
+#
+#build-reqs:
+#- CHEST*16
+#- g:door*3
+#- g:window*16
+#- g:stairs*8
+#- g:roof*80
+#- BOOKSHELF*14
+#- g:sign*10
+#- g:secondary*70
+#- g:primary*200
+#build-radius: 5 # 11x27x11
+#build-radius-y: 13
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- door_use
+#- chest_use
+#- port
+#- cant_override
+#- housing:2
+#
+#rebuild: city_hall
+#rebuild-required: true
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 8
+#

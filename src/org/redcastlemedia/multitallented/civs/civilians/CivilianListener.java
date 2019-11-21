@@ -45,6 +45,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -64,17 +65,21 @@ import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsSingleton
 public class CivilianListener implements Listener {
 
     private static CivilianListener civilianListener;
 
     public CivilianListener() {
-        civilianListener = this;
+
     }
 
     public static CivilianListener getInstance() {
         if (civilianListener == null) {
-            new CivilianListener();
+            civilianListener = new CivilianListener();
+            if (Civs.getInstance() != null) {
+                Bukkit.getPluginManager().registerEvents(civilianListener, Civs.getInstance());
+            }
         }
         return civilianListener;
     }

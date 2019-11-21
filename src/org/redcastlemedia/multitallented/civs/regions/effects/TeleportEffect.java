@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
@@ -16,10 +18,15 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsSingleton
 public class TeleportEffect implements Listener, RegionCreatedListener {
     public static String KEY = "teleport";
 
-
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new TeleportEffect(), Civs.getInstance());
+        }
+    }
 
     public TeleportEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);

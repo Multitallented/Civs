@@ -14,6 +14,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -29,9 +30,16 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
+@CivsSingleton
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
     public static String KEY = "drain_power";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new SiegeEffect(), Civs.getInstance());
+        }
+    }
 
     public SiegeEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);

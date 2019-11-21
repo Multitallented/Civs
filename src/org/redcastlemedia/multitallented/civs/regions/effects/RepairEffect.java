@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.Repairable;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -20,7 +22,14 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import java.util.HashSet;
 import java.util.Set;
 
+@CivsSingleton
 public class RepairEffect implements Listener {
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new RepairEffect(), Civs.getInstance());
+        }
+    }
 
     private final String KEY = "repair";
     private HashSet<Material> getRequiredReagent(Material material) {

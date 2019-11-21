@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -15,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -25,22 +27,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class TutorialManager {
     private static TutorialManager tutorialManager = null;
 
     HashMap<String, TutorialPath> tutorials = new HashMap<>();
 
-    public TutorialManager() {
-        tutorialManager = this;
-
-        loadTutorialFile();
-    }
-
-    // TODO create end type for tutorial
-
     public static TutorialManager getInstance() {
         if (tutorialManager == null) {
-            new TutorialManager();
+            tutorialManager = new TutorialManager();
+            if (Civs.getInstance() != null) {
+                tutorialManager.loadTutorialFile();
+            }
         }
         return tutorialManager;
     }
@@ -56,11 +54,10 @@ public class TutorialManager {
         }
 
         File dataFolder = Civs.getInstance().getDataFolder();
-        File tutorialFile = new File(dataFolder, "tutorial.yml");
-        FileConfiguration tutorialConfig = new YamlConfiguration();
+        File tutorialFile = new File(dataFolder, "Civs/tutorial.yml");
+        FileConfiguration tutorialConfig = FallbackConfigUtil.getConfig(tutorialFile, "tutorial.yml");
 
         try {
-            tutorialConfig.load(tutorialFile);
             for (String key : tutorialConfig.getKeys(false)) {
                 TutorialPath path = new TutorialPath();
                 String iconString = tutorialConfig.getString(key + ".icon", "CHEST");

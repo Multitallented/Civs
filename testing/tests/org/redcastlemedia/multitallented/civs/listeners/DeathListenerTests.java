@@ -41,7 +41,7 @@ public class DeathListenerTests {
     @Before
     public void onBefore() {
         new RegionManager();
-        CivilianTests.skipLoadingFiles();
+        CivilianManager.getInstance();
         this.player1 = mock(Player.class);
         when(player1.getUniqueId()).thenReturn(new UUID(1, 3));
         Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);

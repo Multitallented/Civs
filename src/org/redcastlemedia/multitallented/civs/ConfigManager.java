@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 import lombok.Getter;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.CRITICAL)
 public class ConfigManager {
 
 
@@ -136,14 +138,14 @@ public class ConfigManager {
     boolean useAsyncUpkeeps;
     @Getter
     boolean disableRegionsInUnloadedChunks;
+    @Getter
+    String defaultConfigSet;
 
     public ConfigManager() {
         loadDefaults();
-        configManager = this;
     }
 
     public ConfigManager(File configFile) {
-        configManager = this;
         loadFile(configFile);
     }
 
@@ -254,14 +256,8 @@ public class ConfigManager {
     }
 
     private void loadFile(File configFile) {
-        FileConfiguration config = new YamlConfiguration();
+        FileConfiguration config = FallbackConfigUtil.getConfig(configFile, "config.yml");
         try {
-            if (!configFile.exists()) {
-                Civs.logger.severe("No config.yml found");
-                loadDefaults();
-                return;
-            }
-            config.load(configFile);
 
             blackListWorlds = config.getStringList("black-list-worlds");
             defaultLanguage = config.getString("default-language", "en");
@@ -383,6 +379,7 @@ public class ConfigManager {
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
             useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
+            defaultConfigSet = config.getString("default-config-set", "hybrid");
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -408,6 +405,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
         useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
@@ -492,11 +490,9 @@ public class ConfigManager {
             if (Civs.getInstance() != null) {
                 configManager = new ConfigManager(new File(Civs.getInstance().getDataFolder(), "config.yml"));
             } else {
-                new ConfigManager();
+                configManager = new ConfigManager();
             }
-            return configManager;
-        } else {
-            return configManager;
         }
+        return configManager;
     }
 }

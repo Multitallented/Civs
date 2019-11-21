@@ -1,19 +1,28 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+@CivsSingleton
 public class SpawnEffect implements Listener {
 
     public final String KEY = "spawn";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new SpawnEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onUpkeep(RegionUpkeepEvent event) {

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
     private HashMap<String, CVItem> blocks = new HashMap<>();
@@ -19,7 +20,6 @@ public class BlockLogger {
 //    private int intervalId = -1;
 
     public BlockLogger() {
-        blockLogger = this;
         loadBlocks();
     }
 

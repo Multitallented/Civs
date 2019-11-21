@@ -10,15 +10,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 
+@CivsSingleton
 public class PotionAreaEffect implements Listener {
     public static String KEY = "potion";
     private static HashMap<String, Long> cooldowns = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onPlayerInRegion(PlayerInRegionEvent event) {

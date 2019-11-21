@@ -12,6 +12,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -34,11 +35,19 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
+@CivsSingleton
 public class RaidPortEffect implements Listener, CreateRegionListener {
     public static String KEY = "raid_port";
     public static String CHARGING_KEY = "charging_raid_port";
     private HashMap<Region, Location> raidLocations = new HashMap<>();
     private HashMap<Town, Long> cooldowns = new HashMap<>();
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            RaidPortEffect raidPortEffect = new RaidPortEffect();
+            Bukkit.getPluginManager().registerEvents(raidPortEffect, Civs.getInstance());
+        }
+    }
 
     public RaidPortEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);

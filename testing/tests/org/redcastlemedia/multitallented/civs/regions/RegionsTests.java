@@ -60,7 +60,7 @@ public class RegionsTests {
     public void onBefore() {
         regionManager = new RegionManager();
         townManager = new TownManager();
-        new ItemManager();
+        ItemManager.getInstance().reload();
     }
 
     @Test
@@ -898,7 +898,6 @@ public class RegionsTests {
 
     public static void loadRegionTypeDaily() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "daily");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("build-reqs", reqs);
@@ -908,12 +907,11 @@ public class RegionsTests {
         config.set("effects", effects);
         config.set("upkeep.0.power-output", 2);
         config.set("period", "daily");
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "daily");
     }
 
     public static void loadRegionTypePower(boolean consume) {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "power");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         reqs.add("g:glass*1");
@@ -929,12 +927,11 @@ public class RegionsTests {
         } else {
             config.set("upkeep.0.power-output", 1);
         }
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "power");
     }
 
     public static void loadRegionTypeCobble4() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobble");
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
@@ -953,12 +950,11 @@ public class RegionsTests {
         output.add("GOLDEN_PICKAXE*1");
         config.set("upkeep.0.input", input);
         config.set("upkeep.0.output", output);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobble");
     }
 
     public static void loadRegionTypeCobble3() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobble");
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
@@ -978,12 +974,11 @@ public class RegionsTests {
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
         config.set("upkeep.0.output", outputs);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobble");
     }
 
     public static void loadRegionTypeCobble2() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*3");
         config.set("build-reqs", reqs);
@@ -995,12 +990,11 @@ public class RegionsTests {
         effects.add("block_break");
         config.set("effects", effects);
         config.set("effect-radius", 7);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobble");
     }
 
     public static void loadRegionTypeWarehouse() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "warehouse");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("build-reqs", reqs);
@@ -1009,22 +1003,20 @@ public class RegionsTests {
         effects.add("block_break");
         effects.add("warehouse");
         config.set("effects", effects);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "warehouse");
     }
 
     public static void loadRegionTypeCobbleQuarry() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobblequarry");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*2");
         config.set("build-reqs", reqs);
         config.set("effect-radius", 7);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobblequarry");
     }
 
     public static void loadRegionTypeActive() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "active");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*2");
         config.set("build-reqs", reqs);
@@ -1034,12 +1026,11 @@ public class RegionsTests {
         effects.add("active:120960");
         config.set("build-radius", 5);
         config.set("effects", effects);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "active");
     }
 
     public static void loadRegionTypeCobble() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobble");
         config.set("max", 1);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2,GRASS_BLOCK*2");
@@ -1060,12 +1051,11 @@ public class RegionsTests {
         ArrayList<String> outputs = new ArrayList<>();
         outputs.add("COBBLESTONE");
         config.set("output", outputs);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobble");
     }
 
     public static void loadRegionTypeCobbleGroup() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "town_hall");
         config.set("max", 1);
         ArrayList<String> groups = new ArrayList<>();
         groups.add("cobble");
@@ -1081,11 +1071,10 @@ public class RegionsTests {
         config.set("build-radius", 5);
         config.set("effects", effects);
         config.set("effect-radius", 7);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "town_hall");
     }
     public static void loadRegionTypeCobbleGroup2() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "purifier");
         config.set("max", 1);
         ArrayList<String> groups = new ArrayList<>();
         groups.add("utility");
@@ -1100,22 +1089,20 @@ public class RegionsTests {
         config.set("build-radius", 5);
         config.set("effects", effects);
         config.set("effect-radius", 7);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "purifier");
     }
 
     public static void loadRegionTypeDirt() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "dirt");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("dirt*1");
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "dirt");
     }
     public static void loadRegionTypeRectangle() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "cobble");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2");
         config.set("build-reqs", reqs);
@@ -1123,11 +1110,10 @@ public class RegionsTests {
         config.set("effects", effects);
         config.set("build-radius", 3);
         config.set("build-radius-z", 10);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "cobble");
     }
     public static void loadRegionTypeShelter() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "shelter");
         ArrayList<String> reqs = new ArrayList<>();
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
@@ -1137,18 +1123,17 @@ public class RegionsTests {
         effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "shelter");
     }
     public static void loadRegionTypeUtility() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "utility");
         ArrayList<String> reqs = new ArrayList<>();
         config.set("build-reqs", reqs);
         ArrayList<String> effects = new ArrayList<>();
         config.set("effects", effects);
         config.set("build-radius", 5);
         config.set("upkeep.0.power-output", 96);
-        ItemManager.getInstance().loadRegionType(config);
+        ItemManager.getInstance().loadRegionType(config, "utility");
     }
 
     public static Region createNewRegion(String type) {

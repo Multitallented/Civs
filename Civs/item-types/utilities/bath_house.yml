@@ -1,35 +1,35 @@
-type: region
-icon: CRAFTING_TABLE
-shop-icon: WATER_BUCKET
-name: Bath_House
-max: 1
-price: 700
-groups:
-- utility
-level: 7
-
-pre-reqs:
-- member=metropolis
-
-build-reqs:
-- WATER*75
-- g:fencegate*1
-- FURNACE*7
-- g:primary*115
-- g:secondary*30
-
-build-radius: 7
-towns:
-- metropolis
-
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-
-period: 900 #15 minutes
-upkeep:
-  0:
-    power-output: 2
-
+#enabled: true
+#type: region
+#icon: CRAFTING_TABLE
+#shop-icon: WATER_BUCKET
+#max: 1
+#price: 700
+#groups:
+#- utility
+#level: 7
+#
+#pre-reqs:
+#- member=metropolis
+#
+#build-reqs:
+#- WATER*75
+#- g:fencegate*1
+#- FURNACE*7
+#- g:primary*115
+#- g:secondary*30
+#
+#build-radius: 7
+#towns:
+#- metropolis
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 2
+#

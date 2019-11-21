@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -9,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterTownEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
@@ -17,9 +17,16 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
+@CivsSingleton
 public class CommandEffect implements Listener {
     public static final String ENTRY_KEY = "enter_command";
     public static final String EXIT_KEY = "exit_command";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new CommandEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerEnterRegion(PlayerEnterRegionEvent event) {

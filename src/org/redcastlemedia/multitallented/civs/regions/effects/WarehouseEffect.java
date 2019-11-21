@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -37,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.io.File;
 import java.util.*;
 
+@CivsSingleton
 public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static final String KEY = "warehouse";
     public HashMap<Region, ArrayList<InventoryLocation>> invs = new HashMap<>();
@@ -45,14 +47,16 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
     public static WarehouseEffect getInstance() {
         if (instance == null) {
-            new WarehouseEffect();
+            instance = new WarehouseEffect();
+            if (Civs.getInstance() != null) {
+                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
+            }
         }
         return instance;
     }
 
     public WarehouseEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
-        instance = this;
     }
 
     @EventHandler(ignoreCancelled = true)

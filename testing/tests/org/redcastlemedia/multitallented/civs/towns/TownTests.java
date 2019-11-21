@@ -42,8 +42,8 @@ public class TownTests {
     public void onBefore() {
         townManager = new TownManager();
         new RegionManager();
-        new GovernmentManager();
-        new ItemManager();
+        GovernmentManager.getInstance();
+        ItemManager.getInstance().reload();
     }
 
     @Test

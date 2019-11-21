@@ -80,7 +80,6 @@ public class SpellsTests {
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "RED_WOOL");
         config.set("type", "spell");
-        config.set("name", "Hunger");
         ConfigurationSection conditions = new YamlConfiguration();
         conditions.set("cooldown^1", 10000);
         config.set("conditions", conditions);
@@ -92,6 +91,6 @@ public class SpellsTests {
         component1.set("yield", yieldSection);
         components.set("1", component1);
         config.set("components", components);
-        ItemManager.getInstance().loadSpellType(config);
+        ItemManager.getInstance().loadSpellType(config, "Hunger");
     }
 }

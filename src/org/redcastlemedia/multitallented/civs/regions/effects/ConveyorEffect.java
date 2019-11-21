@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +17,8 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
@@ -32,6 +35,7 @@ import java.util.*;
 
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
+@CivsSingleton
 public class ConveyorEffect implements Listener, RegionCreatedListener {
     private static ConveyorEffect instance = null;
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
@@ -42,7 +46,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     public static String KEY = "conveyor";
 
     public ConveyorEffect() {
-        instance = this;
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
         for (Region region : RegionManager.getInstance().getAllRegions()) {
             if (!region.getEffects().containsKey(KEY)) {
@@ -54,7 +57,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     public static ConveyorEffect getInstance() {
         if (instance == null) {
-            new ConveyorEffect();
+            instance = new ConveyorEffect();
+            if (Civs.getInstance() != null) {
+                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
+            }
         }
         return instance;
     }

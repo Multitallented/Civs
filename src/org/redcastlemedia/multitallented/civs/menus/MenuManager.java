@@ -11,9 +11,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -21,13 +23,14 @@ import org.reflections.util.ConfigurationBuilder;
 import java.io.File;
 import java.util.*;
 
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
     public static HashMap<UUID, CycleGUI> cycleGuis = new HashMap<>();
     private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
     private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
     private static HashMap<UUID, String> openMenus = new HashMap<>();
-    private static HashMap<String, CustomMenu> menus = new HashMap<>();
+    protected static HashMap<String, CustomMenu> menus = new HashMap<>();
 
     @Getter
     private MenuIcon backButton;
@@ -36,17 +39,19 @@ public class MenuManager implements Listener {
     @Getter
     private MenuIcon nextButton;
 
-    public MenuManager() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
-        }
-        instance = this;
-    }
     public static MenuManager getInstance() {
         if (instance == null) {
-            new MenuManager();
+            instance = new MenuManager();
+            instance.loadMenuConfigs();
+            if (Civs.getInstance() != null) {
+                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
+            }
         }
         return instance;
+    }
+    public void reload() {
+        menus.clear();
+        loadMenuConfigs();
     }
 
     public boolean hasMenuOpen(UUID uuid) {
@@ -137,18 +142,16 @@ public class MenuManager implements Listener {
     }
 
     public void loadMenuConfigs() {
-        File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-        if (menuFolder.exists()) {
-            menuFolder.mkdir();
-        }
-        File menuFile = new File(menuFolder, "default.yml");
-        if (!menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to find menu default.yml");
-            return;
+        File menuFile = null;
+        if (Civs.getInstance() != null) {
+            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
+            if (menuFolder.exists()) {
+                menuFolder.mkdir();
+            }
+            menuFile = new File(menuFolder, "default.yml");
         }
         try {
-            FileConfiguration config = new YamlConfiguration();
-            config.load(menuFile);
+            FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/default.yml");
             backButton = new MenuIcon("back",
                     config.getString("back.icon", "REDSTONE_BLOCK"),
                     config.getString("back.name", "back-button"),
@@ -167,9 +170,7 @@ public class MenuManager implements Listener {
             return;
         }
 
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs.menus"));
-        Reflections reflections = new Reflections(configurationBuilder);
+        Reflections reflections = new Reflections("org.redcastlemedia.multitallented.civs.menus");
         Set<Class<? extends CustomMenu>> menuClasses = reflections.getSubTypesOf(CustomMenu.class);
         for (Class<? extends CustomMenu> menuClass : menuClasses) {
             try {
@@ -187,23 +188,14 @@ public class MenuManager implements Listener {
     }
 
     private void loadConfig(CustomMenu customMenu) {
-        File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-        if (menuFolder.exists()) {
-            menuFolder.mkdir();
-        }
+        File menuFile = null;
         String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
-        File menuFile = new File(menuFolder, menuName + ".yml");
-        if (!menuFile.exists()) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
-            return;
+        if (Civs.getInstance() != null) {
+            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
+            menuFile = new File(menuFolder, menuName + ".yml");
         }
 
-        FileConfiguration config = new YamlConfiguration();
-        try {
-            config.load(menuFile);
-        } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu " + menuName);
-        }
+        FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/" + menuName + ".yml");
         int newSize = config.getInt("size", 36);
         int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");

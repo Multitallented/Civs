@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -16,9 +17,16 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+@CivsSingleton
 public class ForSaleEffect implements Listener {
 
     public static final String KEY = "buyable";
+
+    public static void getInstance() {
+        if (Civs.getInstance() != null) {
+            Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), Civs.getInstance());
+        }
+    }
 
     @EventHandler
     public void onPlayerEnterRegionEvent(PlayerEnterRegionEvent event) {
