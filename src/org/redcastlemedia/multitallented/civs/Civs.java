@@ -22,7 +22,6 @@ import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.update.UpdateUtil;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
