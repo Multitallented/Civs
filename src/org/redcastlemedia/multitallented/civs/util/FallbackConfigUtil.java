@@ -13,11 +13,15 @@ public final class FallbackConfigUtil {
     private FallbackConfigUtil() {
 
     }
-    public static FileConfiguration getConfig(File originalFile, String filePath) {
-        FileConfiguration config = new YamlConfiguration();
 
+    public static FileConfiguration getConfig(File originalFile, String filePath) {
+        String url = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + filePath;
+        return getConfigFullPath(originalFile, url);
+    }
+
+    public static FileConfiguration getConfigFullPath(File originalFile, String url) {
+        FileConfiguration config = new YamlConfiguration();
         try {
-            String url = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + filePath;
             InputStream inputStream = FallbackConfigUtil.class.getResourceAsStream(url);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             config.load(reader);

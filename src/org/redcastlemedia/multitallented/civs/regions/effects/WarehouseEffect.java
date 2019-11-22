@@ -47,9 +47,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static WarehouseEffect getInstance() {
         if (instance == null) {
             instance = new WarehouseEffect();
-            if (Civs.getInstance() != null) {
-                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
-            }
+            Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
     }
@@ -75,7 +73,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
 
-        File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
+        File dataFolder = new File(Civs.dataLocation, "regions");
         if (!dataFolder.exists()) {
             return;
         }
@@ -144,7 +142,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
 
-        File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
+        File dataFolder = new File(Civs.dataLocation, "regions");
         if (!dataFolder.exists()) {
             return;
         }
@@ -298,7 +296,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
         //Remove excess chests from the data file
         deletefromfile: if (deletedSomething) {
-            File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
+            File dataFolder = new File(Civs.dataLocation, "regions");
             if (!dataFolder.exists()) {
                 break deletefromfile;
             }
@@ -325,7 +323,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     private void checkExcessChests(Region r) {
         if ((!invs.containsKey(r) || invs.get(r).isEmpty()) && Civs.getInstance() != null) {
             // Since there isn't a cached list of chests for this warehouse, retrieve it from the data file
-            File dataFolder = new File(Civs.getInstance().getDataFolder(), "regions");
+            File dataFolder = new File(Civs.dataLocation, "regions");
             if (!dataFolder.exists()) {
                 return;
             }

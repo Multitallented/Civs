@@ -26,23 +26,19 @@ public class AllianceManager implements Listener {
     public static AllianceManager getInstance() {
         if (instance == null) {
             instance = new AllianceManager();
-            if (Civs.getInstance() != null) {
-                instance.loadAllAlliances();
-                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
-            }
+            instance.loadAllAlliances();
+            Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
     }
 
     public void reload() {
         alliances.clear();
-        if (Civs.getInstance() != null) {
-            loadAllAlliances();
-        }
+        loadAllAlliances();
     }
 
     public void loadAllAlliances() {
-        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
         if (!allianceFolder.exists()) {
             allianceFolder.mkdir();
             return;
@@ -83,7 +79,7 @@ public class AllianceManager implements Listener {
             return false;
         }
         Alliance alliance = alliances.get(oldName);
-        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
         File allianceFile = new File(allianceFolder, oldName + ".yml");
         if (!allianceFile.delete()) {
             return false;
@@ -96,23 +92,18 @@ public class AllianceManager implements Listener {
     }
 
     public boolean removeAlliance(Alliance alliance) {
-        if (Civs.getInstance() != null) {
-            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
-            File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
-            if (!allianceFile.delete()) {
-                return false;
-            }
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
+        File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
+        if (!allianceFile.delete()) {
+            return false;
         }
         alliances.remove(alliance.getName());
         return true;
     }
 
     public void saveAlliance(Alliance alliance) {
-        if (Civs.getInstance() == null) {
-            return;
-        }
         try {
-            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+            File allianceFolder = new File(Civs.dataLocation, "alliances");
             if (!allianceFolder.exists()) {
                 allianceFolder.mkdir();
             }

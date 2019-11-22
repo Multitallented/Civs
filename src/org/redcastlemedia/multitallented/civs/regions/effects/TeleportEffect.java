@@ -23,9 +23,7 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
     public static String KEY = "teleport";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new TeleportEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new TeleportEffect(), Civs.getInstance());
     }
 
     public TeleportEffect() {

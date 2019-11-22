@@ -77,9 +77,7 @@ public class CivilianListener implements Listener {
     public static CivilianListener getInstance() {
         if (civilianListener == null) {
             civilianListener = new CivilianListener();
-            if (Civs.getInstance() != null) {
-                Bukkit.getPluginManager().registerEvents(civilianListener, Civs.getInstance());
-            }
+            Bukkit.getPluginManager().registerEvents(civilianListener, Civs.getInstance());
         }
         return civilianListener;
     }

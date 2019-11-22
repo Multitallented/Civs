@@ -25,10 +25,7 @@ public class EvolveEffect implements Listener {
     public static String KEY = "evolve";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            EvolveEffect evolveEffect = new EvolveEffect();
-            Bukkit.getPluginManager().registerEvents(evolveEffect, Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new EvolveEffect(), Civs.getInstance());
     }
 
     @EventHandler

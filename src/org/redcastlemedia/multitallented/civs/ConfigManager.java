@@ -246,7 +246,7 @@ public class ConfigManager {
     }
 
     public void reload() {
-        File config = new File(Civs.getInstance().getDataFolder(), "config.yml");
+        File config = new File(Civs.dataLocation, "config.yml");
         loadFile(config);
     }
 
@@ -483,9 +483,7 @@ public class ConfigManager {
     public static ConfigManager getInstance() {
         if (configManager == null) {
             configManager = new ConfigManager();
-            if (Civs.getInstance() != null) {
-                configManager.loadFile(new File(Civs.getInstance().getDataFolder(), "config.yml"));
-            }
+            configManager.loadFile(new File(Civs.dataLocation, "config.yml"));
         }
         return configManager;
     }

@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,18 +36,20 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Civs extends JavaPlugin {
 
+    public static File dataLocation;
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static String NAME = "Civs";
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
     public static DiscordSRV discordSRV;
-    private static Civs civs;
+    protected static Civs civs;
     public static Logger logger;
 
     @Override
     public void onEnable() {
         civs = this;
+        dataLocation = getDataFolder();
         logger = Logger.getLogger("Minecraft");
         setupDependencies();
         setupEconomy();
@@ -57,7 +60,6 @@ public class Civs extends JavaPlugin {
         initCommands();
 
         initScheduler();
-        civs = this;
         fancyPrintLog();
     }
 

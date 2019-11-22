@@ -30,9 +30,7 @@ public class IntruderEffect implements Listener {
     private final static String KEY = "intruder";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new IntruderEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new IntruderEffect(), Civs.getInstance());
     }
 
     @EventHandler
