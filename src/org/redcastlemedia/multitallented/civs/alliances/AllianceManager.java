@@ -26,7 +26,9 @@ public class AllianceManager implements Listener {
     public static AllianceManager getInstance() {
         if (instance == null) {
             instance = new AllianceManager();
-            instance.loadAllAlliances();
+            if (Civs.getInstance() != null) {
+                instance.loadAllAlliances();
+            }
             Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
@@ -34,7 +36,9 @@ public class AllianceManager implements Listener {
 
     public void reload() {
         alliances.clear();
-        loadAllAlliances();
+        if (Civs.getInstance() != null) {
+            loadAllAlliances();
+        }
     }
 
     public void loadAllAlliances() {
@@ -92,16 +96,22 @@ public class AllianceManager implements Listener {
     }
 
     public boolean removeAlliance(Alliance alliance) {
+        alliances.remove(alliance.getName());
+        if (Civs.getInstance() == null) {
+            return true;
+        }
         File allianceFolder = new File(Civs.dataLocation, "alliances");
         File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
         if (!allianceFile.delete()) {
             return false;
         }
-        alliances.remove(alliance.getName());
         return true;
     }
 
     public void saveAlliance(Alliance alliance) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         try {
             File allianceFolder = new File(Civs.dataLocation, "alliances");
             if (!allianceFolder.exists()) {
