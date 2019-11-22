@@ -21,6 +21,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
@@ -49,22 +52,10 @@ public class ItemManager {
 
     private void loadAllItemTypes() {
         final String ITEM_TYPES_FOLDER_NAME = "item-types";
-        String resourcePath = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + ITEM_TYPES_FOLDER_NAME;
-        InputStream in = getClass().getResourceAsStream(resourcePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        List<String> fileNames = new ArrayList<>();
-        String resource;
-        try {
-            while ((resource = reader.readLine()) != null) {
-                fileNames.add(resource);
-            }
-        } catch (IOException io) {
-            io.printStackTrace();
-            Civs.logger.severe("Unable to load items!");
-            return;
-        }
-        for (String fileName : fileNames) {
-            loopThroughResources(resourcePath + "/" + fileName, null);
+        String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
+        Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
+        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
+            loopThroughResources(resourcePath.replaceAll("\\.", "/") + "/" + fileName, null);
         }
         File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
