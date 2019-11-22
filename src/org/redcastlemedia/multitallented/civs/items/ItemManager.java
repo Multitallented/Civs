@@ -55,7 +55,7 @@ public class ItemManager {
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            loopThroughResources(fileName);
+            loopThroughResources("/" + fileName);
         }
         File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
@@ -71,15 +71,19 @@ public class ItemManager {
     }
 
     private void loopThroughResources(String path) {
-        path = path.replace("resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
-        String[] pathSplit = path.split("/");
+        String relativePath = path.replace("/resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
+        String[] pathSplit = relativePath.split("/");
         String currentFileName = pathSplit[pathSplit.length - 1];
         try {
             try {
                 FolderType folderType = null;
                 for (String currentFolder : pathSplit) {
+                    if (currentFolder.isEmpty() || "item-types".equals(currentFolder) ||
+                            currentFolder.equals(currentFileName)) {
+                        continue;
+                    }
                     if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
-                        FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !path.contains("-invisible"));
+                        FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains("-invisible"));
                         if (folderType != null) {
                             folderType.getChildren().add(currentFolderType);
                             folderType = currentFolderType;
@@ -89,7 +93,7 @@ public class ItemManager {
                     }
                 }
 
-                File file = new File(Civs.dataLocation, path);
+                File file = new File(Civs.dataLocation, relativePath);
                 FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
                 if (!typeConfig.getBoolean("enabled", true)) {
                     return;
@@ -114,11 +118,12 @@ public class ItemManager {
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to load " + path);
+            Civs.logger.severe("Unable to load " + relativePath);
         }
     }
 
     private FolderType createFolder(String currentFileName, boolean invisible) {
+        System.out.println("creating folder " + currentFileName);
         String folderName = currentFileName.replace("-invisible", "");
         FolderType folderType = new FolderType(new ArrayList<>(),
                 folderName,

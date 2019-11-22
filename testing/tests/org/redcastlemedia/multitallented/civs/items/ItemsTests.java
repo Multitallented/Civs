@@ -38,6 +38,12 @@ public class ItemsTests {
     }
 
     @Test
+    public void itemTypesShouldLoadProperly() {
+        FolderType folderType = (FolderType) ItemManager.getInstance().getItemType("defense");
+        assertTrue(folderType.getChildren().contains(ItemManager.getInstance().getItemType("church")));
+    }
+
+    @Test
     public void playerShouldHaveGroupUnlocked() {
         loadRegionTypeShack2();
         loadRegionTypeNPCShack2();
