@@ -55,7 +55,7 @@ public class ItemManager {
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            loopThroughResources(resourcePath.replaceAll("\\.", "/") + "/" + fileName, null);
+            loopThroughResources(fileName);
         }
         File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
@@ -70,79 +70,80 @@ public class ItemManager {
         }
     }
 
-    private void loopThroughResources(String path, List<CivItem> parentList) {
+    private void loopThroughResources(String path) {
+        path = path.replace("resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
         String[] pathSplit = path.split("/");
         String currentFileName = pathSplit[pathSplit.length - 1];
         try {
-            if (!path.contains(".yml")) {
-                List<CivItem> currParentList = new ArrayList<>();
-                InputStream in = getClass().getResourceAsStream(path);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                List<String> fileNames = new ArrayList<>();
-                String resource;
-                try {
-                    while ((resource = reader.readLine()) != null) {
-                        fileNames.add(resource);
+            try {
+                FolderType folderType = null;
+                for (String currentFolder : pathSplit) {
+                    if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
+                        FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !path.contains("-invisible"));
+                        if (folderType != null) {
+                            folderType.getChildren().add(currentFolderType);
+                            folderType = currentFolderType;
+                        }
+                    } else {
+                        folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
                     }
-                } catch (IOException io) {
-                    io.printStackTrace();
-                    Civs.logger.severe("Unable to load items!");
+                }
+
+                File file = new File(Civs.dataLocation, path);
+                FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
+                if (!typeConfig.getBoolean("enabled", true)) {
                     return;
                 }
-                for (String fileName : fileNames) {
-                    loopThroughResources(path + "/" + fileName, currParentList);
+                String type = typeConfig.getString("type","region");
+                CivItem civItem = null;
+                String itemName = currentFileName.replace(".yml", "").toLowerCase();
+                if (type.equals("region")) {
+                    civItem = loadRegionType(typeConfig, itemName);
+                } else if (type.equals("spell")) {
+                    civItem = loadSpellType(typeConfig, itemName);
+                } else if (type.equals("class")) {
+                    civItem = loadClassType(typeConfig, itemName);
+                } else if (type.equals("town")) {
+                    civItem = loadTownType(typeConfig, itemName);
                 }
-                String folderName = currentFileName.replace("-invisible", "");
-                FolderType folderType = new FolderType(new ArrayList<>(),
-                        folderName,
-                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
-                        0,
-                        null,
-                        currParentList,
-                        !path.contains("invisible"),
-                        1);
-                itemTypes.put(folderName.toLowerCase(), folderType);
-                if (parentList != null) {
-                    parentList.add(folderType);
+                if (folderType != null) {
+                    folderType.getChildren().add(civItem);
                 }
-            } else {
-                try {
-                    File file = new File(Civs.dataLocation, path);
-                    FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
-                    if (!typeConfig.getBoolean("enabled", true)) {
-                        return;
-                    }
-                    String type = typeConfig.getString("type","region");
-                    CivItem civItem = null;
-                    String itemName = currentFileName.replace(".yml", "").toLowerCase();
-                    if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig, itemName);
-                    } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig, itemName);
-                    } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig, itemName);
-                    } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, itemName);
-                    }
-                    if (civItem != null && parentList != null) {
-                        parentList.add(civItem);
-                    }
-                } catch (Exception e) {
-                    Civs.logger.severe("Unable to read from " + currentFileName);
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                Civs.logger.severe("Unable to read from " + currentFileName);
+                e.printStackTrace();
             }
         } catch (Exception e) {
             Civs.logger.severe("Unable to load " + path);
         }
     }
 
+    private FolderType createFolder(String currentFileName, boolean invisible) {
+        String folderName = currentFileName.replace("-invisible", "");
+        FolderType folderType = new FolderType(new ArrayList<>(),
+                folderName,
+                ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                0,
+                null,
+                new ArrayList<>(),
+                invisible,
+                1);
+        itemTypes.put(folderName.toLowerCase(), folderType);
+        return folderType;
+    }
+
     private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
         try {
             if (file.isDirectory() && !file.getName().contains(".yml")) {
-                List<CivItem> currParentList = new ArrayList<>();
-                for (File pFile : file.listFiles()) {
+                List<CivItem> currParentList;
+                if (ItemManager.getInstance().getItemType(file.getName().toLowerCase()) != null) {
+                    FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(file.getName().toLowerCase());
+                    currParentList = folderType.getChildren();
+                } else {
+                    currParentList = new ArrayList<>();
+                }
 
+                for (File pFile : file.listFiles()) {
                     loopThroughTypeFiles(pFile, currParentList);
                 }
                 if (itemTypes.containsKey(file.getName().toLowerCase())) {
