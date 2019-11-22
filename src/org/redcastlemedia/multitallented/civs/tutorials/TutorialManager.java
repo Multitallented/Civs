@@ -36,26 +36,18 @@ public class TutorialManager {
     public static TutorialManager getInstance() {
         if (tutorialManager == null) {
             tutorialManager = new TutorialManager();
-            if (Civs.getInstance() != null) {
-                tutorialManager.loadTutorialFile();
-            }
+            tutorialManager.loadTutorialFile();
         }
         return tutorialManager;
     }
 
     public void reload() {
         tutorials.clear();
-        if (Civs.getInstance() != null) {
-            loadTutorialFile();
-        }
+        loadTutorialFile();
     }
 
     private void loadTutorialFile() {
-        if (Civs.getInstance() == null) {
-            return;
-        }
-
-        File dataFolder = Civs.getInstance().getDataFolder();
+        File dataFolder = Civs.dataLocation;
         File tutorialFile = new File(dataFolder, "Civs/tutorial.yml");
         FileConfiguration tutorialConfig = FallbackConfigUtil.getConfig(tutorialFile, "tutorial.yml");
 
@@ -121,7 +113,7 @@ public class TutorialManager {
     }
 
     public void completeStep(Civilian civilian, TutorialType type, String param) {
-        if (Civs.getInstance() == null || !ConfigManager.getInstance().isUseTutorial()) {
+        if (!ConfigManager.getInstance().isUseTutorial()) {
             return;
         }
 

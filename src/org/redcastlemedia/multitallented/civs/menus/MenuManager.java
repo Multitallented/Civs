@@ -43,9 +43,7 @@ public class MenuManager implements Listener {
         if (instance == null) {
             instance = new MenuManager();
             instance.loadMenuConfigs();
-            if (Civs.getInstance() != null) {
-                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
-            }
+            Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
     }
@@ -142,14 +140,11 @@ public class MenuManager implements Listener {
     }
 
     public void loadMenuConfigs() {
-        File menuFile = null;
-        if (Civs.getInstance() != null) {
-            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-            if (menuFolder.exists()) {
-                menuFolder.mkdir();
-            }
-            menuFile = new File(menuFolder, "default.yml");
+        File menuFolder = new File(Civs.dataLocation, "menus");
+        if (menuFolder.exists()) {
+            menuFolder.mkdir();
         }
+        File menuFile = new File(menuFolder, "default.yml");
         try {
             FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/default.yml");
             backButton = new MenuIcon("back",
@@ -184,12 +179,9 @@ public class MenuManager implements Listener {
     }
 
     private void loadConfig(CustomMenu customMenu) {
-        File menuFile = null;
         String menuName = customMenu.getClass().getAnnotation(CivsMenu.class).name();
-        if (Civs.getInstance() != null) {
-            File menuFolder = new File(Civs.getInstance().getDataFolder(), "menus");
-            menuFile = new File(menuFolder, menuName + ".yml");
-        }
+        File menuFolder = new File(Civs.dataLocation, "menus");
+        File menuFile = new File(menuFolder, menuName + ".yml");
 
         FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/" + menuName + ".yml");
         int newSize = config.getInt("size", 36);

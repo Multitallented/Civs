@@ -14,9 +14,7 @@ public class ActiveEffect implements Listener {
     public final String KEY = "active";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new ActiveEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new ActiveEffect(), Civs.getInstance());
     }
 
     @EventHandler

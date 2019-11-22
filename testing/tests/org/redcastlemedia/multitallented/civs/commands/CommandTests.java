@@ -2,30 +2,24 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import com.google.common.util.concurrent.AbstractScheduledService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,10 +56,10 @@ public class CommandTests {
     public void playerShouldBeAbleToUpgradeTown() {
         RegionsTests.loadRegionTypeCobble();
         RegionsTests.createNewRegion("cobble");
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         TownTests.loadTownTypeTribe2();
         Location location = TestUtil.player.getLocation();
-        Town town = TownTests.loadTown("test", "hamlet", location);
+        Town town = TownTests.loadTown("test", "hamlet2", location);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
                 new HashSet<>(), null, new ArrayList<>());
         TownTests.addGovernmentType(government);
@@ -83,10 +77,10 @@ public class CommandTests {
     public void playerShouldBeAbleToUpgradeTownGroup() {
         RegionsTests.loadRegionTypeCobbleGroup();
         RegionsTests.createNewRegion("town_hall");
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         TownTests.loadTownTypeTribe2();
         Location location = TestUtil.player.getLocation();
-        Town town = TownTests.loadTown("test", "hamlet", location);
+        Town town = TownTests.loadTown("test", "hamlet2", location);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
                 new HashSet<>(), null, new ArrayList<>());
         TownTests.addGovernmentType(government);

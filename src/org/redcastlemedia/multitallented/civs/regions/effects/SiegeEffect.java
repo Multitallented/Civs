@@ -36,9 +36,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
     public static String KEY = "drain_power";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new SiegeEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new SiegeEffect(), Civs.getInstance());
     }
 
     public SiegeEffect() {

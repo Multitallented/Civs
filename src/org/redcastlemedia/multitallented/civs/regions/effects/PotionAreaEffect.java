@@ -23,9 +23,7 @@ public class PotionAreaEffect implements Listener {
     private static HashMap<String, Long> cooldowns = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), Civs.getInstance());
     }
 
     @EventHandler

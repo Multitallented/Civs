@@ -59,12 +59,8 @@ public class BlockLogger {
 //    }
 
     private void saveBlocks() {
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
 //        intervalId = -1;
-        final File blockData = new File(civs.getDataFolder(), "block-data.yml");
+        final File blockData = new File(Civs.dataLocation, "block-data.yml");
         final HashMap<String, CVItem> finalBlocks = blocks;
         Runnable runMe = new Runnable() {
             @Override
@@ -90,11 +86,7 @@ public class BlockLogger {
     }
 
     private void loadBlocks() {
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
-        File blockData = new File(civs.getDataFolder(), "block-data.yml");
+        File blockData = new File(Civs.dataLocation, "block-data.yml");
         if (!blockData.exists()) {
             try {
                 blockData.createNewFile();

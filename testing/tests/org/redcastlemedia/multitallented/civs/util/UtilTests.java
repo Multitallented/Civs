@@ -113,11 +113,11 @@ public class UtilTests {
     @Test
     public void placeHookShouldReportOwnerName() {
         CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
-        Town town = new Town("mytown", "hamlet", location, people, 100, 100,
+        Town town = new Town("mytown", "hamlet2", location, people, 100, 100,
                 1, 0, -1);
         TownManager.getInstance().addTown(town);
         PlaceHook placeHook = new PlaceHook();
@@ -128,14 +128,14 @@ public class UtilTests {
     @Ignore
     public void placeHookShouldReportHighestPop() {
         CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "member");
-        Town town = new Town("mytown1", "hamlet", location, people, 100, 100,
+        Town town = new Town("mytown1", "hamlet2", location, people, 100, 100,
                 3, 0, -1);
         TownManager.getInstance().addTown(town);
-        Town town1 = new Town("mytown2", "hamlet", location, people, 100, 100,
+        Town town1 = new Town("mytown2", "hamlet2", location, people, 100, 100,
                 8, 0, -1);
         TownManager.getInstance().addTown(town1);
         PlaceHook placeHook = new PlaceHook();

@@ -103,9 +103,9 @@ public class SchedulerTests {
 
     @Test(expected = SuccessException.class)
     public void messageShouldBeSentWhenEnterTown() {
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         World world = mock(World.class);
-        TownTests.loadTown("Moenia", "hamlet", new Location(world, 0, 0, 0));
+        TownTests.loadTown("Moenia", "hamlet2", new Location(world, 0, 0, 0));
         CommonScheduler commonScheduler = new CommonScheduler();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 8);
@@ -121,9 +121,9 @@ public class SchedulerTests {
 
     @Test
     public void messageShouldNotBeRepeatedlySent() {
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         World world = mock(World.class);
-        TownTests.loadTown("Arcadia", "hamlet", new Location(world, 0, 0, 0));
+        TownTests.loadTown("Arcadia", "hamlet2", new Location(world, 0, 0, 0));
         CommonScheduler commonScheduler = new CommonScheduler();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 8);

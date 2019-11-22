@@ -37,18 +37,14 @@ public class ItemManager {
     public static ItemManager getInstance() {
         if (itemManager == null) {
             itemManager = new ItemManager();
-            if (Civs.getInstance() != null) {
-                itemManager.loadAllItemTypes();
-            }
+            itemManager.loadAllItemTypes();
         }
         return itemManager;
     }
 
     public void reload() {
         itemTypes.clear();
-        if (Civs.getInstance() != null) {
-            loadAllItemTypes();
-        }
+        loadAllItemTypes();
     }
 
     private void loadAllItemTypes() {
@@ -70,7 +66,7 @@ public class ItemManager {
         for (String fileName : fileNames) {
             loopThroughResources(resourcePath + "/" + fileName, null);
         }
-        File itemTypesFolder = new File(Civs.getInstance().getDataFolder(), ITEM_TYPES_FOLDER_NAME);
+        File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
             for (File file : itemTypesFolder.listFiles()) {
                 String itemName = file.getName().replace(".yml", "").toLowerCase();
@@ -120,8 +116,8 @@ public class ItemManager {
                 }
             } else {
                 try {
-                    File file = new File(Civs.getInstance().getDataFolder(), path);
-                    FileConfiguration typeConfig = FallbackConfigUtil.getConfig(file, path);
+                    File file = new File(Civs.dataLocation, path);
+                    FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
                     if (!typeConfig.getBoolean("enabled", true)) {
                         return;
                     }

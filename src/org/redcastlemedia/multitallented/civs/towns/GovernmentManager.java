@@ -32,23 +32,19 @@ public class GovernmentManager {
     public static GovernmentManager getInstance() {
         if (instance == null) {
             instance = new GovernmentManager();
-            if (Civs.getInstance() != null) {
-                instance.loadAllGovTypes();
-            }
+            instance.loadAllGovTypes();
         }
         return instance;
     }
 
     public void reload() {
         governments.clear();
-        if (Civs.getInstance() != null) {
-            loadAllGovTypes();
-        }
+        loadAllGovTypes();
     }
 
     private void loadAllGovTypes() {
         final String GOV_TYPE_FOLDER_NAME = "gov-types";
-        File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);
+        File govTypeFolder = new File(Civs.dataLocation, GOV_TYPE_FOLDER_NAME);
         boolean govTypeFolderExists = govTypeFolder.exists();
         String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + GOV_TYPE_FOLDER_NAME;
         InputStream in = getClass().getResourceAsStream(path);

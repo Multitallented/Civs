@@ -44,10 +44,8 @@ import java.util.UUID;
 public class DeathListener implements Listener {
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            DeathListener deathListener = new DeathListener();
-            Bukkit.getPluginManager().registerEvents(deathListener, Civs.getInstance());
-        }
+        DeathListener deathListener = new DeathListener();
+        Bukkit.getPluginManager().registerEvents(deathListener, Civs.getInstance());
     }
 
     @EventHandler(ignoreCancelled = true)

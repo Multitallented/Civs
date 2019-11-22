@@ -3,8 +3,6 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -25,13 +23,10 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -51,9 +46,9 @@ public class RegionEffectTests {
     public void setup() {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         this.townLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        this.town = new Town("Hamlet1", "hamlet", townLocation, new HashMap<>(),
+        this.town = new Town("Hamlet1", "hamlet2", townLocation, new HashMap<>(),
                 300, 300, 2, 0, -1);
         TownManager.getInstance().addTown(town);
     }
@@ -79,7 +74,7 @@ public class RegionEffectTests {
         EntityDeathEvent entityDeathEvent = mock(EntityDeathEvent.class);
         when(entityDeathEvent.getEntity()).thenReturn(villager);
         villagerEffect.onVillagerDeath(entityDeathEvent);
-        assertEquals(299, this.town.getPower());
+        assertEquals(296, this.town.getPower());
     }
 
     @Test
@@ -132,7 +127,6 @@ public class RegionEffectTests {
     public void warehouseShouldFindNeededItems() {
         RegionsTests.loadRegionTypeCobble3();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
-        RegionsTests.loadRegionTypeWarehouse();
         RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
         Location location = new Location(Bukkit.getWorld("world"), 2,60,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
@@ -149,9 +143,9 @@ public class RegionEffectTests {
         chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest.getBlockInventory());
         warehouseEffect.availableItems.put(warehouse, chestMap);
 
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         Location townLocation = new Location(Bukkit.getWorld("world"), 2, 75, 0);
-        TownTests.loadTown("test", "hamlet", townLocation);
+        TownTests.loadTown("test", "hamlet2", townLocation);
 
         warehouseEffect.onCustomEvent(regionTickEvent);
         assertEquals(Material.IRON_PICKAXE, cobbleChest.getBlockInventory().getItem(0).getType());

@@ -42,7 +42,7 @@ public class TownTests {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
         GovernmentManager.getInstance().reload();
-        ItemManager.getInstance().reload();
+//        ItemManager.getInstance().reload();
     }
 
     @Test
@@ -61,31 +61,31 @@ public class TownTests {
 
     @Test
     public void findTownAtShouldReturnTown() {
-        loadTownTypeHamlet();
-        Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
-        loadTown("Silverstone", "hamlet", new Location(Bukkit.getWorld("world"), 100, 0, 0));
-        loadTown("Cupcake", "hamlet", new Location(Bukkit.getWorld("world"), -100, 0, 0));
+        loadTownTypeHamlet2();
+        Town town = loadTown("BizRep", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTown("Silverstone", "hamlet2", new Location(Bukkit.getWorld("world"), 100, 0, 0));
+        loadTown("Cupcake", "hamlet2", new Location(Bukkit.getWorld("world"), -100, 0, 0));
 
         assertEquals(town, TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void shouldNotFindTown() {
-        loadTownTypeHamlet();
-        loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTownTypeHamlet2();
+        loadTown("BizRep", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         assertNull(TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 55,0)));
     }
     @Test
     public void shouldFindTown() {
-        loadTownTypeHamlet();
-        Town town = loadTown("BizRep", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTownTypeHamlet2();
+        Town town = loadTown("BizRep", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         assertEquals(town, TownManager.getInstance().getTownAt(new Location(Bukkit.getWorld("world"), 0, 0,0)));
     }
 
     @Test
     public void memberShouldBeAdded() {
-        loadTownTypeHamlet();
-        Town town = loadTown("Aeria", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 20));
+        loadTownTypeHamlet2();
+        Town town = loadTown("Aeria", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 20));
         UUID uuid = new UUID(1,5);
         TownManager.getInstance().addInvite(uuid, town);
         TownManager.getInstance().acceptInvite(uuid);
@@ -94,23 +94,23 @@ public class TownTests {
 
     @Test
     public void townsShouldIntersect() {
-        loadTownTypeHamlet();
-        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
-        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        loadTownTypeHamlet2();
+        loadTown("Summertown", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet2");
         assertEquals(1, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 26, 0, 0), townType, 0).size());
     }
     @Test
     public void townShouldNotIntersect() {
-        loadTownTypeHamlet();
-        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
-        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        loadTownTypeHamlet2();
+        loadTown("Summertown", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet2");
         assertEquals(0, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 0).size());
     }
     @Test
     public void townShouldNotIntersectWithModifer() {
-        loadTownTypeHamlet();
-        loadTown("Summertown", "hamlet", new Location(Bukkit.getWorld("world"), 0, 0, 0));
-        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        loadTownTypeHamlet2();
+        loadTown("Summertown", "hamlet2", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet2");
         assertEquals(1, TownManager.getInstance().checkIntersect(new Location(Bukkit.getWorld("world"), 51, 0, 0), townType, 27).size());
     }
 
@@ -287,17 +287,17 @@ public class TownTests {
 
     @Test
     public void townShouldDowngrade() {
-        loadTownTypeHamlet();
+        loadTownTypeHamlet2();
         loadTownTypeTribe2();
         Town town = loadTown("test", "tribe", TestUtil.block.getLocation());
         TownManager.getInstance().setTownPower(town, 0);
-        assertEquals("hamlet", town.getType());
+        assertEquals("hamlet2", town.getType());
     }
 
     @Test
     public void townShouldHaveGrace() {
-        loadTownTypeHamlet();
-        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        loadTownTypeHamlet2();
+        Town town = loadTown("test", "hamlet2", TestUtil.block.getLocation());
         TownManager.getInstance().setTownPower(town, 0);
         assertTrue(TownManager.getInstance().hasGrace(town, false));
         ProtectionHandler protectionHandler = new ProtectionHandler();
@@ -308,8 +308,8 @@ public class TownTests {
 
     @Test
     public void townShouldNotProtectWithoutGrace() {
-        loadTownTypeHamlet();
-        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        loadTownTypeHamlet2();
+        Town town = loadTown("test", "hamlet2", TestUtil.block.getLocation());
         TownManager.getInstance().setTownPower(town, 0);
         town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
         assertFalse(TownManager.getInstance().hasGrace(town, true));
@@ -322,8 +322,8 @@ public class TownTests {
 
     @Test
     public void townShouldProtectWithoutGraceButWithPower() {
-        loadTownTypeHamlet();
-        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        loadTownTypeHamlet2();
+        Town town = loadTown("test", "hamlet2", TestUtil.block.getLocation());
         TownManager.getInstance().setTownPower(town, 0);
         town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
         TownManager.getInstance().hasGrace(town, true);
@@ -337,8 +337,8 @@ public class TownTests {
 
     @Test
     public void townShouldNotProtectWithoutGraceAndTinyPower() {
-        loadTownTypeHamlet();
-        Town town = loadTown("test", "hamlet", TestUtil.block.getLocation());
+        loadTownTypeHamlet2();
+        Town town = loadTown("test", "hamlet2", TestUtil.block.getLocation());
         TownManager.getInstance().setTownPower(town, 0);
         town.setLastDisable(System.currentTimeMillis() - (24*60*60*1000));
         TownManager.getInstance().hasGrace(town, true);
@@ -354,8 +354,8 @@ public class TownTests {
 
     @Test
     public void townTransitionTest() {
-        TownTests.loadTownTypeHamlet();
-        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        TownTests.loadTownTypeHamlet2();
+        Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setPower(2);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -373,8 +373,8 @@ public class TownTests {
 
     @Test
     public void townShouldNotTransition() {
-        TownTests.loadTownTypeHamlet();
-        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        TownTests.loadTownTypeHamlet2();
+        Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -389,8 +389,8 @@ public class TownTests {
 
     @Test
     public void townShouldNotInactiveTransition() {
-        TownTests.loadTownTypeHamlet();
-        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        TownTests.loadTownTypeHamlet2();
+        Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setPower(160);
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();
@@ -435,9 +435,9 @@ public class TownTests {
         return town;
     }
 
-    public static void loadTownTypeHamlet() {
+    public static void loadTownTypeHamlet2() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("name", "Hamlet");
+        config.set("name", "Hamlet2");
         config.set("type", "town");
         config.set("build-radius", 25);
         ArrayList<String> effects = new ArrayList<>();
@@ -447,7 +447,7 @@ public class TownTests {
         config.set("effects", effects);
         config.set("power", 0);
         config.set("max-power", 500);
-        ItemManager.getInstance().loadTownType(config, "hamlet");
+        ItemManager.getInstance().loadTownType(config, "hamlet2");
     }
 
     public static void loadTownTypeTribe() {
@@ -471,7 +471,7 @@ public class TownTests {
         ArrayList<String> preReqs = new ArrayList<>();
         preReqs.add("tribe:population=5");
         config.set("pre-reqs", preReqs);
-        config.set("child", "hamlet");
+        config.set("child", "hamlet2");
         config.set("build-reqs", critReqs);
         config.set("critical-build-reqs", critReqs);
         config.set("build-radius", 25);

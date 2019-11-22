@@ -23,9 +23,7 @@ public class ForSaleEffect implements Listener {
     public static final String KEY = "buyable";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new ForSaleEffect(), Civs.getInstance());
     }
 
     @EventHandler
