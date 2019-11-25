@@ -123,7 +123,6 @@ public class ItemManager {
     }
 
     private FolderType createFolder(String currentFileName, boolean invisible) {
-        System.out.println("creating folder " + currentFileName);
         String folderName = currentFileName.replace("-invisible", "");
         FolderType folderType = new FolderType(new ArrayList<>(),
                 folderName,
