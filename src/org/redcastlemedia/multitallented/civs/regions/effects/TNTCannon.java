@@ -33,10 +33,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            TNTCannon tntCannon = new TNTCannon();
-            Bukkit.getPluginManager().registerEvents(tntCannon, Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new TNTCannon(), Civs.getInstance());
     }
 
     public TNTCannon() {

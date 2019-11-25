@@ -58,7 +58,7 @@ public class RegionsTests {
     public void onBefore() {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
-        ItemManager.getInstance().reload();
+//        ItemManager.getInstance().reload();
     }
 
     @Test
@@ -654,9 +654,9 @@ public class RegionsTests {
     @Test
     public void regionShouldHaveUpkeep() {
         loadRegionTypeUtility();
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         Location location = new Location(Bukkit.getWorld("world"), 4,0,0);
-        TownTests.loadTown("test", "hamlet", location);
+        TownTests.loadTown("test", "hamlet2", location);
         Region region = RegionsTests.createNewRegion("utility");
         assertTrue(region.needsReagentsOrInput());
     }
@@ -719,8 +719,8 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
-        TownTests.loadTownTypeHamlet();
-        Town town = new Town("townName", "hamlet", location1,
+        TownTests.loadTownTypeHamlet2();
+        Town town = new Town("townName", "hamlet2", location1,
                 owners, 300, 300, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         assertTrue(region.hasUpkeepItems());
@@ -736,8 +736,8 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
-        TownTests.loadTownTypeHamlet();
-        Town town = new Town("townName", "hamlet", location1,
+        TownTests.loadTownTypeHamlet2();
+        Town town = new Town("townName", "hamlet2", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         region.runUpkeep(false);
@@ -766,8 +766,8 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
-        TownTests.loadTownTypeHamlet();
-        Town town = new Town("townname", "hamlet", location1,
+        TownTests.loadTownTypeHamlet2();
+        Town town = new Town("townname", "hamlet2", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         try {
@@ -786,8 +786,8 @@ public class RegionsTests {
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
-        TownTests.loadTownTypeHamlet();
-        Town town = new Town("townname", "hamlet", location1,
+        TownTests.loadTownTypeHamlet2();
+        Town town = new Town("townname", "hamlet2", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         RegionTickUtil.runUpkeeps();
@@ -860,13 +860,13 @@ public class RegionsTests {
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
 
-        TownTests.loadTownTypeHamlet();
-        Town town = new Town("townname", "hamlet", location1,
+        TownTests.loadTownTypeHamlet2();
+        Town town = new Town("townname", "hamlet2", location1,
                 new HashMap<>(), 300, 300, 2, 0, -1);
         TownManager.getInstance().addTown(town);
 
         Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
-        Town town1 = new Town("townname1", "hamlet", location,
+        Town town1 = new Town("townname1", "hamlet2", location,
                 new HashMap<>(), 300, 300, 2, 0, -1);
         town1.getPeople().put(uuid1, "member");
         TownManager.getInstance().addTown(town1);
@@ -989,19 +989,6 @@ public class RegionsTests {
         config.set("effects", effects);
         config.set("effect-radius", 7);
         ItemManager.getInstance().loadRegionType(config, "cobble");
-    }
-
-    public static void loadRegionTypeWarehouse() {
-        FileConfiguration config = new YamlConfiguration();
-        ArrayList<String> reqs = new ArrayList<>();
-        reqs.add("cobblestone*2");
-        config.set("build-reqs", reqs);
-        ArrayList<String> effects = new ArrayList<>();
-        effects.add("block_place");
-        effects.add("block_break");
-        effects.add("warehouse");
-        config.set("effects", effects);
-        ItemManager.getInstance().loadRegionType(config, "warehouse");
     }
 
     public static void loadRegionTypeCobbleQuarry() {

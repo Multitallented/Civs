@@ -28,8 +28,8 @@ public class AllianceManager implements Listener {
             instance = new AllianceManager();
             if (Civs.getInstance() != null) {
                 instance.loadAllAlliances();
-                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
             }
+            Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
     }
@@ -42,7 +42,7 @@ public class AllianceManager implements Listener {
     }
 
     public void loadAllAlliances() {
-        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
         if (!allianceFolder.exists()) {
             allianceFolder.mkdir();
             return;
@@ -83,7 +83,7 @@ public class AllianceManager implements Listener {
             return false;
         }
         Alliance alliance = alliances.get(oldName);
-        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
         File allianceFile = new File(allianceFolder, oldName + ".yml");
         if (!allianceFile.delete()) {
             return false;
@@ -96,14 +96,15 @@ public class AllianceManager implements Listener {
     }
 
     public boolean removeAlliance(Alliance alliance) {
-        if (Civs.getInstance() != null) {
-            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
-            File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
-            if (!allianceFile.delete()) {
-                return false;
-            }
-        }
         alliances.remove(alliance.getName());
+        if (Civs.getInstance() == null) {
+            return true;
+        }
+        File allianceFolder = new File(Civs.dataLocation, "alliances");
+        File allianceFile = new File(allianceFolder, alliance.getName() + ".yml");
+        if (!allianceFile.delete()) {
+            return false;
+        }
         return true;
     }
 
@@ -112,7 +113,7 @@ public class AllianceManager implements Listener {
             return;
         }
         try {
-            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
+            File allianceFolder = new File(Civs.dataLocation, "alliances");
             if (!allianceFolder.exists()) {
                 allianceFolder.mkdir();
             }

@@ -43,10 +43,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     private HashMap<Town, Long> cooldowns = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            RaidPortEffect raidPortEffect = new RaidPortEffect();
-            Bukkit.getPluginManager().registerEvents(raidPortEffect, Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), Civs.getInstance());
     }
 
     public RaidPortEffect() {

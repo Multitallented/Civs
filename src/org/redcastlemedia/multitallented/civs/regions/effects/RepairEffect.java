@@ -26,9 +26,7 @@ import java.util.Set;
 public class RepairEffect implements Listener {
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new RepairEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new RepairEffect(), Civs.getInstance());
     }
 
     private final String KEY = "repair";

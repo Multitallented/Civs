@@ -44,13 +44,11 @@ public class TownManager {
         towns.clear();
         sortedTowns.clear();
         invites.clear();
-        if (Civs.getInstance() != null) {
-            loadAllTowns();
-        }
+        loadAllTowns();
     }
 
     public void loadAllTowns() {
-        File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
+        File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
@@ -309,9 +307,6 @@ public class TownManager {
         }
         towns.remove(town.getName());
         sortedTowns.remove(town);
-        if (Civs.getInstance() == null) {
-            return;
-        }
         if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
@@ -363,7 +358,7 @@ public class TownManager {
     }
 
     private void removeTownFile(String townName) {
-        File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
+        File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
@@ -460,13 +455,10 @@ public class TownManager {
     }
 
     private void saveTownNow(Town town) {
-        if (Civs.getInstance() == null) {
-            return;
-        }
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.saves++;
         }
-        File townFolder = new File(Civs.getInstance().getDataFolder(), "towns");
+        File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }

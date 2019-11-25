@@ -31,9 +31,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
     public static final String KEY = "hunt";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new HuntEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new HuntEffect(), Civs.getInstance());
     }
 
     @Override

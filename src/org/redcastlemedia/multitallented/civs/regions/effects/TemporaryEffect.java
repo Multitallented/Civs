@@ -15,9 +15,7 @@ public class TemporaryEffect implements Listener {
     private HashMap<String, Long> created = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), Civs.getInstance());
     }
 
     @EventHandler

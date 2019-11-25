@@ -100,8 +100,8 @@ public class RegionManager {
     public void loadAllRegions() {
         regions.clear();
         regionLocations.clear();
-        Civs civs = Civs.getInstance();
-        File regionFolder = new File(civs.getDataFolder(), "regions");
+        File regionFolder = new File(Civs.dataLocation, "regions");
+        System.out.println(regionFolder.getAbsolutePath());
         if (!regionFolder.exists()) {
             regionFolder.mkdir();
         }
@@ -114,7 +114,7 @@ public class RegionManager {
                     }
                     UUID worldName = region.getLocation().getWorld().getUID();
                     if (!regions.containsKey(worldName)) {
-                        regions.put(worldName, new ArrayList<Region>());
+                        regions.put(worldName, new ArrayList<>());
                     }
                     regions.get(worldName).add(region);
                     sortRegions(worldName);
@@ -203,11 +203,7 @@ public class RegionManager {
         }
 //        regions.get(region.getLocation().getWorld().getUID()).remove(region);
         regionLocations.remove(region.getId());
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
-        File dataFolder = new File(civs.getDataFolder(), "regions");
+        File dataFolder = new File(Civs.dataLocation, "regions");
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
         }
@@ -249,14 +245,10 @@ public class RegionManager {
     }
 
     private void saveRegionNow(Region region) {
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.saves++;
         }
-        File regionFolder = new File(civs.getDataFolder(), "regions");
+        File regionFolder = new File(Civs.dataLocation, "regions");
         if (!regionFolder.exists()) {
             regionFolder.mkdir();
         }

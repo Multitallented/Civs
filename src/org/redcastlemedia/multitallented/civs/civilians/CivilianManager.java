@@ -50,8 +50,7 @@ public class CivilianManager {
     }
 
     private void loadAllCivilians() {
-        Civs civs = Civs.getInstance();
-        File civilianFolder = new File(civs.getDataFolder(), "players");
+        File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             return;
         }
@@ -117,13 +116,12 @@ public class CivilianManager {
         return civilian;
     }
     private Civilian loadFromFileCivilian(UUID uuid) {
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
+        if (Civs.getInstance() == null) {
             Civilian civilian = createDefaultCivilian(uuid);
             saveCivilian(civilian);
             return civilian;
         }
-        File civilianFolder = new File(civs.getDataFolder(), "players");
+        File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             Civilian civilian = createDefaultCivilian(uuid);
             saveCivilian(civilian);
@@ -210,7 +208,7 @@ public class CivilianManager {
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
-        Set<CivClass> classes = new HashSet<CivClass>();
+        Set<CivClass> classes = new HashSet<>();
         classes.add(defaultClass);
         int expOrbs = -1;
         if (Civs.getInstance() != null) {
@@ -223,7 +221,7 @@ public class CivilianManager {
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
                 classes,
-                new HashMap<CivItem, Integer>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
@@ -232,11 +230,7 @@ public class CivilianManager {
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
-        Civs civs = Civs.getInstance();
-        if (civs == null) {
-            return;
-        }
-        File civilianFolder = new File(civs.getDataFolder(), "players");
+        File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             if (!civilianFolder.mkdir()) {
                 Civs.logger.severe("Unable to create players folder");
@@ -335,7 +329,7 @@ public class CivilianManager {
 
     public void deleteCivilian(Civilian civilian) {
         civilians.remove(civilian.getUuid());
-        File playerFolder = new File(Civs.getInstance().getDataFolder(), "players");
+        File playerFolder = new File(Civs.dataLocation, "players");
         File playerFile = new File(playerFolder, civilian.getUuid() + ".yml");
         if (!playerFile.exists()) {
             return;

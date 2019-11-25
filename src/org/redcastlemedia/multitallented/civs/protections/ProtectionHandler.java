@@ -49,10 +49,8 @@ import java.util.Set;
 public class ProtectionHandler implements Listener {
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            ProtectionHandler protectionHandler = new ProtectionHandler();
-            Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
-        }
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
     }
 
 //    @EventHandler

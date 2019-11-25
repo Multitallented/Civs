@@ -23,9 +23,7 @@ public class CommandEffect implements Listener {
     public static final String EXIT_KEY = "exit_command";
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new CommandEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new CommandEffect(), Civs.getInstance());
     }
 
     @EventHandler(priority = EventPriority.LOW)

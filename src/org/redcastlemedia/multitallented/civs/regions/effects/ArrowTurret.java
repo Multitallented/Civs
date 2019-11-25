@@ -35,10 +35,7 @@ public class ArrowTurret implements Listener {
     public static HashMap<Arrow, Integer> arrowDamages = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            ArrowTurret arrowTurret = new ArrowTurret();
-            Bukkit.getPluginManager().registerEvents(arrowTurret, Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new ArrowTurret(), Civs.getInstance());
     }
 
     //Shoot arrows at mobs

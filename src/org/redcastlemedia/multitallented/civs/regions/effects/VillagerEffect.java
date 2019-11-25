@@ -38,10 +38,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
     protected static HashMap<String, Long> townCooldowns = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            VillagerEffect villagerEffect = new VillagerEffect();
-            Bukkit.getPluginManager().registerEvents(villagerEffect, Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new VillagerEffect(), Civs.getInstance());
     }
 
     public VillagerEffect() {

@@ -31,11 +31,7 @@ public class AIManager {
     }
 
     private void loadAIs() {
-        if (Civs.getInstance() == null) {
-            return;
-        }
-
-        File aiFolder = new File(Civs.getInstance().getDataFolder(), "ai");
+        File aiFolder = new File(Civs.dataLocation, "ai");
         if (!aiFolder.exists()) {
             if (!aiFolder.mkdir()) {
                 Civs.logger.severe("Unable to create ai folder");
@@ -67,7 +63,7 @@ public class AIManager {
     }
 
     public void saveAI(AI ai) {
-        File aiFolder = new File(Civs.getInstance().getDataFolder(), "ai");
+        File aiFolder = new File(Civs.dataLocation, "ai");
         if (!aiFolder.exists()) {
             Civs.logger.severe("Unable to save to non-existent ai folder");
             return;

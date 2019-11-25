@@ -58,9 +58,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     public static ConveyorEffect getInstance() {
         if (instance == null) {
             instance = new ConveyorEffect();
-            if (Civs.getInstance() != null) {
-                Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
-            }
+            Bukkit.getPluginManager().registerEvents(instance, Civs.getInstance());
         }
         return instance;
     }

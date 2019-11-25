@@ -30,7 +30,6 @@ public class AllianceMenuTests {
     public void setup() {
         TownManager.getInstance().reload();
         AllianceManager.getInstance().reload();
-        TownTests.loadTownTypeHamlet();
         town1 = TownTests.loadTown("town1", "hamlet", TestUtil.block.getLocation());
         town2 = TownTests.loadTown("town2", "hamlet", TestUtil.block14.getLocation());
         town3 = TownTests.loadTown("town3", "hamlet", TestUtil.block8.getLocation());

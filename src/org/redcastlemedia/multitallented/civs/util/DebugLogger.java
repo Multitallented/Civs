@@ -22,11 +22,11 @@ public final class DebugLogger {
 
             @Override
             public void run() {
-                Civs.getInstance().getLogger().info("Saves:                   " + saves);
-                Civs.getInstance().getLogger().info("Chunk Loads:             " + chunkLoads);
-                Civs.getInstance().getLogger().info("Inventory Modifications: " + inventoryModifications);
-                Civs.getInstance().getLogger().info("Pending Town Saves:      " + TownManager.getInstance().getCountOfPendingSaves());
-                Civs.getInstance().getLogger().info("Pending Region Saves:    " + RegionManager.getInstance().getCountOfPendingSaves());
+                Civs.logger.info("Saves:                   " + saves);
+                Civs.logger.info("Chunk Loads:             " + chunkLoads);
+                Civs.logger.info("Inventory Modifications: " + inventoryModifications);
+                Civs.logger.info("Pending Town Saves:      " + TownManager.getInstance().getCountOfPendingSaves());
+                Civs.logger.info("Pending Region Saves:    " + RegionManager.getInstance().getCountOfPendingSaves());
                 int highestActivity = 0;
                 Region mostActiveRegion = null;
                 for (Region region : regionActivity.keySet()) {
@@ -37,12 +37,12 @@ public final class DebugLogger {
                     }
                 }
                 if (mostActiveRegion != null) {
-                    Civs.getInstance().getLogger().info("Most Active Region: " +
+                    Civs.logger.info("Most Active Region: " +
                             (int) mostActiveRegion.getLocation().getX() + "x, " +
                             (int) mostActiveRegion.getLocation().getY() + "y, " +
                             (int) mostActiveRegion.getLocation().getZ() + "z, " +
                             mostActiveRegion.getType());
-                    Civs.getInstance().getLogger().info("^^Ran " + highestActivity + " times");
+                    Civs.logger.info("^^Ran " + highestActivity + " times");
                 }
                 saves = 0;
                 chunkLoads = 0;

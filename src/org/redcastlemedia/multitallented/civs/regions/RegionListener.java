@@ -33,10 +33,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 public class RegionListener implements Listener {
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            RegionListener regionListener = new RegionListener();
-            Bukkit.getPluginManager().registerEvents(regionListener, Civs.getInstance());
-        }
+        RegionListener regionListener = new RegionListener();
+        Bukkit.getPluginManager().registerEvents(regionListener, Civs.getInstance());
     }
 
     /**

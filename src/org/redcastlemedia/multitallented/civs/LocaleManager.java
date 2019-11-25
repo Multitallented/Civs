@@ -61,14 +61,11 @@ public class LocaleManager {
 
     private void loadAllConfigs() {
         final String TRANSLATION_FOLDER_NAME = "translations";
-        File translationFolder = new File(Civs.getInstance().getDataFolder(), TRANSLATION_FOLDER_NAME);
+        File translationFolder = new File(Civs.dataLocation, TRANSLATION_FOLDER_NAME);
         boolean translationFolderExists = translationFolder.exists();
-        String path = "resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + TRANSLATION_FOLDER_NAME;
-        Reflections reflections = new Reflections(new ResourcesScanner());
+        String path = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + TRANSLATION_FOLDER_NAME;
+        Reflections reflections = new Reflections(path , new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            if (!fileName.startsWith(path)) {
-                continue;
-            }
             try {
                 FileConfiguration config;
                 String name = fileName.substring(fileName.lastIndexOf("/") + 1);
@@ -116,9 +113,7 @@ public class LocaleManager {
     public static LocaleManager getInstance() {
         if (localeManager == null) {
             localeManager = new LocaleManager();
-            if (Civs.getInstance() != null) {
-                localeManager.loadAllConfigs();
-            }
+            localeManager.loadAllConfigs();
         }
         return localeManager;
     }

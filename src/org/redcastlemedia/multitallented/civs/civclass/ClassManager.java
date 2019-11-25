@@ -21,10 +21,7 @@ public class ClassManager {
     }
 
     void loadClasses() {
-        if (Civs.getInstance() == null) {
-            return;
-        }
-        File classFolder = new File(Civs.getInstance().getDataFolder(), "class-data");
+        File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
@@ -62,10 +59,7 @@ public class ClassManager {
         saveClass(civClass);
     }
     public void saveClass(CivClass civClass) {
-        if (Civs.getInstance() == null) {
-            return;
-        }
-        File classFolder = new File(Civs.getInstance().getDataFolder(), "class-data");
+        File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
@@ -93,10 +87,7 @@ public class ClassManager {
     }
     public int getNextId() {
         int i=0;
-        if (Civs.getInstance() == null) {
-            return 0;
-        }
-        File classFolder = new File(Civs.getInstance().getDataFolder(), "class-data");
+        File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             return 0;
         }

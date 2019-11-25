@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -18,21 +17,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -259,8 +254,8 @@ public class ProtectionsTests {
                     regionLocation,
                     RegionsTests.getRadii(),
                     effects,0);
-            TownTests.loadTownTypeHamlet();
-            TownTests.loadTown("testTown", "hamlet", regionLocation);
+            TownTests.loadTownTypeHamlet2();
+            TownTests.loadTown("testTown", "hamlet2", regionLocation);
         } else {
             RegionsTests.loadRegionTypeShelter();
             effects.put("block_explosion", "");
@@ -307,8 +302,8 @@ public class ProtectionsTests {
 
     @Test
     public void denyMonsterSpawnShouldProtectInTown() {
-        TownTests.loadTownTypeHamlet();
-        TownTests.loadTown("test", "hamlet", TestUtil.block.getLocation());
+        TownTests.loadTownTypeHamlet2();
+        TownTests.loadTown("test", "hamlet2", TestUtil.block.getLocation());
         Location location = TestUtil.block.getLocation();
         assertTrue(ProtectionHandler.shouldBlockAction(location, null, "deny_mob_spawn"));
     }

@@ -12,7 +12,6 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -39,12 +38,18 @@ public class ItemsTests {
     }
 
     @Test
+    public void itemTypesShouldLoadProperly() {
+        FolderType folderType = (FolderType) ItemManager.getInstance().getItemType("defense");
+        assertTrue(folderType.getChildren().contains(ItemManager.getInstance().getItemType("church")));
+    }
+
+    @Test
     public void playerShouldHaveGroupUnlocked() {
-        loadRegionTypeShack();
-        loadRegionTypeNPCShack();
-        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        loadRegionTypeShack2();
+        loadRegionTypeNPCShack2();
+        RegionsTests.createNewRegion("shack2", TestUtil.player.getUniqueId());
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        CivItem npcShack = ItemManager.getInstance().getItemType("npc_shack");
+        CivItem npcShack = ItemManager.getInstance().getItemType("npc_shack2");
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, npcShack));
     }
 
@@ -93,24 +98,24 @@ public class ItemsTests {
 
     @Test
     public void playerShouldHaveShackUnlocked() {
-        loadRegionTypeShack();
-        TownTests.loadTownTypeHamlet();
+        loadRegionTypeShack2();
+        TownTests.loadTownTypeHamlet2();
         Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);
-        Town town = TownTests.loadTown("something", "hamlet", location1);
+        Town town = TownTests.loadTown("something", "hamlet2", location1);
         town.getPeople().put(TestUtil.player.getUniqueId(), "owner");
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian,
-                ItemManager.getInstance().getItemType("shack")));
+                ItemManager.getInstance().getItemType("shack2")));
     }
 
     @Test
     public void playerShouldHaveCityHall2Unlocked() {
         loadRegionTypeCityHall2();
-        loadRegionTypeShack();
-        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        loadRegionTypeShack2();
+        RegionsTests.createNewRegion("shack2", TestUtil.player.getUniqueId());
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian,
-                ItemManager.getInstance().getItemType("cityhall")));
+                ItemManager.getInstance().getItemType("cityhall2")));
     }
 
     @Test
@@ -151,10 +156,10 @@ public class ItemsTests {
     @Test
     public void hamletShouldBeUnlocked() {
         TownTests.loadTownTypeTribe();
-        Town town = TownTests.loadTown("test", "hamlet", TestUtil.player.getLocation());
+        Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setVillagers(4);
         town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
-        TownTests.loadTownTypeHamlet();
+        TownTests.loadTownTypeHamlet2();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe")));
     }
@@ -206,13 +211,13 @@ public class ItemsTests {
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "GOLD_BLOCK");
         ArrayList<String> preReqs = new ArrayList<>();
-        preReqs.add("shack:built=1");
+        preReqs.add("shack2:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config, "cityhall");
+        itemManager.loadRegionType(config, "cityhall2");
     }
 
-    private void loadRegionTypeShack() {
+    private void loadRegionTypeShack2() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
         ArrayList<String> groups = new ArrayList<>();
@@ -220,13 +225,13 @@ public class ItemsTests {
         config.set("groups", groups);
         config.set("icon", "CHEST");
         ArrayList<String> preReqs = new ArrayList<>();
-        preReqs.add("member=hamlet");
+        preReqs.add("member=hamlet2");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config, "shack");
+        itemManager.loadRegionType(config, "shack2");
     }
 
-    private void loadRegionTypeNPCShack() {
+    private void loadRegionTypeNPCShack2() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "CHEST");
@@ -234,6 +239,6 @@ public class ItemsTests {
         preReqs.add("baseshack:built=1");
         config.set("pre-reqs", preReqs);
         config.set("build-radius", 7);
-        itemManager.loadRegionType(config, "npc_shack");
+        itemManager.loadRegionType(config, "npc_shack2");
     }
 }

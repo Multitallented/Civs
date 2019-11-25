@@ -21,6 +21,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
@@ -37,40 +40,24 @@ public class ItemManager {
     public static ItemManager getInstance() {
         if (itemManager == null) {
             itemManager = new ItemManager();
-            if (Civs.getInstance() != null) {
-                itemManager.loadAllItemTypes();
-            }
+            itemManager.loadAllItemTypes();
         }
         return itemManager;
     }
 
     public void reload() {
         itemTypes.clear();
-        if (Civs.getInstance() != null) {
-            loadAllItemTypes();
-        }
+        loadAllItemTypes();
     }
 
     private void loadAllItemTypes() {
         final String ITEM_TYPES_FOLDER_NAME = "item-types";
-        String resourcePath = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + ITEM_TYPES_FOLDER_NAME;
-        InputStream in = getClass().getResourceAsStream(resourcePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        List<String> fileNames = new ArrayList<>();
-        String resource;
-        try {
-            while ((resource = reader.readLine()) != null) {
-                fileNames.add(resource);
-            }
-        } catch (IOException io) {
-            io.printStackTrace();
-            Civs.logger.severe("Unable to load items!");
-            return;
+        String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
+        Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
+        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
+            loopThroughResources("/" + fileName);
         }
-        for (String fileName : fileNames) {
-            loopThroughResources(resourcePath + "/" + fileName, null);
-        }
-        File itemTypesFolder = new File(Civs.getInstance().getDataFolder(), ITEM_TYPES_FOLDER_NAME);
+        File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
             for (File file : itemTypesFolder.listFiles()) {
                 String itemName = file.getName().replace(".yml", "").toLowerCase();
@@ -83,79 +70,85 @@ public class ItemManager {
         }
     }
 
-    private void loopThroughResources(String path, List<CivItem> parentList) {
-        String[] pathSplit = path.split("/");
+    private void loopThroughResources(String path) {
+        String relativePath = path.replace("/resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
+        String[] pathSplit = relativePath.split("/");
         String currentFileName = pathSplit[pathSplit.length - 1];
         try {
-            if (!path.contains(".yml")) {
-                List<CivItem> currParentList = new ArrayList<>();
-                InputStream in = getClass().getResourceAsStream(path);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                List<String> fileNames = new ArrayList<>();
-                String resource;
-                try {
-                    while ((resource = reader.readLine()) != null) {
-                        fileNames.add(resource);
+            try {
+                FolderType folderType = null;
+                for (String currentFolder : pathSplit) {
+                    if (currentFolder.isEmpty() || "item-types".equals(currentFolder) ||
+                            currentFolder.equals(currentFileName)) {
+                        continue;
                     }
-                } catch (IOException io) {
-                    io.printStackTrace();
-                    Civs.logger.severe("Unable to load items!");
+                    if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
+                        FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains("-invisible"));
+                        if (folderType != null) {
+                            folderType.getChildren().add(currentFolderType);
+                            folderType = currentFolderType;
+                        }
+                    } else {
+                        folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
+                    }
+                }
+
+                File file = new File(Civs.dataLocation, relativePath);
+                FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
+                if (!typeConfig.getBoolean("enabled", true)) {
                     return;
                 }
-                for (String fileName : fileNames) {
-                    loopThroughResources(path + "/" + fileName, currParentList);
+                String type = typeConfig.getString("type","region");
+                CivItem civItem = null;
+                String itemName = currentFileName.replace(".yml", "").toLowerCase();
+                if (type.equals("region")) {
+                    civItem = loadRegionType(typeConfig, itemName);
+                } else if (type.equals("spell")) {
+                    civItem = loadSpellType(typeConfig, itemName);
+                } else if (type.equals("class")) {
+                    civItem = loadClassType(typeConfig, itemName);
+                } else if (type.equals("town")) {
+                    civItem = loadTownType(typeConfig, itemName);
                 }
-                String folderName = currentFileName.replace("-invisible", "");
-                FolderType folderType = new FolderType(new ArrayList<>(),
-                        folderName,
-                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
-                        0,
-                        null,
-                        currParentList,
-                        !path.contains("invisible"),
-                        1);
-                itemTypes.put(folderName.toLowerCase(), folderType);
-                if (parentList != null) {
-                    parentList.add(folderType);
+                if (folderType != null) {
+                    folderType.getChildren().add(civItem);
                 }
-            } else {
-                try {
-                    File file = new File(Civs.getInstance().getDataFolder(), path);
-                    FileConfiguration typeConfig = FallbackConfigUtil.getConfig(file, path);
-                    if (!typeConfig.getBoolean("enabled", true)) {
-                        return;
-                    }
-                    String type = typeConfig.getString("type","region");
-                    CivItem civItem = null;
-                    String itemName = currentFileName.replace(".yml", "").toLowerCase();
-                    if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig, itemName);
-                    } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig, itemName);
-                    } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig, itemName);
-                    } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, itemName);
-                    }
-                    if (civItem != null && parentList != null) {
-                        parentList.add(civItem);
-                    }
-                } catch (Exception e) {
-                    Civs.logger.severe("Unable to read from " + currentFileName);
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                Civs.logger.severe("Unable to read from " + currentFileName);
+                e.printStackTrace();
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to load " + path);
+            Civs.logger.severe("Unable to load " + relativePath);
         }
+    }
+
+    private FolderType createFolder(String currentFileName, boolean invisible) {
+        System.out.println("creating folder " + currentFileName);
+        String folderName = currentFileName.replace("-invisible", "");
+        FolderType folderType = new FolderType(new ArrayList<>(),
+                folderName,
+                ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                0,
+                null,
+                new ArrayList<>(),
+                invisible,
+                1);
+        itemTypes.put(folderName.toLowerCase(), folderType);
+        return folderType;
     }
 
     private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
         try {
             if (file.isDirectory() && !file.getName().contains(".yml")) {
-                List<CivItem> currParentList = new ArrayList<>();
-                for (File pFile : file.listFiles()) {
+                List<CivItem> currParentList;
+                if (ItemManager.getInstance().getItemType(file.getName().toLowerCase()) != null) {
+                    FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(file.getName().toLowerCase());
+                    currParentList = folderType.getChildren();
+                } else {
+                    currParentList = new ArrayList<>();
+                }
 
+                for (File pFile : file.listFiles()) {
                     loopThroughTypeFiles(pFile, currParentList);
                 }
                 if (itemTypes.containsKey(file.getName().toLowerCase())) {

@@ -26,9 +26,7 @@ public class PermissionEffect implements Listener {
     private static final Map<UUID, HashSet<String>> permissionMap = new HashMap<>();
 
     public static void getInstance() {
-        if (Civs.getInstance() != null) {
-            Bukkit.getPluginManager().registerEvents(new PermissionEffect(), Civs.getInstance());
-        }
+        Bukkit.getPluginManager().registerEvents(new PermissionEffect(), Civs.getInstance());
     }
 
     @EventHandler

@@ -1,5 +1,14 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,13 +25,8 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.*;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class GovernmentManager {
@@ -32,38 +36,23 @@ public class GovernmentManager {
     public static GovernmentManager getInstance() {
         if (instance == null) {
             instance = new GovernmentManager();
-            if (Civs.getInstance() != null) {
-                instance.loadAllGovTypes();
-            }
+            instance.loadAllGovTypes();
         }
         return instance;
     }
 
     public void reload() {
         governments.clear();
-        if (Civs.getInstance() != null) {
-            loadAllGovTypes();
-        }
+        loadAllGovTypes();
     }
 
     private void loadAllGovTypes() {
         final String GOV_TYPE_FOLDER_NAME = "gov-types";
-        File govTypeFolder = new File(Civs.getInstance().getDataFolder(), GOV_TYPE_FOLDER_NAME);
+        File govTypeFolder = new File(Civs.dataLocation, GOV_TYPE_FOLDER_NAME);
         boolean govTypeFolderExists = govTypeFolder.exists();
-        String path = "/resources/" + ConfigManager.getInstance().getDefaultConfigSet() + "/" + GOV_TYPE_FOLDER_NAME;
-        InputStream in = getClass().getResourceAsStream(path);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        List<String> fileNames = new ArrayList<>();
-        String resource;
-        try {
-            while ((resource = reader.readLine()) != null) {
-                fileNames.add(resource);
-            }
-        } catch (IOException io) {
-            Civs.logger.severe("Unable to load any gov types!");
-            return;
-        }
-        for (String fileName : fileNames) {
+        String path = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + GOV_TYPE_FOLDER_NAME;
+        Reflections reflections = new Reflections(path , new ResourcesScanner());
+        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
             FileConfiguration config;
             if (govTypeFolderExists) {
                 config = FallbackConfigUtil.getConfig(
