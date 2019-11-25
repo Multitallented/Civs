@@ -55,8 +55,9 @@ public class GovernmentManager {
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
             FileConfiguration config;
             if (govTypeFolderExists) {
-                config = FallbackConfigUtil.getConfig(
-                        new File(govTypeFolder, fileName), GOV_TYPE_FOLDER_NAME + "/" + fileName);
+                System.out.println(fileName);
+                config = FallbackConfigUtil.getConfigFullPath(
+                        new File(govTypeFolder, fileName), "/" + fileName);
             } else {
                 config = FallbackConfigUtil.getConfig(null, GOV_TYPE_FOLDER_NAME + "/" + fileName);
             }
