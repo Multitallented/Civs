@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -29,6 +30,9 @@ public final class FallbackConfigUtil {
                 FileConfiguration configOverride = new YamlConfiguration();
                 configOverride.load(originalFile);
                 for (String key : configOverride.getKeys(true)) {
+                    if (configOverride.get(key) instanceof ConfigurationSection) {
+                        continue;
+                    }
                     config.set(key, configOverride.get(key));
                 }
             }
