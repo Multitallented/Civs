@@ -116,7 +116,7 @@ public class MemberActionMenu extends CustomMenu {
         } else if ("set-owner".equals(menuIcon.getKey())) {
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
                     !isVoteOnly && !role.contains("owner") && !cantAddOwners)) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
                     cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
@@ -146,7 +146,7 @@ public class MemberActionMenu extends CustomMenu {
                     governmentType == GovernmentType.CAPITALISM ||
                     governmentType == GovernmentType.COOPERATIVE) &&
                     (governmentType == GovernmentType.CAPITALISM || !alreadyVoted)) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                     String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
                     cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "capitalism-voting-cost")

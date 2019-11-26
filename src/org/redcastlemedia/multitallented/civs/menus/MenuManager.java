@@ -106,19 +106,19 @@ public class MenuManager implements Listener {
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         if (event.getCurrentItem() != null) {
-            if (backButton.createCVItem(civilian.getLocale())
+            if (backButton.createCVItem(civilian.getLocale(), 0)
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 goBack(civilian.getUuid());
                 event.setCancelled(true);
                 return;
-            } else if (prevButton.createCVItem(civilian.getLocale())
+            } else if (prevButton.createCVItem(civilian.getLocale(), 0)
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
                 putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
                 refreshMenu(civilian);
                 event.setCancelled(true);
                 return;
-            } else if (nextButton.createCVItem(civilian.getLocale())
+            } else if (nextButton.createCVItem(civilian.getLocale(), 0)
                     .equivalentItem(event.getCurrentItem(), true, true)) {
                 int page = (Integer) getData(civilian.getUuid(), "page");
                 int maxPage = (Integer) getData(civilian.getUuid(), "maxPage");

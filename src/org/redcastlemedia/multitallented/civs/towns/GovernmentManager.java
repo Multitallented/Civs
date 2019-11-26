@@ -59,9 +59,9 @@ public class GovernmentManager {
                 config = FallbackConfigUtil.getConfigFullPath(
                         new File(govTypeFolder, fileName), "/" + fileName);
             } else {
-                config = FallbackConfigUtil.getConfig(null, GOV_TYPE_FOLDER_NAME + "/" + fileName);
+                config = FallbackConfigUtil.getConfigFullPath(null, "/" + fileName);
             }
-            loadGovType(config, fileName.replace(".yml", ""));
+            loadGovType(config, fileName.substring(fileName.lastIndexOf("/") + 1).replace(".yml", ""));
         }
         if (govTypeFolderExists) {
             for (File file : govTypeFolder.listFiles()) {

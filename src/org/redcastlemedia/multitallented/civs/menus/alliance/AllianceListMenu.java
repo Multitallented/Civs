@@ -54,7 +54,7 @@ public class AllianceListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             Alliance alliance = allianceArray[startIndex + count];
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(alliance.getName());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

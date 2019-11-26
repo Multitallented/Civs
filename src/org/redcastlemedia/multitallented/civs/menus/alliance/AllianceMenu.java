@@ -54,7 +54,7 @@ public class AllianceMenu extends CustomMenu {
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(alliance.getLastRenamedBy());
             if (offlinePlayer.getName() != null) {
-                CVItem lastRenameCVItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem lastRenameCVItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 lastRenameCVItem.setMat(Material.PLAYER_HEAD);
                 ItemStack is = lastRenameCVItem.createItemStack();
                 SkullMeta isMeta = (SkullMeta) is.getItemMeta();
@@ -68,7 +68,7 @@ public class AllianceMenu extends CustomMenu {
             }
         }
         if (menuIcon.getKey().equals("icon")) {
-            CVItem icon = menuIcon.createCVItem(civilian.getLocale());
+            CVItem icon = menuIcon.createCVItem(civilian.getLocale(), count);
             icon.setDisplayName(alliance.getName());
             ItemStack itemStack = icon.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

@@ -81,7 +81,7 @@ public class TownMenu extends CustomMenu {
             if (town.getPower() < 1) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
@@ -93,7 +93,7 @@ public class TownMenu extends CustomMenu {
             if (town.getPower() > 0) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
@@ -105,7 +105,7 @@ public class TownMenu extends CustomMenu {
             return itemStack;
         } else if ("location".equals(menuIcon.getKey())) {
             if (town.getPeople().containsKey(civilian.getUuid())) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 World world = town.getLocation().getWorld();
                 String worldName = world == null ? "null" : world.getName();
                 cvItem.getLore().add(worldName + " " +
@@ -120,7 +120,7 @@ public class TownMenu extends CustomMenu {
             }
         } else if ("set-ally".equals(menuIcon.getKey())) {
             if (selectedTown != null && selectedTown != town && !isAllied) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         menuIcon.getName()).replace("$1", town.getName()));
                 cvItem.getLore().clear();
@@ -135,7 +135,7 @@ public class TownMenu extends CustomMenu {
             if (!isAllied) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
@@ -144,7 +144,7 @@ public class TownMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("population".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.getLore().clear();
             cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getDesc())
@@ -155,7 +155,7 @@ public class TownMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
@@ -219,7 +219,7 @@ public class TownMenu extends CustomMenu {
             if (!town.getRevolt().contains(civilian.getUuid())) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String bankBalance = Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", bankBalance));
@@ -251,7 +251,7 @@ public class TownMenu extends CustomMenu {
             if (hasRevolt(town) && town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains("member")) {
                 CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 cvItem.getLore().clear();
                 cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), menuIcon.getDesc()).replace("$1", town.getName())
@@ -268,7 +268,7 @@ public class TownMenu extends CustomMenu {
             }
             if (hasRevolt(town) && town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains("member")) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 cvItem.getLore().clear();
                 cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
                         civilian.getLocale(), "cancel-revolt").replace("$1", town.getName())));

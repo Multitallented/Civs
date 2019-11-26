@@ -52,7 +52,7 @@ public class PlayerMenu extends CustomMenu {
             if (Civs.econ == null) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String money = Util.getNumberFormat(Civs.econ.getBalance(Bukkit.getOfflinePlayer(civilian.getUuid())),
                     civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -61,7 +61,7 @@ public class PlayerMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("towns".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             int i = 0;
             for (Town town : TownManager.getInstance().getTowns()) {
                 if (!town.getRawPeople().containsKey(civilian.getUuid())) {
@@ -78,7 +78,7 @@ public class PlayerMenu extends CustomMenu {
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             Player player = Bukkit.getPlayer(civilian.getUuid());
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", player.getName()));
             ArrayList<String> lore = new ArrayList<>();
@@ -97,35 +97,35 @@ public class PlayerMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("points".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + civilian.getPoints()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("karma".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + civilian.getKarma()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("deaths".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + civilian.getDeaths()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("killstreak".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + civilian.getKillStreak()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("highest-killstreak".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale());
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()).replace("$1", "" + civilian.getHighestKillStreak()));
             ItemStack itemStack = cvItem.createItemStack();
