@@ -22,8 +22,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
@@ -359,6 +362,9 @@ public class RegionsTests {
     public void regionShouldNotBeCreatedIfNotAllReqs() {
         loadRegionTypeCobble2();
 
+        InventoryView transaction = mock(InventoryView.class);
+        when(transaction.getPlayer()).thenReturn(TestUtil.player);
+        InventoryCloseEvent inventoryCloseEvent = new InventoryCloseEvent(transaction);
         BlockPlaceEvent event3 = mock(BlockPlaceEvent.class);
         when(event3.getBlockPlaced()).thenReturn(TestUtil.block4);
         ItemStack cobbleStack = TestUtil.createItemStack(Material.COBBLESTONE);
@@ -371,6 +377,8 @@ public class RegionsTests {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         doReturn(TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble")).when(event1).getItemInHand();
 
+
+        MenuManager.getInstance().onInventoryClose(inventoryCloseEvent);
         RegionListener regionListener = new RegionListener();
         regionListener.onBlockPlace(event2);
         regionListener.onBlockPlace(event3);

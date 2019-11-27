@@ -82,7 +82,6 @@ public class MenuManager implements Listener {
         String dataMenuName = (String) getData(civilian.getUuid(), "menuName");
         if (openMenus.get(uuid).equals(dataMenuName) &&
                 dataMenuName.equals(getData(civilian.getUuid(), "menuName"))) {
-            System.out.println("clearing data " + dataMenuName);
             clearData(uuid);
         }
         openMenus.remove(uuid);

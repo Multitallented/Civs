@@ -137,10 +137,8 @@ public class CivilianManager {
         try {
             civConfig.load(civilianFile);
 
-            //TODO load other civilian file properties
-
             ItemManager itemManager = ItemManager.getInstance();
-            HashMap<String, Integer> items = itemManager.loadCivItems(civConfig, uuid);
+            Map<String, Integer> items = itemManager.loadCivItems(civConfig);
             Set<CivClass> classes = new HashSet<>();
             ClassManager classManager = ClassManager.getInstance();
             for (int id : civConfig.getIntegerList("classes")) {

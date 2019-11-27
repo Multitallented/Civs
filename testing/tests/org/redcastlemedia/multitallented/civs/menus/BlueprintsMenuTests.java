@@ -35,7 +35,6 @@ public class BlueprintsMenuTests {
     private CustomMenu blueprintsMenu;
     private Civilian civilian;
     private InventoryImpl inventory;
-    private InventoryCloseEvent event;
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -51,11 +50,7 @@ public class BlueprintsMenuTests {
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
         this.inventory.setTitle("CivsRegionStash");
-        this.inventoryView = mock(InventoryView.class);
-        when(inventoryView.getTopInventory()).thenReturn(inventory);
-        when(inventoryView.getPlayer()).thenReturn(TestUtil.player);
 
-        this.event = new InventoryCloseEvent(inventoryView);
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().put("shelter", 1);
     }

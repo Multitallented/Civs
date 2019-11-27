@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,6 +37,8 @@ import java.util.regex.Pattern;
 public class ItemManager {
     private static ItemManager itemManager;
     private HashMap<String, CivItem> itemTypes = new HashMap<>();
+    private static final String INVISIBLE = "-invisible";
+    private static final String ITEM_TYPES = "item-types";
 
     public static ItemManager getInstance() {
         if (itemManager == null) {
@@ -51,7 +54,7 @@ public class ItemManager {
     }
 
     private void loadAllItemTypes() {
-        final String ITEM_TYPES_FOLDER_NAME = "item-types";
+        final String ITEM_TYPES_FOLDER_NAME = ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
@@ -75,55 +78,51 @@ public class ItemManager {
         String[] pathSplit = relativePath.split("/");
         String currentFileName = pathSplit[pathSplit.length - 1];
         try {
-            try {
-                FolderType folderType = null;
-                for (String currentFolder : pathSplit) {
-                    if (currentFolder.isEmpty() || "item-types".equals(currentFolder) ||
-                            currentFolder.equals(currentFileName)) {
-                        continue;
-                    }
-                    if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
-                        FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains("-invisible"));
-                        if (folderType != null) {
-                            folderType.getChildren().add(currentFolderType);
-                            folderType = currentFolderType;
-                        }
-                    } else {
-                        folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
-                    }
+            FolderType folderType = null;
+            for (String currentFolder : pathSplit) {
+                if (currentFolder.isEmpty() || ITEM_TYPES.equals(currentFolder) ||
+                        currentFolder.equals(currentFileName)) {
+                    continue;
                 }
+                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
+                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(INVISIBLE));
+                    if (folderType != null) {
+                        folderType.getChildren().add(currentFolderType);
+                        folderType = currentFolderType;
+                    }
+                } else {
+                    folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
+                }
+            }
 
-                File file = new File(Civs.dataLocation, relativePath);
-                FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
-                if (!typeConfig.getBoolean("enabled", true)) {
-                    return;
-                }
-                String type = typeConfig.getString("type","region");
-                CivItem civItem = null;
-                String itemName = currentFileName.replace(".yml", "").toLowerCase();
-                if (type.equals("region")) {
-                    civItem = loadRegionType(typeConfig, itemName);
-                } else if (type.equals("spell")) {
-                    civItem = loadSpellType(typeConfig, itemName);
-                } else if (type.equals("class")) {
-                    civItem = loadClassType(typeConfig, itemName);
-                } else if (type.equals("town")) {
-                    civItem = loadTownType(typeConfig, itemName);
-                }
-                if (folderType != null) {
-                    folderType.getChildren().add(civItem);
-                }
-            } catch (Exception e) {
-                Civs.logger.severe("Unable to read from " + currentFileName);
-                e.printStackTrace();
+            File file = new File(Civs.dataLocation, relativePath);
+            FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
+            if (!typeConfig.getBoolean("enabled", true)) {
+                return;
+            }
+            String type = typeConfig.getString("type","region");
+            CivItem civItem = null;
+            String itemName = currentFileName.replace(".yml", "").toLowerCase();
+            if (type.equals("region")) {
+                civItem = loadRegionType(typeConfig, itemName);
+            } else if (type.equals("spell")) {
+                civItem = loadSpellType(typeConfig, itemName);
+            } else if (type.equals("class")) {
+                civItem = loadClassType(typeConfig, itemName);
+            } else if (type.equals("town")) {
+                civItem = loadTownType(typeConfig, itemName);
+            }
+            if (folderType != null) {
+                folderType.getChildren().add(civItem);
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to load " + relativePath);
+            Civs.logger.severe("Unable to read from " + currentFileName);
+            e.printStackTrace();
         }
     }
 
     private FolderType createFolder(String currentFileName, boolean invisible) {
-        String folderName = currentFileName.replace("-invisible", "");
+        String folderName = currentFileName.replace(INVISIBLE, "");
         FolderType folderType = new FolderType(new ArrayList<>(),
                 folderName,
                 ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -156,7 +155,7 @@ public class ItemManager {
                     }
                     return;
                 }
-                String folderName = file.getName().replace("-invisible", "");
+                String folderName = file.getName().replace(INVISIBLE, "");
                 FolderType folderType = new FolderType(new ArrayList<>(),
                         folderName,
                         ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -205,14 +204,14 @@ public class ItemManager {
             return;
         }
     }
-    public CivItem loadClassType(FileConfiguration config, String name) throws NullPointerException {
+    public CivItem loadClassType(FileConfiguration config, String name) {
         //TODO load classestype properly
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         ClassType civItem = new ClassType(
                 config.getStringList("reqs"),
                 name,
                 icon,
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 config.getStringList("children"),
@@ -226,13 +225,13 @@ public class ItemManager {
         return civItem;
     }
 
-    public CivItem loadSpellType(FileConfiguration config, String name) throws NullPointerException {
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+    public CivItem loadSpellType(FileConfiguration config, String name) {
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         SpellType spellType = new SpellType(
                 config.getStringList("reqs"),
                 name,
                 icon.getMat(),
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
                 config.getInt("max", -1),
@@ -260,7 +259,7 @@ public class ItemManager {
     }
 
     public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.STONE.name()));
         HashMap<String, String> effects = new HashMap<>();
         List<String> configEffects = config.getStringList("effects");
         for (String effectString : configEffects) {
@@ -275,7 +274,7 @@ public class ItemManager {
         TownType townType = new TownType(
                 name,
                 icon,
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min",0),
@@ -300,8 +299,8 @@ public class ItemManager {
         return townType;
     }
 
-    public RegionType loadRegionType(FileConfiguration config, String name) throws NullPointerException {
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
+    public RegionType loadRegionType(FileConfiguration config, String name) {
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         List<List<CVItem>> reqs = new ArrayList<>();
         for (String req : config.getStringList("build-reqs")) {
             reqs.add(CVItem.createListFromString(req));
@@ -373,7 +372,7 @@ public class ItemManager {
         RegionType regionType = new RegionType(
                 name,
                 icon,
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", "CHEST"))),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getStringList("pre-reqs"),
                 config.getInt("qty", 0),
                 config.getInt("min", 0),
@@ -402,7 +401,7 @@ public class ItemManager {
         return regionType;
     }
 
-    public HashMap<String, Integer> loadCivItems(FileConfiguration civConfig, UUID uuid) {
+    public Map<String, Integer> loadCivItems(FileConfiguration civConfig) {
         HashMap<String, Integer> items = new HashMap<>();
         ConfigurationSection configurationSection = civConfig.getConfigurationSection("items");
         if (configurationSection == null) {

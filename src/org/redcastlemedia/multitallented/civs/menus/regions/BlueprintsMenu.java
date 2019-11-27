@@ -37,7 +37,7 @@ public class BlueprintsMenu extends CustomMenu {
             data.put("page", 0);
         }
 
-        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        Map<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
         for (String itemName : newItems.keySet()) {
             stashItems.put(itemName, newItems.get(itemName));
@@ -59,7 +59,7 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override
     public void onCloseMenu(Civilian civilian, Inventory inventory) {
-        HashMap<String, Integer> stashItems = civilian.getStashItems();
+        Map<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "itemsInView");
         for (ItemStack is : inventory) {
             if (!CVItem.isCivsItem(is)) {
@@ -109,7 +109,7 @@ public class BlueprintsMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("blueprints")) {
-            HashMap<String, Integer> stashItems = civilian.getStashItems();
+            Map<String, Integer> stashItems = civilian.getStashItems();
             if (stashItems.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,11 +33,14 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 public class Civilian {
 
     private final UUID uuid;
-    private final HashMap<CivItem, Integer> exp;
+    @Getter
+    private final Map<CivItem, Integer> exp;
     private Set<CivClass> civClasses;
     private String locale;
-    private HashMap<String, Integer> stashItems;
-    private final HashMap<String, CivState> states;
+    @Getter @Setter
+    private Map<String, Integer> stashItems;
+    @Getter
+    private final Map<String, CivState> states;
     private Location respawnPoint = null;
     private long lastJail = 0;
     private int kills;
@@ -54,29 +58,24 @@ public class Civilian {
     private List<Bounty> bounties = new ArrayList<>();
     private long lastKarmaDepreciation;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private int tutorialIndex;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private String tutorialPath;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean askForTutorial;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private int tutorialProgress;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean useAnnouncements;
 
-    public Civilian(UUID uuid, String locale, HashMap<String, Integer> stashItems, Set<CivClass> civClasses,
-            HashMap<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-            double points, int karma, int expOrbs, boolean askForTutorial) {
+    public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
+                    Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
+                    double points, int karma, int expOrbs, boolean askForTutorial) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -116,12 +115,6 @@ public class Civilian {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-    public HashMap<String, Integer> getStashItems() {
-        return stashItems;
-    }
-    public void setStashItems(HashMap<String, Integer> stashItems) { this.stashItems = stashItems; }
-    public HashMap<CivItem, Integer> getExp() { return exp; }
-    public HashMap<String, CivState> getStates() { return states; }
     public Location getRespawnPoint() { return respawnPoint; }
     public void setRespawnPoint(Location location) { this.respawnPoint = location; }
     public long getLastJail() { return lastJail; }
