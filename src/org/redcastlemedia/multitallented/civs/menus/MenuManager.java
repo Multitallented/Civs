@@ -208,6 +208,11 @@ public class MenuManager implements Listener {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (openMenus.containsKey(civilian.getUuid()) &&
+                menuName.equals(openMenus.get(civilian.getUuid()))) {
+            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+            openMenus.remove(civilian.getUuid());
+        }
         player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
         if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
             cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
@@ -230,6 +235,11 @@ public class MenuManager implements Listener {
         if (redirectMenu != null) {
             openMenuFromString(civilian, redirectMenu);
             return;
+        }
+        if (openMenus.containsKey(civilian.getUuid()) &&
+                menuName.equals(openMenus.get(civilian.getUuid()))) {
+            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+            openMenus.remove(civilian.getUuid());
         }
         player.openInventory(menus.get(menuName).createMenu(civilian, params));
         if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
@@ -264,6 +274,9 @@ public class MenuManager implements Listener {
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
         String menuName = openMenus.get(civilian.getUuid());
+
+        menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+        openMenus.remove(civilian.getUuid());
         player.openInventory(menus.get(menuName).createMenu(civilian));
         openMenus.put(civilian.getUuid(), menuName);
     }

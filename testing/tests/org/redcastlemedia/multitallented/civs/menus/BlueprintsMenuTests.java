@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 
 public class BlueprintsMenuTests {
     private CustomMenu blueprintsMenu;
-    private InventoryView inventoryView;
     private Civilian civilian;
     private InventoryImpl inventory;
     private InventoryCloseEvent event;

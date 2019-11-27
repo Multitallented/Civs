@@ -268,7 +268,6 @@ public class RegionTypeMenu extends CustomMenu {
                 if (regionType.getUpkeeps().get(count).getInputs().isEmpty()) {
                     return new ItemStack(Material.AIR);
                 }
-                    System.out.println(count);
                 return replaceItemStackWithRegionTypeName(civilian, menuIcon, localizedRegionTypeName, count);
 
                 case "power-input":

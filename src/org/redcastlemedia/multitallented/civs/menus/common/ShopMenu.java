@@ -211,8 +211,8 @@ public class ShopMenu extends CustomMenu {
                     civItem.getProcessedName() + "-name"));
             civItem1.getLore().clear();
             civItem1.getLore().add(ChatColor.BLACK + civItem.getProcessedName());
-            civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price") +
-                    ": " + Util.getNumberFormat(civItem.getPrice(), civilian.getLocale()));
+            civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price")
+                    .replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             civItem1.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
         }
         ItemStack itemStack = civItem1.createItemStack();
