@@ -2,15 +2,12 @@ package org.redcastlemedia.multitallented.civs.menus.regions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -25,8 +22,10 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "blueprints")
+@CivsMenu(name = "blueprints") @SuppressWarnings("unused")
 public class BlueprintsMenu extends CustomMenu {
+    private static final String ITEMS_IN_VIEW = "itemsInView";
+
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
@@ -39,16 +38,18 @@ public class BlueprintsMenu extends CustomMenu {
 
         Map<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
-        for (String itemName : newItems.keySet()) {
+        for (Map.Entry<String, Integer> entry : newItems.entrySet()) {
+            String itemName = entry.getKey();
             stashItems.put(itemName, newItems.get(itemName));
         }
         CivilianManager.getInstance().saveCivilian(civilian);
-        data.put("itemsInView", new HashMap<String, Integer>());
+        data.put(ITEMS_IN_VIEW, new HashMap<String, Integer>());
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 
-        for (String key : params.keySet()) {
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String key = entry.getKey();
             if (key.equals("page") || key.equals("maxPage")) {
                 continue;
             }
@@ -57,39 +58,16 @@ public class BlueprintsMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public void onCloseMenu(Civilian civilian, Inventory inventory) {
         Map<String, Integer> stashItems = civilian.getStashItems();
-        HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "itemsInView");
-        for (ItemStack is : inventory) {
-            if (!CVItem.isCivsItem(is)) {
-                continue;
-            }
-            CivItem civItem = CivItem.getFromItemStack(is);
-            String name = civItem.getProcessedName();
-            if (itemsInView.containsKey(name)) {
-                if (itemsInView.get(name) >= is.getAmount()) {
-                    itemsInView.put(name, itemsInView.get(name) - is.getAmount());
-                } else {
-                    if (itemsInView.get(name) < is.getAmount()) {
-                        int amount = is.getAmount() - itemsInView.get(name);
-                        if (stashItems.containsKey(name)) {
-                            stashItems.put(name, amount + stashItems.get(name));
-                        } else {
-                            stashItems.put(name, amount);
-                        }
-                    }
-                    itemsInView.remove(name);
-                }
-            } else {
-                if (stashItems.containsKey(name)) {
-                    stashItems.put(name, is.getAmount() + stashItems.get(name));
-                } else {
-                    stashItems.put(name, is.getAmount());
-                }
-            }
+        HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), ITEMS_IN_VIEW);
+        if (itemsInView == null) {
+            itemsInView = new HashMap<>();
         }
-        for (String name : itemsInView.keySet()) {
+        addItemsToStash(inventory, itemsInView, stashItems);
+        for (Map.Entry<String, Integer> entry : itemsInView.entrySet()) {
+            String name = entry.getKey();
             if (!stashItems.containsKey(name)) {
                 stashItems.put(name, itemsInView.get(name));
                 continue;
@@ -105,8 +83,47 @@ public class BlueprintsMenu extends CustomMenu {
         CivilianManager.getInstance().saveCivilian(civilian);
         itemsInView.clear();
     }
+    private void addItemsToStash(Inventory inventory,
+                                 HashMap<String, Integer> itemsInView,
+                                 Map<String, Integer> stashItems) {
+        for (ItemStack is : inventory) {
+            if (!CVItem.isCivsItem(is)) {
+                continue;
+            }
+            CivItem civItem = CivItem.getFromItemStack(is);
+            String name = civItem.getProcessedName();
+            if (itemsInView.containsKey(name)) {
+                addItemFromItemsInView(itemsInView, name, is, stashItems);
+            } else {
+                if (stashItems.containsKey(name)) {
+                    stashItems.put(name, is.getAmount() + stashItems.get(name));
+                } else {
+                    stashItems.put(name, is.getAmount());
+                }
+            }
+        }
+    }
 
-    @Override
+    private void addItemFromItemsInView(HashMap<String, Integer> itemsInView,
+                                        String name,
+                                        ItemStack is,
+                                        Map<String, Integer> stashItems) {
+        if (itemsInView.get(name) >= is.getAmount()) {
+            itemsInView.put(name, itemsInView.get(name) - is.getAmount());
+        } else {
+            if (itemsInView.get(name) < is.getAmount()) {
+                int amount = is.getAmount() - itemsInView.get(name);
+                if (stashItems.containsKey(name)) {
+                    stashItems.put(name, amount + stashItems.get(name));
+                } else {
+                    stashItems.put(name, amount);
+                }
+            }
+            itemsInView.remove(name);
+        }
+    }
+
+    @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("blueprints")) {
             Map<String, Integer> stashItems = civilian.getStashItems();
@@ -125,6 +142,7 @@ public class BlueprintsMenu extends CustomMenu {
             if (civItem == null) {
                 civilian.getStashItems().remove(currentStashItemName);
                 CivilianManager.getInstance().saveCivilian(civilian);
+                return new ItemStack(Material.AIR);
             }
             CVItem cvItem = civItem.clone();
             List<String> lore = new ArrayList<>();
@@ -140,7 +158,10 @@ public class BlueprintsMenu extends CustomMenu {
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentStashItemName));
-            HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "itemsInView");
+            HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), ITEMS_IN_VIEW);
+            if (itemsInView == null) {
+                return new ItemStack(Material.AIR);
+            }
             itemsInView.put(currentStashItemName, civilian.getStashItems().get(currentStashItemName));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -151,10 +172,8 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getCurrentItem() != null && !CVItem.isCivsItem(event.getCurrentItem())) {
-            if (!event.isCancelled()) {
-                event.setCancelled(true);
-            }
+        if (!event.isCancelled() && event.getCurrentItem() != null && !CVItem.isCivsItem(event.getCurrentItem())) {
+            event.setCancelled(true);
         }
     }
 
