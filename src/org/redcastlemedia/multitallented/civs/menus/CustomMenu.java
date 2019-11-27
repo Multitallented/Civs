@@ -94,7 +94,7 @@ public abstract class CustomMenu {
             }
         }
 
-        ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale()).createItemStack();
+        ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale(), count).createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
         return itemStack;
     }

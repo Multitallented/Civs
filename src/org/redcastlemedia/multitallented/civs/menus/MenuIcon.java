@@ -73,11 +73,13 @@ public class MenuIcon {
         this.desc = desc;
     }
 
-    public CVItem createCVItem(String locale) {
+    public CVItem createCVItem(String locale, int count) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
         if (cvItem.getMmoItemType() == null) {
             if (!name.isEmpty()) {
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name));
+                String countString = count > 0 ? count + "" : "";
+
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name) + countString);
             }
             if (!desc.isEmpty()) {
                 cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
