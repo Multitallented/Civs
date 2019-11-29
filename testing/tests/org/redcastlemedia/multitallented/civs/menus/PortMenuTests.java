@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -26,7 +27,6 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 public class PortMenuTests {
-    private PortMenu portMenu = new PortMenu();
 
     @BeforeClass
     public static void onBeforeEverything() {
@@ -38,16 +38,14 @@ public class PortMenuTests {
     @Before
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
+        RegionManager.getInstance().reload();
     }
 
-    @Test @Ignore
+    @Test
     public void privatePortsShouldDisplay() {
         loadRegionTypePPort();
         loadRegion("pport");
-        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        portMenu.itemsPerPage.put("ports", 36);
-        portMenu.createData(civilian, new HashMap<>());
-        Inventory inventory = portMenu.createMenu(civilian);
+        Inventory inventory = MenuManager.getInstance().openMenu(TestUtil.player, "port", new HashMap<>());
         assertEquals(Material.IRON_BLOCK, inventory.getItem(9).getType());
     }
 
@@ -60,7 +58,7 @@ public class PortMenuTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_place");
         effects.add("block_break");
-        effects.add("port:private");
+        effects.add("port:owner");
         config.set("effects", effects);
         config.set("upkeep.0.power-input", 2);
         config.set("period", "daily");

@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -75,7 +76,7 @@ public class MenuManager implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onInventoryClose(InventoryCloseEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
@@ -92,7 +93,7 @@ public class MenuManager implements Listener {
         openMenus.remove(uuid);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onInventoryDrag(InventoryDragEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
@@ -101,7 +102,7 @@ public class MenuManager implements Listener {
         menus.get(openMenus.get(uuid)).onInventoryDrag(event);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onInventoryClick(InventoryClickEvent event) {
         UUID uuid = event.getWhoClicked().getUniqueId();
         if (!openMenus.containsKey(uuid)) {
@@ -209,9 +210,9 @@ public class MenuManager implements Listener {
         cycleGuis.remove(uuid);
     }
 
-    public void openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {
+    public Inventory openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {
         if (!menus.containsKey(menuName)) {
-            return;
+            return null;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (openMenus.containsKey(civilian.getUuid()) &&
@@ -219,7 +220,8 @@ public class MenuManager implements Listener {
             menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
-        player.openInventory(menus.get(menuName).createMenuFromHistory(civilian, data));
+        Inventory inventory = menus.get(menuName).createMenuFromHistory(civilian, data);
+        player.openInventory(inventory);
         if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
             cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
             menus.get(menuName).cycleItems.remove(civilian.getUuid());
@@ -230,24 +232,25 @@ public class MenuManager implements Listener {
         }
         MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
         history.get(player.getUniqueId()).add(menuHistoryState);
+        return inventory;
     }
 
-    public void openMenu(Player player, String menuName, Map<String, String> params) {
+    public Inventory openMenu(Player player, String menuName, Map<String, String> params) {
         if (!menus.containsKey(menuName)) {
-            return;
+            return null;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
         if (redirectMenu != null) {
-            openMenuFromString(civilian, redirectMenu);
-            return;
+            return openMenuFromString(civilian, redirectMenu);
         }
         if (openMenus.containsKey(civilian.getUuid()) &&
                 menuName.equals(openMenus.get(civilian.getUuid()))) {
             menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
-        player.openInventory(menus.get(menuName).createMenu(civilian, params));
+        Inventory inventory = menus.get(menuName).createMenu(civilian, params);
+        player.openInventory(inventory);
         if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
             cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
             menus.get(menuName).cycleItems.remove(civilian.getUuid());
@@ -258,9 +261,10 @@ public class MenuManager implements Listener {
         }
         MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
         history.get(player.getUniqueId()).add(menuHistoryState);
+        return inventory;
     }
 
-    public static void openMenuFromString(Civilian civilian, String menuString) {
+    public static Inventory openMenuFromString(Civilian civilian, String menuString) {
         String[] menuSplit = menuString.split("\\?");
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Map<String, String> params = new HashMap<>();
@@ -271,7 +275,7 @@ public class MenuManager implements Listener {
                 params.put(splitParams[0], splitParams[1]);
             }
         }
-        MenuManager.getInstance().openMenu(player, menuSplit[0], params);
+        return MenuManager.getInstance().openMenu(player, menuSplit[0], params);
     }
 
     public void refreshMenu(Civilian civilian) {
