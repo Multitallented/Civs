@@ -1,9 +1,17 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import lombok.Getter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,20 +25,17 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
-import java.io.File;
-import java.util.*;
+import lombok.Getter;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
-    public static HashMap<UUID, CycleGUI> cycleGuis = new HashMap<>();
-    private static HashMap<UUID, Map<String, Object>> data = new HashMap<>();
-    private static HashMap<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
-    private static HashMap<UUID, String> openMenus = new HashMap<>();
-    protected static HashMap<String, CustomMenu> menus = new HashMap<>();
+    private static Map<UUID, CycleGUI> cycleGuis = new HashMap<>();
+    private static Map<UUID, Map<String, Object>> data = new HashMap<>();
+    private static Map<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
+    private static Map<UUID, String> openMenus = new HashMap<>();
+    protected static Map<String, CustomMenu> menus = new HashMap<>();
 
     @Getter
     private MenuIcon backButton;
@@ -59,14 +64,14 @@ public class MenuManager implements Listener {
         return menuName.equals(openMenus.get(uuid));
     }
 
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onTwoSecondEvent(TwoSecondEvent event) {
         try {
             for (CycleGUI gui : new HashSet<>(cycleGuis.values())) {
                 gui.advanceItemPositions();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -93,7 +98,6 @@ public class MenuManager implements Listener {
         if (!openMenus.containsKey(uuid)) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         menus.get(openMenus.get(uuid)).onInventoryDrag(event);
     }
 
@@ -160,7 +164,7 @@ public class MenuManager implements Listener {
                     config.getString("next.desc", ""));
         } catch (Exception e) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to load menu default.yml");
-            e.printStackTrace();
+            Civs.logger.severe(Arrays.toString(e.getStackTrace()));
             return;
         }
 
@@ -168,11 +172,11 @@ public class MenuManager implements Listener {
         Set<Class<? extends CustomMenu>> menuClasses = reflections.getSubTypesOf(CustomMenu.class);
         for (Class<? extends CustomMenu> menuClass : menuClasses) {
             try {
-                CustomMenu currentMenu = menuClass.newInstance();
+                CustomMenu currentMenu = menuClass.getConstructor().newInstance();
                 loadConfig(currentMenu);
                 menus.put(menuClass.getAnnotation(CivsMenu.class).name(), currentMenu);
             } catch (Exception e) {
-                e.printStackTrace();
+                Civs.logger.severe(Arrays.toString(e.getStackTrace()));
             }
         }
     }
@@ -187,18 +191,21 @@ public class MenuManager implements Listener {
         int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");
         HashSet<MenuIcon> items = new HashSet<>();
-        for (String key : config.getConfigurationSection("items").getKeys(false)) {
-            MenuIcon menuIcon = new MenuIcon(key, config.getConfigurationSection("items." + key));
-            if (menuIcon.getIndex().isEmpty() ||
-                    menuIcon.getIndex().get(0) < 0) {
-                continue;
+        ConfigurationSection section = config.getConfigurationSection("items");
+        if (section != null) {
+            for (String key : section.getKeys(false)) {
+                MenuIcon menuIcon = new MenuIcon(key, config.getConfigurationSection("items." + key));
+                if (menuIcon.getIndex().isEmpty() ||
+                        menuIcon.getIndex().get(0) < 0) {
+                    continue;
+                }
+                items.add(menuIcon);
             }
-            items.add(menuIcon);
         }
         customMenu.loadConfig(items, size, name);
     }
 
-    private synchronized static void clearCycleItems(UUID uuid) {
+    private static synchronized void clearCycleItems(UUID uuid) {
         cycleGuis.remove(uuid);
     }
 
@@ -291,8 +298,7 @@ public class MenuManager implements Listener {
     public static MenuHistoryState popLastMenu(UUID uuid) {
         if (!history.containsKey(uuid) ||
                 history.get(uuid).isEmpty()) {
-            MenuHistoryState menuHistoryState = new MenuHistoryState("main", new HashMap<>());
-            return menuHistoryState;
+            return new MenuHistoryState("main", new HashMap<>());
         }
         MenuHistoryState menuHistoryState = history.get(uuid).get(history.get(uuid).size() - 1);
         history.get(uuid).remove(history.get(uuid).size() - 1);

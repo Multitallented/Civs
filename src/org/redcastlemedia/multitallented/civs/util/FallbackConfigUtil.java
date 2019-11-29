@@ -3,12 +3,14 @@ package org.redcastlemedia.multitallented.civs.util;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public final class FallbackConfigUtil {
     private FallbackConfigUtil() {
@@ -37,7 +39,7 @@ public final class FallbackConfigUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
         }
 
         return config;
