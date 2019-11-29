@@ -124,6 +124,9 @@ public class PlaceHook extends PlaceholderExpansion {
             }
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(bounty.getIssuer());
+            if (offlinePlayer.getName() == null) {
+                return "Unknown $" + bountyString;
+            }
             return offlinePlayer.getName() + " $" + bountyString;
         } else if (NATION.equals(identifier)) {
             String nation = getNation(civilian);

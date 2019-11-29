@@ -15,7 +15,9 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -74,18 +76,17 @@ public class CivilianTests {
         assertNull(civilian.isAtMax(itemManager.getItemType("cobble")));
     }
 
-//    @Test
-//    public void highestBountyShouldWork() {
-//        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-//        ArrayList<Bounty> bountyArrayList = new ArrayList<>();
-//        UUID uuid = new UUID(2,6);
-//        bountyArrayList.add(new Bounty(new UUID(2,4),10));
-//        bountyArrayList.add(new Bounty(uuid,20));
-//        civilian.setBounties(bountyArrayList);
-//        PlaceHook placeHook = new PlaceHook();
-//        String placeholder = placeHook.onPlaceholderRequest(TestUtil.player, "highestbounty");
-//        assertEquals(uuid + " $20.0", placeholder);
-//    }
+    @Test
+    public void highestBountyShouldWork() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        ArrayList<Bounty> bountyArrayList = new ArrayList<>();
+        UUID uuid = new UUID(2,6);
+        bountyArrayList.add(new Bounty(new UUID(2,4),10));
+        bountyArrayList.add(new Bounty(uuid,20));
+        civilian.setBounties(bountyArrayList);
+        Bounty bounty = civilian.getHighestBounty();
+        assertEquals(20.0, bounty.getAmount(), 0.1);
+    }
 
     public static void loadCivilian(Player player) {
         CivilianManager.getInstance().loadCivilian(player);
