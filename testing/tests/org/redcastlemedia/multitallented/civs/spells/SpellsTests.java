@@ -1,11 +1,19 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
-import org.bukkit.Bukkit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
@@ -16,20 +24,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-
-public class SpellsTests {
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class SpellsTests extends TestUtil {
 
     @Test
     public void hungerSpellShouldReduceStamina() {

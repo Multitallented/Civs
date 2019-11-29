@@ -1,5 +1,19 @@
 package org.redcastlemedia.multitallented.civs.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -7,7 +21,6 @@ import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,22 +32,10 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-import java.util.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class UtilTests {
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class UtilTests extends TestUtil {
 
     @Before
     public void setup() {
@@ -125,7 +126,6 @@ public class UtilTests {
     }
 
     @Test
-    @Ignore
     public void placeHookShouldReportHighestPop() {
         CivilianManager.getInstance().createDefaultCivilian(TestUtil.player);
         TownTests.loadTownTypeHamlet2();
@@ -136,7 +136,7 @@ public class UtilTests {
                 3, 0, -1);
         TownManager.getInstance().addTown(town);
         Town town1 = new Town("mytown2", "hamlet2", location, people, 100, 100,
-                8, 0, -1);
+                8, 1, -1);
         TownManager.getInstance().addTown(town1);
         PlaceHook placeHook = new PlaceHook();
         assertEquals("mytown2", placeHook.onPlaceholderRequest(TestUtil.player, "townname"));

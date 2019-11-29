@@ -1,57 +1,32 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import org.bukkit.Bukkit;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.common.RecipeMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-public class RecipeMenuTests {
-    private CustomMenu recipeMenu;
-
-    private ArrayList<CVItem> subItems;
-    private HashMap<Integer, List<CVItem>> cycleItems;
-    private HashMap<Integer, CVItem> proxyInv;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class RecipeMenuTests extends TestUtil {
 
     @Before
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
-        this.recipeMenu = MenuManager.menus.get("recipe");
-        this.subItems = new ArrayList<>();
-        this.cycleItems = new HashMap<>();
-        this.proxyInv = new HashMap<>();
     }
 
-//    @Test
+
+    // TODO make sure the primary group items link to the primary group
+
+//    @Test TODO
 //    public void cycleItemsShouldHaveLengthOf2() {
 //        subItems.add(new CVItem(Material.STONE, 4));
 //        subItems.add(new CVItem(Material.CHEST, 2));
@@ -62,7 +37,7 @@ public class RecipeMenuTests {
 //        assertEquals(2, cycleItems.get(0).size());
 //    }
 //
-//    @Test
+//    @Test TODO
 //    public void cycleItemsShouldAddAirIfQtyGreaterThanMaxStackSize() {
 //        subItems.add(new CVItem(Material.STONE, 4));
 //        subItems.add(new CVItem(Material.WOODEN_PICKAXE, 4));
@@ -71,7 +46,7 @@ public class RecipeMenuTests {
 //        assertEquals(Material.AIR, cycleItems.get(1).get(0).getMat());
 //    }
 //
-//    @Test
+//    @Test TODO
 //    public void cycleItemsShouldBreakDownItemStacksIntoMaxStackSize() {
 //        subItems.add(new CVItem(Material.STONE, 4));
 //        subItems.add(new CVItem(Material.WOODEN_PICKAXE, 4));
@@ -82,37 +57,19 @@ public class RecipeMenuTests {
 //        assertEquals(1, cycleItems.get(0).get(1).getQty());
 //    }
 
-    @Test @Ignore
+    @Test
     public void regionReqsShouldNeverChange() {
-        loadRegionTypeCouncilRoom();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
-        UUID uuid = TestUtil.player.getUniqueId();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("council_room");
         HashMap<String, String> params = new HashMap<>();
         params.put("recipe", "reqs");
         params.put("regionType", regionType.getProcessedName());
-        recipeMenu.itemIndexes = new HashSet<>();
-        recipeMenu.itemIndexes.add(new MenuIcon("icon", 0, "", "", ""));
-        FileConfiguration config = new YamlConfiguration();
-        config.set("index", "9-48");
-        recipeMenu.itemIndexes.add(new MenuIcon("icon", 0, "", "", ""));
-        recipeMenu.itemsPerPage.put("items", 48);
-        Inventory inventory = recipeMenu.createMenu(civilian, params);
+        Inventory inventory = MenuManager.getInstance().openMenu(TestUtil.player, "recipe", params);
         assertEquals(Material.CHEST, regionType.getReqs().get(0).get(0).getMat());
-        assertEquals(Material.SIGN, regionType.getReqs().get(8).get(0).getMat());
-        assertEquals(Material.QUARTZ_BLOCK, regionType.getReqs().get(5).get(0).getMat());
-        assertEquals(Material.SPRUCE_PLANKS, regionType.getReqs().get(5).get(2).getMat());
-        assertEquals(Material.BOOKSHELF, regionType.getReqs().get(7).get(0).getMat());
+        assertEquals(Material.QUARTZ_STAIRS, regionType.getReqs().get(3).get(0).getMat());
+        assertEquals(Material.JUNGLE_PLANKS, regionType.getReqs().get(8).get(2).getMat());
+        assertEquals(Material.BOOKSHELF, regionType.getReqs().get(5).get(0).getMat());
         assertEquals(Material.RED_STAINED_GLASS_PANE, regionType.getReqs().get(2).get(3).getMat());
-//        for (int i = 0; i < 17; i++) {
-//            if (inventory.getItem(i) != null) {
-//                System.out.println(inventory.getItem(i).getType().name());
-//            }
-//        }
-        assertEquals(Material.SIGN, inventory.getItem(0).getType());
         assertEquals(Material.CHEST, inventory.getItem(9).getType());
-        assertEquals(Material.BOOKSHELF, inventory.getItem(22).getType());
-        assertEquals(Material.SIGN, inventory.getItem(23).getType());
     }
 
     @Test

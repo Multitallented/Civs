@@ -31,17 +31,10 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BlueprintsMenuTests {
+public class BlueprintsMenuTests extends TestUtil {
     private CustomMenu blueprintsMenu;
     private Civilian civilian;
     private InventoryImpl inventory;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
 
     @Before
     public void setup() {

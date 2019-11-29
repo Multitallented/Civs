@@ -1,12 +1,21 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
-import org.bukkit.Bukkit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -15,26 +24,8 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-public class CivilianTests {
-
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class CivilianTests extends TestUtil {
 
     @Test
     public void localeTestShouldReturnProperLanguageString() {

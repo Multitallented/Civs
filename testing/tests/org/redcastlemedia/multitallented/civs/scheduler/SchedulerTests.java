@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
@@ -26,28 +25,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class SchedulerTests {
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
-    /*@Test(expected = SuccessException.class)
-    public void regionShouldUpkeep() {
-        RegionsTests.loadRegionTypeCobble();
-        RegionManager regionManager = RegionManager.getInstance();
-        HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
-        HashMap<String, String> effects = new HashMap<>();
-        Region region = new Region("cobble", people,
-                TestUtil.blockUnique.getLocation(),
-                RegionsTests.getRadii(), effects);
-        regionManager.addRegion(region);
-
-        RegionTickTask regionTickThread = new RegionTickTask();
-        regionTickThread.run();
-    }*/
+public class SchedulerTests extends TestUtil {
 
     @Test
     public void shouldGetCorrectChunksOfTheArray() {

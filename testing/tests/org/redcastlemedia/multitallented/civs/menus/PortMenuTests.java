@@ -26,14 +26,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class PortMenuTests {
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class PortMenuTests extends TestUtil {
 
     @Before
     public void setup() {

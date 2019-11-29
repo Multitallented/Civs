@@ -15,14 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuTests {
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class MenuTests extends TestUtil {
 
     @Test
     public void inventorySizeTest() {

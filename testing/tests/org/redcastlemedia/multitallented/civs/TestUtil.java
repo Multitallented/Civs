@@ -1,13 +1,23 @@
 package org.redcastlemedia.multitallented.civs;
 
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,23 +30,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
+import org.junit.BeforeClass;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
-import java.io.File;
-import java.util.*;
-import java.util.logging.Logger;
-
-import static org.mockito.Mockito.*;
-
-public class TestUtil {
+public abstract class TestUtil {
     public static WorldImpl world;
     public static Block block;
     public static Block block2;
@@ -65,8 +67,13 @@ public class TestUtil {
     public static Block blockUnique9;
     public static Block blockUnique10;
     public static PluginManager pluginManager = mock(PluginManager.class);
+    private static boolean initialized = false;
 
+    @BeforeClass
     public static void serverSetup() {
+        if (initialized) {
+            return;
+        }
         Civs.logger = mock(PluginLogger.class);
 
         Civs.dataLocation = new File("/src/resouces/hybrid");
@@ -270,24 +277,8 @@ public class TestUtil {
         CivilianManager.getInstance().createDefaultCivilian(player);
         createDefaultClass();
         ConfigManager configManager = ConfigManager.getInstance();
-//        configManager.blackListWorlds = new ArrayList<>();
-//        configManager.blackListWorlds.add("Hub");
-//        configManager.itemGroups = new HashMap<>();
-//        configManager.itemGroups.put("sign", "SIGN,WALL_SIGN");
-//        configManager.itemGroups.put("wood", "OAK_PLANKS,SPRUCE_PLANKS,BIRCH_PLANKS,JUNGLE_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS");
-//        configManager.itemGroups.put("log", "OAK_LOG,SPRUCE_LOG,BIRCH_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG");
-//        configManager.itemGroups.put("fence", "NETHER_BRICK_FENCE,OAK_FENCE,BIRCH_FENCE,SPRUCE_FENCE,JUNGLE_FENCE,DARK_OAK_FENCE,ACACIA_FENCE,IRON_BARS");
-//        configManager.itemGroups.put("fencegate", "NETHER_BRICK_FENCE_GATE,OAK_FENCE_GATE,BIRCH_FENCE_GATE,SPRUCE_FENCE_GATE,JUNGLE_FENCE_GATE,DARK_OAK_FENCE_GATE,ACACIA_FENCE_GATE");
-//        configManager.itemGroups.put("door", "OAK_DOOR,ACACIA_DOOR,DARK_OAK_DOOR,SPRUCE_DOOR,BIRCH_DOOR,JUNGLE_DOOR,IRON_DOOR");
-//        configManager.itemGroups.put("glass", "GLASS,GLASS_PANE,RED_STAINED_GLASS_PANE,BLACK_STAINED_GLASS_PANE,BLUE_STAINED_GLASS_PANE,BROWN_STAINED_GLASS_PANE,CYAN_STAINED_GLASS_PANE,GRAY_STAINED_GLASS_PANE,GREEN_STAINED_GLASS_PANE,LIGHT_BLUE_STAINED_GLASS_PANE,LIGHT_GRAY_STAINED_GLASS_PANE,LIME_STAINED_GLASS_PANE,MAGENTA_STAINED_GLASS_PANE,ORANGE_STAINED_GLASS_PANE,PINK_STAINED_GLASS_PANE,PURPLE_STAINED_GLASS_PANE,WHITE_STAINED_GLASS_PANE,YELLOW_STAINED_GLASS_PANE,RED_STAINED_GLASS,BLACK_STAINED_GLASS,BLUE_STAINED_GLASS,BROWN_STAINED_GLASS,CYAN_STAINED_GLASS,GRAY_STAINED_GLASS,GREEN_STAINED_GLASS,LIGHT_BLUE_STAINED_GLASS,LIGHT_GRAY_STAINED_GLASS,LIME_STAINED_GLASS,MAGENTA_STAINED_GLASS,ORANGE_STAINED_GLASS,PINK_STAINED_GLASS,PURPLE_STAINED_GLASS,WHITE_STAINED_GLASS,YELLOW_STAINED_GLASS");
-//        configManager.itemGroups.put("window", "GLASS,GLASS_PANE,IRON_BARS,RED_STAINED_GLASS_PANE,BLACK_STAINED_GLASS_PANE,BLUE_STAINED_GLASS_PANE,BROWN_STAINED_GLASS_PANE,CYAN_STAINED_GLASS_PANE,GRAY_STAINED_GLASS_PANE,GREEN_STAINED_GLASS_PANE,LIGHT_BLUE_STAINED_GLASS_PANE,LIGHT_GRAY_STAINED_GLASS_PANE,LIME_STAINED_GLASS_PANE,MAGENTA_STAINED_GLASS_PANE,ORANGE_STAINED_GLASS_PANE,PINK_STAINED_GLASS_PANE,PURPLE_STAINED_GLASS_PANE,WHITE_STAINED_GLASS_PANE,YELLOW_STAINED_GLASS_PANE,RED_STAINED_GLASS,BLACK_STAINED_GLASS,BLUE_STAINED_GLASS,BROWN_STAINED_GLASS,CYAN_STAINED_GLASS,GRAY_STAINED_GLASS,GREEN_STAINED_GLASS,LIGHT_BLUE_STAINED_GLASS,LIGHT_GRAY_STAINED_GLASS,LIME_STAINED_GLASS,MAGENTA_STAINED_GLASS,ORANGE_STAINED_GLASS,PINK_STAINED_GLASS,PURPLE_STAINED_GLASS,WHITE_STAINED_GLASS,YELLOW_STAINED_GLASS,NETHER_BRICK_FENCE,OAK_FENCE,BIRCH_FENCE,SPRUCE_FENCE,JUNGLE_FENCE,DARK_OAK_FENCE,ACACIA_FENCE,IRON_BARS");
-//        configManager.itemGroups.put("primary", "QUARTZ_BLOCK,OAK_PLANKS,SPRUCE_PLANKS,JUNGLE_PLANKS,BIRCH_PLANKS,DARK_OAK_PLANKS,ACACIA_PLANKS,SAND,RED_SAND,CLAY,PACKED_ICE,STONE,RED_WOOL,BLACK_WOOL,BLUE_WOOL,BROWN_WOOL,CYAN_WOOL,GRAY_WOOL,GREEN_WOOL,LIGHT_BLUE_WOOL,LIGHT_GRAY_WOOL,LIME_WOOL,MAGENTA_WOOL,ORANGE_WOOL,PINK_WOOL,PURPLE_WOOL,WHITE_WOOL,YELLOW_WOOL,TERRACOTTA,RED_TERRACOTTA,BLACK_TERRACOTTA,BLUE_TERRACOTTA,BROWN_TERRACOTTA,CYAN_TERRACOTTA,GRAY_TERRACOTTA,GREEN_TERRACOTTA,LIGHT_BLUE_TERRACOTTA,LIGHT_GRAY_TERRACOTTA,LIME_TERRACOTTA,MAGENTA_TERRACOTTA,ORANGE_TERRACOTTA,PINK_TERRACOTTA,PURPLE_TERRACOTTA,WHITE_TERRACOTTA,YELLOW_TERRACOTTA,PRISMARINE,PURPUR_BLOCK");
-//        configManager.itemGroups.put("secondary", "SANDSTONE,RED_SANDSTONE,BRICKS,STONE_BRICKS,SNOW_BLOCK,COBBLESTONE,OAK_LOG,SPRUCE_LOG,BIRCH_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG,QUARTZ_PILLAR,CHISELED_QUARTZ_BLOCK,RED_GLAZED_TERRACOTTA,BLACK_GLAZED_TERRACOTTA,BLUE_GLAZED_TERRACOTTA,BROWN_GLAZED_TERRACOTTA,CYAN_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,GREEN_GLAZED_TERRACOTTA,LIGHT_BLUE_GLAZED_TERRACOTTA,LIGHT_GRAY_GLAZED_TERRACOTTA,LIME_GLAZED_TERRACOTTA,MAGENTA_GLAZED_TERRACOTTA,ORANGE_GLAZED_TERRACOTTA,PINK_GLAZED_TERRACOTTA,PURPLE_GLAZED_TERRACOTTA,WHITE_GLAZED_TERRACOTTA,YELLOW_GLAZED_TERRACOTTA,DARK_PRISMARINE,PURPUR_PILLAR");
-//        configManager.itemGroups.put("roof", "SMOOTH_SANDSTONE,SMOOTH_RED_SANDSTONE,SMOOTH_STONE,QUARTZ_SLAB,QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS,GRASS_BLOCK");
-//        configManager.itemGroups.put("bed", "RED_BED,BLACK_BED,BLUE_BED,BROWN_BED,CYAN_BED,GRAY_BED,GREEN_BED,LIGHT_BLUE_BED,LIGHT_GRAY_BED,LIME_BED,MAGENTA_BED,ORANGE_BED,PINK_BED,PURPLE_BED,WHITE_BED,YELLOW_BED");
-//        configManager.itemGroups.put("stairs", "QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS");
-//        configManager.itemGroups.put("vertical", "LADDER,QUARTZ_STAIRS,SANDSTONE_STAIRS,RED_SANDSTONE_STAIRS,ACACIA_STAIRS,OAK_STAIRS,BIRCH_STAIRS,JUNGLE_STAIRS,SPRUCE_STAIRS,DARK_OAK_STAIRS,BRICK_STAIRS,COBBLESTONE_STAIRS,DARK_PRISMARINE_STAIRS,PRISMARINE_BRICK_STAIRS,PURPUR_STAIRS,STONE_BRICK_STAIRS");
         configManager.useStarterBook = false;
+        initialized = true;
     }
 
     public static ItemStack createItemStack(Material mat) {

@@ -1,12 +1,16 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -18,18 +22,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-import java.util.ArrayList;
-
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-public class ItemsTests {
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class ItemsTests extends TestUtil {
 
     @Before
     public void onBefore() {

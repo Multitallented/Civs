@@ -1,12 +1,20 @@
 package org.redcastlemedia.multitallented.civs.listeners;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -15,13 +23,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
-import java.util.UUID;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-public class DeathListenerTests {
+public class DeathListenerTests extends TestUtil {
 
     private EntityDamageByEntityEvent damageEvent;
     private Player player1;
@@ -30,13 +32,6 @@ public class DeathListenerTests {
     private EntityDamageEvent dEvent;
     private Civilian civilian1;
     private Player player3;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
 
     @Before
     public void onBefore() {

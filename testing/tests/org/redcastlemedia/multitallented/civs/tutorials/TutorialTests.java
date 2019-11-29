@@ -1,27 +1,18 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
-import org.bukkit.Bukkit;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public class TutorialTests {
+public class TutorialTests extends TestUtil {
     private Civilian civilian;
     private HashMap<String, TutorialPath> tutorials;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
 
     @Before
     public void onBefore() {

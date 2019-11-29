@@ -13,18 +13,11 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
-public class AllianceMenuTests {
+public class AllianceMenuTests extends TestUtil {
     private Town town1;
     private Town town2;
     private Town town3;
     private Town town4;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
 
     @Before
     public void setup() {

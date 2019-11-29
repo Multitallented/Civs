@@ -26,21 +26,13 @@ import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class RegionEffectTests {
+public class RegionEffectTests extends TestUtil {
 
     private Town town;
     private Location townLocation;
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
 
     @Before
     public void setup() {

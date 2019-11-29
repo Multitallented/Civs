@@ -28,21 +28,13 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TownTests {
-
-    @BeforeClass
-    public static void onBeforeEverything() {
-        if (Bukkit.getServer() == null) {
-            TestUtil.serverSetup();
-        }
-    }
+public class TownTests extends TestUtil {
 
     @Before
     public void onBefore() {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
         GovernmentManager.getInstance().reload();
-//        ItemManager.getInstance().reload();
     }
 
     @Test
