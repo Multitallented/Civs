@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -11,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -28,13 +29,18 @@ public class TownTypeInfoMenu extends Menu {
     void handleInteract(InventoryClickEvent event) {
         event.setCancelled(true);
         ItemManager itemManager = ItemManager.getInstance();
-        String townTypeName = event.getInventory().getItem(0)
-                .getItemMeta().getDisplayName().replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        String processedName = ChatColor.stripColor(event.getInventory().getItem(0).getItemMeta().getDisplayName());
+        String townTypeName = processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
         TownType townType = (TownType) itemManager.getItemType(townTypeName);
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
 
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
+            return;
+        }
+
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
             return;
         }
 
@@ -88,7 +94,7 @@ public class TownTypeInfoMenu extends Menu {
         List<String> lore = new ArrayList<>();
         lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
                 ": " + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadiusY() * 2 + 1));
-        lore.addAll(Util.textWrap("", Util.parseColors(townType.getDescription(civilian.getLocale()))));
+        lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
         cvItem.setLore(lore);
         inventory.setItem(0, cvItem.createItemStack());
 

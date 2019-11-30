@@ -3,7 +3,8 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -26,14 +27,11 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-
-import java.util.Date;
-import java.util.HashMap;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
     public static String KEY = "drain_power";
-    private HashMap<Location, Long> lastUpkeep = new HashMap<>();
 
     public SiegeEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
@@ -42,38 +40,20 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
     @EventHandler
     public void onCustomEvent(RegionTickEvent event) {
-        if (!event.getRegion().getEffects().containsKey(KEY)) {
+        if (!event.getRegion().getEffects().containsKey(KEY) || !event.isHasUpkeep()) {
             return;
         }
         Region region = event.getRegion();
-        RegionType regionType = event.getRegionType();
         Location l = region.getLocation();
 
-        //Check if the region has the shoot arrow effect and return arrow velocity
-        if (regionType.getEffects().get(KEY) == null) {
-            return;
-        }
-        String[] effectSplit = regionType.getEffects().get(KEY).split("\\.");
-        long period = Long.parseLong(effectSplit[0]) * 1000;
-        if (period < 1) {
-            return;
-        }
+        String damageString = region.getEffects().get(KEY);
         int damage = 1;
-        if (effectSplit.length > 1) {
-            damage = Integer.parseInt(effectSplit[1]);
-        }
-
-        if (lastUpkeep.get(l) != null && period + lastUpkeep.get(l) > new Date().getTime()) {
-            return;
+        if (damageString != null) {
+            damage = Integer.parseInt(damageString);
         }
 
         //Check if valid siege machine position
-        if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
-            return;
-        }
-
-        //Check to see if the Townships has enough reagents
-        if (!region.hasUpkeepItems()) {
+        if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
             return;
         }
 
@@ -122,40 +102,34 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return;
         }
 
-        //Run upkeep but don't need to know if upkeep occured
-        //effect.forceUpkeep(l);
-        region.runUpkeep(false);
-        lastUpkeep.put(l, new Date().getTime());
-
         Location spawnLoc = l.getBlock().getRelative(BlockFace.UP, 3).getLocation();
-        //Location srLoc = sr.getLocation();
         Location loc = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 15, spawnLoc.getZ());
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
         final Location loc2 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 25, spawnLoc.getZ());
         final Location loc3 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 30, spawnLoc.getZ());
-        TNTPrimed tnt = l.getWorld().spawn(loc, TNTPrimed.class);
-        tnt.setFuseTicks(1);
+        l.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 2);
+        l.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc1.getWorld().spawn(loc1, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc1.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc1, 2);
+                loc1.getWorld().playSound(loc1, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 5L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc2.getWorld().spawn(loc2, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc2.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc2, 2);
+                loc2.getWorld().playSound(loc2, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 10L);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                TNTPrimed tnt = loc3.getWorld().spawn(loc3, TNTPrimed.class);
-                tnt.setFuseTicks(1);
+                loc3.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc3, 2);
+                loc3.getWorld().playSound(loc3, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
             }
         }, 15L);
 
@@ -208,7 +182,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return false;
         }
 
-        if (l.getBlock().getRelative(BlockFace.UP).getY() < l.getWorld().getHighestBlockAt(l).getY()) {
+        if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-blocks-above-chest").replace("$1", regionType.getName()));
             return false;
@@ -217,11 +191,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         //Find target Super-region
         Sign sign = (Sign) state;
         String townName = sign.getLine(0);
-        Town town = null;
-        for (Town cTown : TownManager.getInstance().getTowns()) {
-            if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
-                town = cTown;
-                break;
+        Town town = TownManager.getInstance().getTown(townName);
+        if (town == null) {
+            for (Town cTown : TownManager.getInstance().getTowns()) {
+                if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
+                    town = cTown;
+                    break;
+                }
             }
         }
         if (town == null) {
@@ -244,9 +220,17 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+            String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
-                    .replace("$2", regionType.getName()).replace("$3", town.getName()));
+                    .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
+        }
+        if (Civs.discordSRV != null) {
+            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
+                    ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
+                    .replace("$2", regionType.getName()).replace("$3", town.getName());
+            defaultMessage += DiscordUtil.atAllTownOwners(town);
+            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         return true;
     }

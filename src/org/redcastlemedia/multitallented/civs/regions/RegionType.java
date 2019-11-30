@@ -2,12 +2,11 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
 
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,12 +26,14 @@ public class RegionType extends CivItem {
     private final int buildRadiusY;
     private final int buildRadiusZ;
     private final int effectRadius;
-    private final String rebuild;
+    private final List<String> rebuild;
     private final boolean dailyPeriod;
     private final HashSet<String> towns;
     private List<RegionUpkeep> upkeeps;
     private final long period;
     private final Set<Biome> biomes;
+    @Getter
+    private final HashSet<String> worlds;
 
     @Getter
     private final boolean rebuildRequired;
@@ -54,16 +55,16 @@ public class RegionType extends CivItem {
                       int buildRadiusY,
                       int buildRadiusZ,
                       int effectRadius,
-                      String rebuild,
+                      List<String> rebuild,
                       HashSet<String> towns,
                       Set<Biome> biomes,
-                      HashMap<String, String> description,
                       long period,
                       boolean dailyPeriod,
                       List<String> groups,
                       boolean isInShop,
                       boolean rebuildRequired,
-                      int level) {
+                      int level,
+                      HashSet<String> worlds) {
         super(civReqs,
                 true,
                 ItemType.REGION,
@@ -74,7 +75,6 @@ public class RegionType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);
@@ -93,6 +93,7 @@ public class RegionType extends CivItem {
         this.towns = towns;
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
+        this.worlds = worlds;
     }
     public String getName() {
         return name;
@@ -118,7 +119,7 @@ public class RegionType extends CivItem {
     public int getEffectRadius() {
         return effectRadius;
     }
-    public String getRebuild() { return rebuild; }
+    public List<String> getRebuild() { return rebuild; }
     public List<RegionUpkeep> getUpkeeps() { return upkeeps; }
     public long getPeriod() {
         return period;

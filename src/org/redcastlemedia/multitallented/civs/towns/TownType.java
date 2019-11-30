@@ -1,10 +1,9 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import lombok.Getter;
@@ -51,7 +50,7 @@ public class TownType extends CivItem {
     }
     public String getChild() { return child; }
     public int getRegionLimit(String regionTypeName) {
-        return regionLimits.get(regionTypeName) == null ? 0 : regionLimits.get(regionTypeName);
+        return regionLimits.get(regionTypeName) == null ? -1 : regionLimits.get(regionTypeName);
     }
 
     public TownType(String name,
@@ -69,7 +68,6 @@ public class TownType extends CivItem {
                     int buildRadius,
                     int buildRadiusY,
                     List<String> criticalReqs,
-                    HashMap<String, String> description,
                     int power,
                     int maxPower,
                     List<String> groups,
@@ -78,7 +76,7 @@ public class TownType extends CivItem {
                     boolean isInShop,
                     int level) {
         super(civReqs,
-                false,
+                true,
                 ItemType.TOWN,
                 name,
                 icon.getMat(),
@@ -88,7 +86,6 @@ public class TownType extends CivItem {
                 civMax,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);

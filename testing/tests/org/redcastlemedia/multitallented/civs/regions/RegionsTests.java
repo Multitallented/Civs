@@ -32,6 +32,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
+import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -40,9 +41,9 @@ import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
-import org.redcastlemedia.multitallented.civs.scheduler.RegionTickTask;
+import org.redcastlemedia.multitallented.civs.scheduler.RegionTickUtil;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class RegionsTests {
     private RegionManager regionManager;
@@ -72,7 +73,7 @@ public class RegionsTests {
                 10, new HashSet<>(), regions);
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
-        Government government = new Government(GovernmentType.ANARCHY,
+        Government government = new Government("ANARCHY", GovernmentType.ANARCHY,
                 buffs, null, new ArrayList<>());
         assertEquals(90, regionType.getPeriod(government));
     }
@@ -400,12 +401,12 @@ public class RegionsTests {
         regionManager.addRegion(new Region("cobble", owners, location5, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location6, getRadii(), new HashMap<>(),0));
         regionManager.addRegion(new Region("cobble", owners, location7, getRadii(), new HashMap<>(),0));
-        assertSame(location5, regionManager.getRegionAt(location5).getLocation());
-        assertSame(location2, regionManager.getRegionAt(location2).getLocation());
-        assertSame(location1, regionManager.getRegionAt(location1).getLocation());
-        assertSame(location7, regionManager.getRegionAt(location7).getLocation());
+        assertEquals(location5.getX(), regionManager.getRegionAt(location5).getLocation().getX(), 0.1);
+        assertEquals(location2.getX(), regionManager.getRegionAt(location2).getLocation().getX(), 0.1);
+        assertEquals(location1.getX(), regionManager.getRegionAt(location1).getLocation().getX(), 0.1);
+        assertEquals(location7.getX(), regionManager.getRegionAt(location7).getLocation().getX(), 0.1);
         regionManager.addRegion(new Region("cobble", owners, location8, getRadii(), new HashMap<>(),0));
-        assertSame(location8, regionManager.getRegionAt(location8).getLocation());
+        assertEquals(location8.getX(), regionManager.getRegionAt(location8).getLocation().getX(), 0.1);
     }
 
     @Test
@@ -749,7 +750,7 @@ public class RegionsTests {
     public void regionShouldConsiderAlliesAsGuests() {
         UUID uuid1 = new UUID(1, 3);
         Region region = load2TownsWith1Region(uuid1, true);
-        assertEquals("ally", region.getPeople().get(uuid1));
+        assertEquals("allyforeign", region.getPeople().get(uuid1));
     }
 
     @Test
@@ -771,7 +772,11 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new DailyScheduler().run();
+        try {
+            new DailyScheduler().run();
+        } catch (SuccessException se) {
+
+        }
         assertEquals(302, town.getPower());
     }
 
@@ -787,7 +792,7 @@ public class RegionsTests {
         Town town = new Town("townname", "hamlet", location1,
                 owners, 300, 305, 2, 0, -1);
         TownManager.getInstance().addTown(town);
-        new RegionTickTask().run();
+        RegionTickUtil.runUpkeeps();
         assertEquals(300, town.getPower());
     }
 
@@ -1064,6 +1069,26 @@ public class RegionsTests {
         config.set("max", 1);
         ArrayList<String> groups = new ArrayList<>();
         groups.add("cobble");
+        groups.add("utility");
+        config.set("groups", groups);
+        ArrayList<String> reqs = new ArrayList<>();
+        reqs.add("cobblestone*2,GRASS_BLOCK*2");
+        reqs.add("gold_block*1");
+        config.set("build-reqs", reqs);
+        ArrayList<String> effects = new ArrayList<>();
+        effects.add("block_build");
+        effects.add("block_break");
+        config.set("build-radius", 5);
+        config.set("effects", effects);
+        config.set("effect-radius", 7);
+        ItemManager.getInstance().loadRegionType(config);
+    }
+    public static void loadRegionTypeCobbleGroup2() {
+        FileConfiguration config = new YamlConfiguration();
+        config.set("name", "purifier");
+        config.set("max", 1);
+        ArrayList<String> groups = new ArrayList<>();
+        groups.add("utility");
         config.set("groups", groups);
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("cobblestone*2,GRASS_BLOCK*2");
@@ -1108,6 +1133,7 @@ public class RegionsTests {
         ArrayList<String> effects = new ArrayList<>();
         effects.add("block_explosion");
         effects.add("deny_mob_spawn");
+        effects.add("chest_use");
         effects.add("port");
         config.set("effects", effects);
         config.set("build-radius", 5);
@@ -1128,7 +1154,7 @@ public class RegionsTests {
     public static Region createNewRegion(String type) {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), "owner");
-        Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
+        Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);

@@ -13,12 +13,14 @@ tutorial-click: Civs útmutató - ajánlott megnézni
 tutorial-wiki: Civs wiki
 click-info: Kattints ide több információért
 guide: Útmutató
-guide-desc: Következő cél megtekintése.
-choose-path: Válaszd ki a szakmát
+guide-desc: Következő cél megtekintése
+choose-path: Válaszd ki a fejlődési utad
 new-owner-town: $1 leváltotta $2-t $3 város élén
 town-bank-balance: "Város egyenlege: $1"
 town-bank-desc: "Pénz felvétele: /cv withdraw $1 összeg"
 withdrawn-money: Felvettél $$1-t $2 város bankjából
+deposit-money: A $1-at $2 bankjába helyezték
+too-much-money: A betét limit $1
 town-tax: "Város adói: $1"
 town-tax-desc: "Adók beállítása: /cv tax $1 összeg"
 town-tax-gov-type: $1 nem állíthat be adót.
@@ -31,7 +33,13 @@ tribalism-no-invite: Nem hívhatod meg $1-t, mert $2-ból/ből származik és ne
 vote-member: Szavazz a következő vezetőre
 capitalism-voting-cost: "Plusz szavazat ára: $1"
 voted: Szavaztál $1-ra/re
-gov-type-change: $1 megváltoztatta az államformát $2-ról/ről$3-ra/re
+gov-type-change: $1 megváltoztatta az államformát $2-ról/ről $3-ra/re
+cant-change-gov-type-daily: Nem változtathatod meg a városod államformáját egy nap többször.
+revolt: Lázadás
+revolt-desc: "Kattints ide, hogy csatlakozz a lázadáshoz $1 ellen. Ára: $2 $3."
+revolt-display: $1 / $2 tag lázad.
+cancel-revolt: Kattints ide, hogy elhagyd a lázadást $1 ellen.
+item-cost: Ennek a műveletnek az ára $1 $2.
 cost-buff: Vissza lett térítve $1 $2 épületekért $3 városban.
 merit-new-owner: Gratulálok! Felülkerekedtél $1-n. Te vagy az új vezető!
 item-locked: Még nem oldottad fel ezt a tárgyat.
@@ -45,7 +53,7 @@ cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
 shop: Bolt
 buy-item: Eladó
 price: Ár
-buy: Vásárlás $1-ért
+buy: $1 megvásárlása
 cancel: Mégsem
 item-bought: Gratulálok! Megvásároltad $1-t $2-ért
 max-item: Nem vásárolhatsz többet, mint $2 $1
@@ -111,29 +119,36 @@ recruiter: Toborzó
 set-owner: Tulajdonos beállítása
 set-member: Tag beállítása
 set-guest: Vendég beállítása
+set-recruiter: Toborzó beállítása
 remove-member: Tag eltávolítása
 leave-town: Város elhagyása
 you-left-town: Elhagytad $1 várost
+invite-sent: Meghívás elküldve
 add-member-region: Hozzáadtak $1-hoz/höz tagként
 member-added-region: $1 tagja a(z) $2 területnek
 owner-description: Tulajdonosok bármit megtehetnek a területükön
 guest-description: Vendégek tudják használni az ajtót és a gombokat
 member-description: Tagok tudják használni és építeni a területet
+recruiter-description: Toborzók meg tudnak hívni játékosokat a városba.
 remove-member-region: Már nem vagy tagja a $1 területnek
 member-removed-region: $1 már nem a tagja a(z) $2 területnek
 add-owner-region: Tulajdonosa lettél a(z) $1 területnek
 owner-added-region: $1 be lett állítva tulajdonosként a(z) $2 területen
+add-recruiter-region: $1 toborzója lettél.
+recruiter-added-region: $1 a toborzója lett $2-nak/nek
 add-guest-region: Vendég lettél a(z) $1 területnek
 guest-added-region: $1 be lett állítva vendégként a(z) $2 területen
 invite-member-region: Tagja lettél a(z) $1 területnek
-member-invited-region: $1 hozzá lett adva a(z) $2 területnek
+member-invited-region: $1 hozzá lett adva a(z) $2 területhez
+no-invite: Jelenleg nincsenek meghívóid.
 stand-in-region: $1-nak/nek a területben kell állnia
 create: Létrehoz
 click-for-region-limits: Kattints ide a terület határainak listázásához
 click-for-req-regions: Kattints ide a szükséges területek listájához
 town-instructions: Hozz létre egy $1-t, a /cv town VárosNév parancs használatával
 town-enter: Megérkeztél $1 ($2) városába
-town-exit: Kiléptél $1 ($2) városából
+town-exit: Elhagytad $1 ($2) városát
+wild: Vadon
 new-town-member: $1 csatlakozott $2-ba/be
 must-be-built-on-top: A $1-t $2 tetejére kell építeni
 town-power: "Erőpontok: $1/$2"
@@ -145,6 +160,7 @@ rename-desc: Használd a /cv rename régiNév újNév parancsot
 town-renamed: A városod át lett nevezve $1-ról/ről $2-ra/re
 bounty-set: Fejpénzt tettél $1-ra/re $2-ért
 bounty-bonus: Begyűjtöttél $1 fejpénzt
+allied-bounty: Szövetséges levadászásáért nem jár jutalom.
 add-friend: Barát hozzáadása
 remove-friend: Barát eltávolítása
 friend-added: $1 hozzá lett adva a barátlistádhoz
@@ -160,6 +176,7 @@ town-ally-removed: A szövetség $1 és $2 között felbomlott
 region-evolved: $1 felfejlődött $2-ra/re
 anti-camp-active: $1 anti-camp beállítás bekapcsolva
 anti-camp-expired: $1 anti-camp beállítás lejárt
+activate-anticamp-question: $1 meghalt az $2-n. Bekapcsolja az $3 kempingvédelmet?
 region-sale-set: $1 eladó $2-ért
 sell-region: Terület eladása
 cancel-sale: Eladás visszavonása
@@ -173,6 +190,7 @@ rename-alliance: Szövetség átnevezése
 rename-alliance-desc: Használd a /cv really $1 újSzövetségNév parancsot
 alliance-renamed: $1 át lett nevezve $2-ra/re
 invalid-name: Érvénytelen név
+region-not-allowed-in-world: Nem építhetsz $1 ebben a világban
 last-renamed-by: "Előző átnevező: $1"
 leave-alliance: Szövetség elhagyása
 hunting-players: "@{RED}Figyelem! Valaki vadászni szeretne a környékeden."
@@ -185,7 +203,7 @@ cant-build-on-region: Nem építhetsz egy $1-t $2 tetejére
 rebuild-required: $1-t $2 tetejére kell építeni
 prevent-civs-item-share: Nincs jogod Civs tárgyakat cserélni
 region-protected: Ez a terület le van védve
-region-destroyed: $1 terület le megsemmisült!
+region-destroyed: $1 épületed megsemmisült!
 specify-player-town: Adj meg egy játékost és egy várost
 specify-town-name: Adj meg egy városnevet
 specify-player-region: Adj meg egy játékost és egy területet
@@ -205,6 +223,8 @@ no-commands-in-jail: "Nem tudsz használni parancsokat a börtönbe még ennyi i
 mana-use-exp: Nem használhatod, míg nincs a mana teljesen feltöltődve
 building-requires-2space: Ennek az épületnek szükséges 2 üres blokk a központi láda felett
 missing-blocks-build: Le kell tenned a hiányzó blokkokat egy $1 építéséhez
+intruder-enter: "@{RED}[FIGYELEM] $1 belépett az $2-be"
+intruder-exit: $1 elhagyta az $2-t
 in-combat: Harc közben nem használhatod ezt a funkciót
 cooldown: "Várakozási idő: $1 másodperc"
 need-more-health: Szükséged van még $1-val/vel több életre
@@ -212,13 +232,18 @@ need-more-stamina: Szükséged van még $1-val/vel több állóképességre
 need-more-mana: Szükséged van még $1-val/vel több manára
 port-not-found: Nem található teleport
 region-missing-upkeep-items: A területnek nincs elég tárgya.
+raid-porter-offline: Nem támadhatja meg az $1-t, ha egyetlen tag sem online.
 raid-target-lost: Nincs $1 nevű város $2 blokkos környezetben
 searching-for-target: Rajtaütés helyének keresése...
 raid-target-blocked: Rajtaütés teleport helye blokkolva van.
 raid-porter-warning: FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3
+siege-built: "@{RED}FIGYELEM! $1 létrehozott egy $2-t aminek a célpontja $3"
 raid-remote: Kaptál egy tárgyat, hogy irányítsd $1-t
 raid-sign: Szükséged van egy táblára a láda felett a választott város nevével
+no-blocks-above-chest: A középső mellkas felett nem lehetnek blokkok
 invalid-target: Érvénytelen célpont
+no-tp-out-of-town: Nem lehet teleportálni nem szövetséges városból.
+jammer-redirect: "@{RED}[FIGYELEM] Teleportját az $1 módosította"
 raid-target-inside-region: Nem állíthatsz be célpontot területen belül
 req-build-inside-town: $1-t csak $2-n belül lehet építeni
 missing-region-requirements: $1-nak/nek hiányzik szükséges terület
@@ -264,16 +289,17 @@ ann-karma: "@{YELLOW}[Caution] $1 elérhető. Ha meg tudod ölni, jutalomban ré
 ann-missing-input: "[Info] Hiányzik pár tárgy még a $1-ból/ből. Használd a Civs könyved, hogy
   ellenőrizd, mi kell még hozzá."
 ann-bounty: "[Info] $1 nyakán $2 fejdíj van."
-tut-default-0: Építs egy menedéket (shelter). Nyisd meg a könyvet, válaszd az alaprajzok
-  menüt, majd vedd ki a menedéked (shelter) és helyezd le.
+tut-default-0: Építs egy menedéket. Nyisd meg a könyvet, válaszd az alaprajzok menüt, majd
+  vedd ki a menedéked és helyezd le.
 tut-default-1: Gyűjts össze 4 db kenyeret, 32 db répát, steaket, krumplit, majd tedd bele a
-  menedék (shelter) ládájába.
-tut-default-2: A menedék (shelter) ételért ad neked pénzt, de a szénbolt (coal shop) többet
-  fizet. Nyisd meg a könyved, majd a bolt menüt, és vedd ki a szénboltot.
+  menedék ládájába.
+tut-default-2: A menedék ételért ad neked pénzt, de a szénbolt többet fizet. Nyisd meg a
+  könyved, majd a bolt menüt, és vedd ki a szénboltot.
 tut-default-3: Tedd le a 25 db gyapjút, 14 db kerítést és 2 db ládát, majd tedd le a
-  szénboltot (coal shop) is.
+  szénboltot is.
+tut-default-4: Gratulálok! Teljesítetted az alap útmutatót. Most válaszd ki a fejlődési utad.
 tut-warrior-name: Harcos
-tut-warrior-0: Vedd meg az oltárt (altar). Gyémánt szerszámokat tudsz szerezni a segítségével.
+tut-warrior-0: Vedd meg az oltárt. Gyémánt szerszámokat tudsz szerezni a segítségével.
 tut-warrior-1: Tégy egy vaskardot az oltár ládájába. Ha van $300-od, akkor kapsz egy
   gyémántfelszerelést.
 tut-warrior-2: "Itt egy aranyalma. Most már mindened megvan a következő feladathoz: ölj meg
@@ -282,61 +308,61 @@ tut-warrior-3: "Gratulálok! Most vált harcos belőled. Következő feladatod: 
   raid_porter-t és építsd fel közel egy városhoz."
 tut-warrior-4: Amint a raid_porter-ed aktív, lépj a tetejére és teleportálj a városba.
 tut-warrior-5: Most, hogy kifosztottad a várost, itt az ideje háborúba lépni valakivel. Építs
-  egy parancsnoki sátrat (Command_Tent) közel egy ellenséges városhoz.
-tut-warrior-6: Most vásárolj és építs fel egy előörsöt (Outpost) a parancsnoki sátor
-  (Command_Tent) felé. Ezután vásárolj és építs egy ostromgépet (Siege_Machine).
-tut-warrior-7: Az ostromgép (Siege_Machine) lassan csökkenti az ellenséges város erőpontjait,
-  amely a várost támadásra fogja kényszeríteni. Vásárolj és építs egy bástyát
-  (Castle) a parancsnoki sátrad (Command_Tent) tetejére.
-tut-warrior-8: Most, hogy megépítetted a bástyád (Castle) vásárolj és építs egy várat (Keep).
-  Aztán építs egy ostrom spawnpointot (Memorial).
+  egy parancsnoki sátrat közel egy ellenséges városhoz.
+tut-warrior-6: Most vásárolj és építs fel egy előörsöt a parancsnoki sátor felé. Ezután
+  vásárolj és építs egy ostromgépet.
+tut-warrior-7: Az ostromgép lassan csökkenti az ellenséges város erőpontjait, amely a várost
+  támadásra fogja kényszeríteni. Vásárolj és építs egy bástyát a parancsnoki
+  sátrad tetejére.
+tut-warrior-8: Most, hogy megépítetted a bástyád vásárolj és építs egy fejlesztett előörsöt,
+  azaz várat. Aztán építs egy ostrom spawnpointot.
 tut-warrior-9: Gratulálok! Most már kiokosodtál a háborús rendszerben. Megcsináltad a harcos
   életpályát.
 tut-builder-name: Építész
-tut-builder-1: Most építsd meg a tanácsszobát (council_room).
+tut-builder-0: Kezdd el az építést egy tanácsszoba építésével. Ez a város szíve. Erőpontot
+  generél és 2 lakhatást biztosít
+tut-builder-1: Most építsd meg a tanácsszobát (blokkról blokkra).
 tut-builder-2: Most, hogy megépítetted a városod szívét, foglald le a területed. Vegyél egy
-  telepet (settlement).
+  telepet (első szintje egy településnek).
 tut-builder-3: Gratulálok! Foglald le a területed a /cv town városnév paranccsal. Ha kész
-  vagy vásárolj és építs egy kunyhót (shack).
-tut-builder-4: A kunyhó (shack) egy alap szintű ház. A házak határozzák meg, hogy mennyi
-  lakosa lehet a városnak. Vásárolj és helyezz le egy NPC kunyhót (NPCShack) a
-  kunyhón (shack) belül.
+  vagy vásárolj és építs egy kalyibát.
+tut-builder-4: A kalyiba egy alap szintű ház. A házak határozzák meg, hogy mennyi lakosa
+  lehet a városnak. Vásárolj és helyezz le egy NPC kalyibát a kalyibán belül.
 tut-builder-5: Falusiak bele számítanak a lakosságba. Ha meghalnak, a város veszít erőt. A
-  falusiak is újraélednek. Most építs egy templomot (church).
+  falusiak is újraélednek. Most építs egy templomot.
 tut-builder-6: Fontos, hogy építs olyan épületeket, amelyek erőpontokat generálnak. Az
-  erőpontok védik meg a várost. Építs egy íjászgépet (arrow_trap) a városod
-  védelmére.
-tut-builder-7: Következő feladatod, hogy építs egy nyílgyárat (arrow_factory), amely nyilakat
-  biztosít a védekezéshez.
-tut-builder-8: Egy telepbe csak 4 kunyhó (shack) tehető. Hogy maximalizáld a lakosságot,
-  építs egy kunyhót (shack), majd vásárolj és helyezd el a kalyibát (hovel) a
-  választott kunyhóba (shack).
-tut-builder-9: Most építs egy katapultot (catapult). A katapultok elég pontos TNT ágyúk,
-  amelyeket használhatsz a támadók ostromgépeinek elpusztításához.
-tut-builder-10: Menj és frissítsd a városod falura (Hamlet). Amint sikerült, építs egy házat
-  (Dwelling). Minden szintlépéssel növeled a házak szintjét.
-tut-builder-11: Fejleszd a városod községre (village), majd építs egy istállót (Stables).
-tut-builder-12: Mielőtt fejleszteni tudnád a falvad, fejleszteni kell a tanácsszobát
-  (Council_Room). Vegyél majd helyezz le egy városházát (Town_Hall-t) a
-  tanácsszobában (Council_Room).
+  erőpontok védik meg a várost. Építs egy íjásztornyot a városod védelmére.
+tut-builder-7: Következő feladatod, hogy építs egy nyílgyárat, amely nyilakat biztosít a
+  védekezéshez.
+tut-builder-8: Egy telepbe csak 4 kalyiba tehető. Hogy maximalizáld a lakosságot, építs egy
+  kalyibát, majd vásárolj és helyezd el a kunyhót a választott kalyibába.
+tut-builder-9: Most építs egy katapultot. A katapultok elég pontos TNT ágyúk, amelyeket
+  használhatsz a támadók ostromgépeinek elpusztításához.
+tut-builder-10: Fejleszd a városod kisfalu szintre. Amint sikerült, építs egy házikót. Minden
+  szintlépéssel növeled a házak szintjét.
+tut-builder-11: Fejleszd a városod falura (village), majd építs egy istállót.
+tut-builder-12: Mielőtt fejleszteni tudnád a falvad, fejleszteni kell a tanácsszobát. Vegyél
+  majd helyezz le egy városházát a tanácsszobában.
 tut-builder-13: Grautlálok! Már gyakorlott építész lettél. Befejezted az építész életpályát.
 tut-merchant-name: Kereskedő
-tut-merchant-0: Csatlakozz egy városba, majd vásárolj egy kunyhót (shack) valakitől a
-  városban. Miután beállítottak tulajdonosnak, tégy néhány kenyeret a kunyhó
-  ládájába.
+tut-merchant-0: Csatlakozz egy városba, majd vásárolj egy kalyiba valakitől a városban. Miután
+  beállítottak tulajdonosnak, tégy néhány kenyeret a kalyiba ládájába.
 tut-merchant-1: A házakat fejleszteni lehet, hogy több pénzt hozzanak a kasszára. Vásárolj egy
-  kalyibát (hovel) a boltból.
-tut-merchant-2: Fejleszd a kunyhód kalyibára, hogy 9x9x9-es méret legyen. Helyezd el a kalyiba
-  ládát (hovel) a kunyhó (shack) belsejébe.
-tut-merchant-3: Rakj 384 db krumplit a kalyiba ládájába. 24 órán belül a kalyibád eladja őket
-  és felfejlődik kalyiba1-re (hovel1).
-tut-merchant-5: Itt az idő újabb fejlesztéshez. Vásárolj és tégy le egy házat (dwelling) a
-  kalyiba1-en belül (hovel1).
-tut-merchant-6: A házak (dwelling) jó pénzt hoznak, de a lakások (house) többet adnak.
-  Vásárolj és fejlessz egy házat lakássá.
-tut-merchant-7: Tégy kenyeret a lakásodba (house), hogy felfejleszd lakás1-re (house1)
-tut-merchant-8: Tégy lazacokat a lakás1-be, hogy felfejleszd lakás2-re.
-tut-merchant-9: Építs egy vasboltot (iron_shop), hogy tovább növeld a bevételeid.
+  kunyhót a boltból.
+tut-merchant-2: Fejleszd a kalyibád kunyhóra, hogy 9x9x9-es méret legyen. Helyezd el a kunyhó
+  ládát a kalyiba belsejébe.
+tut-merchant-3: Rakj 384 db krumplit a kunyhód ládájába. 24 órán belül a kunyhód eladja őket
+  és felfejlődik kunyhó1-re.
+tut-merchant-4: Vegyél és építs egy almafarmot. Építs sínből egy utat az almafarmtól a
+  Kunyhó1-edhez. Helyezz egy elektromos sínt egy emelkedőre az almafarmnál, majd
+  rakj bele egy minecart-ot az almafarmba.
+tut-merchant-5: Itt az idő újabb fejlesztéshez. Vásárolj és tégy le egy házikót a kunyhó1-en
+  belül.
+tut-merchant-6: A házikók jó pénzt hoznak, de a házak többet adnak. Vásárolj és fejlessz egy
+  házikót házzá.
+tut-merchant-7: Tégy kenyeret a házadba, hogy felfejleszd ház1-re.
+tut-merchant-8: Tégy lazacokat a ház1-be, hogy felfejleszd ház2-re.
+tut-merchant-9: Építs egy vasboltot, hogy tovább növeld a bevételeid.
 tut-merchant-10: Minden játékosnak 3 boltja lehet. A legjövedelmezőbb bolt egy Jade bolt
   (Jade_Shop). Építs egyet.
 tut-merchant-11: Gratulálok! Mostantól el tudsz adni tárgyakat és tudsz vásárolni más város
@@ -367,6 +393,9 @@ dictatorship-desc: A város tulajdonosai kezelik a szövetségeket, felül tudj�
   tagokat tudnak hozzá adni, adókat állítani.
 feudalism-name: Feudalizmus
 feudalism-desc: Diktatúra + Város lakói nem építhetnek a város területein.
+idiocracy-name: Idiocracy
+idiocracy-desc: Aki egy rögzített tűzijátékot tartalmaz, és egy további hirdetést készített
+  egy nevükkel, az lesz a tulajdonos.
 kraterocracy-name: Kraterocrácia
 kraterocracy-desc: Diktatúra + Ha a város tagja megöli a város vezetőjét, helyet cserélnek.
 libertarian-name: Liberalizmus
@@ -390,6 +419,15 @@ admin_graveyard-desc: Hely, ahol a város lakói újra éledhetnek és biztonsá
 shelter-name: Menedék
 shelter-desc: Egy biztonságos hely, ahol a tárgyaidat tárolhatod és 30 percenként eladhatsz
   vele kenyeret, répát, húst, krumplit.
+arrow_trap-name: Íjásztorony
+arrow_trap-desc: Szint 1 | Hatótáv 15 | Sebzés 30 | Gyorsaság 38 | Szórás 3 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
+arrow_trap_fast-name: Íjásztorony (2. szint)
+arrow_trap_fast-desc: Szint 2 | Hatótáv 19 | Sebzés 34 | Gyorsaság 38 | Szórás 4 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
+arrow_trap_fastest-name: Íjásztorony (3. szint)
+arrow_trap_fastest-desc: Szint 3 | Hatótáv 21 | Sebzés 38 | Gyorsaság 42 | Szórás 3 | Íjakat lő a
+  közelben álló nem városlakó játékosokra és szörnyekre.
 barracks-name: Kaszárnya
 barracks-desc: 6 házat ad a városhoz és 288 erőpontot generál naponta. Nem építhető olyan
   városba, ahol már egy fogadó áll.
@@ -404,93 +442,406 @@ graveyard-desc: Hely, ahol a város lakói újra éledhetnek és biztonságban v
 hospital-name: Kórház
 hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak és 192 erőpontot generál a
   városnak naponta.
+idol-name: Szobor
 idol-desc: Sérülési ellenállást, sebzési bónuszt ad a város tagjainak és 192 erőpontot
   generál a városnak naponta.
 jail-name: Börtön
+jail-desc: Egy hely, ahol ideiglenesen csapdába tudod ejteni a városban meghaltakat és
+  192 erőpontot generál a városnak naponta.
 monument-name: Emlékmű
 monument-desc: Sérülési ellenállást, sebzési bónuszt és gyorsaságot ad a város tagjainak és
   192 erőpontot generál a városnak naponta.
 statue-name: Szobor
 statue-desc: Sérülési ellenállást ad a város tagjainak és 192 erőpontot generál a városnak
   naponta.
+arrow_factory-name: Nyílgyár
 arrow_factory-desc: Automatikusan gyárt nyilakat.
 bakery-name: Sütöde
+bakery-desc: "Sütiket és tökpitét csinál minden második percben.  "
+dye_works-name: Színezék gyár
+dye_works-desc: Automatikusan gyárt színezékeket
+flint_works-name: Kovakő bánya
+flint_works-desc: Automatikusan gyárt kovakövet. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+gold_infuser-name: Aranyozó
+gold_infuser-desc: Automatikusan  készít aranyrépákat és almákat
+ice_maker-name: Jégkészítő
+ice_maker-desc: Automatikusan készít jeget
+iron_works-name: Vasszerszám gyár
+iron_works-desc: Vasszerszámokat gyárt automatikusan. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+lava_works-name: Lávakészítő
+lava_works-desc: Automatikusan készít lávát. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
 mill-name: Malom
+mill-desc: Két búzából 1 kenyeret készít 30 másodpercenként. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+boot_grinder-name: Cipőfeldolgozó
+boot_grinder-desc: Bőr cipőből készít nyers bőrt. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+stone_works-name: Kőszerszám gyár
+stone_works-desc: Kőszerszámokat gyárt automatikusan. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
 weapons_factory-name: Fegyvergyár
 weapons_factory-desc: 3 puskaporból és 5 homokból robbanószereket gyárt
+jammer_trap-name: Fogócsapda
+jammer_trap-desc: Egy épület, amely megváltoztatja a teleport célállomását.
+chicken_coop-name: Csirkeól
+chicken_coop-desc: Automatikus csirke farm. Helyezz egy minecart-ot a ládába, építs sínekből utat
+  a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+donkey_farm-name: Szamár farm
 donkey_farm-desc: Szamarakat és nyergeket készít minden órában.
+mule_farm-name: Összvér farm
 mule_farm-desc: Öszvéreket és nyergeket készít minden órában.
+pig_pen-name: Disznóól
 pig_pen-desc: Automatikus malacfarm.
+rabbit_hutch-name: Nyúl ketrec
 rabbit_hutch-desc: Automatikus nyúlfarm.
+ranch-name: Tehén farm
+ranch-desc: Automatikus tehénfarm. Helyezz egy minecart-ot a ládába, építs sínekből utat a
+  célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+sheep_farm-name: Birka farm
 sheep_farm-desc: Automatikus birkafarm.
+stables-name: Istálló
 stables-desc: Lovakat és nyergeket készít minden órában.
+acacia_lumberyard-name: Akácia fatelep
+acacia_lumberyard-desc: Automatikus akácia fa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+birch_lumberyard-name: Nyír fatelep
+birch_lumberyard-desc: Automatikus nyírfa farm. Helyezz egy minecart-ot a ládába, építs sínekből utat
+  a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+dark_oak_lumberyard-name: Sötét tölgy fatelep
+dark_oak_lumberyard-desc: Automatikus sötét tölgyfa farm. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+jungle_lumberyard-name: Trópusifa fatelep
+jungle_lumberyard-desc: Automatikus trópusifa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+oak_lumberyard-name: Tölgy fatelep
+oak_lumberyard-desc: Automatikus tölgyfa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+spruce_lumberyard-name: Fenyő fatelep
+spruce_lumberyard-desc: Automatikus fenyőfa farm. Helyezz egy minecart-ot a ládába, építs sínekből
+  utat a célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+apple_orchard-name: Alma farm
+apple_orchard-desc: Automatikus alma farm. Helyezz egy minecart-ot a ládába, építs sínekből utat a
+  célhoz, majd helyezz le egy leejtős elektromos sínt a kezdőpontba.
+carrot_farm-name: Répa farm
+carrot_farm-desc: 16 db répát termel minden ötödik percben. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+cocoa_farm-name: Kakaóbab farm
+cocoa_farm-desc: 16 db kakaóbabot termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+ender_pearl_farm-name: Véggyöngy farm
 ender_pearl_farm-desc: Automatikus véggyöngy farm.
+fishing_hut-name: Halászkunyhó
 fishing_hut-desc: Lazacot, trópusi halat, gömbhalat, tőkehalat termel 5 percenként.
+greenhouse-name: Üvegház
 greenhouse-desc: Virágokat termel automatikusan.
+melon_farm-name: Dinnye farm
+melon_farm-desc: Dinnyét termel minden tizedik percben. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+potato_farm-name: Krumpli farm
 potato_farm-desc: Krumplit és mérgező krumplit termel 5 percenként.
+pumpkin_farm-name: Tök farm
+pumpkin_farm-desc: Tököt termel minden tizedik percben. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+sugar_cane_farm-name: Cukornád farm
+sugar_cane_farm-desc: 16 db cukornádat termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+wheat_farm-name: Búza farm
+wheat_farm-desc: Búzát és halott kórót termel minden ötödik percben. Helyezz egy minecart-ot a
+  ládába, építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos
+  sínt a kezdőpontba.
+shack-name: Kalyiba
+shack-desc: 1. szintje a háznak. Bevétele $122 naponta krumpli eladásával.
+hovel-name: Kunyhó
+hovel-desc: 2. szintje a háznak. Bevétele $144 naponta krumpli eladásával. Csak kaliyba
+  fejlesztésével elérhető.
+hovel1-name: Kunyhó1
+hovel1-desc: 2. szintje a háznak. Bevétele $310 naponta krumpli és alma eladásával.
+dwelling-name: Házikó
+dwelling-desc: 3. szintje a háznak. Bevétele $309 naponta krumpli és alma eladásával.
+dwelling1-name: Házikó1
+dwelling1-desc: 3. szintje a háznak. Bevétele $326 naponta krumpli és alma eladásával.
+dwelling2-name: Házikó2
+dwelling2-desc: 3. szintje a háznak. Bevétele $598 naponta krumpli, alma és hal eladásával.
+house-name: Ház
+house-desc: 4. szintje a háznak. Bevétele $491 naponta kenyér és alma eladásával. Csak
+  házikó fejlesztésével elérhető.
+house1-name: Ház1
+house1-desc: 4. szintje a háznak. Bevétele $635 naponta kenyér, alma és hal eladásával.
+house2-name: Ház2
+house2-desc: 4. szintje a háznak. Bevétele $832 naponta kenyér, alma, hal és dinnyeszeletek
+  eladásával.
+chalet-name: Lakás
+chalet-desc: 5. szintje a háznak. Bevétele $548 naponta kenyér és répa eladásával.
+chalet1-name: Lakás1
+chalet1-desc: 5. szintje a háznak. Bevétele $692 naponta kenyér, répa és hal eladásával.
+chalet2-name: Lakás2
+chalet2-desc: 5. szintje a háznak. Bevétele $890 naponta kenyér, hal, répa és dinnyeszeletek
+  eladásával.
+chalet3-name: Lakás3
+chalet3-desc: 5. szintje a háznak. Bevétele $1022 naponta kenyér, hal, répa, süti és
+  dinnyeszeletek eladásával.
+mansion-name: Kúria
+mansion-desc: 6. szintje a háznak. Bevétele $648 naponta kenyér, répa és marhahús
+  eladásával. Csak lakás fejlesztésével elérhető.
+mansion1-name: Kúria1
+mansion1-desc: 6. szintje a háznak. Bevétele $894 naponta kenyér, répa, marhahús és sütik
+  eladásával.
+mansion2-name: Kúria2
+mansion2-desc: 6. szintje a háznak. Bevétele $1167 naponta kenyér, répa, marhahús és sütik
+  eladásával.
+mansion3-name: Kúria3
+mansion3-desc: 6. szintje a háznak. Bevétele $1407 naponta kenyér, répa, marhahús, süti és
+  tej eladásával.
+manor-name: Majorság
+manor-desc: 7. szintje a háznak. Bevétele $1032 naponta aranyrépa, sütik és marhahús
+  eladásával. Csak kúria fejlesztésével érhető el.
+manor1-name: Majorság1
+manor1-desc: 7. szintje a háznak. Bevétele $1276 naponta aranyrépa, sütik, marhahús és tej
+  eladásával.
+manor2-name: Majorság2
+manor2-desc: 7. szintje a háznak. Bevétele $1679 naponta aranyrépa, tökpite, marhahús sütik
+  és tej eladásával.
+manor3-name: Majorság3
+manor3-desc: 7. szintje a háznak. Bevétele $1751 naponta aranyrépa, tökpite, marhahús sütik
+  és tej eladásával.
+villa-name: Villa
+villa-desc: 8. szintje a háznak. Bevétele $1100 naponta aranyrépa, tökpite és marhahús
+  eladásával.
+villa1-name: Villa1
+villa1-desc: 8. szintje a háznak. Bevétele $11397 naponta aranyrépa, tökpite, marhahús és
+  tej eladásával.
+villa2-name: Villa2
+villa2-desc: 8. szintje a háznak. Bevétele $1877 naponta aranyrépa, tökpite, marhahús és
+  aranyalma eladásával.
+estate-name: Kastély
+estate-desc: 9. szintje a háznak. Bevétele $1480 naponta aranyrépa, tökpite és aranyalma
+  eladásával. Csak villa fejlesztésével érhető el.
+estate1-name: Kastély1
+estate1-desc: 9. szintje a háznak. Bevétele $1917 naponta aranyrépa, tökpite, aranyalma és
+  süti eladásával.
+estate2-name: Kastély2
+estate2-desc: 9. szintje a háznak. Bevétele $2397 naponta aranyrépa, aranyalma, tökpite
+  nyúlragu és torta eladásával.
+estate3-name: Kastély3
+estate3-desc: 9. szintje a háznak. Bevétele $2621 naponta aranyrépa, aranyalma, tökpite
+  nyúlragu és torta eladásával.
+inn-name: Fogadó
+inn-desc: 12 lakhatást biztosít és egy teleportot. Hasznos arra, hogy úgy adj lakosságot
+  a városhoz, hogy ne kelljen külön házakat építeni.
+jade_mine-name: Jade bánya
 jade_mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
   ahol van Jade bolt.
+coal_mine-name: Szén bánya
+coal_mine-desc: Szenet termel csákányok használatával. Helyezz egy minecart-ot a ládába, építs
+  sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+diamond_mine-name: Gyémánt bánya
 diamond_mine-desc: Gyémántot termel vascsákányok használatával.
+gold_mine-name: Arany bánya
+gold_mine-desc: Aranyat termel vas csákányok használatával. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+gunpowder_mine-name: Puskapor bánya
 gunpowder_mine-desc: Puskaport termel vascsákányok használatával.
+iron_mine-name: Vas bánya
 iron_mine-desc: Vasat termel csákányok használatával.
+lapis_mine-name: Lapis (lazurit) bánya
 lapis_mine-desc: Lazuritot termel vascsákányok használatával.
+marine_mine-name: Tengeri bánya
 marine_mine-desc: Prizmarint termel csákányok használatával.
+obsidian_mine-name: Obsidian bánya
 obsidian_mine-desc: Obszidiánt termel automatikusan.
+quartz_mine-name: Kvarc bánya
 quartz_mine-desc: Kvarcot termel csákányok használatával.
+redstone_mine-name: Vöröskő bánya
+redstone_mine-desc: Vöröskövet termel csákányok használatával. Helyezz egy minecart-ot a ládába,
+  építs sínekből utat a célhoz, majd helyezz le egy leejtős elektromos sínt a
+  kezdőpontba.
+npc_chalet-name: NPC Lakás
 npc_chalet-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_dwelling-name: NPC Házikó
 npc_dwelling-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_house-name: NPC Ház
 npc_house-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_hovel-name: NPC Kunyhó
 npc_hovel-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_mansion-name: NPC Kúria
 npc_mansion-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+npc_shack-name: NPC Kalyiba
 npc_shack-desc: Ház egy falusinak. Beleszámít a város lélekszámába.
+raid_porter-name: Raid porter
 raid_porter-desc: Megbízható módja egy ellenséges városba bejutásának. Beüzemelése 4 perc.
+raid_porter_active-name: Raid porter (aktív)
+raid_porter_active-desc: Helyezz egy táblát a középső blokkra a célváros nevével, majd állj a blokk
+  közepére.
+siege_machine-name: Ostromgép
 siege_machine-desc: Egy háború alapja. Lassan csökkenti az erőpontjait a közelében lévő városnak.
   Beüzemelése 4 perc.
+siege_machine_active-name: Ostromgép (aktív)
+siege_machine_active-desc: Levesz 1 erőpontot minden harmadik percben. 3 lövés után fejlődik
+siege_machine1-name: Ostromgép1
+siege_machine1-desc: Levesz 1 erőpontot minden 2.5 percben. 3 lövés után fejlődik.
+siege_machine2-name: Ostromgép2
+siege_machine2-desc: Levesz 1 erőpontot minden második percben. 4 lövés után fejlődik
+siege_machine3-name: Ostromgép3
+siege_machine3-desc: Levesz 1 erőpontot minden másfeledik percben.
+altar-name: Oltár
 altar-desc: Teljes gyémántszettet, kardot, íjat, és nyilakat készít $300-ért óránként.
+blindness_trap-name: Vakító csapda
 blindness_trap-desc: Vakságot, lassúságot és gyengeséget ad a nem városlakóknak. Megsemmisíti magát
   30 perc múlva.
+castle-name: Bástya
 castle-desc: Egy vár közepe. Felépítéséhez szükséges az előörs fejlesztése. 6 erőpontot
   generál 15 percenként.
+catapult-name: Katapult
 catapult-desc: TNT-t lő nagy távolságokrara nagy pontossággal.
+command_tent-name: Parancsnoki sátor
 command_tent-desc: Központja egy előörsnek. Segít megostromolni egy várost. 1 erőpontot generál
   15 percenként.
+hunting_lodge-name: Vadász kabin
 hunting_lodge-desc: Ha egy táblát helyezel egy obszidián felé az áldozatod nevével és jobb
   egérgombbal kattintsz az obszidiánra, a játékos közelébe teleportál.
+memorial-name: Ostrom spawnpoint
 memorial-desc: Egy hely, ahol a város lakosai újraéledhetnek. Megelőzi a sebződést is.
+mobile_hospital-name: Mobil kórház
 mobile_hospital-desc: Gyógyítja a játékosokat, ha benne tartózkodnak. Megsemmisíti magát 30 perc
   után.
+temp_arrow_trap-name: Ideiglenes íjásztorony
 temp_arrow_trap-desc: Nyilakat lő a közelében álló nem városlakókra. Megsemmisíti magát 15 perc után.
+clay_quarry-name: Agyag bánya
 clay_quarry-desc: Agyagot termel automatikusan.
+cobble_quarry-name: Zúzottkő bánya
 cobble_quarry-desc: Zúzottkövet termel 30 másodpercenként.
+cobble_grinder-name: Zúzottkő örlőgép
+cobble_grinder-desc: Zúzottkövet gyárt  minden 30 másodpercben. Helyezz el egy ládás minecart-ot a
+  ládában. Építs utat sínből a Zúzottkő örlőgéptől a célhoz. Helyezz el egy
+  leejtős elektromos sínt a kezdőpontba.
+dirt_quarry-name: Föld bánya
 dirt_quarry-desc: Földet termel 30 másodpercenként.
+red_sand_pit-name: Vörös homok gödör
 red_sand_pit-desc: Vörös homokot termel 30 másodpercenként.
+sand_pit-name: Homok gödör
 sand_pit-desc: Homokot termel 30 másodpercenként.
+sifter-name: Rosta
 sifter-desc: Földet szitál, hogy értékes tárgyakat találjon.
-jade_shop-desc: 144 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
+jade_shop-name: Jade bolt
+jade_shop-desc: 16 Jade-t ad el a szervernek $1000-ért egy nap. Nem építhető olyan városban,
   ahol van Jade bánya.
+coal_shop-name: Szén bolt
 coal_shop-desc: 144 db szenet ad el a szervernek napi $432-ért.
+diamond_shop-name: Gyémánt bolt
 diamond_shop-desc: 24 db gyémántot ad el a szervernek napi $1536-ért.
+flower_shop-name: Virág bolt
 flower_shop-desc: Virágokat ad el a szervernek napi $288-ért.
+gold_shop-name: Arany bolt
 gold_shop-desc: 288 db aranyat ad el a szervernek napi $672-ért.
+iron_shop-name: Vas bolt
 iron_shop-desc: 288 db vasat ad el a szervernek napi $576-ért.
+leather_shop-name: Bőr bolt
 leather_shop-desc: Bőrt ad el a szervernek napi $360-ért.
+city-name: Nagyváros
+city-desc: Az ötödik szintje a városnak. Szükséges hozzá 30 lakos.
+hamlet-name: Kisfalu
+hamlet-desc: A második szintje a városnak. Szükséges hozzá 5 lakos.
+keep-name: Fejlesztett előörs (vár)
 keep-desc: A második szintje az előörsnek.
+metropolis-name: Metropolisz
+metropolis-desc: A hatodik szintje a városnak. Szükséges hozzá 50 lakos.
+mining_colony-name: Bányász kolónia
 mining_colony-desc: Letiltja a szörnyek spawnolását és gyorsítja a bányászatot.
+outpost-name: Előörs
 outpost-desc: Az első szintje az előörsnek.
+settlement-name: Telep
 settlement-desc: Az első szintje a városnak.
+town-name: Város
+town-desc: A negyedik szintje a városnak. Szükséges hozzá 20 lakos.
+village-name: Falu
+village-desc: A harmadik szintje a városnak. Szükséges hozzá 10 lakos.
+bank-name: Bank
 bank-desc: 192 erőpontot generál naponta. 64 db smaragdot ad el $640-ért.
+bath_house-name: Fürdőház
 bath_house-desc: 192 erőpontot generál naponta.
+capitol-name: Kongresszus
 capitol-desc: A város központja. 768 erőpontot generál naponta. Otthon teleportnak is
   használható.
+city_hall-name: Városháza (nagy)
 city_hall-desc: A város központja. 576 erőpontot generál naponta. Otthon teleportnak is
   használható.
+council_room-name: Tanácsháza
 council_room-desc: A város központja. 192 erőpontot generál naponta. Otthon teleportnak is
   használható.
+embassy-name: Követség
 embassy-desc: 192 erőpontot generál naponta. Otthoni teleportként is használható.
+library-name: Könyvtár
 library-desc: 192 erőpontot generál naponta. 2 db XP üveget termel 15 percenként.
+purifier-name: Tisztító
 purifier-desc: Átalakítja a rohadt húst bőrré és eltávolítja a mérget a krumplikról 15
   percenként.
+smithy-name: Kovácsműhely
 smithy-desc: Eszközöket javít jobb egérgombbal kattintással vasblokkra. 192 erőpontot
   generál naponta.
+town_hall-name: Városháza
 town_hall-desc: A város központja. 348 erőpontot generál naponta. Otthon teleportnak is
   használható.
+warehouse-name: Raktár
+warehouse-desc: Elosztja a régiók között a tárgyakat, ahol szükség keletkezik.
+item-jade-name: Jade
+item-jade-desc: Beváltható 16 db Jade a Jade boltban $1000-ért.
+farms-name: Farmok
+farms-desc: Minden, ami ételt, állatokat és természetes  alapanyagokat gyárt.
+towns-name: Városok
+towns-desc: Minden, ami városfejlesztés, háborúhoz táborok és bányászvárosok.
+shops-name: Bolt
+shops-desc: A boltok tárgyakat adnak el a szervernek. Egy játékosnak 3 db lehet csak.
+utilities-name: Közjavak
+utilities-desc: Minden épület, ami erőpontot generál és megvédi a várost.
+housing-name: Lakások
+housing-desc: Épületek, amelyek segítenek a város lakosságát növelni. Legtöbb lakás tud
+  eladni élelmiszereket a szervernek.
+defense-name: Védekezés
+defense-desc: Épületek, melyek segítik a város védelmét. Némelyik épület generál erőpontot
+  is.
+quarries-name: Kőbánya
+quarries-desc: Épületek, amelyek a föld anyagait termelik. Kövek, föld stb.
+factories-name: Gyárak
+factories-desc: Épületek, amelyek hatékonyan gyártanak tárgyakat. Legtöbb síneket használ
+  tárgyak szállításához más régiókból.
+offense-name: Támadás
+offense-desc: Épületek, mely a háborút segítik a városon kívül. Ostromgépeket is tartalmaz
+  városok támadásához.
+mines-name: Bánya
+mines-desc: Épület, amely érceket és más értékes anyagokat generál.
+woodworks-name: Fatelep
+woodworks-desc: Fatelep, mindenféle fára.
+animals-name: Állat farm
+animals-desc: Farm, ahol állatok spawnolnak.
+npchousing-name: NPC ház
+npchousing-desc: Épület, amely lakhatást biztosít és növeli a lakosok számát falusi formájában.
+  Ezek az épületek nem generálnak bevételt és fel kell fejleszteni normális
+  lakásból.
+trading-name: Kereskedőház
+trading-desc: Épület, amelyben városok között kereskedhetünk.
+fireworks_factory-name: Tüzijáték gyár
+fireworks_factory-desc: Tüzijátékokat készít puskapor felhasználása nélkül
+admin-name: Admin
+admin-desc: Tárgyak adminoknak
+house-evolve-name: Ház fejlesztést
+house-evolve-desc: Rejtett fejlesztett formái a lakásoknak
+trade-mines-name: Bányák kereskedéshez
+trade-mines-desc: Bányák, amelyek tárgyakat gyártanak, amiket más városban adhatsz el.
+evolve-name: Fejlesztések
+evolve-desc: Rejtett fejlesztett formái bizonyos épületeknek

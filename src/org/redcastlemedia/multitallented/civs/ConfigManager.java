@@ -5,7 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -72,28 +72,22 @@ public class ConfigManager {
     Map<String, List<String>> customItemDescriptions;
     @Getter
     Material townRingMat;
-
     @Getter
     boolean checkWaterSpread;
-
     @Getter
     boolean useTutorial;
-
     @Getter
     boolean useGuide;
-
     @Getter
     String tutorialUrl;
-
     @Getter
     List<String> levelList;
-
     @Getter
     boolean allowTeleportInCombat;
-
     @Getter
-    GovernmentType defaultGovernmentType;
-
+    boolean useParticleBoundingBoxes;
+    @Getter
+    String defaultGovernmentType;
     @Getter
     boolean allowChangingOfGovType;
     @Getter
@@ -116,6 +110,32 @@ public class ConfigManager {
     long announcementPeriod;
     @Getter
     String revoltCost;
+    @Getter
+    boolean useBoundingBox;
+    @Getter
+    boolean mobsDropItemsWhenKilledInDenyDamage;
+    @Getter
+    boolean debugLog;
+    @Getter
+    double maxBankDeposit;
+    @Getter
+    double antiCampCost;
+    @Getter
+    boolean allowOfflineRaiding;
+    @Getter
+    boolean allowTeleportingOutOfHostileTowns;
+    @Getter
+    boolean townRingsCrumbleToGravel;
+    @Getter
+    boolean enterExitMessagesUseTitles;
+    @Getter
+    boolean dropMoneyIfZeroBalance;
+    @Getter
+    int minDistanceBetweenTowns;
+    @Getter
+    boolean useAsyncUpkeeps;
+    @Getter
+    boolean disableRegionsInUnloadedChunks;
 
     public ConfigManager() {
         loadDefaults();
@@ -243,7 +263,7 @@ public class ConfigManager {
             }
             config.load(configFile);
 
-            blackListWorlds = config.getStringList("blacklist-worlds");
+            blackListWorlds = config.getStringList("black-list-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             explosionOverride = config.getBoolean("explosion-override", false);
@@ -300,7 +320,7 @@ public class ConfigManager {
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
-            portWarmup = config.getInt("port.warmpup", 5);
+            portWarmup = config.getInt("port.warmup", 5);
             portCooldown = config.getInt("port.cooldown", 60);
             portMoney = config.getDouble("port.money", 0);
             portDamage = config.getInt("port.damage", 0);
@@ -329,11 +349,12 @@ public class ConfigManager {
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
+            useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
             String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
             if (defaultGovTypeString != null) {
-                defaultGovernmentType = GovernmentType.valueOf(defaultGovTypeString.toUpperCase());
+                defaultGovernmentType = defaultGovTypeString.toUpperCase();
             } else {
-                defaultGovernmentType = GovernmentType.DICTATORSHIP;
+                defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
             }
             allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
             maxTax = config.getDouble("max-town-tax", 50);
@@ -350,6 +371,18 @@ public class ConfigManager {
             revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
+            useBoundingBox = config.getBoolean("use-region-bounding-box", true);
+            mobsDropItemsWhenKilledInDenyDamage = config.getBoolean("stop-mobs-from-dropping-items-in-safe-zones", false);
+            debugLog = config.getBoolean("debug-log", false);
+            maxBankDeposit = config.getDouble("max-bank-deposit", -1);
+            allowOfflineRaiding = config.getBoolean("allow-offline-raiding", true);
+            allowTeleportingOutOfHostileTowns = config.getBoolean("allow-teleporting-out-of-hostile-towns", true);
+            townRingsCrumbleToGravel = config.getBoolean("town-rings-crumble-to-gravel", true);
+            enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
+            dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
+            minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
+            useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
+            disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -367,7 +400,7 @@ public class ConfigManager {
             if (returnList.isEmpty()) {
                 returnList.add(key);
             } else if (returnList.size() == 1) {
-                returnMap.put(key, Util.textWrap("", Util.parseColors(returnList.get(0))));
+                returnMap.put(key, Util.textWrap(Util.parseColors(returnList.get(0))));
             }
             returnMap.put(key, returnList);
         }
@@ -375,6 +408,18 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        disableRegionsInUnloadedChunks = false;
+        useAsyncUpkeeps = true;
+        minDistanceBetweenTowns = 10;
+        dropMoneyIfZeroBalance = false;
+        enterExitMessagesUseTitles = true;
+        townRingsCrumbleToGravel = true;
+        allowTeleportingOutOfHostileTowns = true;
+        allowOfflineRaiding = true;
+        maxBankDeposit = -1;
+        debugLog = false;
+        mobsDropItemsWhenKilledInDenyDamage = false;
+        useBoundingBox = true;
         revoltCost = "GUNPOWDER*64";
         announcementPeriod = 240;
         useAnnouncements = true;
@@ -385,6 +430,7 @@ public class ConfigManager {
         daysBetweenVotes = 7;
         defaultLanguage = "en";
         allowCivItemDropping = false;
+        useParticleBoundingBoxes = false;
         maxTax = 50;
         explosionOverride = false;
         useStarterBook = true;
@@ -437,7 +483,7 @@ public class ConfigManager {
         checkWaterSpread = true;
         customItemDescriptions = new HashMap<>();
         levelList = new ArrayList<>();
-        defaultGovernmentType = GovernmentType.DICTATORSHIP;
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
     }
 

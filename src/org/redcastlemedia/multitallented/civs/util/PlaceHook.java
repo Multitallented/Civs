@@ -14,6 +14,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class PlaceHook extends PlaceholderExpansion {
 
     private static final String ROOT_ID = "civs";
@@ -29,6 +32,8 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String NATION = "nation";
     private static final String POWER = "power";
     private static final String MAX_POWER = "max_power";
+    private static final String POPULATION = "population";
+    private static final String HOUSING = "housing";
 
     @Override
     public boolean canRegister() {
@@ -72,10 +77,28 @@ public class PlaceHook extends PlaceholderExpansion {
             return getReplacement(civilian);
         } else if (POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
             return "" + town.getPower();
         } else if (MAX_POWER.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
             return "" + town.getMaxPower();
+        } else if (POPULATION.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
+            return "" + town.getPopulation();
+        } else if (HOUSING.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            if (town == null) {
+                return "-";
+            }
+            return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (KILLS.equals(identifier)) {
@@ -93,7 +116,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
             if (bounty == null) {
-                return "";
+                return "-";
             }
             String bountyString = Util.getNumberFormat(bounty.getAmount(), civilian.getLocale());
             if (bounty.getIssuer() == null) {
@@ -109,7 +132,7 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             return nation;
         } else {
-            return "";
+            return "-";
         }
     }
 
@@ -117,8 +140,11 @@ public class PlaceHook extends PlaceholderExpansion {
         for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
+                if (town == null) {
+                    continue;
+                }
                 if (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                        !town.getRawPeople().get(civilian.getUuid()).equals("ally")) {
+                        !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
                     return alliance.getName();
                 }
             }
@@ -143,7 +169,7 @@ public class PlaceHook extends PlaceholderExpansion {
                     highestPopulation = pop;
                 }
             }
-            return highestTown == null ? "" : highestTown.getName();
+            return highestTown == null ? "-" : highestTown.getName();
         }
     }
 }

@@ -18,10 +18,9 @@ import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.text.NumberFormat;
 import java.util.*;
 
 public class RegionActionMenu extends Menu {
@@ -43,6 +42,12 @@ public class RegionActionMenu extends Menu {
         LocaleManager localeManager = LocaleManager.getInstance();
         Region region = (Region) getData(civilian.getUuid(), "region");
 
+        if (region == null) {
+            clearHistory(civilian.getUuid());
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+
         if (isBackButton(event.getCurrentItem(), civilian.getLocale())) {
             clickBackButton(event.getWhoClicked());
             return;
@@ -57,9 +62,9 @@ public class RegionActionMenu extends Menu {
             return;
         }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(
-                localeManager.getTranslation(civilian.getLocale(),
-                        "region-type"))) {
+        if (event.getCurrentItem().getItemMeta().getDisplayName() != null &&
+                event.getCurrentItem().getItemMeta().getDisplayName().equals(
+                localeManager.getTranslation(civilian.getLocale(), "region-type"))) {
             appendHistory(civilian.getUuid(), MENU_NAME + "," + region.getId());
             event.getWhoClicked().closeInventory();
             event.getWhoClicked().openInventory(RegionTypeInfoMenu.createMenu(civilian, regionType, false));
@@ -163,7 +168,7 @@ public class RegionActionMenu extends Menu {
         //0 Icon
         {
             CVItem cvItem = regionType.getShopIcon().clone();
-            lore = new ArrayList<>(Util.textWrap("", regionType.getDescription(civilian.getLocale())));
+            lore = new ArrayList<>(Util.textWrap(regionType.getDescription(civilian.getLocale())));
             cvItem.setLore(lore);
             inventory.setItem(0, cvItem.createItemStack());
         }

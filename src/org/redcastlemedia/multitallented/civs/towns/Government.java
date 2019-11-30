@@ -3,14 +3,15 @@ package org.redcastlemedia.multitallented.civs.towns;
 import lombok.Getter;
 
 import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class Government {
+    @Getter
+    private final String name;
     @Getter
     private final GovernmentType governmentType;
     @Getter
@@ -19,9 +20,10 @@ public class Government {
     private final ArrayList<GovTransition> transitions;
     private final CVItem icon;
 
-    public Government(GovernmentType governmentType,
+    public Government(String name, GovernmentType governmentType,
                       HashSet<GovTypeBuff> buffs, CVItem cvItem,
                       ArrayList<GovTransition> transitions) {
+        this.name = name;
         this.governmentType = governmentType;
         this.buffs = buffs;
         this.icon = cvItem;
@@ -35,11 +37,11 @@ public class Government {
     public CVItem getIcon(String locale, boolean isUseBuffs) {
         CVItem cvItem = icon.clone();
         cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale,
-                governmentType.name().toLowerCase() + "-name"));
+                name.toLowerCase() + "-name"));
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Gov Type: " + governmentType.name());
-        lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(locale,
-                governmentType.name().toLowerCase() + "-desc")));
+        lore.add("Gov Type: " + name);
+        lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(locale,
+                name.toLowerCase() + "-desc")));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(locale));
         }
@@ -51,7 +53,7 @@ public class Government {
         ArrayList<String> lore = new ArrayList<>();
         for (GovTypeBuff buff : buffs) {
             String applyString = getApplyString(buff);
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
                     locale, buff.getBuffType().name().toLowerCase() + "-buff-desc")
                     .replace("$1", buff.getAmount() + "")
                     .replace("$2", applyString)));

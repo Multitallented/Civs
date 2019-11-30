@@ -18,7 +18,6 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -116,13 +115,6 @@ public class ItemManager {
         //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         ClassType civItem = new ClassType(
                 config.getStringList("reqs"),
                 name,
@@ -131,7 +123,6 @@ public class ItemManager {
                 config.getDouble("price", 0),
                 config.getString("permission"),
                 config.getStringList("children"),
-                description,
                 config.getStringList("groups"),
                 config.getInt("mana-per-second", 1),
                 config.getInt("max-mana", 100),
@@ -145,13 +136,6 @@ public class ItemManager {
     public CivItem loadSpellType(FileConfiguration config) throws NullPointerException {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", "CHEST"));
         String name = config.getString("name");
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         SpellType spellType = new SpellType(
                 config.getStringList("reqs"),
                 name,
@@ -162,7 +146,6 @@ public class ItemManager {
                 config.getInt("max", -1),
                 config.getDouble("price", 0),
                 config.getString("permission"),
-                description,
                 config.getStringList("groups"),
                 config,
                 config.getBoolean("is-in-shop", true),
@@ -197,13 +180,6 @@ public class ItemManager {
             }
         }
         int buildRadius = config.getInt("build-radius", 20);
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
-            }
-        }
         TownType townType = new TownType(
                 name,
                 icon,
@@ -220,7 +196,6 @@ public class ItemManager {
                 buildRadius,
                 config.getInt("build-radius-y", buildRadius),
                 config.getStringList("critical-build-reqs"),
-                description,
                 config.getInt("power", 200),
                 config.getInt("max-power", 1000),
                 config.getStringList("groups"),
@@ -228,7 +203,7 @@ public class ItemManager {
                 config.getInt("child-population", 0),
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
-        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType().name()));
+        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType()));
         itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
         return townType;
     }
@@ -258,7 +233,8 @@ public class ItemManager {
                 }
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
                 double exp = config.getDouble("upkeep." + key + ".exp", 0);
-                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp);
+                String perm = config.getString("upkeep." + key + ".perm", "");
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp, perm);
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));
@@ -285,12 +261,12 @@ public class ItemManager {
         int buildRadiusY = config.getInt("build-radius-y", buildRadius);
         int buildRadiusZ = config.getInt("build-radius-z", buildRadius);
         int effectRadius = config.getInt("effect-radius", buildRadius);
-        String rebuild = config.getString("rebuild", null);
-        ConfigurationSection configurationSection = config.getConfigurationSection("description");
-        HashMap<String, String> description = new HashMap<>();
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                description.put(key, configurationSection.getString(key));
+        List<String> rebuild = config.getStringList("rebuild");
+        if (rebuild.isEmpty()) {
+            rebuild = new ArrayList<>();
+            String onlyRebuild = config.getString("rebuild");
+            if (onlyRebuild != null && !onlyRebuild.isEmpty()) {
+                rebuild.add(onlyRebuild);
             }
         }
         Set<Biome> biomes = new HashSet<>();
@@ -298,6 +274,10 @@ public class ItemManager {
             for (String s : config.getStringList("biomes")) {
                 biomes.add(Biome.valueOf(s));
             }
+        }
+        HashSet<String> worlds = new HashSet<>();
+        if (config.isSet("worlds")) {
+            worlds.addAll(config.getStringList("worlds"));
         }
         RegionType regionType = new RegionType(
                 name,
@@ -320,13 +300,13 @@ public class ItemManager {
                 rebuild,
                 townSet,
                 biomes,
-                description,
                 config.getLong("period", 0),
                 config.getString("period", "false").equals("daily"),
                 config.getStringList("groups"),
                 config.getBoolean("is-in-shop", true),
                 config.getBoolean("rebuild-required", false),
-                config.getInt("level",1));
+                config.getInt("level",1),
+                worlds);
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
@@ -348,9 +328,9 @@ public class ItemManager {
     }
 
     public CivItem getItemType(String name) {
-        return itemTypes.get(ChatColor.stripColor(name.replace(
-                ConfigManager.getInstance().getCivsItemPrefix(),
-                "").toLowerCase()));
+        String processedName = ChatColor.stripColor(name);
+        return itemTypes.get(processedName.replace(
+                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
 
     public List<CivItem> getItemGroup(String groupName) {

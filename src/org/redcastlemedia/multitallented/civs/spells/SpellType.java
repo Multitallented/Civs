@@ -11,7 +11,7 @@ import org.redcastlemedia.multitallented.civs.spells.targets.AreaTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,6 @@ public class SpellType extends CivItem {
                      int max,
                      double price,
                      String permission,
-                     HashMap<String, String> description,
                      List<String> groups,
                      FileConfiguration config,
                      boolean isInShop,
@@ -44,7 +43,6 @@ public class SpellType extends CivItem {
                 max,
                 price,
                 permission,
-                description,
                 groups,
                 isInShop,
                 level);

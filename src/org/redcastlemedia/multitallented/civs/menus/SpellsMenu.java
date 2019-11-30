@@ -6,13 +6,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -101,7 +100,7 @@ public class SpellsMenu extends Menu {
             CVItem newItem = cvItem.clone();
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.addAll(Util.textWrap("", Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(Util.parseColors(cvItem.getDescription(civilian.getLocale()))));
 //            lore.addAll(cvItem.getLore());
             newItem.setLore(lore);
             newItem.setQty(civilian.getStashItems().get(currentName));

@@ -5,9 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class CivItem extends CVItem {
@@ -20,7 +19,6 @@ public abstract class CivItem extends CVItem {
     private final String permission;
     private final boolean isInShop;
     private boolean isPlaceable = false;
-    private final HashMap<String, String> description;
     private final List<String> groups;
     @Getter
     private final CVItem shopIcon;
@@ -52,17 +50,10 @@ public abstract class CivItem extends CVItem {
     }
     public static String processItemName(String input) {
         input = ChatColor.stripColor(input);
-        return input.replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase();
+        return input.replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
     }
     public String getDescription(String locale) {
-        String localizedDescription = description.get(locale);
-        if (localizedDescription == null) {
-            localizedDescription = description.get(ConfigManager.getInstance().getDefaultLanguage());
-            if (localizedDescription == null) {
-                return "";
-            }
-        }
-        return localizedDescription;
+        return LocaleManager.getInstance().getTranslation(locale, getProcessedName().toLowerCase() + "-desc");
     }
     public List<String> getGroups() { return groups; }
 
@@ -78,16 +69,19 @@ public abstract class CivItem extends CVItem {
                    int max,
                    double price,
                    String permission,
-                   HashMap<String, String> description,
                    List<String> groups,
                    boolean isInShop,
                    int level) {
         super(material, 1, 100, ConfigManager.getInstance().getCivsItemPrefix() + name);
         this.isPlaceable = isPlaceable;
-        this.shopIcon = new CVItem(shopIcon.getMat(),
-                shopIcon.getQty(),
-                (int) shopIcon.getChance(),
-                ConfigManager.getInstance().getCivsItemPrefix() + name);
+        if (shopIcon.getMmoItemType() == null) {
+            this.shopIcon = new CVItem(shopIcon.getMat(),
+                    shopIcon.getQty(),
+                    (int) shopIcon.getChance(),
+                    ConfigManager.getInstance().getCivsItemPrefix() + name);
+        } else {
+            this.shopIcon = shopIcon;
+        }
         this.itemType = itemType;
         this.reqs = reqs;
         this.qty = qty;
@@ -95,7 +89,6 @@ public abstract class CivItem extends CVItem {
         this.max = max;
         this.price = price;
         this.permission = permission;
-        this.description = description;
         this.groups = groups;
         this.isInShop = isInShop;
         this.level = level;
@@ -110,11 +103,13 @@ public abstract class CivItem extends CVItem {
     }
 
     public static CivItem getFromItemStack(ItemStack itemStack) {
-        return ItemManager.getInstance().getItemType(itemStack.getItemMeta().getLore().get(1)
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
+        return ItemManager.getInstance().getItemType(processedName
+                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
     public static CivItem getFromItemStack(CVItem cvItem) {
-        return ItemManager.getInstance().getItemType(cvItem.getLore().get(1)
-                .replace(ConfigManager.getInstance().getCivsItemPrefix(), "").toLowerCase());
+        String processedName = ChatColor.stripColor(cvItem.getLore().get(1));
+        return ItemManager.getInstance().getItemType(processedName
+                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
 }

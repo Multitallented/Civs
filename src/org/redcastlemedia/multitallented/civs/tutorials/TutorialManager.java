@@ -1,16 +1,18 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.TutorialChoosePathMenu;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -85,6 +87,15 @@ public class TutorialManager {
                             }
                         }
 
+                        List<String> commands = (List<String>) rewards.get("commands");
+                        if (commands != null) {
+                            tutorialStep.setCommands(commands);
+                        }
+                        List<String> permissions = (List<String>) rewards.get("permissions");
+                        if (permissions != null) {
+                            tutorialStep.setCommands(permissions);
+                        }
+
                         List<String> itemList = (List<String>) rewards.get("items");
                         if (itemList != null) {
                             for (String itemString : itemList) {
@@ -108,7 +119,7 @@ public class TutorialManager {
     }
 
     public void completeStep(Civilian civilian, TutorialType type, String param) {
-        if (Civs.getInstance() == null) {
+        if (Civs.getInstance() == null || !ConfigManager.getInstance().isUseTutorial()) {
             return;
         }
 
@@ -149,16 +160,104 @@ public class TutorialManager {
             // TODO send message of progress made?
             return;
         }
-        Player player = Bukkit.getPlayer(civilian.getUuid());
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
+        Player player = null;
+        if (offlinePlayer.isOnline()) {
+            player = offlinePlayer.getPlayer();
+        }
 
         ArrayList<CVItem> itemList = step.getRewardItems();
-        if (itemList != null && !itemList.isEmpty() && player.isOnline()) {
+        if (itemList != null && !itemList.isEmpty() && player != null && player.isOnline()) {
             giveItemsToPlayer(player, itemList);
         }
 
         double money = step.getRewardMoney();
         if (money > 0 && Civs.econ != null) {
-            Civs.econ.depositPlayer(player, money);
+            Civs.econ.depositPlayer(offlinePlayer, money);
+        }
+        List<String> permissions = step.getPermissions();
+        if (Civs.perm != null && !permissions.isEmpty()) {
+            for (String permission : permissions) {
+                boolean remove = false;
+                boolean transientPerm = false;
+                String finalPermission = permission;
+                for (;;) {
+                    if (finalPermission.startsWith("!")) {
+                        remove = true;
+                        finalPermission = finalPermission.substring(1);
+                    } else if (finalPermission.startsWith("^")) {
+                        transientPerm = true;
+                        finalPermission = finalPermission.substring(1);
+                    } else {
+                        break;
+                    }
+                }
+
+                if (player != null) {
+                    if (transientPerm) {
+                        if (remove) {
+                            Civs.perm.playerRemove(player, finalPermission);
+                        } else {
+                            Civs.perm.playerAddTransient(player, finalPermission);
+                        }
+                    } else {
+                        if (remove) {
+                            Civs.perm.playerRemove(player, finalPermission);
+                        } else {
+                            Civs.perm.playerAdd(player, finalPermission);
+                        }
+                    }
+                } else {
+                    Player player1 = offlinePlayer.getPlayer();
+                    if (player1 != null && player1.getLocation().getWorld() != null) {
+                        String worldName = player1.getLocation().getWorld().getName();
+                        if (remove) {
+                            Civs.perm.playerRemove(worldName, offlinePlayer, finalPermission);
+                        } else {
+                            Civs.perm.playerAdd(worldName, offlinePlayer, finalPermission);
+                        }
+                    }
+                }
+            }
+        }
+        List<String> commands = step.getCommands();
+        if (!commands.isEmpty()) {
+            for (String command : commands) {
+                String finalCommand = command;
+                boolean runAsOp = false;
+                boolean runFromConsole = false;
+                for (;;) {
+                    if (finalCommand.startsWith("^")) {
+                        runAsOp = true;
+                        finalCommand = finalCommand.substring(1);
+                    } else if (finalCommand.startsWith("!")) {
+                        runFromConsole = true;
+                        finalCommand = finalCommand.substring(1);
+                    } else {
+                        break;
+                    }
+                }
+                if (player != null) {
+                    finalCommand = finalCommand.replace("$name$", player.getName());
+                } else {
+                    Player player1 = offlinePlayer.getPlayer();
+                    if (player1 != null && player1.isValid()) {
+                        finalCommand = finalCommand.replace("$name$", player1.getName());
+                    }
+                }
+                if (runFromConsole) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+                } else if (player != null) {
+                    boolean setOp = runAsOp && !player.isOp();
+                    if (setOp) {
+                        player.setOp(true);
+                    }
+                    player.performCommand(finalCommand);
+                    if (setOp) {
+                        player.setOp(false);
+                    }
+                }
+            }
         }
 
         civilian.setTutorialProgress(0);
@@ -197,7 +296,7 @@ public class TutorialManager {
             if (useHr) {
                 player.sendMessage("-----------------" + Civs.NAME + "-----------------");
             }
-            List<String> messages = Util.parseColors(Util.textWrap("", rawMessage));
+            List<String> messages = Util.parseColors(Util.textWrap(rawMessage));
             for (String message : messages) {
                 player.sendMessage(Civs.getPrefix() + message);
             }
@@ -225,6 +324,10 @@ public class TutorialManager {
         }
     }
 
+    public TutorialPath getPathByName(String pathName) {
+        return tutorials.get(pathName);
+    }
+
     public List<CVItem> getPaths(Civilian civilian) {
         ArrayList<CVItem> returnList = new ArrayList<>();
         if (civilian.getTutorialIndex() == -1) {
@@ -233,6 +336,12 @@ public class TutorialManager {
         TutorialPath path = tutorials.get(civilian.getTutorialPath());
         if (path == null) {
             return returnList;
+        }
+        if (civilian.getTutorialIndex() >= path.getSteps().size()) {
+            civilian.setTutorialIndex(path.getSteps().size() - 1);
+        }
+        if (civilian.getTutorialIndex() < 0) {
+            civilian.setTutorialIndex(0);
         }
         TutorialStep step = path.getSteps().get(civilian.getTutorialIndex());
         if (step == null) {

@@ -11,11 +11,12 @@ import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class CommunityMenu extends Menu {
     public static final String MENU_NAME = "CivsCommunity";
@@ -170,17 +171,10 @@ public class CommunityMenu extends Menu {
             if (!region.getEffects().containsKey("port")) {
                 continue;
             }
-            if (!region.getPeople().containsKey(civilian.getUuid())) {
-                continue;
+            if (PortCommand.canPort(region, civilian.getUuid(), null)) {
+                hasPort = true;
+                break;
             }
-            //Don't show private ports
-            if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
-                continue;
-            }
-            hasPort = true;
-            break;
         }
 
         //6 Ports

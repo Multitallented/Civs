@@ -10,13 +10,14 @@ import org.bukkit.inventory.Inventory;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.*;
 
@@ -80,16 +81,14 @@ public class PortMenu extends Menu {
         List<Region> returnSet = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
         for (Region region : regionSet) {
+            if (returnSet.contains(region)) {
+                continue;
+            }
             if (!region.getEffects().containsKey("port")) {
                 continue;
             }
-            if (!region.getPeople().containsKey(civilian.getUuid())) {
-                continue;
-            }
             //Don't show private ports
-            if (region.getEffects().get("port") != null &&
-                    !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                    !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+            if (!PortCommand.canPort(region, civilian.getUuid(), null)) {
                 continue;
             }
             returnSet.add(region);
@@ -124,9 +123,15 @@ public class PortMenu extends Menu {
             inventory.setItem(8, cvItem1.createItemStack());
         }
 
+        HashSet<Region> regionsAdded = new HashSet<>();
         int i=9;
         for (int k=startIndex; k<returnSet.size() && k<startIndex+36; k++) {
             Region region = returnSet.get(k);
+            if (regionsAdded.contains(region)) {
+                continue;
+            } else {
+                regionsAdded.add(region);
+            }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             CVItem cvItem1 = regionType.clone();
             cvItem1.setDisplayName(region.getId());

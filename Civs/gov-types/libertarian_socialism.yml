@@ -8,40 +8,24 @@
 icon: "ORANGE_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  corruption:
+  0:
     money-gap: 70
     to: OLIGARCHY
-  chaos:
+  1:
     power: 30
     revolt: 51
-    to: ANARCHY
-  takeover:
+    to: IDIOCRACY
+  2:
     revolt: 51
     money-gap: 60
     to: CAPITALISM
-  distribute:
+  3:
     revolt: 51
     money-gap: 30
     to: DEMOCRATIC_SOCIALISM
-  earned:
+  4:
     revolt: 51
     to: MERITOCRACY
-name:
-  en: "Libertarian Socialism"
-  de: "Libertärer Sozialismus"
-  ru: "Либертарианский социализм"
-  pt_br: "Socialismo Libertário"
-  fr: "Socialisme libertaire"
-  es: "Socialismo libertario"
-  hu: "Liberális szocializmus"
-description:
-  en: "Libertarian + Socialism"
-  es: "Libertario + socialismo"
-  fr: "Libertaire + socialisme"
-  pt_br: "Libertário + Socialismo"
-  ru: "Либертарианец + социализм"
-  de: "Libertärer + Sozialismus"
-  hu: "Liberalizmus + Szocializmus"
 buffs:
   cooldown:
     percent: 10

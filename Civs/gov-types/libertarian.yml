@@ -7,40 +7,24 @@
 icon: "YELLOW_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  corruption:
+  0:
     money-gap: 70
     to: OLIGARCHY
-  chaos:
+  1:
     power: 30
     revolt: 51
-    to: ANARCHY
-  takeover:
+    to: IDIOCRACY
+  2:
     revolt: 51
     money-gap: 60
     to: CAPITALISM
-  distribute:
+  3:
     revolt: 51
     money-gap: 30
     to: DEMOCRACY
-  earned:
+  4:
     revolt: 51
     to: MERITOCRACY
-name:
-  en: "Libertarian"
-  de: "Libertär"
-  ru: "вольный"
-  pt_br: "Libertário"
-  fr: "Libertaire"
-  es: "Libertario"
-  hu: "Liberalizmus"
-description:
-  en: "No town ownership."
-  es: "No propiedad de la ciudad."
-  fr: "Aucune propriété de la ville."
-  pt_br: "Nenhuma propriedade da cidade."
-  ru: "Нет городской собственности."
-  de: "Kein Stadteigentum."
-  hu: "Nincs tulajdonosa a városnak, nincsenek adók, nincs bank. Bárki jelentkezhet a városba."
 buffs:
   payout:
     percent: 15

@@ -22,7 +22,8 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class MainMenu extends Menu {
         event.setCancelled(true);
 
         ItemStack clickedStack = event.getCurrentItem();
-        if (clickedStack.getItemMeta() == null) {
+        if (clickedStack == null || clickedStack.getItemMeta() == null) {
             return;
         }
         if (clickedStack.getItemMeta().getDisplayName() == null) {
@@ -118,6 +119,7 @@ public class MainMenu extends Menu {
 
     public static Inventory createMenu(Civilian civilian) {
         clearHistory(civilian.getUuid());
+        StructureUtil.removeBoundingBox(civilian.getUuid());
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
             return StartTutorialMenu.createMenu(civilian);
         }
@@ -210,7 +212,7 @@ public class MainMenu extends Menu {
             townIcon.setDisplayName(town.getName());
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "town");
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     townType.getProcessedName() + "-desc")));
             townIcon.setLore(lore);
             inventory.setItem(9, townIcon.createItemStack());
@@ -225,7 +227,7 @@ public class MainMenu extends Menu {
                     regionType.getProcessedName() + "-name"));
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + "region");
-            lore.addAll(Util.textWrap("", LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     regionType.getProcessedName() + "-desc")));
             regionIcon.setLore(lore);
             inventory.setItem(10, regionIcon.createItemStack());

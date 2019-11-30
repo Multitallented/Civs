@@ -2,18 +2,14 @@ package org.redcastlemedia.multitallented.civs;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.util.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class BlockLogger {
     private static BlockLogger blockLogger = null;

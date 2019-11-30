@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -32,7 +33,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class CommonScheduler implements Runnable {
-    private final int MAX_TPS = 5;
     public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     public static final HashMap<UUID, Town> lastTown = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
@@ -48,29 +48,34 @@ public class CommonScheduler implements Runnable {
             }
             depreciateKarma();
             StructureUtil.cleanUpExpiredBoundingBoxes();
+            if (ConfigManager.getInstance().isUseParticleBoundingBoxes()) {
+                StructureUtil.refreshAllBoundingBoxes();
+            }
 
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-            int chunk = players.size() / MAX_TPS;
-            for (int j = chunk * i; j < (i == MAX_TPS - 1 ? players.size() : chunk * (i + 1)); j++) {
+            int maxTPS = 5;
+            int chunk = players.size() / maxTPS;
+            for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
                 try {
                     Player player = (Player) players.toArray()[j];
                     playerInRegion(player);
                     playerInTown(player);
-                    incrementMana(player);
-                    sendAnnouncement(player);
+                    if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                        incrementMana(player);
+                    }
+                    if (ConfigManager.getInstance().isUseAnnouncements()) {
+                        sendAnnouncement(player);
+                    }
                 } catch (Exception e) {
 
                 }
-                //            Thread.yield();
             }
-            if (i == MAX_TPS - 1) {
+            RegionTickUtil.runUpkeeps();
+            if (i == maxTPS - 1) {
                 i = 0;
-                RegionTickTask regionTickTask = new RegionTickTask();
-                regionTickTask.run();
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
-                    checkTownTransition();
                 }
             } else {
                 i++;
@@ -79,67 +84,8 @@ public class CommonScheduler implements Runnable {
             e.printStackTrace();
         }
     }
-    private void checkTownTransition() {
-        HashSet<Town> saveThese = new HashSet<>();
-        for (Town town : TownManager.getInstance().getTowns()) {
-            if (town.isGovTypeChangedToday() || town.getRawPeople().size() < 3) {
-                continue;
-            }
-            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-            if (government == null) {
-                continue;
-            }
-
-            for (GovTransition transition : government.getTransitions()) {
-                boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null;
-                if (moneyGap) {
-                    double highestMoney = 0;
-                    double totalMoney = 0;
-                    for (UUID uuid : town.getRawPeople().keySet()) {
-                        double money = Civs.econ.getBalance(Bukkit.getOfflinePlayer(uuid));
-                        totalMoney += money;
-                        if (highestMoney < money) {
-                            highestMoney = money;
-                        }
-                    }
-                    if (totalMoney == 0 || highestMoney < (double) transition.getMoneyGap() / 100 * totalMoney) {
-                        continue;
-                    }
-                }
-
-                boolean power = transition.getPower() < 0 ||
-                        town.getPower() < ((double) transition.getPower() / 100 * (double) town.getMaxPower());
-                if (!power) {
-                    continue;
-                }
-
-                boolean revolt = transition.getRevolt() > 0;
-                double townRevoltPercent = ((double) town.getRevolt().size() / (double) town.getRawPeople().size());
-                if (revolt && townRevoltPercent < (double) transition.getRevolt() / 100) {
-                    continue;
-                }
-
-                boolean inactive = transition.getInactive() > 0;
-                if (inactive && (town.getLastActive() < 0 ||
-                        town.getLastActive() + transition.getInactive() * 1000 > System.currentTimeMillis())) {
-                    continue;
-                }
-
-                GovernmentManager.getInstance().transitionGovernment(town,
-                        transition.getTransitionGovernmentType(), false);
-                saveThese.add(town);
-                break;
-            }
-        }
-        for (Town town : saveThese) {
-            TownManager.getInstance().saveTown(town);
-        }
-    }
 
     private void sendAnnouncement(Player player) {
-        if (!ConfigManager.getInstance().isUseAnnouncements()) {
-            return;
-        }
         long announcementCooldown = ConfigManager.getInstance().getAnnouncementPeriod() * 1000;
         if (!lastAnnouncment.containsKey(player.getUniqueId())) {
             lastAnnouncment.put(player.getUniqueId(), System.currentTimeMillis() + announcementCooldown);
@@ -239,11 +185,15 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getGovernmentType().name().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + "-name");
         }
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "town-enter").replace("$1", town.getName())
-                .replace("$2", govName));
+        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+            player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
+        } else {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-enter").replace("$1", town.getName())
+                    .replace("$2", govName));
+        }
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
         PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
@@ -253,11 +203,16 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getGovernmentType().name().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + "-name");
         }
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "town-exit").replace("$1", town.getName())
-                .replace("$2", govName));
+        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+            String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
+            player.sendTitle(ChatColor.GREEN + wild, "", 5, 40, 5);
+        } else {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "town-exit").replace("$1", town.getName())
+                    .replace("$2", govName));
+        }
     }
 
     private void playerInRegion(Player player) {

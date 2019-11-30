@@ -9,33 +9,17 @@
 icon: "CYAN_STAINED_GLASS"
 enabled: true
 transition:
-  takeover:
+  0:
     revolt: 51
     money-gap: 40
     to: COMMUNISM
-  chaos:
+  1:
     revolt: 51
     power: 33
-    to: KRATEROCRACY
-  overthrow:
+    to: IDIOCRACY
+  2:
     revolt: 75
     to: LIBERTARIAN_SOCIALISM
-name:
-  en: "Democratic Socialism"
-  de: "Demokratischer Sozialismus"
-  ru: "Демократический социализм"
-  pt_br: "Socialismo Democrático"
-  fr: "Socialisme démocratique"
-  es: "Socialismo democratico"
-  hu: "Demokratikus Szocializmus"
-description:
-  en: "Democracy + All utilities, farms, mines, factories, and quarries are publicly owned."
-  es: "Democracia + Todas las empresas de servicios públicos, granjas, minas, fábricas y canteras son de propiedad pública."
-  fr: "Démocratie + Tous les services publics, exploitations agricoles, mines, usines et carrières appartiennent à l'État."
-  pt_br: "Democracia + Todos os serviços públicos, fazendas, minas, fábricas e pedreiras são de propriedade pública."
-  ru: "Демократия + Все коммунальные услуги, фермы, шахты, фабрики и карьеры находятся в государственной собственности."
-  de: "Demokratie + Alle Versorgungsunternehmen, Farmen, Minen, Fabriken und Steinbrüche befinden sich in öffentlichem Besitz."
-  hu: "Demokrácia + Közösen tulajdonolt szolgáltatások, farmok, bányák, gyárak és lelőhelyek."
 buffs:
   max_power:
     percent: 15

@@ -14,13 +14,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 
 public class DailyScheduler implements Runnable {
 
@@ -36,6 +30,7 @@ public class DailyScheduler implements Runnable {
         doTaxes();
         doVotes();
         addDailyPower();
+        TownTransitionUtil.checkTownTransitions();
     }
 
     private void addDailyPower() {
@@ -68,10 +63,11 @@ public class DailyScheduler implements Runnable {
             if (town.getVotes().isEmpty()) {
                 continue;
             }
-            if (town.getGovernmentType() != GovernmentType.DEMOCRACY &&
-                    town.getGovernmentType() != GovernmentType.DEMOCRATIC_SOCIALISM &&
-                    town.getGovernmentType() != GovernmentType.COOPERATIVE &&
-                    town.getGovernmentType() != GovernmentType.CAPITALISM) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (government.getGovernmentType() != GovernmentType.DEMOCRACY &&
+                    government.getGovernmentType() != GovernmentType.DEMOCRATIC_SOCIALISM &&
+                    government.getGovernmentType() != GovernmentType.COOPERATIVE &&
+                    government.getGovernmentType() != GovernmentType.CAPITALISM) {
                 continue;
             }
             long daysBetweenVotes = ConfigManager.getInstance().getDaysBetweenVotes() * 86400000;

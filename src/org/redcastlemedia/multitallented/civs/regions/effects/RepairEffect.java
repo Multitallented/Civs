@@ -158,7 +158,7 @@ public class RepairEffect implements Listener {
             return;
         }
 
-        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ||
+        if ((!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && !event.getAction().equals(Action.LEFT_CLICK_BLOCK)) ||
                 (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK)) ||
                 event.getHand().equals(EquipmentSlot.HAND)) {
             return;
@@ -222,6 +222,10 @@ public class RepairEffect implements Listener {
     protected boolean hasReagentCost(Player player, ItemStack itemStack) {
         int amount = 0;
         for (ItemStack stack : player.getInventory().all(itemStack.getType()).values()) {
+            if (stack.getItemMeta() != null && stack.getItemMeta().getLore() != null &&
+                    !stack.getItemMeta().getLore().isEmpty()) {
+                continue;
+            }
             amount += stack.getAmount();
             if (amount >= itemStack.getAmount()) {
                 return true;

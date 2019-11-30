@@ -28,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.lang.ref.PhantomReference;
 import java.util.HashMap;
+import java.util.function.Predicate;
 
 public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener, RegionCreatedListener {
     public static String KEY = "villager";
@@ -56,8 +57,17 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         Block block = region.getLocation().getBlock();
 
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
+        String villagerCountString = region.getEffects().get(KEY);
+        int villagerCount = 1;
+        if (villagerCountString != null && !villagerCountString.isEmpty()) {
+            try {
+                villagerCount = Integer.parseInt(villagerCountString);
+            } catch (Exception e) {
+
+            }
+        }
         if (town != null) {
-            town.setVillagers(town.getVillagers() + 1);
+            town.setVillagers(town.getVillagers() + villagerCount);
             TownManager.getInstance().saveTown(town);
         }
     }
@@ -91,7 +101,16 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (town == null) {
             return;
         }
-        town.setVillagers(Math.max(0, town.getVillagers() - 1));
+        String villagerCountString = region.getEffects().get(KEY);
+        int villagerCount = 1;
+        if (villagerCountString != null && !villagerCountString.isEmpty()) {
+            try {
+                villagerCount = Integer.parseInt(villagerCountString);
+            } catch (Exception e) {
+
+            }
+        }
+        town.setVillagers(Math.max(0, town.getVillagers() - villagerCount));
         TownManager.getInstance().saveTown(town);
     }
 
@@ -120,11 +139,34 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (!Util.isLocationWithinSightOfPlayer(town.getLocation())) {
             return null;
         }
-        for (Entity e : town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius)) {
-            if (e instanceof Villager) {
-                villagerCount++;
+        String villagerCountString = region.getEffects().get(KEY);
+        int regionVillagerCount = 1;
+        if (villagerCountString != null && !villagerCountString.isEmpty()) {
+            try {
+                regionVillagerCount = Integer.parseInt(villagerCountString);
+            } catch (Exception e) {
+
             }
         }
+        if (region.getLocation().getWorld().getNearbyEntities(region.getLocation(),
+                Math.max(region.getRadiusXN(), region.getRadiusXP()),
+                Math.max(region.getRadiusYN(), region.getRadiusYP()),
+                Math.max(region.getRadiusZN(), region.getRadiusZP()),
+                new Predicate<Entity>() {
+                    @Override
+                    public boolean test(Entity entity) {
+                        return entity instanceof Villager;
+                    }
+                }).size() >= regionVillagerCount) {
+            return null;
+        }
+        villagerCount = town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius,
+                new Predicate<Entity>() {
+                    @Override
+                    public boolean test(Entity entity) {
+                        return entity instanceof Villager;
+                    }
+                }).size();
 
         townCooldowns.put(town.getName(), System.currentTimeMillis());
         if (town.getVillagers() <= villagerCount) {

@@ -105,6 +105,29 @@ public class HuntEffect implements Listener, CreateRegionListener {
         Location location = targetPlayer.getLocation();
         int radius = 200;
 
+        Location teleportTarget = findNearbyLocationForTeleport(location, radius, player);
+        if (teleportTarget != null) {
+            player.teleport(teleportTarget);
+            messageNearbyPlayers(player, "hunting-players", null);
+        }
+    }
+
+    public static void messageNearbyPlayers(Player player, String messageKey, String replace1) {
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+            if (!player1.getWorld().equals(player.getWorld()) ||
+                    player1.getLocation().distanceSquared(player.getLocation()) > 90000) {
+                continue;
+            }
+            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
+            String message = LocaleManager.getInstance().getTranslation(civilian1.getLocale(), messageKey);
+            if (replace1 != null) {
+                message = message.replace("$1", replace1);
+            }
+            player1.sendMessage(Civs.getPrefix() + message);
+        }
+    }
+
+    public static Location findNearbyLocationForTeleport(Location location, int radius, Player player) {
         int times = 0;
         Block targetBlock;
         do {
@@ -123,19 +146,10 @@ public class HuntEffect implements Listener, CreateRegionListener {
         } while (times < 5 && (targetBlock.getType() == Material.LAVA));
 
         if (times == 5) {
-            return;
+            return null;
         }
 
-        player.teleport(targetBlock.getLocation());
-        for (Player player1 : Bukkit.getOnlinePlayers()) {
-            if (!player1.getWorld().equals(player.getWorld()) ||
-                    player1.getLocation().distanceSquared(player.getLocation()) > 90000) {
-                continue;
-            }
-            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
-            player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian1.getLocale(), "hunting-players"
-            ));
-        }
+
+        return targetBlock.getLocation();
     }
 }

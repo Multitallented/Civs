@@ -27,22 +27,6 @@ transition:
   devolve:
     power: 20
     to: TRIBALISM
-name:
-  en: "Socialism"
-  fr: "Socialisme"
-  ru: "Социализм"
-  de: "Sozialismus"
-  pt_br: "Socialismo"
-  es: "Socialismo"
-  hu: "Szocializmus"
-description:
-  en: "Dictatorship + All utilities, farms, mines, factories, and quarries are publicly owned."
-  es: "Dictadura + Todos los servicios públicos, granjas, minas, fábricas y canteras son de propiedad pública."
-  pt_br: "Ditadura + Todos os utilitários, fazendas, minas, fábricas e pedreiras são de propriedade pública."
-  de: "Diktatur + Alle Versorger, Farmen, Minen, Fabriken und Steinbrüche sind in öffentlichem Besitz."
-  ru: "диктатура + Все коммунальные услуги, фермы, шахты, фабрики и карьеры находятся в государственной собственности."
-  fr: "Dictature + Tous les services publics, fermes, mines, usines et carrières sont la propriété de l’État."
-  hu: "Diktatúra + Közösen tulajdonolt szolgáltatások, farmok, bányák, gyárak és lelőhelyek."
 buffs:
   max_power:
     percent: 10

@@ -84,4 +84,9 @@ public class LocaleManager {
         }
         return localeManager;
     }
+
+    public boolean hasTranslation(String language, String key) {
+        return languageMap.get(language) != null &&
+                languageMap.get(language).get(key) != null;
+    }
 }

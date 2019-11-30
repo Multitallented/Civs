@@ -1,0 +1,39 @@
+type: region
+icon: CHEST
+shop-icon: SAND
+name: Sand_Pit
+price: 80
+groups:
+- raw
+- quarry
+level: 1
+
+build-reqs:
+- SAND*24
+- FURNACE*2
+- CHEST*2
+
+build-radius: 3 #7x7x7
+effects:
+- block_break
+- block_build
+- conveyor:SAND
+
+period: 60
+upkeep:
+  0:
+    reagents:
+    - STONE_SHOVEL
+    output:
+    - SAND*4
+  1:
+    reagents:
+    - IRON_SHOVEL
+    output:
+    - SAND*8
+  2:
+    reagents:
+    - DIAMOND_SHOVEL
+    output:
+    - SAND*32
+
