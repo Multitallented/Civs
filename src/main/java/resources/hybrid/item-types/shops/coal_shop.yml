@@ -1,0 +1,35 @@
+type: region
+icon: CHEST
+shop-icon: COAL
+name: Coal_Shop
+max: 1
+price: 100
+groups:
+- shop
+- oreshop
+level: 1
+
+build-reqs:
+- g:fence*7
+- CHEST*1
+- COAL_BLOCK*1
+- g:wool*25
+
+build-radius: 2
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    power-input: 1
+  1:
+    input:
+    - COAL*6,CHARCOAL*30 # 144 coal or 720 charcoal / day
+    payout: 18          # $432 / day
+

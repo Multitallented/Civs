@@ -1,45 +1,45 @@
-type: region
-icon: CHEST
-shop-icon: EMERALD
-name: Jade_Shop
-max: 1
-price: 500
-groups:
-- tradeshop
-- trading
-level: 3
-
-pre-reqs:
-- member=hamlet:village:town:city:metropolis
-
-towns:
-- hamlet
-- village
-- town
-- city
-- metropolis
-
-build-reqs:
-- g:fence*7
-- CHEST*2
-- g:wool*20
-
-build-radius: 2
-
-effects:
-- block_break
-- block_build
-- chest_use
-- block_liquid
-- block_fire
-- exclusive:jade_mine
-
-period: daily
-upkeep:
-  0:
-    power-input: 12
-  1:
-    input:
-    - EMERALD.jade*16
-    payout: 1000          # 1000 / day
-
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: EMERALD
+#max: 1
+#price: 500
+#groups:
+#- tradeshop
+#- trading
+#level: 3
+#
+#pre-reqs:
+#- member=hamlet:village:town:city:metropolis
+#
+#towns:
+#- hamlet
+#- village
+#- town
+#- city
+#- metropolis
+#
+#build-reqs:
+#- g:fence*7
+#- CHEST*2
+#- g:wool*20
+#
+#build-radius: 2
+#
+#effects:
+#- block_break
+#- block_build
+#- chest_use
+#- block_liquid
+#- block_fire
+#- exclusive:jade_mine
+#
+#period: daily
+#upkeep:
+#  0:
+#    power-input: 12
+#  1:
+#    input:
+#    - EMERALD.jade*16
+#    payout: 1000          # 1000 / day
+#

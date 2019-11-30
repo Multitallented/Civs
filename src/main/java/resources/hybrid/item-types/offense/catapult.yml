@@ -1,0 +1,31 @@
+type: region
+icon: CHEST
+shop-icon: TNT
+name: Catapult
+price: 150
+groups:
+- offense
+level: 1
+
+build-reqs:
+- OBSIDIAN*16
+- IRON_BARS*8
+- REDSTONE_BLOCK*2
+- TNT*4
+
+build-radius: 2 #5x5x5
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- tnt_cannon:12
+- chest_use
+
+period: 15
+upkeep:
+  0:
+    reagents:
+    - REDSTONE*8
+    input:
+    - TNT*1

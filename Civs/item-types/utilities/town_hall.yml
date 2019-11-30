@@ -1,51 +1,51 @@
-type: region
-icon: OBSIDIAN
-shop-icon: SIGN
-name: Town_Hall
-price: 4000
-max: 1
-groups:
-- utility
-- town_center
-level: 4
-
-pre-reqs:
-- member=village:town:city:metropolis
-
-towns:
-- village
-- town
-- city
-- metropolis
-
-build-reqs:
-- CHEST*4
-- g:door*2
-- g:window*8
-- g:stairs*4
-- g:roof*60
-- BOOKSHELF*10
-- g:sign*10
-- g:secondary*40
-- g:primary*150
-
-build-radius: 5 # 11x15x11
-build-radius-y: 7
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- door_use
-- chest_use
-- port
-- cant_override
-- housing:2
-
-rebuild: council_room
-rebuild-required: true
-period: 900 #15 minutes
-upkeep:
-  0:
-    power-output: 4
-
+#enabled: true
+#type: region
+#icon: OBSIDIAN
+#shop-icon: SIGN
+#price: 4000
+#max: 1
+#groups:
+#- utility
+#- town_center
+#level: 4
+#
+#pre-reqs:
+#- member=village:town:city:metropolis
+#
+#towns:
+#- village
+#- town
+#- city
+#- metropolis
+#
+#build-reqs:
+#- CHEST*4
+#- g:door*2
+#- g:window*8
+#- g:stairs*4
+#- g:roof*60
+#- BOOKSHELF*10
+#- g:sign*10
+#- g:secondary*40
+#- g:primary*150
+#
+#build-radius: 5 # 11x15x11
+#build-radius-y: 7
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- door_use
+#- chest_use
+#- port
+#- cant_override
+#- housing:2
+#
+#rebuild: council_room
+#rebuild-required: true
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 4
+#
