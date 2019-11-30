@@ -28,20 +28,6 @@ import static org.mockito.Mockito.*;
 public class SchedulerTests extends TestUtil {
 
     @Test
-    public void shouldGetCorrectChunksOfTheArray() {
-        int numberOfChunks = 10;
-        int listSize = 199;
-        int chunk = listSize / numberOfChunks;
-        for (int i = 0; i < numberOfChunks; i++) {
-            int start = chunk * i;
-            int end = (i == numberOfChunks - 1 ? listSize : chunk * (i + 1));
-            System.out.println(start + "/" + end);
-//            assertEquals(i * 2, start);
-//            assertEquals(i * 2 + 2, end);
-        }
-    }
-
-    @Test
     public void regionShouldTickWhenZeroPlayersAreOnline() {
         CommonScheduler commonScheduler = new CommonScheduler();
         RegionsTests.loadRegionTypeCobble();

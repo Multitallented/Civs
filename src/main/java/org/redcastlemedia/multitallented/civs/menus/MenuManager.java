@@ -57,6 +57,9 @@ public class MenuManager implements Listener {
         menus.clear();
         loadMenuConfigs();
     }
+    public void clearOpenMenus() {
+        openMenus.clear();
+    }
 
     public boolean hasMenuOpen(UUID uuid) {
         return openMenus.containsKey(uuid);

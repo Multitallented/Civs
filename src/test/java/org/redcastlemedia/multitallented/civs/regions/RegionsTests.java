@@ -47,7 +47,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.PortMenuTests;
+import org.redcastlemedia.multitallented.civs.menus.PortMenuTest;
 import org.redcastlemedia.multitallented.civs.menus.RecipeMenuTests;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
@@ -65,6 +65,7 @@ public class RegionsTests extends TestUtil {
     public void onBefore() {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
+        MenuManager.getInstance().clearOpenMenus();
     }
 
     @Test
@@ -184,16 +185,12 @@ public class RegionsTests extends TestUtil {
             Region region = new Region("cobble", new HashMap<>(), location, radii, new HashMap<>(), 0);
             RegionManager.getInstance().addRegion(region);
             RegionManager.getInstance().regionLocations.remove(location);
-//            System.out.println("Index: 0, Size: " + (i+1));
             assertEquals(region1, RegionManager.getInstance().getRegionAt(location1));
-//            System.out.println("Index: " + (i+1) + ", Size: " + (i+1));
             assertEquals(region, RegionManager.getInstance().getRegionAt(location));
         }
         Location finalLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-//        System.out.println("Null Index, Size: 25");
         assertNull(RegionManager.getInstance().getRegionAt(finalLocation));
         for (int i = 0; i < 24; i++) {
-//            System.out.println("Index: " + (i+1) + ", Size: 25");
             Location location = new Location(Bukkit.getWorld("world"), 500 + 20 * i, 70, 500+ 20 *i);
             assertNotNull(RegionManager.getInstance().getRegionAt(location));
         }
@@ -822,7 +819,7 @@ public class RegionsTests extends TestUtil {
     @Test
     public void membersShouldBeAbleToOpenChests() {
         loadRegionTypePower(false);
-        Region region = PortMenuTests.loadRegion("power");
+        Region region = PortMenuTest.loadRegion("power");
         region.getPeople().put(TestUtil.player.getUniqueId(), "member");
         PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(
                 TestUtil.player,

@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class PortMenuTests extends TestUtil {
+public class PortMenuTest extends TestUtil {
 
     @Before
     public void setup() {

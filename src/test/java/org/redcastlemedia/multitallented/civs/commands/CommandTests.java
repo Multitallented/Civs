@@ -59,7 +59,11 @@ public class CommandTests extends TestUtil {
         String[] args = new String[3];
         args[0] = "town";
         args[1] = "test2";
-        townCommand.runCommand(TestUtil.player, null, "town", args);
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException se) {
+
+        }
         assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
     }
 
