@@ -37,12 +37,12 @@ effects:
 - block_fire
 - conveyor:BREAD
 
-period: 30
+period: 300 #5 minutes
 upkeep:
   0:
     input:
-    - WHEAT*2
+    - WHEAT*12
     output:
-    - BREAD
+    - BREAD*6
 
 

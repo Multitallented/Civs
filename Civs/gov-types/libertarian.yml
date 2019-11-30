@@ -7,22 +7,22 @@
 icon: "YELLOW_GLAZED_TERRACOTTA"
 enabled: true
 transition:
-  0:
+  corruption:
     money-gap: 70
     to: OLIGARCHY
-  1:
+  chaos:
     power: 30
     revolt: 51
-    to: IDIOCRACY
-  2:
+    to: ANARCHY
+  takeover:
     revolt: 51
     money-gap: 60
     to: CAPITALISM
-  3:
+  distribute:
     revolt: 51
     money-gap: 30
     to: DEMOCRACY
-  4:
+  earned:
     revolt: 51
     to: MERITOCRACY
 buffs:

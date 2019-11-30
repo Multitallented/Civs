@@ -43,7 +43,7 @@ public final class TownTransitionUtil {
         }
 
         for (GovTransition transition : government.getTransitions()) {
-            boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null && town.getRawPeople().size() > 1;
+            boolean moneyGap = transition.getMoneyGap() > 0 && Civs.econ != null && town.getRawPeople().size() > 2;
             if (moneyGap) {
                 double highestMoney = 0;
                 double totalMoney = 0;

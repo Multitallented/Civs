@@ -4,13 +4,12 @@ description: Allows you to create structures and towns.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
 load: POSTWORLD
-version: 1.5.8
-api-version: 1.13
+version: 1.5.3
+api-version: 1.14
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
-- DiscordSRV
-- MMOItems
+- MultiverseCore
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
@@ -29,7 +28,4 @@ permissions:
    civs.admin:
       description: Lets you use admin commands and bypass protections
       default: op
-   civs.bypasspvp:
-      description: Lets you bypass war machines, bounties, and other combat features
-      default: op
-loadafter: [Vault, PlaceholderAPI, MMOItems]
+loadafter: [Vault, PlaceholderAPI]

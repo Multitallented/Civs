@@ -44,7 +44,7 @@ public class LanguageMenu extends Menu {
                 localeManager.getTranslation(newLocale, "language-set").replace("$1", itemName));
     }
 
-    public static Inventory createMenu(String locale) {
+    public static Inventory createMenu() {
         Inventory inventory = Bukkit.createInventory(null, 18, MENU_NAME);
 
         LocaleManager localeManager = LocaleManager.getInstance();

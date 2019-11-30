@@ -3,8 +3,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -27,7 +26,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
+
+import java.util.Date;
+import java.util.HashMap;
 
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
@@ -107,29 +108,29 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
         final Location loc2 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 25, spawnLoc.getZ());
         final Location loc3 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 30, spawnLoc.getZ());
-        l.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 2);
-        l.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
+        TNTPrimed tnt = l.getWorld().spawn(loc, TNTPrimed.class);
+        tnt.setFuseTicks(1);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                loc1.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc1, 2);
-                loc1.getWorld().playSound(loc1, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
+                TNTPrimed tnt = loc1.getWorld().spawn(loc1, TNTPrimed.class);
+                tnt.setFuseTicks(1);
             }
         }, 5L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                loc2.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc2, 2);
-                loc2.getWorld().playSound(loc2, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
+                TNTPrimed tnt = loc2.getWorld().spawn(loc2, TNTPrimed.class);
+                tnt.setFuseTicks(1);
             }
         }, 10L);
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                loc3.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc3, 2);
-                loc3.getWorld().playSound(loc3, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
+                TNTPrimed tnt = loc3.getWorld().spawn(loc3, TNTPrimed.class);
+                tnt.setFuseTicks(1);
             }
         }, 15L);
 
@@ -191,13 +192,11 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         //Find target Super-region
         Sign sign = (Sign) state;
         String townName = sign.getLine(0);
-        Town town = TownManager.getInstance().getTown(townName);
-        if (town == null) {
-            for (Town cTown : TownManager.getInstance().getTowns()) {
-                if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
-                    town = cTown;
-                    break;
-                }
+        Town town = null;
+        for (Town cTown : TownManager.getInstance().getTowns()) {
+            if (cTown.getName().toLowerCase().startsWith(sign.getLine(0))) {
+                town = cTown;
+                break;
             }
         }
         if (town == null) {
@@ -222,15 +221,8 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
             String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
+                    civ.getLocale(), "raid-porter-warning").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
-        }
-        if (Civs.discordSRV != null) {
-            String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
-                    ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
-                    .replace("$2", regionType.getName()).replace("$3", town.getName());
-            defaultMessage += DiscordUtil.atAllTownOwners(town);
-            DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         return true;
     }

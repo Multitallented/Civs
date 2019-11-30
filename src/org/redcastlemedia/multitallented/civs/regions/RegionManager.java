@@ -80,7 +80,7 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
-        saveRegionNow(region);
+        saveRegion(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
             regions.put(worldUuid, new ArrayList<>());
@@ -104,24 +104,19 @@ public class RegionManager {
         }
         try {
             for (File file : regionFolder.listFiles()) {
-                try {
-                    Region region = loadRegion(file);
-                    if (region == null || regionLocations.containsKey(region.getId())) {
-                        continue;
-                    }
-                    UUID worldName = region.getLocation().getWorld().getUID();
-                    if (!regions.containsKey(worldName)) {
-                        regions.put(worldName, new ArrayList<Region>());
-                    }
-                    regions.get(worldName).add(region);
-                    sortRegions(worldName);
-                    regionLocations.put(region.getId(), region);
-                } catch (Exception e) {
-                    Civs.logger.severe("Unable to load invalid region file " + file.getName());
+                Region region = loadRegion(file);
+                if (region == null || regionLocations.containsKey(region.getId())) {
+                    continue;
                 }
+                UUID worldName = region.getLocation().getWorld().getUID();
+                if (!regions.containsKey(worldName)) {
+                    regions.put(worldName, new ArrayList<Region>());
+                }
+                regions.get(worldName).add(region);
+                sortRegions(worldName);
+                regionLocations.put(region.getId(), region);
             }
         } catch (NullPointerException npe) {
-            npe.printStackTrace();
             Civs.logger.warning("No region files found to load");
             return;
         }
@@ -296,7 +291,7 @@ public class RegionManager {
                 regionConfig.set("last-active", null);
             }
             regionConfig.save(regionFile);
-//            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
+            region.setLocation(Region.idToLocation(regionConfig.getString("location")));
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
             return;
@@ -414,12 +409,12 @@ public class RegionManager {
         if (!rLocation.getWorld().equals(location.getWorld())) {
             return false;
         }
-        return rLocation.getX() - 0.5 - region.getRadiusXN() <= location.getX() &&
-               rLocation.getX() + 0.5 + region.getRadiusXP() >= location.getX() &&
-               rLocation.getY() - 0.5 - region.getRadiusYN() <= location.getY() &&
-               rLocation.getY() + 0.5 + region.getRadiusYP() >= location.getY() &&
-               rLocation.getZ() - 0.5 - region.getRadiusZN() <= location.getZ() &&
-               rLocation.getZ() + 0.5 + region.getRadiusZP() >= location.getZ();
+        return rLocation.getX() - region.getRadiusXN() <= location.getX() &&
+                rLocation.getX() + region.getRadiusXP() >= location.getX() &&
+                rLocation.getY() - region.getRadiusYN() <= location.getY() &&
+                rLocation.getY() + region.getRadiusYP() >= location.getY() &&
+                rLocation.getZ() - region.getRadiusZN() <= location.getZ() &&
+                rLocation.getZ() + region.getRadiusZP() >= location.getZ();
     }
 
     boolean detectNewRegion(BlockPlaceEvent event) {
@@ -469,32 +464,28 @@ public class RegionManager {
         }
 
         Region rebuildRegion = getRegionAt(location);
+        List<CivItem> itemList = ItemManager.getInstance().getItemGroup(regionType.getRebuild());
         boolean hasType = false;
         if (rebuildRegion != null) {
-            outer: for (String rebuild : regionType.getRebuild()) {
-                hasType = rebuildRegion.getType().equalsIgnoreCase(rebuild);
-                if (!hasType) {
-                    List<CivItem> itemList = ItemManager.getInstance().getItemGroup(rebuild);
-                    for (CivItem item : itemList) {
-                        if (item.getProcessedName().equalsIgnoreCase(rebuildRegion.getType())) {
+            hasType = rebuildRegion.getType().equalsIgnoreCase(regionType.getRebuild());
+            if (!hasType) {
+                outer:
+                for (CivItem item : itemList) {
+                    if (item.getProcessedName().equalsIgnoreCase(rebuildRegion.getType())) {
+                        hasType = true;
+                        break outer;
+                    }
+                    for (String group : item.getGroups()) {
+                        if (group.equalsIgnoreCase(rebuildRegion.getType())) {
                             hasType = true;
                             break outer;
                         }
-                        for (String group : item.getGroups()) {
-                            if (group.equalsIgnoreCase(rebuildRegion.getType())) {
-                                hasType = true;
-                                break outer;
-                            }
-                        }
                     }
-                } else {
-                    break;
                 }
             }
         }
-
         boolean rebuildTransition = false;
-        if (rebuildRegion != null && regionType.getRebuild().isEmpty()) {
+        if (rebuildRegion != null && regionType.getRebuild() == null) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
@@ -506,11 +497,11 @@ public class RegionManager {
                     localeManager.getTranslation(civilian.getLocale(), "cant-build-on-region")
                             .replace("$1", localizedRegionName).replace("$2", rebuildRegion.getType()));
             return false;
-        } else if (rebuildRegion == null && !regionType.getRebuild().isEmpty() && regionType.isRebuildRequired()) {
+        } else if (rebuildRegion == null && regionType.getRebuild() != null && regionType.isRebuildRequired()) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
-                            .replace("$1", localizedRegionName).replace("$2", regionType.getRebuild().get(0)));
+                            .replace("$1", localizedRegionName).replace("$2", regionType.getRebuild()));
             return false;
         } else if (rebuildRegion != null) {
             location = rebuildRegion.getLocation();
@@ -557,70 +548,42 @@ public class RegionManager {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             String townLocalizedName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     townType.getProcessedName() + "-name");
-            int limit = -1;
-            if (townType.getRegionLimit(regionTypeName) > -1) {
-                limit = townType.getRegionLimit(regionTypeName);
-                if (limit < 1) {
-                    player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                    .replace("$1", townLocalizedName)
-                                    .replace("$2", limit + "")
-                                    .replace("$3", localizedRegionName));
-                    event.setCancelled(true);
-                    return false;
-                }
-            }
-            HashMap<String, Integer> groupLimits = new HashMap<>();
-            for (String group : regionType.getGroups()) {
-                if (townType.getRegionLimit(group) > -1) {
-                    groupLimits.put(group, townType.getRegionLimit(group));
-                    if (townType.getRegionLimit(group) < 1) {
-                        player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                        .replace("$1", townLocalizedName)
-                                        .replace("$2", townType.getRegionLimit(group) + "")
-                                        .replace("$3", group));
-                        event.setCancelled(true);
-                        return false;
+            if (townType.getRegionLimit(regionTypeName) > 0) {
+                int limit = townType.getRegionLimit(regionTypeName);
+                HashMap<String, Integer> groupLimits = new HashMap<>();
+                for (String group : regionType.getGroups()) {
+                    if (townType.getRegionLimit(group) > 0) {
+                        groupLimits.put(group, townType.getRegionLimit(group));
                     }
                 }
-            }
-            int count = 0;
-            for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
-                if (limit > -1 && region.getType().equals(regionTypeName)) {
-                    count++;
-                    if (count >= limit) {
-                        player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                        .replace("$1", townLocalizedName)
-                                        .replace("$2", limit + "")
-                                        .replace("$3", localizedRegionName));
-                        event.setCancelled(true);
-                        return false;
-                    }
-                }
-                RegionType regionType1 = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                for (String groupType : regionType1.getGroups()) {
-                    if (groupLimits.containsKey(groupType)) {
-                        if (groupLimits.get(groupType) < 2) {
-                            boolean rebuildWithinSameGroup = false;
-                            if (rebuildRegion != null) {
-                                RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
-                                if (!rebuildType.getGroups().contains(groupType)) {
-                                    rebuildWithinSameGroup = true;
+                int count = 0;
+                for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+                    if (region.getType().equals(regionTypeName)) {
+                        count++;
+                        if (count >= limit) {
+                            player.sendMessage(Civs.getPrefix() +
+                                    localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                            .replace("$1", townLocalizedName)
+                                            .replace("$2", limit + "")
+                                            .replace("$3", localizedRegionName));
+                            event.setCancelled(true);
+                            return false;
+                        }
+                        RegionType regionType1 = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                        for (String groupType : regionType1.getGroups()) {
+                            if (groupLimits.containsKey(groupType)) {
+                                if (groupLimits.get(groupType) < 2) {
+                                    player.sendMessage(Civs.getPrefix() +
+                                            localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
+                                                    .replace("$1", townLocalizedName)
+                                                    .replace("$2", townType.getRegionLimit(groupType) + "")
+                                                    .replace("$3", groupType));
+                                    event.setCancelled(true);
+                                    return false;
+                                } else {
+                                    groupLimits.put(groupType, groupLimits.get(groupType) - 1);
                                 }
                             }
-                            if (!rebuildWithinSameGroup) {
-                                player.sendMessage(Civs.getPrefix() +
-                                        localeManager.getTranslation(civilian.getLocale(), "region-limit-reached")
-                                                .replace("$1", townLocalizedName)
-                                                .replace("$2", townType.getRegionLimit(groupType) + "")
-                                                .replace("$3", groupType));
-                                event.setCancelled(true);
-                                return false;
-                            }
-                        } else {
-                            groupLimits.put(groupType, groupLimits.get(groupType) - 1);
                         }
                     }
                 }
@@ -661,6 +624,9 @@ public class RegionManager {
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
+                    //                for (String message : generateMissingReqsMessage(missingBlocks)) {
+                    //                    player.sendMessage(message);
+                    //                }
                     player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
                 }
                 return false;
@@ -696,11 +662,7 @@ public class RegionManager {
         if (rebuildTransition) {
             event.setCancelled(true);
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack.getAmount() > 1) {
-                itemStack.setAmount(itemStack.getAmount() - 1);
-            } else {
-                player.getInventory().setItemInMainHand(null);
-            }
+            player.getInventory().setItemInMainHand(null);
             location.getBlock().setType(itemStack.getType());
         }
 

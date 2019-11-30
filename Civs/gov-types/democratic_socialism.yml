@@ -9,15 +9,15 @@
 icon: "CYAN_STAINED_GLASS"
 enabled: true
 transition:
-  0:
+  takeover:
     revolt: 51
     money-gap: 40
     to: COMMUNISM
-  1:
+  chaos:
     revolt: 51
     power: 33
-    to: IDIOCRACY
-  2:
+    to: KRATEROCRACY
+  overthrow:
     revolt: 75
     to: LIBERTARIAN_SOCIALISM
 buffs:

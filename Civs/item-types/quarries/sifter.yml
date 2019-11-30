@@ -29,13 +29,13 @@ effects:
 - block_liquid
 - block_fire
 
-period: 15 #15 seconds
+period: 60 #15 seconds
 upkeep:
   0:
     reagents:
     - IRON_SHOVEL
     input:
-    - DIRT*4
+    - DIRT*16
     output:
-    - DIRT*1%75,LEATHER_BOOTS*1%20,EMERALD*2%4,NETHER_STAR*1%1
+    - DIRT*4%73,LEATHER_BOOTS*4%20,EMERALD*8%4,NETHER_STAR*1%2
 

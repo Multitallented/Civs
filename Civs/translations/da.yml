@@ -404,6 +404,62 @@ arrow_trap_fast-desc: Niveau 2 | Rækkevidde 19 | Skade 34 | Hastighed 38 | Disp
 arrow_trap_fastest-name: Pile fælde 3
 arrow_trap_fastest-desc: Niveau 3 | Rækkevidde 21 | Skade 38 | Hastighed 42 | Dispersion 3 | Skytter
   pile på alle ikke allierede spillere og monstre.
+barracks-name: Brraker
+barracks-desc: Tilføjer 6 boliger til byen. Laver 288 Power pr. Dag. Kan ikke bygges i en by
+  med en kro.
+bell_tower-name: Klokke Tårn
+bell_tower-desc: Advarer bymedlemmer, når en ubudne er kommet ind i byen.
+church-name: Kirke
+church-desc: Et sikkert sted hvor ingen kan tage skade. Producerer 192 power pr. Dag
+graveyard-name: Kirkegård
+graveyard-desc: Et sted for byens medlemmer at respawn. Forhindrer også skade.
+hospital-name: Hospital
+hospital-desc: Healer alle spillere på hospitalet. Laver 192 Power pr. Dag.
+idol-name: Idol
+jail-name: Fængsel
+jail-desc: Et sted at midlertidigt at fange indtrengere, der dør i byen. Laver 192 Power
+  pr. Dag.
+monument-name: Monument
+statue-name: Statue
+arrow_factory-name: Pile Fabrik
+arrow_factory-desc: Automatisk Pile Fabrik
+bakery-name: Bageri
+dye_works-name: Uld farvning
+dye_works-desc: Automatisk farvning af uld
+flint_works-name: Flint arbejde
+gold_infuser-name: Guld infuser
+ice_maker-name: Is maskine
+ice_maker-desc: Automatisk Is fabrik
+iron_works-name: Jern arbejde
+lava_works-name: Lava arbejde
+mill-name: Mølle
+stone_works-name: Sten arbejde
+weapons_factory-name: Våben fabrok
+chicken_coop-name: Kyllinge fabrik
+donkey_farm-name: Æsel farm
+mule_farm-name: Muldyrs farm
+pig_pen-name: Grise farm
+rabbit_hutch-name: Kanin bur
+ranch-name: Gård
+sheep_farm-name: Fåre Farm
+stables-name: Stalde
+acacia_lumberyard-name: Acacia Savmølle
+birch_lumberyard-name: Birk Savmølle
+dark_oak_lumberyard-name: Mørk egetræs Savmølle
+jungle_lumberyard-name: Jungle træs Savmølle
+oak_lumberyard-name: Egetræ Savmølle
+spruce_lumberyard-name: Grantræs Savmølle
+apple_orchard-name: Æble have
+carrot_farm-name: Gulerøds farm
+cocoa_farm-name: Kakao farm
+ender_pearl_farm-name: Ender perle farm
+fishing_hut-name: Fiskehytte
+greenhouse-name: Drivhus
+melon_farm-name: Melon farm
+potato_farm-name: Kartoffel farm
+pumpkin_farm-name: Græskar farm
+sugar_cane_farm-name: Sukkerrørs farm
+wheat_farm-name: Korn farm
 library-name: Bibliotek
 smithy-name: Smed
 town_hall-name: Rådhus

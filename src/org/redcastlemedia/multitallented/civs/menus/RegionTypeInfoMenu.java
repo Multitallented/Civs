@@ -42,8 +42,8 @@ public class RegionTypeInfoMenu extends Menu {
         }
 
         if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null ||
-                !event.getCurrentItem().hasItemMeta() || event.getCurrentItem().getItemMeta().getDisplayName() == null
-                || event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(event.getInventory().getItem(0).getItemMeta().getDisplayName())) {
+                !event.getCurrentItem().hasItemMeta() ||
+                event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(event.getInventory().getItem(0).getItemMeta().getDisplayName())) {
             return;
         }
 

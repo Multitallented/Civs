@@ -8,18 +8,18 @@
 icon: "WHITE_STAINED_GLASS"
 enabled: true
 transition:
-  0:
+  takeover:
     revolt: 51
     money-gap: 40
     to: COMMUNISM
-  1:
-    money-gap: 70
+  corruption:
+    money-gap: 60
     to: CAPITALISM
-  2:
+  chaos:
     power: 33
     revolt: 51
-    to: IDIOCRACY
-  3:
+    to: KRATEROCRACY
+  socialize:
     revolt: 51
     to: DEMOCRATIC_SOCIALISM
 buffs:

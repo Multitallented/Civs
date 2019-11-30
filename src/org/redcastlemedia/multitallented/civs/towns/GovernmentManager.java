@@ -94,7 +94,7 @@ public class GovernmentManager {
                     revolt = section.getInt(index + "." + key);
                 } else if ("inactive".equals(key)) {
                     inactive = section.getLong(index + "." + key);
-                } else {
+                } else if ("to".equals("key")) {
                     governmentType = section.getString(index + "." + key);
                 }
             }

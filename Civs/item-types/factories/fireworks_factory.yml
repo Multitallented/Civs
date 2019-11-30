@@ -33,12 +33,12 @@ effects:
   - block_liquid
   - block_fire
 
-period: 15 # 15 seconds
+period: 300 # 5 minutes
 upkeep:
   0:
     reagents:
       - GUNPOWDER*32
       - BONE_MEAL*32
     output:
-      - FIREWORK_STAR*1
+      - FIREWORK_STAR*20
 

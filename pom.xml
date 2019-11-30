@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.5.8</version>
+    <version>1.5.3</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -30,17 +30,13 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <repository>
-            <id>Scarsz-Nexus</id>
-            <url>https://nexus.scarsz.me/content/groups/public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.14.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->
@@ -90,12 +86,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.discordsrv</groupId>
-            <artifactId>discordsrv</artifactId>
-            <version>1.16.6</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
