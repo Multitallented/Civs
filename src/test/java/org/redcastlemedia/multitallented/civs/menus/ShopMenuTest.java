@@ -22,9 +22,25 @@ public class ShopMenuTest extends TestUtil {
     }
 
     @Test @SuppressWarnings("unchecked")
-    public void shopMenuShouldNotDuplicateItems() {
+    public void shopMenuRootShouldNotDuplicateItems() {
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, new HashMap<>());
+        List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");
+        HashSet<CivItem> items = new HashSet<>();
+        for (CivItem civItem : shopItems) {
+            if (items.contains(civItem)) {
+                fail("Duplicate item found " + civItem.getProcessedName());
+            }
+            items.add(civItem);
+        }
+    }
+
+    @Test @SuppressWarnings("unchecked")
+    public void shopMenuShopsShouldNotDuplicateItems() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("parent", "shops");
+        Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, params);
         List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");
         HashSet<CivItem> items = new HashSet<>();
         for (CivItem civItem : shopItems) {
