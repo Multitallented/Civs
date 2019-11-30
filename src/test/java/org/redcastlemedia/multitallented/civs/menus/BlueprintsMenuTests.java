@@ -42,7 +42,6 @@ public class BlueprintsMenuTests extends TestUtil {
         loadRegionTypeShelter();
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
-        this.inventory.setTitle("CivsRegionStash");
 
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().put("shelter", 1);
