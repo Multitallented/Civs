@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Nation {
     private String name;
-    private Set<String> members;
+    private Set<String> members = new HashSet<>();
     private String capitol;
     private UUID lastRenamedBy;
     private HashSet<String> effects = new HashSet<>();

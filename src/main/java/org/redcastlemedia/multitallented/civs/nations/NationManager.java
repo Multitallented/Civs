@@ -46,6 +46,13 @@ public class NationManager implements Listener {
         }
     }
 
+    public void reload() {
+        nations.clear();
+        if (Civs.getInstance() != null) {
+            loadAllNations();
+        }
+    }
+
     private void loadAllNations() {
         File nationFolder = new File(Civs.dataLocation, "nations");
         if (!nationFolder.exists()) {
@@ -472,6 +479,8 @@ public class NationManager implements Listener {
         nation.setCapitol(newTown.getName());
         // TODO create chunk claims
         nation.getMembers().add(newTown.getName());
+
+        nations.put(nation.getName(), nation);
         saveNation(nation);
     }
 }

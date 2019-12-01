@@ -277,6 +277,8 @@ public abstract class TestUtil {
         CivilianManager.getInstance().createDefaultCivilian(player);
         createDefaultClass();
         ConfigManager configManager = ConfigManager.getInstance();
+        configManager.townRings = false;
+        configManager.townRingsCrumbleToGravel = false;
         configManager.useStarterBook = false;
         initialized = true;
     }

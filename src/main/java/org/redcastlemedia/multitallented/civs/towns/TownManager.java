@@ -737,10 +737,6 @@ public class TownManager {
             governmentType = intersectTown.getGovernmentType();
             childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
-            // Don't destroy the ring on upgrade
-    //            if (ConfigManager.getInstance().getTownRings()) {
-    //                intersectTown.destroyRing(false);
-    //            }
             villagerCount = intersectTown.getVillagers();
         }
 

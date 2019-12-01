@@ -11,9 +11,29 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.*;
 import java.util.function.Consumer;
 
+import lombok.Setter;
+
 public class PlayerInventoryImpl implements PlayerInventory {
 
+    @Setter
+    private ItemStack mainHandItem;
+
     private HashMap<Integer, ItemStack> contents = new HashMap<>();
+
+    public PlayerInventoryImpl() {
+        init();
+    }
+    public void init() {
+        ItemStackImpl itemStack = new ItemStackImpl(Material.GLOWSTONE,1);
+        ItemMetaImpl itemMeta = new ItemMetaImpl();
+        itemMeta.setDisplayName("Civs Tribe");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(new UUID(1,2).toString());
+        lore.add("Civs Tribe");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        mainHandItem = itemStack;
+    }
 
     @Override
     public ItemStack[] getArmorContents() {
@@ -381,15 +401,8 @@ public class PlayerInventoryImpl implements PlayerInventory {
 
     @Override
     public ItemStack getItemInMainHand() {
-        ItemStackImpl itemStack = new ItemStackImpl(Material.GLOWSTONE,1);
-        ItemMetaImpl itemMeta = new ItemMetaImpl();
-        itemMeta.setDisplayName("Civs Tribe");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Tribe");
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+
+        return mainHandItem;
     }
 
     @Override
