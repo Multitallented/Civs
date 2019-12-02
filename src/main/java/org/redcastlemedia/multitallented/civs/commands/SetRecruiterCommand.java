@@ -19,7 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
-@CivsCommand(keys = { "setrecruiter" })
+@CivsCommand(keys = { "setrecruiter" }) @SuppressWarnings("unused")
 public class SetRecruiterCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -29,7 +29,7 @@ public class SetRecruiterCommand implements CivCommand {
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        boolean isAdmin = false;
+        boolean isAdmin;
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -21,7 +22,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-@CivsMenu(name = "people")
+@CivsMenu(name = "people") @SuppressWarnings("unused")
 public class PeopleMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -168,7 +169,7 @@ public class PeopleMenu extends CustomMenu {
         }
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if ("people".equals(menuIcon.getKey())) {
             List<Civilian> civilians = (List<Civilian>) MenuManager.getData(civilian.getUuid(), "civilians");
@@ -185,6 +186,13 @@ public class PeopleMenu extends CustomMenu {
             }
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
             cvItem.setDisplayName(offlinePlayer.getName());
+            if (MenuManager.getData(civilian.getUuid(), "region") != null) {
+                Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+                addRank(civilian.getLocale(), cvItem, region.getRawPeople().get(offlinePlayer.getUniqueId()));
+            } else if ((MenuManager.getData(civilian.getUuid(), "town") != null)) {
+                Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+                addRank(civilian.getLocale(), cvItem, town.getRawPeople().get(offlinePlayer.getUniqueId()));
+            }
             ItemStack itemStack = cvItem.createItemStack();
             if (player != null) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -196,6 +204,21 @@ public class PeopleMenu extends CustomMenu {
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    private void addRank(String locale, CVItem cvItem, String ranks) {
+        if (ranks.contains("owner")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "owner"));
+        }
+        if (ranks.contains("member")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "member"));
+        }
+        if (ranks.contains("recruiter")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "recruiter"));
+        }
+        if (ranks.contains("ally")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "guest"));
+        }
     }
 
     @Override

@@ -24,7 +24,7 @@ items:
     icon: OAK_SIGN
     name: players
     actions:
-      - menu:player-list
+      - menu:people
   regions-for-sale:
     index: 4
     icon: EMERALD

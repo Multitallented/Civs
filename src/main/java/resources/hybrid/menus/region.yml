@@ -52,7 +52,7 @@ items:
     icon: BARRIER
     name: destroy
     actions:
-      - menu:confirmation&region=$region$&type=destroy
+      - menu:confirmation?region=$region$&type=destroy
   back:
     index: 8
   people:

@@ -50,4 +50,17 @@ public class ShopMenuTest extends TestUtil {
             items.add(civItem);
         }
     }
+
+    @Test @SuppressWarnings("unchecked")
+    public void shopMenuShouldNotContainEmptyFolders() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, new HashMap<>());
+        List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");
+        for (CivItem civItem : shopItems) {
+            System.out.println(civItem.getProcessedName());
+            if ("defense".equals(civItem.getProcessedName())) {
+                fail("Found empty defense folder in shop");
+            }
+        }
+    }
 }

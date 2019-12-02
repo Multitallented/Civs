@@ -25,7 +25,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "player")
+@CivsMenu(name = "player") @SuppressWarnings("unused")
 public class PlayerMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -38,16 +38,25 @@ public class PlayerMenu extends CustomMenu {
 
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        UUID uuid = UUID.fromString((String) MenuManager.getData(civilian.getUuid(), "uuid"));
+        UUID uuid = (UUID) MenuManager.getData(civilian.getUuid(), "uuid");
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getName()));
             ItemStack itemStack = cvItem.createItemStack();
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            ((SkullMeta) itemStack.getItemMeta()).setOwningPlayer(offlinePlayer);
+            if (skullMeta != null) {
+                skullMeta.setOwningPlayer(offlinePlayer);
+                itemStack.setItemMeta(skullMeta);
+            }
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("friends".equals(menuIcon.getKey())) {
+            Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
+            if (civilian1.getFriends().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("money".equals(menuIcon.getKey())) {
             if (Civs.econ == null) {
                 return new ItemStack(Material.AIR);
@@ -117,6 +126,13 @@ public class PlayerMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("kills".equals(menuIcon.getKey())) {
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", "" + civilian.getKills()));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("killstreak".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -132,9 +148,13 @@ public class PlayerMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("add-friend".equals(menuIcon.getKey())) {
-
+            if (civilian.getUuid().equals(uuid) || civilian.getFriends().contains(uuid)) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("remove-friend".equals(menuIcon.getKey())) {
-
+            if (civilian.getUuid().equals(uuid) || !civilian.getFriends().contains(uuid)) {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
