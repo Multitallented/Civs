@@ -24,7 +24,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "shop")
+@CivsMenu(name = "shop") @SuppressWarnings("unused")
 public class ShopMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -121,7 +121,26 @@ public class ShopMenu extends CustomMenu {
                 if (shopItems.size() <= index) {
                     return new ItemStack(Material.AIR);
                 }
-                ItemStack itemStack = createShopItem(shopItems.get(index), civilian);
+                CivItem civItem = shopItems.get(index);
+                if (civItem instanceof FolderType) {
+                    FolderType folderType = (FolderType) civItem;
+                    if (!folderType.getVisible()) {
+                        return new ItemStack(Material.AIR);
+                    }
+                    boolean hasNoItemsUnlocked = true;
+                    for (CivItem civItem1 : folderType.getChildren()) {
+                        if (ItemManager.getInstance().hasItemUnlocked(civilian, civItem1)) {
+                            hasNoItemsUnlocked = false;
+                        }
+                    }
+                    if (hasNoItemsUnlocked) {
+                        return new ItemStack(Material.AIR);
+                    }
+                }
+                ItemStack itemStack = createShopItem(civItem, civilian);
+                if (itemStack.getType() == Material.AIR) {
+                    return itemStack;
+                }
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             } else if (levelList != null) {

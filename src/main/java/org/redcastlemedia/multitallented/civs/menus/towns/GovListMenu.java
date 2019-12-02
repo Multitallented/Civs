@@ -13,7 +13,7 @@ import org.redcastlemedia.multitallented.civs.towns.*;
 
 import java.util.*;
 
-@CivsMenu(name = "gov-list")
+@CivsMenu(name = "gov-list") @SuppressWarnings("unused")
 public class GovListMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -46,7 +46,7 @@ public class GovListMenu extends CustomMenu {
             govList.sort(new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
-                    return govPower.get(o2).compareTo(govPower.get(o1));
+                    return govPower.getOrDefault(o2, 0).compareTo(govPower.getOrDefault(o1, 0));
                 }
             });
             data.put("townsByGov", townsByGov);
@@ -76,6 +76,9 @@ public class GovListMenu extends CustomMenu {
             boolean isLeaderboard = false;
             HashMap<String, Integer> govPower = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "govPower");
             if (govPower != null) {
+                if (govPower.get(govName) == null) {
+                    return new ItemStack(Material.AIR);
+                }
                 cvItem = government.getIcon(civilian.getLocale(), false);
                 cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "points")
                         .replace("$1", "" + govPower.get(govName)));

@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@CivsMenu(name = "member-action")
+@CivsMenu(name = "member-action") @SuppressWarnings("unused")
 public class MemberActionMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -111,6 +112,11 @@ public class MemberActionMenu extends CustomMenu {
             String localizedRanks = getLocalizedRanks(rankString, civilian.getLocale());
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+            if (skullMeta != null) {
+                skullMeta.setOwningPlayer(offlinePlayer);
+                itemStack.setItemMeta(skullMeta);
+            }
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("set-owner".equals(menuIcon.getKey())) {
@@ -134,6 +140,13 @@ public class MemberActionMenu extends CustomMenu {
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains("guest") && !cantAddOwners))) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("set-recruiter".equals(menuIcon.getKey())) {
+            if (town == null) {
+                return new ItemStack(Material.AIR);
+            }
+            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains("recruiter") && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {

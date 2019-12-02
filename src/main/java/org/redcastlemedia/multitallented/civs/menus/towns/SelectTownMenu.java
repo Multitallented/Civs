@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.towns;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +14,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-@CivsMenu(name = "select-town")
+@CivsMenu(name = "select-town") @SuppressWarnings("unused")
 public class SelectTownMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -29,13 +26,21 @@ public class SelectTownMenu extends CustomMenu {
             data.put("page", 0);
         }
         Set<Town> towns;
-        if (!params.containsKey("townList")) {
-            towns = TownManager.getInstance().getOwnedTowns(civilian);
-        } else {
+        if (params.containsKey("uuid")) {
+            towns = new HashSet<>();
+            UUID uuid = UUID.fromString(params.get("uuid"));
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (town.getRawPeople().containsKey(uuid)) {
+                    towns.add(town);
+                }
+            }
+        } else if (params.containsKey("townList")) {
             towns = new HashSet<>();
             for (String townName : params.get("townList").split(",")) {
                 towns.add(TownManager.getInstance().getTown(townName));
             }
+        } else {
+            towns = TownManager.getInstance().getOwnedTowns(civilian);
         }
         int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("towns"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;

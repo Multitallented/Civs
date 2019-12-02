@@ -195,6 +195,7 @@ public abstract class CustomMenu {
         } else if (actionString.startsWith("command:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
+            System.out.println("command: " + actionString);
             CommandUtil.performCommand(offlinePlayer, actionString
                     .replace("command:", ""));
         } else if (actionString.startsWith("permission:")) {
@@ -222,6 +223,8 @@ public abstract class CustomMenu {
         } else if (key.equals("townType")) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
+        } else if (key.equals("uuid")) {
+            return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;
         } else {
