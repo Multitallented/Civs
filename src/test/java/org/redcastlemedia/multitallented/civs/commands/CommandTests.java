@@ -91,4 +91,14 @@ public class CommandTests extends TestUtil {
         }
         assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
     }
+
+    @Test
+    public void taxCommandShouldSetTax() {
+        Town town = TownTests.loadTown("Summervale", "village", new Location(TestUtil.world, 0, 0, 0));
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        TaxCommand taxCommand = new TaxCommand();
+        String[] args = {"tax", "Summervale", "50"};
+        taxCommand.runCommand(TestUtil.player, null, "cv", args);
+        assertEquals(50, town.getTaxes(), 0.1);
+    }
 }
