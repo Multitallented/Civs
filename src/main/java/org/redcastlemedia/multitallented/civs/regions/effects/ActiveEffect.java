@@ -11,7 +11,8 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
 public class ActiveEffect implements Listener {
 
-    public final String KEY = "active";
+    public static final String LAST_ACTIVE_KEY = "last-active";
+    public static final String KEY = "active";
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new ActiveEffect(), Civs.getInstance());
