@@ -150,9 +150,6 @@ public class ItemManager {
                     loopThroughTypeFiles(pFile, currParentList);
                 }
                 if (itemTypes.containsKey(file.getName().toLowerCase())) {
-                    if (parentList != null) {
-                        parentList.add(itemTypes.get(file.getName().toLowerCase()));
-                    }
                     return;
                 }
                 String folderName = file.getName().replace(INVISIBLE, "");
@@ -171,9 +168,6 @@ public class ItemManager {
             } else {
                 String name = file.getName().replace(".yml", "").toLowerCase();
                 if (itemTypes.containsKey(name)) {
-                    if (parentList != null) {
-                        parentList.add(itemTypes.get(name));
-                    }
                     return;
                 }
                 try {
@@ -459,7 +453,8 @@ public class ItemManager {
         List<CivItem> returnList = new ArrayList<>();
         HashSet<CivItem> checkList = new HashSet<>();
         if (parent == null) {
-            for (CivItem civItem : itemTypes.values()) {
+            for (Map.Entry<String, CivItem> entry : itemTypes.entrySet()) {
+                CivItem civItem = entry.getValue();
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     checkList.addAll(((FolderType) civItem).getChildren());
                 } else if (civItem.getItemType() == CivItem.ItemType.CLASS) {
@@ -487,6 +482,7 @@ public class ItemManager {
                 }
             }
         }
+        returnList.removeAll(checkList);
         checkList.clear();
         boolean isCivAdmin = Civs.perm != null &&
                 Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.admin");

@@ -2,8 +2,10 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -155,6 +157,24 @@ public class ItemsTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe")));
+    }
+
+    @Test
+    public void folderShouldBeCorrect() {
+        FolderType folderType = (FolderType) ItemManager.getInstance().getItemType("animals");
+        CivItem civItem = ItemManager.getInstance().getItemType("ranch");
+        assertTrue(folderType.getChildren().contains(civItem));
+    }
+
+    @Test
+    public void folderShouldNotHaveDuplicateChildren() {
+        HashSet<CivItem> items = new HashSet<>();
+        for (CivItem civItem : ((FolderType) ItemManager.getInstance().getItemType("utilities")).getChildren()) {
+            if (items.contains(civItem)) {
+                fail("Dupicate folder children found " + civItem.getProcessedName());
+            }
+            items.add(civItem);
+        }
     }
 
     private void loadSpellTypeBackflip() {
