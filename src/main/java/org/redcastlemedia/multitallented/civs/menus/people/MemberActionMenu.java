@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus.people;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -120,6 +121,9 @@ public class MemberActionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("set-owner".equals(menuIcon.getKey())) {
+            if (isOwner && viewingSelf) {
+                return new ItemStack(Material.AIR);
+            }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
                     !isVoteOnly && !role.contains("owner") && !cantAddOwners)) {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
@@ -135,15 +139,24 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-member".equals(menuIcon.getKey())) {
+            if (viewingSelf && role.contains("member")) {
+                return new ItemStack(Material.AIR);
+            }
             if (!(isAdmin || (!viewingSelf && isOwner && !role.contains("member")))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
+            if (viewingSelf && role.contains("guest")) {
+                return new ItemStack(Material.AIR);
+            }
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains("guest") && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-recruiter".equals(menuIcon.getKey())) {
             if (town == null) {
+                return new ItemStack(Material.AIR);
+            }
+            if (viewingSelf && role.contains("recruiter")) {
                 return new ItemStack(Material.AIR);
             }
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains("recruiter") && !cantAddOwners))) {
