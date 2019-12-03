@@ -484,8 +484,9 @@ public class ItemManager {
         }
         returnList.removeAll(checkList);
         checkList.clear();
-        boolean isCivAdmin = Civs.perm != null &&
-                Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.admin");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isCivAdmin = player != null && (player.isOp() || (Civs.perm != null &&
+                Civs.perm.has(player, "civs.admin")));
         for (CivItem item : returnList) {
             if (!hasItemUnlocked(civilian, item) ||
                     (isShop && !item.getInShop() && !isCivAdmin)) {
