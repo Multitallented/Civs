@@ -60,7 +60,8 @@ public class TownTypeMenu extends CustomMenu {
                 CVItem priceItem = CVItem.createCVItemFromString(menuIcon.getIcon());
                 priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), menuIcon.getName()));
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(localeManager.getTranslation(civilian.getLocale(), "price") + ": " + townType.getPrice());
+                lore.add(localeManager.getTranslation(civilian.getLocale(), "price")
+                        .replace("$1", Util.getNumberFormat(townType.getPrice(), civilian.getLocale())));
                 priceItem.setLore(lore);
                 ItemStack itemStack = priceItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
