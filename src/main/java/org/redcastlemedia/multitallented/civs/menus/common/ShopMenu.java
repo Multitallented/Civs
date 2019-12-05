@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -71,6 +72,16 @@ public class ShopMenu extends CustomMenu {
             }
         } else {
             shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
+            shopItems.removeIf(new Predicate<CivItem>() {
+                @Override
+                public boolean test(CivItem civItem) {
+                    if (!(civItem instanceof FolderType)) {
+                        return false;
+                    }
+                    FolderType folderType = (FolderType) civItem;
+                    return !folderType.getVisible();
+                }
+            });
         }
         if (shopItems != null) {
             data.put("shopItems", shopItems);
@@ -125,15 +136,6 @@ public class ShopMenu extends CustomMenu {
                 if (civItem instanceof FolderType) {
                     FolderType folderType = (FolderType) civItem;
                     if (!folderType.getVisible()) {
-                        return new ItemStack(Material.AIR);
-                    }
-                    boolean hasNoItemsUnlocked = true;
-                    for (CivItem civItem1 : folderType.getChildren()) {
-                        if (ItemManager.getInstance().hasItemUnlocked(civilian, civItem1)) {
-                            hasNoItemsUnlocked = false;
-                        }
-                    }
-                    if (hasNoItemsUnlocked) {
                         return new ItemStack(Material.AIR);
                     }
                 }
