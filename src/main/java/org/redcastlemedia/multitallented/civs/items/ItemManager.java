@@ -88,8 +88,8 @@ public class ItemManager {
                     FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(INVISIBLE));
                     if (folderType != null) {
                         folderType.getChildren().add(currentFolderType);
-                        folderType = currentFolderType;
                     }
+                    folderType = currentFolderType;
                 } else {
                     folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
                 }

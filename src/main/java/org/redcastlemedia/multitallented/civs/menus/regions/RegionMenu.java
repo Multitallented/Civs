@@ -65,6 +65,13 @@ public class RegionMenu extends CustomMenu {
                 personCount++;
             }
         }
+        boolean hasUpkeepsOrInput = false;
+        for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            if (!regionUpkeep.getInputs().isEmpty() || !regionUpkeep.getReagents().isEmpty()) {
+                hasUpkeepsOrInput = true;
+                break;
+            }
+        }
         boolean canSeeSellOptions = personCount == 1 && regionType.getEffects().containsKey(ForSaleEffect.KEY);
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
@@ -181,11 +188,11 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("warehouse-enabled".equals(menuIcon.getKey())) {
-            if (!region.isWarehouseEnabled()) {
+            if (!region.isWarehouseEnabled() || !hasUpkeepsOrInput) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("warehouse-disabled".equals(menuIcon.getKey())) {
-            if (region.isWarehouseEnabled()) {
+            if (region.isWarehouseEnabled() || !hasUpkeepsOrInput) {
                 return new ItemStack(Material.AIR);
             }
         }
