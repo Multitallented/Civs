@@ -437,10 +437,12 @@ public class ItemManager {
                     !hasItemUnlocked(civilian, civItem)) {
                 continue;
             }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
             if (civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivMin() > 0) {
-                newItems.put(civItem.getProcessedName(), civItem.getQty());
+            } else if (civItem.getCivMin() > 0 && civItem.getCivMin() > count) {
+                newItems.put(civItem.getProcessedName(), civItem.getCivMin() - count);
             }
         }
         return newItems;
