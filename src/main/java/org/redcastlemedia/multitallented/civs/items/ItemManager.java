@@ -429,7 +429,7 @@ public class ItemManager {
         return returnList;
     }
 
-    public HashMap<String, Integer> getNewItems(Civilian civilian) {
+    public Map<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getItemType() == CivItem.ItemType.FOLDER ||

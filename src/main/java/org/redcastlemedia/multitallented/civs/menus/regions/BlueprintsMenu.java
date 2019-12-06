@@ -37,7 +37,7 @@ public class BlueprintsMenu extends CustomMenu {
         }
 
         Map<String, Integer> stashItems = civilian.getStashItems();
-        HashMap<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
+        Map<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
         for (Map.Entry<String, Integer> entry : newItems.entrySet()) {
             String itemName = entry.getKey();
             stashItems.put(itemName, newItems.get(itemName));
