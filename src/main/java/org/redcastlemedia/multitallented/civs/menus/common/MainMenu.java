@@ -25,18 +25,16 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
-@CivsMenu(name = "main")
+@CivsMenu(name = "main") @SuppressWarnings("unused")
 public class MainMenu extends CustomMenu {
     @Override
     public String beforeOpenMenu(Civilian civilian) {
         MenuManager.clearHistory(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
         if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
-            System.out.println("redirect to confirmation");
             return "confirmation?type=tutorial";
         }
         if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
-            System.out.println("redirect to tutorial choose path");
             return "tutorial-choose-path";
         }
         return null;

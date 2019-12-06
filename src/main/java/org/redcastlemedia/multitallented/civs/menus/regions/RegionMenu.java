@@ -55,6 +55,8 @@ public class RegionMenu extends CustomMenu {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
                 (String) MenuManager.getData(civilian.getUuid(), "regionTypeName"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
+                region.getRawPeople().get(civilian.getUuid()).contains("owner");
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
                 (region.getPeople().get(civilian.getUuid()) != null &&
@@ -90,8 +92,6 @@ public class RegionMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         } else if ("destroy".equals(menuIcon.getKey())) {
             boolean isIndestrucible = region.getEffects().containsKey("indestructible");
-            boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
-                    region.getRawPeople().get(civilian.getUuid()).contains("owner");
             boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
             if (!isAdmin || isIndestrucible || !isOwner) {
                 return new ItemStack(Material.AIR);
@@ -151,8 +151,6 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("income".equals(menuIcon.getKey())) {
-            boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
-                    region.getRawPeople().get(civilian.getUuid()).contains("owner");
             boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
             if (!isAdmin && !isOwner) {
                 return new ItemStack(Material.AIR);
@@ -188,11 +186,11 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("warehouse-enabled".equals(menuIcon.getKey())) {
-            if (!region.isWarehouseEnabled() || !hasUpkeepsOrInput) {
+            if (!region.isWarehouseEnabled() || !hasUpkeepsOrInput || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("warehouse-disabled".equals(menuIcon.getKey())) {
-            if (region.isWarehouseEnabled() || !hasUpkeepsOrInput) {
+            if (region.isWarehouseEnabled() || !hasUpkeepsOrInput || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
         }

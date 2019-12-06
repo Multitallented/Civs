@@ -85,7 +85,6 @@ public class ConfirmationMenu extends CustomMenu {
             if ("tutorial".equals(type)) {
                 civilian.setAskForTutorial(false);
                 CivilianManager.getInstance().saveCivilian(civilian);
-                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
                 return true;
             }
         }
