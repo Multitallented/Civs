@@ -249,6 +249,9 @@ public class RegionManager {
     }
 
     private static void saveRegionNow(Region region) {
+        if (Civs.getInstance() != null) {
+            return;
+        }
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.saves++;
         }

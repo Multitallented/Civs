@@ -5,7 +5,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -175,6 +177,14 @@ public class ItemsTests extends TestUtil {
             }
             items.add(civItem);
         }
+    }
+
+    @Test
+    public void shelterShouldNotDupe() {
+        RegionsTests.createNewRegion("shelter", TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        Map<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
+        assertFalse(newItems.containsKey("shelter"));
     }
 
     private void loadSpellTypeBackflip() {

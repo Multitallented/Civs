@@ -43,6 +43,9 @@ public class TownTypeMenu extends CustomMenu {
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
+        if (townType == null) {
+            return new ItemStack(Material.AIR);
+        }
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = townType.clone();
             List<String> lore = new ArrayList<>();
@@ -92,10 +95,33 @@ public class TownTypeMenu extends CustomMenu {
             ItemStack itemStack = rebuildItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("build-reqs".equals(menuIcon.getKey())) {
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            String localizedName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    townType.getProcessedName() + "-name");
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getDesc()).replace("$1", localizedName)));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("effects".equals(menuIcon.getKey())) {
-            ItemStack itemStack = super.createItemStack(civilian, menuIcon, count);
-            List<String> lore = new ArrayList<>(townType.getEffects().keySet());
-            itemStack.getItemMeta().setLore(lore);
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            cvItem.getLore().addAll(townType.getEffects().keySet());
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("population".equals(menuIcon.getKey())) {
+            if (townType.getChild() == null || townType.getChildPopulation() < 1) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            String childName = LocaleManager.getInstance().getTranslation(
+                    civilian.getLocale(), townType.getChild().toLowerCase() + "-name");
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    menuIcon.getName()).replace("$1", childName)
+                    .replace("$2", "" + townType.getChildPopulation()));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);

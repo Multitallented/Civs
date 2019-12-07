@@ -23,13 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@CivsMenu(name = "town")
+@CivsMenu(name = "town") @SuppressWarnings("unused")
 public class TownMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
         if (params.containsKey("town")) {
-            data.put("town", TownManager.getInstance().getTown(params.get("town")));
+            Town town = TownManager.getInstance().getTown(params.get("town"));
+            data.put("town", town);
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            data.put("townType", townType);
         }
         if (params.containsKey("selectedTown")) {
             data.put("selectedTown", params.get("selectedTown"));
@@ -41,6 +44,7 @@ public class TownMenu extends CustomMenu {
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
         String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
         Town selectedTown = null;
         if (selectedTownName != null) {
             selectedTown = TownManager.getInstance().getTown(selectedTownName);
@@ -49,7 +53,6 @@ public class TownMenu extends CustomMenu {
         }
         boolean isAllied = selectedTown != null && selectedTown != town &&
                 AllianceManager.getInstance().isAllied(selectedTown, town);
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
                 town.getPeople().get(civilian.getUuid()).contains("owner");
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
@@ -213,7 +216,9 @@ public class TownMenu extends CustomMenu {
         } else if ("government-type".equals(menuIcon.getKey())) {
             CVItem cvItem = government.getIcon(civilian.getLocale()).clone();
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
+            if (!town.isGovTypeChangedToday()) {
+                putActions(civilian, menuIcon, itemStack, count);
+            }
             return itemStack;
         } else if ("bank".equals(menuIcon.getKey())) {
             if (!town.getRevolt().contains(civilian.getUuid())) {

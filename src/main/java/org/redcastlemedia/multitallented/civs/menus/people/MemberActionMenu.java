@@ -195,6 +195,9 @@ public class MemberActionMenu extends CustomMenu {
 
     private String getLocalizedRanks(String rankString, String locale) {
         String localizedRanks = "";
+        if (rankString == null) {
+            return localizedRanks;
+        }
         if (rankString.contains(OWNER)) {
             localizedRanks += LocaleManager.getInstance().getTranslation(locale, OWNER) + ", ";
         }

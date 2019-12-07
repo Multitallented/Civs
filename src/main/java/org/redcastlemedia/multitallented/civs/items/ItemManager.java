@@ -429,7 +429,7 @@ public class ItemManager {
         return returnList;
     }
 
-    public HashMap<String, Integer> getNewItems(Civilian civilian) {
+    public Map<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
@@ -437,10 +437,12 @@ public class ItemManager {
                     !hasItemUnlocked(civilian, civItem)) {
                 continue;
             }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
             if (civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivMin() > 0) {
-                newItems.put(civItem.getProcessedName(), civItem.getQty());
+            } else if (civItem.getCivMin() > 0 && civItem.getCivMin() > count) {
+                newItems.put(civItem.getProcessedName(), civItem.getCivMin() - count);
             }
         }
         return newItems;

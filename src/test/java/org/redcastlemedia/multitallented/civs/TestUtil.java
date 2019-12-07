@@ -76,7 +76,7 @@ public abstract class TestUtil {
         }
         Civs.logger = mock(PluginLogger.class);
 
-        Civs.dataLocation = new File("/src/resouces/hybrid");
+        Civs.dataLocation = new File("/src/resources/hybrid");
 
         CivilianManager.getInstance();
         Server server = mock(Server.class);

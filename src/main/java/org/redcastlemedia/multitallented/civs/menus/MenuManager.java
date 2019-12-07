@@ -58,6 +58,7 @@ public class MenuManager implements Listener {
         loadMenuConfigs();
     }
     public void clearOpenMenus() {
+        data.clear();
         openMenus.clear();
     }
 

@@ -171,7 +171,24 @@ public class PeopleMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        if ("people".equals(menuIcon.getKey())) {
+        String sort = (String) MenuManager.getData(civilian.getUuid(), "sort");
+        if ("sort-rank".equals(menuIcon.getKey())) {
+            if ("rank".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+            if (MenuManager.getData(civilian.getUuid(), "region") == null &&
+                    MenuManager.getData(civilian.getUuid(), "town") == null) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("sort-alphabetical".equals(menuIcon.getKey())) {
+            if ("alphabetical".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("sort-points".equals(menuIcon.getKey())) {
+            if ("points".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("people".equals(menuIcon.getKey())) {
             List<Civilian> civilians = (List<Civilian>) MenuManager.getData(civilian.getUuid(), "civilians");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
@@ -207,6 +224,9 @@ public class PeopleMenu extends CustomMenu {
     }
 
     private void addRank(String locale, CVItem cvItem, String ranks) {
+        if (ranks == null || ranks.isEmpty()) {
+            return;
+        }
         if (ranks.contains("owner")) {
             cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "owner"));
         }

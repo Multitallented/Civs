@@ -26,7 +26,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
-@CivsMenu(name = "confirmation")
+@CivsMenu(name = "confirmation") @SuppressWarnings("unused")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -85,7 +85,6 @@ public class ConfirmationMenu extends CustomMenu {
             if ("tutorial".equals(type)) {
                 civilian.setAskForTutorial(false);
                 CivilianManager.getInstance().saveCivilian(civilian);
-                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
                 return true;
             }
         }
