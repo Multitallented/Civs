@@ -19,12 +19,16 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 public class ShopMenuTest extends TestUtil {
 
     @Before
     public void setup() {
         MenuManager.getInstance().clearOpenMenus();
+        RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -84,7 +88,6 @@ public class ShopMenuTest extends TestUtil {
         Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, new HashMap<>());
         List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");
         for (CivItem civItem : shopItems) {
-            System.out.println(civItem.getProcessedName());
             if ("defense".equals(civItem.getProcessedName())) {
                 fail("Found empty defense folder in shop");
             }
