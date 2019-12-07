@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@CivsMenu(name = "alliance-list")
+@CivsMenu(name = "alliance-list") @SuppressWarnings("unused")
 public class AllianceListMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -28,7 +28,7 @@ public class AllianceListMenu extends CustomMenu {
         }
         ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllSortedAlliances();
 
-        int maxPage = (int) Math.ceil((double) alliances.size() / (double) itemsPerPage.get("regions"));
+        int maxPage = (int) Math.ceil((double) alliances.size() / (double) itemsPerPage.get("alliances"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 

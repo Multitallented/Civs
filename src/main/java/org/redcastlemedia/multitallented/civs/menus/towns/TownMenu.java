@@ -315,7 +315,7 @@ public class TownMenu extends CustomMenu {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
         }
         if (actionString.equals("ally")) {
-            if (selectedTown == null) {
+            if (selectedTown == null || town.getAllyInvites().contains(selectedTown.getName())) {
                 return true;
             }
             town.getAllyInvites().add(selectedTown.getName());
