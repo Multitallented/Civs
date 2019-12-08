@@ -28,7 +28,7 @@ items:
     name: towns
     # desc list of towns
     actions:
-      - menu:select-town?uuid=$uuid$
+      - menu:select-town?uuid=$uuid$&prevMenu=town
   bounty:
     index: 4
     icon: SKELETON_SKULL

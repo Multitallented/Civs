@@ -17,7 +17,7 @@ items:
     # name: town name
     desc: your-towns
     actions:
-      - menu:select-town?prevMenu=Alliance&preserveData=true
+      - menu:select-town?prevMenu=alliance&preserveData=true
   rename:
     index: 2
     icon: PAPER
