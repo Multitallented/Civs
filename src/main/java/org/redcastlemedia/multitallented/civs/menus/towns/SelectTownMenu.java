@@ -25,9 +25,8 @@ public class SelectTownMenu extends CustomMenu {
         } else {
             data.put("page", 0);
         }
-        Set<Town> towns;
+        Set<Town> towns = new HashSet<>();
         if (params.containsKey("uuid")) {
-            towns = new HashSet<>();
             UUID uuid = UUID.fromString(params.get("uuid"));
             for (Town town : TownManager.getInstance().getTowns()) {
                 if (town.getRawPeople().containsKey(uuid)) {
@@ -35,12 +34,11 @@ public class SelectTownMenu extends CustomMenu {
                 }
             }
         } else if (params.containsKey("townList")) {
-            towns = new HashSet<>();
             for (String townName : params.get("townList").split(",")) {
                 towns.add(TownManager.getInstance().getTown(townName));
             }
         } else {
-            towns = TownManager.getInstance().getOwnedTowns(civilian);
+            towns.addAll(TownManager.getInstance().getTowns());
         }
         int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("towns"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
