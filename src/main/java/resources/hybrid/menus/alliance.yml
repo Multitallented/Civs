@@ -11,20 +11,20 @@ items:
     index: 0
     icon: GOLDEN_SWORD
     # name: alliance name
-  select-town:
-    index: 1
-    # icon: town icon
-    # name: town name
-    desc: your-towns
-    actions:
-      - menu:select-town?prevMenu=alliance&preserveData=true
+#  select-town:
+#    index: 1
+#    # icon: town icon
+#    # name: town name
+#    desc: your-towns
+#    actions:
+#      - menu:select-town?prevMenu=alliance&preserveData=true
   rename:
-    index: 2
+    index: 1
     icon: PAPER
     name: rename-alliance
     desc: rename-alliance-desc
   last-rename:
-    index: 3
+    index: 2
     # icon: player's head
     # name: player's name
     desc: last-renamed-by
