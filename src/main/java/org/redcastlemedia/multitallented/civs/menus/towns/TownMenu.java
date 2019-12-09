@@ -36,7 +36,9 @@ public class TownMenu extends CustomMenu {
         }
         if (params.containsKey("selectedTown")) {
             if (!params.containsKey("town")) {
-                data.put("town", TownManager.getInstance().getTown(params.get("town")));
+                Town town = TownManager.getInstance().getTown(params.get("selectedTown"));
+                data.put("town", town);
+                data.put("townType", ItemManager.getInstance().getItemType(town.getType()));
             }
             data.put("selectedTown", TownManager.getInstance().getTown(params.get("selectedTown")));
         }
