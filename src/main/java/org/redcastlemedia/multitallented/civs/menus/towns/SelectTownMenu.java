@@ -40,6 +40,7 @@ public class SelectTownMenu extends CustomMenu {
         } else {
             towns.addAll(TownManager.getInstance().getTowns());
         }
+        data.put("towns", towns);
         int maxPage = (int) Math.ceil((double) towns.size() / (double) itemsPerPage.get("towns"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -57,7 +58,7 @@ public class SelectTownMenu extends CustomMenu {
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("towns")) {
-            Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+            Set<Town> towns = (Set<Town>) MenuManager.getData(civilian.getUuid(), "towns");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
             Town[] townArray = new Town[towns.size()];

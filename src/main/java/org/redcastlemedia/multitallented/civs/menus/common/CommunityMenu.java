@@ -15,11 +15,13 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import java.util.HashMap;
 import java.util.Map;
 
-@CivsMenu(name = "community")
+@CivsMenu(name = "community") @SuppressWarnings("unused")
 public class CommunityMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
-        return new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("uuid", civilian.getUuid());
+        return data;
     }
 
     @Override
