@@ -35,7 +35,12 @@ public class TownMenu extends CustomMenu {
             data.put("townType", townType);
         }
         if (params.containsKey("selectedTown")) {
-            data.put("selectedTown", params.get("selectedTown"));
+            if (!params.containsKey("town")) {
+                Town town = TownManager.getInstance().getTown(params.get("selectedTown"));
+                data.put("town", town);
+                data.put("townType", ItemManager.getInstance().getItemType(town.getType()));
+            }
+            data.put("selectedTown", TownManager.getInstance().getTown(params.get("selectedTown")));
         }
         return data;
     }
@@ -43,12 +48,9 @@ public class TownMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
-        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
         TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
-        Town selectedTown = null;
-        if (selectedTownName != null) {
-            selectedTown = TownManager.getInstance().getTown(selectedTownName);
-        } else {
+        Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        if (selectedTown == null) {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
         }
         boolean isAllied = selectedTown != null && selectedTown != town &&

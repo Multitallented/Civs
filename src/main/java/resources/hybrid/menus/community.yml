@@ -12,7 +12,7 @@ items:
     icon: BLUE_BED
     name: your-towns
     actions:
-      - menu:select-town?prevMenu=town&member=$uuid$
+      - menu:select-town?prevMenu=town&uuid=$uuid$
   alliances:
     index: 2
     icon: IRON_SWORD
