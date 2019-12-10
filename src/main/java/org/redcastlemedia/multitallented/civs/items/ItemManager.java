@@ -20,16 +20,13 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -37,8 +34,6 @@ import java.util.regex.Pattern;
 public class ItemManager {
     private static ItemManager itemManager;
     private HashMap<String, CivItem> itemTypes = new HashMap<>();
-    private static final String INVISIBLE = "-invisible";
-    private static final String ITEM_TYPES = "item-types";
 
     public static ItemManager getInstance() {
         if (itemManager == null) {
@@ -54,7 +49,7 @@ public class ItemManager {
     }
 
     private void loadAllItemTypes() {
-        final String ITEM_TYPES_FOLDER_NAME = ITEM_TYPES;
+        final String ITEM_TYPES_FOLDER_NAME = Constants.ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
@@ -80,12 +75,12 @@ public class ItemManager {
         try {
             FolderType folderType = null;
             for (String currentFolder : pathSplit) {
-                if (currentFolder.isEmpty() || ITEM_TYPES.equals(currentFolder) ||
+                if (currentFolder.isEmpty() || Constants.ITEM_TYPES.equals(currentFolder) ||
                         currentFolder.equals(currentFileName)) {
                     continue;
                 }
                 if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
-                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(INVISIBLE));
+                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(Constants.INVISIBLE));
                     if (folderType != null) {
                         folderType.getChildren().add(currentFolderType);
                     }
@@ -122,7 +117,7 @@ public class ItemManager {
     }
 
     private FolderType createFolder(String currentFileName, boolean invisible) {
-        String folderName = currentFileName.replace(INVISIBLE, "");
+        String folderName = currentFileName.replace(Constants.INVISIBLE, "");
         FolderType folderType = new FolderType(new ArrayList<>(),
                 folderName,
                 ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -152,7 +147,7 @@ public class ItemManager {
                 if (itemTypes.containsKey(file.getName().toLowerCase())) {
                     return;
                 }
-                String folderName = file.getName().replace(INVISIBLE, "");
+                String folderName = file.getName().replace(Constants.INVISIBLE, "");
                 FolderType folderType = new FolderType(new ArrayList<>(),
                         folderName,
                         ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -542,7 +537,7 @@ public class ItemManager {
                     int pop = Integer.parseInt(req.replace("population=", ""));
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (!town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                             continue;
                         }
                         if (pop <= town.getPopulation()) {
@@ -595,7 +590,7 @@ public class ItemManager {
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (!town.getType().equalsIgnoreCase(splitReq[0]) ||
                                 !town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                             continue;
                         }
                         if (requirement <= town.getPopulation()) {

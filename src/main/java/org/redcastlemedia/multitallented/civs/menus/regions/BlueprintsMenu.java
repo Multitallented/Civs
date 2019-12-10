@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -20,11 +20,11 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "blueprints") @SuppressWarnings("unused")
 public class BlueprintsMenu extends CustomMenu {
-    private static final String ITEMS_IN_VIEW = "itemsInView";
 
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -43,7 +43,7 @@ public class BlueprintsMenu extends CustomMenu {
             stashItems.put(itemName, newItems.get(itemName));
         }
         CivilianManager.getInstance().saveCivilian(civilian);
-        data.put(ITEMS_IN_VIEW, new HashMap<String, Integer>());
+        data.put(Constants.ITEMS_IN_VIEW, new HashMap<String, Integer>());
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -61,7 +61,7 @@ public class BlueprintsMenu extends CustomMenu {
     @Override @SuppressWarnings("unchecked")
     public void onCloseMenu(Civilian civilian, Inventory inventory) {
         Map<String, Integer> stashItems = civilian.getStashItems();
-        HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), ITEMS_IN_VIEW);
+        HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), Constants.ITEMS_IN_VIEW);
         if (itemsInView == null) {
             itemsInView = new HashMap<>();
         }
@@ -158,7 +158,7 @@ public class BlueprintsMenu extends CustomMenu {
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentStashItemName));
-            HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), ITEMS_IN_VIEW);
+            HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), Constants.ITEMS_IN_VIEW);
             if (itemsInView == null) {
                 return new ItemStack(Material.AIR);
             }

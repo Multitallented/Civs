@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -56,7 +57,7 @@ public class TownMenu extends CustomMenu {
         boolean isAllied = selectedTown != null && selectedTown != town &&
                 AllianceManager.getInstance().isAllied(selectedTown, town);
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
-                town.getPeople().get(civilian.getUuid()).contains("owner");
+                town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean colonialOverride = OwnershipUtil.hasColonialOverride(town, civilian);
         boolean govTypeDisable = government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
@@ -216,7 +217,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("government-type".equals(menuIcon.getKey())) {
-            CVItem cvItem = government.getIcon(civilian.getLocale()).clone();
+            CVItem cvItem = government.getIcon(civilian.getLocale());
             ItemStack itemStack = cvItem.createItemStack();
             if (!town.isGovTypeChangedToday()) {
                 putActions(civilian, menuIcon, itemStack, count);

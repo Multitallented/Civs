@@ -20,7 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
-@CivsSingleton
+@CivsSingleton @SuppressWarnings("unused")
 public class PermissionEffect implements Listener {
     private static final String KEY = "permission";
     private static final Map<UUID, HashSet<String>> permissionMap = new HashMap<>();

@@ -12,11 +12,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -41,9 +40,18 @@ public abstract class CustomMenu {
     }
 
     public Inventory createMenu(Civilian civilian, Map<String, String> params) {
-        MenuManager.clearData(civilian.getUuid());
-        Map<String, Object> newData = createData(civilian, params);
+        Map<String, Object> newData;
+        if (!params.containsKey("preserveData") || !"true".equals(params.get("preserveData"))) {
+            MenuManager.clearData(civilian.getUuid());
+            newData = new HashMap<>();
+        } else {
+            newData = MenuManager.getAllData(civilian.getUuid());
+        }
+        newData.putAll(createData(civilian, params));
         MenuManager.setNewData(civilian.getUuid(), newData);
+        for (Map.Entry<String, Object> data : newData.entrySet()) {
+            System.out.println(data.getKey() + ":" + data.getValue());
+        }
         MenuManager.putData(civilian.getUuid(), "menuName", name);
         return createMenu(civilian);
     }

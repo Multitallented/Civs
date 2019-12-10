@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -32,10 +32,10 @@ public final class OwnershipUtil {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
-                town.getRawPeople().get(civilian.getUuid()).contains("owner");
+                town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
 
         boolean inviteeIsOwner = town.getRawPeople().containsKey(invitee.getUuid()) &&
-                !town.getRawPeople().get(invitee.getUuid()).contains("owner");
+                !town.getRawPeople().get(invitee.getUuid()).contains(Constants.OWNER);
 
         double price = townType.getPrice() * 2;
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
@@ -126,7 +126,7 @@ public final class OwnershipUtil {
         boolean colonialOverride = hasColonialOverride(town, civilian);
         boolean isOwner = false;
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains("owner")) {
+            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 isOwner = true;
             }
         }

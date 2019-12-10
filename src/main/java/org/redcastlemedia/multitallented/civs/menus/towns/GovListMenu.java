@@ -2,7 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.towns;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;

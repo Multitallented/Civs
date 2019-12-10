@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,7 +30,7 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
@@ -50,12 +51,12 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {
-    private static final String REGION_FOLDER_NAME = "regions";
 
     private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
     protected HashMap<String, Region> regionLocations = new HashMap<>();
@@ -105,7 +106,7 @@ public class RegionManager {
     public void loadAllRegions() {
         regions.clear();
         regionLocations.clear();
-        File regionFolder = new File(Civs.dataLocation, RegionManager.REGION_FOLDER_NAME);
+        File regionFolder = new File(Civs.dataLocation, Constants.REGIONS);
         if (!regionFolder.exists()) {
             regionFolder.mkdir();
         }
@@ -207,7 +208,7 @@ public class RegionManager {
             entry.getValue().remove(region);
         }
         regionLocations.remove(region.getId());
-        File dataFolder = new File(Civs.dataLocation, REGION_FOLDER_NAME);
+        File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
         }
@@ -255,11 +256,11 @@ public class RegionManager {
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.saves++;
         }
-        File regionFolder = new File(Civs.dataLocation, RegionManager.REGION_FOLDER_NAME);
+        File regionFolder = new File(Civs.dataLocation, Constants.REGIONS);
         if (!regionFolder.exists()) {
             boolean folderCreated = regionFolder.mkdir();
             if (!folderCreated) {
-                Civs.logger.severe("Unable to create " + REGION_FOLDER_NAME + " folder");
+                Civs.logger.severe("Unable to create " + Constants.REGIONS + " folder");
                 return;
             }
         }
@@ -365,8 +366,7 @@ public class RegionManager {
                 }
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to read " + regionFile.getName());
-            Civs.logger.severe(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);
             return null;
         }
         return region;
