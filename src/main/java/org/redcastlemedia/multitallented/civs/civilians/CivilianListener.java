@@ -47,7 +47,7 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;

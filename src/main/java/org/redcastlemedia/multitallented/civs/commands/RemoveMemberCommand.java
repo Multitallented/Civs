@@ -6,13 +6,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -70,7 +71,7 @@ public class RemoveMemberCommand implements CivCommand {
         }
         if (!isAdmin && !inviteUUID.equals(player.getUniqueId()) && region != null &&
                 !Util.hasOverride(region, civilian, overrideTown) &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
                     "no-permission"));
             return true;

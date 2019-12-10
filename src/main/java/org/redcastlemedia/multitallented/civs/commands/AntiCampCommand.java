@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;

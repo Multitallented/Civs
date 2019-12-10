@@ -36,6 +36,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
 public abstract class TestUtil {
@@ -269,10 +270,6 @@ public abstract class TestUtil {
         Bukkit.setServer(server);
 
         MenuManager.getInstance();
-        LocaleManager localeManager = LocaleManager.getInstance();
-        HashMap<String, String> mockLanguageMap = new HashMap<>();
-        mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
-        localeManager.languageMap.put("es", mockLanguageMap);
 
         CivilianManager.getInstance().createDefaultCivilian(player);
         createDefaultClass();

@@ -6,16 +6,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 @CivsSingleton
 public class ForSaleEffect implements Listener {

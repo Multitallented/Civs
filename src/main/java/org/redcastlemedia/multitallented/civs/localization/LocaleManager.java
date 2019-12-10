@@ -1,25 +1,20 @@
-package org.redcastlemedia.multitallented.civs;
+package org.redcastlemedia.multitallented.civs.localization;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Predicate;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
-
-import javax.annotation.Nullable;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHEST)
 public class LocaleManager {
@@ -39,7 +34,7 @@ public class LocaleManager {
             }
             String translation = map.get(key);
             if (translation == null) {
-                Civs.logger.severe("Unable to find any translation for " + key);
+                Civs.logger.log(Level.SEVERE, "Unable to find any translation for {}", key);
                 return "";
             }
             return Util.parseColors(textPrefix + translation);

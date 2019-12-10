@@ -2,21 +2,16 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.text.ParseException;
 
 @CivsCommand(keys = { "bounty" })
 public class BountyCommand implements CivCommand {
