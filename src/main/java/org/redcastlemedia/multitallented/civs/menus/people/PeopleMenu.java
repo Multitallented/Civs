@@ -37,7 +37,15 @@ public class PeopleMenu extends CustomMenu {
         HashMap<UUID, String> ranks = null;
         boolean alreadyOnlineFiltered = false;
         boolean invite = !(!params.containsKey("invite") || "false".equals(params.get("invite")));
-        data.put("invite", invite);
+        if (invite) {
+            data.put("invite", true);
+        } else {
+            Boolean inviteData = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            if (inviteData != null && inviteData) {
+                invite = true;
+                data.put("invite", true);
+            }
+        }
         if (params.containsKey("region")) {
             Region region = RegionManager.getInstance().getRegionById(params.get("region"));
             data.put("region", region);
@@ -116,9 +124,16 @@ public class PeopleMenu extends CustomMenu {
     }
 
     private void rankSort(List<Civilian> civilians, HashMap<UUID, String> ranks) {
+        if (ranks == null || ranks.isEmpty()) {
+            return;
+        }
         civilians.sort(new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {
+                if (!ranks.containsKey(o1.getUuid()) ||
+                        !ranks.containsKey(o2.getUuid())) {
+                    return 0;
+                }
                 return Integer.compare(rankWeight(ranks.get(o1.getUuid())),
                         rankWeight(ranks.get(o2.getUuid())));
             }

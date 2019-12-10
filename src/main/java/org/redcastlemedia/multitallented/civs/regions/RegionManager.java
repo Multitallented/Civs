@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -365,8 +366,7 @@ public class RegionManager {
                 }
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to read " + regionFile.getName());
-            Civs.logger.severe(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);
             return null;
         }
         return region;

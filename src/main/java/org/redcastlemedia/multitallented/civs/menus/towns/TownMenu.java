@@ -216,7 +216,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("government-type".equals(menuIcon.getKey())) {
-            CVItem cvItem = government.getIcon(civilian.getLocale()).clone();
+            CVItem cvItem = government.getIcon(civilian.getLocale());
             ItemStack itemStack = cvItem.createItemStack();
             if (!town.isGovTypeChangedToday()) {
                 putActions(civilian, menuIcon, itemStack, count);
