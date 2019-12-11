@@ -310,15 +310,17 @@ public class TownMenu extends CustomMenu {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
         String townName = town.getName();
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        Object selectedTownObject = MenuManager.getData(civilian.getUuid(), "selectedTown");
         Town selectedTown = null;
-        if (selectedTownName != null) {
-            selectedTown = TownManager.getInstance().getTown(selectedTownName);
-        } else {
+        if (selectedTownObject == null) {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
+        } else if (selectedTownObject instanceof String) {
+            selectedTown = TownManager.getInstance().getTown((String) selectedTownObject);
+        } else {
+            selectedTown = (Town) selectedTownObject;
         }
-        if (actionString.equals("ally")) {
-            if (selectedTown == null) {
+        if ("ally".equals(actionString)) {
+            if (selectedTown == null || town.getAllyInvites().contains(selectedTown.getName())) {
                 return true;
             }
             town.getAllyInvites().add(selectedTown.getName());

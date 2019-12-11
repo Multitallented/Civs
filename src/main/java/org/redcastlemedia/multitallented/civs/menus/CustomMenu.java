@@ -49,9 +49,6 @@ public abstract class CustomMenu {
         }
         newData.putAll(createData(civilian, params));
         MenuManager.setNewData(civilian.getUuid(), newData);
-        for (Map.Entry<String, Object> data : newData.entrySet()) {
-            System.out.println(data.getKey() + ":" + data.getValue());
-        }
         MenuManager.putData(civilian.getUuid(), "menuName", name);
         return createMenu(civilian);
     }
@@ -186,6 +183,8 @@ public abstract class CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             MenuManager.clearHistory(civilian.getUuid());
             player.closeInventory();
+        } else if ("clear-history".equals(actionString)) {
+            MenuManager.clearHistory(civilian.getUuid());
         } else if (actionString.startsWith("message:")) {
             String messageKey = actionString.split(":")[1];
             Player player = Bukkit.getPlayer(civilian.getUuid());

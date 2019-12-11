@@ -173,6 +173,9 @@ default-config-set: hybrid
 
 #allow-changing-gov-type: true
 #default-gov-type: "DICTATORSHIP"
+## how many players need to be in a town before the gov type will auto transition
+## on new days
+#min-population-for-auto-gov-transition: 4
 ## for governments that use voting, for how long should a player be elected?
 #days-between-elections: 7
 #use-announcements: true

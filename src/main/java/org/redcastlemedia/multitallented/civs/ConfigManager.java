@@ -140,6 +140,8 @@ public class ConfigManager {
     boolean disableRegionsInUnloadedChunks;
     @Getter
     String defaultConfigSet;
+    @Getter
+    int minPopulationForGovTransition;
 
     public ConfigManager() {
         loadDefaults();
@@ -375,6 +377,7 @@ public class ConfigManager {
             useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
+            minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from config.yml");
@@ -400,6 +403,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
         useAsyncUpkeeps = true;

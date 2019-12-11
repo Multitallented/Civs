@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "player") @SuppressWarnings("unused")
@@ -30,22 +31,20 @@ public class PlayerMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
-        if (params.containsKey("uuid")) {
-            data.put("uuid", UUID.fromString(params.get("uuid")));
+        if (params.containsKey(Constants.UUID)) {
+            data.put(Constants.UUID, UUID.fromString(params.get(Constants.UUID)));
         }
         return data;
     }
 
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        UUID uuid = (UUID) MenuManager.getData(civilian.getUuid(), "uuid");
+        UUID uuid = (UUID) MenuManager.getData(civilian.getUuid(), Constants.UUID);
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    menuIcon.getName()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             if (skullMeta != null) {
                 skullMeta.setOwningPlayer(offlinePlayer);
                 itemStack.setItemMeta(skullMeta);
@@ -73,7 +72,7 @@ public class PlayerMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             int i = 0;
             for (Town town : TownManager.getInstance().getTowns()) {
-                if (!town.getRawPeople().containsKey(civilian.getUuid())) {
+                if (!town.getRawPeople().containsKey(uuid)) {
                     continue;
                 }
                 cvItem.getLore().add(town.getName());
@@ -161,7 +160,7 @@ public class PlayerMenu extends CustomMenu {
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
-        UUID uuid = ((UUID) MenuManager.getData(civilian.getUuid(), "uuid"));
+        UUID uuid = ((UUID) MenuManager.getData(civilian.getUuid(), Constants.UUID));
         Player player = Bukkit.getPlayer(civilian.getUuid());
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         String name = offlinePlayer.getName();
