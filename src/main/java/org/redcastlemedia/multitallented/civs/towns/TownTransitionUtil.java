@@ -1,13 +1,11 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
-
 import java.util.HashSet;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 public final class TownTransitionUtil {
     private TownTransitionUtil() {
@@ -35,6 +33,9 @@ public final class TownTransitionUtil {
 
     protected static boolean checkTown(Town town) {
         if (town.isGovTypeChangedToday()) {
+            return false;
+        }
+        if (town.getRawPeople().size() < ConfigManager.getInstance().getMinPopulationForGovTransition()) {
             return false;
         }
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());

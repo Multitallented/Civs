@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "people") @SuppressWarnings("unused")
 public class PeopleMenu extends CustomMenu {
@@ -46,15 +47,20 @@ public class PeopleMenu extends CustomMenu {
                 data.put("invite", true);
             }
         }
-        if (params.containsKey("region")) {
-            Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-            data.put("region", region);
+        Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+        Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
+
+        if (region != null || params.containsKey(Constants.REGION)) {
+            if (region == null) {
+                region = RegionManager.getInstance().getRegionById(params.get(Constants.REGION));
+            }
+            data.put(Constants.REGION, region);
             ranks = region.getRawPeople();
             if (invite) {
                 addOnlinePlayers(civilians, region.getRawPeople().keySet());
-                Town town = TownManager.getInstance().getTownAt(region.getLocation());
-                if (town != null) {
-                    for (UUID uuid : town.getRawPeople().keySet()) {
+                Town containingTown = TownManager.getInstance().getTownAt(region.getLocation());
+                if (containingTown != null) {
+                    for (UUID uuid : containingTown.getRawPeople().keySet()) {
                         if (region.getRawPeople().containsKey(uuid)) {
                             continue;
                         }
@@ -66,9 +72,11 @@ public class PeopleMenu extends CustomMenu {
                     civilians.add(CivilianManager.getInstance().getCivilian(uuid));
                 }
             }
-        } else if (params.containsKey("town")) {
-            Town town = TownManager.getInstance().getTown(params.get("town"));
-            data.put("town", town);
+        } else if (town != null || params.containsKey(Constants.TOWN)) {
+            if (town == null) {
+                town = TownManager.getInstance().getTown(params.get(Constants.TOWN));
+            }
+            data.put(Constants.TOWN, town);
             ranks = town.getRawPeople();
             if (invite) {
                 addOnlinePlayers(civilians, town.getRawPeople().keySet());
@@ -191,8 +199,12 @@ public class PeopleMenu extends CustomMenu {
             if ("rank".equals(sort)) {
                 return new ItemStack(Material.AIR);
             }
-            if (MenuManager.getData(civilian.getUuid(), "region") == null &&
-                    MenuManager.getData(civilian.getUuid(), "town") == null) {
+            Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            if (invite != null && invite) {
+                return new ItemStack(Material.AIR);
+            }
+            if (MenuManager.getData(civilian.getUuid(), Constants.REGION) == null &&
+                    MenuManager.getData(civilian.getUuid(), Constants.TOWN) == null) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("sort-alphabetical".equals(menuIcon.getKey())) {
@@ -218,11 +230,11 @@ public class PeopleMenu extends CustomMenu {
             }
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
             cvItem.setDisplayName(offlinePlayer.getName());
-            if (MenuManager.getData(civilian.getUuid(), "region") != null) {
-                Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+            if (MenuManager.getData(civilian.getUuid(), Constants.REGION) != null) {
+                Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
                 addRank(civilian.getLocale(), cvItem, region.getRawPeople().get(offlinePlayer.getUniqueId()));
-            } else if ((MenuManager.getData(civilian.getUuid(), "town") != null)) {
-                Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            } else if ((MenuManager.getData(civilian.getUuid(), Constants.TOWN) != null)) {
+                Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
                 addRank(civilian.getLocale(), cvItem, town.getRawPeople().get(offlinePlayer.getUniqueId()));
             }
             ItemStack itemStack = cvItem.createItemStack();
@@ -256,29 +268,29 @@ public class PeopleMenu extends CustomMenu {
         }
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if ("take-action".equals(actionString)) {
             UUID uuid = ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).get(clickedItem);
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             Player player = Bukkit.getPlayer(civilian.getUuid());
-            boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
             if (region != null) {
-                if (invite) {
+                if (invite != null && invite) {
                     player.performCommand("cv add " + clickedItem.getItemMeta().getDisplayName() + " " + region.getId());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("region", region.getId());
+                    params.put(Constants.REGION, region.getId());
                     params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else if (town != null) {
-                if (invite) {
+                if (invite != null && invite) {
                     player.performCommand("cv invite " + clickedItem.getItemMeta().getDisplayName() + " " + town.getName());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("town", town.getName());
+                    params.put(Constants.TOWN, town.getName());
                     params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }

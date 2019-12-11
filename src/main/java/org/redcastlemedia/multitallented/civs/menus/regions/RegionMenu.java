@@ -43,6 +43,8 @@ public class RegionMenu extends CustomMenu {
         if (!region.getFailingUpkeeps().isEmpty()) {
             failingUpkeeps.substring(0, failingUpkeeps.length() - 1);
             data.put("failingUpkeeps", failingUpkeeps.toString());
+        } else {
+            data.put("failingUpkeeps", "");
         }
         data.put("regionTypeName", region.getType());
         return data;
@@ -104,15 +106,16 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("sale".equals(menuIcon.getKey())) {
-            if (!canSeeSellOptions) {
+            if (!canSeeSellOptions || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("cancel-sale".equals(menuIcon.getKey())) {
-            if (!canSeeSellOptions || region.getForSale() == -1) {
+            if (!canSeeSellOptions || region.getForSale() == -1 || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("buy-region".equals(menuIcon.getKey())) {
-            if (region.getRawPeople().containsKey(civilian.getUuid()) || region.getForSale() == -1 ||
+            if (isOwner || region.getRawPeople().containsKey(civilian.getUuid()) ||
+                    region.getForSale() == -1 ||
                     civilian.isAtMax(regionType) != null) {
                 return new ItemStack(Material.AIR);
             }

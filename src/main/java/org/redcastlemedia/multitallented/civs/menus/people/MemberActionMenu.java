@@ -122,7 +122,7 @@ public class MemberActionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("set-owner".equals(menuIcon.getKey())) {
-            if (isOwner && viewingSelf) {
+            if (isOwner) {
                 return new ItemStack(Material.AIR);
             }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
@@ -140,14 +140,14 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-member".equals(menuIcon.getKey())) {
-            if (viewingSelf && role.contains(Constants.MEMBER)) {
+            if (role.contains(Constants.MEMBER)) {
                 return new ItemStack(Material.AIR);
             }
             if (!(isAdmin || (!viewingSelf && isOwner && !role.contains(Constants.MEMBER)))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
-            if (viewingSelf && role.contains(Constants.GUEST)) {
+            if (role.contains(Constants.GUEST)) {
                 return new ItemStack(Material.AIR);
             }
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
@@ -157,7 +157,7 @@ public class MemberActionMenu extends CustomMenu {
             if (town == null) {
                 return new ItemStack(Material.AIR);
             }
-            if (viewingSelf && role.contains(Constants.RECRUITER)) {
+            if (role.contains(Constants.RECRUITER)) {
                 return new ItemStack(Material.AIR);
             }
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {

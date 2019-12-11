@@ -216,7 +216,7 @@ public class ShopMenu extends CustomMenu {
         }
         String maxLimit = civilian.isAtMax(civItem);
         if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
-            CVItem item = CVItem.createCVItemFromString("BARRIER");
+            CVItem item = CVItem.createCVItemFromString(Material.BARRIER.name());
             item.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
                     civItem.getProcessedName() + "-name"));
             int limit = maxLimit.equals(civItem.getProcessedName()) ? civItem.getCivMax() :
