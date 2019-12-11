@@ -24,7 +24,7 @@ limits:
 build-radius: 24 # 49x1000x49
 build-radius-y: 500
 effects:
-- exempt-housing
+- exempt_housing
 - block_break
 - block_build
 - block_liquid

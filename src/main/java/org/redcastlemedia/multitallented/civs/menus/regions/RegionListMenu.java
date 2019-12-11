@@ -20,7 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-@CivsMenu(name = "region-list")
+@CivsMenu(name = "region-list") @SuppressWarnings("unused")
 public class RegionListMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -34,6 +34,7 @@ public class RegionListMenu extends CustomMenu {
         List<Region> regions = new ArrayList<>();
         if (params.containsKey("sell")) {
             for (Region r : RegionManager.getInstance().getAllRegions()) {
+                System.out.println(r.getForSale());
                 if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
                     Town town = TownManager.getInstance().getTownAt(r.getLocation());
                     if (town == null || town.getPeople().containsKey(civilian.getUuid())) {
