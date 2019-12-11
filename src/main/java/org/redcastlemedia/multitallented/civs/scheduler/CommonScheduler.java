@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -21,15 +22,17 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class CommonScheduler implements Runnable {
-    public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
-    public static final HashMap<UUID, Town> lastTown = new HashMap<>();
+    protected static final Map<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
+    protected static final Map<UUID, Town> lastTown = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
-    public static boolean run = true;
+    protected static boolean run = true;
 
     @Override
     public void run() {
@@ -47,19 +50,7 @@ public class CommonScheduler implements Runnable {
             int maxTPS = 5;
             int chunk = players.size() / maxTPS;
             for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
-                try {
-                    Player player = (Player) players.toArray()[j];
-                    playerInRegion(player);
-                    playerInTown(player);
-                    if (ConfigManager.getInstance().getUseClassesAndSpells()) {
-                        incrementMana(player);
-                    }
-                    if (ConfigManager.getInstance().isUseAnnouncements()) {
-                        sendAnnouncement(player);
-                    }
-                } catch (Exception e) {
-
-                }
+                checkPlayer((Player) players.toArray()[j]);
             }
             RegionTickUtil.runUpkeeps();
             if (i == maxTPS - 1) {
@@ -72,7 +63,22 @@ public class CommonScheduler implements Runnable {
                 i++;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat thread", e);
+        }
+    }
+
+    private void checkPlayer(Player player) {
+        try {
+            playerInRegion(player);
+            playerInTown(player);
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                incrementMana(player);
+            }
+            if (ConfigManager.getInstance().isUseAnnouncements()) {
+                sendAnnouncement(player);
+            }
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }
     }
 
@@ -97,10 +103,8 @@ public class CommonScheduler implements Runnable {
         long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
         //TODO lazy loop this
         for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
-            if (civilian.getKarma() < 2 && civilian.getKarma() > -2) {
-                continue;
-            }
-            if (civilian.getLastKarmaDepreciation() + karmaPeriod > System.currentTimeMillis()) {
+            if ((civilian.getKarma() < 2 && civilian.getKarma() > -2) ||
+                    (civilian.getLastKarmaDepreciation() + karmaPeriod > System.currentTimeMillis())) {
                 continue;
             }
             civilian.setLastKarmaDepreciation(System.currentTimeMillis());
@@ -176,7 +180,7 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getName().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
@@ -194,7 +198,7 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getName().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
@@ -232,8 +236,8 @@ public class CommonScheduler implements Runnable {
                 if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
                     Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                            regionType.getProcessedName() + "-name");
-                    player.sendTitle("", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
+                            regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                    player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
                 }
             }
         }
