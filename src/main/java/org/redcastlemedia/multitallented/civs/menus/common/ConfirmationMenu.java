@@ -121,7 +121,7 @@ public class ConfirmationMenu extends CustomMenu {
         }
     }
 
-    private boolean doesntHavePermission(Civilian civilian, HashMap<UUID, String> people, Player player) {
+    private boolean doesntHavePermission(Civilian civilian, Map<UUID, String> people, Player player) {
         LocaleManager localeManager = LocaleManager.getInstance();
         if ((!people.containsKey(civilian.getUuid()) ||
                 !people.get(civilian.getUuid()).contains("owner")) &&

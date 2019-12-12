@@ -26,12 +26,18 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class CommonScheduler implements Runnable {
+    @Getter
     protected static final Map<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
+    @Getter
     protected static final Map<UUID, Town> lastTown = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
+    @Getter @Setter
     protected static boolean run = true;
 
     @Override

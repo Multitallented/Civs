@@ -129,7 +129,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return null;
         }
         // Don't spawn a villager if there aren't players in the town
-        if (!CommonScheduler.lastTown.values().contains(town)) {
+        if (!CommonScheduler.getLastTown().values().contains(town)) {
             return null;
         }
         long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;

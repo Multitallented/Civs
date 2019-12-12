@@ -35,7 +35,7 @@ public class PeopleMenu extends CustomMenu {
             data.put("page", 0);
         }
         List<Civilian> civilians = new ArrayList<>();
-        HashMap<UUID, String> ranks = null;
+        Map<UUID, String> ranks = null;
         boolean alreadyOnlineFiltered = false;
         boolean invite = !(!params.containsKey("invite") || "false".equals(params.get("invite")));
         if (invite) {
@@ -131,7 +131,7 @@ public class PeopleMenu extends CustomMenu {
         return data;
     }
 
-    private void rankSort(List<Civilian> civilians, HashMap<UUID, String> ranks) {
+    private void rankSort(List<Civilian> civilians, Map<UUID, String> ranks) {
         if (ranks == null || ranks.isEmpty()) {
             return;
         }

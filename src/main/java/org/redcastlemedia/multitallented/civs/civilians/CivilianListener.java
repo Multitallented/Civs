@@ -104,7 +104,7 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onCivilianQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
@@ -123,8 +123,8 @@ public class CivilianListener implements Listener {
             }
         }
 //        civilianManager.unloadCivilian(player);
-        CommonScheduler.lastRegion.remove(uuid);
-        CommonScheduler.lastTown.remove(uuid);
+        CommonScheduler.getLastRegion().remove(uuid);
+        CommonScheduler.getLastTown().remove(uuid);
         CommonScheduler.removeLastAnnouncement(uuid);
         MenuManager.clearHistory(uuid);
         MenuManager.clearData(uuid);
