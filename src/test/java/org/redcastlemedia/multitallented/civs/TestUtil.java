@@ -282,10 +282,6 @@ public abstract class TestUtil {
         return new ItemStackImpl(mat, 1);
     }
 
-    public static void setLanguageEntry(String locale, String key, String entry) {
-        LocaleManager.getInstance().languageMap.get(locale).put(key, entry);
-    }
-
     public static ItemStack createUniqueItemStack(Material mat, String name) {
         ItemStack is = new ItemStackImpl(mat, 1);
         is.getItemMeta().setDisplayName(name);
