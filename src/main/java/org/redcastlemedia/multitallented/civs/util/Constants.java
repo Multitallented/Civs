@@ -14,6 +14,7 @@ public final class Constants {
     public static final String PORT = "port";
     public static final String TOWN = "town";
     public static final String UUID = "uuid";
+    public static final String EXCLUSIVE = "exclusive";
 
     private Constants() {
 

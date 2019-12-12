@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -114,8 +115,8 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            int[] radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
-            if (radii.length == 0) {
+            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
+            if (!radii.isValid()) {
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                         region.getLocation(),
                         new ItemStack(event.getBlock().getType(), 1));

@@ -353,6 +353,10 @@ public class TownTests extends TestUtil {
         town.getRawPeople().put(new UUID(1, 8), "member");
 
         town.setPower(2);
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player2.getUniqueId(), "member");
+        town.getRawPeople().put(new UUID(1,5), "member");
+        town.getRawPeople().put(new UUID(1, 6), "member");
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
                 GovernmentType.ANARCHY.name());

@@ -28,7 +28,7 @@ import java.util.*;
 public class Region {
 
     private String type;
-    private final HashMap<UUID, String> people;
+    private final Map<UUID, String> people;
     private final World world;
     private final double x;
     private final double y;
@@ -42,7 +42,8 @@ public class Region {
     @Getter
     private HashMap<Long, Integer> upkeepHistory = new HashMap<>();
     private double exp;
-    public HashMap<String, String> effects;
+    @Getter
+    public Map<String, String> effects;
     long lastTick = 0;
     @Getter @Setter
     private HashSet<Integer> failingUpkeeps = new HashSet<>();
@@ -75,6 +76,28 @@ public class Region {
         this.exp = exp;
     }
 
+    public Region(String type,
+                  Map<UUID, String> people,
+                  Location location,
+                  RegionPoints regionPoints,
+                  Map<String, String> effects,
+                  double exp) {
+        this.type = type;
+        this.people = people;
+        this.world = location.getWorld();
+        this.x = location.getX();
+        this.y = location.getY();
+        this.z = location.getZ();
+        radiusXP = regionPoints.getRadiusXP();
+        radiusZP = regionPoints.getRadiusZP();
+        radiusXN = regionPoints.getRadiusXN();
+        radiusZN = regionPoints.getRadiusZN();
+        radiusYP = regionPoints.getRadiusYP();
+        radiusYN = regionPoints.getRadiusYN();
+        this.effects = effects;
+        this.exp = exp;
+    }
+
     public double getExp() {
         return exp;
     }
@@ -93,10 +116,10 @@ public class Region {
         people.put(uuid, role);
     }
 
-    public HashMap<UUID, String> getRawPeople() {
+    public Map<UUID, String> getRawPeople() {
         return people;
     }
-    public HashMap<UUID, String> getPeople() {
+    public Map<UUID, String> getPeople() {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(getLocation());
         if (town == null) {
@@ -112,23 +135,8 @@ public class Region {
                 }
             }
         }
-
-//        for (Alliance alliance : AllianceManager.getInstance().getAlliances(town)) {
-//            for (String name : alliance.getMembers()) {
-//                Town currentTown = townManager.getTown(name);
-//                if (currentTown != null) {
-//                    for (UUID uuid : currentTown.getPeople().keySet()) {
-//                        if (!newPeople.containsKey(uuid) &&
-//                                !currentTown.getPeople().get(uuid).contains("ally")) {
-//                            newPeople.put(uuid, "ally");
-//                        }
-//                    }
-//                }
-//            }
-//        }
         return newPeople;
     }
-    public HashMap<String, String> getEffects() { return effects; }
     public Set<UUID> getOwners() {
         Set<UUID> owners = new HashSet<>();
         for (UUID uuid : people.keySet()) {
@@ -316,11 +324,7 @@ public class Region {
         return false;
     }
 
-    public static int[] hasRequiredBlocks(String type, Location location) {
-        return hasRequiredBlocks(type, location, true);
-    }
-
-    private static int[] addItemCheck(int[] radii, Location location, World currentWorld,
+    private static RegionPoints addItemCheck(RegionPoints radii, Location location, World currentWorld,
                                      double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
                                      List<HashMap<Material, Integer>> itemCheck, RegionType regionType) {
 
@@ -384,11 +388,8 @@ public class Region {
         return radii;
     }
 
-    private static int[] buildNewRadii(List<Block> blocks, Location location) {
-        int[] radii = new int[6];
-        for (int i = 0; i < 6; i++) {
-            radii[i] = 0;
-        }
+    private static RegionPoints buildNewRadii(List<Block> blocks, Location location) {
+        RegionPoints radii = new RegionPoints(0, 0, 0, 0, 0, 0);
         for (Block block : blocks) {
             RegionManager.getInstance().adjustRadii(radii, location,
                     block.getX(), block.getY(), block.getZ());
@@ -396,15 +397,15 @@ public class Region {
         return radii;
     }
 
-    private static int[] trimExcessRegion(List<Block> blocksFound,
+    private static RegionPoints trimExcessRegion(List<Block> blocksFound,
                                      List<HashMap<Material, Integer>> itemCheck,
                                      HashMap<Material, Integer> maxCheck,
-                                     int[] radii, Location location, RegionType regionType) {
-        if (radiusCheck(radii, regionType).length > 0) {
+                                     RegionPoints radii, Location location, RegionType regionType) {
+        if (radiusCheck(radii, regionType).isValid()) {
             return radii;
         }
 
-        int[] returnRadii;
+        RegionPoints returnRadii;
         do {
             Block block = blocksFound.remove(0);
             if (maxCheck.containsKey(block.getType())) {
@@ -437,23 +438,16 @@ public class Region {
                 }
             }
             returnRadii = buildNewRadii(blocksFound, location);
-        } while (!blocksFound.isEmpty() && (Arrays.equals(returnRadii, radii) || radiusCheck(returnRadii, regionType).length < 1));
+        } while (!blocksFound.isEmpty() && (returnRadii.isEquivalentTo(radii) || !radiusCheck(returnRadii, regionType).isValid()));
         return returnRadii;
     }
 
-    public static int[] hasRequiredBlocks(String type, Location location, boolean useCivItem) {
-        return hasRequiredBlocks(null, type, location, useCivItem);
-    }
-
-    public static int[] hasRequiredBlocks(Player player, String type, Location location, boolean useCivItem) {
+    public static RegionPoints hasRequiredBlocks(String type, Location location, boolean useCivItem) {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
 
-        int[] radii = new int[6];
-        for (int i = 0; i < 6; i++) {
-            radii[i] = 0;
-        }
+        RegionPoints radii = new RegionPoints(0, 0, 0, 0, 0, 0);
         if (itemCheck.isEmpty()) {
             radiusCheck(radii, regionType);
             return radii;
@@ -476,37 +470,34 @@ public class Region {
         boolean hasReqs = itemCheck.isEmpty();
         if (itemCheck.isEmpty() && useCivItem) {
             Block centerBlock = location.getBlock();
-            if (centerBlock == null) {
-                hasReqs = false;
-            } else if (regionType.getMat() != centerBlock.getType()) {
+            if (regionType.getMat() != centerBlock.getType()) {
                 hasReqs = false;
             }
         }
 
-        if (radii.length == 0) {
-            return radii;
+        if (!hasReqs) {
+            radii.setValid(false);
         }
-//        if (!hasReqs && player != null) {
-//            StructureUtil.showGuideBoundingBox(player, location, radii);
-//        }
-        return hasReqs ? radii : new int[0];
+        return radii;
     }
 
-    public static int[] hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
+    public static RegionPoints hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
         if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
                 regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
-            return new int[0];
+            return new RegionPoints();
         }
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
         World currentWorld = location.getWorld();
         if (currentWorld == null) {
-            return new int[0];
+            return new RegionPoints();
         }
 
-        int[] radii = new int[6];
-        for (int i=0; i< 6; i++) {
-            radii[i]=regionType.getBuildRadiusX();
-        }
+        RegionPoints regionPoints = new RegionPoints(regionType.getBuildRadiusX(),
+                regionType.getBuildRadiusX(),
+                regionType.getBuildRadiusY(),
+                regionType.getBuildRadiusY(),
+                regionType.getBuildRadiusZ(),
+                regionType.getBuildRadiusZ());
 
         double xMax = location.getX() + regionType.getBuildRadiusX();
         double xMin = location.getX() - regionType.getBuildRadiusX();
@@ -553,53 +544,53 @@ public class Region {
             }
         }
         if (!itemCheck.isEmpty()) {
-            return new int[0];
+            return new RegionPoints();
         } else {
-            return radii;
+            return regionPoints;
         }
     }
 
-    public static int[] radiusCheck(int[] radii, RegionType regionType) {
+    public static RegionPoints radiusCheck(RegionPoints radii, RegionType regionType) {
         int xRadius = regionType.getBuildRadiusX();
         int yRadius = regionType.getBuildRadiusY();
         int zRadius = regionType.getBuildRadiusZ();
         boolean xRadiusBigger = xRadius > zRadius;
-        boolean xRadiusActuallyBigger = radii[0] + radii[2] > radii[1] + radii[3];
-        if ((xRadiusActuallyBigger && xRadiusBigger && radii[0] + radii[2] > xRadius * 2) ||
-                xRadiusActuallyBigger && !xRadiusBigger && radii[0] + radii[2] > zRadius * 2) {
-            return new int[0];
+        boolean xRadiusActuallyBigger = radii.getRadiusXP() + radii.getRadiusXN() > radii.getRadiusZP() + radii.getRadiusZN();
+        if ((xRadiusActuallyBigger && xRadiusBigger && radii.getRadiusXP() + radii.getRadiusXN() > xRadius * 2) ||
+                xRadiusActuallyBigger && !xRadiusBigger && radii.getRadiusXP() + radii.getRadiusXN() > zRadius * 2) {
+            return new RegionPoints();
         } else {
-            while ((radii[0] + radii[2] < xRadius * 2 && xRadiusActuallyBigger) ||
-                    (radii[0] + radii[2] < zRadius * 2 && !xRadiusActuallyBigger)) {
-                if (radii[0] < radii[2]) {
-                    radii[0]++;
+            while ((radii.getRadiusXP() + radii.getRadiusXN() < xRadius * 2 && xRadiusActuallyBigger) ||
+                    (radii.getRadiusXP() + radii.getRadiusXN() < zRadius * 2 && !xRadiusActuallyBigger)) {
+                if (radii.getRadiusXP() < radii.getRadiusXN()) {
+                    radii.setRadiusXP(radii.getRadiusXP() + 1);
                 } else {
-                    radii[2]++;
+                    radii.setRadiusXN(radii.getRadiusXN() + 1);
                 }
             }
         }
-        if (radii[4] + radii[5] > yRadius * 2) {
-            return new int[0];
+        if (radii.getRadiusYP() + radii.getRadiusYN() > yRadius * 2) {
+            return new RegionPoints();
         } else {
 
-            while (radii[4] + radii[5] < yRadius * 2) {
-                if (radii[4] < radii[5]) {
-                    radii[4]++;
+            while (radii.getRadiusYP() + radii.getRadiusYN() < yRadius * 2) {
+                if (radii.getRadiusYP() < radii.getRadiusYN()) {
+                    radii.setRadiusYP(radii.getRadiusYP() + 1);
                 } else {
-                    radii[5]++;
+                    radii.setRadiusYN(radii.getRadiusYN() + 1);
                 }
             }
         }
-        if ((!xRadiusActuallyBigger && !xRadiusBigger && radii[1] + radii[3] > zRadius * 2) ||
-                !xRadiusActuallyBigger && xRadiusBigger && radii[1] + radii[3] > xRadius * 2) {
-            return new int[0];
+        if ((!xRadiusActuallyBigger && !xRadiusBigger && radii.getRadiusZP() + radii.getRadiusZN() > zRadius * 2) ||
+                !xRadiusActuallyBigger && xRadiusBigger && radii.getRadiusZP() + radii.getRadiusZN() > xRadius * 2) {
+            return new RegionPoints();
         } else {
-            while ((radii[1] + radii[3] < zRadius * 2 && xRadiusActuallyBigger) ||
-                    (radii[1] + radii[3] < xRadius * 2 && !xRadiusActuallyBigger)) {
-                if (radii[1] < radii[3]) {
-                    radii[1]++;
+            while ((radii.getRadiusZP() + radii.getRadiusZN() < zRadius * 2 && xRadiusActuallyBigger) ||
+                    (radii.getRadiusZP() + radii.getRadiusZN() < xRadius * 2 && !xRadiusActuallyBigger)) {
+                if (radii.getRadiusZP() < radii.getRadiusZN()) {
+                    radii.setRadiusZP(radii.getRadiusZP() + 1);
                 } else {
-                    radii[3]++;
+                    radii.setRadiusZN(radii.getRadiusZN() + 1);
                 }
             }
         }
@@ -614,10 +605,7 @@ public class Region {
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs(), missingItem);
 
-        int[] radii = new int[6];
-        for (int i = 0; i < 6; i++) {
-            radii[i] = 0;
-        }
+        RegionPoints radii = new RegionPoints(0, 0, 0, 0, 0, 0);
         if (itemCheck.isEmpty()) {
             radiusCheck(radii, regionType);
             return itemCheck;
@@ -638,7 +626,7 @@ public class Region {
         radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
                 itemCheck, regionType);
         radii = radiusCheck(radii, regionType);
-        if (radii.length == 0) {
+        if (!radii.isValid()) {
             return itemCheck;
         }
         return itemCheck.isEmpty() ? null : itemCheck;
