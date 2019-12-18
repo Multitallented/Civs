@@ -10,6 +10,7 @@ depend: [Vault]
 softdepend:
 - PlaceholderAPI
 - MultiverseCore
+- MMOItems
 commands:
    cv:
       aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
