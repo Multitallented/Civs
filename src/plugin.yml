@@ -1,6 +1,6 @@
 author: Multitallented
 database: false
-description: A RPG plugin that focuses on land management via towns and regions.
+description: An RPG plugin that focuses on land management via towns and regions.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
 load: POSTWORLD
