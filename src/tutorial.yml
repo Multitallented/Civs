@@ -1,3 +1,4 @@
+# Check out https://github.com/Multitallented/Civs/wiki/Tutorial-Config for more information on tutorials.
 default:
   steps:
   - type: build
