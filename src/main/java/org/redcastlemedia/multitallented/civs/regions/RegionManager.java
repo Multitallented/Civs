@@ -251,7 +251,7 @@ public class RegionManager {
     }
 
     private static void saveRegionNow(Region region) {
-        if (Civs.getInstance() != null) {
+        if (Civs.getInstance() == null) {
             return;
         }
         if (ConfigManager.getInstance().isDebugLog()) {
@@ -261,7 +261,7 @@ public class RegionManager {
         if (!regionFolder.exists()) {
             boolean folderCreated = regionFolder.mkdir();
             if (!folderCreated) {
-                Civs.logger.severe("Unable to create " + Constants.REGIONS + " folder");
+                Civs.logger.log(Level.SEVERE, "Unable to create {} folder", Constants.REGIONS);
                 return;
             }
         }
