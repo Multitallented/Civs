@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -34,7 +33,6 @@ public class RegionListMenu extends CustomMenu {
         List<Region> regions = new ArrayList<>();
         if (params.containsKey("sell")) {
             for (Region r : RegionManager.getInstance().getAllRegions()) {
-                System.out.println(r.getForSale());
                 if (r.getForSale() != -1 && !r.getRawPeople().containsKey(civilian.getUuid())) {
                     Town town = TownManager.getInstance().getTownAt(r.getLocation());
                     if (town == null || town.getPeople().containsKey(civilian.getUuid())) {
@@ -50,7 +48,7 @@ public class RegionListMenu extends CustomMenu {
             }
         }
         data.put("regionMap", new HashMap<ItemStack, Region>());
-        data.put("region", regions);
+        data.put("regions", regions);
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("regions"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -65,7 +63,7 @@ public class RegionListMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (clickedItem.getItemMeta() != null && clickedItem.getItemMeta().getLore() != null &&
                 !clickedItem.getItemMeta().getLore().isEmpty()) {
@@ -77,12 +75,12 @@ public class RegionListMenu extends CustomMenu {
         return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("regions")) {
             List<Region> regions;
             if (MenuManager.getData(civilian.getUuid(), "regions") != null) {
-                regions = (ArrayList<Region>) MenuManager.getData(civilian.getUuid(), "regions");
+                regions = (List<Region>) MenuManager.getData(civilian.getUuid(), "regions");
             } else {
                 regions = new ArrayList<>();
                 for (Region region : RegionManager.getInstance().getAllRegions()) {
