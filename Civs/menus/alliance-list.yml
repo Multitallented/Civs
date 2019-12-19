@@ -1,15 +1,15 @@
-name: AllianceList
-size: 36
-items:
-  prev:
-    index: 3
-  next:
-    index: 5
-  back:
-    index: 8
-  alliances:
-    index: 9-35
-    icon: GOLDEN_SWORD
-    # name: alliance name
-    actions:
-      - menu:alliance?alliance=$itemName$
+#name: AllianceList
+#size: 36
+#items:
+#  prev:
+#    index: 3
+#  next:
+#    index: 5
+#  back:
+#    index: 8
+#  alliances:
+#    index: 9-35
+#    icon: GOLDEN_SWORD
+#    # name: alliance name
+#    actions:
+#      - menu:alliance?alliance=$itemName$
