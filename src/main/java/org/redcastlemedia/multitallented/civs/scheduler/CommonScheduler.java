@@ -236,15 +236,15 @@ public class CommonScheduler implements Runnable {
         for (Region r : containedRegions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
-                PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
-                        r, regionType);
-                Bukkit.getPluginManager().callEvent(playerEnterRegionEvent);
                 if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
                     Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                             regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
                     player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
                 }
+                PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
+                        r, regionType);
+                Bukkit.getPluginManager().callEvent(playerEnterRegionEvent);
             }
         }
 
