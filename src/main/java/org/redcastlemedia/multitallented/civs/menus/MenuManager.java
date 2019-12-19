@@ -322,7 +322,7 @@ public class MenuManager implements Listener {
         history.remove(uuid);
     }
     public static Map<String, Object> getAllData(UUID uuid) {
-        return data.get(uuid);
+        return data.getOrDefault(uuid, new HashMap<>());
     }
     public static Object getData(UUID uuid, String key) {
         Map<String, Object> dataMap = data.get(uuid);
