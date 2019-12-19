@@ -28,6 +28,7 @@ import org.reflections.scanners.ResourcesScanner;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
@@ -79,8 +80,10 @@ public class ItemManager {
                         currentFolder.equals(currentFileName)) {
                     continue;
                 }
-                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
-                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(Constants.INVISIBLE));
+                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.replace(Constants.INVISIBLE, "").toLowerCase())) {
+                    boolean isVisible = relativePath.substring(0, relativePath.lastIndexOf(currentFolder) + currentFolder.length())
+                            .contains(Constants.INVISIBLE);
+                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !isVisible);
                     if (folderType != null) {
                         folderType.getChildren().add(currentFolderType);
                     }
@@ -95,24 +98,24 @@ public class ItemManager {
             if (!typeConfig.getBoolean("enabled", true)) {
                 return;
             }
-            String type = typeConfig.getString("type","region");
+            String type = typeConfig.getString("type",Constants.REGION);
             CivItem civItem = null;
             String itemName = currentFileName.replace(".yml", "").toLowerCase();
-            if (type.equals("region")) {
+            if (Constants.REGION.equals(type)) {
                 civItem = loadRegionType(typeConfig, itemName);
-            } else if (type.equals("spell")) {
+            } else if ("spell".equals(type)) {
                 civItem = loadSpellType(typeConfig, itemName);
-            } else if (type.equals("class")) {
+            } else if ("class".equals(type)) {
                 civItem = loadClassType(typeConfig, itemName);
-            } else if (type.equals("town")) {
+            } else if ("town".equals(type)) {
                 civItem = loadTownType(typeConfig, itemName);
             }
             if (folderType != null) {
                 folderType.getChildren().add(civItem);
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to read from " + currentFileName);
-            e.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Unable to read from {}", currentFileName);
+            Civs.logger.log(Level.SEVERE, "Exception during file read ", e);
         }
     }
 

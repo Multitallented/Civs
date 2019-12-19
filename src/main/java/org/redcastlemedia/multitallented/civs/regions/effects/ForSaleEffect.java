@@ -43,7 +43,7 @@ public class ForSaleEffect implements Listener {
         if (civilian.isAtMax(regionType) != null) {
             return;
         }
-        String title = Civs.NAME;
+        String title = " ";
         String subTitle = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", regionType.getName())
                 .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()));

@@ -18,10 +18,11 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
-@CivsMenu(name = "recipe")
+@CivsMenu(name = "recipe") @SuppressWarnings("unused")
 public class RecipeMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+        super.cycleItems.remove(civilian.getUuid());
         Map<String, Object> data = new HashMap<>();
 
         if (params.containsKey("page")) {

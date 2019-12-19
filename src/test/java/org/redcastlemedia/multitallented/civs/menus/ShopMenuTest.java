@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 public class ShopMenuTest extends TestUtil {
 
@@ -92,5 +96,21 @@ public class ShopMenuTest extends TestUtil {
                 fail("Found empty defense folder in shop");
             }
         }
+    }
+
+    @Test @SuppressWarnings("unchecked")
+    public void shopShouldContainTownLevelItems() {
+        Town town = TownTests.loadTown("test", "settlement", new Location(TestUtil.world, 0, 0, 0));
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, new HashMap<>());
+        List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");
+        boolean containsHousing = false;
+        for (CivItem civItem : shopItems) {
+            if ("housing".equals(civItem.getProcessedName())) {
+                containsHousing = true;
+            }
+        }
+        assertTrue(containsHousing);
     }
 }
