@@ -15,6 +15,7 @@ public final class Constants {
     public static final String TOWN = "town";
     public static final String UUID = "uuid";
     public static final String EXCLUSIVE = "exclusive";
+    public static final String PLACEHOLDER_API = "PlaceholderAPI";
 
     private Constants() {
 
