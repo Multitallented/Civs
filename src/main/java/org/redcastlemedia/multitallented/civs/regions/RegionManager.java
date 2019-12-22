@@ -261,7 +261,7 @@ public class RegionManager {
         if (!regionFolder.exists()) {
             boolean folderCreated = regionFolder.mkdir();
             if (!folderCreated) {
-                Civs.logger.log(Level.SEVERE, "Unable to create {} folder", Constants.REGIONS);
+                Civs.logger.log(Level.SEVERE, "Unable to create {0} folder", Constants.REGIONS);
                 return;
             }
         }

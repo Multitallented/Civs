@@ -778,14 +778,14 @@ public class RegionsTests extends TestUtil {
         RegionManager.getInstance().addRegion(region);
         TownTests.loadTownTypeHamlet2();
         Town town = new Town("townname", "hamlet2", location1,
-                owners, 300, 305, 2, 0, -1);
+                owners, 300, 500, 2, 0, -1);
         TownManager.getInstance().addTown(town);
         try {
             new DailyScheduler().run();
         } catch (SuccessException se) {
 
         }
-        assertEquals(302, town.getPower());
+        assertEquals(412, town.getPower());
     }
 
     @Test

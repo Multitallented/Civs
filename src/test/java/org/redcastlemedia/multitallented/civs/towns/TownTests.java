@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -425,7 +426,7 @@ public class TownTests extends TestUtil {
         args[1] = "test";
         try {
             townCommand.runCommand(TestUtil.player, null, "town", args);
-        } catch (SuccessException exception) {
+        } catch (Exception exception) {
 
         }
         assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());
@@ -451,7 +452,7 @@ public class TownTests extends TestUtil {
         effects.add("deny_mob_spawn");
         effects.add("block_break");
         config.set("effects", effects);
-        config.set("power", 0);
+        config.set("power", 100);
         config.set("max-power", 500);
         ItemManager.getInstance().loadTownType(config, "hamlet2");
     }
