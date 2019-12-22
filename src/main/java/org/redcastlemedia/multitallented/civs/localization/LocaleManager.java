@@ -34,7 +34,7 @@ public class LocaleManager {
             }
             String translation = map.get(key);
             if (translation == null) {
-                Civs.logger.log(Level.SEVERE, "Unable to find any translation for {}", key);
+                Civs.logger.log(Level.SEVERE, "Unable to find any translation for {0}", key);
                 return "";
             }
             return Util.parseColors(textPrefix + translation);

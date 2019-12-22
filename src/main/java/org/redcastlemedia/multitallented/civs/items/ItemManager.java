@@ -114,8 +114,8 @@ public class ItemManager {
                 folderType.getChildren().add(civItem);
             }
         } catch (Exception e) {
-            Civs.logger.log(Level.SEVERE, "Unable to read from {}", currentFileName);
-            Civs.logger.log(Level.SEVERE, "Exception during file read ", e);
+            Civs.logger.log(Level.SEVERE, "Unable to read from {0}", currentFileName);
+            Civs.logger.log(Level.SEVERE, "Exception during file read", e);
         }
     }
 
