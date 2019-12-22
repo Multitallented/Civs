@@ -255,7 +255,8 @@ public class MenuManager implements Listener {
             return openMenuFromString(civilian, redirectMenu);
         }
         if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid()))) {
+                menuName.equals(openMenus.get(civilian.getUuid())) &&
+                menus.containsKey(menuName)) {
             menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
