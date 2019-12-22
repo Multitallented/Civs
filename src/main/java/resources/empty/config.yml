@@ -1,5 +1,5 @@
 last-version: 1.5.6
-default-config-set: hybrid
+default-config-set: empty
 
 black-list-worlds:
 - Hub
