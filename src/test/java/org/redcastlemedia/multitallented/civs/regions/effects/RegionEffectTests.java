@@ -72,7 +72,7 @@ public class RegionEffectTests extends TestUtil {
     @Test
     @Ignore // TODO fix this
     public void villagerShouldSpawnNewVillager() {
-        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
+        CommonScheduler.getLastTown().put(TestUtil.player.getUniqueId(), this.town);
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
         HashMap<String, String> effectMap = new HashMap<>();
@@ -105,7 +105,7 @@ public class RegionEffectTests extends TestUtil {
 //        Block block = TestUtil.createBlock(Material.CHEST, townLocation);
 //        doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
 //        when(block.getWorld()).thenReturn(mock(World.class));
-        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
+        CommonScheduler.getLastTown().put(TestUtil.player.getUniqueId(), this.town);
 
         villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);

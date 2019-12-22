@@ -1,15 +1,19 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import org.bukkit.Bukkit;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.InventoryImpl;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
@@ -20,16 +24,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BlueprintsMenuTests extends TestUtil {
     private CustomMenu blueprintsMenu;
@@ -68,9 +65,20 @@ public class BlueprintsMenuTests extends TestUtil {
     }
 
     @Test
+    public void stashShouldNotContainShelter() {
+        Region region = RegionsTests.createNewRegion("shelter", TestUtil.player.getUniqueId());
+        RegionManager.getInstance().addRegion(region);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.getStashItems().remove("shelter");
+        MenuManager.menus.get("blueprints").createData(civilian, new HashMap<>());
+        assertFalse(civilian.getStashItems().containsKey("shelter"));
+    }
+
+    @Test
     public void reloggingShouldNotReAddTheItem() {
         loadRegionTypeShelter();
-        RegionsTests.createNewRegion("shelter", TestUtil.player.getUniqueId());
+        Region region = RegionsTests.createNewRegion("shelter", TestUtil.player.getUniqueId());
+        RegionManager.getInstance().addRegion(region);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.setStashItems(new HashMap<>());
         CivilianListener civilianListener = new CivilianListener();

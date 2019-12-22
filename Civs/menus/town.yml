@@ -1,132 +1,132 @@
-size: 18
-name: Town
-# variables
-#  town
-#  selectedTown
-# actions
-#  ally: send an alliance invite
-#  unally: break alliance
-#  join-revolt
-#  leave-revolt
-items:
-  icon:
-    index: 0
-    # icon: town shop-icon
-    # name: town name
-    # desc: town desc
-    actions: []
-  power-protected:
-    index: 1
-    icon: GREEN_WOOL
-    name: town-power
-    # desc: power-history #TODO
-    actions: []
-  power-unprotected:
-    index: 1
-    icon: RED_WOOL
-    name: town-power
-    desc: grace-period
-    actions: []
-  location:
-    index: 2
-    icon: COMPASS
-    name: location
-    # desc location world x y z
-    actions: []
-  set-ally:
-    index: 3
-    icon: GOLDEN_SWORD
-    name: town-ally
-    # desc which towns will be allied
-    actions:
-      - ally
-      - refresh
-  remove-ally:
-    index: 3
-    icon: CREEPER_HEAD
-    name: town-unally
-    # desc which towns will be allied
-    actions:
-      - unally
-      - refresh
-  population:
-    index: 4
-    icon: PLAYER_HEAD
-    name: population
-    desc: pop-desc
-    actions:
-      - menu:people?town=$town$
-  bounty:
-    index: 5
-    icon: SKELETON_SKULL
-    name: bounty
-    # desc top 5 list of bounties
-    actions: []
-  destroy:
-    index: 6
-    icon: BARRIER
-    name: destroy
-    actions:
-      - menu:confirmation?town=$town$
-  rename:
-    index: 7
-    icon: PAPER
-    name: rename-town
-    desc: rename-desc
-    actions: []
-  back:
-    index: 8
-  people:
-    index: 9
-    icon: PLAYER_HEAD
-    name: view-members
-    actions:
-      - menu:people?town=$town$
-  add-person:
-    index: 10
-    icon: PLAYER_HEAD
-    name: add-member
-    actions:
-      - menu:people?town=$town$&invite=true
-  leave-town:
-    index: 11
-    icon: OAK_DOOR
-    name: leave-town
-    actions:
-      - menu:confirmation?town=$town$&type=leave
-      - close
-  alliance-invites:
-    index: 12
-    icon: GOLDEN_SWORD
-    name: town-ally-invites
-    actions:
-      - menu:town-invites?town=$town$
-  government-type:
-    index: 13
-    # icon: gov icon
-    # name: gov name
-    # desc: gov desc
-    actions:
-      - menu:gov-list?town=$town$
-  bank:
-    index: 14
-    icon: EMERALD_BLOCK
-    name: town-bank-balance
-    # desc bank balance, town tax, and town bank desc
-    actions: []
-  join-revolt:
-    index: 15
-    icon: TORCH
-    name: revolt
-    desc: revolt-desc
-    actions:
-      - join-revolt
-      - refresh
-  leave-revolt:
-    index: 15
-    icon: CHARCOAL
-    name: revolt
-    # desc cancel-revolt & revolt-display
-    actions:
-      - leave-revolt
-      - refresh
+#size: 18
+#name: Town
+## variables
+##  town
+##  selectedTown
+## actions
+##  ally: send an alliance invite
+##  unally: break alliance
+##  join-revolt
+##  leave-revolt
+#items:
+#  icon:
+#    index: 0
+#    # icon: town shop-icon
+#    # name: town name
+#    # desc: town desc
+#    actions: []
+#  power-protected:
+#    index: 1
+#    icon: GREEN_WOOL
+#    name: town-power
+#    # desc: power-history #TODO
+#    actions: []
+#  power-unprotected:
+#    index: 1
+#    icon: RED_WOOL
+#    name: town-power
+#    desc: grace-period
+#    actions: []
+#  location:
+#    index: 2
+#    icon: COMPASS
+#    name: location
+#    # desc location world x y z
+#    actions: []
+#  set-ally:
+#    index: 3
+#    icon: GOLDEN_SWORD
+#    name: town-ally
+#    # desc which towns will be allied
+#    actions:
+#      - ally
+#      - refresh
+#  remove-ally:
+#    index: 3
+#    icon: CREEPER_HEAD
+#    name: town-unally
+#    # desc which towns will be allied
+#    actions:
+#      - unally
+#      - refresh
+#  population:
+#    index: 4
+#    icon: PLAYER_HEAD
+#    name: population
+#    desc: pop-desc
+#    actions:
+#      - menu:people?town=$town$
+#  bounty:
+#    index: 5
+#    icon: SKELETON_SKULL
+#    name: bounty
+#    # desc top 5 list of bounties
+#    actions: []
+#  destroy:
+#    index: 6
+#    icon: BARRIER
+#    name: destroy
+#    actions:
+#      - menu:confirmation?town=$town$
+#  rename:
+#    index: 7
+#    icon: PAPER
+#    name: rename-town
+#    desc: rename-desc
+#    actions: []
+#  back:
+#    index: 8
+#  people:
+#    index: 9
+#    icon: PLAYER_HEAD
+#    name: view-members
+#    actions:
+#      - menu:people?town=$town$
+#  add-person:
+#    index: 10
+#    icon: PLAYER_HEAD
+#    name: add-member
+#    actions:
+#      - menu:people?town=$town$&invite=true
+#  leave-town:
+#    index: 11
+#    icon: OAK_DOOR
+#    name: leave-town
+#    actions:
+#      - menu:confirmation?town=$town$&type=leave
+#      - close
+#  alliance-invites:
+#    index: 12
+#    icon: GOLDEN_SWORD
+#    name: town-ally-invites
+#    actions:
+#      - menu:town-invites?town=$town$
+#  government-type:
+#    index: 13
+#    # icon: gov icon
+#    # name: gov name
+#    # desc: gov desc
+#    actions:
+#      - menu:gov-list?town=$town$
+#  bank:
+#    index: 14
+#    icon: EMERALD_BLOCK
+#    name: town-bank-balance
+#    # desc bank balance, town tax, and town bank desc
+#    actions: []
+#  join-revolt:
+#    index: 15
+#    icon: TORCH
+#    name: revolt
+#    desc: revolt-desc
+#    actions:
+#      - join-revolt
+#      - refresh
+#  leave-revolt:
+#    index: 15
+#    icon: CHARCOAL
+#    name: revolt
+#    # desc cancel-revolt & revolt-display
+#    actions:
+#      - leave-revolt
+#      - refresh

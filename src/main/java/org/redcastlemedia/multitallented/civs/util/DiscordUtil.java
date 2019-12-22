@@ -17,7 +17,7 @@ public final class DiscordUtil {
     public static String atAllTownOwners(Town town) {
         String defaultMessage = "";
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (!town.getRawPeople().get(uuid).contains("owner")) {
+            if (!town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 continue;
             }
             String discordUserId = Civs.discordSRV.getAccountLinkManager().getDiscordId(uuid);

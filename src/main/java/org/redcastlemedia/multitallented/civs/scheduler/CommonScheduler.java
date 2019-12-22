@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -29,16 +31,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class CommonScheduler implements Runnable {
-    public static final HashMap<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
-    public static final HashMap<UUID, Town> lastTown = new HashMap<>();
+    @Getter
+    protected static final Map<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
+    @Getter
+    protected static final Map<UUID, Town> lastTown = new HashMap<>();
     public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
-    public static boolean run = true;
+    @Getter @Setter
+    protected static boolean run = true;
 
     @Override
     public void run() {
@@ -56,20 +66,7 @@ public class CommonScheduler implements Runnable {
             int maxTPS = 5;
             int chunk = players.size() / maxTPS;
             for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
-                try {
-                    Player player = (Player) players.toArray()[j];
-                    playerInRegion(player);
-                    playerInTown(player);
-                    if (ConfigManager.getInstance().getUseClassesAndSpells()) {
-                        incrementMana(player);
-                    }
-                    if (ConfigManager.getInstance().isUseAnnouncements()) {
-                        sendAnnouncement(player);
-                    }
-                    playerInChunk(player);
-                } catch (Exception e) {
-
-                }
+                checkPlayer((Player) players.toArray()[j]);
             }
             RegionTickUtil.runUpkeeps();
             if (i == maxTPS - 1) {
@@ -82,7 +79,23 @@ public class CommonScheduler implements Runnable {
                 i++;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat thread", e);
+        }
+    }
+
+    private void checkPlayer(Player player) {
+        try {
+            playerInRegion(player);
+            playerInTown(player);
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                incrementMana(player);
+            }
+            if (ConfigManager.getInstance().isUseAnnouncements()) {
+                sendAnnouncement(player);
+            }
+            playerInChunk(player);
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }
     }
 
@@ -107,10 +120,8 @@ public class CommonScheduler implements Runnable {
         long karmaPeriod = ConfigManager.getInstance().getKarmaDepreciatePeriod() * 1000;
         //TODO lazy loop this
         for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
-            if (civilian.getKarma() < 2 && civilian.getKarma() > -2) {
-                continue;
-            }
-            if (civilian.getLastKarmaDepreciation() + karmaPeriod > System.currentTimeMillis()) {
+            if ((civilian.getKarma() < 2 && civilian.getKarma() > -2) ||
+                    (civilian.getLastKarmaDepreciation() + karmaPeriod > System.currentTimeMillis())) {
                 continue;
             }
             civilian.setLastKarmaDepreciation(System.currentTimeMillis());
@@ -301,7 +312,7 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getName().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
@@ -319,7 +330,7 @@ public class CommonScheduler implements Runnable {
         String govName = "Unknown";
         if (government != null) {
             govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getName().toLowerCase() + "-name");
+                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
@@ -351,6 +362,12 @@ public class CommonScheduler implements Runnable {
         for (Region r : containedRegions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
+                if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                    String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                            regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                    player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
+                }
                 PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
                         r, regionType);
                 Bukkit.getPluginManager().callEvent(playerEnterRegionEvent);

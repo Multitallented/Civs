@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -20,8 +21,9 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
-@CivsMenu(name = "people")
+@CivsMenu(name = "people") @SuppressWarnings("unused")
 public class PeopleMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -33,19 +35,32 @@ public class PeopleMenu extends CustomMenu {
             data.put("page", 0);
         }
         List<Civilian> civilians = new ArrayList<>();
-        HashMap<UUID, String> ranks = null;
+        Map<UUID, String> ranks = null;
         boolean alreadyOnlineFiltered = false;
         boolean invite = !(!params.containsKey("invite") || "false".equals(params.get("invite")));
-        data.put("invite", invite);
-        if (params.containsKey("region")) {
-            Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-            data.put("region", region);
+        if (invite) {
+            data.put("invite", true);
+        } else {
+            Boolean inviteData = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            if (inviteData != null && inviteData) {
+                invite = true;
+                data.put("invite", true);
+            }
+        }
+        Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+        Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
+
+        if (region != null || params.containsKey(Constants.REGION)) {
+            if (region == null) {
+                region = RegionManager.getInstance().getRegionById(params.get(Constants.REGION));
+            }
+            data.put(Constants.REGION, region);
             ranks = region.getRawPeople();
             if (invite) {
                 addOnlinePlayers(civilians, region.getRawPeople().keySet());
-                Town town = TownManager.getInstance().getTownAt(region.getLocation());
-                if (town != null) {
-                    for (UUID uuid : town.getRawPeople().keySet()) {
+                Town containingTown = TownManager.getInstance().getTownAt(region.getLocation());
+                if (containingTown != null) {
+                    for (UUID uuid : containingTown.getRawPeople().keySet()) {
                         if (region.getRawPeople().containsKey(uuid)) {
                             continue;
                         }
@@ -57,9 +72,11 @@ public class PeopleMenu extends CustomMenu {
                     civilians.add(CivilianManager.getInstance().getCivilian(uuid));
                 }
             }
-        } else if (params.containsKey("town")) {
-            Town town = TownManager.getInstance().getTown(params.get("town"));
-            data.put("town", town);
+        } else if (town != null || params.containsKey(Constants.TOWN)) {
+            if (town == null) {
+                town = TownManager.getInstance().getTown(params.get(Constants.TOWN));
+            }
+            data.put(Constants.TOWN, town);
             ranks = town.getRawPeople();
             if (invite) {
                 addOnlinePlayers(civilians, town.getRawPeople().keySet());
@@ -114,10 +131,17 @@ public class PeopleMenu extends CustomMenu {
         return data;
     }
 
-    private void rankSort(List<Civilian> civilians, HashMap<UUID, String> ranks) {
+    private void rankSort(List<Civilian> civilians, Map<UUID, String> ranks) {
+        if (ranks == null || ranks.isEmpty()) {
+            return;
+        }
         civilians.sort(new Comparator<Civilian>() {
             @Override
             public int compare(Civilian o1, Civilian o2) {
+                if (!ranks.containsKey(o1.getUuid()) ||
+                        !ranks.containsKey(o2.getUuid())) {
+                    return 0;
+                }
                 return Integer.compare(rankWeight(ranks.get(o1.getUuid())),
                         rankWeight(ranks.get(o2.getUuid())));
             }
@@ -168,9 +192,30 @@ public class PeopleMenu extends CustomMenu {
         }
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        if ("people".equals(menuIcon.getKey())) {
+        String sort = (String) MenuManager.getData(civilian.getUuid(), "sort");
+        if ("sort-rank".equals(menuIcon.getKey())) {
+            if ("rank".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+            Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            if (invite != null && invite) {
+                return new ItemStack(Material.AIR);
+            }
+            if (MenuManager.getData(civilian.getUuid(), Constants.REGION) == null &&
+                    MenuManager.getData(civilian.getUuid(), Constants.TOWN) == null) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("sort-alphabetical".equals(menuIcon.getKey())) {
+            if ("alphabetical".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("sort-points".equals(menuIcon.getKey())) {
+            if ("points".equals(sort)) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("people".equals(menuIcon.getKey())) {
             List<Civilian> civilians = (List<Civilian>) MenuManager.getData(civilian.getUuid(), "civilians");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
@@ -185,6 +230,13 @@ public class PeopleMenu extends CustomMenu {
             }
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
             cvItem.setDisplayName(offlinePlayer.getName());
+            if (MenuManager.getData(civilian.getUuid(), Constants.REGION) != null) {
+                Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+                addRank(civilian.getLocale(), cvItem, region.getRawPeople().get(offlinePlayer.getUniqueId()));
+            } else if ((MenuManager.getData(civilian.getUuid(), Constants.TOWN) != null)) {
+                Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
+                addRank(civilian.getLocale(), cvItem, town.getRawPeople().get(offlinePlayer.getUniqueId()));
+            }
             ItemStack itemStack = cvItem.createItemStack();
             if (player != null) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -198,29 +250,47 @@ public class PeopleMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    @Override
+    private void addRank(String locale, CVItem cvItem, String ranks) {
+        if (ranks == null || ranks.isEmpty()) {
+            return;
+        }
+        if (ranks.contains("owner")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "owner"));
+        }
+        if (ranks.contains("member")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "member"));
+        }
+        if (ranks.contains("recruiter")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "recruiter"));
+        }
+        if (ranks.contains("ally")) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "guest"));
+        }
+    }
+
+    @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if ("take-action".equals(actionString)) {
             UUID uuid = ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).get(clickedItem);
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             Player player = Bukkit.getPlayer(civilian.getUuid());
-            boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
+            Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
             if (region != null) {
-                if (invite) {
+                if (invite != null && invite) {
                     player.performCommand("cv add " + clickedItem.getItemMeta().getDisplayName() + " " + region.getId());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("region", region.getId());
+                    params.put(Constants.REGION, region.getId());
                     params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else if (town != null) {
-                if (invite) {
+                if (invite != null && invite) {
                     player.performCommand("cv invite " + clickedItem.getItemMeta().getDisplayName() + " " + town.getName());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("town", town.getName());
+                    params.put(Constants.TOWN, town.getName());
                     params.put("uuid", uuid.toString());
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }

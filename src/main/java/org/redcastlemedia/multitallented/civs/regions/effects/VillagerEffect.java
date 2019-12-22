@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
@@ -28,7 +28,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.lang.ref.PhantomReference;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -130,7 +129,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return null;
         }
         // Don't spawn a villager if there aren't players in the town
-        if (!CommonScheduler.lastTown.values().contains(town)) {
+        if (!CommonScheduler.getLastTown().values().contains(town)) {
             return null;
         }
         long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;

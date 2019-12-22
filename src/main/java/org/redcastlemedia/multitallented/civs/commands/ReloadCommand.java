@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -17,12 +17,12 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 
-@CivsCommand(keys = { "reload" })
+@CivsCommand(keys = { "reload" }) @SuppressWarnings("unused")
 public class ReloadCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if ((Civs.perm != null && commandSender.hasPermission("civs.admin")) || commandSender.isOp()) {
-            CommonScheduler.run = false;
+            CommonScheduler.setRun(false);
             ConfigManager.getInstance().reload();
             ItemManager.getInstance().reload();
             MenuManager.getInstance().reload();
@@ -34,7 +34,7 @@ public class ReloadCommand implements CivCommand {
             AllianceManager.getInstance().reload();
             NationManager.getInstance().reload();
             new LocaleManager();
-            CommonScheduler.run = true;
+            CommonScheduler.setRun(true);
             commandSender.sendMessage(Civs.getPrefix() + "reloaded");
             return true;
         } else {

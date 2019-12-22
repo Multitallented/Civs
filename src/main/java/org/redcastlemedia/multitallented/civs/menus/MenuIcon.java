@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -75,15 +75,13 @@ public class MenuIcon {
 
     public CVItem createCVItem(String locale, int count) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
-        if (cvItem.getMmoItemType() == null) {
-            if (!name.isEmpty()) {
-                String countString = count > 0 ? count + "" : "";
+        if (!name.isEmpty()) {
+            String countString = count > 0 ? count + "" : "";
 
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name) + countString);
-            }
-            if (!desc.isEmpty()) {
-                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
-            }
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale, name) + countString);
+        }
+        if (!desc.isEmpty()) {
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
         }
         return cvItem;
     }

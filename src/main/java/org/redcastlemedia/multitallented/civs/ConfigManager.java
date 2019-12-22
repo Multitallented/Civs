@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
@@ -14,14 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import lombok.Getter;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.CRITICAL)
 public class ConfigManager {
+    private static final String CONFIG_FILE_NAME = "config.yml";
 
-
-    public static ConfigManager configManager;
+    private static ConfigManager configManager;
     List<String> blackListWorlds = new ArrayList<>();
     String defaultLanguage;
     boolean allowCivItemDropping;
@@ -149,6 +149,8 @@ public class ConfigManager {
     @Getter
     String defaultConfigSet;
     @Getter
+    int minPopulationForGovTransition;
+    @Getter
     int nationFormedAtTownLevel;
 
     public ConfigManager() {
@@ -170,8 +172,8 @@ public class ConfigManager {
     public int getExpBase() { return expBase; }
     public long getJailTime() { return jailTime; }
     public String getDefaultClass() { return defaultClass; }
-    public HashMap<String, String> getItemGroups() { return itemGroups; }
-    public HashMap<String, Integer> getGroups() { return groups; }
+    public Map<String, String> getItemGroups() { return itemGroups; }
+    public Map<String, Integer> getGroups() { return groups; }
     public long getDeathGracePeriod() { return deathGracePeriod; }
     public double getPointsPerKillStreak() { return pointsPerKillStreak; }
     public double getMoneyPerKillStreak() { return moneyPerKillStreak; }
@@ -256,12 +258,12 @@ public class ConfigManager {
     }
 
     public void reload() {
-        File config = new File(Civs.dataLocation, "config.yml");
+        File config = new File(Civs.dataLocation, CONFIG_FILE_NAME);
         loadFile(config);
     }
 
     private void loadFile(File configFile) {
-        FileConfiguration config = FallbackConfigUtil.getConfig(configFile, "config.yml");
+        FileConfiguration config = FallbackConfigUtil.getConfig(configFile, CONFIG_FILE_NAME);
         try {
 
             blackListWorlds = config.getStringList("black-list-worlds");
@@ -330,13 +332,7 @@ public class ConfigManager {
             portReagents = config.getStringList("port.reagents");
             combatTagDuration = config.getInt("combat-tag-duration", 60);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
-            townRings = config.getBoolean("town-rings", true);
-            try {
-                townRingMat = Material.valueOf(config.getString("town-ring-material", "GLOWSTONE"));
-            } catch (Exception e) {
-                townRingMat = Material.GLOWSTONE;
-                Civs.logger.severe("Unable to read town-ring-material");
-            }
+            getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
             destroyTownsAtZero = config.getBoolean("destroy-towns-at-zero", false);
@@ -351,13 +347,7 @@ public class ConfigManager {
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
             useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
-            String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
-            if (defaultGovTypeString != null) {
-                defaultGovernmentType = defaultGovTypeString.toUpperCase();
-            } else {
-                defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
-            }
-            allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
+            getGovSettings(config);
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
@@ -393,10 +383,30 @@ public class ConfigManager {
             useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
+            minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
 
         } catch (Exception e) {
-            Civs.logger.severe("Unable to read from config.yml");
-            e.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
+        }
+    }
+
+    private void getGovSettings(FileConfiguration config) {
+        String defaultGovTypeString = config.getString("default-gov-type", "DICTATORSHIP");
+        if (defaultGovTypeString != null) {
+            defaultGovernmentType = defaultGovTypeString.toUpperCase();
+        } else {
+            defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
+        }
+        allowChangingOfGovType = config.getBoolean("allow-changing-gov-type", false);
+    }
+
+    private void getTownRingSettings(FileConfiguration config) {
+        townRings = config.getBoolean("town-rings", true);
+        try {
+            townRingMat = Material.valueOf(config.getString("town-ring-material", "GLOWSTONE"));
+        } catch (Exception e) {
+            townRingMat = Material.GLOWSTONE;
+            Civs.logger.severe("Unable to read town-ring-material");
         }
     }
 
@@ -425,6 +435,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         nationFormedAtTownLevel = 3;
         disableRegionsInUnloadedChunks = false;
@@ -512,7 +523,7 @@ public class ConfigManager {
     public static ConfigManager getInstance() {
         if (configManager == null) {
             configManager = new ConfigManager();
-            configManager.loadFile(new File(Civs.dataLocation, "config.yml"));
+            configManager.loadFile(new File(Civs.dataLocation, CONFIG_FILE_NAME));
         }
         return configManager;
     }

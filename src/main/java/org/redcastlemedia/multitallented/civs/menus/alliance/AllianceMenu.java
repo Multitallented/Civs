@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.menus.alliance;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -11,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -23,9 +22,10 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "alliance")
+@CivsMenu(name = "alliance") @SuppressWarnings("unused")
 public class AllianceMenu extends CustomMenu {
 
     @Override
@@ -47,8 +47,7 @@ public class AllianceMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
-        }
-        if (menuIcon.getKey().equals("last-rename")) {
+        } else if (menuIcon.getKey().equals("last-rename")) {
             if (alliance == null || alliance.getLastRenamedBy() == null) {
                 return new ItemStack(Material.AIR);
             }
@@ -66,22 +65,41 @@ public class AllianceMenu extends CustomMenu {
                 putActions(civilian, menuIcon, is, count);
                 return is;
             }
-        }
-        if (menuIcon.getKey().equals("icon")) {
+        } else if (menuIcon.getKey().equals("icon")) {
             CVItem icon = menuIcon.createCVItem(civilian.getLocale(), count);
             icon.setDisplayName(alliance.getName());
             ItemStack itemStack = icon.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
-        }
-
-        if (menuIcon.getKey().equals("rename") ||
+        } else if (menuIcon.getKey().equals("rename") ||
                 menuIcon.getKey().equals("leave-alliance")) {
             Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
             if (selectedTown == null) {
                 return new ItemStack(Material.AIR);
             }
-            return super.createItemStack(civilian, menuIcon, count);
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
+                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        menuIcon.getDesc()).replace("$1", alliance.getName())));
+            }
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("select-town".equals(menuIcon.getKey())) {
+            Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+            if (selectedTown == null) {
+                return new ItemStack(Material.AIR);
+            }
+            TownType selectedTownType = (TownType) ItemManager.getInstance().getItemType(selectedTown.getType());
+            CVItem cvItem = selectedTownType.getShopIcon(civilian.getLocale()).clone();
+            cvItem.setDisplayName(selectedTown.getName());
+            if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
+                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        menuIcon.getDesc())));
+            }
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
@@ -103,7 +121,9 @@ public class AllianceMenu extends CustomMenu {
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 
-        data.put("lastRename", alliance.getLastRenamedBy().toString());
+        if (alliance.getLastRenamedBy() != null) {
+            data.put("lastRename", alliance.getLastRenamedBy().toString());
+        }
         if (!params.containsKey("selectedTown")) {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);

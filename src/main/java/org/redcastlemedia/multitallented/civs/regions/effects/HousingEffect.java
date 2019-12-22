@@ -10,8 +10,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 @CivsSingleton
 public class HousingEffect implements RegionCreatedListener, DestroyRegionListener {
-    public static String KEY = "housing";
-    public static String HOUSING_EXCEPT = "exempt-housing";
+    public static final String KEY = "housing";
+    public static final String HOUSING_EXCEPT = "exempt_housing";
 
     public static void getInstance() {
         new HousingEffect();

@@ -1,14 +1,9 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Material;
@@ -18,24 +13,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 public class CivilianTests extends TestUtil {
-
-    @Test
-    public void localeTestShouldReturnProperLanguageString() {
-        LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new HashMap<>(), null, new HashMap<CivItem, Integer>(),
-                0, 0,0,0,0, 0, 0, false);
-
-        assertEquals("No se encontró ningún tipo de región",
-                localeManager.getTranslation(civilian.getLocale(), "no-region-type-found"));
-    }
 
     @Test(expected = SuccessException.class)
     @Ignore

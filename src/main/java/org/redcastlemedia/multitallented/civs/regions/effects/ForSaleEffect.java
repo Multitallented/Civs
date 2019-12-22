@@ -6,16 +6,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 @CivsSingleton
 public class ForSaleEffect implements Listener {
@@ -46,7 +43,7 @@ public class ForSaleEffect implements Listener {
         if (civilian.isAtMax(regionType) != null) {
             return;
         }
-        String title = Civs.NAME;
+        String title = " ";
         String subTitle = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
                 .replace("$1", regionType.getName())
                 .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()));

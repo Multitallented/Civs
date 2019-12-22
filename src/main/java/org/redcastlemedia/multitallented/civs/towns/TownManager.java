@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
@@ -37,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -272,7 +274,7 @@ public class TownManager {
         HashSet<Town> townSet = new HashSet();
         for (Town town : towns.values()) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                    !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                 continue;
             }
             townSet.add(town);
@@ -421,7 +423,7 @@ public class TownManager {
             return false;
         }
         Town town = invites.get(uuid);
-        town.setPeople(uuid, "member");
+        town.setPeople(uuid, Constants.MEMBER);
         saveTown(town);
         invites.remove(uuid);
         return true;
@@ -596,7 +598,7 @@ public class TownManager {
     public Town isOwnerOfATown(Civilian civilian) {
         for (Town town : sortedTowns) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                    !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                 continue;
             }
             return town;
@@ -716,7 +718,7 @@ public class TownManager {
 
 
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(player.getUniqueId(), "owner");
+        people.put(player.getUniqueId(), Constants.OWNER);
         Location newTownLocation = player.getLocation();
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;

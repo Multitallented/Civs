@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -23,16 +24,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@CivsMenu(name = "town")
+@CivsMenu(name = "town") @SuppressWarnings("unused")
 public class TownMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
         if (params.containsKey("town")) {
-            data.put("town", TownManager.getInstance().getTown(params.get("town")));
+            Town town = TownManager.getInstance().getTown(params.get("town"));
+            data.put("town", town);
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            data.put("townType", townType);
         }
         if (params.containsKey("selectedTown")) {
-            data.put("selectedTown", params.get("selectedTown"));
+            if (!params.containsKey("town")) {
+                Town town = TownManager.getInstance().getTown(params.get("selectedTown"));
+                data.put("town", town);
+                data.put("townType", ItemManager.getInstance().getItemType(town.getType()));
+                Town selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
+                data.put("selectedTown", selectedTown);
+            } else {
+                data.put("selectedTown", TownManager.getInstance().getTown(params.get("selectedTown")));
+            }
         }
         return data;
     }
@@ -40,18 +52,16 @@ public class TownMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
-        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
-        Town selectedTown = null;
-        if (selectedTownName != null) {
-            selectedTown = TownManager.getInstance().getTown(selectedTownName);
-        } else {
+        TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
+        Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        if (selectedTown == null) {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
         }
+        // TODO allow for alliance management when owning multiple towns
         boolean isAllied = selectedTown != null && selectedTown != town &&
                 AllianceManager.getInstance().isAllied(selectedTown, town);
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
-                town.getPeople().get(civilian.getUuid()).contains("owner");
+                town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean colonialOverride = OwnershipUtil.hasColonialOverride(town, civilian);
         boolean govTypeDisable = government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
@@ -211,9 +221,11 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("government-type".equals(menuIcon.getKey())) {
-            CVItem cvItem = government.getIcon(civilian.getLocale()).clone();
+            CVItem cvItem = government.getIcon(civilian.getLocale());
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
+            if (!town.isGovTypeChangedToday()) {
+                putActions(civilian, menuIcon, itemStack, count);
+            }
             return itemStack;
         } else if ("bank".equals(menuIcon.getKey())) {
             if (!town.getRevolt().contains(civilian.getUuid())) {
@@ -302,15 +314,17 @@ public class TownMenu extends CustomMenu {
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
         String townName = town.getName();
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        String selectedTownName = (String) MenuManager.getData(civilian.getUuid(), "selectedTown");
+        Object selectedTownObject = MenuManager.getData(civilian.getUuid(), "selectedTown");
         Town selectedTown = null;
-        if (selectedTownName != null) {
-            selectedTown = TownManager.getInstance().getTown(selectedTownName);
-        } else {
+        if (selectedTownObject == null) {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
+        } else if (selectedTownObject instanceof String) {
+            selectedTown = TownManager.getInstance().getTown((String) selectedTownObject);
+        } else {
+            selectedTown = (Town) selectedTownObject;
         }
-        if (actionString.equals("ally")) {
-            if (selectedTown == null) {
+        if ("ally".equals(actionString)) {
+            if (selectedTown == null || town.getAllyInvites().contains(selectedTown.getName())) {
                 return true;
             }
             town.getAllyInvites().add(selectedTown.getName());

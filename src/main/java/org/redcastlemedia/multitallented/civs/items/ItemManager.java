@@ -20,25 +20,21 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
     private static ItemManager itemManager;
     private HashMap<String, CivItem> itemTypes = new HashMap<>();
-    private static final String INVISIBLE = "-invisible";
-    private static final String ITEM_TYPES = "item-types";
 
     public static ItemManager getInstance() {
         if (itemManager == null) {
@@ -54,7 +50,7 @@ public class ItemManager {
     }
 
     private void loadAllItemTypes() {
-        final String ITEM_TYPES_FOLDER_NAME = ITEM_TYPES;
+        final String ITEM_TYPES_FOLDER_NAME = Constants.ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
         for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
@@ -80,16 +76,18 @@ public class ItemManager {
         try {
             FolderType folderType = null;
             for (String currentFolder : pathSplit) {
-                if (currentFolder.isEmpty() || ITEM_TYPES.equals(currentFolder) ||
+                if (currentFolder.isEmpty() || Constants.ITEM_TYPES.equals(currentFolder) ||
                         currentFolder.equals(currentFileName)) {
                     continue;
                 }
-                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.toLowerCase())) {
-                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !relativePath.contains(INVISIBLE));
+                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.replace(Constants.INVISIBLE, "").toLowerCase())) {
+                    boolean isVisible = relativePath.substring(0, relativePath.lastIndexOf(currentFolder) + currentFolder.length())
+                            .contains(Constants.INVISIBLE);
+                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !isVisible);
                     if (folderType != null) {
                         folderType.getChildren().add(currentFolderType);
-                        folderType = currentFolderType;
                     }
+                    folderType = currentFolderType;
                 } else {
                     folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
                 }
@@ -100,29 +98,29 @@ public class ItemManager {
             if (!typeConfig.getBoolean("enabled", true)) {
                 return;
             }
-            String type = typeConfig.getString("type","region");
+            String type = typeConfig.getString("type",Constants.REGION);
             CivItem civItem = null;
             String itemName = currentFileName.replace(".yml", "").toLowerCase();
-            if (type.equals("region")) {
+            if (Constants.REGION.equals(type)) {
                 civItem = loadRegionType(typeConfig, itemName);
-            } else if (type.equals("spell")) {
+            } else if ("spell".equals(type)) {
                 civItem = loadSpellType(typeConfig, itemName);
-            } else if (type.equals("class")) {
+            } else if ("class".equals(type)) {
                 civItem = loadClassType(typeConfig, itemName);
-            } else if (type.equals("town")) {
+            } else if ("town".equals(type)) {
                 civItem = loadTownType(typeConfig, itemName);
             }
             if (folderType != null) {
                 folderType.getChildren().add(civItem);
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to read from " + currentFileName);
-            e.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Unable to read from {}", currentFileName);
+            Civs.logger.log(Level.SEVERE, "Exception during file read ", e);
         }
     }
 
     private FolderType createFolder(String currentFileName, boolean invisible) {
-        String folderName = currentFileName.replace(INVISIBLE, "");
+        String folderName = currentFileName.replace(Constants.INVISIBLE, "");
         FolderType folderType = new FolderType(new ArrayList<>(),
                 folderName,
                 ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -150,12 +148,9 @@ public class ItemManager {
                     loopThroughTypeFiles(pFile, currParentList);
                 }
                 if (itemTypes.containsKey(file.getName().toLowerCase())) {
-                    if (parentList != null) {
-                        parentList.add(itemTypes.get(file.getName().toLowerCase()));
-                    }
                     return;
                 }
-                String folderName = file.getName().replace(INVISIBLE, "");
+                String folderName = file.getName().replace(Constants.INVISIBLE, "");
                 FolderType folderType = new FolderType(new ArrayList<>(),
                         folderName,
                         ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
@@ -171,9 +166,6 @@ public class ItemManager {
             } else {
                 String name = file.getName().replace(".yml", "").toLowerCase();
                 if (itemTypes.containsKey(name)) {
-                    if (parentList != null) {
-                        parentList.add(itemTypes.get(name));
-                    }
                     return;
                 }
                 try {
@@ -435,7 +427,7 @@ public class ItemManager {
         return returnList;
     }
 
-    public HashMap<String, Integer> getNewItems(Civilian civilian) {
+    public Map<String, Integer> getNewItems(Civilian civilian) {
         HashMap<String, Integer> newItems = new HashMap<>();
         for (CivItem civItem : itemTypes.values()) {
             if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
@@ -443,10 +435,12 @@ public class ItemManager {
                     !hasItemUnlocked(civilian, civItem)) {
                 continue;
             }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
             if (civItem.getCivQty() > 0) {
                 newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivMin() > 0) {
-                newItems.put(civItem.getProcessedName(), civItem.getQty());
+            } else if (civItem.getCivMin() > 0 && civItem.getCivMin() > count) {
+                newItems.put(civItem.getProcessedName(), civItem.getCivMin() - count);
             }
         }
         return newItems;
@@ -459,7 +453,8 @@ public class ItemManager {
         List<CivItem> returnList = new ArrayList<>();
         HashSet<CivItem> checkList = new HashSet<>();
         if (parent == null) {
-            for (CivItem civItem : itemTypes.values()) {
+            for (Map.Entry<String, CivItem> entry : itemTypes.entrySet()) {
+                CivItem civItem = entry.getValue();
                 if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
                     checkList.addAll(((FolderType) civItem).getChildren());
                 } else if (civItem.getItemType() == CivItem.ItemType.CLASS) {
@@ -487,9 +482,11 @@ public class ItemManager {
                 }
             }
         }
+        returnList.removeAll(checkList);
         checkList.clear();
-        boolean isCivAdmin = Civs.perm != null &&
-                Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.admin");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isCivAdmin = player != null && (player.isOp() || (Civs.perm != null &&
+                Civs.perm.has(player, "civs.admin")));
         for (CivItem item : returnList) {
             if (!hasItemUnlocked(civilian, item) ||
                     (isShop && !item.getInShop() && !isCivAdmin)) {
@@ -543,7 +540,7 @@ public class ItemManager {
                     int pop = Integer.parseInt(req.replace("population=", ""));
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (!town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                             continue;
                         }
                         if (pop <= town.getPopulation()) {
@@ -596,7 +593,7 @@ public class ItemManager {
                     for (Town town : TownManager.getInstance().getTowns()) {
                         if (!town.getType().equalsIgnoreCase(splitReq[0]) ||
                                 !town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                             continue;
                         }
                         if (requirement <= town.getPopulation()) {

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
@@ -214,5 +216,47 @@ public class UtilTests extends TestUtil {
         String wrapThis = "§c0123456789 0123456789 0123456789 0123456789 01234567890 1234567890";
         assertEquals("§c0123456789 0123456789 0123456789", Util.textWrap(wrapThis).get(0));
         assertEquals("§c01", Util.textWrap(wrapThis).get(1).substring(0, 4));
+    }
+
+    @Test
+    public void performCommandShouldExecuteCorrectCommand() {
+        Player player = mock(Player.class);
+        when(player.isOnline()).thenReturn(true);
+        when(player.isOp()).thenReturn(false);
+        when(player.getName()).thenReturn("Multitallented");
+        CommandUtil.performCommand(player, "cv invite $name$ Moenia");
+        verify(player, times(1)).performCommand("cv invite Multitallented Moenia");
+    }
+
+    @Test
+    public void performCommandOfflineShouldExecuteCorrectCommand() {
+        Player player = mock(Player.class);
+        when(player.isOnline()).thenReturn(false);
+        when(player.isOp()).thenReturn(false);
+        when(player.isValid()).thenReturn(true);
+        when(player.getPlayer()).thenReturn(player);
+        when(player.getName()).thenReturn("Multitallented");
+        CommandUtil.performCommand(player, "^!cv invite $name$ Moenia");
+        verify(Bukkit.getServer(), times(1)).dispatchCommand(null,"cv invite Multitallented Moenia");
+    }
+
+    @Test
+    public void performCommandOpShouldExecuteCorrectCommand() {
+        Player player = mock(Player.class);
+        when(player.isOnline()).thenReturn(true);
+        when(player.isOp()).thenReturn(false);
+        when(player.getName()).thenReturn("Multitallented");
+        CommandUtil.performCommand(player, "^cv invite $name$ Moenia");
+        verify(player, times(1)).performCommand("cv invite Multitallented Moenia");
+        verify(player, times(1)).setOp(true);
+        verify(player, times(1)).setOp(false);
+    }
+
+    @Test
+    public void ownershipShouldBeDenied() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        Civilian civilian2 = CivilianManager.getInstance().getCivilian(TestUtil.player2.getUniqueId());
+        Town town = TownTests.loadTown("Biznatch Republic", "hamlet", new Location(TestUtil.world, 0, 0, 0));
+        assertFalse(OwnershipUtil.shouldDenyOwnershipOverSomeone(town, civilian, civilian2, TestUtil.player));
     }
 }
