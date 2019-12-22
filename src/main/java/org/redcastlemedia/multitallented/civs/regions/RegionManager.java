@@ -31,8 +31,6 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -470,7 +468,7 @@ public class RegionManager {
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
         if (location == null) {
             event.setCancelled(true);
-            return false;
+            return;
         }
         String regionTypeName = ChatColor.stripColor(event.getItemInHand().getItemMeta().getLore().get(1));
         regionTypeName = regionTypeName.replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "");
@@ -483,6 +481,11 @@ public class RegionManager {
             event.setCancelled(true);
             return;
         }
+        if (regionType == null) {
+            Civs.logger.severe("Unable to find region type " + regionTypeName.toLowerCase());
+            event.setCancelled(true);
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
 
@@ -491,14 +494,6 @@ public class RegionManager {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "region-not-allowed-in-world")
-                            .replace("$1", localizedRegionName));
-            return;
-        }
-
-        if (regionType == null) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", localizedRegionName));
             return;
         }
@@ -705,7 +700,7 @@ public class RegionManager {
         }
 
         for (Chunk chunk : NationManager.getInstance().getContainingChunks(location,
-                radii[0], radii[2], radii[1], radii[3])) {
+                radii.getRadiusXP(), radii.getRadiusXN(), radii.getRadiusZP(), radii.getRadiusZN())) {
             ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
                     !NationManager.getInstance().isInNation(civilian.getUuid(), chunkClaim.getNation())) {
@@ -714,7 +709,7 @@ public class RegionManager {
                         civilian.getLocale(), "cant-build-in-nation"
                 ).replace("$1", chunkClaim.getNation().getName()));
                 event.setCancelled(true);
-                return false;
+                return;
             }
         }
 

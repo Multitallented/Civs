@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -415,7 +416,7 @@ public class TownTests extends TestUtil {
         args[1] = "test";
         try {
             townCommand.runCommand(TestUtil.player, null, "town", args);
-        } catch (SuccessException exception) {
+        } catch (Exception exception) {
 
         }
         assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());

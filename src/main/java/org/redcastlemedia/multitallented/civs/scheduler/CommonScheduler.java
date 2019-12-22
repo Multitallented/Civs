@@ -8,9 +8,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -30,7 +27,6 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -43,7 +39,7 @@ public class CommonScheduler implements Runnable {
     protected static final Map<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     @Getter
     protected static final Map<UUID, Town> lastTown = new HashMap<>();
-    public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
+    protected static final Map<UUID, ChunkClaim> lastClaims = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;
