@@ -209,29 +209,31 @@ public final class Util {
         String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
-        String[] sends = sendMe.split(" ");
         String addMe = prefix.equals("§r") ? prefix : "";
-        for (String s : sends) {
-            do {
-                if (s.length() < lineLength) {
-                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
-                        lore.add("" + addMe.trim());
-                        addMe = prefix;
+        for (String line : sendMe.split("\n")) {
+            for (String s : line.split(" ")) {
+                do {
+                    if (s.length() < lineLength) {
+                        if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
+                            lore.add("" + addMe.trim());
+                            addMe = prefix;
+                        }
+                        addMe += s + " ";
+                        s = "";
+                    } else {
+                        if (!addMe.equals(prefix) && addMe.length() > 0) {
+                            lore.add("" + addMe.trim());
+                            addMe = prefix;
+                        }
+                        addMe += s.substring(0, lineLength - 1);
+                        s = s.substring(lineLength - 1);
                     }
-                    addMe += s + " ";
-                    s = "";
-                } else {
-                    if (!addMe.equals(prefix) && addMe.length() > 0) {
-                        lore.add("" + addMe.trim());
-                        addMe = prefix;
-                    }
-                    addMe += s.substring(0, lineLength - 1);
-                    s = s.substring(lineLength - 1);
-                }
-            } while (s.length() > 0);
-        }
-        if (!addMe.equals(prefix) && addMe.length() > 0) {
-            lore.add("" + addMe.trim());
+                } while (s.length() > 0);
+            }
+            if (!addMe.equals(prefix) && addMe.length() > 0) {
+                lore.add("" + addMe.trim());
+                addMe = prefix;
+            }
         }
         return lore;
     }
