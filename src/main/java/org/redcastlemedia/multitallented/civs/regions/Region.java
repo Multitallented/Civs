@@ -19,11 +19,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class Region {
 
@@ -186,25 +188,20 @@ public class Region {
         return locationToString(getLocation());
     }
     public static String blockLocationToString(Location location) {
-//        double x = location.getX();
-//        double z = location.getZ();
-//        Location location1 = new Location(location.getWorld(), x, location.getY(), z);
         return locationToString(location);
     }
     public static String locationToString(Location location) {
         if (location == null || location.getWorld() == null) {
             return null;
         }
-        StringBuilder builder = new StringBuilder();
-        builder.append(location.getWorld().getUID().toString());
-        builder.append("~");
-        builder.append(Math.floor(location.getX()) + 0.5);
-        builder.append("~");
-        builder.append(Math.floor(location.getY()) + 0.5);
-        builder.append("~");
-        builder.append(Math.floor(location.getZ()) + 0.5);
 
-        return builder.toString();
+        return location.getWorld().getUID().toString() +
+                "~" +
+                (Math.floor(location.getX()) + 0.5) +
+                "~" +
+                (Math.floor(location.getY()) + 0.5) +
+                "~" +
+                (Math.floor(location.getZ()) + 0.5);
     }
     public static Location idToLocation(String id) {
         String[] idSplit = id.split("~");
@@ -216,7 +213,8 @@ public class Region {
             world = Bukkit.getWorld(idSplit[0]);
         }
         if (world == null) {
-            Civs.logger.severe("Null world for " + idSplit[0] + ", " + idSplit.length);
+            Object[] params = { idSplit[0], idSplit.length };
+            Civs.logger.log(Level.SEVERE, "Null world for {0}, {1}", params);
         }
         return new Location(world,
                 Double.parseDouble(idSplit[1]),
@@ -813,6 +811,13 @@ public class Region {
                 }
                 if (powerMod) {
                     TownManager.getInstance().saveTown(town);
+                }
+            }
+            if (regionUpkeep.getCommand() != null && !regionUpkeep.getCommand().isEmpty()) {
+                Set<UUID> owners = getOwners();
+                if (!owners.isEmpty()) {
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owners.iterator().next());
+                    CommandUtil.performCommand(offlinePlayer, regionUpkeep.getCommand());
                 }
             }
             if (chestInventory != null) {

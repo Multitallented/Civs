@@ -320,6 +320,9 @@ public class ItemManager {
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));
+                if (config.isSet("upkeep." + key + ".command")) {
+                    regionUpkeep.setCommand(config.getString("upkeep." + key + ".command"));
+                }
                 upkeeps.add(regionUpkeep);
             }
         }

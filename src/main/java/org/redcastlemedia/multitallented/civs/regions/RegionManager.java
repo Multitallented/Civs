@@ -474,6 +474,12 @@ public class RegionManager {
             event.setCancelled(true);
             return;
         }
+        if (regionType == null) {
+            Civs.logger.log(Level.SEVERE, "Unable to find region type {0}", regionTypeName.toLowerCase());
+            event.setCancelled(true);
+            return;
+        }
+
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
 
@@ -482,14 +488,6 @@ public class RegionManager {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "region-not-allowed-in-world")
-                            .replace("$1", localizedRegionName));
-            return;
-        }
-
-        if (regionType == null) {
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-region-type-found")
                             .replace("$1", localizedRegionName));
             return;
         }
