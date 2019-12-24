@@ -38,7 +38,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -59,7 +59,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (region == null && town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -68,7 +68,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (region != null && !isAdmin && !Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
@@ -84,11 +84,11 @@ public class SetGuestCommand implements CivCommand {
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             Player invitePlayer = (Player) invitee;
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
                     "add-guest-region").replace("$1", name));
         }
         if (player != null && civilian!= null && invitee.getName() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "guest-added-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {

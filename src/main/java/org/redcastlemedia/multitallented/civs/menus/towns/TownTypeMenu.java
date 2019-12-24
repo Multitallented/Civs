@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -41,6 +42,10 @@ public class TownTypeMenu extends CustomMenu {
 
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         LocaleManager localeManager = LocaleManager.getInstance();
         TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
         if (townType == null) {
@@ -49,7 +54,7 @@ public class TownTypeMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = townType.clone();
             List<String> lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), "size") +
+            lore.add(localeManager.getTranslationWithPlaceholders(player, "size") +
                     ": " + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadiusY() * 2 + 1));
             lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
@@ -57,13 +62,13 @@ public class TownTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
-            boolean hasShopPerms = Civs.perm != null && Civs.perm.has(Bukkit.getPlayer(civilian.getUuid()), "civs.shop");
+            boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
             String maxLimit = civilian.isAtMax(townType);
             if (hasShopPerms && maxLimit == null) {
                 CVItem priceItem = CVItem.createCVItemFromString(menuIcon.getIcon());
-                priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), menuIcon.getName()));
+                priceItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player, menuIcon.getName()));
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(localeManager.getTranslation(civilian.getLocale(), "price")
+                lore.add(localeManager.getTranslationWithPlaceholders(player, "price")
                         .replace("$1", Util.getNumberFormat(townType.getPrice(), civilian.getLocale())));
                 priceItem.setLore(lore);
                 ItemStack itemStack = priceItem.createItemStack();
@@ -71,11 +76,11 @@ public class TownTypeMenu extends CustomMenu {
                 return itemStack;
             } else if (hasShopPerms) {
                 CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
-                priceItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(), menuIcon.getName()));
+                priceItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player, menuIcon.getName()));
                 int max = maxLimit.equals(townType.getProcessedName()) ? townType.getCivMax() :
                         ConfigManager.getInstance().getGroups().get(maxLimit);
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "max-item")
+                lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "max-item")
                         .replace("$1", maxLimit)
                         .replace("$2", "" + max));
                 priceItem.setLore(lore);
@@ -88,7 +93,7 @@ public class TownTypeMenu extends CustomMenu {
             CVItem rebuildItem = ItemManager.getInstance()
                     .getItemType(townType.getChild().toLowerCase()).clone();
             List<String> lore = new ArrayList<>();
-            lore.add(localeManager.getTranslation(civilian.getLocale(), menuIcon.getDesc())
+            lore.add(localeManager.getTranslationWithPlaceholders(player, menuIcon.getDesc())
                     .replace("$1", townType.getProcessedName())
                     .replace("$2", townType.getChild()));
             rebuildItem.setLore(lore);
@@ -97,9 +102,9 @@ public class TownTypeMenu extends CustomMenu {
             return itemStack;
         } else if ("build-reqs".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            String localizedName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            String localizedName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     townType.getProcessedName() + "-name");
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", localizedName)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -117,7 +122,7 @@ public class TownTypeMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String childName = LocaleManager.getInstance().getTranslation(
                     civilian.getLocale(), townType.getChild().toLowerCase() + "-name");
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", childName)
                     .replace("$2", "" + townType.getChildPopulation()));
             ItemStack itemStack = cvItem.createItemStack();

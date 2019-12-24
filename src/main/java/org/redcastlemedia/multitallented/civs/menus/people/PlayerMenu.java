@@ -40,6 +40,7 @@ public class PlayerMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         UUID uuid = (UUID) MenuManager.getData(civilian.getUuid(), Constants.UUID);
+        Player player = (Player) Bukkit.getPlayer(civilian.getUuid());
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = new CVItem(Material.PLAYER_HEAD, 1);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -63,7 +64,7 @@ public class PlayerMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String money = Util.getNumberFormat(Civs.econ.getBalance(Bukkit.getOfflinePlayer(civilian.getUuid())),
                     civilian.getLocale());
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", money));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -85,9 +86,8 @@ public class PlayerMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", player.getName()));
             ArrayList<String> lore = new ArrayList<>();
             int i=0;
@@ -106,42 +106,42 @@ public class PlayerMenu extends CustomMenu {
             return itemStack;
         } else if ("points".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getPoints()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("karma".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getKarma()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("deaths".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getDeaths()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("kills".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getKills()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("killstreak".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getKillStreak()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("highest-killstreak".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + civilian.getHighestKillStreak()));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -170,13 +170,13 @@ public class PlayerMenu extends CustomMenu {
         if ("add-friend".equals(actionString)) {
             civilian.getFriends().add(uuid);
             CivilianManager.getInstance().saveCivilian(civilian);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "friend-added").replace("$1", name));
             return true;
         } else if ("remove-friend".equals(actionString)) {
             civilian.getFriends().remove(uuid);
             CivilianManager.getInstance().saveCivilian(civilian);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "friend-removed").replace("$1", name));
             return true;
         }
