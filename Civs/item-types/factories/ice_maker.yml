@@ -1,38 +1,34 @@
-type: region
-icon: CHEST
-shop-icon: ICE
-name: Ice_Maker
-price: 20
-groups:
-- factory
-level: 1
-
-build-reqs:
-- g:window*2
-- g:door*1
-- g:roof*15
-- SNOW_BLOCK*9
-- g:primary*35
-- g:secondary*6
-
-build-radius: 3
-
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-
-period: 300 #15 seconds
-upkeep:
-  0:
-    reagents:
-    - SNOW_BLOCK*64
-    - STONE_SHOVEL
-    output:
-    - ICE*64
-    - ICE*64
-    - ICE*52
-    - SNOW_BLOCK*64
-    - SNOW_BLOCK*64
-    - SNOW_BLOCK*52
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: ICE
+#price: 20
+#groups:
+#- factory
+#level: 1
+#
+#build-reqs:
+#- g:window*2
+#- g:door*1
+#- g:roof*15
+#- SNOW_BLOCK*9
+#- g:primary*35
+#- g:secondary*6
+#
+#build-radius: 3
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#
+#period: 15 #15 seconds
+#upkeep:
+#  0:
+#    reagents:
+#    - SNOW_BLOCK*64
+#    - STONE_SHOVEL
+#    output:
+#    - ICE*9
+#    - SNOW_BLOCK*9

@@ -1,0 +1,53 @@
+type: region
+name: Bakery
+icon: CHEST
+shop-icon: PUMPKIN_PIE
+price: 200
+max: 1
+groups:
+- factory
+level: 4
+
+pre-reqs:
+- member=village:town:city:metropolis
+
+build-reqs:
+- CHEST*2
+- g:window*4
+- g:door*1
+- g:roof*30
+- g:primary*45
+- g:secondary*10
+
+build-radius: 4 #9x9x9
+
+towns:
+- village
+- town
+- city
+- metropolis
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- conveyor:BREAD
+
+period: 120 # 2 minutes
+upkeep:
+  0:
+    input:
+    - WHEAT
+    - COCOA_BEANS
+    output:
+    - COOKIE*12
+  1:
+    reagents:
+    - EGG*64
+    input:
+    - PUMPKIN
+    - SUGAR_CANE
+    output:
+    - PUMPKIN_PIE
+

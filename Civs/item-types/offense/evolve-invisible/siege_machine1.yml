@@ -1,40 +1,40 @@
-type: region
-icon: CHEST
-shop-icon: TNT
-name: Siege_Machine1
-is-in-shop: false
-groups:
-- offense
-- siegemachinegroup
-- townpowerreduce
-
-build-reqs:
-- TNT*5
-- g:sign*1
-- OBSIDIAN*9
-- g:fence*12
-
-build-radius: 3 #7x7x7
-effects:
-- block_build
-- block_break
-- drain_power:1
-- evolve:siege_machine2.3
-- chest_use
-
-towns:
-- outpost
-- keep
-
-period: 150 # 2.5 minutes
-upkeep:
-  0:
-    input:
-    - TNT*1
-    - REDSTONE*3
-    - COAL*3
-    output:
-    - GRAVEL*1%90,TNT*1%10
-    - DIRT*1%80,COAL*1%10,REDSTONE*1%10
-    exp: 1
-
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: TNT
+#is-in-shop: false
+#groups:
+#- offense
+#- siegemachinegroup
+#- townpowerreduce
+#
+#build-reqs:
+#- TNT*5
+#- SIGN*1,WALL_SIGN*1
+#- OBSIDIAN*9
+#- g:fence*12
+#
+#build-radius: 3 #7x7x7
+#effects:
+#- block_build
+#- block_break
+#- drain_power:1
+#- evolve:siege_machine2.3
+#- chest_use
+#
+#towns:
+#- outpost
+#- keep
+#
+#period: 150 # 2.5 minutes
+#upkeep:
+#  0:
+#    input:
+#    - TNT*1
+#    - REDSTONE*3
+#    - COAL*3
+#    output:
+#    - GRAVEL*1%90,TNT*1%10
+#    - DIRT*1%80,COAL*1%10,REDSTONE*1%10
+#    exp: 1
+#

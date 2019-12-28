@@ -55,6 +55,7 @@ out/
 *.iml
 target
 mavenVersion.xml
+testFiles
 
 _windows/*
 codestyles/*

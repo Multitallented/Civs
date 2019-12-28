@@ -1,0 +1,18 @@
+## global-actions:
+##  close: closes the menu
+##  print-tutorial: prints the current tutorial step
+##  menu:name?varname=var opens a menu and passes those variables
+##  command:command goes here
+##  permission:perm.something
+#back:
+#  icon: REDSTONE_BLOCK
+#  name: back-button
+#  # desc: []
+#prev:
+#  icon: REDSTONE
+#  name: prev-button
+#  # desc: []
+#next:
+#  icon: EMERALD
+#  name: next-button
+#  # desc: []

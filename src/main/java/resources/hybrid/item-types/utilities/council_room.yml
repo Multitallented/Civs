@@ -1,0 +1,38 @@
+type: region
+icon: OBSIDIAN
+shop-icon: OAK_SIGN
+name: Council_Room
+price: 500
+max: 1
+groups:
+- utility
+- town_center
+level: 1
+
+build-reqs:
+- CHEST*4
+- g:door*2
+- g:window*8
+- g:stairs*4
+- g:roof*50
+- BOOKSHELF*8
+- g:sign*8
+- g:secondary*30
+- g:primary*125
+build-radius: 5 # 11x11x11
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- door_use
+- chest_use
+- port
+- cant_override
+- housing:2
+
+period: 900 #15 minutes
+upkeep:
+  0:
+    power-output: 2
+
