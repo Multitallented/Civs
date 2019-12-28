@@ -128,7 +128,7 @@ public class AntiCampEffect implements Listener {
             }
         }
 
-        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(civilian.getLocale(),
+        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
                 "activate-anticamp-question").replace("$1", player.getDisplayName())
                 .replace("$2", town.getName())
                 .replace("$3", "" + antiCampCost) + " ";

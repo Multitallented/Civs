@@ -62,8 +62,7 @@ public class AI {
 
     public static void broadcastToAllPlayers(String key, String[] args, String aiName) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            String message = LocaleManager.getInstance().getTranslation(civilian.getLocale(), key);
+            String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player, key);
             for (int i=0; i<args.length; i++) {
                 message = message.replace("$" + i, args[i]);
             }
@@ -124,7 +123,7 @@ public class AI {
             public void run() {
                 Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(inviteCiv.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
                         .replace("$2", town.getType())
                         .replace("$3", townName));

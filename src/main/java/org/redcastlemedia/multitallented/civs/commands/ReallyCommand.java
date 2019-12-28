@@ -13,7 +13,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsCommand(keys = { "really" })
+@CivsCommand(keys = { "really" }) @SuppressWarnings("unused")
 public class ReallyCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -21,8 +21,7 @@ public class ReallyCommand implements CivCommand {
         if (args.length < 3) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -36,8 +35,7 @@ public class ReallyCommand implements CivCommand {
         if (alliance == null) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "invalid-target"));
             } else {
                 commandSender.sendMessage("invalid alliance target");
@@ -60,8 +58,7 @@ public class ReallyCommand implements CivCommand {
 
         if (!isOwnerOfTown) {
             Player player = (Player) commandSender;
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
@@ -69,8 +66,7 @@ public class ReallyCommand implements CivCommand {
         if (!Util.validateFileName(args[2])) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -87,8 +83,7 @@ public class ReallyCommand implements CivCommand {
             commandSender.sendMessage(Civs.getPrefix() + "Alliance " + args[1] + " has been renamed to " + validName);
         } else {
             Player player = (Player) commandSender;
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "alliance-renamed").replace("$1", args[1])
                         .replace("$2", validName));
         }

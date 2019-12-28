@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -17,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -24,14 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CivsMenu(name = "region-type")
+@CivsMenu(name = "region-type") @SuppressWarnings("unused")
 public class RegionTypeMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
-        if (params.containsKey("regionType")) {
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(params.get("regionType"));
-            data.put("regionType", regionType);
+        if (params.containsKey(Constants.REGION_TYPE)) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(params.get(Constants.REGION_TYPE));
+            data.put(Constants.REGION_TYPE, regionType);
             if (!regionType.getRebuild().isEmpty()) {
                 data.put("rebuildRegion", regionType.getRebuild().get(0));
                 StringBuilder regionList = new StringBuilder();
@@ -42,14 +44,13 @@ public class RegionTypeMenu extends CustomMenu {
                 data.put("rebuildRegions", regionList.substring(0, regionList.length() - 1));
             }
             if (regionType.getEffects().containsKey(EvolveEffect.KEY)) {
-                data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY)
-                        .split(":")[1].split("\\.")[0]);
+                data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY).split("\\.")[0]);
             }
         }
-        if (params.containsKey("showPrice") && "true".equals(params.get("showPrice"))) {
-            data.put("showPrice", true);
+        if (params.containsKey(Constants.SHOW_PRICE) && "true".equals(params.get(Constants.SHOW_PRICE))) {
+            data.put(Constants.SHOW_PRICE, true);
         } else {
-            data.put("showPrice", false);
+            data.put(Constants.SHOW_PRICE, false);
         }
         return data;
     }
@@ -57,8 +58,9 @@ public class RegionTypeMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         LocaleManager localeManager = LocaleManager.getInstance();
-        RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), "regionType");
-        String localizedRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + "-name");
+        RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE);
+        String localizedRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
         if ("icon".equals(menuIcon.getKey())) {
             CVItem shopIcon = regionType.getShopIcon(civilian.getLocale());
             List<String> lore = new ArrayList<>();
@@ -129,7 +131,7 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
-            boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), "showPrice");
+            boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), Constants.SHOW_PRICE);
             Player player = Bukkit.getPlayer(civilian.getUuid());
             boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
             boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");

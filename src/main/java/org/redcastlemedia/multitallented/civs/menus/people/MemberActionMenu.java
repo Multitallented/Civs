@@ -111,7 +111,7 @@ public class MemberActionMenu extends CustomMenu {
             } else {
                 rankString = "";
             }
-            String localizedRanks = getLocalizedRanks(rankString, civilian.getLocale());
+            String localizedRanks = getLocalizedRanks(rankString, player);
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -130,7 +130,7 @@ public class MemberActionMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "buy")
                             .replace("$1", priceString));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -176,7 +176,7 @@ public class MemberActionMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                     String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "capitalism-voting-cost")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "capitalism-voting-cost")
                             .replace("$1", votingCost));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -189,22 +189,22 @@ public class MemberActionMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    private String getLocalizedRanks(String rankString, String locale) {
+    private String getLocalizedRanks(String rankString, Player player) {
         String localizedRanks = "";
         if (rankString == null) {
             return localizedRanks;
         }
         if (rankString.contains(Constants.OWNER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, Constants.OWNER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.OWNER) + ", ";
         }
         if (rankString.contains(Constants.MEMBER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, Constants.MEMBER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.MEMBER) + ", ";
         }
         if (rankString.contains(Constants.GUEST)) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, Constants.GUEST) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.GUEST) + ", ";
         }
         if (rankString.contains(Constants.RECRUITER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, Constants.RECRUITER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.RECRUITER) + ", ";
         }
         if (localizedRanks.length() > 0) {
             localizedRanks = localizedRanks.substring(0, localizedRanks.length() - 2);

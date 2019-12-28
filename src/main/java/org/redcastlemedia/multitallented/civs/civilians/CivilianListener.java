@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -61,6 +62,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -152,8 +154,8 @@ public class CivilianListener implements Listener {
         if (mat == Material.ANVIL ||
                 mat == Material.ENCHANTING_TABLE) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(), "mana-use-exp"));
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "mana-use-exp"));
         }
     }
 
@@ -403,7 +405,8 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslationWithPlaceholders(event.getPlayer(),
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
@@ -442,16 +445,17 @@ public class CivilianListener implements Listener {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
                 Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
             }
         }
     }
 
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
-        if ("PlaceholderAPI".equals(event.getPlugin().getName()) &&
-                Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
+            Civs.placeholderAPI = (PlaceholderAPI) event.getPlugin();
             return;
         }
         if ("MMOItems".equals(event.getPlugin().getName()) &&
@@ -474,8 +478,12 @@ public class CivilianListener implements Listener {
             return;
         }
         if ("DiscordSRV".equals(event.getPlugin().getName()) &&
-                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
-            Civs.discordSRV = DiscordSRV.getPlugin();
+                !Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Civs.discordSRV = null;
+            return;
+        }
+        if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName())) {
+            Civs.placeholderAPI = null;
             return;
         }
     }
@@ -509,9 +517,8 @@ public class CivilianListener implements Listener {
             if (i < inventorySize) {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
-                Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
                 return;
             }
         }
@@ -555,9 +562,8 @@ public class CivilianListener implements Listener {
         }
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "prevent-civs-item-share"));
+                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {
