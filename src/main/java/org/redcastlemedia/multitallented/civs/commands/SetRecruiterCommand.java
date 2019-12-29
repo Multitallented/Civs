@@ -94,8 +94,6 @@ public class SetRecruiterCommand implements CivCommand {
             return true;
         }
 
-        Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
-
         String name = town.getName();
         if (invitePlayer != null) {
             invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,

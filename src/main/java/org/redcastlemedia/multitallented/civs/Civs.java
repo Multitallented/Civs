@@ -32,9 +32,8 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.reflections.Reflections;
 
 import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
-import net.Indyuce.mmoitems.comp.placeholderapi.PlaceholderAPIParser;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -47,7 +46,7 @@ public class Civs extends JavaPlugin {
     public static Permission perm;
     public static MMOItems mmoItems;
     public static DiscordSRV discordSRV;
-    public static PlaceholderAPI placeholderAPI;
+    public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
 
@@ -187,7 +186,7 @@ public class Civs extends JavaPlugin {
     private void setupDependencies() {
         if (Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
-            placeholderAPI = (PlaceholderAPI) Bukkit.getPluginManager().getPlugin(Constants.PLACEHOLDER_API);
+            placeholderAPI = (PlaceholderAPIPlugin) Bukkit.getPluginManager().getPlugin(Constants.PLACEHOLDER_API);
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;

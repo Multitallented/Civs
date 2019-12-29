@@ -11,11 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -77,12 +79,8 @@ public class TownTypeMenu extends CustomMenu {
             } else if (hasShopPerms) {
                 CVItem priceItem = CVItem.createCVItemFromString("BARRIER");
                 priceItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player, menuIcon.getName()));
-                int max = maxLimit.equals(townType.getProcessedName()) ? townType.getCivMax() :
-                        ConfigManager.getInstance().getGroups().get(maxLimit);
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "max-item")
-                        .replace("$1", maxLimit)
-                        .replace("$2", "" + max));
+                LocaleUtil.getTranslationMaxItem(maxLimit, townType, player, lore);
                 priceItem.setLore(lore);
                 return priceItem.createItemStack();
             }

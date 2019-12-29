@@ -97,66 +97,65 @@ public class RepairEffect implements Listener {
         }
     }
 
-    private int getRepairCost(Material mat, ItemStack is) {
-        ItemMeta itemMeta = is.getItemMeta();
-        if (!(itemMeta instanceof Damageable)) {
-            return 0;
-        }
-        Damageable damageable = (Damageable) itemMeta;
+    protected int getRepairCost(Material mat, double damage) {
         int amt;
         switch (mat) {
-            case WOODEN_HOE:
-            case WOODEN_PICKAXE:
             case WOODEN_SHOVEL:
-            case WOODEN_SWORD:
-            case BOW:
-            case FISHING_ROD:
-                amt = (int) Math.ceil((double) damageable.getDamage() / mat.getMaxDurability() * 1.0D);
-                return Math.max(amt, 1);
-            case SHEARS:
-            case GOLDEN_PICKAXE:
-            case GOLDEN_SHOVEL:
-            case GOLDEN_SWORD:
-            case GOLDEN_AXE:
-            case GOLDEN_HOE:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_HELMET:
-            case GOLDEN_LEGGINGS:
-            case GOLDEN_BOOTS:
-                amt = (int) Math.ceil((double) damageable.getDamage() / mat.getMaxDurability() * 3.0D);
-                return Math.max(amt, 1);
-            case IRON_PICKAXE:
-            case IRON_SHOVEL:
-            case IRON_SWORD:
-            case IRON_AXE:
-            case IRON_HOE:
-            case IRON_CHESTPLATE:
-            case IRON_HELMET:
-            case IRON_LEGGINGS:
-            case IRON_BOOTS:
-                amt = (int) Math.ceil((double) damageable.getDamage() / mat.getMaxDurability() * 4.0D);
-                return Math.max(amt, 1);
-            case DIAMOND_PICKAXE:
-            case DIAMOND_SHOVEL:
-            case DIAMOND_SWORD:
-            case DIAMOND_AXE:
-            case DIAMOND_HOE:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_HELMET:
-            case DIAMOND_LEGGINGS:
-            case DIAMOND_BOOTS:
-                amt = (int) Math.ceil((double) damageable.getDamage() / mat.getMaxDurability() * 7.0D);
-                return Math.max(amt, 1);
-            case STONE_AXE:
-            case STONE_HOE:
-            case STONE_PICKAXE:
             case STONE_SHOVEL:
+            case GOLDEN_SHOVEL:
+            case IRON_SHOVEL:
+            case DIAMOND_SHOVEL:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 1.0D);
+                return Math.max(amt, 1);
+            case WOODEN_HOE:
+            case WOODEN_SWORD:
+            case FISHING_ROD:
+            case SHEARS:
+            case STONE_HOE:
             case STONE_SWORD:
-            case LEATHER_CHESTPLATE:
-            case LEATHER_HELMET:
-            case LEATHER_LEGGINGS:
+            case GOLDEN_SWORD:
+            case GOLDEN_HOE:
+            case IRON_HOE:
+            case DIAMOND_SWORD:
+            case DIAMOND_HOE:
+            case IRON_SWORD:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 2.0D);
+                return Math.max(amt, 1);
+            case BOW:
+            case STONE_PICKAXE:
+            case WOODEN_PICKAXE:
+            case GOLDEN_PICKAXE:
+            case GOLDEN_AXE:
+            case STONE_AXE:
+            case DIAMOND_AXE:
+            case IRON_AXE:
+            case IRON_PICKAXE:
+            case DIAMOND_PICKAXE:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 3.0D);
+                return Math.max(amt, 1);
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
             case LEATHER_BOOTS:
-                amt = (int) Math.ceil((double) damageable.getDamage() / mat.getMaxDurability() * 2.0D);
+            case DIAMOND_BOOTS:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 4.0D);
+                return Math.max(amt, 1);
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 5.0D);
+                return Math.max(amt, 1);
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 7.0D);
+                return Math.max(amt, 1);
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 8.0D);
                 return Math.max(amt, 1);
             default:
                 return 0;
@@ -202,11 +201,19 @@ public class RepairEffect implements Listener {
         if (!damageable.hasDamage()) {
             return;
         }
-        repairItem(event, player, item, itemMeta, damageable);
+        repairItem(event, player, item);
     }
 
-    private void repairItem(PlayerInteractEvent event, Player player, ItemStack item, ItemMeta itemMeta, Damageable damageable) {
-        int repairCost = getRepairCost(item.getType(), item);
+    private void repairItem(PlayerInteractEvent event, Player player, ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
+        Damageable damageable = (Damageable) itemMeta;
+        if (damageable == null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));
+            event.setCancelled(true);
+            return;
+        }
+        int repairCost = getRepairCost(item.getType(), damageable.getDamage());
         if (repairCost == 0) {
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));

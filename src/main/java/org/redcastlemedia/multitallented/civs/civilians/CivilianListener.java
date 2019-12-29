@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -455,7 +456,7 @@ public class CivilianListener implements Listener {
         if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
-            Civs.placeholderAPI = (PlaceholderAPI) event.getPlugin();
+            Civs.placeholderAPI = (PlaceholderAPIPlugin) event.getPlugin();
             return;
         }
         if ("MMOItems".equals(event.getPlugin().getName()) &&
