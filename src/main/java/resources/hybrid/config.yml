@@ -1,10 +1,10 @@
-last-version: 1.5.6
 default-config-set: hybrid
 
 black-list-worlds:
 - Hub
 
 default-language: en
+line-break-length: 40
 
 allow-civ-item-sharing: false
 
