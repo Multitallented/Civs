@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 public final class Constants {
     public static final String REGIONS = "regions";
     public static final String REGION = "region";
+    public static final String REGION_TYPE = "regionType";
     public static final String ITEMS_IN_VIEW = "itemsInView";
     public static final String INVISIBLE = "-invisible";
     public static final String ITEM_TYPES = "item-types";
@@ -16,6 +17,7 @@ public final class Constants {
     public static final String UUID = "uuid";
     public static final String EXCLUSIVE = "exclusive";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
+    public static final String SHOW_PRICE = "showPrice";
 
     private Constants() {
 

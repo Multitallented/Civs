@@ -48,8 +48,8 @@ public class RecipeMenu extends CustomMenu {
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getReqs();
-        } else if (recipe.startsWith("reagents")) {
-            int index = Integer.parseInt(recipe.replace("reagents", ""));
+        } else if (recipe.startsWith("reagent")) {
+            int index = Integer.parseInt(recipe.replace("reagent", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getReagents();
         } else if (recipe.startsWith("input")) {

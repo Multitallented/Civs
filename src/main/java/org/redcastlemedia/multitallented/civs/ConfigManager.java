@@ -152,6 +152,8 @@ public class ConfigManager {
     int minPopulationForGovTransition;
     @Getter
     int nationFormedAtTownLevel;
+    @Getter
+    int lineBreakLength;
 
     public ConfigManager() {
         loadDefaults();
@@ -384,6 +386,7 @@ public class ConfigManager {
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
+            lineBreakLength = config.getInt("line-break-length", 40);
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -435,6 +438,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         nationFormedAtTownLevel = 3;

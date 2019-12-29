@@ -38,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.reflections.Reflections;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -51,6 +52,7 @@ public class Civs extends JavaPlugin {
     public static Permission perm;
     public static MMOItems mmoItems;
     public static DiscordSRV discordSRV;
+    public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
 
@@ -107,19 +109,19 @@ public class Civs extends JavaPlugin {
 
         logger.info(LogInfo.PH_INFO);
         if (econ != null) {
-            logger.log(Level.INFO, "{}", LogInfo.HOOKECON + econ.getName());
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKECON + econ.getName());
         }
         if (perm != null) {
-            logger.log(Level.INFO, "{}", LogInfo.HOOKPERM + perm.getName());
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKPERM + perm.getName());
         }
         if (Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
-            logger.log(Level.INFO, "{}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
         }
         if (mmoItems != null) {
-            logger.log(Level.INFO, "{} MMOItems", LogInfo.HOOKCHAT);
+            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKCHAT);
         }
         if (discordSRV != null) {
-            logger.log(Level.INFO, "{} DiscordSRV", LogInfo.HOOKCHAT);
+            logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
         }
         logger.info(LogInfo.PH_INFO);
 
@@ -134,7 +136,7 @@ public class Civs extends JavaPlugin {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         long timeUntilDay = (86400000 + calendar.getTimeInMillis() - System.currentTimeMillis()) / 50;
-        Civs.logger.log(Level.INFO, "{} ticks until 00:00", timeUntilDay);
+        Civs.logger.log(Level.INFO, "{0} ticks until 00:00", timeUntilDay);
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
@@ -164,7 +166,7 @@ public class Civs extends JavaPlugin {
                     commandList.put(key, currentCommand);
                 }
             } catch (Exception e) {
-                Civs.logger.log(Level.SEVERE, "Unable to load {} class", currentCommandClass.getName());
+                Civs.logger.log(Level.SEVERE, "Unable to load {0} class", currentCommandClass.getName());
                 Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
@@ -190,6 +192,7 @@ public class Civs extends JavaPlugin {
     private void setupDependencies() {
         if (Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
+            placeholderAPI = (PlaceholderAPIPlugin) Bukkit.getPluginManager().getPlugin(Constants.PLACEHOLDER_API);
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;

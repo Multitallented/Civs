@@ -21,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -195,7 +196,8 @@ public final class Util {
     }
 
     public static ArrayList<String> textWrap(String input) {
-        int lineLength = 40;
+        int lineLength = ConfigManager.getInstance().getLineBreakLength();
+        int longestLength = (int) Math.ceil((double) lineLength * 0.625);
         int longestSection = 0;
         for (String subString : input.split(" ")) {
             int length = subString.length();
@@ -203,35 +205,37 @@ public final class Util {
                 longestSection = length;
             }
         }
-        if (longestSection > 25) {
-            lineLength = 25;
+        if (longestSection > longestLength) {
+            lineLength = longestLength;
         }
         String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
         String sendMe = new String(input);
-        String[] sends = sendMe.split(" ");
         String addMe = prefix.equals("§r") ? prefix : "";
-        for (String s : sends) {
-            do {
-                if (s.length() < lineLength) {
-                    if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
-                        lore.add("" + addMe.trim());
-                        addMe = prefix;
+        for (String line : sendMe.split("\n")) {
+            for (String s : line.split(" ")) {
+                do {
+                    if (s.length() < lineLength) {
+                        if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
+                            lore.add("" + addMe.trim());
+                            addMe = prefix;
+                        }
+                        addMe += s + " ";
+                        s = "";
+                    } else {
+                        if (!addMe.equals(prefix) && addMe.length() > 0) {
+                            lore.add("" + addMe.trim());
+                            addMe = prefix;
+                        }
+                        addMe += s.substring(0, lineLength - 1);
+                        s = s.substring(lineLength - 1);
                     }
-                    addMe += s + " ";
-                    s = "";
-                } else {
-                    if (!addMe.equals(prefix) && addMe.length() > 0) {
-                        lore.add("" + addMe.trim());
-                        addMe = prefix;
-                    }
-                    addMe += s.substring(0, lineLength - 1);
-                    s = s.substring(lineLength - 1);
-                }
-            } while (s.length() > 0);
-        }
-        if (!addMe.equals(prefix) && addMe.length() > 0) {
-            lore.add("" + addMe.trim());
+                } while (s.length() > 0);
+            }
+            if (!addMe.equals(prefix) && addMe.length() > 0) {
+                lore.add("" + addMe.trim());
+                addMe = prefix;
+            }
         }
         return lore;
     }

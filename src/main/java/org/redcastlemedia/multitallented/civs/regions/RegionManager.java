@@ -264,7 +264,7 @@ public class RegionManager {
         if (!regionFolder.exists()) {
             boolean folderCreated = regionFolder.mkdir();
             if (!folderCreated) {
-                Civs.logger.log(Level.SEVERE, "Unable to create {} folder", Constants.REGIONS);
+                Civs.logger.log(Level.SEVERE, "Unable to create {0} folder", Constants.REGIONS);
                 return;
             }
         }
@@ -486,6 +486,12 @@ public class RegionManager {
             event.setCancelled(true);
             return;
         }
+        if (regionType == null) {
+            Civs.logger.log(Level.SEVERE, "Unable to find region type {0}", regionTypeName.toLowerCase());
+            event.setCancelled(true);
+            return;
+        }
+
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
 

@@ -13,7 +13,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import java.util.UUID;
 
-@CivsCommand(keys = { "accept" })
+@CivsCommand(keys = { "accept" }) @SuppressWarnings("unused")
 public class AcceptInviteCommand implements CivCommand {
 
     @Override
@@ -25,10 +25,8 @@ public class AcceptInviteCommand implements CivCommand {
         Player player = (Player) commandSender;
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-
         if (Civs.perm != null && !Civs.perm.has(player, "civs.join")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
@@ -38,20 +36,17 @@ public class AcceptInviteCommand implements CivCommand {
         Town town = townManager.getInviteTown(player.getUniqueId());
         if (town != null) {
             townManager.acceptInvite(player.getUniqueId());
-//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-//                    "invite-accepted"));
             for (UUID uuid : town.getPeople().keySet()) {
                 Player player1 = Bukkit.getPlayer(uuid);
                 if (player1 != null && player1.isOnline()) {
-                    Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
-                    player1.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
-                            civilian1.getLocale(),
+                    player1.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(
+                            player1,
                             "new-town-member"
                     ).replace("$1", player.getDisplayName()).replace("$2", town.getName()));
                 }
             }
         } else {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-invite"));
         }
 

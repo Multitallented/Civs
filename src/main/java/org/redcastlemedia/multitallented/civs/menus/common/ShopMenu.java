@@ -13,12 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.FolderType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -30,6 +32,10 @@ public class ShopMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return data;
+        }
 
         if (params.containsKey("page")) {
             data.put("page", Integer.parseInt(params.get("page")));
@@ -58,7 +64,7 @@ public class ShopMenu extends CustomMenu {
                 int currentLevel = 1;
                 for (String matString : ConfigManager.getInstance().getLevelList()) {
                     CVItem cvItem = CVItem.createCVItemFromString(matString);
-                    cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "level").replace("$1", "" + currentLevel));
                     ArrayList<String> lore = new ArrayList<>();
                     lore.add("" + currentLevel);
@@ -106,8 +112,12 @@ public class ShopMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("parent")) {
             CivItem parent = (CivItem) MenuManager.getData(civilian.getUuid(), "parent");
             if (parent == null) {
@@ -115,11 +125,11 @@ public class ShopMenu extends CustomMenu {
             }
             CVItem icon = parent.getShopIcon(civilian.getLocale());
             icon.setDisplayName(LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(), parent.getProcessedName() + "-name"));
+                    .getTranslationWithPlaceholders(player, parent.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             icon.getLore().clear();
             icon.getLore().add(ChatColor.BLACK + parent.getProcessedName());
             icon.getLore().addAll(Util.textWrap(LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(),
+                    .getTranslationWithPlaceholders(player,
                     parent.getProcessedName() + "-desc")));
             putActions(civilian, menuIcon, icon.createItemStack(), count);
             return icon.createItemStack();
@@ -203,6 +213,9 @@ public class ShopMenu extends CustomMenu {
     private ItemStack createShopItem(CivItem civItem, Civilian civilian) {
         LocaleManager localeManager = LocaleManager.getInstance();
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         CVItem civItem1 = civItem.getShopIcon(civilian.getLocale());
         if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
             FolderType folderType = (FolderType) civItem;
@@ -210,29 +223,25 @@ public class ShopMenu extends CustomMenu {
                     (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
                 return new ItemStack(Material.AIR);
             }
-            civItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-name"));
+            civItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-name"));
             civItem1.getLore().add(ChatColor.BLACK + folderType.getProcessedName());
-            civItem1.getLore().addAll(Util.textWrap(localeManager.getTranslation(civilian.getLocale(), folderType.getProcessedName() + "-desc")));
+            civItem1.getLore().addAll(Util.textWrap(localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-desc")));
         }
         String maxLimit = civilian.isAtMax(civItem);
         if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
             CVItem item = CVItem.createCVItemFromString(Material.BARRIER.name());
-            item.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
-                    civItem.getProcessedName() + "-name"));
-            int limit = maxLimit.equals(civItem.getProcessedName()) ? civItem.getCivMax() :
-                    ConfigManager.getInstance().getGroups().get(maxLimit);
-            item.getLore().add(localeManager.getTranslation(civilian.getLocale(),
-                    "max-item").replace("$1", maxLimit)
-                    .replace("$2", limit + ""));
+            item.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
+            LocaleUtil.getTranslationMaxItem(maxLimit, civItem, player, item.getLore());
             item.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             return item.createItemStack();
         }
         if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
-            civItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
-                    civItem.getProcessedName() + "-name"));
+            civItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             civItem1.getLore().clear();
             civItem1.getLore().add(ChatColor.BLACK + civItem.getProcessedName());
-            civItem1.getLore().add(localeManager.getTranslation(civilian.getLocale(), "price")
+            civItem1.getLore().add(localeManager.getTranslationWithPlaceholders(player, "price")
                     .replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             civItem1.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
         }

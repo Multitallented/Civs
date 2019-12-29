@@ -28,7 +28,7 @@ public class AddMemberCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -45,7 +45,7 @@ public class AddMemberCommand implements CivCommand {
         Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
         if (region == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -54,14 +54,14 @@ public class AddMemberCommand implements CivCommand {
         }
         if (!Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
         Player invitee = Bukkit.getPlayer(playerName);
         if (invitee == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "player-not-online").replace("$1", playerName));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player " + playerName + " is not online");
@@ -71,20 +71,18 @@ public class AddMemberCommand implements CivCommand {
         Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
         if (invitee.isOnline()) {
-            invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitee,
                     "invite-member-region").replace("$1", region.getType()));
         }
         if (player != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "member-invited-region").replace("$1", playerName)
                     .replace("$2", region.getType()));
         } else {
             commandSender.sendMessage(Civs.getPrefix() + playerName + " has been added to your " + region.getType());
         }
-//        if (!region.getPeople().containsKey(invitee.getUniqueId())) {
-            region.setPeople(invitee.getUniqueId(), "member");
-            RegionManager.getInstance().saveRegion(region);
-//        }
+        region.setPeople(invitee.getUniqueId(), "member");
+        RegionManager.getInstance().saveRegion(region);
         return true;
     }
 }

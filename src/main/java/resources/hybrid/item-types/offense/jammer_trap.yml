@@ -5,6 +5,7 @@ max: 1
 price: 400
 groups:
   - offense
+  - trap
 level: 1
 
 build-reqs:
