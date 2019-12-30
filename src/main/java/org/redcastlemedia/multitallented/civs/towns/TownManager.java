@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -352,7 +353,7 @@ public class TownManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "devolve-town")
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "devolve-town")
                     .replace("$1", town.getName())
                     .replace("$2", childTownType.getProcessedName()));
         }
@@ -608,21 +609,21 @@ public class TownManager {
         if (TownManager.getInstance().townNameExists(name) && (town == null ||
                 !town.getName().equalsIgnoreCase(name) ||
                 !town.getRawPeople().containsKey(civilian.getUuid()))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "specify-town-name"));
             return;
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
             if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "hold-town"));
             return;
         }
         CivItem civItem = CivItem.getFromItemStack(itemStack);
 
         if (civItem == null || !(civItem instanceof TownType)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "hold-town"));
             return;
         }
@@ -634,17 +635,20 @@ public class TownManager {
         if (intersectTowns.size() > 1 ||
                     (!intersectTowns.isEmpty() &&
                     (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return;
         }
         if (intersectTowns.isEmpty() && townType.getChild() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "must-be-built-on-top").replace("$1", townType.getProcessedName())
                     .replace("$2", townType.getChild()));
             return;
         }
 
+
+        String townTypeLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                townType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
         if (!townType.getReqs().isEmpty()) {
             HashMap<String, Integer> checkList = (HashMap<String, Integer>) townType.getReqs().clone();
             Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
@@ -673,12 +677,12 @@ public class TownManager {
                 }
             }
             if (!checkList.isEmpty()) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                        "missing-region-requirements").replace("$1", townType.getDisplayName()));
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                        "missing-region-requirements").replace("$1", townTypeLocalName));
                 HashMap<String, String> params = new HashMap<>();
                 StringBuilder regionString = new StringBuilder();
-                for (String regionName : checkList.keySet()) {
-                    regionString.append(regionName).append(":").append(checkList.get(regionName));
+                for (Map.Entry<String, Integer> entry : checkList.entrySet()) {
+                    regionString.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
                 }
                 regionString.substring(0, regionString.length() - 1);
                 params.put("regionList", regionString.toString());
@@ -699,7 +703,7 @@ public class TownManager {
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(), "population-req")
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "population-req")
                         .replace("$1", intersectTown.getType())
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
@@ -758,9 +762,9 @@ public class TownManager {
                 Civs.econ.depositPlayer(player, price);
                 newTown.setBankAccount(newTown.getBankAccount() - price);
                 String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "town-assist-price").replace("$1", priceString)
-                        .replace("$2", townType.getDisplayName()));
+                        .replace("$2", townTypeLocalName));
             }
 
         } else {
@@ -769,7 +773,7 @@ public class TownManager {
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
 
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                 "town-created").replace("$1", newTown.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
             newTown.createRing();

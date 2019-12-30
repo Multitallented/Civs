@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -63,7 +67,8 @@ public class BlueprintsMenu extends CustomMenu {
         Map<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), Constants.ITEMS_IN_VIEW);
         if (itemsInView == null) {
-            itemsInView = new HashMap<>();
+            Civs.logger.log(Level.SEVERE, "Unable to get data for blueprints! Possible Civ item duplication!");
+            return;
         }
         addItemsToStash(inventory, itemsInView, stashItems);
         for (Map.Entry<String, Integer> entry : itemsInView.entrySet()) {
@@ -82,6 +87,10 @@ public class BlueprintsMenu extends CustomMenu {
         civilian.setStashItems(stashItems);
         CivilianManager.getInstance().saveCivilian(civilian);
         itemsInView.clear();
+        System.out.println("blueprints closed");
+        for (Map.Entry<String, Integer> entry : civilian.getStashItems().entrySet()) {
+            System.out.println(entry.getKey() + "*" + entry.getValue());
+        }
     }
     private void addItemsToStash(Inventory inventory,
                                  HashMap<String, Integer> itemsInView,
@@ -125,6 +134,10 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("blueprints")) {
             Map<String, Integer> stashItems = civilian.getStashItems();
             if (stashItems.isEmpty()) {
@@ -151,7 +164,7 @@ public class BlueprintsMenu extends CustomMenu {
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "town-instructions")
+                        .getTranslationWithPlaceholders(player, "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
                 lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));

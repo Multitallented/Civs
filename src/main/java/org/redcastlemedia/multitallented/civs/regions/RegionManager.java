@@ -174,7 +174,7 @@ public class RegionManager {
                 if (player.getLocation().distance(region.getLocation()) < 25) {
                     Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     player.sendMessage(Civs.getPrefix() +
-                            LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-destroyed").replace("$1", region.getType()));
+                            LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-destroyed").replace("$1", region.getType()));
                 }
             }
         }
@@ -481,13 +481,13 @@ public class RegionManager {
         }
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String localizedRegionName = LocaleManager.getInstance().getTranslation(civilian.getLocale(), regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+        String localizedRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player, regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
 
         if (!regionType.getWorlds().isEmpty() &&
                 !regionType.getWorlds().contains(location.getWorld().getName())) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "region-not-allowed-in-world")
+                    localeManager.getTranslationWithPlaceholders(player, "region-not-allowed-in-world")
                             .replace("$1", localizedRegionName));
             return;
         }
@@ -496,7 +496,7 @@ public class RegionManager {
                 !regionType.getBiomes().contains(location.getBlock().getBiome())) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "region-in-biome")
+                    localeManager.getTranslationWithPlaceholders(player, "region-in-biome")
                             .replace("$1", localizedRegionName).replace("$2", location.getBlock().getBiome().name()));
             return;
         }
@@ -515,15 +515,25 @@ public class RegionManager {
         if ((!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) ||
                 (!isPlot && rebuildRegion != null && !hasType)) {
             event.setCancelled(true);
+            String rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                    rebuildRegion.getType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), LocaleConstants.CANT_BUILD_ON_REGION)
-                            .replace("$1", localizedRegionName).replace("$2", rebuildRegion.getType()));
+                    localeManager.getTranslationWithPlaceholders(player, LocaleConstants.CANT_BUILD_ON_REGION)
+                            .replace("$1", localizedRegionName).replace("$2", rebuildLocalName));
             return;
         } else if (rebuildRegion == null && !regionType.getRebuild().isEmpty() && regionType.isRebuildRequired()) {
             event.setCancelled(true);
+            String rebuildLocalName;
+            if (ItemManager.getInstance().getItemType(regionType.getRebuild().get(0)) == null) {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.GROUP_SUFFIX);
+            } else {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.NAME_SUFFIX);
+            }
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "rebuild-required")
-                            .replace("$1", localizedRegionName).replace("$2", regionType.getRebuild().get(0)));
+                    localeManager.getTranslationWithPlaceholders(player, "rebuild-required")
+                            .replace("$1", localizedRegionName).replace("$2", rebuildLocalName));
             return;
         } else if (rebuildRegion != null) {
             location = rebuildRegion.getLocation();
@@ -539,7 +549,7 @@ public class RegionManager {
                         town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER);
                 if (!isOwner) {
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                            .getTranslation(civilian.getLocale(), "cant-build-feudal"));
+                            .getTranslationWithPlaceholders(player, "cant-build-feudal"));
                     event.setCancelled(true);
                     return;
                 }
@@ -560,7 +570,7 @@ public class RegionManager {
                     lowestLevelString = "towns";
                 }
                 player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(civilian.getLocale(), "req-build-inside-town")
+                        localeManager.getTranslationWithPlaceholders(player, "req-build-inside-town")
                                 .replace("$1", localizedRegionName).replace("$2", lowestLevelString));
                 event.setCancelled(true);
                 return;
@@ -568,14 +578,14 @@ public class RegionManager {
         }
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            String townLocalizedName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            String townLocalizedName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     townType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             int limit = -1;
             if (townType.getRegionLimit(regionTypeName) > -1) {
                 limit = townType.getRegionLimit(regionTypeName);
                 if (limit < 1) {
                     player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(civilian.getLocale(), LocaleConstants.REGION_LIMIT_REACHED)
+                            localeManager.getTranslationWithPlaceholders(player, LocaleConstants.REGION_LIMIT_REACHED)
                                     .replace("$1", townLocalizedName)
                                     .replace("$2", limit + "")
                                     .replace("$3", localizedRegionName));
@@ -589,7 +599,7 @@ public class RegionManager {
                     groupLimits.put(group, townType.getRegionLimit(group));
                     if (townType.getRegionLimit(group) < 1) {
                         player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslation(civilian.getLocale(), LocaleConstants.REGION_LIMIT_REACHED)
+                                localeManager.getTranslationWithPlaceholders(player, LocaleConstants.REGION_LIMIT_REACHED)
                                         .replace("$1", townLocalizedName)
                                         .replace("$2", townType.getRegionLimit(group) + "")
                                         .replace("$3", group));
@@ -604,7 +614,7 @@ public class RegionManager {
                     count++;
                     if (count >= limit) {
                         player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslation(civilian.getLocale(), LocaleConstants.REGION_LIMIT_REACHED)
+                                localeManager.getTranslationWithPlaceholders(player, LocaleConstants.REGION_LIMIT_REACHED)
                                         .replace("$1", townLocalizedName)
                                         .replace("$2", limit + "")
                                         .replace("$3", localizedRegionName));
@@ -625,7 +635,7 @@ public class RegionManager {
                             }
                             if (!rebuildWithinSameGroup) {
                                 player.sendMessage(Civs.getPrefix() +
-                                        localeManager.getTranslation(civilian.getLocale(), LocaleConstants.REGION_LIMIT_REACHED)
+                                        localeManager.getTranslationWithPlaceholders(player, LocaleConstants.REGION_LIMIT_REACHED)
                                                 .replace("$1", townLocalizedName)
                                                 .replace("$2", townType.getRegionLimit(groupType) + "")
                                                 .replace("$3", groupType));
@@ -645,9 +655,9 @@ public class RegionManager {
                     if (exclusiveSet.contains(region.getType().toLowerCase())) {
                         RegionType currentRegionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                         String currentRegionLocalizedName = LocaleManager.getInstance()
-                                .getTranslation(civilian.getLocale(), currentRegionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                                .getTranslationWithPlaceholders(player, currentRegionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
                         player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslation(civilian.getLocale(), Constants.EXCLUSIVE)
+                                localeManager.getTranslationWithPlaceholders(player, Constants.EXCLUSIVE)
                                         .replace("$1", localizedRegionName).replace("$2", currentRegionLocalizedName));
                         event.setCancelled(true);
                         return;
@@ -670,7 +680,7 @@ public class RegionManager {
             if (!radii.isValid()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(civilian.getLocale(), "no-required-blocks")
+                        localeManager.getTranslationWithPlaceholders(player, "no-required-blocks")
                                 .replace("$1", localizedRegionName));
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(regionType.getName().toLowerCase(), location, null);
                 if (missingBlocks != null) {
@@ -699,7 +709,7 @@ public class RegionManager {
             }
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "too-close-region")
+                    localeManager.getTranslationWithPlaceholders(player, "too-close-region")
                             .replace("$1", localizedRegionName).replace("$2", currentRegion.getType()));
             return;
         }
@@ -730,7 +740,7 @@ public class RegionManager {
         }
 
         player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslation(civilian.getLocale(), "region-built")
+                localeManager.getTranslationWithPlaceholders(player, "region-built")
                         .replace("$1", localizedRegionName));
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);

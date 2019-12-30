@@ -127,6 +127,16 @@ public class BlueprintsMenuTests extends TestUtil {
         assertFalse(CivItem.isCivsItem(itemStack));
     }
 
+    @Test
+    public void goingBackFromBlueprintsShouldntClearDataBeforeClose() {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+        this.blueprintsMenu.createMenu(this.civilian, params);
+        MenuManager.putData(this.civilian.getUuid(), "test", "success");
+        MenuManager.getInstance().goBack(this.civilian.getUuid());
+        // TODO fix this
+    }
+
     private void loadRegionTypeShelter() {
         FileConfiguration fileConfiguration = new YamlConfiguration();
         fileConfiguration.set("icon", "CHEST");
