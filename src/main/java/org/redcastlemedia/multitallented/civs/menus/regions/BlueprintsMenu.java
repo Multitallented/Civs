@@ -87,10 +87,6 @@ public class BlueprintsMenu extends CustomMenu {
         civilian.setStashItems(stashItems);
         CivilianManager.getInstance().saveCivilian(civilian);
         itemsInView.clear();
-        System.out.println("blueprints closed");
-        for (Map.Entry<String, Integer> entry : civilian.getStashItems().entrySet()) {
-            System.out.println(entry.getKey() + "*" + entry.getValue());
-        }
     }
     private void addItemsToStash(Inventory inventory,
                                  HashMap<String, Integer> itemsInView,
