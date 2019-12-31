@@ -81,6 +81,13 @@ public class AllianceMenuTests extends TestUtil {
         assertEquals(3, AllianceManager.getInstance().getAllAlliances().get(1).getMembers().size());
     }
 
+    @Test
+    public void unAllyShouldRemoveAlliance() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().unAlly(town1, town2);
+        assertEquals(0, AllianceManager.getInstance().getAllAlliances().size());
+    }
+
     private void printAlliances() {
         for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
             StringBuilder stringBuilder = new StringBuilder();
