@@ -147,13 +147,6 @@ public class MenuManager implements Listener {
         }
     }
 
-    public void goBack(UUID uuid) {
-        popLastMenu(uuid);
-        MenuHistoryState menuHistoryState = popLastMenu(uuid);
-        Player player = Bukkit.getPlayer(uuid);
-        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
-    }
-
     public void loadMenuConfigs() {
         File menuFolder = new File(Civs.dataLocation, "menus");
         if (menuFolder.exists()) {
@@ -218,6 +211,13 @@ public class MenuManager implements Listener {
 
     private static synchronized void clearCycleItems(UUID uuid) {
         cycleGuis.remove(uuid);
+    }
+
+    public void goBack(UUID uuid) {
+        popLastMenu(uuid);
+        MenuHistoryState menuHistoryState = popLastMenu(uuid);
+        Player player = Bukkit.getPlayer(uuid);
+        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
     }
 
     public Inventory openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {

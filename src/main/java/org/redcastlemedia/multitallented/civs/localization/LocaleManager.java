@@ -101,7 +101,7 @@ public class LocaleManager {
                 }
                 loadLanguageFromConfig(config, name.replace(".yml", ""));
             } catch (Exception e) {
-                e.printStackTrace();
+                Civs.logger.log(Level.SEVERE, "Error loading " + fileName, e);
             }
         }
         if (translationFolderExists) {
@@ -114,8 +114,7 @@ public class LocaleManager {
                 try {
                     config.load(file);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    Civs.logger.severe("Unable to load " + file.getName());
+                    Civs.logger.log(Level.SEVERE, "Unable to load " + file.getName(), e);
                     continue;
                 }
                 loadLanguageFromConfig(config, langKey);

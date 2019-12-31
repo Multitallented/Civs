@@ -3,14 +3,13 @@ package org.redcastlemedia.multitallented.civs.menus;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -35,21 +33,25 @@ public class BlueprintsMenuTests extends TestUtil {
 
     @Before
     public void setup() {
+        CivilianManager.getInstance().reload();
         MenuManager.clearData(TestUtil.player.getUniqueId());
-        loadRegionTypeShelter();
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
 
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.getStashItems().clear();
         civilian.getStashItems().put("shelter", 1);
     }
 
     @Test
     public void stashRegionItemsShouldBeEmpty() {
+        civilian.getStashItems().put("coal_mine", 1);
         blueprintsMenu.createMenu(this.civilian, new HashMap<>());
         blueprintsMenu.onCloseMenu(this.civilian, this.inventory);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        assertEquals(0, civilian.getStashItems().size());
+        blueprintsMenu.createMenu(this.civilian, new HashMap<>());
+        assertEquals(1, (int) civilian.getStashItems().get("shelter"));
+        assertNull(civilian.getStashItems().get("coal_mine"));
     }
 
     @Test
@@ -75,7 +77,6 @@ public class BlueprintsMenuTests extends TestUtil {
 
     @Test
     public void reloggingShouldNotReAddTheItem() {
-        loadRegionTypeShelter();
         Region region = RegionsTests.createNewRegion("shelter", TestUtil.player.getUniqueId());
         RegionManager.getInstance().addRegion(region);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
@@ -126,13 +127,13 @@ public class BlueprintsMenuTests extends TestUtil {
         assertFalse(CivItem.isCivsItem(itemStack));
     }
 
-    private void loadRegionTypeShelter() {
-        FileConfiguration fileConfiguration = new YamlConfiguration();
-        fileConfiguration.set("icon", "CHEST");
-        fileConfiguration.set("min", 1);
-        fileConfiguration.set("max", 1);
-        fileConfiguration.set("type", "region");
-        fileConfiguration.set("is-in-shop", false);
-        ItemManager.getInstance().loadRegionType(fileConfiguration, "shelter");
+    @Test
+    public void goingBackFromBlueprintsShouldntClearDataBeforeClose() {
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+        this.blueprintsMenu.createMenu(this.civilian, params);
+        MenuManager.getInstance().goBack(this.civilian.getUuid());
+        this.blueprintsMenu.createMenu(this.civilian, params);
+        assertEquals(1, (int) this.civilian.getStashItems().get("shelter"));
     }
 }

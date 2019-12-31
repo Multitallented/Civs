@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -30,10 +34,10 @@ public class BlueprintsMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
 
-        if (params.containsKey("page")) {
-            data.put("page", Integer.parseInt(params.get("page")));
+        if (params.containsKey(Constants.PAGE)) {
+            data.put(Constants.PAGE, Integer.parseInt(params.get(Constants.PAGE)));
         } else {
-            data.put("page", 0);
+            data.put(Constants.PAGE, 0);
         }
 
         Map<String, Integer> stashItems = civilian.getStashItems();
@@ -46,11 +50,11 @@ public class BlueprintsMenu extends CustomMenu {
         data.put(Constants.ITEMS_IN_VIEW, new HashMap<String, Integer>());
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
-        data.put("maxPage", maxPage);
+        data.put(Constants.MAX_PAGE, maxPage);
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
-            if (key.equals("page") || key.equals("maxPage")) {
+            if (key.equals(Constants.PAGE) || key.equals(Constants.MAX_PAGE)) {
                 continue;
             }
             data.put(key, params.get(key));
@@ -63,7 +67,8 @@ public class BlueprintsMenu extends CustomMenu {
         Map<String, Integer> stashItems = civilian.getStashItems();
         HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), Constants.ITEMS_IN_VIEW);
         if (itemsInView == null) {
-            itemsInView = new HashMap<>();
+            Civs.logger.log(Level.SEVERE, "Unable to get data for blueprints! Possible Civ item duplication!");
+            return;
         }
         addItemsToStash(inventory, itemsInView, stashItems);
         for (Map.Entry<String, Integer> entry : itemsInView.entrySet()) {
@@ -82,6 +87,10 @@ public class BlueprintsMenu extends CustomMenu {
         civilian.setStashItems(stashItems);
         CivilianManager.getInstance().saveCivilian(civilian);
         itemsInView.clear();
+        System.out.println("blueprints closed");
+        for (Map.Entry<String, Integer> entry : civilian.getStashItems().entrySet()) {
+            System.out.println(entry.getKey() + "*" + entry.getValue());
+        }
     }
     private void addItemsToStash(Inventory inventory,
                                  HashMap<String, Integer> itemsInView,
@@ -125,12 +134,16 @@ public class BlueprintsMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("blueprints")) {
             Map<String, Integer> stashItems = civilian.getStashItems();
             if (stashItems.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+            int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
             int startIndex = page * menuIcon.getIndex().size();
             String[] stashArray = new String[stashItems.size()];
             stashArray = stashItems.keySet().toArray(stashArray);
@@ -151,7 +164,7 @@ public class BlueprintsMenu extends CustomMenu {
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "town-instructions")
+                        .getTranslationWithPlaceholders(player, "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
                 lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));

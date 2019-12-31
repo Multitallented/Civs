@@ -176,19 +176,20 @@ public abstract class CustomMenu {
     }
 
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return true;
+        }
         if (actionString.equals("print-tutorial")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             TutorialManager.getInstance().printTutorial(player, civilian);
         } else if (actionString.equals("close")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             MenuManager.clearHistory(civilian.getUuid());
             player.closeInventory();
         } else if ("clear-history".equals(actionString)) {
             MenuManager.clearHistory(civilian.getUuid());
         } else if (actionString.startsWith("message:")) {
             String messageKey = actionString.split(":")[1];
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     messageKey));
         } else if ("refresh".equals(actionString)) {
             MenuManager.getInstance().refreshMenu(civilian);
