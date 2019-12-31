@@ -225,9 +225,8 @@ public class MenuManager implements Listener {
             return null;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid()))) {
-            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+        if (openMenus.containsKey(civilian.getUuid())) {
+            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
         Inventory inventory = menus.get(menuName).createMenuFromHistory(civilian, data);
@@ -254,10 +253,8 @@ public class MenuManager implements Listener {
         if (redirectMenu != null) {
             return openMenuFromString(civilian, redirectMenu);
         }
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid())) &&
-                menus.containsKey(menuName)) {
-            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+        if (openMenus.containsKey(civilian.getUuid())) {
+            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
         Inventory inventory = menus.get(menuName).createMenu(civilian, params);
