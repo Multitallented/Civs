@@ -18,6 +18,8 @@ public final class Constants {
     public static final String EXCLUSIVE = "exclusive";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String SHOW_PRICE = "showPrice";
+    public static final String PAGE = "page";
+    public static final String MAX_PAGE = "maxPage";
 
     private Constants() {
 

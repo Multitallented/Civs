@@ -34,10 +34,10 @@ public class BlueprintsMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
 
-        if (params.containsKey("page")) {
-            data.put("page", Integer.parseInt(params.get("page")));
+        if (params.containsKey(Constants.PAGE)) {
+            data.put(Constants.PAGE, Integer.parseInt(params.get(Constants.PAGE)));
         } else {
-            data.put("page", 0);
+            data.put(Constants.PAGE, 0);
         }
 
         Map<String, Integer> stashItems = civilian.getStashItems();
@@ -50,11 +50,11 @@ public class BlueprintsMenu extends CustomMenu {
         data.put(Constants.ITEMS_IN_VIEW, new HashMap<String, Integer>());
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
-        data.put("maxPage", maxPage);
+        data.put(Constants.MAX_PAGE, maxPage);
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
-            if (key.equals("page") || key.equals("maxPage")) {
+            if (key.equals(Constants.PAGE) || key.equals(Constants.MAX_PAGE)) {
                 continue;
             }
             data.put(key, params.get(key));
@@ -143,7 +143,7 @@ public class BlueprintsMenu extends CustomMenu {
             if (stashItems.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+            int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
             int startIndex = page * menuIcon.getIndex().size();
             String[] stashArray = new String[stashItems.size()];
             stashArray = stashItems.keySet().toArray(stashArray);
