@@ -74,11 +74,13 @@ public class TownMenu extends CustomMenu {
                 (government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
                         government.getGovernmentType() == GovernmentType.ANARCHY);
-        boolean govTypeOwnerOverride = government.getGovernmentType() == GovernmentType.OLIGARCHY ||
+        boolean govTypeOwnerOverride =
+                town.getRawPeople().containsKey(civilian.getUuid()) &&
+                (government.getGovernmentType() == GovernmentType.OLIGARCHY ||
                 government.getGovernmentType() == GovernmentType.COOPERATIVE ||
                 government.getGovernmentType() == GovernmentType.DEMOCRACY ||
                 government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
-                government.getGovernmentType() == GovernmentType.CAPITALISM;
+                government.getGovernmentType() == GovernmentType.CAPITALISM);
         Player player = Bukkit.getPlayer(civilian.getUuid());
         boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
 
