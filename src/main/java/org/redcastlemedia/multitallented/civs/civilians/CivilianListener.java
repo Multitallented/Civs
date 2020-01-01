@@ -125,7 +125,7 @@ public class CivilianListener implements Listener {
                 player.damage(penalty);
             }
         }
-//        civilianManager.unloadCivilian(player);
+        CivilianManager.getInstance().unloadCivilian(player);
         CommonScheduler.getLastRegion().remove(uuid);
         CommonScheduler.getLastTown().remove(uuid);
         CommonScheduler.removeLastAnnouncement(uuid);
