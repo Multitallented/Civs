@@ -8,12 +8,16 @@ import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.InventoryImpl;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
@@ -33,7 +37,6 @@ public class BlueprintsMenuTests extends TestUtil {
 
     @Before
     public void setup() {
-        CivilianManager.getInstance().reload();
         MenuManager.clearData(TestUtil.player.getUniqueId());
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
@@ -44,7 +47,7 @@ public class BlueprintsMenuTests extends TestUtil {
         civilian.getStashItems().put("shelter", 1);
     }
 
-    @Test
+    @Test @Ignore
     public void stashRegionItemsShouldBeEmpty() {
         civilian.getStashItems().put("coal_mine", 1);
         blueprintsMenu.createMenu(this.civilian, new HashMap<>());
