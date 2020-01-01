@@ -225,8 +225,7 @@ public class MenuManager implements Listener {
             return null;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid()))) {
+        if (openMenus.containsKey(civilian.getUuid())) {
             menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
@@ -254,9 +253,7 @@ public class MenuManager implements Listener {
         if (redirectMenu != null) {
             return openMenuFromString(civilian, redirectMenu);
         }
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid())) &&
-                menus.containsKey(menuName)) {
+        if (openMenus.containsKey(civilian.getUuid())) {
             menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }

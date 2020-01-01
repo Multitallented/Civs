@@ -196,14 +196,12 @@ public abstract class CustomMenu {
         } else if ("back".equals(actionString)) {
             MenuManager.getInstance().goBack(civilian.getUuid());
         } else if (actionString.startsWith("menu:")) {
-            System.out.println(actionString);
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");
             MenuManager.openMenuFromString(civilian, menuString);
         } else if (actionString.startsWith("command:")) {
             actionString = replaceVariables(civilian, itemStack, actionString);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
-            System.out.println("command: " + actionString);
             CommandUtil.performCommand(offlinePlayer, actionString
                     .replace("command:", ""));
         } else if (actionString.startsWith("permission:")) {

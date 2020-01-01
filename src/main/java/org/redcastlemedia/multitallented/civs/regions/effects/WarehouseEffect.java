@@ -37,6 +37,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 
 @CivsSingleton
 public class WarehouseEffect implements Listener, RegionCreatedListener {
@@ -149,14 +150,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
         File dataFile = new File(dataFolder, r.getId() + ".yml");
         if (!dataFile.exists()) {
-            System.out.println("warehouse region file does not exist");
-            System.out.println(r.getId() + ".yml");
+            Civs.logger.log(Level.SEVERE, "Warehouse region file does not exist {0}.yml", r.getId());
             return;
         }
         FileConfiguration config = new YamlConfiguration();
         try {
             config.load(dataFile);
-            ArrayList<String> locationList = new ArrayList<String>();
+            ArrayList<String> locationList = new ArrayList<>();
             for (InventoryLocation inventoryLocation : chests) {
                 locationList.add(Region.blockLocationToString(inventoryLocation.getLocation()));
             }
