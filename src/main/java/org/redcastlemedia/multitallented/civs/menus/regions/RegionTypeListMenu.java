@@ -112,7 +112,6 @@ public class RegionTypeListMenu extends CustomMenu {
                     currentItem.setDisplayName("g:" + regionTypeName);
                 } else if (civItem instanceof FolderType) {
                     currentItem = civItem.getShopIcon(civilian.getLocale()).clone();
-                    currentItem.setDisplayName("f:" + currentItem.getDisplayName());
                     regionTypeNames.add(civItem.getProcessedName());
                 } else {
                     regionTypeNames.add(civItem.getProcessedName());
