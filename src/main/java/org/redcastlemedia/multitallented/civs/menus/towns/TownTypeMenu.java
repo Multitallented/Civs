@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -23,21 +22,22 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "town-type")
+@CivsMenu(name = "town-type") @SuppressWarnings("unused")
 public class TownTypeMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
-        if (params.containsKey("townType")) {
-            CivItem regionType = ItemManager.getInstance().getItemType(params.get("townType"));
-            data.put("townType", regionType);
+        if (params.containsKey(Constants.TOWN_TYPE)) {
+            CivItem regionType = ItemManager.getInstance().getItemType(params.get(Constants.TOWN_TYPE));
+            data.put(Constants.TOWN_TYPE, regionType);
         }
-        if (params.containsKey("showPrice") && "true".equals(params.get("showPrice"))) {
-            data.put("showPrice", true);
+        if (params.containsKey(Constants.SHOW_PRICE) && "true".equals(params.get(Constants.SHOW_PRICE))) {
+            data.put(Constants.SHOW_PRICE, true);
         } else {
-            data.put("showPrice", false);
+            data.put(Constants.SHOW_PRICE, false);
         }
         return data;
     }
@@ -49,7 +49,7 @@ public class TownTypeMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         LocaleManager localeManager = LocaleManager.getInstance();
-        TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), "townType");
+        TownType townType = (TownType) MenuManager.getData(civilian.getUuid(), Constants.TOWN_TYPE);
         if (townType == null) {
             return new ItemStack(Material.AIR);
         }
@@ -118,11 +118,12 @@ public class TownTypeMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            String childName = LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(), townType.getChild().toLowerCase() + "-name");
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            String childName = LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    player, townType.getChild().toLowerCase() + LocaleConstants.NAME_SUFFIX);
+            cvItem.getLore().clear();
+            cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", childName)
-                    .replace("$2", "" + townType.getChildPopulation()));
+                    .replace("$2", "" + townType.getChildPopulation())));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

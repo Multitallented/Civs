@@ -82,6 +82,9 @@ public class TownMenu extends CustomMenu {
                 government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                 government.getGovernmentType() == GovernmentType.CAPITALISM);
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null || townType == null) {
+            return new ItemStack(Material.AIR);
+        }
         boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
 
         if ("icon".equals(menuIcon.getKey())) {
@@ -94,7 +97,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
             // TODO power history
@@ -106,10 +109,10 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1",
                     (TownManager.getInstance().getRemainingGracePeriod(town) / 1000) + ""));
             ItemStack itemStack = cvItem.createItemStack();
@@ -133,7 +136,7 @@ public class TownMenu extends CustomMenu {
         } else if ("set-ally".equals(menuIcon.getKey())) {
             if (selectedTown != null && selectedTown != town && !isAllied) {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         menuIcon.getName()).replace("$1", town.getName()));
                 cvItem.getLore().clear();
                 cvItem.getLore().add(selectedTown.getName());
@@ -148,7 +151,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
             cvItem.getLore().add(selectedTown.getName());
@@ -158,7 +161,7 @@ public class TownMenu extends CustomMenu {
         } else if ("population".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             cvItem.getLore().clear();
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc())
                     .replace("$1", town.getPopulation() + "")
                     .replace("$2", town.getHousing() + "")
@@ -168,7 +171,7 @@ public class TownMenu extends CustomMenu {
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
             int i=0;
@@ -230,29 +233,26 @@ public class TownMenu extends CustomMenu {
             }
             return itemStack;
         } else if ("bank".equals(menuIcon.getKey())) {
-            if (!town.getRevolt().contains(civilian.getUuid())) {
-                return new ItemStack(Material.AIR);
-            }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String bankBalance = Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()).replace("$1", bankBalance));
             cvItem.getLore().clear();
             if (town.getTaxes() > 0) {
                 String taxString = Util.getNumberFormat(town.getTaxes(), civilian.getLocale());
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "town-tax")
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "town-tax")
                         .replace("$1", taxString));
             }
             if (isOwner || colonialOverride) {
                 if (government.getGovernmentType() != GovernmentType.COOPERATIVE &&
                         government.getGovernmentType() != GovernmentType.COMMUNISM &&
                         government.getGovernmentType() != GovernmentType.ANARCHY) {
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(
-                            civilian.getLocale(), "town-tax-desc")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                            player, "town-tax-desc")
                             .replace("$1", town.getName()));
                 }
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "town-bank-desc")
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "town-bank-desc")
                         .replace("$1", town.getName()));
             }
             ItemStack itemStack = cvItem.createItemStack();
@@ -267,8 +267,8 @@ public class TownMenu extends CustomMenu {
                 CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), menuIcon.getDesc()).replace("$1", town.getName())
+                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, menuIcon.getDesc()).replace("$1", town.getName())
                         .replace("$2", "" + costItem.getQty()).replace("$3", costItem.getMat().name())));
                 ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
@@ -284,9 +284,9 @@ public class TownMenu extends CustomMenu {
                     town.getRawPeople().get(civilian.getUuid()).contains("member")) {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "cancel-revolt").replace("$1", town.getName())));
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "cancel-revolt").replace("$1", town.getName())));
+                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "revolt-display").replace("$1", town.getRevolt().size() + "")
                         .replace("$2", town.getRawPeople().size() + "")));
                 ItemStack itemStack = cvItem.createItemStack();
@@ -330,13 +330,13 @@ public class TownMenu extends CustomMenu {
                 return true;
             }
             town.getAllyInvites().add(selectedTown.getName());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "town-ally-request-sent").replace("$1", townName));
             for (UUID uuid : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(uuid).contains("owner")) {
                     Player pSend = Bukkit.getPlayer(uuid);
                     if (pSend != null && pSend.isOnline()) {
-                        pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(pSend,
                                 "town-ally-request-sent").replace("$1", townName));
                     }
                 }
@@ -349,7 +349,7 @@ public class TownMenu extends CustomMenu {
             AllianceManager.getInstance().unAlly(selectedTown, town);
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                 cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "town-ally-removed")
+                        .getTranslationWithPlaceholders(cPlayer, "town-ally-removed")
                         .replace("$1", selectedTown.getName())
                         .replace("$2", townName));
             }
@@ -357,9 +357,8 @@ public class TownMenu extends CustomMenu {
         } else if (actionString.equals("join-revolt")) {
             CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
             if (!player.getInventory().contains(costItem.createItemStack())) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(),
-                        "item-cost").replace("$1", "" + costItem.getQty())
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "item-cost").replace("$1", "" + costItem.getQty())
                         .replace("$2", costItem.getMat().name()));
                 return true;
             }

@@ -5,20 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.FolderType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "region-type-list") @SuppressWarnings("unused")
 public class RegionTypeListMenu extends CustomMenu {
@@ -82,6 +87,10 @@ public class RegionTypeListMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals(REGION_TYPES)) {
             HashMap<String, Integer> regionTypes;
             if (MenuManager.getData(civilian.getUuid(), REGION_TYPES) != null) {
@@ -100,7 +109,7 @@ public class RegionTypeListMenu extends CustomMenu {
                 if (civItem == null) {
                     regionTypeNames.add("g:" + regionTypeName);
                     currentItem = CVItem.createCVItemFromString("CHEST");
-                    currentItem.setDisplayName("g:" + regionTypeName); // TODO translate group names
+                    currentItem.setDisplayName("g:" + regionTypeName);
                 } else if (civItem instanceof FolderType) {
                     currentItem = civItem.getShopIcon(civilian.getLocale()).clone();
                     currentItem.setDisplayName("f:" + currentItem.getDisplayName());
@@ -120,7 +129,10 @@ public class RegionTypeListMenu extends CustomMenu {
             CVItem cvItem = fullListRegionTypes.get(startIndex + count);
             ItemStack itemStack;
             if (cvItem.getDisplayName().startsWith("g:")) {
-                cvItem.setDisplayName(cvItem.getDisplayName().replace("g:", ""));
+                String groupKey = cvItem.getDisplayName().replace("g:", "");
+                String localGroupName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        groupKey + LocaleConstants.GROUP_SUFFIX);
+                cvItem.setDisplayName(localGroupName);
                 itemStack = cvItem.createItemStack();
                 ArrayList<String> actionList = new ArrayList<>();
                 List<CivItem> group = ItemManager.getInstance().getItemGroup(cvItem.getDisplayName());
@@ -132,7 +144,10 @@ public class RegionTypeListMenu extends CustomMenu {
                 actionList.add(action.toString());
                 actions.get(civilian.getUuid()).put(itemStack, actionList);
             } else if (cvItem.getDisplayName().startsWith("f:")) {
-                cvItem.setDisplayName(cvItem.getDisplayName().replace("g:", ""));
+                String folderKey = cvItem.getDisplayName().replace("f:", "");
+                String localFolderName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        folderKey + LocaleConstants.NAME_SUFFIX);
+                cvItem.setDisplayName(localFolderName);
                 FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(regionTypeNames.get(startIndex + count));
                 itemStack = cvItem.createItemStack();
                 ArrayList<String> actionList = new ArrayList<>();
