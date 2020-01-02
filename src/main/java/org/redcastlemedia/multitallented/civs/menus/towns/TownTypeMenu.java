@@ -122,7 +122,7 @@ public class TownTypeMenu extends CustomMenu {
                     player, townType.getChild().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             cvItem.getLore().clear();
             cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    menuIcon.getName()).replace("$1", childName)
+                    menuIcon.getDesc()).replace("$1", childName)
                     .replace("$2", "" + townType.getChildPopulation())));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
