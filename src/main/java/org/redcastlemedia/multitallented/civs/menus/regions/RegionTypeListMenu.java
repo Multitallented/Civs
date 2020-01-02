@@ -112,6 +112,7 @@ public class RegionTypeListMenu extends CustomMenu {
                     currentItem.setDisplayName("g:" + regionTypeName);
                 } else if (civItem instanceof FolderType) {
                     currentItem = civItem.getShopIcon(civilian.getLocale()).clone();
+                    currentItem.setDisplayName("f:" + currentItem.getDisplayName());
                     regionTypeNames.add(civItem.getProcessedName());
                 } else {
                     regionTypeNames.add(civItem.getProcessedName());
@@ -134,7 +135,7 @@ public class RegionTypeListMenu extends CustomMenu {
                 cvItem.setDisplayName(localGroupName);
                 itemStack = cvItem.createItemStack();
                 ArrayList<String> actionList = new ArrayList<>();
-                List<CivItem> group = ItemManager.getInstance().getItemGroup(cvItem.getDisplayName());
+                List<CivItem> group = ItemManager.getInstance().getItemGroup(groupKey);
                 StringBuilder action = new StringBuilder("menu:region-type-list?regionList=");
                 for (CivItem item : group) {
                     action.append(item.getProcessedName()).append(",");
@@ -143,10 +144,8 @@ public class RegionTypeListMenu extends CustomMenu {
                 actionList.add(action.toString());
                 actions.get(civilian.getUuid()).put(itemStack, actionList);
             } else if (cvItem.getDisplayName().startsWith("f:")) {
-                String folderKey = cvItem.getDisplayName().replace("f:", "");
-                String localFolderName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        folderKey + LocaleConstants.NAME_SUFFIX);
-                cvItem.setDisplayName(localFolderName);
+                String folderName = cvItem.getDisplayName().replace("f:", "");
+                cvItem.setDisplayName(folderName);
                 FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(regionTypeNames.get(startIndex + count));
                 itemStack = cvItem.createItemStack();
                 ArrayList<String> actionList = new ArrayList<>();
