@@ -1,13 +1,15 @@
 package org.redcastlemedia.multitallented.civs.menus.people;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -18,14 +20,16 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@CivsMenu(name = "member-action")
+@CivsMenu(name = "member-action") @SuppressWarnings("unused")
 public class MemberActionMenu extends CustomMenu {
+
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         HashMap<String, Object> data = new HashMap<>();
@@ -36,9 +40,9 @@ public class MemberActionMenu extends CustomMenu {
             data.put("town", TownManager.getInstance().getTown(params.get("town")));
             data.put("key", params.get("town"));
         }
-        if (params.containsKey("region")) {
-            data.put("region", RegionManager.getInstance().getRegionById(params.get("region")));
-            data.put("key", params.get("region"));
+        if (params.containsKey(Constants.REGION)) {
+            data.put(Constants.REGION, RegionManager.getInstance().getRegionById(params.get(Constants.REGION)));
+            data.put("key", params.get(Constants.REGION));
         }
         return data;
     }
@@ -48,7 +52,7 @@ public class MemberActionMenu extends CustomMenu {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
         UUID uuid = (UUID) MenuManager.getData(civilian.getUuid(), "uuid");
-        Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+        Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
         if (town == null && region != null) {
             town = TownManager.getInstance().getTownAt(region.getLocation());
         }
@@ -78,10 +82,10 @@ public class MemberActionMenu extends CustomMenu {
         boolean isOwner = false;
         if (region != null) {
             isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
-                    region.getRawPeople().get(uuid).contains("owner");
+                    region.getRawPeople().get(uuid).contains(Constants.OWNER);
         } else if (town != null) {
             isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
-                    town.getRawPeople().get(uuid).contains("owner");
+                    town.getRawPeople().get(uuid).contains(Constants.OWNER);
         }
 
         boolean isVoteOnly = !isOwner && (governmentType == GovernmentType.CAPITALISM ||
@@ -98,7 +102,7 @@ public class MemberActionMenu extends CustomMenu {
             if (displayName == null) {
                 displayName = "Unknown";
             }
-            CVItem cvItem = CVItem.createCVItemFromString("PLAYER_HEAD");
+            CVItem cvItem = CVItem.createCVItemFromString(Material.PLAYER_HEAD.name());
             cvItem.setDisplayName(displayName);
             String rankString;
             if (region != null) {
@@ -108,18 +112,26 @@ public class MemberActionMenu extends CustomMenu {
             } else {
                 rankString = "";
             }
-            String localizedRanks = getLocalizedRanks(rankString, civilian.getLocale());
+            String localizedRanks = getLocalizedRanks(rankString, player);
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+            if (skullMeta != null) {
+                skullMeta.setOwningPlayer(offlinePlayer);
+                itemStack.setItemMeta(skullMeta);
+            }
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("set-owner".equals(menuIcon.getKey())) {
+            if (isOwner) {
+                return new ItemStack(Material.AIR);
+            }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
-                    !isVoteOnly && !role.contains("owner") && !cantAddOwners)) {
+                    !isVoteOnly && !role.contains(Constants.OWNER) && !cantAddOwners)) {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "buy")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "buy")
                             .replace("$1", priceString));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -129,11 +141,27 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-member".equals(menuIcon.getKey())) {
-            if (!(isAdmin || (!viewingSelf && isOwner && !role.contains("member")))) {
+            if (role.contains(Constants.MEMBER)) {
+                return new ItemStack(Material.AIR);
+            }
+            if (!(isAdmin || (!viewingSelf && isOwner && !role.contains(Constants.MEMBER)))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
-            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains("guest") && !cantAddOwners))) {
+            if (role.contains(Constants.GUEST)) {
+                return new ItemStack(Material.AIR);
+            }
+            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("set-recruiter".equals(menuIcon.getKey())) {
+            if (town == null) {
+                return new ItemStack(Material.AIR);
+            }
+            if (role.contains(Constants.RECRUITER)) {
+                return new ItemStack(Material.AIR);
+            }
+            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {
@@ -149,7 +177,7 @@ public class MemberActionMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
                 if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                     String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "capitalism-voting-cost")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "capitalism-voting-cost")
                             .replace("$1", votingCost));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -162,19 +190,22 @@ public class MemberActionMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    private String getLocalizedRanks(String rankString, String locale) {
+    private String getLocalizedRanks(String rankString, Player player) {
         String localizedRanks = "";
-        if (rankString.contains("owner")) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, "owner") + ", ";
+        if (rankString == null) {
+            return localizedRanks;
         }
-        if (rankString.contains("member")) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, "member") + ", ";
+        if (rankString.contains(Constants.OWNER)) {
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.OWNER) + ", ";
         }
-        if (rankString.contains("guest")) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, "guest") + ", ";
+        if (rankString.contains(Constants.MEMBER)) {
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.MEMBER) + ", ";
         }
-        if (rankString.contains("recruiter")) {
-            localizedRanks += LocaleManager.getInstance().getTranslation(locale, "recruiter") + ", ";
+        if (rankString.contains(Constants.GUEST)) {
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.GUEST) + ", ";
+        }
+        if (rankString.contains(Constants.RECRUITER)) {
+            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.RECRUITER) + ", ";
         }
         if (localizedRanks.length() > 0) {
             localizedRanks = localizedRanks.substring(0, localizedRanks.length() - 2);
@@ -194,8 +225,8 @@ public class MemberActionMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             if (town.getVotes().containsKey(civilian.getUuid())) {
                 if (Civs.econ == null || !Civs.econ.has(player, price)) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                            civilian.getLocale(), "not-enough-money")
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                            player, "not-enough-money")
                             .replace("$1", price + ""));
                     return true;
                 }
@@ -213,8 +244,11 @@ public class MemberActionMenu extends CustomMenu {
                 vote.put(uuid, 1);
                 town.getVotes().put(civilian.getUuid(), vote);
             }
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(), "voted").replace("$1", player.getName()));
+            if (player != null) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "voted").replace("$1", offlinePlayer.getName()));
+            }
             TownManager.getInstance().saveTown(town);
             return true;
         }

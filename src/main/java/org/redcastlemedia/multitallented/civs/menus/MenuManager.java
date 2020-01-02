@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,6 +59,7 @@ public class MenuManager implements Listener {
         loadMenuConfigs();
     }
     public void clearOpenMenus() {
+        data.clear();
         openMenus.clear();
     }
 
@@ -107,43 +109,42 @@ public class MenuManager implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onInventoryClick(InventoryClickEvent event) {
-        UUID uuid = event.getWhoClicked().getUniqueId();
-        if (!openMenus.containsKey(uuid)) {
-            return;
-        }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-        if (event.getCurrentItem() != null) {
-            if (backButton.createCVItem(civilian.getLocale(), 0)
-                    .equivalentItem(event.getCurrentItem(), true, true)) {
-                goBack(civilian.getUuid());
-                event.setCancelled(true);
-                return;
-            } else if (prevButton.createCVItem(civilian.getLocale(), 0)
-                    .equivalentItem(event.getCurrentItem(), true, true)) {
-                int page = (Integer) getData(civilian.getUuid(), "page");
-                putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
-                refreshMenu(civilian);
-                event.setCancelled(true);
-                return;
-            } else if (nextButton.createCVItem(civilian.getLocale(), 0)
-                    .equivalentItem(event.getCurrentItem(), true, true)) {
-                int page = (Integer) getData(civilian.getUuid(), "page");
-                int maxPage = (Integer) getData(civilian.getUuid(), "maxPage");
-                putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
-                refreshMenu(civilian);
-                event.setCancelled(true);
+        try {
+            UUID uuid = event.getWhoClicked().getUniqueId();
+            if (!openMenus.containsKey(uuid)) {
                 return;
             }
+            Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+            if (event.getCurrentItem() != null) {
+                if (backButton.createCVItem(civilian.getLocale(), 0)
+                        .equivalentItem(event.getCurrentItem(), true, true)) {
+                    goBack(civilian.getUuid());
+                    event.setCancelled(true);
+                    return;
+                } else if (prevButton.createCVItem(civilian.getLocale(), 0)
+                        .equivalentItem(event.getCurrentItem(), true, true)) {
+                    int page = (Integer) getData(civilian.getUuid(), "page");
+                    putData(civilian.getUuid(), "page", page < 1 ? 0 : page - 1);
+                    refreshMenu(civilian);
+                    event.setCancelled(true);
+                    return;
+                } else if (nextButton.createCVItem(civilian.getLocale(), 0)
+                        .equivalentItem(event.getCurrentItem(), true, true)) {
+                    int page = (Integer) getData(civilian.getUuid(), "page");
+                    int maxPage = (Integer) getData(civilian.getUuid(), "maxPage");
+                    putData(civilian.getUuid(), "page", page >= maxPage ? maxPage : page + 1);
+                    refreshMenu(civilian);
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
+            menus.get(openMenus.get(uuid)).onInventoryClick(event);
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Exception thrown during inventory click", e);
+            event.setCancelled(true);
+            event.getWhoClicked().closeInventory();
         }
-
-        menus.get(openMenus.get(uuid)).onInventoryClick(event);
-    }
-
-    public void goBack(UUID uuid) {
-        popLastMenu(uuid);
-        MenuHistoryState menuHistoryState = popLastMenu(uuid);
-        Player player = Bukkit.getPlayer(uuid);
-        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
     }
 
     public void loadMenuConfigs() {
@@ -167,8 +168,7 @@ public class MenuManager implements Listener {
                     config.getString("next.name", "next-button"),
                     config.getString("next.desc", ""));
         } catch (Exception e) {
-            Civs.logger.severe(Civs.getPrefix() + "Unable to load menu default.yml");
-            Civs.logger.severe(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.SEVERE, Civs.getPrefix() + "Unable to load menu default.yml", e);
             return;
         }
 
@@ -180,7 +180,7 @@ public class MenuManager implements Listener {
                 loadConfig(currentMenu);
                 menus.put(menuClass.getAnnotation(CivsMenu.class).name(), currentMenu);
             } catch (Exception e) {
-                Civs.logger.severe(Arrays.toString(e.getStackTrace()));
+                Civs.logger.log(Level.SEVERE, "Error finding menus", e);
             }
         }
     }
@@ -213,14 +213,20 @@ public class MenuManager implements Listener {
         cycleGuis.remove(uuid);
     }
 
+    public void goBack(UUID uuid) {
+        popLastMenu(uuid);
+        MenuHistoryState menuHistoryState = popLastMenu(uuid);
+        Player player = Bukkit.getPlayer(uuid);
+        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
+    }
+
     public Inventory openMenuFromHistory(Player player, String menuName, Map<String, Object> data) {
         if (!menus.containsKey(menuName)) {
             return null;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid()))) {
-            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+        if (openMenus.containsKey(civilian.getUuid())) {
+            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
         Inventory inventory = menus.get(menuName).createMenuFromHistory(civilian, data);
@@ -247,9 +253,8 @@ public class MenuManager implements Listener {
         if (redirectMenu != null) {
             return openMenuFromString(civilian, redirectMenu);
         }
-        if (openMenus.containsKey(civilian.getUuid()) &&
-                menuName.equals(openMenus.get(civilian.getUuid()))) {
-            menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+        if (openMenus.containsKey(civilian.getUuid())) {
+            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
             openMenus.remove(civilian.getUuid());
         }
         Inventory inventory = menus.get(menuName).createMenu(civilian, params);
@@ -315,7 +320,7 @@ public class MenuManager implements Listener {
         history.remove(uuid);
     }
     public static Map<String, Object> getAllData(UUID uuid) {
-        return data.get(uuid);
+        return data.getOrDefault(uuid, new HashMap<>());
     }
     public static Object getData(UUID uuid, String key) {
         Map<String, Object> dataMap = data.get(uuid);

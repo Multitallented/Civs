@@ -10,15 +10,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -131,7 +128,7 @@ public class AntiCampEffect implements Listener {
             }
         }
 
-        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(civilian.getLocale(),
+        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
                 "activate-anticamp-question").replace("$1", player.getDisplayName())
                 .replace("$2", town.getName())
                 .replace("$3", "" + antiCampCost) + " ";

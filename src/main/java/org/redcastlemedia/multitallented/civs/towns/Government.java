@@ -2,12 +2,14 @@ package org.redcastlemedia.multitallented.civs.towns;
 
 import lombok.Getter;
 
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Government {
     @Getter
@@ -15,14 +17,14 @@ public class Government {
     @Getter
     private final GovernmentType governmentType;
     @Getter
-    private final HashSet<GovTypeBuff> buffs;
+    private final Set<GovTypeBuff> buffs;
     @Getter
-    private final ArrayList<GovTransition> transitions;
+    private final List<GovTransition> transitions;
     private final CVItem icon;
 
     public Government(String name, GovernmentType governmentType,
-                      HashSet<GovTypeBuff> buffs, CVItem cvItem,
-                      ArrayList<GovTransition> transitions) {
+                      Set<GovTypeBuff> buffs, CVItem cvItem,
+                      List<GovTransition> transitions) {
         this.name = name;
         this.governmentType = governmentType;
         this.buffs = buffs;

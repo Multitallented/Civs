@@ -4,12 +4,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 
-@CivsCommand(keys = { "newday" })
+@CivsCommand(keys = { "newday" }) @SuppressWarnings("unused")
 public class DayCommand implements CivCommand {
 
     @Override
@@ -22,7 +22,7 @@ public class DayCommand implements CivCommand {
                 (Civs.perm == null || !Civs.perm.has(player, "civs.admin")))) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(), "no-permission"));
+                    .getTranslationWithPlaceholders(player, "no-permission"));
             return true;
         }
 

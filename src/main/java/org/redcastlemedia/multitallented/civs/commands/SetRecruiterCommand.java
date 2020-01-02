@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -19,7 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
-@CivsCommand(keys = { "setrecruiter" })
+@CivsCommand(keys = { "setrecruiter" }) @SuppressWarnings("unused")
 public class SetRecruiterCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -29,7 +29,7 @@ public class SetRecruiterCommand implements CivCommand {
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        boolean isAdmin = false;
+        boolean isAdmin;
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -39,7 +39,7 @@ public class SetRecruiterCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a town");
@@ -56,7 +56,7 @@ public class SetRecruiterCommand implements CivCommand {
         Town town = TownManager.getInstance().getTown(locationString);
         if (town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -67,7 +67,7 @@ public class SetRecruiterCommand implements CivCommand {
         Player invitePlayer = invitee.isOnline() ? (Player) invitee : null;
 //        if (!isAdmin && (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
 //                town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
-//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
 //                    "no-permission"));
 //            return true;
 //        }
@@ -89,20 +89,18 @@ public class SetRecruiterCommand implements CivCommand {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         if (!isAdmin && !hasPermission && !colonialOverride) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
 
-        Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
-
         String name = town.getName();
         if (invitePlayer != null) {
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
                     "add-recruiter-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitePlayer != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "recruiter-added-region").replace("$1", invitePlayer.getDisplayName())
                     .replace("$2", name));
         } else {

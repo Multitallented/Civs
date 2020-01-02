@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
@@ -72,7 +75,7 @@ public class RegionEffectTests extends TestUtil {
     @Test
     @Ignore // TODO fix this
     public void villagerShouldSpawnNewVillager() {
-        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
+        CommonScheduler.getLastTown().put(TestUtil.player.getUniqueId(), this.town);
         RegionsTests.loadRegionTypeCobble();
         Region region = RegionsTests.createNewRegion("cobble");
         HashMap<String, String> effectMap = new HashMap<>();
@@ -105,7 +108,7 @@ public class RegionEffectTests extends TestUtil {
 //        Block block = TestUtil.createBlock(Material.CHEST, townLocation);
 //        doReturn(TestUtil.createBlock(Material.AIR, townLocation.add(0, 1,0))).when(block).getRelative(any(), anyInt());
 //        when(block.getWorld()).thenReturn(mock(World.class));
-        CommonScheduler.lastTown.put(TestUtil.player.getUniqueId(), this.town);
+        CommonScheduler.getLastTown().put(TestUtil.player.getUniqueId(), this.town);
 
         villagerEffect.regionCreatedHandler(region);
         Villager villager = VillagerEffect.spawnVillager(region);
@@ -163,6 +166,20 @@ public class RegionEffectTests extends TestUtil {
         PlayerInRegionEvent event = new PlayerInRegionEvent(TestUtil.player.getUniqueId(), region, regionType);
         activeEffect.onPlayerInRegion(event);
         assertTrue(region.getLastActive() > 0);
+    }
+
+    @Test
+    public void repairEffectShouldGetCorrectAmount() {
+        RepairEffect repairEffect = new RepairEffect();
+        int repairCost = repairEffect.getRepairCost(Material.DIAMOND_PICKAXE, 1);
+        assertEquals(1, repairCost);
+    }
+
+    @Test
+    public void maxRepairEffectShouldGetCorrectAmount() {
+        RepairEffect repairEffect = new RepairEffect();
+        int repairCost = repairEffect.getRepairCost(Material.DIAMOND_PICKAXE, Material.DIAMOND_PICKAXE.getMaxDurability() - 1);
+        assertEquals(3, repairCost);
     }
 
     @After

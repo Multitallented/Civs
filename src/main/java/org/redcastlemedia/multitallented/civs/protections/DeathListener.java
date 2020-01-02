@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -48,7 +48,7 @@ public class DeathListener implements Listener {
         Bukkit.getPluginManager().registerEvents(deathListener, Civs.getInstance());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -56,7 +56,7 @@ public class DeathListener implements Listener {
         if (!ConfigManager.getInstance().isAllowTeleportInCombat()) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "in-combat"));
                 return;
             }
@@ -68,7 +68,7 @@ public class DeathListener implements Listener {
                 Region region = RegionManager.getInstance().getRegionAt(event.getTo());
                 if (region == null || !region.getEffects().containsKey("bypass_hostile_port")) {
                     event.setCancelled(true);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "no-tp-out-of-town"));
                     return;
                 }
@@ -123,7 +123,7 @@ public class DeathListener implements Listener {
             if (damagerCiv.getFriends().contains(civilian.getUuid())) {
                 event.setCancelled(true);
                 damager.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(damagerCiv.getLocale(),
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(damager,
                                 "friendly-fire"));
                 return;
             }
@@ -162,7 +162,7 @@ public class DeathListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 "no-commands-in-jail").replace("$1", (int) (timeRemaining / 1000) + "s"));
     }
 
@@ -345,7 +345,7 @@ public class DeathListener implements Listener {
         TutorialManager.getInstance().completeStep(damagerCiv, TutorialManager.TutorialType.KILL, "player");
         final LocaleManager localeManager = LocaleManager.getInstance();
         if (dyingCiv.getLastDeath() + ConfigManager.getInstance().getDeathGracePeriod() > System.currentTimeMillis()) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(damager,
                     "repeat-kill").replace("$1", player.getDisplayName()));
             return;
         }
@@ -373,8 +373,7 @@ public class DeathListener implements Listener {
         econBonus += damagerCiv.getKillStreak() * ConfigManager.getInstance().getMoneyPerKillStreak();
         if (damagerCiv.getKillStreak() >= 3) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-                p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civ.getLocale(), "kill-streak")
+                p.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(p, "kill-streak")
                         .replace("$1", damager.getDisplayName())
                         .replace("$2", damagerCiv.getKillStreak() + ""));
             }
@@ -385,8 +384,7 @@ public class DeathListener implements Listener {
         econBonus += ConfigManager.getInstance().getMoneyPerKillJoy() * dyingCiv.getKillStreak();
         if (dyingCiv.getKillStreak() > 2) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-                p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civ.getLocale(), "kill-joy")
+                p.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(p, "kill-joy")
                         .replace("$1", player.getDisplayName())
                         .replace("$2", damager.getDisplayName())
                         .replace("$3", dyingCiv.getKillStreak() + ""));
@@ -454,9 +452,10 @@ public class DeathListener implements Listener {
                     continue;
                 }
                 bountyBonus += town.getBounties().remove(town.getBounties().size() -1).getAmount();
+                TownManager.getInstance().saveTown(town);
             }
         } else if (!dyingCiv.getBounties().isEmpty()) {
-            damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+            damager.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(damager,
                     "allied-bounty"));
         }
         final double BOUNTY_BONUS = bountyBonus;
@@ -465,7 +464,7 @@ public class DeathListener implements Listener {
             Civs.econ.depositPlayer(damager, bountyBonus);
         }
 
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(), "death"
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "death"
                 .replace("$1", ConfigManager.getInstance().getPointsPerDeath() + "")));
 
         //save
@@ -492,9 +491,8 @@ public class DeathListener implements Listener {
                     if (townPlayer == null || !townPlayer.isOnline()) {
                         continue;
                     }
-                    Civilian townCiv = CivilianManager.getInstance().getCivilian(uuid);
-                    townPlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
-                            townCiv.getLocale(), "new-owner-town")
+                    townPlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(
+                            townPlayer, "new-owner-town")
                             .replace("$1", damager.getDisplayName())
                             .replace("$2", player.getDisplayName())
                             .replace("$3", town.getName()));
@@ -505,14 +503,14 @@ public class DeathListener implements Listener {
         //display points
         if (karma != 0) {
             if (karmaEcon == 0) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "karma").replace("$1", karma + ""));
-                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(damager,
                         "karma").replace("$1", (karma * -1) + ""));
             } else {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(dyingCiv.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "karma-lost").replace("$1", karma + "").replace("$2", karmaEcon + ""));
-                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslation(damagerCiv.getLocale(),
+                damager.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(damager,
                         "karma-gained").replace("$1", karma + "").replace("$2", karmaEcon + ""));
             }
         }
@@ -523,7 +521,7 @@ public class DeathListener implements Listener {
                 @Override
                 public void run() {
                     dPlayer.sendMessage(Civs.getPrefix() + ChatColor.GREEN +
-                            localeManager.getTranslation(damagerCiv.getLocale(), "bounty-bonus")
+                            localeManager.getTranslationWithPlaceholders(dPlayer, "bounty-bonus")
                                     .replace("$1", "" + BOUNTY_BONUS));
                 }
             }, interval);
@@ -534,7 +532,7 @@ public class DeathListener implements Listener {
                 @Override
                 public void run() {
                     dPlayer.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(damagerCiv.getLocale(), "kill")
+                            localeManager.getTranslationWithPlaceholders(dPlayer, "kill")
                                     .replace("$1", "" + ConfigManager.getInstance().getPointsPerKill()));
                 }
             }, interval);
@@ -546,7 +544,7 @@ public class DeathListener implements Listener {
                 @Override
                 public void run() {
                     dPlayer.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(damagerCiv.getLocale(), "low-health")
+                            localeManager.getTranslationWithPlaceholders(dPlayer, "low-health")
                                     .replace("$1", "" + ptsHealth));
                 }
             }, interval);
@@ -558,7 +556,7 @@ public class DeathListener implements Listener {
                 @Override
                 public void run() {
                     player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(damagerCiv.getLocale(), "killstreak-points")
+                            localeManager.getTranslationWithPlaceholders(dPlayer, "killstreak-points")
                                     .replace("$1", "" + killStreakPts));
                 }
             }, interval);
@@ -570,7 +568,7 @@ public class DeathListener implements Listener {
                 @Override
                 public void run() {
                     player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(damagerCiv.getLocale(), "killjoy-points")
+                            localeManager.getTranslationWithPlaceholders(dPlayer, "killjoy-points")
                                     .replace("%amount", "" + killJoyPts));
                 }
             }, interval);
@@ -581,7 +579,7 @@ public class DeathListener implements Listener {
             @Override
             public void run() {
                 player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(damagerCiv.getLocale(), "total-points")
+                        localeManager.getTranslationWithPlaceholders(dPlayer, "total-points")
                                 .replace("%amount", "" + pts));
             }
         }, interval);

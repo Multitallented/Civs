@@ -18,9 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -30,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -117,8 +117,8 @@ public class ProtectionHandler implements Listener {
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            int[] radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
-            if (radii.length == 0) {
+            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
+            if (!radii.isValid()) {
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                         region.getLocation(),
                         new ItemStack(event.getBlock().getType(), 1));

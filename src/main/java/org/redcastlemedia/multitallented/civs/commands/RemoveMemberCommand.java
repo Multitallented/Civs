@@ -6,13 +6,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -38,7 +39,7 @@ public class RemoveMemberCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -61,7 +62,7 @@ public class RemoveMemberCommand implements CivCommand {
         }
         if (region == null && town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -70,8 +71,8 @@ public class RemoveMemberCommand implements CivCommand {
         }
         if (!isAdmin && !inviteUUID.equals(player.getUniqueId()) && region != null &&
                 !Util.hasOverride(region, civilian, overrideTown) &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
@@ -87,11 +88,11 @@ public class RemoveMemberCommand implements CivCommand {
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             Player invitePlayer = (Player) invitee;
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
                     "remove-member-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitee.getName() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "member-removed-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {

@@ -2,21 +2,16 @@ package org.redcastlemedia.multitallented.civs.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.text.ParseException;
 
 @CivsCommand(keys = { "bounty" })
 public class BountyCommand implements CivCommand {
@@ -37,7 +32,7 @@ public class BountyCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "invalid-target"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
@@ -54,7 +49,7 @@ public class BountyCommand implements CivCommand {
 
         if (amount < 1) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "invalid-target"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
@@ -64,7 +59,7 @@ public class BountyCommand implements CivCommand {
         if (player != null) {
             double balance = Civs.econ.getBalance(player);
             if (balance < amount) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "not-enough-money").replace("$1", amount + ""));
                 return true;
             }
@@ -74,7 +69,7 @@ public class BountyCommand implements CivCommand {
         if (town != null) {
             if (civilian != null) {
                 if (town.getPeople().containsKey(civilian.getUuid())) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                             "invalid-target"));
                     return true;
                 }
@@ -87,7 +82,7 @@ public class BountyCommand implements CivCommand {
             }
             town.sortBounties();
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {
-                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(civilian.getLocale(),
+                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslationWithPlaceholders(cPlayer,
                         "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
             }
             return true;
@@ -97,7 +92,7 @@ public class BountyCommand implements CivCommand {
         Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "player-not-online").replace("$1", playerName));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player not online");
@@ -106,7 +101,7 @@ public class BountyCommand implements CivCommand {
         }
         if (Civs.perm != null && Civs.perm.has(target, "civs.bypasspvp")) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "invalid-target"));
             }
             return true;
@@ -124,8 +119,7 @@ public class BountyCommand implements CivCommand {
         }
         targetCiv.sortBounties();
         for (Player cPlayer : Bukkit.getOnlinePlayers()) {
-            Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
-            cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslation(cCivilian.getLocale(),
+            cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + localeManager.getTranslationWithPlaceholders(cPlayer,
                     "bounty-set").replace("$1", playerName).replace("$2", amount + ""));
         }
 

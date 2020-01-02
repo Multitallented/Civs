@@ -18,10 +18,11 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
-@CivsMenu(name = "recipe")
+@CivsMenu(name = "recipe") @SuppressWarnings("unused")
 public class RecipeMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+        super.cycleItems.remove(civilian.getUuid());
         Map<String, Object> data = new HashMap<>();
 
         if (params.containsKey("page")) {
@@ -47,8 +48,8 @@ public class RecipeMenu extends CustomMenu {
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getReqs();
-        } else if (recipe.startsWith("reagents")) {
-            int index = Integer.parseInt(recipe.replace("reagents", ""));
+        } else if (recipe.startsWith("reagent")) {
+            int index = Integer.parseInt(recipe.replace("reagent", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getReagents();
         } else if (recipe.startsWith("input")) {

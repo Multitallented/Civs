@@ -12,11 +12,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -41,8 +40,14 @@ public abstract class CustomMenu {
     }
 
     public Inventory createMenu(Civilian civilian, Map<String, String> params) {
-        MenuManager.clearData(civilian.getUuid());
-        Map<String, Object> newData = createData(civilian, params);
+        Map<String, Object> newData;
+        if (!params.containsKey("preserveData") || !"true".equals(params.get("preserveData"))) {
+            MenuManager.clearData(civilian.getUuid());
+            newData = new HashMap<>();
+        } else {
+            newData = MenuManager.getAllData(civilian.getUuid());
+        }
+        newData.putAll(createData(civilian, params));
         MenuManager.setNewData(civilian.getUuid(), newData);
         MenuManager.putData(civilian.getUuid(), "menuName", name);
         return createMenu(civilian);
@@ -171,24 +176,26 @@ public abstract class CustomMenu {
     }
 
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return true;
+        }
         if (actionString.equals("print-tutorial")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             TutorialManager.getInstance().printTutorial(player, civilian);
         } else if (actionString.equals("close")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             MenuManager.clearHistory(civilian.getUuid());
             player.closeInventory();
+        } else if ("clear-history".equals(actionString)) {
+            MenuManager.clearHistory(civilian.getUuid());
         } else if (actionString.startsWith("message:")) {
             String messageKey = actionString.split(":")[1];
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     messageKey));
         } else if ("refresh".equals(actionString)) {
             MenuManager.getInstance().refreshMenu(civilian);
         } else if ("back".equals(actionString)) {
             MenuManager.getInstance().goBack(civilian.getUuid());
         } else if (actionString.startsWith("menu:")) {
-            System.out.println(actionString);
             actionString = replaceVariables(civilian, itemStack, actionString);
             String menuString = actionString.replace("menu:", "");
             MenuManager.openMenuFromString(civilian, menuString);
@@ -222,6 +229,8 @@ public abstract class CustomMenu {
         } else if (key.equals("townType")) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
+        } else if (key.equals("uuid")) {
+            return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;
         } else {

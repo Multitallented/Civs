@@ -43,6 +43,7 @@ public class AllianceMenuTests extends TestUtil {
         AllianceManager.getInstance().allyTheseTowns(town1, town2);
         AllianceManager.getInstance().unAlly(town1, town2);
         assertFalse(AllianceManager.getInstance().isAllied(town1, town2));
+        assertEquals(0, AllianceManager.getInstance().getAllAlliances().size());
     }
 
     @Test

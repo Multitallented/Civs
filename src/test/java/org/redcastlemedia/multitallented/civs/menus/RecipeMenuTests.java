@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 public class RecipeMenuTests extends TestUtil {
@@ -76,16 +79,10 @@ public class RecipeMenuTests extends TestUtil {
     public void radiusCheckShouldNotMutate() {
         loadRegionTypeCouncilRoom();
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("councilroom");
-        int[] radii = new int[6];
-        radii[0] = 5;
-        radii[1] = 5;
-        radii[2] = 6;
-        radii[3] = 5;
-        radii[4] = 5;
-        radii[5] = 5;
-        int[] newRadii = Region.radiusCheck(radii,regionType);
-        assertEquals(0, newRadii.length);
-        assertEquals(6, radii.length);
+        RegionPoints radii = new RegionPoints(5, 6, 5, 5, 5, 5);
+        RegionPoints newRadii = Region.radiusCheck(radii,regionType);
+        assertFalse(newRadii.isValid());
+        assertTrue(radii.isValid());
     }
 
     public static void loadRegionTypeCouncilRoom() {

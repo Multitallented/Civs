@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
 
@@ -183,7 +184,7 @@ public class Town {
         }
         int count = 0;
         for (String currentRole : people.values()) {
-            if (currentRole.contains(role) || currentRole.contains("owner")) {
+            if (currentRole.contains(role) || currentRole.contains(Constants.OWNER)) {
                 count++;
             }
         }

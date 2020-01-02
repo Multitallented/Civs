@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -44,7 +44,7 @@ public class SetOwnerCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -65,7 +65,7 @@ public class SetOwnerCommand implements CivCommand {
         }
         if (region == null && town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -74,7 +74,7 @@ public class SetOwnerCommand implements CivCommand {
         }
         if (region != null && !Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains("owner")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
@@ -82,7 +82,7 @@ public class SetOwnerCommand implements CivCommand {
         Player invitePlayer = invitee.isOnline() ? (Player) invitee : null;
         if (!invitee.isOnline() && region != null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "player-not-online").replace("$1", "Unknown"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player unknown is not online");
@@ -92,7 +92,7 @@ public class SetOwnerCommand implements CivCommand {
         if (region != null && invitePlayer != null &&
                 region != RegionManager.getInstance().getRegionAt(invitePlayer.getLocation())) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "stand-in-region").replace("$1", invitePlayer.getName()));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please have " + invitee.getName() + " stand in the region");
@@ -104,7 +104,7 @@ public class SetOwnerCommand implements CivCommand {
             if (!isAdmin && (government.getGovernmentType() == GovernmentType.DEMOCRACY ||
                     government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
                 if (player != null) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                             "no-permission"));
                 }
                 return true;
@@ -131,13 +131,13 @@ public class SetOwnerCommand implements CivCommand {
 
             if (oligarchyOverride && !Civs.econ.has(player, price)) {
                 String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "not-enough-money").replace("$1", priceString));
                 return true;
             }
             if (!isAdmin && !hasPermission && !oligarchyOverride && !colonialOverride) {
                 if (player != null) {
-                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                             "no-permission"));
                 }
                 return true;
@@ -179,7 +179,7 @@ public class SetOwnerCommand implements CivCommand {
                     "add-owner-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitePlayer != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "owner-added-region").replace("$1", invitePlayer.getDisplayName())
                     .replace("$2", name));
         } else {

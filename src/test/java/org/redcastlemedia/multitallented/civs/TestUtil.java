@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,7 +77,7 @@ public abstract class TestUtil {
         }
         Civs.logger = mock(PluginLogger.class);
 
-        Civs.dataLocation = new File("/src/resouces/hybrid");
+        Civs.dataLocation = new File("/src/resources/hybrid");
 
         CivilianManager.getInstance();
         Server server = mock(Server.class);
@@ -121,6 +122,9 @@ public abstract class TestUtil {
         when(player.getUniqueId()).thenReturn(uuid);
         when(player.getLocation()).thenReturn(new Location(world, 0.5,0.5,0.5));
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
+        InventoryView view = mock(InventoryView.class);
+        when(view.getTopInventory()).thenReturn(new InventoryImpl());
+        when(player.getOpenInventory()).thenReturn(view);
         when(player.getServer()).thenReturn(server);
         when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         UUID uuid2 = new UUID(1,3);
@@ -269,10 +273,6 @@ public abstract class TestUtil {
         Bukkit.setServer(server);
 
         MenuManager.getInstance();
-        LocaleManager localeManager = LocaleManager.getInstance();
-        HashMap<String, String> mockLanguageMap = new HashMap<>();
-        mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
-        localeManager.languageMap.put("es", mockLanguageMap);
 
         CivilianManager.getInstance().createDefaultCivilian(player);
         createDefaultClass();

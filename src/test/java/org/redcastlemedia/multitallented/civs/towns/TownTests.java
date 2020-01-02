@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -349,6 +350,10 @@ public class TownTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setPower(2);
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player2.getUniqueId(), "member");
+        town.getRawPeople().put(new UUID(1,5), "member");
+        town.getRawPeople().put(new UUID(1, 6), "member");
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
                 GovernmentType.ANARCHY.name());
@@ -411,7 +416,7 @@ public class TownTests extends TestUtil {
         args[1] = "test";
         try {
             townCommand.runCommand(TestUtil.player, null, "town", args);
-        } catch (SuccessException exception) {
+        } catch (Exception exception) {
 
         }
         assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());

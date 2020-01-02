@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -30,9 +30,8 @@ public class ResetCommand implements CivCommand {
         if (offlinePlayer == null) {
             if (commandSender instanceof Player) {
                 Player player = (Player) commandSender;
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "player-not-found")
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "player-not-found")
                         .replace("$1", args[1]));
             } else {
                 commandSender.sendMessage("Player " + args[1] + " not found");

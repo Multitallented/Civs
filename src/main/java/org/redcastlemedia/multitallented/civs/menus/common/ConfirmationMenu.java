@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -26,7 +26,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
-@CivsMenu(name = "confirmation")
+@CivsMenu(name = "confirmation") @SuppressWarnings("unused")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -85,7 +85,6 @@ public class ConfirmationMenu extends CustomMenu {
             if ("tutorial".equals(type)) {
                 civilian.setAskForTutorial(false);
                 CivilianManager.getInstance().saveCivilian(civilian);
-                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
                 return true;
             }
         }
@@ -122,7 +121,7 @@ public class ConfirmationMenu extends CustomMenu {
         }
     }
 
-    private boolean doesntHavePermission(Civilian civilian, HashMap<UUID, String> people, Player player) {
+    private boolean doesntHavePermission(Civilian civilian, Map<UUID, String> people, Player player) {
         LocaleManager localeManager = LocaleManager.getInstance();
         if ((!people.containsKey(civilian.getUuid()) ||
                 !people.get(civilian.getUuid()).contains("owner")) &&

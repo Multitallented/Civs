@@ -1,53 +1,50 @@
-size: 36
-name: Alliance
-# variables:
-#  $lastRename$ uuid of last person to rename alliance
-#  $selectedTown$ selected alliance member town you own
-#  $allianceName$
-# custom actions:
-#  leave-alliance unallies all towns in the alliance
-items:
-  icon:
-    index: 0
-    icon: GOLDEN_SWORD
-    # name: alliance name
-  select-town:
-    index: 1
-    # icon: town icon
-    # name: town name
-    desc: selected-town
-    actions:
-      - menu:select-town?prevMenu=Alliance&preserveData=true
-  rename:
-    index: 2
-    icon: PAPER
-    name: rename-alliance
-    desc: rename-alliance-desc
-  last-rename:
-    index: 3
-    # icon: player's head
-    # name: player's name
-    desc: last-renamed-by
-    actions:
-      - menu:player?uuid=$lastRename$
-  leave-alliance:
-    index: 6
-    icon: BARRIER
-    name: leave-alliance
-    actions:
-      - leave-alliance
-      - close
-  back:
-    index: 8
-  prev:
-    index: 9
-  spacer1:
-    index: 10-16
-    icon: LIGHT_BLUE_STAINED_GLASS
-  next:
-    index: 17
-  members:
-    index: 18-35
-    # name: town name
-    actions:
-      - menu:town?town=$itemName$
+#size: 54
+#name: Alliance
+## variables:
+##  $lastRename$ uuid of last person to rename alliance
+##  $selectedTown$ selected alliance member town you own
+##  $allianceName$
+## custom actions:
+##  leave-alliance unallies all towns in the alliance
+#items:
+#  icon:
+#    index: 0
+#    icon: GOLDEN_SWORD
+#    # name: alliance name
+#  select-town:
+#    index: 1
+#    # icon: town icon
+#    # name: town name
+#    desc: your-towns
+#    actions:
+#      - menu:select-town?prevMenu=alliance&preserveData=true
+#  rename:
+#    index: 2
+#    icon: PAPER
+#    name: rename-alliance
+#    desc: rename-alliance-desc
+#  last-rename:
+#    index: 3
+#    # icon: player's head
+#    # name: player's name
+#    desc: last-renamed-by
+#    actions:
+#      - menu:player?uuid=$lastRename$
+#  prev:
+#    index: 4
+#  next:
+#    index: 5
+#  leave-alliance:
+#    index: 6
+#    icon: BARRIER
+#    name: leave-alliance
+#    actions:
+#      - leave-alliance
+#      - close
+#  back:
+#    index: 8
+#  members:
+#    index: 9-53
+#    # name: town name
+#    actions:
+#      - menu:town?town=$itemName$

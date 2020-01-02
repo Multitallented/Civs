@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;
@@ -32,12 +32,12 @@ public class AntiCampCommand implements CivCommand {
             town = TownManager.getInstance().getTownAt(player.getLocation());
         }
         if (town == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "invalid-target"));
             return true;
         }
         if (!town.getEffects().containsKey(AntiCampEffect.KEY)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "invalid-target"));
             return true;
         }
@@ -51,13 +51,13 @@ public class AntiCampCommand implements CivCommand {
         }
         if (antiCampCost > 0 && (Civs.econ == null || !Civs.econ.has(player, antiCampCost)) &&
                 town.getBankAccount() < antiCampCost) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "not-enough-money").replace("$1", antiCampCost + ""));
             return true;
         }
 
         if (!AntiCampEffect.canActivateAntiCamp(player.getUniqueId(), town)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }

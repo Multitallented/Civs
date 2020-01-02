@@ -14,9 +14,6 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 public class PlaceHook extends PlaceholderExpansion {
 
     private static final String ROOT_ID = "civs";

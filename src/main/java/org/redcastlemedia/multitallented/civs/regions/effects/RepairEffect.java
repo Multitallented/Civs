@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.HashSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,26 +12,21 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@CivsSingleton
+@CivsSingleton @SuppressWarnings("unused")
 public class RepairEffect implements Listener {
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new RepairEffect(), Civs.getInstance());
     }
 
-    private final String KEY = "repair";
+    private static final String KEY = "repair";
     private HashSet<Material> getRequiredReagent(Material material) {
         HashSet<Material> returnSet = new HashSet<>();
         switch (material) {
@@ -95,68 +92,74 @@ public class RepairEffect implements Listener {
             case FISHING_ROD:
                 returnSet.add(Material.STRING);
                 return returnSet;
-        } return null;
+            default:
+                return returnSet;
+        }
     }
 
-    private int getRepairCost(Material mat, ItemStack is)
-    {
-        int amt = 1;
-//        System.out.println("Durability: " + mat.getMaxDurability() + ":" + is.getDurability());
+    protected int getRepairCost(Material mat, double damage) {
+        int amt;
         switch (mat) {
-            case WOODEN_HOE:
-            case WOODEN_PICKAXE:
             case WOODEN_SHOVEL:
-            case WOODEN_SWORD:
-            case BOW:
-            case FISHING_ROD:
-                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 1.0D);
-                return amt < 1 ? 1 : amt;
-            case SHEARS:
-            case GOLDEN_PICKAXE:
-            case GOLDEN_SHOVEL:
-            case GOLDEN_SWORD:
-            case GOLDEN_AXE:
-            case GOLDEN_HOE:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_HELMET:
-            case GOLDEN_LEGGINGS:
-            case GOLDEN_BOOTS:
-                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 3.0D);
-                return amt < 1 ? 1 : amt;
-            case IRON_PICKAXE:
-            case IRON_SHOVEL:
-            case IRON_SWORD:
-            case IRON_AXE:
-            case IRON_HOE:
-            case IRON_CHESTPLATE:
-            case IRON_HELMET:
-            case IRON_LEGGINGS:
-            case IRON_BOOTS:
-                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 4.0D);
-                return amt < 1 ? 1 : amt;
-            case DIAMOND_PICKAXE:
-            case DIAMOND_SHOVEL:
-            case DIAMOND_SWORD:
-            case DIAMOND_AXE:
-            case DIAMOND_HOE:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_HELMET:
-            case DIAMOND_LEGGINGS:
-            case DIAMOND_BOOTS:
-                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 7.0D);
-                return amt < 1 ? 1 : amt;
-            case STONE_AXE:
-            case STONE_HOE:
-            case STONE_PICKAXE:
             case STONE_SHOVEL:
+            case GOLDEN_SHOVEL:
+            case IRON_SHOVEL:
+            case DIAMOND_SHOVEL:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 1.0D);
+                return Math.max(amt, 1);
+            case WOODEN_HOE:
+            case WOODEN_SWORD:
+            case FISHING_ROD:
+            case SHEARS:
+            case STONE_HOE:
             case STONE_SWORD:
-            case LEATHER_CHESTPLATE:
-            case LEATHER_HELMET:
-            case LEATHER_LEGGINGS:
+            case GOLDEN_SWORD:
+            case GOLDEN_HOE:
+            case IRON_HOE:
+            case DIAMOND_SWORD:
+            case DIAMOND_HOE:
+            case IRON_SWORD:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 2.0D);
+                return Math.max(amt, 1);
+            case BOW:
+            case STONE_PICKAXE:
+            case WOODEN_PICKAXE:
+            case GOLDEN_PICKAXE:
+            case GOLDEN_AXE:
+            case STONE_AXE:
+            case DIAMOND_AXE:
+            case IRON_AXE:
+            case IRON_PICKAXE:
+            case DIAMOND_PICKAXE:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 3.0D);
+                return Math.max(amt, 1);
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
             case LEATHER_BOOTS:
-                amt = (int)((double) is.getDurability() / mat.getMaxDurability() * 2.0D);
-                return amt < 1 ? 1 : amt;
-        } return 0;
+            case DIAMOND_BOOTS:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 4.0D);
+                return Math.max(amt, 1);
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 5.0D);
+                return Math.max(amt, 1);
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 7.0D);
+                return Math.max(amt, 1);
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 8.0D);
+                return Math.max(amt, 1);
+            default:
+                return 0;
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -178,37 +181,50 @@ public class RepairEffect implements Listener {
         }
 
         Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         ItemStack item = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = item.getItemMeta();
+        if (!(itemMeta instanceof Damageable)) {
+            return;
+        }
+        Damageable damageable = (Damageable) itemMeta;
 
-        if (getRequiredReagent(item.getType()) == null) {
+        if (getRequiredReagent(item.getType()).isEmpty()) {
             return;
         }
         if (item.getType() == Material.AIR) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "hold-repair-item"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "hold-repair-item"));
             return;
         }
 
-        if (item.getDurability() >= item.getType().getMaxDurability()) {
+        if (!damageable.hasDamage()) {
             return;
         }
-        int repairCost = getRepairCost(item.getType(), item);
+        repairItem(event, player, item);
+    }
+
+    private void repairItem(PlayerInteractEvent event, Player player, ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
+        Damageable damageable = (Damageable) itemMeta;
+        if (damageable == null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));
+            event.setCancelled(true);
+            return;
+        }
+        int repairCost = getRepairCost(item.getType(), damageable.getDamage());
         if (repairCost == 0) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "cant-repair-item"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));
             event.setCancelled(true);
             return;
         }
         HashSet<Material> reagents = getRequiredReagent(item.getType());
-        if (reagents != null && !reagents.isEmpty()) {
+        if (!reagents.isEmpty()) {
             boolean hasReagent = false;
-            Material firstMat = null;
+            Material firstMat = reagents.iterator().next();
             for (Material mat : reagents) {
-                if (firstMat == null) {
-                    firstMat = mat;
-                }
                 ItemStack cost = new ItemStack(mat, repairCost);
                 if (!hasReagentCost(player, cost)) {
                     continue;
@@ -217,13 +233,14 @@ public class RepairEffect implements Listener {
                 player.getInventory().removeItem(cost);
             }
             if (!hasReagent) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "more-repair-items")
-                        .replace("$1", firstMat.name().toLowerCase().replace("_", " ")));
+                String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player, "more-repair-items");
+                message = message.replace("$1", firstMat.name().toLowerCase().replace("_", " "));
+                player.sendMessage(Civs.getPrefix() + message);
                 return;
             }
         }
-        item.setDurability((short) 0);
+        damageable.setDamage(0);
+        item.setItemMeta(itemMeta);
     }
 
     protected boolean hasReagentCost(Player player, ItemStack itemStack) {

@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -29,6 +30,7 @@ import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
@@ -36,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.reflections.Reflections;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -44,11 +47,12 @@ public class Civs extends JavaPlugin {
 
     public static File dataLocation;
     private HashMap<String, CivCommand> commandList = new HashMap<>();
-    public static String NAME = "Civs";
+    public static final String NAME = "Civs";
     public static Economy econ;
     public static Permission perm;
     public static MMOItems mmoItems;
     public static DiscordSRV discordSRV;
+    public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
 
@@ -105,19 +109,19 @@ public class Civs extends JavaPlugin {
 
         logger.info(LogInfo.PH_INFO);
         if (econ != null) {
-            logger.info(LogInfo.HOOKECON + econ.getName());
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKECON + econ.getName());
         }
         if (perm != null) {
-            logger.info(LogInfo.HOOKPERM + perm.getName());
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKPERM + perm.getName());
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            logger.info(LogInfo.HOOKCHAT + "PlaceholderAPI");
+        if (Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
         }
         if (mmoItems != null) {
-            logger.info(LogInfo.HOOKCHAT + "MMOItems");
+            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKCHAT);
         }
         if (discordSRV != null) {
-            logger.info(LogInfo.HOOKCHAT + "DiscordSRV");
+            logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
         }
         logger.info(LogInfo.PH_INFO);
 
@@ -132,7 +136,7 @@ public class Civs extends JavaPlugin {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         long timeUntilDay = (86400000 + calendar.getTimeInMillis() - System.currentTimeMillis()) / 50;
-        Civs.logger.info(timeUntilDay + " ticks until 00:00");
+        Civs.logger.log(Level.INFO, "{0} ticks until 00:00", timeUntilDay);
         DailyScheduler dailyScheduler = new DailyScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, dailyScheduler, timeUntilDay, 1728000);
 
@@ -162,7 +166,8 @@ public class Civs extends JavaPlugin {
                     commandList.put(key, currentCommand);
                 }
             } catch (Exception e) {
-
+                Civs.logger.log(Level.SEVERE, "Unable to load {0} class", currentCommandClass.getName());
+                Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
     }
@@ -185,8 +190,9 @@ public class Civs extends JavaPlugin {
         }
     }
     private void setupDependencies() {
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
+            placeholderAPI = (PlaceholderAPIPlugin) Bukkit.getPluginManager().getPlugin(Constants.PLACEHOLDER_API);
         }
         if (Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             mmoItems = MMOItems.plugin;
@@ -194,13 +200,6 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
-//        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-//        if (chatProvider != null) {
-//            chat = chatProvider.getProvider();
-//            if (chat != null)
-//                System.out.println(Civs.getPrefix() + "Hooked into chat plugin " + chat.getName());
-//        }
-//        return (chat != null);
     }
 
     private void instantiateSingletons() {

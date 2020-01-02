@@ -25,7 +25,7 @@
 #build-radius: 36 # 73x1000x73
 #build-radius-y: 500
 #effects:
-#- exempt-housing
+#- exempt_housing
 #- block_break
 #- block_build
 #- block_liquid
