@@ -126,9 +126,12 @@ public class RegionTypeMenu extends CustomMenu {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()));
-            if (regionType.getProcessedName().equals(limitType)) { // TODO translate group names
+            if (regionType.getProcessedName().equals(limitType)) {
                 limitType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        limitType + "-name");
+                        limitType + LocaleConstants.NAME_SUFFIX);
+            } else {
+                limitType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        limitType + LocaleConstants.GROUP_SUFFIX);
             }
             cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", "" + amount)

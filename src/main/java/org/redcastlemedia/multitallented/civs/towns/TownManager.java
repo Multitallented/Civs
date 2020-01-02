@@ -703,8 +703,10 @@ public class TownManager {
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
+                String localIntersectName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        intersectTown.getType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "population-req")
-                        .replace("$1", intersectTown.getType())
+                        .replace("$1", localIntersectName)
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
             }

@@ -22,14 +22,14 @@ public final class MenuUtil {
             divideByTwo(item);
         } else if (mat == Material.REDSTONE_WIRE) {
             item.setType(Material.REDSTONE);
-//        } else if (mat == Material.WALL_SIGN) {
-//            item.setType(Material.SIGN);
         } else if (mat == Material.WATER) {
             item.setType(Material.WATER_BUCKET);
         } else if (mat == Material.LAVA) {
             item.setType(Material.LAVA_BUCKET);
         } else if (mat == Material.POTATOES) {
             item.setType(Material.POTATO);
+        } else if (mat == Material.CARROTS) {
+            item.setType(Material.CARROT);
         }
     }
     private static void divideByTwo(ItemStack item) {

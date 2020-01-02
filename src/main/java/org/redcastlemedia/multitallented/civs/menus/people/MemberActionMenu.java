@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus.people;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -224,8 +225,8 @@ public class MemberActionMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             if (town.getVotes().containsKey(civilian.getUuid())) {
                 if (Civs.econ == null || !Civs.econ.has(player, price)) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                            civilian.getLocale(), "not-enough-money")
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                            player, "not-enough-money")
                             .replace("$1", price + ""));
                     return true;
                 }
@@ -244,8 +245,9 @@ public class MemberActionMenu extends CustomMenu {
                 town.getVotes().put(civilian.getUuid(), vote);
             }
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "voted").replace("$1", player.getName()));
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "voted").replace("$1", offlinePlayer.getName()));
             }
             TownManager.getInstance().saveTown(town);
             return true;

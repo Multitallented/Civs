@@ -105,8 +105,9 @@ public class CivilianManager {
     }
     void unloadCivilian(Player player) {
         Civilian civilian = getCivilian(player.getUniqueId());
-        civilian.setMana(100);
-        civilians.remove(player.getUniqueId());
+        saveCivilian(civilian);
+//        civilian.setMana(100);
+//        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
         Civilian civilian = civilians.get(uuid);

@@ -4,6 +4,7 @@ public final class Constants {
     public static final String REGIONS = "regions";
     public static final String REGION = "region";
     public static final String REGION_TYPE = "regionType";
+    public static final String TOWN_TYPE = "townType";
     public static final String ITEMS_IN_VIEW = "itemsInView";
     public static final String INVISIBLE = "-invisible";
     public static final String ITEM_TYPES = "item-types";
