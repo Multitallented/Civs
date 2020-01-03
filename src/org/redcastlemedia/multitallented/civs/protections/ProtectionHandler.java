@@ -112,9 +112,18 @@ public class ProtectionHandler implements Listener {
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
                         region.getLocation(),
                         new ItemStack(event.getBlock().getType(), 1));
+                List<List<CVItem>> missingList = new ArrayList<>();
+
                 if (missingBlocks != null && !missingBlocks.isEmpty()) {
+                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                        List<CVItem> tempList = new ArrayList<>();
+                        for (Material mat : missingMap.keySet()) {
+                            tempList.add(new CVItem(mat, missingMap.get(mat)));
+                        }
+                        missingList.add(tempList);
+                    }
                     event.setCancelled(true);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "broke-own-region").replace("$1", region.getType()));
                     player.openInventory(RecipeMenu.createMenu(missingBlocks, player.getUniqueId(), regionType.createItemStack()));
                     return;
@@ -128,7 +137,7 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
             Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), "region-protected"));
             return true;
         } else {
             if (Civs.econ != null &&
