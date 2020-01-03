@@ -35,11 +35,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class CommonScheduler implements Runnable {
-    public static final HashMap<UUID, ChunkClaim> lastClaims = new HashMap<>();
     @Getter
     protected static final Map<UUID, ArrayList<Region>> lastRegion = new HashMap<>();
     @Getter
     protected static final Map<UUID, Town> lastTown = new HashMap<>();
+    protected static final Map<UUID, ChunkClaim> lastClaims = new HashMap<>();
     private static final HashMap<UUID, Long> lastAnnouncment = new HashMap<>();
     private int i = 0;
     private boolean notTwoSecond = true;

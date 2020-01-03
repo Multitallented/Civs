@@ -683,8 +683,8 @@ estate3-desc: Haus Level 9.3. Generiert 2621 $ am Tag mit goldenen Karotten, gol
 inn-name: Gasthaus
 inn-desc: Bietet 12 Unterkünfte und einen Teleport. Nützlich, um Leute in die Stadt zu
   holen, ohne erst eine Wohnung bauen zu müssen.
-jade-mine-name: Jademine
-jade-mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
+jade_mine-name: Jademine
+jade_mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
   nicht in einer Stadt gebaut werden welche einen Jadeshop hat. Jade ist eine
   Handelsware.
 coal_mine-name: Kohlemine

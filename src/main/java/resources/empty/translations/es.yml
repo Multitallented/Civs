@@ -685,8 +685,8 @@ estate3-desc: 9º nivel de casa. Gana $2621 por día vendiendo zanahorias dorada
 inn-name: Posada
 inn-desc: Proporciona 12 alojamientos y un puerto. Útil para agregar personas a la
   ciudad sin tener que construir viviendas primero.
-jade-mine-name: Mina de Jade
-jade-mine-desc: Crea 16 de jade una vez al día que puede ser vendida usando una tienda de
+jade_mine-name: Mina de Jade
+jade_mine-desc: Crea 16 de jade una vez al día que puede ser vendida usando una tienda de
   jade. No se puede construir en una ciudad con una tienda de jade.
 coal_mine-name: Mina de carbón
 coal_mine-desc: Crea carbón usando picos. Coloca una vagoneta con cofre en el cofre. Construye

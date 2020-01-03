@@ -41,6 +41,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;

@@ -147,6 +147,13 @@ public class MenuManager implements Listener {
         }
     }
 
+    public void goBack(UUID uuid) {
+        popLastMenu(uuid);
+        MenuHistoryState menuHistoryState = popLastMenu(uuid);
+        Player player = Bukkit.getPlayer(uuid);
+        openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
+    }
+
     public void loadMenuConfigs() {
         File menuFolder = new File(Civs.dataLocation, "menus");
         if (menuFolder.exists()) {

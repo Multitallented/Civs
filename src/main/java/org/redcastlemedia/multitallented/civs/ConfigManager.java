@@ -149,9 +149,9 @@ public class ConfigManager {
     @Getter
     String defaultConfigSet;
     @Getter
-    int nationFormedAtTownLevel;
-    @Getter
     int minPopulationForGovTransition;
+    @Getter
+    int nationFormedAtTownLevel;
     @Getter
     int lineBreakLength;
 
