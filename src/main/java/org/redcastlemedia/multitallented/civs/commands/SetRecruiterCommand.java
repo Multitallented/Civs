@@ -86,6 +86,8 @@ public class SetRecruiterCommand implements CivCommand {
             }
         }
 
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+
         if (!isAdmin && !hasPermission && !colonialOverride) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));

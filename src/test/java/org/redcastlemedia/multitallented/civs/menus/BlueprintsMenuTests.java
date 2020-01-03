@@ -40,7 +40,6 @@ public class BlueprintsMenuTests extends TestUtil {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
-
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().clear();
         civilian.getStashItems().put("shelter", 1);
