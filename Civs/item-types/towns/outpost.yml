@@ -1,0 +1,38 @@
+#enabled: true
+#type: town
+#icon: TNT
+#shop-icon: GUNPOWDER
+#max: 2
+#price: 600
+#group:
+#- outpost
+#level: 2
+#
+#pre-reqs:
+#- command_tent:built=1
+#
+#build-reqs:
+#- command_tent:1
+#
+#critical-build-reqs:
+#- basecenter
+#
+#limits:
+#- arrowtrapgroup:1
+#- siegemachinegroup:2
+#
+#build-radius: 24 # 49x1000x49
+#build-radius-y: 500
+#effects:
+#- exempt_housing
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- deny_mob_spawn
+#- control_override
+#- power_shield
+#
+#power: 256
+#max-power: 256
+#

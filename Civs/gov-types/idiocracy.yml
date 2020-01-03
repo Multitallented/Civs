@@ -1,0 +1,28 @@
+###### BUILT IN #####
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+## every week, a new owner is chosen based on the number of
+##  signs they place with their name on them and the number of fireworks they use
+#
+#
+#icon: "DEAD_BUSH"
+#enabled: true
+#transition:
+#  0:
+#    revolt: 51
+#    power: 30
+#    to: KRATEROCRACY
+#  1:
+#    revolt: 51
+#    to: LIBERTARIAN
+#buffs:
+#  cost:
+#    percent: 25
+#    groups:
+#      - allhousing
+#      - utility
+#      - mine
+#      - quarry
+#      - factory
+#      - farm

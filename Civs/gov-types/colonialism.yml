@@ -1,0 +1,20 @@
+###### BUILT IN #####
+## parent town overrides town ownership
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+## town destroy button disabled in menu
+#
+#icon: "GRAY_GLAZED_TERRACOTTA"
+#enabled: true
+#transition:
+#  0:
+#    revolt: 66
+#    to: LIBERTARIAN
+#buffs:
+#  max_power:
+#    percent: 25
+#  cost:
+#    percent: 10
+#    groups:
+#      - allhousing

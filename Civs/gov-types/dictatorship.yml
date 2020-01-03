@@ -1,0 +1,34 @@
+###### BUILT IN #####
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+#
+#icon: "GLOWSTONE"
+#enabled: true
+#transition:
+#  0:
+#    money-gap: 66
+#    to: OLIGARCHY
+#  1:
+#    revolt: 66
+#    power: 40
+#    to: KRATEROCRACY
+#  2:
+#    revolt: 75
+#    to: LIBERTARIAN
+#  3:
+#    inactive: 1814400 #3 weeks
+#    to: ANARCHY
+#  4:
+#    power: 20
+#    to: TRIBALISM
+#buffs:
+#  power:
+#    percent: 10
+#  cooldown:
+#    percent: 15
+#    groups:
+#      - utility
+#      - defense
+#    regions:
+#      - inn

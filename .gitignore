@@ -53,7 +53,9 @@ hs_err_pid*
 .idea/
 out/
 *.iml
+target
 mavenVersion.xml
+testFiles
 
 _windows/*
 codestyles/*

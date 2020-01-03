@@ -1,0 +1,24 @@
+###### BUILT IN #####
+## killing a town owner sets them as a member, and you as an owner
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+#
+#icon: "BLACK_GLAZED_TERRACOTTA"
+#enabled: true
+#transition:
+#  0:
+#    inactive: 1209600 # 2 weeks
+#    to: ANARCHY
+#buffs:
+#  max_power:
+#    percent: 10
+#  power:
+#    percent: 25
+#  cooldown:
+#    percent: 20
+#    groups:
+#      - utility
+#      - defense
+#    regions:
+#      - inn

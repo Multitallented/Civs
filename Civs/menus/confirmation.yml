@@ -1,0 +1,20 @@
+#size: 9
+#name: Confirm
+## actions:
+##  confirm
+#items:
+#  confirm:
+#    index: 3
+#    icon: EMERALD
+#    name: confirm
+#    actions:
+#      - confirm
+#  reject:
+#    index: 4
+#    icon: BARRIER
+#    name: reject
+#    actions:
+#      - reject
+#      - back
+#  back:
+#    index: 8

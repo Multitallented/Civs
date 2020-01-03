@@ -1,0 +1,27 @@
+###### BUILT IN #####
+## once a week, town owners are set to members
+## votes during the week set the winner as a town owner
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+#
+#icon: "WHITE_STAINED_GLASS"
+#enabled: true
+#transition:
+#  0:
+#    revolt: 51
+#    money-gap: 40
+#    to: COMMUNISM
+#  1:
+#    money-gap: 70
+#    to: CAPITALISM
+#  2:
+#    power: 33
+#    revolt: 51
+#    to: IDIOCRACY
+#  3:
+#    revolt: 51
+#    to: DEMOCRATIC_SOCIALISM
+#buffs:
+#  max_power:
+#    percent: 25

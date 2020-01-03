@@ -1,0 +1,39 @@
+###### BUILT IN #####
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+## all farms, mines, factories, and quarries are public
+#
+#icon: "CYAN_GLAZED_TERRACOTTA"
+#enabled: true
+#transition:
+#  0:
+#    inactive: 1814400 #3 weeks
+#    to: ANARCHY
+#  1:
+#    money-gap: 70
+#    to: OLIGARCHY
+#  2:
+#    revolt: 75
+#    money-gap: 40
+#    to: COMMUNISM
+#  3:
+#    revolt: 66
+#    power: 30
+#    to: KRATEROCRACY
+#  4:
+#    revolt: 75
+#    to: LIBERTARIAN_SOCIALISM
+#  5:
+#    power: 20
+#    to: TRIBALISM
+#buffs:
+#  max_power:
+#    percent: 10
+#  cooldown:
+#    percent: 30
+#    groups:
+#      - factory
+#      - mine
+#      - quarry
+#      - farm

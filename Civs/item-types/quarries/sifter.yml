@@ -1,0 +1,41 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: NETHER_STAR
+#price: 6000
+#groups:
+#- raw
+#- quarry
+#level: 7
+#
+#pre-reqs:
+#- member=metropolis
+#
+#build-reqs:
+#- DIRT*24,GRASS_BLOCK*24,COARSE_DIRT*24,PODZOL*24
+#- DIAMOND_BLOCK*2
+#- GLOWSTONE*2
+#- FURNACE*2
+#- CHEST*2
+#
+#towns:
+#- metropolis
+#
+#build-radius: 3
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#
+#period: 15 #15 seconds
+#upkeep:
+#  0:
+#    reagents:
+#    - IRON_SHOVEL
+#    input:
+#    - DIRT*4
+#    output:
+#    - DIRT*1%75,LEATHER_BOOTS*1%20,EMERALD*2%4,NETHER_STAR*1%1
+#

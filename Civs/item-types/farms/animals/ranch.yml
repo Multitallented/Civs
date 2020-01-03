@@ -1,0 +1,34 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: COW_SPAWN_EGG
+#max: 1
+#price: 10
+#groups:
+#- farm
+#level: 1
+#
+#build-reqs:
+#- g:fencegate*1
+#- g:fence*16
+#- WATER*1
+#- CHEST*2
+#- HAY_BLOCK*2
+#
+#build-radius: 4
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- spawn:COW
+#- conveyor:BEEF
+#
+#period: 600 #10 minutes
+#upkeep:
+#  0:
+#    reagents:
+#    - WHEAT*64
+#    output:
+#    - BEEF*4
+#    - LEATHER

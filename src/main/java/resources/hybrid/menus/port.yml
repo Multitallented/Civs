@@ -1,0 +1,19 @@
+size: 54
+name: Port
+# actions:
+#  teleport: begins a teleport to the selected location
+items:
+  prev:
+    index: 4
+  next:
+    index: 6
+  back:
+    index: 8
+  ports:
+    index: 9-53
+    # region shop icon
+    # name region type
+    # desc location + town
+    actions:
+      - close
+      - teleport

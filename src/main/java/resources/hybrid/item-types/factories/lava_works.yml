@@ -1,0 +1,43 @@
+type: region
+icon: CHEST
+shop-icon: LAVA_BUCKET
+name: Lava_Works
+price: 600
+groups:
+- factory
+level: 6
+
+pre-reqs:
+- member=city:metropolis
+
+build-reqs:
+- LAVA*6
+- g:window*2
+- g:door*1
+- g:roof*20
+- g:primary*55
+- g:secondary*10
+
+towns:
+- city
+- metropolis
+
+build-radius: 3
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- conveyor:LAVA_BUCKET
+
+period: 15 #15 seconds
+upkeep:
+  0:
+    reagents:
+    - WATER_BUCKET
+    input:
+    - BUCKET
+    output:
+    - LAVA_BUCKET
+

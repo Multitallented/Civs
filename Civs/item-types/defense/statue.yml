@@ -1,0 +1,33 @@
+#enabled: true
+#type: region
+#icon: GOLD_BLOCK
+#price: 600
+#groups:
+#- defense
+#- idolgroup
+#level: 5
+#
+#build-reqs:
+#- GOLD_BLOCK*3
+#
+#build-radius: 2 # 5x5x5
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- potion:DAMAGE_RESISTANCE.240
+#
+#pre-reqs:
+#- member=town:city:metropolis
+#
+#towns:
+#- town
+#- city
+#- metropolis
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 2

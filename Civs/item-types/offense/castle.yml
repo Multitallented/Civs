@@ -1,0 +1,42 @@
+#enabled: true
+#type: region
+#icon: TNT
+#shop-icon: STONE_BRICKS
+#max: 2
+#price: 300
+#groups:
+#- offense
+#- basecenter
+#level: 3
+#
+#build-reqs:
+#- g:fence*7
+#- CHEST*1
+#- TNT*2
+#- g:wool*24
+#- g:secondary*12
+#- g:primary*60
+#
+#pre-reqs:
+#- member=outpost:keep
+#- command_tent:built=1
+#
+#towns:
+#- outpost
+#- keep
+#
+#rebuild: command_tent
+#rebuild-required: true
+#build-radius: 6 # 13x13x13
+#
+#effects:
+#- block_break
+#- block_build
+#- chest_use
+#- block_liquid
+#- block_fire
+#
+#period: 900 # 15 minutes
+#upkeep:
+#  0:
+#    power-output: 6

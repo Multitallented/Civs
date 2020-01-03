@@ -1,0 +1,31 @@
+###### BUILT IN #####
+## town members can buy town ownership for themselves
+## town members can pay to remove/demote anyone
+## town owners can override region ownership
+## town owners can set taxes
+## town owners can withdraw from the bank
+#
+#icon: "LIME_GLAZED_TERRACOTTA"
+#enabled: true
+#transition:
+#  0:
+#    revolt: 66
+#    power: 30
+#    to: KRATEROCRACY
+#  1:
+#    revolt: 75
+#    to: COMMUNISM
+#  2:
+#    inactive: 2419200 #4 weeks
+#    to: ANARCHY
+#  3:
+#    power: 20
+#    to: TRIBALISM
+#buffs:
+#  payout:
+#    percent: 25
+#    groups:
+#      - shop
+#      - housing
+#  power:
+#    percent: 15
