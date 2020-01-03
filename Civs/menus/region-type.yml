@@ -1,0 +1,122 @@
+#size: 54
+#name: RegionType
+##variables:
+## regionType: regionType name
+## showPrice: defaults to false
+## rebuildRegion: rebuild region type
+## rebuildRegions: list of rebuild regions
+## evolveRegion: evolve region type
+#items:
+#  icon:
+#    index: 0
+#    # icon: region type shop-icon
+#    # name: region type name
+#    # desc: region type desc + size
+#  price:
+#    index: 1
+#    icon: EMERALD
+#    name: buy-item
+#    # desc: price | item-locked
+#    actions:
+#      - menu:confirmation?item=$regionType$&type=buy
+#  rebuild-required-single:
+#    index: 2
+#    # icon: region icon
+#    # name: region name
+#    desc: rebuild-req-desc
+#    actions:
+#      - menu:region-type?regionType=$rebuildRegion$
+#  rebuild-required-multiple:
+#    index: 2
+#    icon: GOLDEN_AXE
+#    name: rebuild
+#    desc: rebuild-req-desc
+#    actions:
+#      - menu:region-type-list?regionList=$rebuildRegions$
+#  rebuild-optional-single:
+#    index: 2
+#    # icon: region icon
+#    # name: region icon
+#    desc: rebuild-opt-desc
+#    actions:
+#      - menu:region-type?regionType=$rebuildRegion$
+#  rebuild-optional-multiple:
+#    index: 2
+#    icon: GOLDEN_AXE
+#    name: rebuild
+#    desc: rebuild-opt-desc
+#    actions:
+#      - menu:region-type-list?regionList=$rebuildRegions$
+#  evolve:
+#    index: 3
+#    # icon: evolve shop icon
+#    # name: evolve name
+#    # desc: evolve desc
+#    actions:
+#      - menu:region-type?regionType=$evolveRegion$
+#  biome:
+#    index: 4
+#    icon: GRASS_BLOCK
+#    name: biomes
+#    # desc: list of biomes
+#  towns:
+#    index: 5
+#    icon: OAK_DOOR
+#    name: towns
+#    desc: town-req-desc # also adds req towns
+#  build-reqs:
+#    index: 6
+#    icon: IRON_PICKAXE
+#    name: build-reqs-title
+#    desc: build-reqs
+#    actions:
+#      - menu:recipe?regionType=$regionType$&recipe=reqs
+#  effects:
+#    index: 7
+#    icon: POTION
+#    name: effects
+#    #desc: list of region type effects
+#  back:
+#    index: 8
+#  limits:
+#    index: 17
+#    icon: RED_WOOL
+#    name: limits
+#    desc: item-limit
+#    actions: []
+#  reagents:
+#    index: 9,18,27,36,45
+#    icon: CHEST
+#    name: reagents-title
+#    desc: reagents
+#    actions:
+#      - menu:recipe?regionType=$regionType$&recipe=reagent$count$
+#  input:
+#    index: 10,19,28,37,46
+#    icon: HOPPER
+#    name: upkeep-title
+#    desc: upkeep
+#    actions:
+#      - menu:recipe?regionType=$regionType$&recipe=input$count$
+#  output:
+#    index: 11,20,29,38,47
+#    icon: DISPENSER
+#    name: output-title
+#    desc: output
+#    actions:
+#      - menu:recipe?regionType=$regionType$&recipe=output$count$
+#  payout:
+#    index: 12,21,30,39,48
+#    icon: EMERALD_BLOCK
+#    name: payout-title
+#    desc: payout
+#  power-input:
+#    index: 13,22,31,40,49
+#    icon: REDSTONE_ORE
+#    name: power-input-title
+#    desc: power-input
+#  power-output:
+#    index: 14,23,32,41,50
+#    icon: REDSTONE_TORCH
+#    name: power-output-title
+#    desc: power-output

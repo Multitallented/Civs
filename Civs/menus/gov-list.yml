@@ -1,0 +1,23 @@
+#size: 54
+#name: GovList
+## variables
+##  gov
+##  town
+## actions
+##  select-gov: selects the gov type for your town
+#items:
+#  prev:
+#    index: 4
+#  back:
+#    index: 5
+#  next:
+#    index: 6
+#  governments:
+#    index: 9-53
+#    # icon gov icon
+#    # name gov name
+#    # desc gov desc
+#    actions:
+#      - select-gov
+#      - clear-history
+#      - menu:town?town=$town$

@@ -1,0 +1,20 @@
+#size: 54
+#name: RegionTypeList
+## variables
+##  regionList comma separate list of region types
+## actions:
+##  view-type: opens the region-type menu for that region type
+#items:
+#  prev:
+#    index: 4
+#  back:
+#    index: 5
+#  next:
+#    index: 6
+#  regionTypes:
+#    index: 9-53
+#    # icon region type shop icon
+#    # name region type name
+#    # desc region type desc
+#    actions:
+#      - view-type

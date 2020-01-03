@@ -1,35 +1,35 @@
-type: region
-icon: CHEST
-shop-icon: RABBIT_SPAWN_EGG
-name: Rabbit_Hutch
-max: 1
-price: 10
-groups:
-- farm
-level: 1
-
-build-reqs:
-- g:log*4
-- g:wood*10
-- IRON_BARS*4
-- g:fence*9
-- g:fencegate*1
-
-build-radius: 3
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- spawn:RABBIT
-- conveyor:RABBIT
-
-period: 300 #5 minutes
-
-upkeep:
-  0:
-    reagents:
-    - CARROT*64
-    output:
-    - RABBIT*3
-    - RABBIT*1%95,RABBIT_FOOT*1%5
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: RABBIT_SPAWN_EGG
+#max: 1
+#price: 10
+#groups:
+#- farm
+#level: 1
+#
+#build-reqs:
+#- g:log*4
+#- g:wood*10
+#- IRON_BARS*4
+#- g:fence*9
+#- g:fencegate*1
+#
+#build-radius: 3
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- spawn:RABBIT
+#- conveyor:RABBIT
+#
+#period: 300 #5 minutes
+#
+#upkeep:
+#  0:
+#    reagents:
+#    - CARROT*64
+#    output:
+#    - RABBIT*3
+#    - RABBIT*1%95,RABBIT_FOOT*1%5

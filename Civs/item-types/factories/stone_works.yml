@@ -1,44 +1,44 @@
-type: region
-icon: CHEST
-shop-icon: STONE_PICKAXE
-name: Stone_Works
-price: 20
-groups:
-- factory
-level: 1
-
-pre-reqs:
-- cobble_grinder:built=1
-
-build-reqs:
-- g:window*2
-- g:door*1
-- FURNACE*2
-- g:roof*15
-- g:primary*40
-- g:secondary*10
-
-build-radius: 3
-
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- conveyor:STONE_PICKAXE
-
-period: 60 #1 minute
-upkeep:
-  0:
-    input:
-    - COBBLESTONE*8
-    - OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG
-    output:
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
-    - STONE_PICKAXE
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: STONE_PICKAXE
+#price: 20
+#groups:
+#- factory
+#level: 1
+#
+#pre-reqs:
+#- cobble_grinder:built=1
+#
+#build-reqs:
+#- g:window*2
+#- g:door*1
+#- FURNACE*2
+#- g:roof*15
+#- g:primary*40
+#- g:secondary*10
+#
+#build-radius: 3
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- conveyor:STONE_PICKAXE
+#
+#period: 60 #1 minute
+#upkeep:
+#  0:
+#    input:
+#    - COBBLESTONE*8
+#    - OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG
+#    output:
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE
+#    - STONE_PICKAXE

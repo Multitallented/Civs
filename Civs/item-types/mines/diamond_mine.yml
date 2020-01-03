@@ -1,48 +1,48 @@
-type: region
-icon: CHEST
-shop-icon: DIAMOND_ORE
-name: Diamond_Mine
-max: 1
-price: 2000
-groups:
-- mine
-level: 7
-
-pre-reqs:
-- member=metropolis
-
-towns:
-- metropolis
-
-build-reqs:
-- IRON_BARS*2
-- DIAMOND_ORE*2
-- g:door*1
-- CHEST*2
-- FURNACE*2
-- g:primary*45
-- g:secondary*6
-
-build-radius: 4
-
-effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- conveyor:DIAMOND
-
-period: 3600 # 1 hour
-upkeep:
-  0:
-    input:
-    - IRON_PICKAXE
-    output:
-    - DIAMOND
-  1:
-    reagents:
-    - DIAMOND_PICKAXE
-    input:
-    - IRON_PICKAXE
-    output:
-    - DIAMOND*2
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: DIAMOND_ORE
+#max: 1
+#price: 2000
+#groups:
+#- mine
+#level: 7
+#
+#pre-reqs:
+#- member=metropolis
+#
+#towns:
+#- metropolis
+#
+#build-reqs:
+#- IRON_BARS*2
+#- DIAMOND_ORE*2
+#- g:door*1
+#- CHEST*2
+#- FURNACE*2
+#- g:primary*45
+#- g:secondary*6
+#
+#build-radius: 4
+#
+#effects:
+#- block_break
+#- block_build
+#- block_liquid
+#- block_fire
+#- conveyor:DIAMOND
+#
+#period: 3600 # 1 hour
+#upkeep:
+#  0:
+#    input:
+#    - IRON_PICKAXE
+#    output:
+#    - DIAMOND
+#  1:
+#    reagents:
+#    - DIAMOND_PICKAXE
+#    input:
+#    - IRON_PICKAXE
+#    output:
+#    - DIAMOND*2
