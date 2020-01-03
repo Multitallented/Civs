@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
-import org.bukkit.persistence.PersistentDataContainer;
 
 public class ItemMetaImpl implements ItemMeta, Damageable {
 
@@ -73,21 +72,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     @Override
     public void setLore(List<String> list) {
         this.lore = list;
-    }
-
-    @Override
-    public boolean hasCustomModelData() {
-        return false;
-    }
-
-    @Override
-    public int getCustomModelData() {
-        return 0;
-    }
-
-    @Override
-    public void setCustomModelData(Integer integer) {
-
     }
 
     @Override
@@ -206,11 +190,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     }
 
     @Override
-    public void setVersion(int i) {
-
-    }
-
-    @Override
     public boolean hasDamage() {
         return false;
     }
@@ -237,11 +216,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
 
     @Override
     public Map<String, Object> serialize() {
-        return null;
-    }
-
-    @Override
-    public PersistentDataContainer getPersistentDataContainer() {
         return null;
     }
 }
