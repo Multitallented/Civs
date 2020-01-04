@@ -19,11 +19,15 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @CivsSingleton
@@ -105,6 +109,12 @@ public class HuntEffect implements Listener, CreateRegionListener {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
         Player targetPlayer = hasValidSign(r.getLocation(), regionType, player.getUniqueId());
         if (targetPlayer == null) {
+            return;
+        }
+
+        if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "region-missing-upkeep-items"));
             return;
         }
 

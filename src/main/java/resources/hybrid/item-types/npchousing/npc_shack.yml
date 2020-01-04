@@ -43,7 +43,7 @@ effects:
 - block_fire
 - chest_use
 - housing:1
-- villager
+- villager:1
 period: 3600 # 1 hour
 upkeep:
   0:
