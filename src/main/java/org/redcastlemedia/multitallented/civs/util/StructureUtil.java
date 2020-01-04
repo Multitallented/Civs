@@ -21,12 +21,12 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public final class StructureUtil {
-    private final static long DURATION = 20000;
-    private final static long COOLDOWN = 5000;
-    private final static HashMap<UUID, BoundingBox> boundingBoxes = new HashMap<>();
+    private static final long DURATION = 20000;
+    private static final long COOLDOWN = 5000;
+    private static final HashMap<UUID, BoundingBox> boundingBoxes = new HashMap<>();
 
     private StructureUtil() {
-        // Exists so that you can't instantiate this
+        // Exists so that you can't instantiate this util class
     }
 
     public static boolean hasBoundingBoxShown(UUID uuid) {
@@ -37,11 +37,7 @@ public final class StructureUtil {
         if (boundingBox.getCreationTime() == -1) {
             return true;
         }
-        if (boundingBox.getCreationTime() + DURATION < System.currentTimeMillis()) {
-            return false;
-        } else {
-            return true;
-        }
+        return boundingBox.getCreationTime() + DURATION >= System.currentTimeMillis();
     }
 
     public static void cleanUpExpiredBoundingBoxes() {

@@ -95,7 +95,7 @@ public class RegionListener implements Listener {
             return;
         }
 
-        if (civItem.getItemType() != CivItem.ItemType.REGION) {
+        if (civItem.getItemType() == CivItem.ItemType.REGION) {
             RegionType regionType = (RegionType) civItem;
             MenuManager.clearHistory(player.getUniqueId());
             MenuManager.clearHistory(civilian.getUuid());
