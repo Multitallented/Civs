@@ -29,6 +29,21 @@ public final class StructureUtil {
         // Exists so that you can't instantiate this
     }
 
+    public static boolean hasBoundingBoxShown(UUID uuid) {
+        if (!boundingBoxes.containsKey(uuid)) {
+            return false;
+        }
+        BoundingBox boundingBox = boundingBoxes.get(uuid);
+        if (boundingBox.getCreationTime() == -1) {
+            return true;
+        }
+        if (boundingBox.getCreationTime() + DURATION < System.currentTimeMillis()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public static void cleanUpExpiredBoundingBoxes() {
         HashSet<UUID> removeThese = new HashSet<>();
         for (UUID uuid : boundingBoxes.keySet()) {

@@ -18,9 +18,12 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -47,6 +50,17 @@ public class RegionTypeMenu extends CustomMenu {
             }
             if (regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY).split("\\.")[0]);
+            }
+
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player != null && !StructureUtil.hasBoundingBoxShown(civilian.getUuid())) {
+                Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+                boolean infiniteBoundingBox = params.containsKey(Constants.INFINITE_BOUNDING_BOX);
+                if (region == null) {
+                    StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, infiniteBoundingBox);
+                } else {
+                    StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType, infiniteBoundingBox);
+                }
             }
         }
         if (params.containsKey(Constants.SHOW_PRICE) && "true".equals(params.get(Constants.SHOW_PRICE))) {
