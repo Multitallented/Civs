@@ -134,8 +134,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
                     player1.getLocation().distanceSquared(player.getLocation()) > 90000) {
                 continue;
             }
-            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
-            String message = LocaleManager.getInstance().getTranslation(civilian1.getLocale(), messageKey);
+            String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player1, messageKey);
             if (replace1 != null) {
                 message = message.replace("$1", replace1);
             }
