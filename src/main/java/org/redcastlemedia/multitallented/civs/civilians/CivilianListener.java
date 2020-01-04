@@ -67,6 +67,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+import org.yaml.snakeyaml.scanner.Constant;
 
 @CivsSingleton
 public class CivilianListener implements Listener {
@@ -312,7 +313,6 @@ public class CivilianListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!Util.isStarterBook(event.getItem())) {
             return;
         }
@@ -330,23 +330,24 @@ public class CivilianListener implements Listener {
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
-            for (Region r : regionSet) {
+            if (!regionSet.isEmpty()) {
+                region = regionSet.iterator().next();
                 MenuManager.clearHistory(player.getUniqueId());
                 HashMap<String, String> params = new HashMap<>();
-                params.put("region", r.getId());
-                MenuManager.getInstance().openMenu(player, "region", params);
-                return;
+                params.put(Constants.REGION, region.getId());
+                MenuManager.getInstance().openMenu(player, Constants.REGION, params);
+            } else {
+                player.performCommand("cv");
             }
-            player.performCommand("cv");
-            return;
+        } else {
+            MenuManager.clearHistory(player.getUniqueId());
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.REGION, region.getId());
+            MenuManager.getInstance().openMenu(player, Constants.REGION, params);
         }
-        if (player.getGameMode() == GameMode.SURVIVAL) {
+        if (region != null) {
             StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         }
-        MenuManager.clearHistory(player.getUniqueId());
-        HashMap<String, String> params = new HashMap<>();
-        params.put("region", region.getId());
-        MenuManager.getInstance().openMenu(player, "region", params);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
