@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -24,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 import java.util.HashMap;
 import java.util.UUID;
 
+@CivsSingleton @SuppressWarnings("unused")
 public class JammerEffect implements Listener, RegionCreatedListener {
 
     public static String KEY = "jammer";

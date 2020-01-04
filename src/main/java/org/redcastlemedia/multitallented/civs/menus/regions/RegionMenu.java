@@ -24,6 +24,8 @@ import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "region")
@@ -47,6 +49,17 @@ public class RegionMenu extends CustomMenu {
             data.put("failingUpkeeps", "");
         }
         data.put("regionTypeName", region.getType());
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player != null && !StructureUtil.hasBoundingBoxShown(civilian.getUuid())) {
+            Region r = RegionManager.getInstance().getRegionAt(player.getLocation());
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            boolean infiniteBoundingBox = params.containsKey(Constants.INFINITE_BOUNDING_BOX);
+            if (r == null) {
+                StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, infiniteBoundingBox);
+            } else {
+                StructureUtil.showGuideBoundingBox(player, r.getLocation(), regionType, infiniteBoundingBox);
+            }
+        }
         return data;
     }
 

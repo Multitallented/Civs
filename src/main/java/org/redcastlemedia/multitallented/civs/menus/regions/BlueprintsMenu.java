@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -154,6 +155,8 @@ public class BlueprintsMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = civItem.clone();
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             lore.add(cvItem.getDisplayName());

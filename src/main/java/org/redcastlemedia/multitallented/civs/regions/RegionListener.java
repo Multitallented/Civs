@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -61,9 +62,8 @@ public class RegionListener implements Listener {
         CivItem civItem = CivItem.getFromItemStack(heldItem);
 
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(blockPlaceEvent.getPlayer().getUniqueId());
-            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(), "cant-place-town"));
+            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    blockPlaceEvent.getPlayer(), "cant-place-town"));
             return;
         }
 
@@ -90,20 +90,20 @@ public class RegionListener implements Listener {
             TownType townType = (TownType) civItem;
             MenuManager.clearHistory(civilian.getUuid());
             HashMap<String, String> params = new HashMap<>();
-            params.put("townType", townType.getProcessedName());
+            params.put(Constants.TOWN_TYPE, townType.getProcessedName());
             MenuManager.getInstance().openMenu(player, "town-type", params);
             return;
         }
 
-        if (civItem.getItemType() != CivItem.ItemType.REGION) {
-            return;
+        if (civItem.getItemType() == CivItem.ItemType.REGION) {
+            RegionType regionType = (RegionType) civItem;
+            MenuManager.clearHistory(player.getUniqueId());
+            MenuManager.clearHistory(civilian.getUuid());
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.REGION_TYPE, regionType.getProcessedName());
+            params.put(Constants.INFINITE_BOUNDING_BOX, "true");
+            MenuManager.getInstance().openMenu(player, "region-type", params);
         }
-        RegionType regionType = (RegionType) civItem;
-        MenuManager.clearHistory(player.getUniqueId());
-        MenuManager.clearHistory(civilian.getUuid());
-        HashMap<String, String> params = new HashMap<>();
-        params.put("regionType", regionType.getProcessedName());
-        MenuManager.getInstance().openMenu(player, "region-type", params);
     }
 
     @EventHandler
