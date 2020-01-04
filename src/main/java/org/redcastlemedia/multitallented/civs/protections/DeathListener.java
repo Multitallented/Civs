@@ -207,9 +207,6 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getEntity() == null) {
-            return;
-        }
         CivilianManager.getInstance().setListNeedsToBeSorted(true);
         final Player player = event.getEntity();
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -245,42 +242,9 @@ public class DeathListener implements Listener {
                 damager = (Player) entityDamageByEntityEvent.getDamager();
             }
         }
+        jail = findJailInTown(player, deathLocation, regionManager, jail);
+        jail = findKillersJail(regionManager, jail, damager);
 
-        //If you didn't die in a jail, check if you died in a town with a jail
-        outer: if (jail == null) {
-            Town town = TownManager.getInstance().getTownAt(deathLocation);
-            if (town == null) {
-                break outer;
-            }
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-
-            if (town.getPeople().containsKey(player.getUniqueId())) {
-                break outer;
-            }
-
-            for (Region r : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
-                RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-
-                if (rt.getEffects().containsKey("jail")) {
-                    jail = r;
-                    break outer;
-                }
-            }
-        }
-        //If the killer owns a jail, then use that one
-        outer: if (jail == null && damager != null) {
-            for (Region r : regionManager.getAllRegions()) {
-                if (!r.getPeople().containsKey(damager.getUniqueId())) {
-                    continue;
-                }
-
-                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-                if (regionType.getEffects().keySet().contains("jail")) {
-                    jail = r;
-                    break outer;
-                }
-            }
-        }
         if (!bypassJail && jail != null) {
             //If you died in a town with a jail, then put their respawn point in the jail
             dyingCiv.setRespawnPoint(jail.getLocation().add(0,1,0));
@@ -464,8 +428,8 @@ public class DeathListener implements Listener {
             Civs.econ.depositPlayer(damager, bountyBonus);
         }
 
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "death"
-                .replace("$1", ConfigManager.getInstance().getPointsPerDeath() + "")));
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "death")
+                .replace("$1", ConfigManager.getInstance().getPointsPerDeath() + ""));
 
         //save
         CivilianManager.getInstance().saveCivilian(dyingCiv);
@@ -583,5 +547,46 @@ public class DeathListener implements Listener {
                                 .replace("%amount", "" + pts));
             }
         }, interval);
+    }
+
+    private Region findJailInTown(Player player, Location deathLocation, RegionManager regionManager, Region jail) {
+        if (jail != null) {
+            return jail;
+        }
+        Town town = TownManager.getInstance().getTownAt(deathLocation);
+        if (town == null) {
+            return jail;
+        }
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+
+        if (town.getPeople().containsKey(player.getUniqueId())) {
+            return jail;
+        }
+
+        for (Region r : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
+            RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
+
+            if (rt.getEffects().containsKey("jail")) {
+                return r;
+            }
+        }
+        return jail;
+    }
+
+    private Region findKillersJail(RegionManager regionManager, Region jail, Player damager) {
+        if (jail != null || damager == null) {
+            return jail;
+        }
+        for (Region r : regionManager.getAllRegions()) {
+            if (!r.getPeople().containsKey(damager.getUniqueId())) {
+                continue;
+            }
+
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
+            if (regionType.getEffects().containsKey("jail")) {
+                return r;
+            }
+        }
+        return jail;
     }
 }
