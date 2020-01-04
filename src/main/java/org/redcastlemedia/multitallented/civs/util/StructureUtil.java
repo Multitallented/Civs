@@ -204,8 +204,6 @@ public final class StructureUtil {
         player.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
                 new Particle.DustOptions(color, 1));
 
-//        world.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
-//                new Particle.DustOptions(color, 1), true);
         boundingBox.put(location, color);
     }
 
