@@ -18,7 +18,7 @@ public class ChatChannel {
         this.target = target;
     }
 
-    public String getChatChannelName(Player player) {
+    public String getName(Player player) {
         if (chatChannelType == ChatChannelType.GLOBAL) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "global-channel");
@@ -30,6 +30,24 @@ public class ChatChannel {
                     "local-channel");
         } else if (chatChannelType == ChatChannelType.TOWN) {
             return ((Town) target).getName();
+        } else {
+            return "";
+        }
+    }
+
+    public String getDesc(Player player) {
+        if (chatChannelType == ChatChannelType.GLOBAL) {
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "global-channel-desc");
+        } else if (chatChannelType == ChatChannelType.FRIEND) {
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "friend-channel-desc");
+        } else if (chatChannelType == ChatChannelType.LOCAL) {
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "local-channel-desc");
+        } else if (chatChannelType == ChatChannelType.TOWN) {
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "local-channel-desc").replace("$1", ((Town) target).getName());
         } else {
             return "";
         }
