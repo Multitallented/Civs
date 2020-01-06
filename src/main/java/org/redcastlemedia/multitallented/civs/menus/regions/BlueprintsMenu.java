@@ -159,7 +159,7 @@ public class BlueprintsMenu extends CustomMenu {
                     civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.add(cvItem.getDisplayName());
+            lore.add(civItem.getDisplayName());
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
