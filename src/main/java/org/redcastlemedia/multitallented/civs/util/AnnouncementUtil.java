@@ -59,7 +59,7 @@ public final class AnnouncementUtil {
         for (Town town : TownManager.getInstance().getTowns()) {
             if (town.getRawPeople().containsKey(player.getUniqueId())) {
                 towns.add(town);
-                if (town.getRawPeople().get(player.getUniqueId()).contains("owner")) {
+                if (town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
                     isOwnerOfATown = true;
                     if (!isInAnAlliance) {
                         for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
@@ -75,7 +75,7 @@ public final class AnnouncementUtil {
 
         if (isOwnerOfATown) {
             for (Town town : towns) {
-                if (town.getBankAccount() > 0 && town.getRawPeople().get(civilian.getUuid()).contains("owner") &&
+                if (town.getBankAccount() > 0 && town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER) &&
                         !alreadySentMessages.get(civilian.getUuid()).contains("ann-bank-" + town.getName())) {
                     keys.add("ann-bank-" + town.getName());
                     messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bank")

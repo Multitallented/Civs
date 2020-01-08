@@ -70,14 +70,14 @@ public class RegionMenu extends CustomMenu {
                 (String) MenuManager.getData(civilian.getUuid(), "regionTypeName"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
         boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
-                region.getRawPeople().get(civilian.getUuid()).contains("owner");
+                region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
                 (region.getPeople().get(civilian.getUuid()) != null &&
-                region.getPeople().get(civilian.getUuid()).contains("owner"));
+                region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER));
         int personCount = 0;
         for (String role : region.getRawPeople().values()) {
-            if (role.contains("owner") || role.contains("member")) {
+            if (role.contains(Constants.OWNER) || role.contains("member")) {
                 personCount++;
             }
         }
@@ -106,8 +106,8 @@ public class RegionMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         } else if ("destroy".equals(menuIcon.getKey())) {
             boolean isIndestrucible = region.getEffects().containsKey("indestructible");
-            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
-            if (!isAdmin || isIndestrucible || !isOwner) {
+            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
+            if (!isAdmin && (isIndestrucible || !isOwner)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {
@@ -166,7 +166,7 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("income".equals(menuIcon.getKey())) {
-            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
             if (!isAdmin && !isOwner) {
                 return new ItemStack(Material.AIR);
             }

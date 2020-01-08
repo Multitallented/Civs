@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
@@ -100,7 +101,7 @@ public class ConfirmationMenu extends CustomMenu {
                 overrideTown = TownManager.getInstance().getTownAt(region.getLocation());
             }
             boolean hasOverride = overrideTown != null && overrideTown.getRawPeople().containsKey(player.getUniqueId()) &&
-                    overrideTown.getRawPeople().get(player.getUniqueId()).contains("owner");
+                    overrideTown.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER);
             if (!hasOverride && doesntHavePermission(civilian, region.getPeople(), player)) {
                 return;
             }
@@ -124,8 +125,8 @@ public class ConfirmationMenu extends CustomMenu {
     private boolean doesntHavePermission(Civilian civilian, Map<UUID, String> people, Player player) {
         LocaleManager localeManager = LocaleManager.getInstance();
         if ((!people.containsKey(civilian.getUuid()) ||
-                !people.get(civilian.getUuid()).contains("owner")) &&
-                (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
+                !people.get(civilian.getUuid()).contains(Constants.OWNER)) &&
+                (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             player.closeInventory();
             player.sendMessage(Civs.getPrefix() +
                     localeManager.getTranslation(civilian.getLocale(), "no-permission"));

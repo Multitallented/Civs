@@ -148,7 +148,7 @@ public class PeopleMenu extends CustomMenu {
         });
     }
     private int rankWeight(String rank) {
-        if (rank.contains("owner")) {
+        if (rank.contains(Constants.OWNER)) {
             return 100;
         } else if (rank.contains("member")) {
             return 50;
@@ -254,8 +254,8 @@ public class PeopleMenu extends CustomMenu {
         if (ranks == null || ranks.isEmpty()) {
             return;
         }
-        if (ranks.contains("owner")) {
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "owner"));
+        if (ranks.contains(Constants.OWNER)) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.OWNER));
         }
         if (ranks.contains("member")) {
             cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "member"));

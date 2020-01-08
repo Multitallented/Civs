@@ -8,7 +8,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.menus.Menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +30,11 @@ public class InventoryImpl implements Inventory {
     @Override
     public void setMaxStackSize(int i) {
 
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 
     @Override
@@ -304,6 +308,11 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public List<HumanEntity> getViewers() {
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
         return null;
     }
 

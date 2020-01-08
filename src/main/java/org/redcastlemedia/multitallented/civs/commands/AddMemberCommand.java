@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "add" })
@@ -53,7 +54,7 @@ public class AddMemberCommand implements CivCommand {
             return true;
         }
         if (!Util.hasOverride(region, civilian) && player != null &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
@@ -68,7 +69,6 @@ public class AddMemberCommand implements CivCommand {
             }
             return true;
         }
-        Civilian inviteCiv = CivilianManager.getInstance().getCivilian(invitee.getUniqueId());
 
         if (invitee.isOnline()) {
             invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitee,

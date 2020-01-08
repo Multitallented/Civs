@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class ProtectionsTests extends TestUtil {
         when(player2.getUniqueId()).thenReturn(uuid2);
 
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(uuid2, "owner");
+        owners.put(uuid2, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<String, String> effects = new HashMap<>();
         effects.put("block_break", null);
@@ -86,7 +87,7 @@ public class ProtectionsTests extends TestUtil {
         when(player.getUniqueId()).thenReturn(uuid);
 
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(uuid, "owner");
+        owners.put(uuid, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
 
@@ -109,7 +110,7 @@ public class ProtectionsTests extends TestUtil {
         when(player2.getUniqueId()).thenReturn(uuid2);
 
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(uuid2, "owner");
+        owners.put(uuid2, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
 
@@ -131,7 +132,7 @@ public class ProtectionsTests extends TestUtil {
 
         HashMap<UUID, String> owners = new HashMap<>();
 
-        owners.put(uuid2, "owner");
+        owners.put(uuid2, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<String, String> effects = new HashMap<>();
         effects.put("block_break", null);
@@ -157,7 +158,7 @@ public class ProtectionsTests extends TestUtil {
 
         HashMap<UUID, String> owners = new HashMap<>();
 
-        owners.put(uuid2, "owner");
+        owners.put(uuid2, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<String, String> effects = new HashMap<>();
         effects.put("block_break", null);
@@ -173,7 +174,7 @@ public class ProtectionsTests extends TestUtil {
     private void explodeInRegion(boolean throwException, Location regionLocation) throws SuccessException {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
+        people.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         HashMap<String, String> effects = new HashMap<>();
         Region region = new Region("cobble", people,
                 regionLocation,
@@ -238,7 +239,7 @@ public class ProtectionsTests extends TestUtil {
     private void explodeInProtectedRegion(Location regionLocation, boolean useTown) {
         Region region;
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
+        people.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         HashMap<String, String> effects = new HashMap<>();
         if (useTown) {
             RegionsTests.loadRegionTypeCobble();

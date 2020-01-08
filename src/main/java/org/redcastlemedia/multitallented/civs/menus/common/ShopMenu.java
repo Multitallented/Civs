@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "shop") @SuppressWarnings("unused")
@@ -220,7 +221,7 @@ public class ShopMenu extends CustomMenu {
         if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
             FolderType folderType = (FolderType) civItem;
             if (!folderType.getVisible() &&
-                    (Civs.perm == null || !Civs.perm.has(player, "civs.admin"))) {
+                    (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
                 return new ItemStack(Material.AIR);
             }
             civItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-name"));
