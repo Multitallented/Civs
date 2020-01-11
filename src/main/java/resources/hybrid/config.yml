@@ -171,6 +171,23 @@ civs-chat-prefix: "@{GREEN}[Civs]"
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
+chat-channels:
+  global:
+    enabled: true
+    icon: ENDERCHEST
+  local:
+    enabled: true
+    icon: GRASS
+  friend:
+    enabled: true
+    icon: PLAYER_HEAD
+  town:
+    enabled: true
+    icon: BRICKS
+  nation:
+    enabled: true
+    icon: BLUE_BANNER
+
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
 # how many players need to be in a town before the gov type will auto transition
