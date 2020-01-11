@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
 
@@ -109,7 +110,7 @@ public class GovListMenu extends CustomMenu {
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if ("select-gov".equals(actionString)) {
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             if (town == null) {
                 return true;
             }

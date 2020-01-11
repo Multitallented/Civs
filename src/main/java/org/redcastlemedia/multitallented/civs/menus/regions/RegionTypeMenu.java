@@ -76,7 +76,7 @@ public class RegionTypeMenu extends CustomMenu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE);
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
+        if (player == null || regionType == null) {
             return new ItemStack(Material.AIR);
         }
         String localizedRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
