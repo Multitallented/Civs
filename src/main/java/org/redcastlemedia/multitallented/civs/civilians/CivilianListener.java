@@ -31,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -520,6 +521,37 @@ public class CivilianListener implements Listener {
                 humanEntity.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        ChatChannel chatChannel = civilian.getChatChannel();
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+            return;
+        }
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!civilian.getFriends().contains(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.LOCAL) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!recipient.getWorld().equals(player.getWorld()) ||
+                        10000 > recipient.getLocation().distanceSquared(player.getLocation())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.TOWN) {
+            Town town = (Town) chatChannel.getTarget();
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
             }
         }
     }
