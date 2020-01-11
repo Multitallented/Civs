@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.people;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

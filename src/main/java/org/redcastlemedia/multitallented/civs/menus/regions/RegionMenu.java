@@ -3,12 +3,14 @@ package org.redcastlemedia.multitallented.civs.menus.regions;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -65,16 +67,17 @@ public class RegionMenu extends CustomMenu {
 
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+        Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
                 (String) MenuManager.getData(civilian.getUuid(), "regionTypeName"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        Map<UUID, String> regionPeople = region.getPeople();
         boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
-                (region.getPeople().get(civilian.getUuid()) != null &&
-                region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER));
+                (regionPeople.get(civilian.getUuid()) != null &&
+                regionPeople.get(civilian.getUuid()).contains(Constants.OWNER));
         int personCount = 0;
         for (String role : region.getRawPeople().values()) {
             if (role.contains(Constants.OWNER) || role.contains("member")) {
@@ -92,9 +95,9 @@ public class RegionMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    regionType.getProcessedName() + "-name"));
+                    regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    regionType.getProcessedName() + "-desc")));
+                    regionType.getProcessedName() + LocaleConstants.DESC_SUFFIX)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -133,7 +136,7 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             String localizedRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    region.getType().toLowerCase() + "-name");
+                    region.getType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()));
@@ -159,7 +162,7 @@ public class RegionMenu extends CustomMenu {
         } else if ("region-type".equals(menuIcon.getKey())) {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    regionType.getProcessedName() + "-name"));
+                    regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc())));
             ItemStack itemStack = cvItem.createItemStack();
@@ -171,7 +174,7 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             String localRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    regionType.getProcessedName() + "-name");
+                    regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()));
