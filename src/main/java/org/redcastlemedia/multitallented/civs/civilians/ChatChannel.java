@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -19,7 +20,7 @@ public class ChatChannel {
         this.target = target;
     }
 
-    public String getName(Player player) {
+    public String getName(OfflinePlayer player) {
         if (chatChannelType == ChatChannelType.GLOBAL) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "global-channel");
