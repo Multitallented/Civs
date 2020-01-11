@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import net.md_5.bungee.api.ChatColor;
@@ -60,10 +61,10 @@ public class InviteTownCommand implements CivCommand {
                 (government.getGovernmentType() == GovernmentType.ANARCHY ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN);
-        if (Civs.perm != null && !Civs.perm.has(player, "civs.admin") &&
+        if (Civs.perm != null && !Civs.perm.has(player, Constants.ADMIN_PERMISSION) &&
                 !inviteAnyone) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
-                    (!town.getPeople().get(player.getUniqueId()).contains("owner") &&
+                    (!town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
                     !town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "no-permission-invite").replace("$1", townName));
@@ -85,8 +86,8 @@ public class InviteTownCommand implements CivCommand {
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         boolean adminBypass = Civs.perm != null &&
-                (Civs.perm.has(invitee, "civs.admin") ||
-                Civs.perm.has(player, "civs.admin"));
+                (Civs.perm.has(invitee, Constants.ADMIN_PERMISSION) ||
+                Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         if (!townType.getEffects().containsKey(HousingEffect.HOUSING_EXCEPT) &&
                 !adminBypass && town.getPopulation() >= town.getHousing()) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,

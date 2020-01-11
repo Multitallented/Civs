@@ -35,6 +35,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -445,9 +446,9 @@ public class DeathListener implements Listener {
                 continue;
             }
             if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&
-                    !town.getRawPeople().get(damagerCiv.getUuid()).contains("owner")) {
+                    !town.getRawPeople().get(damagerCiv.getUuid()).contains(Constants.OWNER)) {
                 town.getRawPeople().put(dyingCiv.getUuid(), "member");
-                town.getRawPeople().put(damagerCiv.getUuid(), "owner");
+                town.getRawPeople().put(damagerCiv.getUuid(), Constants.OWNER);
                 TownManager.getInstance().saveTown(town);
                 Util.spawnRandomFirework(damager);
                 for (UUID uuid : town.getRawPeople().keySet()) {

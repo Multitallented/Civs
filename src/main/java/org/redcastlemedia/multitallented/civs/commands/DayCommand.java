@@ -8,6 +8,7 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "newday" }) @SuppressWarnings("unused")
 public class DayCommand implements CivCommand {
@@ -19,8 +20,7 @@ public class DayCommand implements CivCommand {
             player = (Player) commandSender;
         }
         if (player != null && (!player.isOp() ||
-                (Civs.perm == null || !Civs.perm.has(player, "civs.admin")))) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+                (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION)))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslationWithPlaceholders(player, "no-permission"));
             return true;

@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -100,11 +101,11 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
             return false;
         }
         for (UUID uuid : currentRegion.getRawPeople().keySet()) {
-            if (!currentRegion.getRawPeople().get(uuid).contains("owner")) {
+            if (!currentRegion.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 continue;
             }
             if (!region.getRawPeople().containsKey(uuid) ||
-                    !region.getRawPeople().get(uuid).contains("owner")) {
+                    !region.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 continue;
             }
             return true;

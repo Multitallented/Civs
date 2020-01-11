@@ -19,7 +19,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.UUID;
 
-@CivsCommand(keys = { "removemember" })
+@CivsCommand(keys = { "removemember" }) @SuppressWarnings("unused")
 public class RemoveMemberCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -27,7 +27,7 @@ public class RemoveMemberCommand implements CivCommand {
         boolean isAdmin = false;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
-            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         } else {
             isAdmin = true;
         }

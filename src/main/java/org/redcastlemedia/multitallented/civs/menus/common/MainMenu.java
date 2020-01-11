@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -23,7 +24,9 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "main") @SuppressWarnings("unused")
 public class MainMenu extends CustomMenu {
@@ -57,8 +60,12 @@ public class MainMenu extends CustomMenu {
 
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
-        if (menuIcon.getKey().equals("region")) {
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
+        if (menuIcon.getKey().equals(Constants.REGION)) {
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
             if (region == null) {
                 return new ItemStack(Material.AIR);
             } else {
@@ -68,8 +75,8 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
-        } else if (menuIcon.getKey().equals("town")) {
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+        } else if (menuIcon.getKey().equals(Constants.TOWN)) {
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             if (town == null) {
                 return new ItemStack(Material.AIR);
             } else {
@@ -80,7 +87,7 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
-        } else if (menuIcon.getKey().equals("regions")) {
+        } else if (menuIcon.getKey().equals(Constants.REGIONS)) {
             boolean showBuiltRegions = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {
                 if (region.getRawPeople().containsKey(civilian.getUuid())) {
@@ -96,11 +103,17 @@ public class MainMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if (menuIcon.getKey().equals("shop")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             if (!player.isOp() &&
                     (Civs.perm == null || !Civs.perm.has(player, "civs.shop"))) {
                 return new ItemStack(Material.AIR);
             }
+        } else if ("chat".equals(menuIcon.getKey())) {
+            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

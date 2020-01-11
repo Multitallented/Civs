@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class CommunityMenu extends CustomMenu {
                 //Don't show private ports
                 if (region.getEffects().get("port") != null &&
                         !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                        !region.getPeople().get(civilian.getUuid()).contains("owner")) {
+                        !region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     continue;
                 }
                 hasPort = true;

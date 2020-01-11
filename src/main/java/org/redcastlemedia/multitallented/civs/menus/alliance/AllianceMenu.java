@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "alliance") @SuppressWarnings("unused")
@@ -128,7 +129,7 @@ public class AllianceMenu extends CustomMenu {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
                 if (town.getPeople().containsKey(civilian.getUuid()) &&
-                        town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                        town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     data.put("selectedTown", town);
                     break;
                 }

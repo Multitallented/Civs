@@ -36,6 +36,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -71,7 +72,7 @@ public class ProtectionHandler implements Listener {
         RegionManager regionManager = RegionManager.getInstance();
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
-                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"));
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
@@ -146,14 +147,13 @@ public class ProtectionHandler implements Listener {
     public static boolean removeRegionIfNotIndestructible(Region region, RegionType regionType, BlockBreakEvent event) {
         if (regionType.getEffects().containsKey("indestructible")) {
             event.setCancelled(true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), "region-protected"));
             return true;
         } else {
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
-                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains("owner")) {
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains(Constants.OWNER)) {
                 double salvage = regionType.getPrice() / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
@@ -168,7 +168,7 @@ public class ProtectionHandler implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
-                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) {
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), "block_build");
@@ -590,7 +590,7 @@ public class ProtectionHandler implements Listener {
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
-//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION)) {
 //            return false;
 //        }
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
@@ -610,7 +610,7 @@ public class ProtectionHandler implements Listener {
                 Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
                 if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                         government.getGovernmentType() == GovernmentType.ANARCHY) {
-                    role = "owner";
+                    role = Constants.OWNER;
                 }
             }
             if (role == null || (role.contains("member") &&
@@ -699,7 +699,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = town.getPeople().get(player.getUniqueId());
-            if (role == null || (!role.contains("owner") && pRole != null && !role.contains(pRole))) {
+            if (role == null || (!role.contains(Constants.OWNER) && pRole != null && !role.contains(pRole))) {
                 return true;
             }
         }
@@ -720,7 +720,7 @@ public class ProtectionHandler implements Listener {
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                     government.getGovernmentType() == GovernmentType.ANARCHY) {
-                role = "owner";
+                role = Constants.OWNER;
             } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
@@ -728,10 +728,10 @@ public class ProtectionHandler implements Listener {
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||
                     regionType.getGroups().contains("factory"))) {
-                role = "owner";
+                role = Constants.OWNER;
             }
         }
-        if (role.contains("owner")) {
+        if (role.contains(Constants.OWNER)) {
             return false;
         }
         if (Util.equivalentLocations(location, region.getLocation()) &&

@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -32,7 +33,7 @@ public class SetMemberCommand implements CivCommand {
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         } else {
             isAdmin = true;
         }
@@ -69,15 +70,15 @@ public class SetMemberCommand implements CivCommand {
             return true;
         }
         if (region != null && !isAdmin && !Util.hasOverride(region, civilian, overrideTown) &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
         }
         OfflinePlayer invitee = Bukkit.getOfflinePlayer(inviteUUID);
         if (invitee == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "player-not-online").replace("$1", invitee.getName()));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player " + inviteUUID + " is not online");
@@ -95,11 +96,11 @@ public class SetMemberCommand implements CivCommand {
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             Player invitePlayer = (Player) invitee;
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(inviteCiv.getLocale(),
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
                     "add-member-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitee.getName() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "member-added-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {

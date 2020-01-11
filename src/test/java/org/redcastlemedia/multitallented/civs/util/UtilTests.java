@@ -121,7 +121,7 @@ public class UtilTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
+        people.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Town town = new Town("mytown", "hamlet2", location, people, 100, 100,
                 1, 0, -1);
         TownManager.getInstance().addTown(town);

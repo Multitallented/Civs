@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "really" }) @SuppressWarnings("unused")
@@ -49,7 +50,7 @@ public class ReallyCommand implements CivCommand {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
                 if (town.getPeople().containsKey(civilian.getUuid()) &&
-                        town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                        town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     isOwnerOfTown = true;
                     break;
                 }
