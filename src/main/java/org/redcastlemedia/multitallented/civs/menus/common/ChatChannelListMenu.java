@@ -10,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -46,6 +48,11 @@ public class ChatChannelListMenu extends CustomMenu {
                 channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
             }
         }
+        if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
+            for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
+                addAllianceIfMember(civilian, alliance, channelList);
+            }
+        }
 
         data.put("channelMap", new HashMap<ItemStack, ChatChannel>());
         data.put("channelList", channelList);
@@ -54,6 +61,16 @@ public class ChatChannelListMenu extends CustomMenu {
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
         return data;
+    }
+
+    private void addAllianceIfMember(Civilian civilian, Alliance alliance, List<ChatChannel> channelList) {
+        for (String townName : alliance.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                channelList.add(new ChatChannel(ChatChannel.ChatChannelType.ALLIANCE, alliance));
+                return;
+            }
+        }
     }
 
     @Override @SuppressWarnings("unchecked")

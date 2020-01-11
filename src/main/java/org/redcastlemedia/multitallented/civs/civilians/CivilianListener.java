@@ -45,6 +45,8 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -548,8 +550,23 @@ public class CivilianListener implements Listener {
             }
         } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.TOWN) {
             Town town = (Town) chatChannel.getTarget();
+            if (!town.getRawPeople().containsKey(player.getUniqueId())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
             for (Player recipient : new HashSet<>(event.getRecipients())) {
                 if (!town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
+            Alliance alliance = (Alliance) chatChannel.getTarget();
+            if (alliance.isInAlliance(civilian.getUuid())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!alliance.isInAlliance(recipient.getUniqueId())) {
                     event.getRecipients().remove(recipient);
                 }
             }

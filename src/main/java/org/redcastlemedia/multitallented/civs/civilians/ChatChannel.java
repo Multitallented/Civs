@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 
@@ -30,6 +31,8 @@ public class ChatChannel {
                     "local-channel");
         } else if (chatChannelType == ChatChannelType.TOWN) {
             return ((Town) target).getName();
+        } else if (chatChannelType == ChatChannelType.ALLIANCE) {
+            return ((Alliance) target).getName();
         } else {
             return "";
         }
@@ -47,7 +50,10 @@ public class ChatChannel {
                     "local-channel-desc");
         } else if (chatChannelType == ChatChannelType.TOWN) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "local-channel-desc").replace("$1", ((Town) target).getName());
+                    "town-channel-desc").replace("$1", ((Town) target).getName());
+        } else if (chatChannelType == ChatChannelType.ALLIANCE) {
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "alliance-channel-desc").replace("$1", ((Alliance) target).getName());
         } else {
             return "";
         }
@@ -58,6 +64,7 @@ public class ChatChannel {
         TOWN,
         NATION,
         GLOBAL,
+        ALLIANCE,
         LOCAL
     }
 }

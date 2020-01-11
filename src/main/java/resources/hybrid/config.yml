@@ -187,6 +187,9 @@ chat-channels:
   nation:
     enabled: true
     icon: BLUE_BANNER
+  alliance:
+    enabled: true
+    icon: GOLDEN_SWORD
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
