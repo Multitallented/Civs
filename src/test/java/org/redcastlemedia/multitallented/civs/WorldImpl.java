@@ -148,17 +148,7 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public boolean unloadChunk(int i, int i1, boolean b, boolean b1) {
-        return false;
-    }
-
-    @Override
     public boolean unloadChunkRequest(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean unloadChunkRequest(int i, int i1, boolean b) {
         return false;
     }
 
@@ -228,7 +218,7 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public <T extends Arrow> T spawnArrow(Location location, Vector vector, float v, float v1, Class<T> aClass) {
+    public <T extends AbstractArrow> T spawnArrow(Location location, Vector vector, float v, float v1, Class<T> aClass) {
         return null;
     }
 
