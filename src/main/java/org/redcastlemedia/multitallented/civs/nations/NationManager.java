@@ -188,15 +188,27 @@ public class NationManager implements Listener {
         return null;
     }
 
+    private void removeNation(Nation nation) {
+        // TODO send messages for nation destroyed
+        nations.remove(nation.getName());
+    }
+
 
     @EventHandler
     public void onTownDestroyed(TownDestroyedEvent event) {
         Town town = event.getTown();
         for (Nation nation : new HashSet<>(nations.values())) {
+            if (town.getName().equals(nation.getCapitol())) {
+                NationManager.getInstance().removeNation(nation);
+                return;
+            }
             if (nation.getMembers().contains(town.getName())) {
                 nation.getMembers().remove(town.getName());
-                // TODO check if nation should dissolve
                 NationManager.getInstance().saveNation(nation);
+            }
+            if (nation.getMembers().isEmpty()) {
+                NationManager.getInstance().removeNation(nation);
+                return;
             }
         }
     }

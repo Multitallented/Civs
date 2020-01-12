@@ -15,11 +15,14 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class NationTests extends TestUtil {
 
@@ -56,7 +59,7 @@ public class NationTests extends TestUtil {
         try {
             TownManager.getInstance().placeTown(TestUtil.player, "town3", town);
         } catch (SuccessException se) {
-
+            // Do nothing
         }
         assertTrue(NationManager.getInstance().getAllNations().isEmpty());
     }
@@ -83,9 +86,20 @@ public class NationTests extends TestUtil {
         try {
             TownManager.getInstance().placeTown(TestUtil.player, "town3", town);
         } catch (SuccessException se) {
-
+            // Do nothing
         }
         assertFalse(NationManager.getInstance().getAllNations().isEmpty());
+    }
+
+    @Test
+    public void nationShouldBeDestroyedWhenCapitolIsDestroyed() {
+        Town town = TownTests.loadTown("test", "village",
+                new Location(TestUtil.world, 0, 0, 0));
+        NationManager.getInstance().createNation(town);
+        TownDestroyedEvent townDestroyedEvent = new TownDestroyedEvent(town,
+                (TownType) ItemManager.getInstance().getItemType(town.getType()));
+        NationManager.getInstance().onTownDestroyed(townDestroyedEvent);
+        assertTrue(NationManager.getInstance().getAllNations().isEmpty());
     }
 
 //    @Test
