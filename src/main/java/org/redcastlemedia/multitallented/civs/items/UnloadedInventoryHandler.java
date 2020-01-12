@@ -104,9 +104,17 @@ public class UnloadedInventoryHandler {
     }
 
     public static String getChunkString(Location location) {
-        int x = (int) Math.floor(location.getX() / 16);
-        int z = (int) Math.floor(location.getZ() / 16);
+        int x = getChunkX(location);
+        int z = getChunkZ(location);
         return "c:" + x + ":" + z;
+    }
+
+    public static int getChunkX(Location location) {
+        return (int) Math.floor(location.getX() / 16);
+    }
+
+    public static int getChunkZ(Location location) {
+        return (int) Math.floor(location.getZ() / 16);
     }
 
     private Inventory getInventoryForce(Location location) {

@@ -4,7 +4,9 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 
@@ -24,7 +26,7 @@ public class ChunkClaim {
         this.x = x;
         this.z = z;
         this.world = world;
-        this.nation = this.nation;
+        this.nation = nation;
     }
 
     @Override
@@ -51,6 +53,23 @@ public class ChunkClaim {
             }
         }
         return null;
+    }
+    public static ChunkClaim fromLocation(Location location) {
+        int x = UnloadedInventoryHandler.getChunkX(location);
+        int z = UnloadedInventoryHandler.getChunkZ(location);
+        return fromXZ(x, z, location.getWorld());
+    }
+
+    public static ChunkClaim fromXZ(int x, int z, World world) {
+        for (Nation nation : NationManager.getInstance().getAllNations()) {
+            if (nation.getNationClaims().containsKey(world.getUID()) &&
+                    nation.getNationClaims().get(world.getUID())
+                            .containsKey(x + "," + z)) {
+                return nation.getNationClaims().get(world.getUID())
+                        .get(x + "," + z);
+            }
+        }
+        return new ChunkClaim(x, z, world, null);
     }
     public Chunk getChunk() {
         return world.getChunkAt(x, z);

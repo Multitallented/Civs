@@ -21,9 +21,11 @@ import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class NationManager implements Listener {
@@ -159,21 +161,20 @@ public class NationManager implements Listener {
         return true;
     }
 
-    public boolean removeAlliance(Nation nation) {
+    public void removeNation(Nation nation) {
+        // TODO send destroyed messages
         if (Civs.getInstance() != null) {
-            File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
-            File allianceFile = new File(allianceFolder, nation.getName() + ".yml");
-            if (!allianceFile.delete()) {
-                return false;
+            File nationFolder = new File(Civs.getInstance().getDataFolder(), "nations");
+            File nationFile = new File(nationFolder, nation.getName() + ".yml");
+            if (!nationFile.delete()) {
+                Civs.logger.severe("Unable to delete nation file " + nationFile.getName());
             }
         }
         nations.remove(nation.getName());
-        return true;
     }
 
     public ChunkClaim getClaimAt(Location location) {
-        Chunk chunk = location.getChunk();
-        String chunkKey = chunk.getX() + "," + chunk.getZ();
+        String chunkKey = UnloadedInventoryHandler.getChunkString(location);
         for (Nation nation : nations.values()) {
 
             if (!nation.getNationClaims().containsKey(location.getWorld().getUID())) {
@@ -187,12 +188,6 @@ public class NationManager implements Listener {
         }
         return null;
     }
-
-    private void removeNation(Nation nation) {
-        // TODO send messages for nation destroyed
-        nations.remove(nation.getName());
-    }
-
 
     @EventHandler
     public void onTownDestroyed(TownDestroyedEvent event) {
@@ -316,10 +311,9 @@ public class NationManager implements Listener {
                     continue;
                 }
 
-                Chunk chunk = getSurroundTownClaim(i, town.getLocation());
-                ChunkClaim claim = ChunkClaim.fromChunk(chunk);
-                if (claim == null) {
-                    claim = new ChunkClaim(chunk.getX(), chunk.getZ(), town.getLocation().getWorld(), nation);
+                ChunkClaim claim = getSurroundTownClaim(i, town.getLocation(), nation);
+                if (claim.getNation() == null) {
+                    claim.setNation(nation);
                     if (!nation.getNationClaims().containsKey(town.getLocation().getWorld().getUID())) {
                         nation.getNationClaims().put(town.getLocation().getWorld().getUID(), new HashMap<>());
                     }
@@ -393,9 +387,9 @@ public class NationManager implements Listener {
         return location.getChunk();
     }
 
-    Chunk getSurroundTownClaim(int index, Location location) {
+    ChunkClaim getSurroundTownClaim(int index, Location location, Nation nation) {
         if (0 == index) {
-            return location.getChunk();
+            return ChunkClaim.fromLocation(location);
         }
         int layer = 0;
         int currentStep = 0;
@@ -426,11 +420,7 @@ public class NationManager implements Listener {
             x = -x + layerProgress + 3 - side * 3;
         }
 
-
-        Chunk chunk = location.getChunk();
-        x = chunk.getX() + x;
-        z = chunk.getZ() + z;
-        return location.getWorld().getChunkAt(x, z);
+        return ChunkClaim.fromXZ(x, z, location.getWorld());
     }
 
     private void mergeClaims(Nation rootNation, HashSet<Nation> merges) {
@@ -489,8 +479,8 @@ public class NationManager implements Listener {
         Nation nation = new Nation();
         nation.setName(newTown.getName());
         nation.setCapitol(newTown.getName());
-        // TODO create chunk claims
         nation.getMembers().add(newTown.getName());
+        surroundAllAlliedTowns(nation, newTown.getPower());
 
         nations.put(nation.getName(), nation);
         saveNation(nation);

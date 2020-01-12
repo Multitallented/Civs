@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.nations;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -89,6 +92,18 @@ public class NationTests extends TestUtil {
             // Do nothing
         }
         assertFalse(NationManager.getInstance().getAllNations().isEmpty());
+        Nation nation = NationManager.getInstance().getNation("town1");
+        assertNotNull(nation);
+        assertEquals(1000, nation.getNationClaims().get(TestUtil.world.getUID()).size());
+    }
+
+    @Test
+    public void townShouldHave1000ClaimsMax() {
+        Town town = TownTests.loadTown("test", "village",
+                new Location(TestUtil.world, 0, 0, 0));
+        NationManager.getInstance().createNation(town);
+        assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
+                NationManager.getInstance().getNation("test")));
     }
 
     @Test
