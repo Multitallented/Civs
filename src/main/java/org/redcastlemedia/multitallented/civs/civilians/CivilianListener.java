@@ -6,13 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -36,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -49,8 +45,11 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -62,11 +61,14 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.Indyuce.mmoitems.MMOItems;
 
 @CivsSingleton
 public class CivilianListener implements Listener {
@@ -312,7 +314,6 @@ public class CivilianListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!Util.isStarterBook(event.getItem())) {
             return;
         }
@@ -330,23 +331,24 @@ public class CivilianListener implements Listener {
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
-            for (Region r : regionSet) {
+            if (!regionSet.isEmpty()) {
+                region = regionSet.iterator().next();
                 MenuManager.clearHistory(player.getUniqueId());
                 HashMap<String, String> params = new HashMap<>();
-                params.put("region", r.getId());
-                MenuManager.getInstance().openMenu(player, "region", params);
-                return;
+                params.put(Constants.REGION, region.getId());
+                MenuManager.getInstance().openMenu(player, Constants.REGION, params);
+            } else {
+                player.performCommand("cv");
             }
-            player.performCommand("cv");
-            return;
+        } else {
+            MenuManager.clearHistory(player.getUniqueId());
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.REGION, region.getId());
+            MenuManager.getInstance().openMenu(player, Constants.REGION, params);
         }
-        if (player.getGameMode() == GameMode.SURVIVAL) {
+        if (region != null) {
             StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         }
-        MenuManager.clearHistory(player.getUniqueId());
-        HashMap<String, String> params = new HashMap<>();
-        params.put("region", region.getId());
-        MenuManager.getInstance().openMenu(player, "region", params);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -391,7 +393,6 @@ public class CivilianListener implements Listener {
                 }
                 CivilianManager.getInstance().saveCivilian(civilian);
             }
-//            location.getWorld().dropItemNaturally(location, itemStack);
         }
         return true;
     }
@@ -444,9 +445,9 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             if (!event.getSource().getViewers().isEmpty()) {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
-                Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity,
+                                LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
             }
         }
     }
@@ -519,8 +520,54 @@ public class CivilianListener implements Listener {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        ChatChannel chatChannel = civilian.getChatChannel();
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+            return;
+        }
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!civilian.getFriends().contains(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.LOCAL) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!recipient.getWorld().equals(player.getWorld()) ||
+                        10000 > recipient.getLocation().distanceSquared(player.getLocation())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.TOWN) {
+            Town town = (Town) chatChannel.getTarget();
+            if (!town.getRawPeople().containsKey(player.getUniqueId())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
+            Alliance alliance = (Alliance) chatChannel.getTarget();
+            if (alliance.isInAlliance(civilian.getUuid())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!alliance.isInAlliance(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
             }
         }
     }
@@ -564,7 +611,7 @@ public class CivilianListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {

@@ -1,10 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,6 +22,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -58,6 +55,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class RegionsTests extends TestUtil {
 
@@ -391,7 +389,7 @@ public class RegionsTests extends TestUtil {
     public void regionManagerShouldFindSingleRegion() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 100, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world"), 0, 100, 0);
         Location location3 = new Location(Bukkit.getWorld("world"), 100, 100, 50);
@@ -419,7 +417,7 @@ public class RegionsTests extends TestUtil {
     public void shouldNotBeAbleToCreateARegionOnTopOfAnotherRegion() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -482,7 +480,7 @@ public class RegionsTests extends TestUtil {
     public void playerShouldBeInMultipleEffectRadii() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location location2 = new Location(Bukkit.getWorld("world"), 5, 0, 0);
         RegionManager.getInstance().addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0));
@@ -495,7 +493,7 @@ public class RegionsTests extends TestUtil {
     public void regionsInDifferentWorldsShouldntCollide() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         World world3 = mock(World.class);
         when(world3.getUID()).thenReturn(new UUID(1, 7));
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
@@ -509,7 +507,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldNotBeBuiltTooClose() {
         loadRegionTypeShelter();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 500, 0, 0);
         RegionManager.getInstance().addRegion(new Region("shelter", owners, location1, getRadii(), new HashMap<>(),0));
 
@@ -533,7 +531,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldBeDestroyedCenter() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+        owners.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         RegionManager.getInstance().addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
@@ -551,7 +549,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldNotBeDestroyedCenter() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+        owners.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         RegionManager.getInstance().addRegion(new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0));
@@ -577,7 +575,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldBeDestroyedExtra() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+        owners.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
@@ -593,7 +591,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldBeNotDestroyedUnrelated() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+        owners.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
@@ -608,7 +606,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldBeNotDestroyedSecondary() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(TestUtil.player.getUniqueId(), "owner");
+        owners.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
@@ -623,7 +621,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldNotBeDestroyed() {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
@@ -640,7 +638,7 @@ public class RegionsTests extends TestUtil {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
         UUID uuid = new UUID(1, 4);
-        owners.put(uuid, "owner");
+        owners.put(uuid, Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
         RegionManager.getInstance().addRegion(new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0));
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.blockUnique, TestUtil.player);
@@ -673,7 +671,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldNotHaveReagents() {
         loadRegionTypeCobble3();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4, 0, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -684,7 +682,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldHaveReagents() {
         loadRegionTypeCobble4();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -696,7 +694,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldRunUpkeep() {
         loadRegionTypeCobble4();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("cobble", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -712,7 +710,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldNotHavePowerReagents() {
         loadRegionTypePower(true);
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -723,7 +721,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldHavePowerReagents() {
         loadRegionTypePower(true);
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -740,7 +738,7 @@ public class RegionsTests extends TestUtil {
     public void regionShouldAddPowerToTown() {
         loadRegionTypePower(false);
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -770,7 +768,7 @@ public class RegionsTests extends TestUtil {
     public void dailyRegionShouldUpkeepDaily() {
         loadRegionTypeDaily();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -790,7 +788,7 @@ public class RegionsTests extends TestUtil {
     public void dailyRegionShouldNotRunUpkeepTick() {
         loadRegionTypeDaily();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("daily", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -806,7 +804,7 @@ public class RegionsTests extends TestUtil {
     public void offCenterRegionShouldDestroy() {
         loadRegionTypeCobbleQuarry();
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 6), "owner");
+        owners.put(new UUID(1, 6), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 300, 100, 0);
         Region region = new Region("cobblequarry", owners, location1, getRadii(9,5,7,7,7,7), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -830,7 +828,7 @@ public class RegionsTests extends TestUtil {
                 EquipmentSlot.HAND);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockInteract(playerInteractEvent);
-        assertFalse(playerInteractEvent.isCancelled());
+        assertSame(Event.Result.ALLOW, playerInteractEvent.useInteractedBlock());
     }
 
     @Test
@@ -863,7 +861,7 @@ public class RegionsTests extends TestUtil {
         loadRegionTypeCobble();
         HashMap<UUID, String> owners = new HashMap<>();
         UUID uuid = new UUID(1, 4);
-        owners.put(uuid, "owner");
+        owners.put(uuid, Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 3, 100, 0);
         Region region = new Region("power", owners, location1, getRadii(), new HashMap<>(),0);
         RegionManager.getInstance().addRegion(region);
@@ -1131,7 +1129,7 @@ public class RegionsTests extends TestUtil {
 
     public static Region createNewRegion(String type) {
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
@@ -1140,7 +1138,7 @@ public class RegionsTests extends TestUtil {
     }
     public static Region createNewRegion(String type, Location location) {
         HashMap<UUID, String> owners = new HashMap<>();
-        owners.put(new UUID(1, 4), "owner");
+        owners.put(new UUID(1, 4), Constants.OWNER);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         Region region = new Region(type, owners, location, getRadii(), (HashMap) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);
@@ -1149,12 +1147,12 @@ public class RegionsTests extends TestUtil {
 
     public static Region createNewRegion(String type, UUID uuid) {
         Region region = createNewRegion(type);
-        region.setPeople(uuid, "owner");
+        region.setPeople(uuid, Constants.OWNER);
         return region;
     }
     public static Region createNewRegion(String type, UUID uuid, Location location) {
         Region region = createNewRegion(type, location);
-        region.setPeople(uuid, "owner");
+        region.setPeople(uuid, Constants.OWNER);
         return region;
     }
 }

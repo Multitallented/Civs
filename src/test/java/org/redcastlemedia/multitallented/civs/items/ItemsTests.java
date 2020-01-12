@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class ItemsTests extends TestUtil {
 
@@ -99,7 +100,7 @@ public class ItemsTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);
         Town town = TownTests.loadTown("something", "hamlet2", location1);
-        town.getPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian,
                 ItemManager.getInstance().getItemType("shack2")));
@@ -155,7 +156,7 @@ public class ItemsTests extends TestUtil {
         TownTests.loadTownTypeTribe();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setVillagers(4);
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TownTests.loadTownTypeHamlet2();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe")));

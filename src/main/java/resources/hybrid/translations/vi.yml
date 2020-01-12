@@ -672,8 +672,8 @@ estate3-desc: Cấp độ cao hơn của Biệt phủ cấp 2. Có thể kiếm 
 inn-name: Quán trọ
 inn-desc: Thêm 12 điểm Nhà ở và cũng có thẻ xem như là Cổng. Thường được dùng để thêm
   người vào thị trấn mà chưa xây nhà trước
-jade_mine-name: Mỏ đào ngọc
-jade_mine-desc: Khai thác 16 viên ngọc mỗi ngày và có thể bán cho Cửa hàng ngọc. Mỏ đào ngọc
+jade-mine-name: Mỏ đào ngọc
+jade-mine-desc: Khai thác 16 viên ngọc mỗi ngày và có thể bán cho Cửa hàng ngọc. Mỏ đào ngọc
   không thể xây dựng trên thị trấn đã có Cửa hàng ngọc
 coal_mine-name: Mỏ than
 coal_mine-desc: Khai thác những quặng than bằng cách dùng cúp. Bỏ vào rương một chiếc xe mỏ có

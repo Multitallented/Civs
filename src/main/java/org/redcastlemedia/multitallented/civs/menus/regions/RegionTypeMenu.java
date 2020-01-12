@@ -18,9 +18,12 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -48,6 +51,17 @@ public class RegionTypeMenu extends CustomMenu {
             if (regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY).split("\\.")[0]);
             }
+
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player != null && !StructureUtil.hasBoundingBoxShown(civilian.getUuid())) {
+                Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+                boolean infiniteBoundingBox = params.containsKey(Constants.INFINITE_BOUNDING_BOX);
+                if (region == null) {
+                    StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, infiniteBoundingBox);
+                } else {
+                    StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType, infiniteBoundingBox);
+                }
+            }
         }
         if (params.containsKey(Constants.SHOW_PRICE) && "true".equals(params.get(Constants.SHOW_PRICE))) {
             data.put(Constants.SHOW_PRICE, true);
@@ -62,7 +76,7 @@ public class RegionTypeMenu extends CustomMenu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE);
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
+        if (player == null || regionType == null) {
             return new ItemStack(Material.AIR);
         }
         String localizedRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -142,7 +156,7 @@ public class RegionTypeMenu extends CustomMenu {
             return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
             boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), Constants.SHOW_PRICE);
-            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
             boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
             String maxLimit = civilian.isAtMax(regionType);
             boolean isInShop = regionType.getInShop();

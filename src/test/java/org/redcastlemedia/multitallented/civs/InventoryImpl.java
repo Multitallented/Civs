@@ -16,11 +16,6 @@ import java.util.ListIterator;
 
 public class InventoryImpl implements Inventory {
     private HashMap<Integer, ItemStack> contents = new HashMap<>();
-    private String title;
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     @Override
     public int getSize() {
@@ -39,7 +34,7 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public String getName() {
-        return "";
+        return null;
     }
 
     @Override
@@ -318,7 +313,7 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public String getTitle() {
-        return title;
+        return null;
     }
 
     @Override

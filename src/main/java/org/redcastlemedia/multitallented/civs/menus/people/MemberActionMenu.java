@@ -74,18 +74,33 @@ public class MemberActionMenu extends CustomMenu {
         }
         boolean viewingSelf = civilian.getUuid().equals(uuid);
         boolean isAdmin = player != null && (player.isOp() || (Civs.perm != null &&
-                Civs.perm.has(player, "civs.admin")));
+                Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
 
         if (governmentType == GovernmentType.ANARCHY) {
             viewingSelf = false;
         }
+        boolean personIsOwner = false;
+        String personRole = "";
+        if (region != null) {
+            personIsOwner = region.getRawPeople().containsKey(uuid) &&
+                    region.getRawPeople().get(uuid).contains(Constants.OWNER);
+            if (region.getRawPeople().containsKey(uuid)) {
+                personRole = region.getRawPeople().get(uuid);
+            }
+        } else if (town != null) {
+            personIsOwner = town.getRawPeople().containsKey(uuid) &&
+                    town.getRawPeople().get(uuid).contains(Constants.OWNER);
+            if (town.getRawPeople().containsKey(uuid)) {
+                personRole = town.getRawPeople().get(uuid);
+            }
+        }
         boolean isOwner = false;
         if (region != null) {
             isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
-                    region.getRawPeople().get(uuid).contains(Constants.OWNER);
+                    region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         } else if (town != null) {
             isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
-                    town.getRawPeople().get(uuid).contains(Constants.OWNER);
+                    town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
 
         boolean isVoteOnly = !isOwner && (governmentType == GovernmentType.CAPITALISM ||
@@ -123,7 +138,7 @@ public class MemberActionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("set-owner".equals(menuIcon.getKey())) {
-            if (isOwner) {
+            if (personIsOwner) {
                 return new ItemStack(Material.AIR);
             }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
@@ -141,34 +156,37 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-member".equals(menuIcon.getKey())) {
-            if (role.contains(Constants.MEMBER)) {
+            if (personRole.contains(Constants.MEMBER)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (!viewingSelf && isOwner && !role.contains(Constants.MEMBER)))) {
+            if (!(isAdmin || (!viewingSelf && personIsOwner && !role.contains(Constants.MEMBER)))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
-            if (role.contains(Constants.GUEST)) {
+            if (personRole.contains(Constants.GUEST)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
+            if (!(isAdmin || (personIsOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-recruiter".equals(menuIcon.getKey())) {
             if (town == null) {
                 return new ItemStack(Material.AIR);
             }
-            if (role.contains(Constants.RECRUITER)) {
+            if (personRole.contains(Constants.RECRUITER)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
+            if (!(isAdmin || (personIsOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {
-            if (!(viewingSelf || isOwner)) {
+            if (!(viewingSelf || personIsOwner)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("vote".equals(menuIcon.getKey())) {
+            if (!role.contains(Constants.MEMBER) && !role.contains(Constants.OWNER)) {
+                return new ItemStack(Material.AIR);
+            }
             if ((governmentType == GovernmentType.DEMOCRACY ||
                     governmentType == GovernmentType.DEMOCRATIC_SOCIALISM ||
                     governmentType == GovernmentType.CAPITALISM ||

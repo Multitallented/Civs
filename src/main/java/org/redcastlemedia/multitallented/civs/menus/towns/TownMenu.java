@@ -72,8 +72,7 @@ public class TownMenu extends CustomMenu {
         boolean govTypeOpenToAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
                 !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
                 (government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                        government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
-                        government.getGovernmentType() == GovernmentType.ANARCHY);
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN);
         boolean govTypeOwnerOverride =
                 town.getRawPeople().containsKey(civilian.getUuid()) &&
                 (government.getGovernmentType() == GovernmentType.OLIGARCHY ||
@@ -85,7 +84,7 @@ public class TownMenu extends CustomMenu {
         if (player == null || townType == null) {
             return new ItemStack(Material.AIR);
         }
-        boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
 
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = townType.getShopIcon(civilian.getLocale()).clone();
@@ -188,11 +187,11 @@ public class TownMenu extends CustomMenu {
             return itemStack;
         } else if ("destroy".equals(menuIcon.getKey())) {
             if ((town.getPeople().containsKey(civilian.getUuid()) &&
-                    town.getPeople().get(civilian.getUuid()).contains("owner") &&
+                    town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER) &&
                     government.getGovernmentType() != GovernmentType.ANARCHY &&
                     government.getGovernmentType() != GovernmentType.COMMUNISM &&
                     government.getGovernmentType() != GovernmentType.COLONIALISM) ||
-                    (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
+                    (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
                 return super.createItemStack(civilian, menuIcon, count);
             } else {
                 return new ItemStack(Material.AIR);
@@ -226,6 +225,10 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("government-type".equals(menuIcon.getKey())) {
+            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
+                    !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = government.getIcon(civilian.getLocale());
             ItemStack itemStack = cvItem.createItemStack();
             if (!town.isGovTypeChangedToday()) {
@@ -333,7 +336,7 @@ public class TownMenu extends CustomMenu {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "town-ally-request-sent").replace("$1", townName));
             for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).contains("owner")) {
+                if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                     Player pSend = Bukkit.getPlayer(uuid);
                     if (pSend != null && pSend.isOnline()) {
                         pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(pSend,

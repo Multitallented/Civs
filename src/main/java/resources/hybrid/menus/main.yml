@@ -36,13 +36,6 @@ items:
     name: community
     actions:
       - menu:community
-  language:
-    index: 17
-    icon: GRASS_BLOCK
-    name: language-menu
-    actions:
-      - menu:language
-
   town:
     index: 9
     # name: town name
@@ -55,3 +48,16 @@ items:
     # icon: region icon
     actions:
       - menu:region?region=$region$
+  chat:
+    index: 16
+    icon: MAP
+    name: chat-channels
+    desc: click-change-chat
+    actions:
+      - menu:chat-channel-list
+  language:
+    index: 17
+    icon: GRASS_BLOCK
+    name: language-menu
+    actions:
+      - menu:language

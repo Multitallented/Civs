@@ -73,6 +73,9 @@ public class Civilian {
     @Getter @Setter
     private boolean useAnnouncements;
 
+    @Getter @Setter
+    private ChatChannel chatChannel;
+
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
                     double points, int karma, int expOrbs, boolean askForTutorial) {
@@ -91,15 +94,7 @@ public class Civilian {
         this.mana = 0;
         this.expOrbs = expOrbs;
         this.askForTutorial = askForTutorial;
-//        Player player;
-//        try {
-//            player = Bukkit.getPlayer(uuid);
-//            if (player != null) {
-//                expOrbs = player.getExp();
-//            }
-//        } catch (NullPointerException npe) {
-//
-//        }
+        this.chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
     }
 
     public UUID getUuid() {

@@ -672,8 +672,8 @@ estate3-desc: 9º nível de habitação. Ganhe $2621 por dia vendendo cenouras &
 inn-name: Pousada
 inn-desc: Provê 12 habitações e um porto. Útil para adicionar pessoas à cidade sem ter
   que construir habitações primeiro.
-jade_mine-name: Mina de Jade
-jade_mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
+jade-mine-name: Mina de Jade
+jade-mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
   pode ser construída numa cidade com uma Loja de Jade.
 coal_mine-name: Mina de Carvão
 coal_mine-desc: Cria Carvão utilizando picaretas. Coloque um carrinho com baú no baú. Construa

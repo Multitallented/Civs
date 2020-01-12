@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
@@ -10,9 +11,12 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -154,6 +158,8 @@ public class ConfigManager {
     int nationFormedAtTownLevel;
     @Getter
     int lineBreakLength;
+    @Getter
+    EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
 
     public ConfigManager() {
         loadDefaults();
@@ -232,16 +238,6 @@ public class ConfigManager {
     }
     public String getCivsItemPrefix() {
         return Util.parseColors(civsItemPrefix + " ");
-    }
-
-    public List<String> getCustomItemDescription(String key) {
-        List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
-        if (returnDescription == null) {
-            ArrayList<String> returnLore = new ArrayList<>();
-            returnLore.add(key);
-            return returnLore;
-        }
-        return returnDescription;
     }
 
     public int getCreatureHealth(String type) {
@@ -387,6 +383,22 @@ public class ConfigManager {
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
+            chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
+            if (config.isSet("chat-channels")) {
+                for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
+                    try {
+                        if (config.getBoolean("chat-channels." + chatChannel + ".enabled", false)) {
+                            chatChannels.put(ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase()),
+                                    config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name()));
+                        }
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "Invalid chat channel type {0}", chatChannel);
+                    }
+                }
+            }
+            if (chatChannels.isEmpty()) {
+                chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+            }
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -438,6 +450,8 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
+        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
         lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";

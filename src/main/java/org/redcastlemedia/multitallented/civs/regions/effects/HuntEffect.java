@@ -19,11 +19,15 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @CivsSingleton
@@ -108,6 +112,12 @@ public class HuntEffect implements Listener, CreateRegionListener {
             return;
         }
 
+        if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "region-missing-upkeep-items"));
+            return;
+        }
+
         Location location = targetPlayer.getLocation();
         int radius = 200;
 
@@ -124,8 +134,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
                     player1.getLocation().distanceSquared(player.getLocation()) > 90000) {
                 continue;
             }
-            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
-            String message = LocaleManager.getInstance().getTranslation(civilian1.getLocale(), messageKey);
+            String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player1, messageKey);
             if (replace1 != null) {
                 message = message.replace("$1", replace1);
             }

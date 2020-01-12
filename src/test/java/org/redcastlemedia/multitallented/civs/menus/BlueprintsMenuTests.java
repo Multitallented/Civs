@@ -26,7 +26,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -41,7 +40,6 @@ public class BlueprintsMenuTests extends TestUtil {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
-        this.inventory.setTitle("CivsRegionStash");
 
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().clear();

@@ -21,12 +21,23 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public final class StructureUtil {
-    private final static long DURATION = 20000;
-    private final static long COOLDOWN = 5000;
-    private final static HashMap<UUID, BoundingBox> boundingBoxes = new HashMap<>();
+    private static final long DURATION = 20000;
+    private static final long COOLDOWN = 5000;
+    private static final HashMap<UUID, BoundingBox> boundingBoxes = new HashMap<>();
 
     private StructureUtil() {
-        // Exists so that you can't instantiate this
+        // Exists so that you can't instantiate this util class
+    }
+
+    public static boolean hasBoundingBoxShown(UUID uuid) {
+        if (!boundingBoxes.containsKey(uuid)) {
+            return false;
+        }
+        BoundingBox boundingBox = boundingBoxes.get(uuid);
+        if (boundingBox.getCreationTime() == -1) {
+            return true;
+        }
+        return boundingBox.getCreationTime() + DURATION >= System.currentTimeMillis();
     }
 
     public static void cleanUpExpiredBoundingBoxes() {
@@ -204,8 +215,6 @@ public final class StructureUtil {
         player.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
                 new Particle.DustOptions(color, 1));
 
-//        world.spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0, 1,
-//                new Particle.DustOptions(color, 1), true);
         boundingBox.put(location, color);
     }
 

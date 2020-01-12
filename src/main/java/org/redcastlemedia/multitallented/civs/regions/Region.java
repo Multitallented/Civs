@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -142,7 +143,7 @@ public class Region {
     public Set<UUID> getOwners() {
         Set<UUID> owners = new HashSet<>();
         for (UUID uuid : people.keySet()) {
-            if (people.get(uuid).contains("owner")) {
+            if (people.get(uuid).contains(Constants.OWNER)) {
                 owners.add(uuid);
             }
         }

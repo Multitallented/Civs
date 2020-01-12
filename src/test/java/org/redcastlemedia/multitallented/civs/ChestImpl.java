@@ -207,4 +207,5 @@ public class ChestImpl implements Chest {
     public void removeMetadata(String s, Plugin plugin) {
 
     }
+
 }

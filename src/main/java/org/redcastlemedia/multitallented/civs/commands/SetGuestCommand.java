@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -26,7 +27,7 @@ public class SetGuestCommand implements CivCommand {
         boolean isAdmin = false;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
-            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         } else {
             isAdmin = true;
         }
@@ -67,7 +68,7 @@ public class SetGuestCommand implements CivCommand {
             return true;
         }
         if (region != null && !isAdmin && !Util.hasOverride(region, civilian) && player != null &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;

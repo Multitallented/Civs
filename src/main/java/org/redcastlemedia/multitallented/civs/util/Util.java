@@ -54,11 +54,11 @@ public final class Util {
         }
         HashMap<UUID, String> people = new HashMap<>(town.getRawPeople());
         for (UUID uuid : people.keySet()) {
-            if (people.get(uuid).contains("owner")) {
+            if (people.get(uuid).contains(Constants.OWNER)) {
                 town.getRawPeople().put(uuid, "member");
             }
         }
-        town.getRawPeople().put(newOwner, "owner");
+        town.getRawPeople().put(newOwner, Constants.OWNER);
         town.getIdiocracyScore().clear();
         if (save) {
             TownManager.getInstance().saveTown(town);
@@ -78,7 +78,7 @@ public final class Util {
                     highestMember = uuid;
                     highestMemberScore = score;
                 }
-            } else if (role.contains("owner")) {
+            } else if (role.contains(Constants.OWNER)) {
                 int score = Util.calculateMerit(uuid, town);
                 if (score < lowestOwnerScore) {
                     lowestOwnerScore = score;
@@ -88,7 +88,7 @@ public final class Util {
         }
         if (lowestOwner != null && highestMember != null && lowestOwnerScore < highestMemberScore) {
             town.setPeople(lowestOwner, "member");
-            town.setPeople(highestMember, "owner");
+            town.setPeople(highestMember, Constants.OWNER);
             if (save) {
                 TownManager.getInstance().saveTown(town);
             }
@@ -107,7 +107,7 @@ public final class Util {
         int score = town.getIdiocracyScore().getOrDefault(civilian.getUuid(), 0);
         UUID demoteMe = null;
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains("owner")) {
+            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 if (town.getIdiocracyScore().getOrDefault(uuid, 0) < score) {
                     demoteMe = uuid;
                     break;
@@ -116,7 +116,7 @@ public final class Util {
         }
         if (demoteMe != null) {
             town.setPeople(demoteMe, "member");
-            town.setPeople(player.getUniqueId(), "owner");
+            town.setPeople(player.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
             String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
@@ -139,7 +139,7 @@ public final class Util {
         int score = Util.calculateMerit(player.getUniqueId(), town);
         UUID demoteMe = null;
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains("owner")) {
+            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 if (Util.calculateMerit(uuid, town) < score) {
                     demoteMe = uuid;
                     break;
@@ -148,7 +148,7 @@ public final class Util {
         }
         if (demoteMe != null) {
             town.setPeople(demoteMe, "member");
-            town.setPeople(player.getUniqueId(), "owner");
+            town.setPeople(player.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
             String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
@@ -170,7 +170,7 @@ public final class Util {
             int townPoints = 0;
             for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
                 if (region.getRawPeople().containsKey(civilian.getUuid()) &&
-                        region.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                        region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                     townPoints += 4 * regionType.getLevel();
                 }
@@ -291,6 +291,9 @@ public final class Util {
         return inputString;
     }
     public static String parseColors(String input) {
+        if (input == null) {
+            return null;
+        }
         String returnInput = new String(input);
         for (ChatColor color : ChatColor.values()) {
             returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
@@ -356,10 +359,9 @@ public final class Util {
         final int RENDER_RANGE_SQUARED = 25600;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().equals(location.getWorld())) {
-                continue;
-            }
-            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+            if (location.getWorld() != null &&
+                    location.getWorld().equals(player.getWorld()) &&
+                    player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
                 return true;
             }
         }
@@ -616,7 +618,7 @@ public final class Util {
     public static boolean hasOverride(Region region, Civilian civilian, Town town) {
         boolean override = false;
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         if (isAdmin) {
             return true;
         }
@@ -626,7 +628,7 @@ public final class Util {
             override = !regionType.getEffects().containsKey("cant_override") &&
                     townType.getEffects().containsKey("control_override") &&
                     town.getPeople().get(civilian.getUuid()) != null &&
-                    town.getPeople().get(civilian.getUuid()).contains("owner");
+                    town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
         return override;
     }

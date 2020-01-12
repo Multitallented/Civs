@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "colony" })
 public class ColonyCommand implements CivCommand {
@@ -43,9 +44,9 @@ public class ColonyCommand implements CivCommand {
         }
 
         boolean isOwner = owningTown.getRawPeople().containsKey(player.getUniqueId()) &&
-                owningTown.getRawPeople().get(player.getUniqueId()).contains("owner");
+                owningTown.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER);
         if (!isOwner || player.isOp() ||
-                (Civs.perm != null && Civs.perm.has(player, "civs.admin"))) {
+                (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;

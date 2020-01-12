@@ -7,6 +7,7 @@ public final class LocaleConstants {
     public static final String DESC_SUFFIX = "-desc";
     public static final String REGION_LIMIT_REACHED = "region-limit-reached";
     public static final String GROUP_SUFFIX = "-group";
+    public static final String PREVENT_CIVS_ITEM_SHARE = "prevent-civs-item-share";
 
     private LocaleConstants() {
 

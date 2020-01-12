@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.util.ArrayList;
@@ -293,7 +294,7 @@ public class CommonScheduler implements Runnable {
         }
 
         if (town != null && town.getRawPeople().containsKey(player.getUniqueId()) &&
-                town.getRawPeople().get(player.getUniqueId()).contains("owner") &&
+                town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
                 town.getLastActive() + 10000 < System.currentTimeMillis()) {
             town.setLastActive(System.currentTimeMillis());
             TownManager.getInstance().saveTown(town);

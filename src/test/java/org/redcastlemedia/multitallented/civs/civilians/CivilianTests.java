@@ -27,7 +27,6 @@ public class CivilianTests extends TestUtil {
         ItemStack is = TestUtil.createUniqueItemStack(Material.CHEST, "Civs Cobble");
         when(event.getCurrentItem()).thenReturn(is);
         Inventory inventory = mock(Inventory.class);
-        when(inventory.getTitle()).thenReturn("");
         when(event.getClickedInventory()).thenReturn(inventory);
         Player player = mock(Player.class);
         UUID uuid = new UUID(1,8);

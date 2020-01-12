@@ -33,9 +33,12 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
@@ -203,7 +206,12 @@ public class Civs extends JavaPlugin {
     }
 
     private void instantiateSingletons() {
-        Reflections reflections = new Reflections("org.redcastlemedia.multitallented.civs");
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        FilterBuilder filterBuilder = new FilterBuilder();
+        configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs"));
+        filterBuilder.includePackage("org.redcastlemedia.multitallented.civs").excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion");
+        configurationBuilder.filterInputsBy(filterBuilder);
+        Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
         List<Class<?>> classList = new ArrayList<>(classes);
         classList.sort(new Comparator<Class<?>>() {

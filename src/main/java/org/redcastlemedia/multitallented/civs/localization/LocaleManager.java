@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -28,13 +28,13 @@ public class LocaleManager {
     private static LocaleManager localeManager;
     HashMap<String, HashMap<String, String>> languageMap = new HashMap<>();
 
-    public String getTranslationWithPlaceholders(Player player, String key) {
+    public String getTranslationWithPlaceholders(OfflinePlayer player, String key) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String messageWithPlaceholders = getTranslation(civilian.getLocale(), key);
         return replacePlaceholders(player, messageWithPlaceholders);
     }
 
-    public String getRawTranslationWithPlaceholders(Player player, String key) {
+    public String getRawTranslationWithPlaceholders(OfflinePlayer player, String key) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String messageWithPlaceholders = getRawTranslation(civilian.getLocale(), key);
         return replacePlaceholders(player, messageWithPlaceholders);
@@ -75,7 +75,7 @@ public class LocaleManager {
         return languageMap.keySet();
     }
 
-    public String replacePlaceholders(Player player, String input) {
+    public String replacePlaceholders(OfflinePlayer player, String input) {
         if (Civs.placeholderAPI == null) {
             return input;
         }
