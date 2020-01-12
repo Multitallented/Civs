@@ -587,8 +587,8 @@ public class ProtectionHandler implements Listener {
         }
 
         // TODO Does not take mod into account
-        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
-        if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
+        ChunkClaim claim = ChunkClaim.fromLocation(location);
+        if (player != null && claim.getNation() != null && claim.getNation().getEffects().contains(type) &&
                 !NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation())) {
             return true;
         }
@@ -652,8 +652,8 @@ public class ProtectionHandler implements Listener {
     }
 
     static boolean shouldBlockAction(Location location, String type) {
-        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
-        if (claim != null && claim.getNation().getEffects().contains(type)) {
+        ChunkClaim claim = ChunkClaim.fromLocation(location);
+        if (claim.getNation() != null && claim.getNation().getEffects().contains(type)) {
             return true;
         }
 
@@ -683,8 +683,8 @@ public class ProtectionHandler implements Listener {
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
-        ChunkClaim claim = NationManager.getInstance().getClaimAt(location);
-        if (player != null && claim != null && claim.getNation().getEffects().contains(type) &&
+        ChunkClaim claim = ChunkClaim.fromLocation(location);
+        if (player != null && claim.getNation() != null && claim.getNation().getEffects().contains(type) &&
                 !NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation())) {
             return true;
         }

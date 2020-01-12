@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.nations;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -17,7 +16,6 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
-import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -29,12 +27,18 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class NationTests extends TestUtil {
 
+    private Town town1;
+    private Town town2;
+
     @Before
     public void setup() {
         NationManager.getInstance().reload();
         AllianceManager.getInstance().reload();
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
+        this.town1  = TownTests.loadTown("town1", "hamlet", new Location(TestUtil.world, 0, 0, 0));
+        this.town2 = TownTests.loadTown("test", "village",
+                new Location(TestUtil.world, 1000, 0, 1000));
     }
 
     @After
@@ -44,7 +48,7 @@ public class NationTests extends TestUtil {
 
     @Test
     public void nationShouldNotBeCreatedWhenTownReachesLevel3() {
-        Town town1  = TownTests.loadTown("town1", "settlement", new Location(TestUtil.world, 0, 0, 0));
+        town1.setType("settlement");
         town1.setVillagers(24);
         RegionsTests.createNewRegion("council_room");
         RegionsTests.createNewRegion("cobble_quarry");
@@ -69,7 +73,6 @@ public class NationTests extends TestUtil {
 
     @Test
     public void nationShouldBeCreatedWhenTownReachesLevel4() {
-        Town town1  = TownTests.loadTown("town1", "hamlet", new Location(TestUtil.world, 0, 0, 0));
         town1.setVillagers(24);
         RegionsTests.createNewRegion("council_room");
         RegionsTests.createNewRegion("cobble_quarry");
@@ -91,28 +94,22 @@ public class NationTests extends TestUtil {
         } catch (SuccessException se) {
             // Do nothing
         }
-        assertFalse(NationManager.getInstance().getAllNations().isEmpty());
         Nation nation = NationManager.getInstance().getNation("town1");
         assertNotNull(nation);
-        assertEquals(1000, nation.getNationClaims().get(TestUtil.world.getUID()).size());
     }
 
     @Test
     public void townShouldHave1000ClaimsMax() {
-        Town town = TownTests.loadTown("test", "village",
-                new Location(TestUtil.world, 0, 0, 0));
-        NationManager.getInstance().createNation(town);
+        NationManager.getInstance().createNation(this.town2);
         assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
                 NationManager.getInstance().getNation("test")));
     }
 
     @Test
     public void nationShouldBeDestroyedWhenCapitolIsDestroyed() {
-        Town town = TownTests.loadTown("test", "village",
-                new Location(TestUtil.world, 0, 0, 0));
-        NationManager.getInstance().createNation(town);
-        TownDestroyedEvent townDestroyedEvent = new TownDestroyedEvent(town,
-                (TownType) ItemManager.getInstance().getItemType(town.getType()));
+        NationManager.getInstance().createNation(this.town2);
+        TownDestroyedEvent townDestroyedEvent = new TownDestroyedEvent(this.town2,
+                (TownType) ItemManager.getInstance().getItemType(this.town2.getType()));
         NationManager.getInstance().onTownDestroyed(townDestroyedEvent);
         assertTrue(NationManager.getInstance().getAllNations().isEmpty());
     }
@@ -131,17 +128,17 @@ public class NationTests extends TestUtil {
 //        assertEquals(200, alliance.getNationClaims().get(TestUtil.world.getUID()).size());
 //    }
 
-//    @Test
-//    public void spiralClaimsShouldReturnCorrectXY() {
-//        AllianceManager.getInstance().allyTheseTowns(town1, town2);
-//        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getX());
-//        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getZ());
-//        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getX());
-//        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getZ());
-//        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
-//        assertEquals(0, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getZ());
-//        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
-//        assertEquals(-1, AllianceManager.getInstance().getSurroundTownClaim(5, town1.getLocation()).getX());
-//        assertEquals(1, AllianceManager.getInstance().getSurroundTownClaim(9, town1.getLocation()).getX());
-//    }
+    @Test
+    public void spiralClaimsShouldReturnCorrectXY() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        assertEquals(0, NationManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getX());
+        assertEquals(0, NationManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getZ());
+        assertEquals(1, NationManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getX());
+        assertEquals(1, NationManager.getInstance().getSurroundTownClaim(1, town1.getLocation()).getZ());
+        assertEquals(1, NationManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
+        assertEquals(0, NationManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getZ());
+        assertEquals(1, NationManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
+        assertEquals(-1, NationManager.getInstance().getSurroundTownClaim(5, town1.getLocation()).getX());
+        assertEquals(1, NationManager.getInstance().getSurroundTownClaim(9, town1.getLocation()).getX());
+    }
 }

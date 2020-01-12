@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +26,6 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class NationManager implements Listener {
@@ -217,23 +217,27 @@ public class NationManager implements Listener {
                 nation.getMembers().add(event.getNewName());
                 saveThese.add(nation);
             }
+            if (nation.getCapitol().equals(event.getOldName())) {
+                nation.setCapitol(event.getNewName());
+                saveThese.add(nation);
+            }
         }
         for (Nation nation : saveThese) {
             saveNation(nation);
         }
     }
 
-    public ArrayList<Nation> getAllNations() {
+    public List<Nation> getAllNations() {
         return new ArrayList<>(nations.values());
     }
 
-    public HashSet<Chunk> getContainingChunks(Location location,
-                                              int xp, int xn,
-                                              int zp, int zn) {
-        HashSet<Chunk> chunkClaims = new HashSet<>();
+    public Set<ChunkClaim> getContainingChunks(Location location,
+                                               int xp, int xn,
+                                               int zp, int zn) {
+        HashSet<ChunkClaim> chunkClaims = new HashSet<>();
         for (int x = (int) location.getX() - xn; x < location.getX() + xp; x += 16) {
             for (int z = (int) location.getZ() - zn; z < location.getZ() + zp; z += 16) {
-                chunkClaims.add(location.getWorld().getChunkAt(x, z));
+                chunkClaims.add(ChunkClaim.fromXZ(x, z, location.getWorld()));
             }
         }
         return chunkClaims;
@@ -271,6 +275,17 @@ public class NationManager implements Listener {
             return;
         }
         HashSet<String> bridges = new HashSet<>();
+        getBridges(nation, bridges);
+        claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
+
+        if (claimsAvailable < 1) {
+            return;
+        }
+
+        // TODO spiral outwards from connected towns
+    }
+
+    private void getBridges(Nation nation, HashSet<String> bridges) {
         for (String town1Name : nation.getMembers()) {
             for (String town2Name : nation.getMembers()) {
                 if (town1Name.equals(town2Name)) {
@@ -288,13 +303,6 @@ public class NationManager implements Listener {
                 }
             }
         }
-        claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
-
-        if (claimsAvailable < 1) {
-            return;
-        }
-
-        // TODO spiral outwards from connected towns
     }
 
     private int surroundAllAlliedTowns(Nation nation, int claimsAvailable) {
@@ -311,7 +319,7 @@ public class NationManager implements Listener {
                     continue;
                 }
 
-                ChunkClaim claim = getSurroundTownClaim(i, town.getLocation(), nation);
+                ChunkClaim claim = getSurroundTownClaim(i, town.getLocation());
                 if (claim.getNation() == null) {
                     claim.setNation(nation);
                     if (!nation.getNationClaims().containsKey(town.getLocation().getWorld().getUID())) {
@@ -345,11 +353,16 @@ public class NationManager implements Listener {
         while (claimsAvailable > 0 && !claimBridges.isEmpty()) {
             HashSet<ClaimBridge> tempBridges = new HashSet<>(claimBridges);
             for (ClaimBridge claimBridge : tempBridges) {
-                Chunk chunk = getBridgeChunk(i, claimBridge);
+                ChunkClaim chunk = getBridgeChunk(i, claimBridge);
                 if (chunk == null) {
                     claimBridges.remove(claimBridge);
+                    continue;
                 }
-                // TODO add chunk to alliance claim
+                if (chunk.getNation() == null) {
+                    chunk.setNation(nation);
+                    nation.getNationClaims().get(claimBridge.getWorld().getUID())
+                            .put(chunk.getId(), chunk);
+                }
             }
         }
 
@@ -374,7 +387,7 @@ public class NationManager implements Listener {
     }
 
     // TODO this is probably wrong and needs to be fixed and tested
-    Chunk getBridgeChunk(int index, ClaimBridge claimBridge) {
+    ChunkClaim getBridgeChunk(int index, ClaimBridge claimBridge) {
         if (claimBridge.getDiffX() > 0 && claimBridge.getX1() + 16 * index > claimBridge.getX2()) {
             return null;
         } else if (claimBridge.getDiffX() < 0 && claimBridge.getX1() + 16 * index < claimBridge.getX2()) {
@@ -384,10 +397,10 @@ public class NationManager implements Listener {
         double z = claimBridge.getZ1() + claimBridge.getSlope() * x;
 
         Location location = new Location(claimBridge.getWorld(), x, 60, z);
-        return location.getChunk();
+        return ChunkClaim.fromLocation(location);
     }
 
-    ChunkClaim getSurroundTownClaim(int index, Location location, Nation nation) {
+    ChunkClaim getSurroundTownClaim(int index, Location location) {
         if (0 == index) {
             return ChunkClaim.fromLocation(location);
         }
@@ -480,7 +493,7 @@ public class NationManager implements Listener {
         nation.setName(newTown.getName());
         nation.setCapitol(newTown.getName());
         nation.getMembers().add(newTown.getName());
-        surroundAllAlliedTowns(nation, newTown.getPower());
+        fillClaims(nation);
 
         nations.put(nation.getName(), nation);
         saveNation(nation);
