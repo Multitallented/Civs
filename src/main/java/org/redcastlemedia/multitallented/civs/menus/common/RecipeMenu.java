@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "recipe") @SuppressWarnings("unused")
 public class RecipeMenu extends CustomMenu {
@@ -31,9 +32,9 @@ public class RecipeMenu extends CustomMenu {
             data.put("page", 0);
         }
         String recipe = params.get("recipe");
-        String regionTypeName = params.get("regionType");
+        String regionTypeName = params.get(Constants.REGION_TYPE);
         if (regionTypeName != null) {
-            data.put("regionType", ItemManager.getInstance().getItemType(regionTypeName));
+            data.put(Constants.REGION_TYPE, ItemManager.getInstance().getItemType(regionTypeName));
         }
         List<List<CVItem>> items;
         if (recipe == null || regionTypeName == null) {
@@ -89,10 +90,10 @@ public class RecipeMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
-                (String) MenuManager.getData(civilian.getUuid(), "regionType"));
+                (String) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE));
         if (menuIcon.getKey().equals("items")) {
             List<List<CVItem>> items;
             if (MenuManager.getData(civilian.getUuid(), "items") != null) {
