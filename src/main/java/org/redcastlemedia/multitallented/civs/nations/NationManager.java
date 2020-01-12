@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -22,7 +23,7 @@ import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
@@ -162,7 +163,10 @@ public class NationManager implements Listener {
     }
 
     public void removeNation(Nation nation) {
-        // TODO send destroyed messages
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "nation-destroyed").replace("$1", nation.getName()));
+        }
         if (Civs.getInstance() != null) {
             File nationFolder = new File(Civs.getInstance().getDataFolder(), "nations");
             File nationFile = new File(nationFolder, nation.getName() + ".yml");
@@ -171,22 +175,6 @@ public class NationManager implements Listener {
             }
         }
         nations.remove(nation.getName());
-    }
-
-    public ChunkClaim getClaimAt(Location location) {
-        String chunkKey = UnloadedInventoryHandler.getChunkString(location);
-        for (Nation nation : nations.values()) {
-
-            if (!nation.getNationClaims().containsKey(location.getWorld().getUID())) {
-                continue;
-            }
-            if (nation.getNationClaims().get(location.getWorld().getUID())
-                    .containsKey(chunkKey)) {
-                return nation.getNationClaims().get(location.getWorld().getUID())
-                        .get(chunkKey);
-            }
-        }
-        return null;
     }
 
     @EventHandler
