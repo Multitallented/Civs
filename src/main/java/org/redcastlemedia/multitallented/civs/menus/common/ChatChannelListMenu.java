@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -39,6 +40,7 @@ public class ChatChannelListMenu extends CustomMenu {
         List<ChatChannel> channelList = new ArrayList<>();
         for (ChatChannel.ChatChannelType chatChannelType : ConfigManager.getInstance().getChatChannels().keySet()) {
             if (chatChannelType != ChatChannel.ChatChannelType.TOWN &&
+                    chatChannelType != ChatChannel.ChatChannelType.ALLIANCE &&
                     chatChannelType != ChatChannel.ChatChannelType.NATION) {
                 channelList.add(new ChatChannel(chatChannelType, null));
             }
@@ -123,6 +125,11 @@ public class ChatChannelListMenu extends CustomMenu {
                     .get(itemStack);
             if (chatChannel != null) {
                 civilian.setChatChannel(chatChannel);
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                if (player != null) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                            "chat-channel-set").replace("$1", chatChannel.getName(player)));
+                }
             }
             return true;
         }
