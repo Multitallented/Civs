@@ -174,7 +174,7 @@ civs-item-prefix: "Civs"
 chat-channels:
   global:
     enabled: true
-    icon: ENDERCHEST
+    icon: ENDER_CHEST
   local:
     enabled: true
     icon: GRASS
