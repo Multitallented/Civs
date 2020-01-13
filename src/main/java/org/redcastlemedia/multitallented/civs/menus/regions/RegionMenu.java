@@ -71,6 +71,9 @@ public class RegionMenu extends CustomMenu {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(
                 (String) MenuManager.getData(civilian.getUuid(), "regionTypeName"));
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null || region == null) {
+            return new ItemStack(Material.AIR);
+        }
         Map<UUID, String> regionPeople = region.getPeople();
         boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
