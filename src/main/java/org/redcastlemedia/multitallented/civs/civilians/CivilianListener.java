@@ -536,14 +536,16 @@ public class CivilianListener implements Listener {
         }
         if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
             for (Player recipient : new HashSet<>(event.getRecipients())) {
-                if (!civilian.getFriends().contains(recipient.getUniqueId())) {
+                if (!civilian.getFriends().contains(recipient.getUniqueId()) &&
+                        recipient != player) {
                     event.getRecipients().remove(recipient);
                 }
             }
         } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.LOCAL) {
             for (Player recipient : new HashSet<>(event.getRecipients())) {
-                if (!recipient.getWorld().equals(player.getWorld()) ||
-                        10000 > recipient.getLocation().distanceSquared(player.getLocation())) {
+                if (player != recipient &&
+                        (!recipient.getWorld().equals(player.getWorld()) ||
+                        10000 < recipient.getLocation().distanceSquared(player.getLocation()))) {
                     event.getRecipients().remove(recipient);
                 }
             }
@@ -554,7 +556,7 @@ public class CivilianListener implements Listener {
                 return;
             }
             for (Player recipient : new HashSet<>(event.getRecipients())) {
-                if (!town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                if (player != recipient && !town.getRawPeople().containsKey(recipient.getUniqueId())) {
                     event.getRecipients().remove(recipient);
                 }
             }
@@ -565,10 +567,15 @@ public class CivilianListener implements Listener {
                 return;
             }
             for (Player recipient : new HashSet<>(event.getRecipients())) {
-                if (!alliance.isInAlliance(recipient.getUniqueId())) {
+                if (player != recipient && !alliance.isInAlliance(recipient.getUniqueId())) {
                     event.getRecipients().remove(recipient);
                 }
             }
+        }
+        if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
+                player.equals(event.getRecipients().iterator().next()))) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-recipients").replace("$1", chatChannel.getName(player)));
         }
     }
 

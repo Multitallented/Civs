@@ -30,9 +30,9 @@ public class ChatChannel {
         } else if (chatChannelType == ChatChannelType.LOCAL) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "local-channel");
-        } else if (chatChannelType == ChatChannelType.TOWN) {
+        } else if (chatChannelType == ChatChannelType.TOWN && target != null) {
             return ((Town) target).getName();
-        } else if (chatChannelType == ChatChannelType.ALLIANCE) {
+        } else if (chatChannelType == ChatChannelType.ALLIANCE && target != null) {
             return ((Alliance) target).getName();
         } else {
             return "";
@@ -49,10 +49,10 @@ public class ChatChannel {
         } else if (chatChannelType == ChatChannelType.LOCAL) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "local-channel-desc");
-        } else if (chatChannelType == ChatChannelType.TOWN) {
+        } else if (chatChannelType == ChatChannelType.TOWN && target != null) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "town-channel-desc").replace("$1", ((Town) target).getName());
-        } else if (chatChannelType == ChatChannelType.ALLIANCE) {
+        } else if (chatChannelType == ChatChannelType.ALLIANCE && target != null) {
             return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "alliance-channel-desc").replace("$1", ((Alliance) target).getName());
         } else {
