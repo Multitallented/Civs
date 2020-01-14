@@ -215,6 +215,7 @@ public class MenuManager implements Listener {
 
     public void goBack(UUID uuid) {
         popLastMenu(uuid);
+        clearCycleItems(uuid);
         MenuHistoryState menuHistoryState = popLastMenu(uuid);
         Player player = Bukkit.getPlayer(uuid);
         openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());
