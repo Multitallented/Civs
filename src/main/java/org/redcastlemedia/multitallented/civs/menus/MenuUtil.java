@@ -36,7 +36,7 @@ public final class MenuUtil {
     }
     private static void divideByTwo(ItemStack item) {
         if (item.getAmount() > 1) {
-            item.setAmount(Math.round(item.getAmount() / 2));
+            item.setAmount((int) Math.round((double) item.getAmount() / 2));
         }
     }
 
