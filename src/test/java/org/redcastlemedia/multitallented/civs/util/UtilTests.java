@@ -23,18 +23,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -121,7 +119,7 @@ public class UtilTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
+        people.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Town town = new Town("mytown", "hamlet2", location, people, 100, 100,
                 1, 0, -1);
         TownManager.getInstance().addTown(town);

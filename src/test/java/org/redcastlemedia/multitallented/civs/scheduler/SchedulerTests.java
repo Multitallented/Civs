@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class SchedulerTests extends TestUtil {
         RegionsTests.loadRegionTypeCobble3();
         RegionManager regionManager = RegionManager.getInstance();
         HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
+        people.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         HashMap<String, String> effects = new HashMap<>();
         Region region = new Region("cobble", people,
                 TestUtil.blockUnique2.getLocation(),

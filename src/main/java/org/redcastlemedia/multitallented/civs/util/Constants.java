@@ -22,6 +22,7 @@ public final class Constants {
     public static final String PAGE = "page";
     public static final String MAX_PAGE = "maxPage";
     public static final String INFINITE_BOUNDING_BOX = "infinite-bounding-box";
+    public static final String ADMIN_PERMISSION = "civs.admin";
 
     private Constants() {
 

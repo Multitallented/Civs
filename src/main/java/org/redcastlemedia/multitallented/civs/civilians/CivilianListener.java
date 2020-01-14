@@ -31,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,6 +45,7 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -60,7 +62,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -521,6 +523,59 @@ public class CivilianListener implements Listener {
                         LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        ChatChannel chatChannel = civilian.getChatChannel();
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+            return;
+        }
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!civilian.getFriends().contains(recipient.getUniqueId()) &&
+                        recipient != player) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.LOCAL) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient &&
+                        (!recipient.getWorld().equals(player.getWorld()) ||
+                        10000 < recipient.getLocation().distanceSquared(player.getLocation()))) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.TOWN) {
+            Town town = (Town) chatChannel.getTarget();
+            if (!town.getRawPeople().containsKey(player.getUniqueId())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient && !town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
+            Alliance alliance = (Alliance) chatChannel.getTarget();
+            if (alliance.isInAlliance(civilian.getUuid())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient && !alliance.isInAlliance(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        }
+        if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
+                player.equals(event.getRecipients().iterator().next()))) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-recipients").replace("$1", chatChannel.getName(player)));
         }
     }
 

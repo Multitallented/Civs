@@ -218,4 +218,5 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     public Map<String, Object> serialize() {
         return null;
     }
+
 }

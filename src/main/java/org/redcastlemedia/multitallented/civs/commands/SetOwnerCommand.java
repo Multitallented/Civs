@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class SetOwnerCommand implements CivCommand {
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         } else {
             isAdmin = true;
         }
@@ -73,7 +74,7 @@ public class SetOwnerCommand implements CivCommand {
             return true;
         }
         if (region != null && !Util.hasOverride(region, civilian) && player != null &&
-                !region.getPeople().get(player.getUniqueId()).contains("owner")) {
+                !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
@@ -112,7 +113,7 @@ public class SetOwnerCommand implements CivCommand {
 
             boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
                     (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                            town.getRawPeople().get(civilian.getUuid()).contains("owner"));
+                            town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
 
             boolean oligarchyOverride = !hasPermission && Civs.econ != null && government.getGovernmentType() == GovernmentType.OLIGARCHY;
 
@@ -120,7 +121,7 @@ public class SetOwnerCommand implements CivCommand {
             if (colonialOverride) {
                 Town colonialTown = TownManager.getInstance().getTown(town.getColonialTown());
                 if (civilian != null && (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
-                        !colonialTown.getRawPeople().get(civilian.getUuid()).contains("owner"))) {
+                        !colonialTown.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER))) {
                     colonialOverride = false;
                 }
             }
@@ -146,7 +147,7 @@ public class SetOwnerCommand implements CivCommand {
                 Civs.econ.withdrawPlayer(player, price);
                 HashSet<UUID> uuids = new HashSet<>();
                 for (UUID uuid : town.getRawPeople().keySet()) {
-                    if (town.getRawPeople().get(uuid).contains("owner")) {
+                    if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                         uuids.add(uuid);
                     }
                 }
@@ -186,12 +187,12 @@ public class SetOwnerCommand implements CivCommand {
             commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is now an owner of your " + name);
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
-                !region.getPeople().get(invitee.getUniqueId()).contains("owner")) {
-            region.setPeople(invitee.getUniqueId(), "owner");
+                !region.getPeople().get(invitee.getUniqueId()).contains(Constants.OWNER)) {
+            region.setPeople(invitee.getUniqueId(), Constants.OWNER);
             RegionManager.getInstance().saveRegion(region);
         } else if (town != null && town.getPeople().get(invitee.getUniqueId()) != null &&
-                !town.getPeople().get(invitee.getUniqueId()).contains("owner")) {
-            town.setPeople(invitee.getUniqueId(), "owner");
+                !town.getPeople().get(invitee.getUniqueId()).contains(Constants.OWNER)) {
+            town.setPeople(invitee.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
         }
         return true;

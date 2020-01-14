@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
@@ -188,7 +189,7 @@ public class GovernmentManager {
         if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
             HashSet<UUID> setThesePeople = new HashSet<>(town.getRawPeople().keySet());
             for (UUID uuid : setThesePeople) {
-                town.setPeople(uuid, "owner");
+                town.setPeople(uuid, Constants.OWNER);
             }
         }
 

@@ -76,7 +76,7 @@ public class RegionTypeMenu extends CustomMenu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE);
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
+        if (player == null || regionType == null) {
             return new ItemStack(Material.AIR);
         }
         String localizedRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -156,7 +156,7 @@ public class RegionTypeMenu extends CustomMenu {
             return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
             boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), Constants.SHOW_PRICE);
-            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
             boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
             String maxLimit = civilian.isAtMax(regionType);
             boolean isInShop = regionType.getInShop();

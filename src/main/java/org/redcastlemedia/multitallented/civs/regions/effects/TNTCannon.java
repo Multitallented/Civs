@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton
 public class TNTCannon implements Listener, CreateRegionListener {
@@ -71,7 +72,7 @@ public class TNTCannon implements Listener, CreateRegionListener {
         }
         Region region = RegionManager.getInstance().getRegionAt(id);
         if (region == null || !region.getPeople().containsKey(player.getUniqueId())
-                || !region.getPeople().get(player.getUniqueId()).contains("owner")) {
+                || !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + "You must be an owner to use this."); //TODO localize
             return;
         }

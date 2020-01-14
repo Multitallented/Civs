@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "rename" }) @SuppressWarnings("unused")
@@ -61,7 +62,7 @@ public class RenameCommand implements CivCommand {
             }
             return true;
         }
-        if (player != null && !town.getPeople().get(player.getUniqueId()).contains("owner")) {
+        if (player != null && !town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;

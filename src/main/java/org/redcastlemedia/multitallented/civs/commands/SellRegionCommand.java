@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "sell" }) @SuppressWarnings("unused")
@@ -66,7 +67,7 @@ public class SellRegionCommand implements CivCommand {
         // Dont sell allow sale of a region that has multiple members
         int count = 0;
         for (String role : region.getRawPeople().values()) {
-            if (role.contains("member") || role.contains("owner")) {
+            if (role.contains("member") || role.contains(Constants.OWNER)) {
                 count++;
             }
         }

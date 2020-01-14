@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class ResetCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         boolean isAdmin = !(commandSender instanceof Player) || commandSender.isOp() ||
-                (Civs.perm != null && Civs.perm.has(commandSender, "civs.admin"));
+                (Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION));
         if (!isAdmin || args.length < 2) {
             return true;
         }

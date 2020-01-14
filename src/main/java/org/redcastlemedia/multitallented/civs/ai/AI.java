@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import lombok.Getter;
 
@@ -49,9 +50,9 @@ public class AI {
     }
 
     private boolean isHigherRank(String role1, String role2) {
-        if (role1.contains("owner")) {
-            return !role2.contains("owner");
-        } else if (role2.contains("owner")) {
+        if (role1.contains(Constants.OWNER)) {
+            return !role2.contains(Constants.OWNER);
+        } else if (role2.contains(Constants.OWNER)) {
             return false;
         } else if (role1.contains("member")) {
             return !role2.contains("member");

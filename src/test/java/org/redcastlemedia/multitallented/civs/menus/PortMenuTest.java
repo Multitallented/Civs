@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.menus.common.PortMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class PortMenuTest extends TestUtil {
     }
     public static Region loadRegion(String type) {
         HashMap<UUID, String> peopleMap = new HashMap<>();
-        peopleMap.put(TestUtil.player.getUniqueId(), "owner");
+        peopleMap.put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Location location = new Location(Bukkit.getWorld("world"), 0,0,0);
         int[] radii = new int[6];
         for (int i=0; i<6; i++) {

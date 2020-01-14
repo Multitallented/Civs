@@ -15,12 +15,13 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "reload" }) @SuppressWarnings("unused")
 public class ReloadCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if ((Civs.perm != null && commandSender.hasPermission("civs.admin")) || commandSender.isOp()) {
+        if ((Civs.perm != null && commandSender.hasPermission(Constants.ADMIN_PERMISSION)) || commandSender.isOp()) {
             CommonScheduler.setRun(false);
             ConfigManager.getInstance().reload();
             ItemManager.getInstance().reload();
