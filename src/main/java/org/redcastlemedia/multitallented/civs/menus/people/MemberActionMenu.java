@@ -142,7 +142,7 @@ public class MemberActionMenu extends CustomMenu {
             }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
                     !isVoteOnly && !role.contains(Constants.OWNER) && !cantAddOwners)) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+                CVItem cvItem = menuIcon.createCVItem(player, count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
                     cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "buy")
@@ -169,7 +169,7 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-recruiter".equals(menuIcon.getKey())) {
-            if (town == null) {
+            if (region != null) {
                 return new ItemStack(Material.AIR);
             }
             if (personRole.contains(Constants.RECRUITER)) {
@@ -191,7 +191,7 @@ public class MemberActionMenu extends CustomMenu {
                     governmentType == GovernmentType.CAPITALISM ||
                     governmentType == GovernmentType.COOPERATIVE) &&
                     (governmentType == GovernmentType.CAPITALISM || !alreadyVoted)) {
-                CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+                CVItem cvItem = menuIcon.createCVItem(player, count);
                 if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                     String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
                     cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "capitalism-voting-cost")
