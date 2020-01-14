@@ -99,6 +99,16 @@ public class NationTests extends TestUtil {
     }
 
     @Test
+    public void townInAllianceEvolveShouldCreateNation() {
+
+    }
+
+    @Test
+    public void townInNationInAllianceEvolveShouldNotCreateNation() {
+
+    }
+
+    @Test
     public void townShouldHave1000ClaimsMax() {
         NationManager.getInstance().createNation(this.town2);
         assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
@@ -112,6 +122,11 @@ public class NationTests extends TestUtil {
                 (TownType) ItemManager.getInstance().getItemType(this.town2.getType()));
         NationManager.getInstance().onTownDestroyed(townDestroyedEvent);
         assertTrue(NationManager.getInstance().getAllNations().isEmpty());
+    }
+
+    @Test
+    public void lastTownLeaveNationShouldDestroyNation() {
+
     }
 
 //    @Test
@@ -140,5 +155,40 @@ public class NationTests extends TestUtil {
         assertEquals(1, NationManager.getInstance().getSurroundTownClaim(2, town1.getLocation()).getX());
         assertEquals(-1, NationManager.getInstance().getSurroundTownClaim(5, town1.getLocation()).getX());
         assertEquals(1, NationManager.getInstance().getSurroundTownClaim(9, town1.getLocation()).getX());
+    }
+
+    @Test
+    public void allianceBecomingANationShouldBridgeTheTwoTowns() {
+
+    }
+
+    @Test
+    public void townJoiningNationShouldAutoClaimBridge() {
+
+    }
+
+    @Test
+    public void nationMemberShouldClaimLandIfHasItemAndClaimsAvailable() {
+
+    }
+
+    @Test
+    public void nationMemberShouldNotClaimLandIfNoClaimsAvailable() {
+
+    }
+
+    @Test
+    public void nationCapitolShouldOnlyBeChangedIfTownHasGreaterPopulation() {
+
+    }
+
+    @Test
+    public void nationCapitolLeavingNationShouldSetNextBiggestTownAsCapitol() {
+
+    }
+
+    @Test
+    public void nationCapitolLeavingNationShouldDestroyNationIfNoOtherTowns() {
+
     }
 }
