@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -54,8 +57,9 @@ public final class ItemStackJsonUtil {
 
 
         itemJson.addProperty("type", itemStack.getType().name());
-        if (itemStack.getDurability() > 0) itemJson.addProperty("data", itemStack.getDurability());
-        if (itemStack.getAmount() != 1) itemJson.addProperty("amount", itemStack.getAmount());
+        if (itemStack.getAmount() != 1) {
+            itemJson.addProperty("amount", itemStack.getAmount());
+        }
 
 
         if (itemStack.hasItemMeta()) {
@@ -92,17 +96,21 @@ public final class ItemStackJsonUtil {
                 }
             }
 
+            if (meta instanceof Damageable && ((Damageable) meta).hasDamage()) {
+                itemJson.addProperty("data", ((Damageable) meta).getDamage());
+            }
+
             if (meta instanceof SkullMeta) {
                 SkullMeta skullMeta = (SkullMeta) meta;
-                if (skullMeta.hasOwner()) {
+                if (skullMeta.hasOwner() && skullMeta.getOwningPlayer() != null) {
                     JsonObject extraMeta = new JsonObject();
-                    extraMeta.addProperty("owner", skullMeta.getOwner());
+                    extraMeta.addProperty("owner", skullMeta.getOwningPlayer().getUniqueId().toString());
                     metaJson.add("extra-meta", extraMeta);
                 }
             } else if (meta instanceof BannerMeta) {
                 BannerMeta bannerMeta = (BannerMeta) meta;
                 JsonObject extraMeta = new JsonObject();
-                extraMeta.addProperty("base-color", bannerMeta.getBaseColor().name());
+//                extraMeta.addProperty("base-color", bannerMeta.getBaseColor().name());
 
                 if (bannerMeta.numberOfPatterns() > 0) {
                     JsonArray patterns = new JsonArray();
@@ -261,13 +269,16 @@ public final class ItemStackJsonUtil {
                 int amount = amountElement != null ? amountElement.getAsInt() : 1;
 
                 ItemStack itemStack = new ItemStack(Material.getMaterial(type));
-                itemStack.setDurability(data);
                 itemStack.setAmount(amount);
 
                 JsonElement itemMetaElement = itemJson.get("item-meta");
                 if (itemMetaElement != null && itemMetaElement.isJsonObject()) {
 
                     ItemMeta meta = itemStack.getItemMeta();
+                    if (data != 0) {
+                        ((Damageable) meta).setDamage(data);
+                    }
+
                     JsonObject metaJson = itemMetaElement.getAsJsonObject();
 
                     JsonElement displaynameElement = metaJson.get("displayname");
@@ -299,6 +310,7 @@ public final class ItemStackJsonUtil {
                                             meta.addEnchant(enchantment, level, true);
                                         }
                                     } catch (NumberFormatException ex) {
+                                        // Don't care
                                     }
                                 }
                             }
@@ -333,23 +345,23 @@ public final class ItemStackJsonUtil {
                                 JsonElement ownerElement = extraJson.get("owner");
                                 if (ownerElement != null && ownerElement.isJsonPrimitive()) {
                                     SkullMeta smeta = (SkullMeta) meta;
-                                    smeta.setOwner(ownerElement.getAsString());
+                                    smeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(ownerElement.getAsString())));
                                 }
                             } else if (meta instanceof BannerMeta) {
-                                JsonElement baseColorElement = extraJson.get("base-color");
+//                                JsonElement baseColorElement = extraJson.get("base-color");
                                 JsonElement patternsElement = extraJson.get("patterns");
                                 BannerMeta bmeta = (BannerMeta) meta;
-                                if (baseColorElement != null && baseColorElement.isJsonPrimitive()) {
-                                    try {
-                                        Optional<DyeColor> color = Arrays.stream(DyeColor.values())
-                                                .filter(dyeColor -> dyeColor.name().equalsIgnoreCase(baseColorElement.getAsString()))
-                                                .findFirst();
-                                        if (color.isPresent()) {
-                                            bmeta.setBaseColor(color.get());
-                                        }
-                                    } catch (NumberFormatException ex) {
-                                    }
-                                }
+//                                if (baseColorElement != null && baseColorElement.isJsonPrimitive()) {
+//                                    try {
+//                                        Optional<DyeColor> color = Arrays.stream(DyeColor.values())
+//                                                .filter(dyeColor -> dyeColor.name().equalsIgnoreCase(baseColorElement.getAsString()))
+//                                                .findFirst();
+//                                        if (color.isPresent()) {
+//                                            bmeta.setBaseColor(color.get());
+//                                        }
+//                                    } catch (NumberFormatException ex) {
+//                                    }
+//                                }
                                 if (patternsElement != null && patternsElement.isJsonArray()) {
                                     JsonArray jarray = patternsElement.getAsJsonArray();
                                     List<Pattern> patterns = new ArrayList<>(jarray.size());
