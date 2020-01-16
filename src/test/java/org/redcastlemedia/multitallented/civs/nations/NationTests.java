@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -73,34 +74,26 @@ public class NationTests extends TestUtil {
 
     @Test
     public void nationShouldBeCreatedWhenTownReachesLevel4() {
-        town1.setVillagers(24);
-        RegionsTests.createNewRegion("council_room");
-        RegionsTests.createNewRegion("cobble_quarry");
-        RegionsTests.createNewRegion("purifier");
-        RegionsTests.createNewRegion("purifier");
-        RegionsTests.createNewRegion("potato_farm");
-        for (int i = 0; i < 8; i++) {
-            RegionsTests.createNewRegion("shack");
-        }
-        ((PlayerInventoryImpl) TestUtil.player.getInventory())
-                .setMainHandItem(TestUtil.createUniqueItemStack(Material.GLOWSTONE, "Civs Village"));
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town("town3", "village",
                 new Location(TestUtil.world, 0, 0, 0),
                 people, 500, 5000, 25, 24, -1);
-        try {
-            TownManager.getInstance().placeTown(TestUtil.player, "town3", town);
-        } catch (SuccessException se) {
-            // Do nothing
-        }
-        Nation nation = NationManager.getInstance().getNation("town1");
+        TownManager.getInstance().addTown(town);
+        TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, (TownType) ItemManager.getInstance().getItemType("village"));
+        NationManager.getInstance().onTownCreated(townCreatedEvent);
+        Nation nation = NationManager.getInstance().getNation("town3");
         assertNotNull(nation);
     }
 
     @Test
-    public void townInAllianceEvolveShouldCreateNation() {
+    public void townJoiningAllianceShouldFormNation() {
+        
+    }
 
+    @Test
+    public void townInAllianceEvolveShouldCreateNation() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
     }
 
     @Test

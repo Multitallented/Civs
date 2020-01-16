@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -474,6 +475,21 @@ public class NationManager implements Listener {
             }
         }
         return null;
+    }
+
+    @EventHandler
+    public void onTownCreated(TownCreatedEvent event) {
+        TownType townType = event.getTownType();
+        Town newTown = event.getTown();
+        int nationFormedAtTownLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
+        int townLevel = townType.getLevel();
+        if (nationFormedAtTownLevel <= townLevel) {
+            NationManager.getInstance().createNation(newTown);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "nation-created").replace("$1", newTown.getName()));
+            }
+        }
     }
 
     public void createNation(Town newTown) {

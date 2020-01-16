@@ -657,15 +657,14 @@ public class TownManager {
             return;
         }
 
-        for (Chunk chunk : NationManager.getInstance().getContainingChunks(player.getLocation(),
+        for (ChunkClaim chunkClaim : NationManager.getInstance().getContainingChunks(player.getLocation(),
                 townType.getBuildRadius(), townType.getBuildRadius(),
                 townType.getBuildRadius(), townType.getBuildRadius())) {
-            ChunkClaim chunkClaim = ChunkClaim.fromChunk(chunk);
             if (chunkClaim != null &&
                     !NationManager.getInstance().isInNation(player.getUniqueId(), chunkClaim.getNation())) {
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        civilian.getLocale(), "cant-build-in-nation"
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        player, "cant-build-in-nation"
                 ).replace("$1", chunkClaim.getNation().getName()));
                 return;
             }
@@ -801,13 +800,6 @@ public class TownManager {
             newTown.createRing();
         }
 
-        int nationFormedAtTownLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
-        int townLevel = townType.getLevel();
-        if (nationFormedAtTownLevel <= townLevel && NationManager.getInstance().getNation(town.getName()) == null) {
-            NationManager.getInstance().createNation(newTown);
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "nation-created").replace("$1", newTown.getName()));
-        }
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
             HashMap<String, String> params = new HashMap<>();
             params.put("town", newTown.getName());
