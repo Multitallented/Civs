@@ -468,12 +468,15 @@ public class ProtectionHandler implements Listener {
         if (event.getEntity() instanceof Player) {
             return;
         }
-        handleInteract(event.getBlock(), null, event);
+        boolean shouldDeny = handleInteract(event.getBlock(), null);
+        if (shouldDeny) {
+            event.setCancelled(true);
+        }
     }
 
-    private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
+    private boolean handleInteract(Block clickedBlock, Player player) {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
-            return;
+            return false;
         }
         Material mat = clickedBlock.getType();
         if (mat == Material.OAK_DOOR ||
@@ -490,23 +493,24 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "door_use", null));
-            if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            boolean shouldBlock = shouldBlockAction(clickedBlock, player, "door_use", null);
+            if (shouldBlock) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
-            if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                mat == Material.SHULKER_BOX ||
+                mat == Material.COMPOSTER ||
+                mat == Material.BARREL ||
+                mat == Material.BLAST_FURNACE) {
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, "chest_use");
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             } else {
                 RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
                 checkRelative(clickedBlock, BlockFace.NORTH);
@@ -517,11 +521,10 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_break", null));
-            if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, "block_break", null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
@@ -531,20 +534,19 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
                 mat == Material.OAK_BUTTON) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "button_use", null));
-            if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, "button_use", null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         } else {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_use", null));
-            if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, "block_use", null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         }
+        return false;
     }
 
     private void checkRelative(Block block, BlockFace blockFace) {
@@ -554,9 +556,21 @@ public class ProtectionHandler implements Listener {
         }
     }
 
+    private void sendRegionProtectedMessage(Player player) {
+        if (player != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onBlockInteract(PlayerInteractEvent event) {
-        handleInteract(event.getClickedBlock(), event.getPlayer(), event);
+        boolean shouldCancel = handleInteract(event.getClickedBlock(), event.getPlayer());
+        if (shouldCancel) {
+            event.setUseInteractedBlock(Event.Result.DENY);
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
