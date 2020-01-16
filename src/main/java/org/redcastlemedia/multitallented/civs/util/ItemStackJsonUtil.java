@@ -11,6 +11,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
@@ -79,7 +80,7 @@ public final class ItemStackJsonUtil {
             if (meta.hasEnchants()) {
                 JsonArray enchants = new JsonArray();
                 meta.getEnchants().forEach((enchantment, integer) -> {
-                    enchants.add(new JsonPrimitive(enchantment.getName() + ":" + integer));
+                    enchants.add(new JsonPrimitive(enchantment.getKey().getKey() + ":" + integer));
                 });
                 metaJson.add("enchants", enchants);
             }
@@ -129,7 +130,7 @@ public final class ItemStackJsonUtil {
                     JsonObject extraMeta = new JsonObject();
                     JsonArray storedEnchants = new JsonArray();
                     esmeta.getStoredEnchants().forEach((enchantment, integer) -> {
-                        storedEnchants.add(new JsonPrimitive(enchantment.getName() + ":" + integer));
+                        storedEnchants.add(new JsonPrimitive(enchantment.getKey().getKey() + ":" + integer));
                     });
                     extraMeta.add("stored-enchants", storedEnchants);
                     metaJson.add("extra-meta", extraMeta);
@@ -304,7 +305,8 @@ public final class ItemStackJsonUtil {
                                 if (enchantString.contains(":")) {
                                     try {
                                         String[] splitEnchant = enchantString.split(":");
-                                        Enchantment enchantment = Enchantment.getByName(splitEnchant[0]);
+                                        NamespacedKey namespacedKey = NamespacedKey.minecraft(splitEnchant[0]);
+                                        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
                                         int level = Integer.parseInt(splitEnchant[1]);
                                         if (enchantment != null && level > 0) {
                                             meta.addEnchant(enchantment, level, true);
@@ -391,7 +393,7 @@ public final class ItemStackJsonUtil {
                                             if (enchantString.contains(":")) {
                                                 try {
                                                     String[] splitEnchant = enchantString.split(":");
-                                                    Enchantment enchantment = Enchantment.getByName(splitEnchant[0]);
+                                                    Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(splitEnchant[0]));
                                                     int level = Integer.parseInt(splitEnchant[1]);
                                                     if (enchantment != null && level > 0) {
                                                         esmeta.addStoredEnchant(enchantment, level, true);
@@ -518,7 +520,9 @@ public final class ItemStackJsonUtil {
         } else return null;
     }
 
-    private static FireworkEffect.Builder getFireworkColors(JsonElement flickerElement, JsonElement trailElement, JsonElement colorsElement, JsonElement fadeColorsElement, FireworkEffect.Type effectType) {
+    private static FireworkEffect.Builder getFireworkColors(JsonElement flickerElement, JsonElement trailElement,
+                                                            JsonElement colorsElement, JsonElement fadeColorsElement,
+                                                            FireworkEffect.Type effectType) {
         List<Color> colors = new ArrayList<>();
         if (colorsElement != null && colorsElement.isJsonArray())
             colorsElement.getAsJsonArray().forEach(colorElement -> {
