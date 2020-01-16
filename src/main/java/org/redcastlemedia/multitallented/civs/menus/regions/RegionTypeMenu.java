@@ -39,7 +39,7 @@ public class RegionTypeMenu extends CustomMenu {
         if (params.containsKey(Constants.REGION_TYPE)) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(params.get(Constants.REGION_TYPE));
             data.put(Constants.REGION_TYPE, regionType);
-            if (!regionType.getRebuild().isEmpty()) {
+            if (regionType.getRebuild() != null && !regionType.getRebuild().isEmpty()) {
                 data.put("rebuildRegion", regionType.getRebuild().get(0));
                 StringBuilder regionList = new StringBuilder();
                 for (String rebuildRegionString : regionType.getRebuild()) {
