@@ -1,8 +1,6 @@
 package org.redcastlemedia.multitallented.civs.nations;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -18,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -30,6 +29,7 @@ public class NationTests extends TestUtil {
 
     private Town town1;
     private Town town2;
+    private Town town3;
 
     @Before
     public void setup() {
@@ -38,8 +38,9 @@ public class NationTests extends TestUtil {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
         this.town1  = TownTests.loadTown("town1", "hamlet", new Location(TestUtil.world, 0, 0, 0));
-        this.town2 = TownTests.loadTown("test", "village",
+        this.town2 = TownTests.loadTown("town2", "village",
                 new Location(TestUtil.world, 1000, 0, 1000));
+        this.town3 = TownTests.loadTown("town3", "settlement", new Location(TestUtil.world, -1000, 0, -1000));
     }
 
     @After
@@ -88,12 +89,23 @@ public class NationTests extends TestUtil {
 
     @Test
     public void townJoiningAllianceShouldFormNation() {
-        
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        Nation nation = NationManager.getInstance().getNation("town2");
+        assertNotNull(nation);
     }
 
     @Test
     public void townInAllianceEvolveShouldCreateNation() {
-        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town3);
+        Nation nation = NationManager.getInstance().getNation("town3");
+        assertNull(nation);
+        TownType oldType = (TownType) ItemManager.getInstance().getItemType("settlement");
+        TownType newType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        TownEvolveEvent townEvolveEvent = new TownEvolveEvent(town3, oldType, newType);
+        town3.setType("hamlet");
+        NationManager.getInstance().onTownEvolve(townEvolveEvent);
+        nation = NationManager.getInstance().getNation("town3");
+        assertNotNull(nation);
     }
 
     @Test

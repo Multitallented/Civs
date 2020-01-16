@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -490,6 +491,11 @@ public class NationManager implements Listener {
                         "nation-created").replace("$1", newTown.getName()));
             }
         }
+    }
+
+    @EventHandler
+    public void onTownEvolve(TownEvolveEvent event) {
+
     }
 
     public void createNation(Town newTown) {
