@@ -166,7 +166,7 @@ public class BlueprintsMenu extends CustomMenu {
                         .getTranslationWithPlaceholders(player, "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
-                lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+                lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentStashItemName));

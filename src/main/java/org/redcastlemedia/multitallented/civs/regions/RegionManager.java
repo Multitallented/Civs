@@ -249,7 +249,7 @@ public class RegionManager {
     }
 
     public void saveAllUnsavedRegions() {
-        for (Region region : needsSaving) {
+        for (Region region : new HashSet<>(needsSaving)) {
             saveRegionNow(region);
         }
         needsSaving.clear();

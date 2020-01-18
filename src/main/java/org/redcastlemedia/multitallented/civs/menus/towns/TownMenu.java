@@ -229,7 +229,7 @@ public class TownMenu extends CustomMenu {
                     !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = government.getIcon(civilian.getLocale());
+            CVItem cvItem = government.getIcon(civilian);
             ItemStack itemStack = cvItem.createItemStack();
             if (!town.isGovTypeChangedToday()) {
                 putActions(civilian, menuIcon, itemStack, count);
@@ -270,7 +270,7 @@ public class TownMenu extends CustomMenu {
                 CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(
                         player, menuIcon.getDesc()).replace("$1", town.getName())
                         .replace("$2", "" + costItem.getQty()).replace("$3", costItem.getMat().name())));
                 ItemStack itemStack = cvItem.createItemStack();
@@ -287,9 +287,9 @@ public class TownMenu extends CustomMenu {
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.MEMBER)) {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(
                         player, "cancel-revolt").replace("$1", town.getName())));
-                cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "revolt-display").replace("$1", town.getRevolt().size() + "")
                         .replace("$2", town.getRawPeople().size() + "")));
                 ItemStack itemStack = cvItem.createItemStack();

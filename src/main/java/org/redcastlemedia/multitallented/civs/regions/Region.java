@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
@@ -661,21 +662,10 @@ public class Region {
             return true;
         }
         Location location = getLocation();
-        Block block = location.getBlock();
-        BlockState state = null;
-        try {
-            state = block.getState();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return needsReagentsOrInput();
-        }
-        if (!(state instanceof Chest)) {
-            return needsReagentsOrInput();
-        }
-        Chest chest = (Chest) state;
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(location);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
-                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                    Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
                 if ((!ignoreReagents && regionUpkeep.getPowerReagent() > 0) || regionUpkeep.getPowerInput() > 0) {
                     Town town = TownManager.getInstance().getTownAt(location);
                     if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
@@ -700,15 +690,10 @@ public class Region {
             return false;
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
-        Block block = getLocation().getBlock();
-        BlockState state = block.getState();
-        if (!(state instanceof Chest)) {
-            return needsReagentsOrInput();
-        }
-        Chest chest = (Chest) state;
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
 
-        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
-                Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
             return true;
         }
         return false;
@@ -747,9 +732,8 @@ public class Region {
 
         Location location = getLocation();
         boolean hadUpkeep = false;
-        Inventory chestInventory = null;
+        CVInventory chestInventory = null;
         boolean hasItemUpkeep = false;
-        boolean chunkLoaded = Util.isChunkLoadedAt(getLocation());
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if (!hasUpkeepPerm(regionUpkeep)) {
@@ -765,10 +749,6 @@ public class Region {
 
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
-                if (!chunkLoaded && ConfigManager.getInstance().isUseAsyncUpkeeps()) {
-                    UnloadedInventoryHandler.getInstance().addUpkeep(getLocation(), i);
-                    continue;
-                }
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
             }
             if (needsItems && chestInventory == null) {
@@ -783,7 +763,9 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
+            ItemStack[] output = Util.getItems(regionUpkeep.getOutputs());
+            boolean fullChest = chestInventory == null ||
+                    !chestInventory.checkAddItems(output).isEmpty();
             if (fullChest) {
                 failingUpkeeps.remove(i);
             }
@@ -826,7 +808,7 @@ public class Region {
                     DebugLogger.inventoryModifications++;
                 }
                 Util.removeItems(regionUpkeep.getInputs(), chestInventory);
-                Util.addItems(regionUpkeep.getOutputs(), chestInventory);
+                chestInventory.addItem(output);
 
                 containsReagents = Util.containsItems(regionUpkeep.getReagents(), chestInventory);
                 containsInputs = Util.containsItems(regionUpkeep.getInputs(), chestInventory);
@@ -857,93 +839,12 @@ public class Region {
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
         }
-        if (!hasItemUpkeep && chunkLoaded) {
+        if (!hasItemUpkeep && Util.isChunkLoadedAt(getLocation())) {
             RegionManager.getInstance().addCheckedRegion(this);
         } else if (hasItemUpkeep) {
             RegionManager.getInstance().removeCheckedRegion(this);
         }
         return hadUpkeep;
-    }
-
-    public void runUpkeep(int i) {
-        Location location = getLocation();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(getType());
-        if (regionType.getUpkeeps().size() <= i) {
-            return;
-        }
-        RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(i);
-        if (!hasUpkeepPerm(regionUpkeep)) {
-            return;
-        }
-
-        boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
-                !regionUpkeep.getInputs().isEmpty();
-
-        if (needsItems) {
-            failingUpkeeps.add(i);
-        }
-
-        Inventory chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
-        if (chestInventory == null && needsItems &&
-                RegionManager.getInstance().hasRegionChestChanged(this)) {
-
-            RegionManager.getInstance().addCheckedRegion(this);
-        }
-        if (needsItems && chestInventory == null) {
-            return;
-        }
-        boolean containsReagents = chestInventory != null &&
-                Util.containsItems(regionUpkeep.getReagents(), chestInventory);
-        boolean containsInputs = chestInventory != null &&
-                Util.containsItems(regionUpkeep.getInputs(), chestInventory);
-        boolean hasReagents = !needsItems || (containsReagents && containsInputs);
-        if (!hasReagents) {
-            return;
-        }
-
-        boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-        boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
-        if (fullChest) {
-            failingUpkeeps.remove(i);
-        }
-        if (!emptyOutput && fullChest) {
-            return;
-        }
-        failingUpkeeps.remove(i);
-
-        if (!runRegionUpkeepPayout(regionUpkeep)) {
-            return;
-        }
-        if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
-            Town town = TownManager.getInstance().getTownAt(location);
-            if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
-                return;
-            }
-            boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
-            if (regionUpkeep.getPowerInput() > 0) {
-                TownManager.getInstance().setTownPower(town, town.getPower() - regionUpkeep.getPowerInput());
-            }
-            if (regionUpkeep.getPowerOutput() > 0) {
-                TownManager.getInstance().setTownPower(town, town.getPower() + regionUpkeep.getPowerOutput());
-            }
-            if (powerMod) {
-                TownManager.getInstance().saveTown(town);
-            }
-        }
-        if (chestInventory != null) {
-            if (ConfigManager.getInstance().isDebugLog()) {
-                DebugLogger.incrementRegion(this);
-                DebugLogger.inventoryModifications++;
-            }
-            Util.removeItems(regionUpkeep.getInputs(), chestInventory);
-            Util.addItems(regionUpkeep.getOutputs(), chestInventory);
-        }
-        if (regionUpkeep.getExp() > 0) {
-            exp += regionUpkeep.getExp();
-            RegionManager.getInstance().saveRegion(this);
-        }
-
-        Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
     }
 
     private boolean hasUpkeepPerm(RegionUpkeep regionUpkeep) {

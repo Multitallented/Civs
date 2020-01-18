@@ -99,7 +99,7 @@ public class RegionMenu extends CustomMenu {
             CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     regionType.getProcessedName() + LocaleConstants.DESC_SUFFIX)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -143,7 +143,7 @@ public class RegionMenu extends CustomMenu {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", localizedRegionName)
                     .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()))));
             ItemStack itemStack = cvItem.createItemStack();
@@ -156,7 +156,7 @@ public class RegionMenu extends CustomMenu {
                     (int) region.getLocation().getY() + "y, " +
                     (int) region.getLocation().getZ() + "z");
             if (town != null) {
-                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         menuIcon.getDesc()).replace("$1", town.getName())));
             }
             ItemStack itemStack = cvItem.createItemStack();
@@ -166,7 +166,7 @@ public class RegionMenu extends CustomMenu {
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc())));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -199,7 +199,7 @@ public class RegionMenu extends CustomMenu {
                 }
                 i++;
             }
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", localRegionTypeName)
                     .replace("$2", NumberFormat.getCurrencyInstance().format(lastDayIncome))
                     .replace("$3", NumberFormat.getCurrencyInstance().format(lastWeekIncome))));
