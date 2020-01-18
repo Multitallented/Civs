@@ -66,7 +66,7 @@ public class TownInvitesMenu extends CustomMenu {
             TownType inviteTownType = (TownType) ItemManager.getInstance().getItemType(inviteTown.getType());
             CVItem cvItem = inviteTownType.getShopIcon(civilian.getLocale()).clone();
             cvItem.setDisplayName(inviteTown.getName());
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getDesc())));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

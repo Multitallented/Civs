@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
@@ -65,6 +66,7 @@ public class CommonScheduler implements Runnable {
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+                    UnloadedInventoryHandler.getInstance().loadChunks();
                 }
             } else {
                 i++;
