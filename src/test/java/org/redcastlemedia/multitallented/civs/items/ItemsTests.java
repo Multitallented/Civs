@@ -1,19 +1,24 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
@@ -186,6 +191,22 @@ public class ItemsTests extends TestUtil {
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         Map<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
         assertFalse(newItems.containsKey("shelter"));
+    }
+
+    @Test
+    public void cvInventoryAddItemsShouldAddToCorrectIndexes() {
+        CVInventory cvInventory = new CVInventory();
+        ItemStack[] itemStacks = {
+                new ItemStack(Material.COBBLESTONE, 64),
+                new ItemStack(Material.COBBLESTONE, 32),
+                new ItemStack(Material.GRAVEL, 4)
+        };
+        cvInventory.addItems(itemStacks);
+        assertEquals(Material.GRAVEL, cvInventory.getIndex(2).getType());
+        ItemStack[] itemStack2 = { new ItemStack(Material.COBBLESTONE, 4) };
+        cvInventory.addItems(itemStack2);
+        assertNull(cvInventory.getIndex(3));
+        assertEquals(36, cvInventory.getIndex(1).getAmount());
     }
 
     private void loadSpellTypeBackflip() {
