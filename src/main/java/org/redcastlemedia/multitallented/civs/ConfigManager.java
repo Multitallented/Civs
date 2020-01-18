@@ -148,6 +148,7 @@ public class ConfigManager {
     int minPopulationForGovTransition;
     @Getter
     int lineBreakLength;
+    Map<String, Integer> lineLengthMap;
     @Getter
     EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
 
@@ -222,6 +223,9 @@ public class ConfigManager {
     public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
+    public int getLineBreakLength(String locale) {
+        return lineLengthMap.getOrDefault(locale, lineBreakLength);
+    }
 
     public String getCivsChatPrefix() {
         return Util.parseColors(civsChatPrefix);
@@ -365,6 +369,12 @@ public class ConfigManager {
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
+            lineLengthMap = new HashMap<>();
+            if (config.isSet("line-break-length-per-language")) {
+                for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
+                    lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
+                }
+            }
             chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
             if (config.isSet("chat-channels")) {
                 for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
@@ -425,6 +435,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        lineLengthMap = new HashMap<>();
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
         chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
         lineBreakLength = 40;

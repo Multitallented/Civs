@@ -195,8 +195,16 @@ public final class Util {
         return xEq && yEq && zEq;
     }
 
-    public static ArrayList<String> textWrap(String input) {
+    public static List<String> textWrap(String input) {
         int lineLength = ConfigManager.getInstance().getLineBreakLength();
+        return textWrap(lineLength, input);
+    }
+
+    public static List<String> textWrap(Civilian civilian, String input) {
+        return textWrap(ConfigManager.getInstance().getLineBreakLength(civilian.getLocale()), input);
+    }
+
+    private static List<String> textWrap(int lineLength, String input) {
         int longestLength = (int) Math.ceil((double) lineLength * 0.625);
         int longestSection = 0;
         for (String subString : input.split(" ")) {

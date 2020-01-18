@@ -5,6 +5,9 @@ black-list-worlds:
 
 default-language: en
 line-break-length: 40
+line-break-length-per-language:
+  en: 40
+  zh: 25
 
 allow-civ-item-sharing: false
 

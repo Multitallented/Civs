@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -97,7 +99,8 @@ public class MenuIcon {
                     .getTranslationWithPlaceholders(player, name) + countString);
         }
         if (!desc.isEmpty()) {
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance()
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
                     .getTranslationWithPlaceholders(player, desc)));
         }
         return cvItem;
