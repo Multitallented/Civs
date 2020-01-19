@@ -23,7 +23,6 @@ explosion-override: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 
-use-delayed-region-upkeep-in-unloaded-chunks: true
 disable-regions-in-unloaded-chunks: false
 
 # the max amount that an owner can tax per day of each town member (only certain gov types)

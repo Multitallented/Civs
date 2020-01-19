@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -427,7 +429,7 @@ public final class Util {
         return startIndex;
     }
 
-    public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean containsItems(List<List<CVItem>> req, CVInventory inv) {
         if (req.isEmpty()) {
             return true;
         }
@@ -475,7 +477,7 @@ public final class Util {
         return bountyList;
     }
 
-    public static boolean removeItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean removeItems(List<List<CVItem>> req, CVInventory inv) {
         if (inv == null) {
             return false;
         }
@@ -542,7 +544,41 @@ public final class Util {
         return true;
     }
 
-    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, Inventory inv) {
+    public static ItemStack[] getItems(List<List<CVItem>> addItems) {
+        List<ItemStack> output = new ArrayList<>();
+        outer: for (List<CVItem> tempItems : addItems) {
+            double rand = Math.random();
+            double prevChance = 0;
+            for (CVItem item : tempItems) {
+                if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
+                    ItemStack is = item.createItemStack();
+                    is.setAmount(1);
+                    int amount = item.getQty();
+                    int max = is.getMaxStackSize();
+                    for (;;) {
+                        ItemStack isa;
+                        if (amount > max) {
+                            isa = item.createItemStack();
+                            isa.setAmount(max);
+                        } else {
+                            isa = item.createItemStack();
+                            isa.setAmount(amount);
+                        }
+                        output.add(isa);
+                        if (amount > max) {
+                            amount -= max;
+                        } else {
+                            continue outer;
+                        }
+                    }
+                }
+                prevChance += item.getChance();
+            }
+        }
+        return output.toArray(new ItemStack[0]);
+    }
+
+    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, CVInventory inv) {
         ArrayList<ItemStack> remainingItems = new ArrayList<>();
 
         outer: for (List<CVItem> tempItems : addItems) {
@@ -558,7 +594,7 @@ public final class Util {
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    for (ItemStack iss : inv) {
+                    for (ItemStack iss : inv.getContents()) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
@@ -601,7 +637,7 @@ public final class Util {
         return remainingItems;
     }
 
-    public static boolean isChestEmpty(Inventory inv) {
+    public static boolean isChestEmpty(CVInventory inv) {
         for (ItemStack item : inv.getContents()) {
             if (item != null) {
                 return false;

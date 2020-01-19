@@ -7,9 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -201,18 +199,18 @@ public class ItemsTests extends TestUtil {
                 new ItemStack(Material.COBBLESTONE, 32),
                 new ItemStack(Material.GRAVEL, 4)
         };
-        cvInventory.addItems(itemStacks);
-        assertEquals(Material.GRAVEL, cvInventory.getIndex(2).getType());
+        cvInventory.addItem(itemStacks);
+        assertEquals(Material.GRAVEL, cvInventory.getItem(2).getType());
         ItemStack[] itemStack2 = { new ItemStack(Material.COBBLESTONE, 4) };
-        cvInventory.addItems(itemStack2);
-        assertNull(cvInventory.getIndex(3));
-        assertEquals(36, cvInventory.getIndex(1).getAmount());
+        cvInventory.addItem(itemStack2);
+        assertNull(cvInventory.getItem(3));
+        assertEquals(36, cvInventory.getItem(1).getAmount());
         ItemStack[] itemStack3 = { new ItemStack(Material.COBBLESTONE, 64) };
-        cvInventory.addItems(itemStack3);
-        assertEquals(64, cvInventory.getIndex(1).getAmount());
-        assertEquals(36, cvInventory.getIndex(3).getAmount());
-        cvInventory.removeItems(itemStack2);
-        assertEquals(60, cvInventory.getIndex(0).getAmount());
+        cvInventory.addItem(itemStack3);
+        assertEquals(64, cvInventory.getItem(1).getAmount());
+        assertEquals(36, cvInventory.getItem(3).getAmount());
+        cvInventory.removeItem(itemStack2);
+        assertEquals(60, cvInventory.getItem(0).getAmount());
     }
 
     @Test
@@ -224,7 +222,7 @@ public class ItemsTests extends TestUtil {
                 new ItemStack(Material.GRAVEL, 4)
         };
         Map<Integer, ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
-        assertNull(cvInventory.getIndex(0));
+        assertNull(cvInventory.getItem(0));
         assertTrue(returnedItems.isEmpty());
     }
 

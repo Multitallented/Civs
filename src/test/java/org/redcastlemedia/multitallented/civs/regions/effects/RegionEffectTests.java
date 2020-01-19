@@ -16,7 +16,9 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -121,7 +123,6 @@ public class RegionEffectTests extends TestUtil {
     @Test @Ignore // TODO fix this firstEmpty moveitems
     public void warehouseShouldFindNeededItems() {
         RegionsTests.loadRegionTypeCobble3();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
         Location location = new Location(Bukkit.getWorld("world"), 2,60,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
@@ -133,9 +134,10 @@ public class RegionEffectTests extends TestUtil {
 
         WarehouseEffect warehouseEffect = new WarehouseEffect();
         RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
-        warehouseEffect.putInventoryLocation(warehouse, TestUtil.blockUnique3.getLocation(), warehouseChest.getBlockInventory());
-        HashMap<String, Inventory> chestMap = new HashMap<>();
-        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseChest.getBlockInventory());
+        warehouseEffect.putInventoryLocation(warehouse, UnloadedInventoryHandler.getInstance().getChestInventory(TestUtil.blockUnique3.getLocation()));
+        HashMap<String, CVInventory> chestMap = new HashMap<>();
+        CVInventory warehouseCVInventory = UnloadedInventoryHandler.getInstance().getChestInventory(warehouseChest.getLocation());
+        chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseCVInventory);
         warehouseEffect.availableItems.put(warehouse, chestMap);
 
         TownTests.loadTownTypeHamlet2();

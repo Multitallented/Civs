@@ -139,8 +139,6 @@ public class ConfigManager {
     @Getter
     int minDistanceBetweenTowns;
     @Getter
-    boolean useAsyncUpkeeps;
-    @Getter
     boolean disableRegionsInUnloadedChunks;
     @Getter
     String defaultConfigSet;
@@ -360,7 +358,6 @@ public class ConfigManager {
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
-            useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
@@ -431,7 +428,6 @@ public class ConfigManager {
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
-        useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;

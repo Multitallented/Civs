@@ -2,18 +2,12 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+@CivsSingleton()
 public class UnloadedInventoryHandler {
     public static UnloadedInventoryHandler instance = null;
 
@@ -21,10 +15,9 @@ public class UnloadedInventoryHandler {
         instance = this;
     }
 
-    private static final HashMap<String, HashMap<String, Inventory>> unloadedChestInventories = new HashMap<>();
-    private static final HashMap<String, ArrayList<Integer>> delayedUpkeeps = new HashMap<>();
+    private static final HashMap<String, HashMap<String, CVInventory>> unloadedChestInventories = new HashMap<>();
 
-    public void syncInventories(String locationString) {
+    public void syncInventory(String locationString) {
         Location location = Region.idToLocation(locationString);
         String chunkString = getChunkString(location);
         if (!unloadedChestInventories.containsKey(chunkString) ||
@@ -32,44 +25,13 @@ public class UnloadedInventoryHandler {
             getInventoryForce(location);
             return;
         }
-        Inventory loadedInventory = unloadedChestInventories.get(chunkString).get(locationString);
-        Inventory realInventory = getInventoryForce(location);
-        if (realInventory == null) {
-            return;
-        }
-        for (int i=0; i<27; i++) {
-            ItemStack itemStack = loadedInventory.getItem(i);
-            if (itemStack == null) {
-                realInventory.setItem(i, new ItemStack(Material.AIR));
-                continue;
-            }
-            if (!itemStack.equals(realInventory.getItem(i))) {
-                realInventory.setItem(i, itemStack);
-            }
-        }
-        unloadedChestInventories.get(chunkString).put(locationString, realInventory);
-        runDelayedUpkeeps(locationString);
+        CVInventory loadedInventory = unloadedChestInventories.get(chunkString).get(locationString);
+        loadedInventory.setInventory();
+        loadedInventory.sync();
     }
 
-    private void runDelayedUpkeeps(String locationString) {
-        if (!delayedUpkeeps.containsKey(locationString)) {
-            return;
-        }
-        Region region = RegionManager.getInstance().getRegionById(locationString);
-        if (region == null) {
-            return;
-        }
-        for (Integer i : delayedUpkeeps.get(locationString)) {
-            region.runUpkeep(i);
-        }
-        delayedUpkeeps.remove(locationString);
-    }
-
-    public Inventory getChestInventory(Location location) {
+    public CVInventory getChestInventory(Location location) {
         String locationString = Region.locationToString(location);
-        if (Util.isChunkLoadedAt(location)) {
-            return getInventoryForce(location);
-        }
         String chunkString = getChunkString(location);
         if (!unloadedChestInventories.containsKey(chunkString) ||
                 !unloadedChestInventories.get(chunkString).containsKey(locationString)) {
@@ -84,23 +46,8 @@ public class UnloadedInventoryHandler {
             return;
         }
         for (String locationString : unloadedChestInventories.get(chunkString).keySet()) {
-            syncInventories(locationString);
+            syncInventory(locationString);
         }
-    }
-
-    public void addUpkeep(Location location, int upkeepIndex) {
-        String locationString = Region.locationToString(location);
-        if (!delayedUpkeeps.containsKey(locationString)) {
-            delayedUpkeeps.put(locationString, new ArrayList<>());
-        }
-        delayedUpkeeps.get(locationString).add(upkeepIndex);
-        new Runnable() {
-
-            @Override
-            public void run() {
-                location.getWorld().loadChunk(location.getChunk());
-            }
-        }.run();
     }
 
     public static String getChunkString(Location location) {
@@ -109,27 +56,21 @@ public class UnloadedInventoryHandler {
         return "c:" + x + ":" + z;
     }
 
-    private Inventory getInventoryForce(Location location) {
-        try {
-            BlockState blockState = location.getBlock().getState();
-            if (blockState instanceof Chest) {
-                Inventory inventory = ((Chest) blockState).getBlockInventory();
-                setUnloadedChestInventory(getChunkString(location), Region.locationToString(location), inventory);
-                return inventory;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private CVInventory getInventoryForce(Location location) {
+        CVInventory cvInventory = new CVInventory(location);
+        if (!cvInventory.isValid()) {
+            return null;
         }
-        deleteUnloadedChestInventory(getChunkString(location), Region.locationToString(location));
-        return null;
+        setUnloadedChestInventory(getChunkString(location), Region.locationToString(location), cvInventory);
+        return cvInventory;
     }
 
-    public void setUnloadedChestInventory(String chunkString, String locationString, Inventory inventory) {
+    public void setUnloadedChestInventory(String chunkString, String locationString, CVInventory inventory) {
         if (unloadedChestInventories.containsKey(chunkString)) {
             unloadedChestInventories.get(chunkString).put(locationString, inventory);
             return;
         }
-        HashMap<String, Inventory> tempMap = new HashMap<>();
+        HashMap<String, CVInventory> tempMap = new HashMap<>();
         tempMap.put(locationString, inventory);
         unloadedChestInventories.put(chunkString, tempMap);
     }
