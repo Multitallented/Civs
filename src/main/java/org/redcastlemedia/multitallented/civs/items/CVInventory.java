@@ -29,6 +29,12 @@ public class CVInventory {
     @Getter
     private boolean valid = true;
 
+    public CVInventory(Inventory inventory, Location location) {
+        this.inventory = inventory;
+        this.size = inventory.getSize();
+        this.location = location;
+    }
+
     protected CVInventory(@NonNull Location location) {
         this.location = location;
         setInventory();

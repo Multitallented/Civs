@@ -17,6 +17,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.UnsafeValues;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -111,6 +112,9 @@ public abstract class TestUtil {
         ItemFactory itemFactory = mock(ItemFactory.class);
         when(itemFactory.equals(Matchers.any(), Matchers.any())).thenReturn(true);
         when(server.getItemFactory()).thenReturn(itemFactory);
+        UnsafeValues unsafeValues = mock(UnsafeValues.class);
+        when(unsafeValues.toLegacy(Material.CHEST)).thenReturn(Material.CHEST);
+        when(server.getUnsafe()).thenReturn(unsafeValues);
         ItemMeta im = new ItemMetaImpl();
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
 //        when(im.getDisplayName()).thenReturn("Civs Cobble");

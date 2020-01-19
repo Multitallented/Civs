@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
@@ -36,6 +37,11 @@ public class ItemsTests extends TestUtil {
     public void onBefore() {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
+    }
+
+    @After
+    public void after() {
+        TestUtil.world.setChunkLoaded(true);
     }
 
     @Test
@@ -193,6 +199,7 @@ public class ItemsTests extends TestUtil {
 
     @Test
     public void cvInventoryAddItemsShouldAddToCorrectIndexes() {
+        TestUtil.world.setChunkLoaded(false);
         CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
         ItemStack[] itemStacks = {
                 new ItemStack(Material.COBBLESTONE, 64),
@@ -215,6 +222,7 @@ public class ItemsTests extends TestUtil {
 
     @Test
     public void cvInventoryCheckItemsShouldNotAdd() {
+        TestUtil.world.setChunkLoaded(false);
         CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
         ItemStack[] itemStacks = {
                 new ItemStack(Material.COBBLESTONE, 64),
