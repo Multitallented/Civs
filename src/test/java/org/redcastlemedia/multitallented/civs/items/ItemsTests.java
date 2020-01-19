@@ -213,6 +213,19 @@ public class ItemsTests extends TestUtil {
         assertEquals(36, cvInventory.getIndex(3).getAmount());
     }
 
+    @Test
+    public void cvInventoryCheckItemsShouldNotAdd() {
+        CVInventory cvInventory = new CVInventory();
+        ItemStack[] itemStacks = {
+                new ItemStack(Material.COBBLESTONE, 64),
+                new ItemStack(Material.COBBLESTONE, 32),
+                new ItemStack(Material.GRAVEL, 4)
+        };
+        List<ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
+        assertNull(cvInventory.getIndex(0));
+        assertTrue(returnedItems.isEmpty());
+    }
+
     private void loadSpellTypeBackflip() {
         ItemManager itemManager = ItemManager.getInstance();
         FileConfiguration config = new YamlConfiguration();
