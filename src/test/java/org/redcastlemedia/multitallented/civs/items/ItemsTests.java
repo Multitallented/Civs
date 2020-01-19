@@ -195,7 +195,7 @@ public class ItemsTests extends TestUtil {
 
     @Test
     public void cvInventoryAddItemsShouldAddToCorrectIndexes() {
-        CVInventory cvInventory = new CVInventory();
+        CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
         ItemStack[] itemStacks = {
                 new ItemStack(Material.COBBLESTONE, 64),
                 new ItemStack(Material.COBBLESTONE, 32),
@@ -211,17 +211,19 @@ public class ItemsTests extends TestUtil {
         cvInventory.addItems(itemStack3);
         assertEquals(64, cvInventory.getIndex(1).getAmount());
         assertEquals(36, cvInventory.getIndex(3).getAmount());
+        cvInventory.removeItems(itemStack2);
+        assertEquals(60, cvInventory.getIndex(0).getAmount());
     }
 
     @Test
     public void cvInventoryCheckItemsShouldNotAdd() {
-        CVInventory cvInventory = new CVInventory();
+        CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
         ItemStack[] itemStacks = {
                 new ItemStack(Material.COBBLESTONE, 64),
                 new ItemStack(Material.COBBLESTONE, 32),
                 new ItemStack(Material.GRAVEL, 4)
         };
-        List<ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
+        Map<Integer, ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
         assertNull(cvInventory.getIndex(0));
         assertTrue(returnedItems.isEmpty());
     }

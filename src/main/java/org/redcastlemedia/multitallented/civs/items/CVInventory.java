@@ -111,20 +111,19 @@ public class CVInventory {
         }
     }
 
-    public HashMap<Integer, ItemStack> checkAddItems(ItemStack... itemStacks) {
+    public Map<Integer, ItemStack> checkAddItems(ItemStack... itemStacks) {
         return addOrCheckItems(false, itemStacks);
     }
-    public HashMap<Integer, ItemStack> addItems(ItemStack... itemStackParams) {
+    public Map<Integer, ItemStack> addItems(ItemStack... itemStackParams) {
         return addOrCheckItems(true, itemStackParams);
     }
-    private HashMap<Integer, ItemStack> addOrCheckItems(boolean modify, ItemStack... itemStackParams) {
+    private Map<Integer, ItemStack> addOrCheckItems(boolean modify, ItemStack... itemStackParams) {
         boolean isChunkLoaded = Util.isChunkLoadedAt(this.location);
         if (isChunkLoaded && modify) {
             return this.inventory.addItem(itemStackParams);
         } else if (isChunkLoaded) {
             update();
         }
-        cleanUp();
         HashMap<Integer, ItemStack> returnItems = new HashMap<>();
         ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
         Map<Integer, ItemStack> contentsToModify;
@@ -144,21 +143,23 @@ public class CVInventory {
                 if (itemStacks.isEmpty()) {
                     return returnItems;
                 }
-                itemAdded = adjustItemToAdd(itemStacks, contentsToModify, itemAdded, i);
+                itemAdded = adjustItemToAdd(itemStacks, contentsToModify, i);
+                if (itemAdded) {
+                    break;
+                }
             }
             if (!itemAdded) {
                 returnItems.put(index, itemStacks.get(0));
                 index++;
                 itemStacks.remove(0);
             }
-            itemStacks.remove(0);
         }
         return returnItems;
     }
 
     private boolean adjustItemToAdd(ArrayList<ItemStack> itemStacks,
-                                    Map<Integer, ItemStack> contentsToModify,
-                                    boolean itemAdded, int i) {
+                                    Map<Integer, ItemStack> contentsToModify, int i) {
+        boolean itemAdded = false;
         ItemStack currentStack = itemStacks.get(0);
         if (!contentsToModify.containsKey(i)) {
             contentsToModify.put(i, currentStack);
@@ -177,5 +178,54 @@ public class CVInventory {
             }
         }
         return itemAdded;
+    }
+
+    public Map<Integer, ItemStack> removeItems(ItemStack... itemStackParams) {
+        if (Util.isChunkLoadedAt(this.location)) {
+            return this.inventory.removeItem(itemStackParams);
+        } else {
+            HashMap<Integer, ItemStack> returnItems = new HashMap<>();
+            ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
+
+            int index = 0;
+            while(!itemStacks.isEmpty()) {
+                boolean itemRemoved = false;
+                for (int i = 0; i < getSize(); i++) {
+                    if (itemStacks.isEmpty()) {
+                        return returnItems;
+                    }
+                    itemRemoved = adjustItemToRemove(itemStacks, this.contents, i);
+                    if (itemRemoved) {
+                        break;
+                    }
+                }
+                if (!itemRemoved) {
+                    returnItems.put(index, itemStacks.get(0));
+                    index++;
+                    itemStacks.remove(0);
+                }
+            }
+            return returnItems;
+        }
+    }
+
+    private boolean adjustItemToRemove(ArrayList<ItemStack> itemStacks,
+                                    Map<Integer, ItemStack> contentsToModify, int i) {
+        boolean itemRemoved = false;
+        ItemStack currentStack = itemStacks.get(0);
+        if (!contentsToModify.containsKey(i)) {
+            return false;
+        } else if (contentsToModify.get(i).isSimilar(currentStack)) {
+            if (contentsToModify.get(i).getAmount() > currentStack.getAmount()) {
+                contentsToModify.get(i).setAmount(contentsToModify.get(i).getAmount() - currentStack.getAmount());
+                itemStacks.remove(0);
+                itemRemoved = true;
+            } else if (contentsToModify.get(i).getAmount() < currentStack.getAmount()) {
+                int amount = contentsToModify.get(i).getAmount();
+                contentsToModify.remove(i);
+                currentStack.setAmount(currentStack.getAmount() - amount);
+            }
+        }
+        return itemRemoved;
     }
 }
