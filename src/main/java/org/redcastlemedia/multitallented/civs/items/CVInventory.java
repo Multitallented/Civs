@@ -46,26 +46,35 @@ public class CVInventory {
         List<ItemStack> returnItems = new ArrayList<>();
         ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
 
-        for (int i = 0; i < getSize(); i++) {
-            if (itemStacks.isEmpty()) {
-                return returnItems;
-            }
-            ItemStack currentStack = itemStacks.get(0);
-            if (!contents.containsKey(i)) {
-                contents.put(i, currentStack);
-                itemStacks.remove(0);
-            } else if (contents.get(i).isSimilar(currentStack)) {
-                if (contents.get(i).getAmount() + currentStack.getAmount() < currentStack.getMaxStackSize()) {
-                    contents.get(i).setAmount(contents.get(i).getAmount() + currentStack.getAmount());
+        while(!itemStacks.isEmpty()) {
+            boolean itemAdded = false;
+            for (int i = 0; i < getSize(); i++) {
+                if (itemStacks.isEmpty()) {
+                    return returnItems;
+                }
+                ItemStack currentStack = itemStacks.get(0);
+                if (!contents.containsKey(i)) {
+                    contents.put(i, currentStack);
                     itemStacks.remove(0);
-                } else if (contents.get(i).getMaxStackSize() < contents.get(i).getAmount() + currentStack.getAmount()) {
-                    int difference = currentStack.getMaxStackSize() - contents.get(i).getAmount();
-                    contents.get(i).setAmount(currentStack.getMaxStackSize());
-                    currentStack.setAmount(currentStack.getAmount() - difference);
-                    returnItems.add(itemStacks.get(0));
-                    itemStacks.remove(0);
+                    itemAdded = true;
+                } else if (contents.get(i).isSimilar(currentStack)) {
+                    if (contents.get(i).getAmount() + currentStack.getAmount() < currentStack.getMaxStackSize()) {
+                        contents.get(i).setAmount(contents.get(i).getAmount() + currentStack.getAmount());
+                        itemStacks.remove(0);
+                        itemAdded = true;
+                    } else if (contents.get(i).getMaxStackSize() < contents.get(i).getAmount() + currentStack.getAmount()) {
+                        int difference = currentStack.getMaxStackSize() - contents.get(i).getAmount();
+                        contents.get(i).setAmount(currentStack.getMaxStackSize());
+                        currentStack.setAmount(currentStack.getAmount() - difference);
+
+                    }
                 }
             }
+            if (!itemAdded) {
+                returnItems.add(itemStacks.get(0));
+                itemStacks.remove(0);
+            }
+            itemStacks.remove(0);
         }
         return returnItems;
     }
