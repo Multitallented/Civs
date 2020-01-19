@@ -1,14 +1,17 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @CivsSingleton()
 public class UnloadedInventoryHandler {
+    private static final long UNLOADED_TIMEOUT = 600000; // 10 minutes
     public static UnloadedInventoryHandler instance = null;
 
     public UnloadedInventoryHandler() {
@@ -16,6 +19,21 @@ public class UnloadedInventoryHandler {
     }
 
     private static final HashMap<String, HashMap<String, CVInventory>> unloadedChestInventories = new HashMap<>();
+
+    public void loadChunks() {
+        for (Map.Entry<String, HashMap<String, CVInventory>> outerEntry : unloadedChestInventories.entrySet()) {
+            for (Map.Entry<String, CVInventory> entry : outerEntry.getValue().entrySet()) {
+                CVInventory cvInventory = entry.getValue();
+                if (cvInventory.getLastUnloadedModification() != -1 &&
+                        System.currentTimeMillis() > UNLOADED_TIMEOUT + cvInventory.getLastUnloadedModification()) {
+                    Chunk chunk = cvInventory.getLocation().getChunk();
+                    if (!chunk.isLoaded()) {
+                        chunk.load();
+                    }
+                }
+            }
+        }
+    }
 
     public void syncInventory(String locationString) {
         Location location = Region.idToLocation(locationString);

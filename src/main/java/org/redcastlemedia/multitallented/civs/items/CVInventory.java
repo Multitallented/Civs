@@ -28,6 +28,8 @@ public class CVInventory {
     private int size;
     @Getter
     private boolean valid = true;
+    @Getter
+    private long lastUnloadedModification = -1;
 
     public CVInventory(Inventory inventory, Location location) {
         this.inventory = inventory;
@@ -74,6 +76,7 @@ public class CVInventory {
         if (!this.valid) {
             return;
         }
+        this.lastUnloadedModification = -1;
         for (int i = 0; i < getSize(); i++) {
             if (this.contents.containsKey(i)) {
                 this.inventory.setItem(i, this.contents.get(i));
@@ -155,6 +158,9 @@ public class CVInventory {
         } else if (isChunkLoaded) {
             update();
         }
+        if (!isChunkLoaded && modify) {
+            this.lastUnloadedModification = System.currentTimeMillis();
+        }
         HashMap<Integer, ItemStack> returnItems = new HashMap<>();
         ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
         Map<Integer, ItemStack> contentsToModify;
@@ -217,6 +223,7 @@ public class CVInventory {
             update();
             return returnMap;
         } else {
+            this.lastUnloadedModification = System.currentTimeMillis();
             HashMap<Integer, ItemStack> returnItems = new HashMap<>();
             ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
 
