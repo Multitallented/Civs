@@ -24,6 +24,9 @@ explosion-override: false
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 
 disable-regions-in-unloaded-chunks: false
+##how often (minutes) should unloaded chunks be loaded to update chests?
+##higher number means less lag, lower number means potential item loss in the event of a crash
+unloaded-chest-refresh-rate: 10
 
 # the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0

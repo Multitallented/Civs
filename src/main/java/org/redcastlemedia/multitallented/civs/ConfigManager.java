@@ -148,6 +148,8 @@ public class ConfigManager {
     int lineBreakLength;
     @Getter
     EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
+    @Getter
+    long unloadedChestRefreshRate;
 
     public ConfigManager() {
         loadDefaults();
@@ -362,6 +364,7 @@ public class ConfigManager {
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
+            unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
             chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
             if (config.isSet("chat-channels")) {
                 for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
@@ -422,6 +425,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
         chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
         lineBreakLength = 40;
