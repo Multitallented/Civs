@@ -109,6 +109,7 @@ public abstract class TestUtil {
 
 
         ItemFactory itemFactory = mock(ItemFactory.class);
+        when(itemFactory.equals(Matchers.any(), Matchers.any())).thenReturn(true);
         when(server.getItemFactory()).thenReturn(itemFactory);
         ItemMeta im = new ItemMetaImpl();
         when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);

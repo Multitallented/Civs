@@ -207,6 +207,10 @@ public class ItemsTests extends TestUtil {
         cvInventory.addItems(itemStack2);
         assertNull(cvInventory.getIndex(3));
         assertEquals(36, cvInventory.getIndex(1).getAmount());
+        ItemStack[] itemStack3 = { new ItemStack(Material.COBBLESTONE, 64) };
+        cvInventory.addItems(itemStack3);
+        assertEquals(64, cvInventory.getIndex(1).getAmount());
+        assertEquals(28, cvInventory.getIndex(3).getAmount());
     }
 
     private void loadSpellTypeBackflip() {

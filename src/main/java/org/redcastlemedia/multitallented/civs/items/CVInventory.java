@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -54,10 +55,10 @@ public class CVInventory {
                 contents.put(i, currentStack);
                 itemStacks.remove(0);
             } else if (contents.get(i).isSimilar(currentStack)) {
-                if (contents.get(i).getAmount() + currentStack.getAmount() > currentStack.getMaxStackSize()) {
+                if (contents.get(i).getAmount() + currentStack.getAmount() < currentStack.getMaxStackSize()) {
                     contents.get(i).setAmount(contents.get(i).getAmount() + currentStack.getAmount());
                     itemStacks.remove(0);
-                } else {
+                } else if (contents.get(i).getMaxStackSize() < contents.get(i).getAmount() + currentStack.getAmount()) {
                     int difference = currentStack.getMaxStackSize() - contents.get(i).getAmount();
                     contents.get(i).setAmount(currentStack.getMaxStackSize());
                     currentStack.setAmount(currentStack.getAmount() - difference);
