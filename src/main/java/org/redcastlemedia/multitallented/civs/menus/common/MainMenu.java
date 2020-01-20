@@ -108,8 +108,8 @@ public class MainMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("chat".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

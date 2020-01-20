@@ -58,7 +58,7 @@ public class TownTypeMenu extends CustomMenu {
             List<String> lore = new ArrayList<>();
             lore.add(localeManager.getTranslationWithPlaceholders(player, "size") +
                     ": " + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadiusY() * 2 + 1));
-            lore.addAll(Util.textWrap(Util.parseColors(townType.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(civilian, Util.parseColors(townType.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -102,7 +102,7 @@ public class TownTypeMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             String localizedName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     townType.getProcessedName() + "-name");
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", localizedName)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -121,7 +121,7 @@ public class TownTypeMenu extends CustomMenu {
             String childName = LocaleManager.getInstance().getTranslationWithPlaceholders(
                     player, townType.getChild().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             cvItem.getLore().clear();
-            cvItem.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", childName)
                     .replace("$2", "" + townType.getChildPopulation())));
             ItemStack itemStack = cvItem.createItemStack();

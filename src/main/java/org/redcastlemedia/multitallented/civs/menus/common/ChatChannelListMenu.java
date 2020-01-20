@@ -84,7 +84,7 @@ public class ChatChannelListMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(civilian.getChatChannel().getName(player));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     civilian.getChatChannel().getDesc(player))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -103,11 +103,11 @@ public class ChatChannelListMenu extends CustomMenu {
                 Town town = (Town) chatChannel.getTarget();
                 TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
                 cvItem = new CVItem(townType.getMat(), 1, 1, chatChannel.getName(player),
-                        Util.textWrap(chatChannel.getDesc(player)));
+                        Util.textWrap(civilian, chatChannel.getDesc(player)));
             } else {
                 cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getChatChannels().get(chatChannel.getChatChannelType()));
                 cvItem.setDisplayName(chatChannel.getName(player));
-                cvItem.setLore(Util.textWrap(chatChannel.getDesc(player)));
+                cvItem.setLore(Util.textWrap(civilian, chatChannel.getDesc(player)));
             }
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, ChatChannel>) MenuManager.getData(civilian.getUuid(), "channelMap"))

@@ -1,21 +1,25 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -23,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
@@ -32,18 +37,16 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
 
 @CivsSingleton
 public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static final String KEY = "warehouse";
-    public HashMap<Region, ArrayList<InventoryLocation>> invs = new HashMap<>();
-    public HashMap<Region, HashMap<String, Inventory>> availableItems = new HashMap<>();
+    private static final String UNABLE_TO_SAVE_CHEST = "Unable to save new chest for {0}.yml";
+    public Map<Region, List<CVInventory>> invs = new HashMap<>();
+    public Map<Region, HashMap<String, CVInventory>> availableItems = new HashMap<>();
     private static WarehouseEffect instance = null;
 
     public static WarehouseEffect getInstance() {
@@ -75,7 +78,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
 
-        File dataFolder = new File(Civs.dataLocation, "regions");
+        File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
         if (!dataFolder.exists()) {
             return;
         }
@@ -86,19 +89,20 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         FileConfiguration config = new YamlConfiguration();
         try {
             config.load(dataFile);
-            List<String> locationList = config.getStringList("chests");
+            List<String> locationList = config.getStringList(Constants.CHESTS);
             locationList.add(Region.locationToString(l));
-            config.set("chests", locationList);
+            config.set(Constants.CHESTS, locationList);
             config.save(dataFile);
         } catch (Exception e) {
-            Civs.logger.warning("Unable to save new chest for " + r.getId() + ".yml");
+            Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
             return;
         }
 
         if (!invs.containsKey(r)) {
             invs.put(r, new ArrayList<>());
         }
-        invs.get(r).add(new InventoryLocation(l, ((Chest) event.getBlock().getState()).getBlockInventory()));
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(event.getBlockPlaced().getLocation());
+        invs.get(r).add(cvInventory);
     }
 
 
@@ -108,9 +112,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        ArrayList<InventoryLocation> chests = new ArrayList<>();
-        chests.add(new InventoryLocation(r.getLocation(),
-                ((Chest) r.getLocation().getBlock().getState()).getBlockInventory()));
+        ArrayList<CVInventory> chests = new ArrayList<>();
+        chests.add(UnloadedInventoryHandler.getInstance().getChestInventory(r.getLocation()));
 
         RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
         double lx = Math.floor(r.getLocation().getX()) + 0.4;
@@ -135,8 +138,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                         Block block = world.getBlockAt(i, j, k);
 
                         if (block.getType() == Material.CHEST) {
-                            chests.add(new InventoryLocation(block.getLocation(),
-                                    ((Chest) block.getState()).getBlockInventory()));
+                            chests.add(UnloadedInventoryHandler.getInstance().getChestInventory(block.getLocation()));
                         }
                     }
                 }
@@ -144,7 +146,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
 
-        File dataFolder = new File(Civs.dataLocation, "regions");
+        File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
         if (!dataFolder.exists()) {
             return;
         }
@@ -157,14 +159,14 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         try {
             config.load(dataFile);
             ArrayList<String> locationList = new ArrayList<>();
-            for (InventoryLocation inventoryLocation : chests) {
-                locationList.add(Region.blockLocationToString(inventoryLocation.getLocation()));
+            for (CVInventory cvInventory : chests) {
+                locationList.add(Region.blockLocationToString(cvInventory.getLocation()));
             }
-            config.set("chests", locationList);
+            config.set(Constants.CHESTS, locationList);
             config.save(dataFile);
         } catch (Exception e) {
             e.printStackTrace();
-            Civs.logger.warning("Unable to save new chest for " + r.getId() + ".yml");
+            Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
             return;
         }
         checkExcessChests(r);
@@ -177,42 +179,29 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     }
 
     public void refreshChest(Region region, Location location) {
-        Block block = location.getBlock();
-        if (block.getType() != Material.CHEST) {
-            return;
-        }
-        Chest state = null;
-        try {
-            state = (Chest) block.getState();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        refreshChest(region, location, state);
+        refreshChest(region, location,
+                UnloadedInventoryHandler.getInstance().getChestInventory(location));
     }
 
-    public void refreshChest(Region region, Location location, Chest chest) {
+    public void refreshChest(Region region, Location location, CVInventory cvInventory) {
         if (Civs.getInstance() == null) {
             return;
         }
-        if (chest == null) {
+        if (cvInventory == null || !cvInventory.isValid()) {
             availableItems.get(region).remove(Region.locationToString(location));
             return;
         }
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            if (!availableItems.containsKey(region)) {
+                return;
+            }
+            if (Util.isChestEmpty(cvInventory)) {
+                availableItems.get(region).remove(Region.locationToString(location));
+            } else {
                 if (!availableItems.containsKey(region)) {
-                    return;
+                    availableItems.put(region, new HashMap<>());
                 }
-                if (Util.isChestEmpty(chest.getBlockInventory())) {
-                    availableItems.get(region).remove(Region.locationToString(location));
-                } else {
-                    if (!availableItems.containsKey(region)) {
-                        availableItems.put(region, new HashMap<>());
-                    }
-                    availableItems.get(region).put(Region.locationToString(location), chest.getBlockInventory());
-                }
+                availableItems.get(region).put(Region.locationToString(location), cvInventory);
             }
         }, 1L);
     }
@@ -234,32 +223,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         if (town == null) {
             return;
         }
-        for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
-            if (re.getFailingUpkeeps().isEmpty() || !re.isWarehouseEnabled()) {
-                continue;
-            }
-            boolean hasMember = false;
-            for (UUID uuid : r.getOwners()) {
-                if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
-                    continue;
-                }
-                hasMember = true;
-                break;
-            }
-            if (!hasMember) {
-                for (UUID uuid : r.getRawPeople().keySet()) {
-                    if (re.getOwners().isEmpty() || !re.getOwners().contains(uuid)) {
-                        continue;
-                    }
-                    hasMember = true;
-                    break;
-                }
-            }
-            if (!hasMember) {
-                continue;
-            }
-            deliverTo.add(re);
-        }
+        populateRegionsNeedingDelivery(r, deliverTo, town);
         for (Region re : deliverTo) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(re.getType());
             if (regionType == null) {
@@ -267,16 +231,41 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
             List<List<CVItem>> missingItems = getMissingItems(regionType, re.getFailingUpkeeps());
 
-            if (missingItems.isEmpty()) {
-                continue;
+            if (!missingItems.isEmpty()) {
+                moveNeededItems(r, re, missingItems);
             }
-            moveNeededItems(r, re, missingItems);
         }
 
         // To avoid cluttering the center chest, move items to available chests
         if (RegionManager.getInstance().hasRegionChestChanged(r)) {
             tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
         }
+    }
+
+    private void populateRegionsNeedingDelivery(Region r, HashSet<Region> deliverTo, Town town) {
+        for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
+            if (re.getFailingUpkeeps().isEmpty() || !re.isWarehouseEnabled()) {
+                continue;
+            }
+            if (!regionOwnerIsMemberOfWarehouse(r, re)) {
+                continue;
+            }
+            deliverTo.add(re);
+        }
+    }
+
+    private boolean regionOwnerIsMemberOfWarehouse(Region r, Region re) {
+        for (UUID uuid : r.getOwners()) {
+            if (!re.getOwners().isEmpty() && re.getOwners().contains(uuid)) {
+                return true;
+            }
+        }
+        for (UUID uuid : r.getRawPeople().keySet()) {
+            if (!re.getOwners().isEmpty() && re.getOwners().contains(uuid)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler
@@ -288,7 +277,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         boolean deletedSomething = false;
 
         if (invs.containsKey(r)) {
-            deletedSomething = invs.get(r).remove(event.getBlock().getLocation());
+            CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(event.getBlock().getLocation());
+            deletedSomething = invs.get(r).remove(cvInventory);
         }
         if (availableItems.containsKey(r)) {
             deletedSomething = availableItems.get(r).remove(Region.locationToString(event.getBlock().getLocation())) != null ||
@@ -297,7 +287,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
         //Remove excess chests from the data file
         deletefromfile: if (deletedSomething) {
-            File dataFolder = new File(Civs.dataLocation, "regions");
+            File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
             if (!dataFolder.exists()) {
                 break deletefromfile;
             }
@@ -309,13 +299,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             try {
                 config.load(dataFile);
                 ArrayList<String> locationList = new ArrayList<String>();
-                for (InventoryLocation inventoryLocation : invs.get(r)) {
+                for (CVInventory inventoryLocation : invs.get(r)) {
                     locationList.add(Region.blockLocationToString(inventoryLocation.getLocation()));
                 }
-                config.set("chests", locationList);
+                config.set(Constants.CHESTS, locationList);
                 config.save(dataFile);
             } catch (Exception e) {
-                Civs.logger.warning("Unable to save new chest for " + r.getId() + ".yml");
+                Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
                 return;
             }
         }
@@ -324,7 +314,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     private void checkExcessChests(Region r) {
         if ((!invs.containsKey(r) || invs.get(r).isEmpty()) && Civs.getInstance() != null) {
             // Since there isn't a cached list of chests for this warehouse, retrieve it from the data file
-            File dataFolder = new File(Civs.dataLocation, "regions");
+            File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
             if (!dataFolder.exists()) {
                 return;
             }
@@ -336,24 +326,24 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             FileConfiguration config = new YamlConfiguration();
             try {
                 config.load(dataFile);
-                ArrayList<InventoryLocation> tempLocations = processLocationList(config.getStringList("chests"));
-                for (InventoryLocation inventoryLocation : tempLocations) {
+                List<CVInventory> tempLocations = processLocationList(config.getStringList(Constants.CHESTS));
+                for (CVInventory inventoryLocation : tempLocations) {
                     if (!availableItems.containsKey(r)) {
                         availableItems.put(r, new HashMap<>());
                     }
                     availableItems.get(r).put(Region.locationToString(inventoryLocation.getLocation()),
-                            inventoryLocation.getInventory());
+                            inventoryLocation);
                 }
                 invs.put(r, tempLocations);
             } catch (Exception e) {
-                Civs.logger.warning("Unable to load chests from " + r.getId() + ".yml");
+                Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
                 e.printStackTrace();
                 return;
             }
         }
     }
 
-    private void tidyCentralChest(Region r, Inventory inventory, Location l) {
+    private void tidyCentralChest(Region r, CVInventory inventory, Location l) {
         if (inventory == null) {
             RegionManager.getInstance().addCheckedRegion(r);
             return;
@@ -364,11 +354,11 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        for (InventoryLocation inventoryLocation : invs.get(r)) {
+        for (CVInventory inventoryLocation : invs.get(r)) {
             if (inventoryLocation.getLocation().equals(l)) {
                 continue;
             }
-            int currentChestFirstEmpty = inventoryLocation.getInventory().firstEmpty();
+            int currentChestFirstEmpty = inventoryLocation.firstEmpty();
             int i = 0;
             while (currentChestFirstEmpty > -1 && i < 40) {
                 //Are we done moving things out of the chest?
@@ -392,26 +382,21 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 temptemp.add(tempList);
                 Util.removeItems(temptemp, inventory);
                 refreshChest(r, l);
-                ArrayList<ItemStack> remainingItems = Util.addItems(temptemp, inventoryLocation.getInventory());
+                ArrayList<ItemStack> remainingItems = Util.addItems(temptemp, inventoryLocation);
                 refreshChest(r, inventoryLocation.getLocation());
-                for (ItemStack iss : remainingItems) {
-                    inventory.addItem(iss);
-                }
-                //currentChest.getBlockInventory().addItem(is);
-                currentChestFirstEmpty = inventoryLocation.getInventory().firstEmpty();
+                inventory.addItem(remainingItems.toArray(new ItemStack[0]));
+                currentChestFirstEmpty = inventoryLocation.firstEmpty();
                 i++;
             }
         }
     }
 
-    private ArrayList<InventoryLocation> processLocationList(List<String> input) {
-        ArrayList<InventoryLocation> tempList = new ArrayList<>();
+    private List<CVInventory> processLocationList(List<String> input) {
+        ArrayList<CVInventory> tempList = new ArrayList<>();
         for (String s : input) {
             Location location = Region.idToLocation(s);
-            if (location != null && location.getBlock().getType() == Material.CHEST) {
-                Inventory inventory = ((Chest) location.getBlock().getState()).getBlockInventory();
-                tempList.add(new InventoryLocation(location, inventory));
-            }
+            CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(location);
+            tempList.add(cvInventory);
         }
         return tempList;
     }
@@ -432,45 +417,44 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         if (!availableItems.containsKey(region)) {
             return;
         }
-        Inventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(destination.getLocation());
+        CVInventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(destination.getLocation());
 
         if (destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 4) {
             return;
         }
 
-        HashMap<InventoryLocation, HashMap<Integer, ItemStack>> itemsToMove = new HashMap<>();
+        HashMap<CVInventory, HashMap<Integer, ItemStack>> itemsToMove = new HashMap<>();
 
         HashSet<String> removeTheseChests = new HashSet<>();
         HashSet<HashSet<CVItem>> req = convertToHashSet(neededItems);
         try {
             nextItem: for (String locationString : availableItems.get(region).keySet()) {
-                Inventory inv = availableItems.get(region).get(locationString);
-                InventoryLocation inventoryLocation = new InventoryLocation(Region.idToLocation(locationString), inv);
+                CVInventory inv = availableItems.get(region).get(locationString);
                 if (Util.isChestEmpty(inv)) {
                     removeTheseChests.add(locationString);
                     continue;
                 }
                 int i = 0;
                 for (ItemStack is : inv.getContents()) {
-                    outer: for (HashSet<CVItem> orReqs : new HashSet<>(req)) {
+                    for (HashSet<CVItem> orReqs : new HashSet<>(req)) {
                         for (CVItem orReq : new HashSet<>(orReqs)) {
                             if (is != null && is.getType() != Material.AIR &&
                                     orReq.equivalentItem(is, orReq.getDisplayName() != null)) {
 
-                                if (!itemsToMove.containsKey(inventoryLocation)) {
-                                    itemsToMove.put(inventoryLocation, new HashMap<>());
+                                if (!itemsToMove.containsKey(inv)) {
+                                    itemsToMove.put(inv, new HashMap<>());
                                 }
 
                                 ItemStack nIS = CVItem.createFromItemStack(is).createItemStack();
                                 if (orReq.getQty() > is.getAmount()) {
                                     orReq.setQty(orReq.getQty() - is.getAmount());
-                                    itemsToMove.get(inventoryLocation).put(i, nIS);
+                                    itemsToMove.get(inv).put(i, nIS);
                                 } else {
                                     if (orReq.getQty() < is.getAmount()) {
                                         nIS.setAmount(is.getAmount() - orReq.getQty());
                                     }
-                                    itemsToMove.get(inventoryLocation).put(i, nIS);
+                                    itemsToMove.get(inv).put(i, nIS);
 
                                     orReqs.remove(orReq);
                                     if (orReqs.isEmpty()) {
@@ -493,10 +477,16 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
 
         //move items from warehouse to needed region
-        outerNew: for (InventoryLocation inventoryLocation : itemsToMove.keySet()) {
+        moveItemsFromWarehouseToRegion(region, destination, destinationInventory, itemsToMove);
+    }
+
+    private void moveItemsFromWarehouseToRegion(Region region, Region destination,
+                                                CVInventory destinationInventory,
+                                                HashMap<CVInventory, HashMap<Integer, ItemStack>> itemsToMove) {
+        for (CVInventory inventoryLocation : itemsToMove.keySet()) {
             for (Integer i : itemsToMove.get(inventoryLocation).keySet()) {
                 ItemStack moveMe = itemsToMove.get(inventoryLocation).get(i);
-                inventoryLocation.getInventory().removeItem(moveMe);
+                inventoryLocation.removeItem(moveMe);
                 refreshChest(region, inventoryLocation.getLocation());
                 if (ConfigManager.getInstance().isDebugLog()) {
                     DebugLogger.inventoryModifications++;
@@ -510,7 +500,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 }
 
                 if (destinationInventory.firstEmpty() < 0) {
-                    break outerNew;
+                    return;
                 }
             }
         }
@@ -538,25 +528,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         return req;
     }
 
-    protected void putInventoryLocation(Region region, Location location, Inventory inventory) {
+    protected void putInventoryLocation(Region region, CVInventory inventory) {
         if (invs.get(region) != null) {
-            invs.get(region).add(new InventoryLocation(location, inventory));
+            invs.get(region).add(inventory);
         } else {
-            ArrayList<InventoryLocation> inventoryLocations = new ArrayList<>();
-            inventoryLocations.add(new InventoryLocation(location, inventory));
+            ArrayList<CVInventory> inventoryLocations = new ArrayList<>();
+            inventoryLocations.add(inventory);
             invs.put(region, inventoryLocations);
-        }
-    }
-
-    @Getter
-    @Setter
-    private static class InventoryLocation {
-        private Location location;
-        private Inventory inventory;
-
-        public InventoryLocation(Location location, Inventory inventory) {
-            this.location = location;
-            this.inventory = inventory;
         }
     }
 }
