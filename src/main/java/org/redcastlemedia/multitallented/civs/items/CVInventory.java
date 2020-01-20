@@ -55,7 +55,7 @@ public class CVInventory {
             return;
         }
         Chest chest = (Chest) block.getState();
-        this.inventory = chest.getBlockInventory();
+        this.inventory = chest.getInventory();
     }
 
     // This method assumes the chunk is loaded
