@@ -41,7 +41,10 @@ public class UnloadedInventoryHandler {
         String chunkString = getChunkString(location);
         if (!unloadedChestInventories.containsKey(chunkString) ||
                 !unloadedChestInventories.get(chunkString).containsKey(locationString)) {
-            getInventoryForce(location);
+            CVInventory cvInventory = new CVInventory(location);
+            if (cvInventory.isValid()) {
+                setUnloadedChestInventory(getChunkString(location), Region.locationToString(location), cvInventory);
+            }
             return;
         }
         CVInventory loadedInventory = unloadedChestInventories.get(chunkString).get(locationString);
@@ -77,9 +80,6 @@ public class UnloadedInventoryHandler {
 
     private CVInventory getInventoryForce(Location location) {
         CVInventory cvInventory = new CVInventory(location);
-        if (!cvInventory.isValid()) {
-            return null;
-        }
         setUnloadedChestInventory(getChunkString(location), Region.locationToString(location), cvInventory);
         return cvInventory;
     }

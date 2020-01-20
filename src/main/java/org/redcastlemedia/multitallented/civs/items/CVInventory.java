@@ -43,6 +43,8 @@ public class CVInventory {
         if (this.valid) {
             this.size = this.inventory.getSize();
             update();
+        } else {
+            this.size = 27;
         }
     }
 

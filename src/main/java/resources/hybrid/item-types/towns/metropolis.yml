@@ -9,7 +9,7 @@ groups:
 level: 7
 
 pre-reqs:
-- city:population=30
+- city:population=1
 
 build-reqs:
 - capitol:1
