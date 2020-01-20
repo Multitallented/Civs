@@ -139,8 +139,6 @@ public class ConfigManager {
     @Getter
     int minDistanceBetweenTowns;
     @Getter
-    boolean useAsyncUpkeeps;
-    @Getter
     boolean disableRegionsInUnloadedChunks;
     @Getter
     String defaultConfigSet;
@@ -151,6 +149,8 @@ public class ConfigManager {
     Map<String, Integer> lineLengthMap;
     @Getter
     EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
+    @Getter
+    long unloadedChestRefreshRate;
 
     public ConfigManager() {
         loadDefaults();
@@ -364,11 +364,11 @@ public class ConfigManager {
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
-            useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
+            unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
             lineLengthMap = new HashMap<>();
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -436,13 +436,13 @@ public class ConfigManager {
 
     private void loadDefaults() {
         lineLengthMap = new HashMap<>();
+        unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
         chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
         lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
-        useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;
