@@ -751,7 +751,7 @@ public class Region {
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
             }
-            if (needsItems && chestInventory == null) {
+            if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
                 continue;
             }
             boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
