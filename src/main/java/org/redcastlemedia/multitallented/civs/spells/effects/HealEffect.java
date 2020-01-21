@@ -85,7 +85,7 @@ public class HealEffect extends Effect {
     @Override
     public HashMap<String, Double> getVariables() {
         Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }
