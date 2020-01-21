@@ -750,7 +750,6 @@ public class Region {
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
-                RegionManager.getInstance().addCheckedRegion(this);
             }
             if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
                 continue;

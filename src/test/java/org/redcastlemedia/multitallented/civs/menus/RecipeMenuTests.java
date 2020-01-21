@@ -87,7 +87,7 @@ public class RecipeMenuTests extends TestUtil {
 
     public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("icon", "OAK_SIGN");
+        config.set("icon", "SIGN");
         config.set("type", "region");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*4");

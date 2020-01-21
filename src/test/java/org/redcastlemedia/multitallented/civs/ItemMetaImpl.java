@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
-import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,21 +72,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     @Override
     public void setLore(List<String> list) {
         this.lore = list;
-    }
-
-    @Override
-    public boolean hasCustomModelData() {
-        return false;
-    }
-
-    @Override
-    public int getCustomModelData() {
-        return 0;
-    }
-
-    @Override
-    public void setCustomModelData(Integer integer) {
-
     }
 
     @Override
@@ -205,11 +189,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
         return null;
     }
 
-    @Override
-    public void setVersion(int i) {
-
-    }
-
 
     @Override
     public boolean hasDamage() {
@@ -241,8 +220,4 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
         return null;
     }
 
-    @Override
-    public PersistentDataContainer getPersistentDataContainer() {
-        return null;
-    }
 }

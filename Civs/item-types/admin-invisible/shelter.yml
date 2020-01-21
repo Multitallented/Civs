@@ -17,7 +17,7 @@
 #- block_fire
 #- block_explosion
 #- deny_damage
-#- port:owner
+#- port:private
 #- bed
 #- active:1209600 #2 weeks
 #

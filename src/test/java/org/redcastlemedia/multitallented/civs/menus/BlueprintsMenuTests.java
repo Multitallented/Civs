@@ -40,12 +40,13 @@ public class BlueprintsMenuTests extends TestUtil {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
+
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().clear();
         civilian.getStashItems().put("shelter", 1);
     }
 
-    @Test @Ignore // TODO fix this
+    @Test @Ignore
     public void stashRegionItemsShouldBeEmpty() {
         civilian.getStashItems().put("coal_mine", 1);
         blueprintsMenu.createMenu(this.civilian, new HashMap<>());
@@ -129,7 +130,7 @@ public class BlueprintsMenuTests extends TestUtil {
         assertFalse(CivItem.isCivsItem(itemStack));
     }
 
-    @Test // TODO fix this
+    @Test
     public void goingBackFromBlueprintsShouldntClearDataBeforeClose() {
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");

@@ -1,6 +1,6 @@
 type: region
 icon: OBSIDIAN
-shop-icon: OAK_SIGN
+shop-icon: SIGN
 name: Council_Room
 price: 500
 max: 1

@@ -21,7 +21,7 @@ items:
       - menu:alliance-list
   players:
     index: 3
-    icon: OAK_SIGN
+    icon: SIGN
     name: players
     actions:
       - menu:people
