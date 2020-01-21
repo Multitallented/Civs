@@ -490,6 +490,23 @@ public class ProtectionHandler implements Listener {
                 sendRegionProtectedMessage(player);
                 return true;
             }
+        } else if (mat == Material.OAK_SIGN ||
+                mat == Material.OAK_WALL_SIGN ||
+                mat == Material.JUNGLE_SIGN ||
+                mat == Material.JUNGLE_WALL_SIGN ||
+                mat == Material.DARK_OAK_SIGN ||
+                mat == Material.DARK_OAK_WALL_SIGN ||
+                mat == Material.SPRUCE_SIGN ||
+                mat == Material.SPRUCE_WALL_SIGN ||
+                mat == Material.ACACIA_SIGN ||
+                mat == Material.ACACIA_WALL_SIGN ||
+                mat == Material.BIRCH_SIGN ||
+                mat == Material.BIRCH_WALL_SIGN) {
+            boolean shouldBlock = shouldBlockAction(clickedBlock, player, "sign_use", null);
+            if (shouldBlock) {
+                sendRegionProtectedMessage(player);
+                return true;
+            }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
                 mat == Material.TRAPPED_CHEST ||
