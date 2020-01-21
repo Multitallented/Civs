@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -17,6 +18,8 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -55,6 +58,12 @@ public class MainMenu extends CustomMenu {
         if (town != null) {
             data.put("town", town);
         }
+        ChunkClaim chunkClaim = ChunkClaim.fromLocation(player.getLocation());
+        Nation nation = chunkClaim.getNation();
+        if (nation != null) {
+            data.put("nation", nation);
+        }
+        data.put("claim", chunkClaim);
         return data;
     }
 
@@ -87,6 +96,27 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
+        } else if (menuIcon.getKey().equals("nation")) {
+            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), "nation");
+            if (nation == null) {
+                return new ItemStack(Material.AIR);
+            }
+            return nation.getIcon();
+        } else if (menuIcon.getKey().equals("claim")) {
+            ChunkClaim chunkClaim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), "claim");
+            ItemStack itemStack;
+            if (chunkClaim.getNation() != null) {
+                itemStack = chunkClaim.getNation().getIcon();
+                itemStack.getItemMeta().setLore(Util.textWrap(civilian,
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, menuIcon.getDesc())));
+            } else {
+                CVItem cvItem = CVItem.createCVItemFromString(Material.GLASS.name());
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        menuIcon.getDesc())));
+                itemStack = cvItem.createItemStack();
+            }
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if (menuIcon.getKey().equals(Constants.REGIONS)) {
             boolean showBuiltRegions = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {

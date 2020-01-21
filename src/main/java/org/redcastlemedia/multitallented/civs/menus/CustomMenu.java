@@ -12,10 +12,12 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -229,6 +231,10 @@ public abstract class CustomMenu {
         } else if (key.equals("townType")) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
+        } else if (key.equals("nation")) {
+            return ((Nation) data).getName();
+        } else if ("claim".equals(key)) {
+            return ((ChunkClaim) data).getId();
         } else if (key.equals("uuid")) {
             return ((UUID) data).toString();
         } else if (data instanceof String) {

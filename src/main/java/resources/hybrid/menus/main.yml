@@ -2,6 +2,8 @@ size: 18
 # variables:
 #  town: name of the town you're currently in
 #  region: id of the region you're currently in
+#  nation: name of the nation you're currently in
+#  claim: id of the claim in
 name: Main
 items:
   guide:
@@ -48,6 +50,20 @@ items:
     # icon: region icon
     actions:
       - menu:region?region=$region$
+  nation:
+    index: 10
+    # name: nation name
+    # icon: nation icon
+    # desc: nation desc
+    actions:
+      - menu:nation?nation=$nation$
+  claim:
+    index: 10
+    # name: nation name
+    # icon: nation icon
+    desc: claim-desc
+    actions:
+      - menu:claim?claim=$claim$
   chat:
     index: 16
     icon: MAP

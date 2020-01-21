@@ -1,9 +1,9 @@
 size: 54
 name: ClaimMap
 # variables
-#
+#  orientation: what way are you facing. defaults to player facing
 # actions
-#
+#  view-claim
 items:
   icon:
     index: 0
@@ -11,8 +11,16 @@ items:
     # name: nation name TODO
     desc: claim-map-desc #TODO
     actions: []
+  orientation:
+    index: 2
+    icon: COMPASS
+    name: orientation-name #TODO
+    desc: orientation-desc #TODO
+    action:
+      - menu:claim-map?rotate=true&orient=$orientation$
   back:
     index: 8
   claims:
     index: 9-53
-    actions: []
+    actions:
+      - view-claim

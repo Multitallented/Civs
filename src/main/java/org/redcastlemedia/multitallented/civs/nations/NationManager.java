@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -507,5 +508,10 @@ public class NationManager implements Listener {
 
         nations.put(nation.getName(), nation);
         saveNation(nation);
+    }
+
+    public Nation getNationAt(Location location) {
+        ChunkClaim chunkClaim = ChunkClaim.fromLocation(location);
+        return chunkClaim.getNation();
     }
 }
