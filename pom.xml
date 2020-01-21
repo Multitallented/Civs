@@ -93,6 +93,13 @@
             <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>
             <version>4.7.17</version>
         </dependency>
+        <dependency>
+            <groupId>net.mmogroup.mmolib</groupId>
+            <artifactId>MMOLib</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
+            <version>1.0.4</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
