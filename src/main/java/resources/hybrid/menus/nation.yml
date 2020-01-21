@@ -1,4 +1,4 @@
-size: 27
+size: 54
 name: Nation
 # variables
 #  nation: name of the nation
@@ -25,7 +25,10 @@ items:
     desc: nation-capitol-desc #TODO
     actions:
       - menu:town?town=$capitol$
-
+  prev:
+    index: 3
+  next:
+    index: 5
   back:
     index: 8
   set-info:
@@ -39,3 +42,10 @@ items:
     desc: constitution-desc #TODO
     actions:
       - get-constitution
+  members:
+    index: 18-53
+    # icon: town icon
+    # name: town name
+    # desc: town power / gov-type
+    actions:
+      - menu:town?town=$itemName$
