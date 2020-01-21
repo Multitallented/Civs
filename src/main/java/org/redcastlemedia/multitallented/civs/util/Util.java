@@ -381,7 +381,12 @@ public final class Util {
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&
                 type != Material.LEVER &&
-                type != Material.WALL_SIGN &&
+                type != Material.OAK_WALL_SIGN &&
+                type != Material.BIRCH_WALL_SIGN &&
+                type != Material.JUNGLE_WALL_SIGN &&
+                type != Material.SPRUCE_WALL_SIGN &&
+                type != Material.DARK_OAK_WALL_SIGN &&
+                type != Material.ACACIA_WALL_SIGN &&
                 type != Material.TORCH &&
                 type != Material.STONE_BUTTON &&
                 type != Material.BIRCH_BUTTON &&
