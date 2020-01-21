@@ -12,6 +12,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -19,6 +20,8 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
@@ -72,6 +75,9 @@ public class ArrowTurret implements Listener {
 
     public static void shootArrow(Region r, LivingEntity livingEntity, String vars, boolean runUpkeep) {
         Location l = r.getLocation();
+        if (!Util.isChunkLoadedAt(r.getLocation()) || !Util.isChunkLoadedAt(livingEntity.getLocation())) {
+            return;
+        }
         //Check if the region has the shoot arrow effect and return arrow velocity
         int damage = 1;
         double speed = 0.5;
@@ -135,29 +141,13 @@ public class ArrowTurret implements Listener {
             return;
         }
 
-        //Check to see if the Townships has enough reagents
+        //Check to see if the region has enough reagents
         if (runUpkeep && !r.runUpkeep(false)) {
             return;
         }
 
-        Block block = l.getBlock();
-        if (block instanceof Chest) {
-            Chest chest = (Chest) block;
-            List<List<CVItem>> itemsToRemove = new ArrayList<>();
-            List<CVItem> arrowList = new ArrayList<>();
-            arrowList.add(CVItem.createCVItemFromString("ARROW"));
-            itemsToRemove.add(arrowList);
-            Util.removeItems(itemsToRemove, chest.getBlockInventory());
-//            chest.getBlockInventory().removeItem(new ItemStack(Material.ARROW, 1));
-        }
-
-        //Damage check before firing
-//            EntityDamageEvent testEvent = new EntityDamageEvent(player, DamageCause.CUSTOM, 0);
-//            Bukkit.getPluginManager().callEvent(testEvent);
-//            if (testEvent.isCancelled()) {
-//                System.out.println("damage test failed");
-//                return;
-//            }
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
+        cvInventory.removeItem(new ItemStack(Material.ARROW));
 
         HashSet<Arrow> arrows = new HashSet<>();
         for (Arrow arrow : arrowDamages.keySet()) {

@@ -443,7 +443,7 @@ public class TownManager {
     }
 
     public void saveAllUnsavedTowns() {
-        for (Town town : needsSaving) {
+        for (Town town : new HashSet<>(needsSaving)) {
             saveTownNow(town);
         }
         needsSaving.clear();

@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
@@ -26,12 +27,18 @@ import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 public class SpellsTests extends TestUtil {
 
+    @Before
+    public void setup() {
+        if (ItemManager.getInstance().getItemType("hunger") == null) {
+            loadSpellTypeHunger();
+        }
+    }
+
     @Test
     public void hungerSpellShouldReduceStamina() {
         Player player = mock(Player.class);
         when(player.getFoodLevel()).thenReturn(20);
         ArgumentCaptor<Integer> staminaCapture = ArgumentCaptor.forClass(Integer.class);
-        loadSpellTypeHunger();
         Spell spell = new Spell("hunger", player, 1);
         spell.useAbility();
         verify(player).setFoodLevel(staminaCapture.capture());
@@ -51,7 +58,6 @@ public class SpellsTests extends TestUtil {
         civilian.getStates().put("hunger.cooldown^1", new CivState(spell2, "cooldown^1", -1, -1, vars));
         when(player.getFoodLevel()).thenReturn(20);
         doThrow(new SuccessException()).when(player).setFoodLevel(Matchers.anyInt());
-        loadSpellTypeHunger();
         Spell spell = new Spell("hunger", player, 1);
         spell.useAbility();
     }
@@ -65,13 +71,12 @@ public class SpellsTests extends TestUtil {
         CivilianManager.getInstance().createDefaultCivilian(player);
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         when(player.getFoodLevel()).thenReturn(20);
-        loadSpellTypeHunger();
         Spell spell = new Spell("hunger", player, 1);
         spell.useAbility();
         assertTrue((long) civilian.getStates().get("hunger.cooldown^1").getVars().get("cooldown") >= currentTime + 10000);
     }
 
-    public static void loadSpellTypeHunger() {
+    private static void loadSpellTypeHunger() {
         FileConfiguration config = new YamlConfiguration();
         config.set("icon", "RED_WOOL");
         config.set("type", "spell");
@@ -86,6 +91,6 @@ public class SpellsTests extends TestUtil {
         component1.set("yield", yieldSection);
         components.set("1", component1);
         config.set("components", components);
-        ItemManager.getInstance().loadSpellType(config, "Hunger");
+        ItemManager.getInstance().loadSpellType(config, "hunger");
     }
 }

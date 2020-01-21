@@ -129,7 +129,7 @@ public class ShopMenu extends CustomMenu {
                     .getTranslationWithPlaceholders(player, parent.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             icon.getLore().clear();
             icon.getLore().add(ChatColor.BLACK + parent.getProcessedName());
-            icon.getLore().addAll(Util.textWrap(LocaleManager.getInstance()
+            icon.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance()
                     .getTranslationWithPlaceholders(player,
                     parent.getProcessedName() + "-desc")));
             putActions(civilian, menuIcon, icon.createItemStack(), count);
@@ -226,7 +226,7 @@ public class ShopMenu extends CustomMenu {
             }
             civItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-name"));
             civItem1.getLore().add(ChatColor.BLACK + folderType.getProcessedName());
-            civItem1.getLore().addAll(Util.textWrap(localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-desc")));
+            civItem1.getLore().addAll(Util.textWrap(civilian, localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-desc")));
         }
         String maxLimit = civilian.isAtMax(civItem);
         if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
@@ -234,7 +234,7 @@ public class ShopMenu extends CustomMenu {
             item.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
                     civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             LocaleUtil.getTranslationMaxItem(maxLimit, civItem, player, item.getLore());
-            item.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            item.getLore().addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             return item.createItemStack();
         }
         if (!civItem.getItemType().equals(CivItem.ItemType.FOLDER)) {
@@ -244,7 +244,7 @@ public class ShopMenu extends CustomMenu {
             civItem1.getLore().add(ChatColor.BLACK + civItem.getProcessedName());
             civItem1.getLore().add(localeManager.getTranslationWithPlaceholders(player, "price")
                     .replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
-            civItem1.getLore().addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            civItem1.getLore().addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
         }
         ItemStack itemStack = civItem1.createItemStack();
         if (civItem1.getMmoItemType() != null) {

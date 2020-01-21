@@ -8,7 +8,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
 import java.util.HashMap;
 
-@CivsCommand(keys = { "menu" }) @SuppressWarnings("unused")
+@CivsCommand(keys = { "menu" })
 public class MenuCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
