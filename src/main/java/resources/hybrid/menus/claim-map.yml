@@ -1,0 +1,18 @@
+size: 54
+name: ClaimMap
+# variables
+#
+# actions
+#
+items:
+  icon:
+    index: 0
+    # icon: nation icon TODO
+    # name: nation name TODO
+    desc: claim-map-desc #TODO
+    actions: []
+  back:
+    index: 8
+  claims:
+    index: 9-53
+    actions: []
