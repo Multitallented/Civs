@@ -30,6 +30,8 @@ public final class MenuUtil {
             item.setType(Material.POTATO);
         } else if (mat == Material.CARROTS) {
             item.setType(Material.CARROT);
+        } else if (mat == Material.WALL_SIGN) {
+            item.setType(Material.SIGN);
         }
     }
     private static void divideByTwo(ItemStack item) {
