@@ -189,7 +189,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
         return null;
     }
 
-
     @Override
     public boolean hasDamage() {
         return false;
