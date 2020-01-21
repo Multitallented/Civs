@@ -129,7 +129,7 @@ public class BlueprintsMenuTests extends TestUtil {
         assertFalse(CivItem.isCivsItem(itemStack));
     }
 
-    @Test // TODO fix this
+    @Test
     public void goingBackFromBlueprintsShouldntClearDataBeforeClose() {
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
