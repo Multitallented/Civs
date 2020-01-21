@@ -350,10 +350,6 @@ public class TownTests extends TestUtil {
     public void townTransitionTest() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
-        town.getRawPeople().put(new UUID(1, 6), "owner");
-        town.getRawPeople().put(new UUID(1, 7), "member");
-        town.getRawPeople().put(new UUID(1, 8), "member");
-
         town.setPower(2);
         town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         town.getRawPeople().put(TestUtil.player2.getUniqueId(), "member");
@@ -377,9 +373,6 @@ public class TownTests extends TestUtil {
     public void townShouldNotTransition() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
-        town.getRawPeople().put(new UUID(1, 6), "owner");
-        town.getRawPeople().put(new UUID(1, 7), "member");
-        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -396,9 +389,6 @@ public class TownTests extends TestUtil {
     public void townShouldNotInactiveTransition() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
-        town.getRawPeople().put(new UUID(1, 6), "owner");
-        town.getRawPeople().put(new UUID(1, 7), "member");
-        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();

@@ -9,7 +9,7 @@ groups:
 
 build-reqs:
   - TNT*5
-  - g:sign*1
+  - SIGN*1,WALL_SIGN*1
   - OBSIDIAN*9
   - g:fence*12
 

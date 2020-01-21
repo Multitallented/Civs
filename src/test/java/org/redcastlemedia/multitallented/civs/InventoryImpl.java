@@ -33,6 +33,11 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
     public ItemStack getItem(int i) {
         return contents.get(i);
     }
@@ -303,6 +308,11 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public List<HumanEntity> getViewers() {
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
         return null;
     }
 
