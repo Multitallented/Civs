@@ -8,7 +8,7 @@ items:
   sort-power:
     index: 1
     icon: REDSTONE
-    name: sort-power #TODO
+    name: sort-power
     actions:
       - menu:nation-list?sort=power
   sort-alphabetical:
