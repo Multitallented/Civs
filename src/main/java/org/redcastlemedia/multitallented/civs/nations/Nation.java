@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +22,15 @@ public class Nation {
     private UUID lastRenamedBy;
     private HashSet<String> effects = new HashSet<>();
     private HashMap<UUID, HashMap<String, ChunkClaim>> nationClaims = new HashMap<>();
+
+    public int getPower() {
+        int power = 0;
+        for (String townName : members) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town != null) {
+                power += town.getPower();
+            }
+        }
+        return power;
+    }
 }

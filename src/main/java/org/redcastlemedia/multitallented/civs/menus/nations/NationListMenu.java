@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus.nations;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,9 @@ public class NationListMenu extends CustomMenu {
             data.put("page", 0);
         }
         List<Nation> nationList = new ArrayList<>(NationManager.getInstance().getAllNations());
+        if (params.containsKey("sort") && "power".equals(params.get("sort"))) {
+            nationList.sort(Comparator.comparingInt(Nation::getPower));
+        }
         data.put("nationList", nationList);
 
         int maxPage = (int) Math.ceil((double) nationList.size() / (double) itemsPerPage.get("nations"));
