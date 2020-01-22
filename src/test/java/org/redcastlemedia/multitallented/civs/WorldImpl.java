@@ -443,12 +443,27 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean createExplosion(double v, double v1, double v2, float v3, boolean b, boolean b1, Entity entity) {
+        return false;
+    }
+
+    @Override
     public boolean createExplosion(Location location, float v) {
         return false;
     }
 
     @Override
     public boolean createExplosion(Location location, float v, boolean b) {
+        return false;
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float v, boolean b, boolean b1) {
+        return false;
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float v, boolean b, boolean b1, Entity entity) {
         return false;
     }
 
@@ -826,7 +841,22 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public int getViewDistance() {
+        return 0;
+    }
+
+    @Override
     public Spigot spigot() {
+        return null;
+    }
+
+    @Override
+    public Raid locateNearestRaid(Location location, int i) {
+        return null;
+    }
+
+    @Override
+    public List<Raid> getRaids() {
         return null;
     }
 
