@@ -10,6 +10,9 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.AllianceDissolvedEvent;
+import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
+import org.redcastlemedia.multitallented.civs.events.RenameAllianceEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
@@ -108,6 +112,8 @@ public class AllianceManager implements Listener {
         alliance.setName(newName);
         alliances.put(newName, alliance);
         saveAlliance(alliance);
+        RenameAllianceEvent renameAllianceEvent = new RenameAllianceEvent(alliance, oldName, newName);
+        Bukkit.getPluginManager().callEvent(renameAllianceEvent);
         return true;
     }
 
@@ -154,7 +160,7 @@ public class AllianceManager implements Listener {
         return alliances.get(name);
     }
 
-    public HashSet<Alliance> getAlliances(UUID uuid) {
+    public Set<Alliance> getAlliances(UUID uuid) {
         HashSet<Alliance> returnAlliances = new HashSet<>();
         for (Alliance alliance : alliances.values()) {
             for (String townName : alliance.getMembers()) {
@@ -205,6 +211,8 @@ public class AllianceManager implements Listener {
             }
             alliance.getMembers().add(town1.getName());
             mergeAlliance = alliance;
+            AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(alliance, town1, false);
+            Bukkit.getPluginManager().callEvent(allianceFormedEvent);
             saveThese.add(alliance);
         }
         if (mergeAlliance == null) {
@@ -213,6 +221,8 @@ public class AllianceManager implements Listener {
             alliance.getMembers().add(town2.getName());
             alliance.setName(town1.getName() + "-" + town2.getName());
             alliances.put(alliance.getName(), alliance);
+            AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(alliance, town2, true);
+            Bukkit.getPluginManager().callEvent(allianceFormedEvent);
             saveAlliance(alliance);
         } else {
             outer: for (Alliance alliance : alliances.values()) {
@@ -224,6 +234,8 @@ public class AllianceManager implements Listener {
                         continue outer;
                     }
                 }
+                AllianceDissolvedEvent allianceDissolvedEvent = new AllianceDissolvedEvent(alliance, town2, true);
+                Bukkit.getPluginManager().callEvent(allianceDissolvedEvent);
                 removeThese.add(alliance);
             }
         }
@@ -249,6 +261,8 @@ public class AllianceManager implements Listener {
             boolean inAlliance = alliance.getMembers().contains(town1.getName()) &&
                     alliance.getMembers().contains(town2.getName());
             if (inAlliance) {
+                AllianceDissolvedEvent allianceDissolvedEvent = new AllianceDissolvedEvent(alliance, town2, true);
+                Bukkit.getPluginManager().callEvent(allianceDissolvedEvent);
                 removeThese.add(alliance);
             }
             if (alliance.getMembers().size() > 2) {
@@ -270,9 +284,13 @@ public class AllianceManager implements Listener {
                     alliance2.getMembers().add(townName);
                 }
                 if (!alliances.containsKey(alliance1.getName())) {
+                    AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(alliance1, town1, true);
+                    Bukkit.getPluginManager().callEvent(allianceFormedEvent);
                     saveThese.add(alliance1);
                 }
                 if (!alliances.containsKey(alliance2.getName())) {
+                    AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(alliance2, town2, true);
+                    Bukkit.getPluginManager().callEvent(allianceFormedEvent);
                     saveThese.add(alliance2);
                 }
             }
