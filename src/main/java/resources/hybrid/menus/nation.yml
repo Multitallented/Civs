@@ -5,6 +5,8 @@ name: Nation
 #  capitol: name of the capitol town
 # actions
 #  get-constituion: gives the player a copy of the nation's constitution if they don't already have it
+#  join-nation: your town will join the nation (opens town select menu if you own multiple towns) and refreshes the menu
+#  leave-nation: leave nation (opens town select menu if you own multiple towns) and refreshes the menu
 items:
   icon:
     index: 0
@@ -42,6 +44,26 @@ items:
     desc: constitution-desc #TODO
     actions:
       - get-constitution
+  rename:
+    index: 11
+    icon: PAPER
+    name: rename-nation #TODO
+    desc: rename-nation-desc #TODO
+    actions: []
+  join-nation:
+    index: 17
+    icon: IRON_SWORD
+    name: join-nation #TODO
+    desc: join-nation-desc #TODO
+    actions:
+      - join-nation #TODO
+  leave-nation:
+    index: 17
+    icon: CREEPER_HEAD
+    name: leave-nation #TODO
+    desc: leave-nation-desc #TODO
+    actions:
+      - leave-nation #TODO
   members:
     index: 18-53
     # icon: town icon
