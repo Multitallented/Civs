@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.civs.events;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
