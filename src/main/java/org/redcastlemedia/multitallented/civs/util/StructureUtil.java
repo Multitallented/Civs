@@ -18,12 +18,13 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
 
 public final class StructureUtil {
     private static final long DURATION = 20000;
     private static final long COOLDOWN = 5000;
-    private static final HashMap<UUID, BoundingBox> boundingBoxes = new HashMap<>();
+    private static final HashMap<UUID, StructureUtil.BoundingBox> boundingBoxes = new HashMap<>();
 
     private StructureUtil() {
         // Exists so that you can't instantiate this util class
@@ -33,7 +34,7 @@ public final class StructureUtil {
         if (!boundingBoxes.containsKey(uuid)) {
             return false;
         }
-        BoundingBox boundingBox = boundingBoxes.get(uuid);
+        StructureUtil.BoundingBox boundingBox = boundingBoxes.get(uuid);
         if (boundingBox.getCreationTime() == -1) {
             return true;
         }
@@ -95,7 +96,7 @@ public final class StructureUtil {
         }
         boolean showParticles = ConfigManager.getInstance().isUseParticleBoundingBoxes();
         if (!showParticles && boundingBoxes.containsKey(player.getUniqueId())) {
-            BoundingBox boundingBox = boundingBoxes.get(player.getUniqueId());
+            StructureUtil.BoundingBox boundingBox = boundingBoxes.get(player.getUniqueId());
             if (boundingBox.getCreationTime() > -1 &&
                     boundingBox.getCreationTime() + COOLDOWN > System.currentTimeMillis()) {
                 return;
@@ -111,7 +112,7 @@ public final class StructureUtil {
         double maxZ = location.getZ() + radii[1] + 1;
         double minZ = location.getZ() - radii[3] - 1;
 
-        BoundingBox boundingBox = new BoundingBox();
+        StructureUtil.BoundingBox boundingBox = new StructureUtil.BoundingBox();
         if (isInfinite) {
             boundingBox.setCreationTime(-1);
         }
@@ -158,7 +159,7 @@ public final class StructureUtil {
         boundingBoxes.put(player.getUniqueId(), boundingBox);
     }
 
-    public static void refreshBoundingBox(BoundingBox boundingBox, Player player) {
+    public static void refreshBoundingBox(StructureUtil.BoundingBox boundingBox, Player player) {
         for (Location location : boundingBox.getLocations().keySet()) {
             spawnParticle(location.getWorld(), location.getX(), location.getY(), location.getZ(),
                     boundingBox.getLocations().get(location), player, boundingBox.getLocations());
@@ -170,7 +171,7 @@ public final class StructureUtil {
             return;
         }
         for (UUID uuid : new HashSet<>(boundingBoxes.keySet())) {
-            BoundingBox boundingBox = boundingBoxes.get(uuid);
+            StructureUtil.BoundingBox boundingBox = boundingBoxes.get(uuid);
             Player player = Bukkit.getPlayer(uuid);
             refreshBoundingBox(boundingBox, player);
         }
@@ -187,11 +188,11 @@ public final class StructureUtil {
         if (player == null || !player.isOnline()) {
             return;
         }
-        BoundingBox boundingBox = boundingBoxes.get(uuid);
+        StructureUtil.BoundingBox boundingBox = boundingBoxes.get(uuid);
         if (boundingBox == null) {
             return;
         }
-        HashMap<Location, Color> locations = boundingBoxes.get(uuid).getLocations();
+        Map<Location, Color> locations = boundingBoxes.get(uuid).getLocations();
         if (locations == null) {
             return;
         }
@@ -207,7 +208,7 @@ public final class StructureUtil {
     }
 
     private static void spawnParticle(World world, double x, double y, double z, Color color, Player player,
-                                      HashMap<Location, Color> boundingBox) {
+                                      Map<Location, Color> boundingBox) {
         Location location = new Location(world, x, y, z);
         if (location.getBlock().getType() != Material.AIR) {
             return;
@@ -218,7 +219,7 @@ public final class StructureUtil {
         boundingBox.put(location, color);
     }
 
-    private static void setGlass(World world, double x, double y, double z, HashMap<Location, Color> boundingBox, Material mat, Player player) {
+    private static void setGlass(World world, double x, double y, double z, Map<Location, Color> boundingBox, Material mat, Player player) {
         if (y < 1 || y >= world.getMaxHeight()) {
             return;
         }
@@ -241,7 +242,7 @@ public final class StructureUtil {
         player.sendBlockChange(location, blockData);
     }
 
-    private static class BoundingBox {
+    public static class BoundingBox {
         @Setter
         private long creationTime;
         private HashMap<Location, Color> locations;
@@ -249,7 +250,7 @@ public final class StructureUtil {
             creationTime = System.currentTimeMillis();
             locations = new HashMap<>();
         }
-        public HashMap<Location, Color> getLocations() {
+        public Map<Location, Color> getLocations() {
             return locations;
         }
         public long getCreationTime() {
