@@ -43,13 +43,37 @@ public class UnloadedInventoryHandler {
                 !unloadedChestInventories.get(chunkString).containsKey(locationString)) {
             CVInventory cvInventory = new CVInventory(location);
             if (cvInventory.isValid()) {
-                setUnloadedChestInventory(getChunkString(location), Region.locationToString(location), cvInventory);
+                setUnloadedChestInventory(chunkString, locationString, cvInventory);
             }
             return;
         }
         CVInventory loadedInventory = unloadedChestInventories.get(chunkString).get(locationString);
         loadedInventory.setInventory();
         loadedInventory.sync();
+    }
+
+    public void updateInventoriesInChunk(Chunk chunk) {
+        if (chunk == null) {
+            return;
+        }
+        String chunkString = getChunkString(chunk);
+        if (unloadedChestInventories.containsKey(chunkString)) {
+            for (String key : unloadedChestInventories.get(chunkString).keySet()) {
+                updateInventoryAtLocation(Region.idToLocation(key));
+            }
+        }
+    }
+
+    public void updateInventoryAtLocation(Location location) {
+        if (location == null) {
+            return;
+        }
+        String chunkString = getChunkString(location);
+        String locationString = Region.locationToString(location);
+        if (unloadedChestInventories.containsKey(chunkString) &&
+                unloadedChestInventories.get(chunkString).containsKey(locationString)) {
+            unloadedChestInventories.get(chunkString).get(locationString).update();
+        }
     }
 
     public CVInventory getChestInventory(Location location) {
@@ -76,6 +100,10 @@ public class UnloadedInventoryHandler {
         int x = (int) Math.floor(location.getX() / 16);
         int z = (int) Math.floor(location.getZ() / 16);
         return "c:" + x + ":" + z;
+    }
+
+    public static String getChunkString(Chunk chunk) {
+        return "c:" + chunk.getX() + ":" + chunk.getZ();
     }
 
     private CVInventory getInventoryForce(Location location) {
