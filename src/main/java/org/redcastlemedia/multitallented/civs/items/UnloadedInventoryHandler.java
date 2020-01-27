@@ -1,14 +1,13 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import org.bukkit.Bukkit;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @CivsSingleton()
 public class UnloadedInventoryHandler {
