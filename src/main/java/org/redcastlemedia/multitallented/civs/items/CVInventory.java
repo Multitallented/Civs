@@ -31,12 +31,6 @@ public class CVInventory {
     @Getter
     private long lastUnloadedModification = -1;
 
-    public CVInventory(Inventory inventory, Location location) {
-        this.inventory = inventory;
-        this.size = inventory.getSize();
-        this.location = location;
-    }
-
     protected CVInventory(@NonNull Location location) {
         this.location = location;
         setInventory();
@@ -64,12 +58,11 @@ public class CVInventory {
 
     // This method assumes the chunk is loaded
     public void update() {
+        setInventory();
         if (!this.valid) {
-            setInventory();
-            if (!this.valid) {
-                return;
-            }
+            return;
         }
+        this.contents.clear();
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack itemStack = inventory.getItem(i);
             if (itemStack != null && itemStack.getType() != Material.AIR) {
