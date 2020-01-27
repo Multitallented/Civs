@@ -329,8 +329,12 @@ public class Civilian {
     }
 
     public int getCountNonStashItems(String name) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) {
+            return 0;
+        }
         int count = 0;
-        for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
+        for (ItemStack is : player.getInventory()) {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }
