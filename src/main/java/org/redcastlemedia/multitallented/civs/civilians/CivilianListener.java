@@ -48,6 +48,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -493,6 +494,8 @@ public class CivilianListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onItemMoveEvent(InventoryMoveItemEvent event) {
         RegionManager.getInstance().removeCheckedRegion(event.getDestination().getLocation());
+        UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(event.getDestination().getLocation());
+        UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(event.getSource().getLocation());
 //        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
 //            return;
 //        }
@@ -504,6 +507,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDragItem(InventoryDragEvent event) {
+        UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(event.getView().getTopInventory().getLocation());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
@@ -579,8 +583,9 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCivilianClickItem(InventoryClickEvent event) {
+        UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(event.getView().getTopInventory().getLocation());
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;

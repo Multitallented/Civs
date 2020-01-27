@@ -77,7 +77,7 @@ public class MenuManager implements Listener {
                 gui.advanceItemPositions();
             }
         } catch (Exception e) {
-            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.WARNING, "Cycle items error", e);
         }
     }
 

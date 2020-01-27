@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -55,10 +56,12 @@ public class ProtectionHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
     }
 
-//    @EventHandler
-//    public void onChunkUnload(ChunkUnloadEvent event) {
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
 //        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-//    }
+        UnloadedInventoryHandler.getInstance().updateInventoriesInChunk(event.getChunk());
+    }
+
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (ConfigManager.getInstance().isDebugLog()) {
