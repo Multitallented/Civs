@@ -513,6 +513,9 @@ public class ItemManager {
             return true;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return false;
+        }
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
                 //perm=civs.admin
