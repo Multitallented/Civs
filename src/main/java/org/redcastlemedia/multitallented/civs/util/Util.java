@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -396,32 +397,34 @@ public final class Util {
                 && getValidFileName(fileName).length()>0;
     }
 
-    public static String getValidFileName(String fileName) throws IllegalStateException {
-        String newFileName = fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
-        if(newFileName.length()==0)
-            throw new IllegalStateException(
-                    "File Name " + fileName + " results in a empty fileName!");
-        return newFileName;
+    public static String getValidFileName(String fileName) {
+        return fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
     }
     public static Locale getNumberFormatLocale(String locale) {
         Locale localeEnum = Locale.forLanguageTag(locale);
         if (localeEnum == null) {
-            Civs.logger.severe("Unable to find locale " + locale);
+            Civs.logger.log(Level.SEVERE, "Unable to find locale {0}", locale);
             return Locale.getDefault();
         }
         return localeEnum;
     }
     public static String getNumberFormat(double number, String locale) {
-        return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        String numberFormat = NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        if (numberFormat.isEmpty()) {
+            return NumberFormat.getCurrencyInstance().format(number);
+        } else {
+            return numberFormat;
+        }
     }
 
     public static int createPageButtons(Inventory inventory, int page, Civilian civilian, int totalSize) {
         LocaleManager localeManager = LocaleManager.getInstance();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
 
         //0 Prev button
         if (page > 0) {
             CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
                     "prev-button"));
             inventory.setItem(0, cvItem.createItemStack());
         }
@@ -430,7 +433,7 @@ public final class Util {
         //8 Next button
         if (startIndex + 36 < totalSize) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
                     "next-button"));
             inventory.setItem(8, cvItem1.createItemStack());
         }
