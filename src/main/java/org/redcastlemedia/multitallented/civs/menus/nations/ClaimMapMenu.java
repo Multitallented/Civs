@@ -6,7 +6,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 
-@CivsMenu(name = "claim-map")
+@CivsMenu(name = "claim-map") @SuppressWarnings("unused")
 public class ClaimMapMenu extends CustomMenu {
 
     @Override

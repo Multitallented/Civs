@@ -210,7 +210,7 @@ public class CommonScheduler implements Runnable {
             return;
         }
         boolean saveNation = false;
-        Nation nation = NationManager.getInstance().getNation(player.getUniqueId());
+        Nation nation = NationManager.getInstance().getNationByPlayer(player.getUniqueId());
         if (nation == null || !nation.getNationClaims().containsKey(claim.getWorld().getUID())) {
             return;
         }

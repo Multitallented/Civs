@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -25,11 +27,11 @@ import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.ItemStackJsonUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class NationManager implements Listener {
@@ -102,6 +104,9 @@ public class NationManager implements Listener {
                 }
                 nation.setNationClaims(claims);
             }
+            if (config.isSet("icon")) {
+                nation.setIcon(ItemStackJsonUtil.fromJson(config.getString("icon")));
+            }
 
             nation.getEffects().addAll(ConfigManager.getInstance().getNationClaimEffects());
 
@@ -141,10 +146,12 @@ public class NationManager implements Listener {
             if (nation.getLastRenamedBy() != null) {
                 config.set("last-rename", nation.getLastRenamedBy().toString());
             }
+            if (nation.getIcon() != null && nation.getIcon().getType() != Material.AIR) {
+                config.set("icon", ItemStackJsonUtil.toJson(nation.getIcon()));
+            }
             config.save(nationFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            Civs.logger.severe("Unable to save alliance " + nation.getName());
+            Civs.logger.log(Level.SEVERE, "Unable to save alliance " + nation.getName(), e);
         }
     }
 
@@ -455,7 +462,7 @@ public class NationManager implements Listener {
         return false;
     }
 
-    public Nation getNation(UUID uniqueId) {
+    public Nation getNationByPlayer(UUID uniqueId) {
         for (Nation nation : nations.values()) {
             for (String townName : nation.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
@@ -470,13 +477,17 @@ public class NationManager implements Listener {
         return null;
     }
 
-    public Nation getNation(String townName) {
+    public Nation getNationByTownName(String townName) {
         for (Nation nation : nations.values()) {
             if (nation.getMembers().contains(townName)) {
                 return nation;
             }
         }
         return null;
+    }
+
+    public Nation getNation(String nationName) {
+        return nations.get(nationName);
     }
 
     @EventHandler

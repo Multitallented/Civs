@@ -31,10 +31,16 @@ items:
     index: 5
   back:
     index: 8
+  set-icon:
+    index: 9
+    name: set-nation-icon-name
+    desc: set-nation-icon-desc
+    actions:
+      - command:cv nation-icon $nation$
   set-info:
     index: 9
-    name: set-nation-info-name #TODO
-    desc: set-nation-info-desc #TODO
+    name: set-nation-info-name
+    desc: set-nation-info-desc
     actions: []
   constitution:
     index: 10

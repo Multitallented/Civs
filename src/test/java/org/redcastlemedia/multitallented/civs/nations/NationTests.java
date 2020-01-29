@@ -83,28 +83,28 @@ public class NationTests extends TestUtil {
         TownManager.getInstance().addTown(town);
         TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, (TownType) ItemManager.getInstance().getItemType("village"));
         NationManager.getInstance().onTownCreated(townCreatedEvent);
-        Nation nation = NationManager.getInstance().getNation("town3");
+        Nation nation = NationManager.getInstance().getNationByTownName("town3");
         assertNotNull(nation);
     }
 
     @Test
     public void townJoiningAllianceShouldFormNation() {
         AllianceManager.getInstance().allyTheseTowns(town1, town2);
-        Nation nation = NationManager.getInstance().getNation("town2");
+        Nation nation = NationManager.getInstance().getNationByTownName("town2");
         assertNotNull(nation);
     }
 
     @Test
     public void townInAllianceEvolveShouldCreateNation() {
         AllianceManager.getInstance().allyTheseTowns(town1, town3);
-        Nation nation = NationManager.getInstance().getNation("town3");
+        Nation nation = NationManager.getInstance().getNationByTownName("town3");
         assertNull(nation);
         TownType oldType = (TownType) ItemManager.getInstance().getItemType("settlement");
         TownType newType = (TownType) ItemManager.getInstance().getItemType("hamlet");
         TownEvolveEvent townEvolveEvent = new TownEvolveEvent(town3, oldType, newType);
         town3.setType("hamlet");
         NationManager.getInstance().onTownEvolve(townEvolveEvent);
-        nation = NationManager.getInstance().getNation("town3");
+        nation = NationManager.getInstance().getNationByTownName("town3");
         assertNotNull(nation);
     }
 
@@ -117,7 +117,7 @@ public class NationTests extends TestUtil {
     public void townShouldHave1000ClaimsMax() {
         NationManager.getInstance().createNation(this.town2);
         assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
-                NationManager.getInstance().getNation("test")));
+                NationManager.getInstance().getNationByTownName("test")));
     }
 
     @Test
