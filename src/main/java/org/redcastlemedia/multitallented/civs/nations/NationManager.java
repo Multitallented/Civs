@@ -22,6 +22,8 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
+import org.redcastlemedia.multitallented.civs.events.NationCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.NationDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
@@ -173,6 +175,8 @@ public class NationManager implements Listener {
     }
 
     public void removeNation(Nation nation) {
+        NationDestroyedEvent nationDestroyedEvent = new NationDestroyedEvent(nation);
+        Bukkit.getPluginManager().callEvent(nationDestroyedEvent);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "nation-destroyed").replace("$1", nation.getName()));
@@ -519,6 +523,8 @@ public class NationManager implements Listener {
 
         nations.put(nation.getName(), nation);
         saveNation(nation);
+        NationCreatedEvent nationCreatedEvent = new NationCreatedEvent(nation);
+        Bukkit.getPluginManager().callEvent(nationCreatedEvent);
     }
 
     public Nation getNationAt(Location location) {

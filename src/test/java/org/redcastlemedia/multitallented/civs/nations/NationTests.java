@@ -50,27 +50,11 @@ public class NationTests extends TestUtil {
 
     @Test
     public void nationShouldNotBeCreatedWhenTownReachesLevel3() {
-        town1.setType("settlement");
-        town1.setVillagers(24);
-        RegionsTests.createNewRegion("council_room");
-        RegionsTests.createNewRegion("cobble_quarry");
-        RegionsTests.createNewRegion("purifier");
-        for (int i = 0; i < 8; i++) {
-            RegionsTests.createNewRegion("shack");
-        }
-        ((PlayerInventoryImpl) TestUtil.player.getInventory())
-                .setMainHandItem(TestUtil.createUniqueItemStack(Material.GLOWSTONE, "Civs Hamlet"));
-        HashMap<UUID, String> people = new HashMap<>();
-        people.put(TestUtil.player.getUniqueId(), "owner");
-        Town town = new Town("town3", "hamlet",
-                new Location(TestUtil.world, 0, 0, 0),
-                people, 500, 5000, 25, 24, -1);
-        try {
-            TownManager.getInstance().placeTown(TestUtil.player, "town3", town);
-        } catch (SuccessException se) {
-            // Do nothing
-        }
-        assertTrue(NationManager.getInstance().getAllNations().isEmpty());
+        TownType hamlet = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        TownType village = (TownType) ItemManager.getInstance().getItemType("village");
+        TownEvolveEvent evolveEvent = new TownEvolveEvent(this.town3, hamlet, village);
+        NationManager.getInstance().onTownEvolve(evolveEvent);
+        assertNull(NationManager.getInstance().getNation(this.town3.getName()));
     }
 
     @Test
@@ -117,7 +101,7 @@ public class NationTests extends TestUtil {
     public void townShouldHave1000ClaimsMax() {
         NationManager.getInstance().createNation(this.town2);
         assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
-                NationManager.getInstance().getNationByTownName("test")));
+                NationManager.getInstance().getNationByTownName(this.town2.getName())));
     }
 
     @Test
