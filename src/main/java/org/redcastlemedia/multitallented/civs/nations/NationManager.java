@@ -114,7 +114,7 @@ public class NationManager implements Listener {
 
             nations.put(nation.getName(), nation);
         } catch (Exception e) {
-            Civs.logger.severe("Unable to load alliance " + nationFile.getName());
+            Civs.logger.log(Level.SEVERE, "Unable to load alliance " + nationFile.getName(), e);
         }
     }
 
