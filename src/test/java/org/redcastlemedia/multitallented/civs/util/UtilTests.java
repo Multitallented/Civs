@@ -275,4 +275,9 @@ public class UtilTests extends TestUtil {
         String testString = "something with a really long line that should be returned for being long\nsomething";
         assertEquals(3, Util.textWrap(testString).size());
     }
+
+    @Test
+    public void numberFormatShouldNotBeEmpty() {
+        assertEquals("100", Util.getNumberFormat(100, "zh"));
+    }
 }

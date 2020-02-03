@@ -61,7 +61,7 @@ max_power-buff-desc: Maximale Macht um $1% erhöht.
 cost-buff-desc: Für alle $2 werden $1% der Kosten rückerstattet.
 shop: Shop
 buy-item: Zu verkaufen
-price: Preis
+price: Preis $1
 buy: Kaufe $1
 cancel: Abbrechen
 item-bought: Du hast $1 für $2 gekauft.
