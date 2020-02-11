@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.dynmaphook;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
