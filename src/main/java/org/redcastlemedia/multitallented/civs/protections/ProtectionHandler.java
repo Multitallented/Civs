@@ -14,10 +14,12 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -36,6 +38,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -53,10 +56,12 @@ public class ProtectionHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
     }
 
-//    @EventHandler
-//    public void onChunkUnload(ChunkUnloadEvent event) {
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
 //        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-//    }
+        UnloadedInventoryHandler.getInstance().updateInventoriesInChunk(event.getChunk());
+    }
+
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (ConfigManager.getInstance().isDebugLog()) {
@@ -71,15 +76,14 @@ public class ProtectionHandler implements Listener {
         RegionManager regionManager = RegionManager.getInstance();
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
-                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"));
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
         }
         if (event.isCancelled()) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
         if (!event.isCancelled()) {
             if (event.getBlock().getType() == Material.CHEST) {
@@ -121,16 +125,17 @@ public class ProtectionHandler implements Listener {
                         region.getLocation(),
                         new ItemStack(event.getBlock().getType(), 1));
                 List<List<CVItem>> missingList = new ArrayList<>();
-                for (HashMap<Material, Integer> missingMap : missingBlocks) {
-                    List<CVItem> tempList = new ArrayList<>();
-                    for (Material mat : missingMap.keySet()) {
-                        tempList.add(new CVItem(mat, missingMap.get(mat)));
-                    }
-                    missingList.add(tempList);
-                }
+
                 if (missingBlocks != null && !missingBlocks.isEmpty()) {
+                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                        List<CVItem> tempList = new ArrayList<>();
+                        for (Material mat : missingMap.keySet()) {
+                            tempList.add(new CVItem(mat, missingMap.get(mat)));
+                        }
+                        missingList.add(tempList);
+                    }
                     event.setCancelled(true);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "broke-own-region").replace("$1", region.getType()));
                     HashMap<String, Object> data = new HashMap<>();
                     data.put("items", missingList);
@@ -145,14 +150,13 @@ public class ProtectionHandler implements Listener {
     public static boolean removeRegionIfNotIndestructible(Region region, RegionType regionType, BlockBreakEvent event) {
         if (regionType.getEffects().containsKey("indestructible")) {
             event.setCancelled(true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
             return true;
         } else {
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
-                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains("owner")) {
+                    region.getRawPeople().get(event.getPlayer().getUniqueId()).contains(Constants.OWNER)) {
                 double salvage = regionType.getPrice() / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
@@ -167,7 +171,7 @@ public class ProtectionHandler implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
-                (Civs.perm != null && Civs.perm.has(event.getPlayer(), "civs.admin"))) {
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), "block_build");
@@ -175,9 +179,8 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -191,9 +194,8 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -246,9 +248,8 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -258,9 +259,8 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -297,9 +297,8 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && event.getPlayer() != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -315,7 +314,7 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && player != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -401,9 +400,8 @@ public class ProtectionHandler implements Listener {
                 }
             }
             if (setCancelled && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         }
         if (setCancelled) {
@@ -426,7 +424,7 @@ public class ProtectionHandler implements Listener {
             RegionManager regionManager = RegionManager.getInstance();
             Set<Region> tempArray = new HashSet<>();
             for (Region region : regionManager.getContainingRegions(location, 5)) {
-                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+//                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
 //                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
 //                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
 //                    tempArray.add(region);
@@ -445,9 +443,8 @@ public class ProtectionHandler implements Listener {
         boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_build");
         if (cancel) {
             event.setCancelled(true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -456,9 +453,8 @@ public class ProtectionHandler implements Listener {
         boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_break");
         if (cancel) {
             event.setCancelled(true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -491,9 +487,15 @@ public class ProtectionHandler implements Listener {
                 mat == Material.IRON_TRAPDOOR) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "door_use", null));
             if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+            }
+        } else if (mat == Material.SIGN ||
+                mat == Material.WALL_SIGN) {
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "sign_use", null));
+            if (event.isCancelled() && player != null) {
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
@@ -503,9 +505,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.SHULKER_BOX) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
             if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             } else {
                 RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
                 checkRelative(clickedBlock, BlockFace.NORTH);
@@ -518,9 +519,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.POTATO) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_break", null));
             if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
@@ -532,16 +532,14 @@ public class ProtectionHandler implements Listener {
                 mat == Material.OAK_BUTTON) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "button_use", null));
             if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         } else {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_use", null));
             if (event.isCancelled() && player != null) {
-                Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-protected"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         }
     }
@@ -575,7 +573,7 @@ public class ProtectionHandler implements Listener {
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
-//        if (player != null && Civs.perm != null && Civs.perm.has(player, "civs.admin")) {
+//        if (player != null && Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION)) {
 //            return false;
 //        }
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
@@ -591,14 +589,14 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = region.getPeople().get(player.getUniqueId());
-            if (town != null && role.contains("member")) {
+            if (town != null && role.contains(Constants.MEMBER)) {
                 Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
                 if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                         government.getGovernmentType() == GovernmentType.ANARCHY) {
-                    role = "owner";
+                    role = Constants.OWNER;
                 }
             }
-            if (role == null || (role.contains("member") &&
+            if (role == null || (role.contains(Constants.MEMBER) &&
                     !Util.equivalentLocations(location, region.getLocation()) &&
                     type.equals("block_break"))) {
                 return true;
@@ -619,7 +617,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
 //            String role = town.getPeople().get(player.getUniqueId());
-//            if (role == null || (role.contains("member"))) {
+//            if (role == null || (role.contains(Constants.MEMBER))) {
 //                return false;
 //            }
             return false;
@@ -636,7 +634,7 @@ public class ProtectionHandler implements Listener {
         return shouldBlockAction(location, player, type, pRole);
     }
     static boolean shouldBlockAction(Location location, Player player, String type) {
-        return shouldBlockAction(location, player, type, "member");
+        return shouldBlockAction(location, player, type, Constants.MEMBER);
     }
 
     static boolean shouldBlockAction(Location location, String type) {
@@ -684,7 +682,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             String role = town.getPeople().get(player.getUniqueId());
-            if (role == null || (!role.contains("owner") && pRole != null && !role.contains(pRole))) {
+            if (role == null || (!role.contains(Constants.OWNER) && pRole != null && !role.contains(pRole))) {
                 return true;
             }
         }
@@ -705,7 +703,7 @@ public class ProtectionHandler implements Listener {
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                     government.getGovernmentType() == GovernmentType.ANARCHY) {
-                role = "owner";
+                role = Constants.OWNER;
             } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
@@ -713,17 +711,17 @@ public class ProtectionHandler implements Listener {
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||
                     regionType.getGroups().contains("factory"))) {
-                role = "owner";
+                role = Constants.OWNER;
             }
         }
-        if (role.contains("owner")) {
+        if (role.contains(Constants.OWNER)) {
             return false;
         }
         if (Util.equivalentLocations(location, region.getLocation()) &&
                 type.equals("block_break")) {
             return true;
         }
-        if (pRole == null && (role.contains("ally") || role.contains("member"))) {
+        if (pRole == null && (role.contains("ally") || role.contains(Constants.MEMBER))) {
             return false;
         }
         if (pRole != null && role.contains(pRole)) {

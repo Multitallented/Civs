@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class DailyScheduler implements Runnable {
 
@@ -113,17 +114,17 @@ public class DailyScheduler implements Runnable {
             }
 
             if (town.getRawPeople().containsKey(mostVotes) &&
-                    !town.getRawPeople().get(mostVotes).contains("owner")) {
+                    !town.getRawPeople().get(mostVotes).contains(Constants.OWNER)) {
                 HashSet<UUID> setMembers = new HashSet<>();
                 for (UUID uuid : town.getRawPeople().keySet()) {
-                    if (town.getRawPeople().get(uuid).contains("owner")) {
+                    if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                         setMembers.add(uuid);
                     }
                 }
                 for (UUID uuid : setMembers) {
                     town.setPeople(uuid, "member");
                 }
-                town.setPeople(mostVotes, "owner");
+                town.setPeople(mostVotes, Constants.OWNER);
             }
             town.setVotes(new HashMap<>());
             saveTheseTowns.add(town);

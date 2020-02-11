@@ -38,7 +38,7 @@ effects:
 - block_fire
 - chest_use
 - housing:1
-- villager
+- villager:1
 
 towns:
 - hamlet

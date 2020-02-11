@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
@@ -17,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 import java.util.ArrayList;
@@ -64,6 +66,7 @@ public class CommonScheduler implements Runnable {
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
+                    UnloadedInventoryHandler.getInstance().loadChunks();
                 }
             } else {
                 i++;
@@ -171,7 +174,7 @@ public class CommonScheduler implements Runnable {
         }
 
         if (town != null && town.getRawPeople().containsKey(player.getUniqueId()) &&
-                town.getRawPeople().get(player.getUniqueId()).contains("owner") &&
+                town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
                 town.getLastActive() + 10000 < System.currentTimeMillis()) {
             town.setLastActive(System.currentTimeMillis());
             TownManager.getInstance().saveTown(town);

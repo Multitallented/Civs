@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.people;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -148,7 +150,7 @@ public class PeopleMenu extends CustomMenu {
         });
     }
     private int rankWeight(String rank) {
-        if (rank.contains("owner")) {
+        if (rank.contains(Constants.OWNER)) {
             return 100;
         } else if (rank.contains("member")) {
             return 50;
@@ -172,11 +174,13 @@ public class PeopleMenu extends CustomMenu {
         civilians.sort(new Comparator<Civilian>() {
             @Override
             public int compare(Civilian civilian1, Civilian civilian2) {
+                OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
+                OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
                 try {
-                    OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
-                    OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
                     return offlinePlayer1.getName().compareTo(offlinePlayer2.getName());
-                } catch (NullPointerException npe) {
+                } catch (Exception e) {
+                    Object[] args = { Civs.NAME, offlinePlayer1.getName(), offlinePlayer2.getName()};
+                    Civs.logger.log(Level.WARNING, "{0} Failed to compare name {1} with {2}", args);
                     return 0;
                 }
             }
@@ -254,8 +258,8 @@ public class PeopleMenu extends CustomMenu {
         if (ranks == null || ranks.isEmpty()) {
             return;
         }
-        if (ranks.contains("owner")) {
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "owner"));
+        if (ranks.contains(Constants.OWNER)) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.OWNER));
         }
         if (ranks.contains("member")) {
             cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "member"));

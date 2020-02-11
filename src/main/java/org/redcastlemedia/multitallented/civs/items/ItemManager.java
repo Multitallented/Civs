@@ -487,12 +487,9 @@ public class ItemManager {
         }
         returnList.removeAll(checkList);
         checkList.clear();
-        Player player = Bukkit.getPlayer(civilian.getUuid());
-        boolean isCivAdmin = player != null && (player.isOp() || (Civs.perm != null &&
-                Civs.perm.has(player, "civs.admin")));
         for (CivItem item : returnList) {
             if (!hasItemUnlocked(civilian, item) ||
-                    (isShop && !item.getInShop() && !isCivAdmin)) {
+                    (isShop && !item.getInShop())) {
                 checkList.add(item);
             }
         }
@@ -516,6 +513,9 @@ public class ItemManager {
             return true;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return false;
+        }
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
                 //perm=civs.admin

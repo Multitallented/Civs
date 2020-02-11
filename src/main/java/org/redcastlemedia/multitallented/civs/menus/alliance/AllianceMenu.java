@@ -23,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "alliance") @SuppressWarnings("unused")
@@ -58,7 +59,7 @@ public class AllianceMenu extends CustomMenu {
                 ItemStack is = lastRenameCVItem.createItemStack();
                 SkullMeta isMeta = (SkullMeta) is.getItemMeta();
                 isMeta.setDisplayName(offlinePlayer.getName());
-                isMeta.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
@@ -79,7 +80,7 @@ public class AllianceMenu extends CustomMenu {
             }
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
-                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         menuIcon.getDesc()).replace("$1", alliance.getName())));
             }
             ItemStack itemStack = cvItem.createItemStack();
@@ -94,7 +95,7 @@ public class AllianceMenu extends CustomMenu {
             CVItem cvItem = selectedTownType.getShopIcon(civilian.getLocale()).clone();
             cvItem.setDisplayName(selectedTown.getName());
             if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
-                cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         menuIcon.getDesc())));
             }
             ItemStack itemStack = cvItem.createItemStack();
@@ -128,7 +129,7 @@ public class AllianceMenu extends CustomMenu {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
                 if (town.getPeople().containsKey(civilian.getUuid()) &&
-                        town.getPeople().get(civilian.getUuid()).contains("owner")) {
+                        town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     data.put("selectedTown", town);
                     break;
                 }

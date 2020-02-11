@@ -77,7 +77,7 @@ public class MenuManager implements Listener {
                 gui.advanceItemPositions();
             }
         } catch (Exception e) {
-            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.WARNING, "Cycle items error", e);
         }
     }
 
@@ -215,6 +215,7 @@ public class MenuManager implements Listener {
 
     public void goBack(UUID uuid) {
         popLastMenu(uuid);
+        clearCycleItems(uuid);
         MenuHistoryState menuHistoryState = popLastMenu(uuid);
         Player player = Bukkit.getPlayer(uuid);
         openMenuFromHistory(player, menuHistoryState.getMenuName(), menuHistoryState.getData());

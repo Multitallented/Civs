@@ -13,6 +13,11 @@
 #tutorial-wiki: 城镇文明插件百科
 #click-info: 点击查看详情
 #guide: 向导
+#income: 收入
+#income-desc: 你的$1在过去一天里赚得了$2，在过去一周里赚得了$3
+#rebuild: 重建
+#rebuild-req-desc: 这个建筑只能在以下建筑上面建造
+#rebuild-opt-desc: 这个建筑可以建造在以下建筑上面
 #guide-desc: 点击查看你的下一个目标
 #choose-path: 选择你的生涯路径
 #new-owner-town: $1 继承了 $2 的衣钵成为了 $3 的城主
@@ -93,11 +98,17 @@
 #build-reqs: 建筑 $1 所需的方块
 #reagents-title: 试剂
 #reagents: $1 箱子里的所有你需要的物品
+#upkeep-title: 投入
 #upkeep: 所有 $1 消耗的物品
+#output-title: 产出
 #output: 所有 $1 创建的物品
+#payout-title: 支付
 #payout: 建造这片区域可获得 $$1
+#power-input-title: 耗能
 #power-input: 这片区域消耗$1点能量
+#power-output-title: 产能
 #power-output: 这片区域生成$1点能量
+#power-history: 前$1天的能量历史：
 #too-close-region: 你的 $1 靠 $2 太近了
 #too-close-town: 你的 $1 靠另一个重载太近了
 #town-created: $1 已被创建!
@@ -112,6 +123,10 @@
 #operation: 操作
 #region-working: 你的区域运行正常
 #region-not-working: 你的区域少了点东西
+#filter-online: 过滤在线玩家
+#sort-alphabetical: 根据字母分类
+#sort-points: 根据击杀数分类
+#sort-rank: 根据头衔分类
 #owner: 地主
 #member: 成员
 #guest: 游客
@@ -154,6 +169,7 @@
 #town-power: "能量: $1/$2"
 #port-warmup: 你将在 $1 秒后被传送
 #teleported: 已传送!
+#location: 地点
 #location-set: 已设置 $1 的地点
 #rename-town: 修改城镇名
 #rename-desc: 使用 /cv rename [旧城镇名] [新城镇名]
@@ -173,6 +189,9 @@
 #town-ally-request-accepted: $1 和 $2 已结盟
 #town-ally-request-denied: $1 的结盟申请被拒绝
 #town-ally-removed: $1 和 $2 的联盟破灭了
+#decline-all: 拒绝所有邀请
+#accept-invite: 接受邀请
+#region-evolve: $1已进化为$2
 #region-evolved: 你的 $1 加入到了 $2
 #anti-camp-active: $1的PVP保护已激活
 #anti-camp-expired: $1的PVP保护已失效
@@ -222,7 +241,7 @@
 #mana-use-exp: 魔法值未满前你不能使用这个
 #building-requires-2space: 这个建筑需要在中心箱子上面留两格空间
 #missing-blocks-build: 你需要放置这些方块来建造 $1
-#intruder-enter: "@{RED}[警报] $1已进入$2"
+#intruder-enter: "@{RED}[警告] $1已进入$2"
 #intruder-exit: $1已退出$2
 #in-combat: 你不能在战斗时这么做
 #cooldown: 冷却中：$1
@@ -231,23 +250,25 @@
 #need-more-mana: 你需要更多的 $1 魔法才能这么做
 #port-not-found: 找不到港口
 #region-missing-upkeep-items: 区域不需要物品
-#raid-porter-offline: 当成员不在线时，您无法突袭$1
+#raid-porter-offline: 当成员不在线时，您无法发动强袭$1
 #raid-target-lost: 在$2 格内没有名为 $1 的城镇
-#searching-for-target: 搜寻侵略传送点中...
-#raid-target-blocked: 侵略传送点被封锁.
+#searching-for-target: 搜索强袭传送点中...
+#raid-target-blocked: 强袭传送点被封锁.
 #raid-porter-warning: 警告! $1 创建了一个朝向 $3 的 $2
-#siege-built: "@{RED}[警报] $1建造$2以摧毁$3"
+#siege-built: "@{RED}[警告] $1建造了$2以摧毁$3"
+#jammer-built: "@{RED}[警告] $1已被建造。请在小心传送。"
 #raid-remote: 你获得了控制这个 $1 的物品
 #raid-sign: 你需要在箱子上面放写有目标城镇名的牌子
 #no-blocks-above-chest: 中央箱子上方不能有任何物品。
 #invalid-target: 无效的目标
 #no-tp-out-of-town: 您无法将自己转移出敌人的城镇
-#jammer-redirect: "@{RED}[警报] 您的转帐由$1重定向"
+#jammer-redirect: "@{RED}[警告] 您的转帐由$1重定向"
 #raid-target-inside-region: 你不能在区域内设置地点
 #req-build-inside-town: 这个 $1 只能在 $2 里建
 #missing-region-requirements: 你的 $1 缺少所需的区域
 #friendly-fire: 你不能伤害你的朋友
 #limits: 限制
+#item-limit: 你拥有 $1 / $2 $3
 #region-limit-reached: $1 只能拥有 $2 $3
 #region-in-biome: 你可以在$2 建造 $1
 #not-enough-housing: 你需要建造更多住宅才能邀请玩家加入
@@ -266,6 +287,7 @@
 #killjoy-points: "杀戮奖励: $1"
 #total-points: "共有点数: $1"
 #karma: "业: $1"
+#karma-desc: 业是测量善恶之物。杀死业力越低的玩家，获得的奖励越丰厚。
 #karma-gained: "业: +$1,获得 $2 "
 #karma-lost: "业: -$1,失去 $2 "
 #ann-limit: "[信息] 你拥有$1/ $2座$3建筑."
@@ -280,6 +302,7 @@
 #ann-karma: "@{YELLOW}[提醒] $1在线. 如果你杀死$1, 你就会获得奖励.但请不要恶意PVP哦."
 #ann-missing-input: " [信息] 你的 $1 需要物品。 使用城镇向导书来查看需要什么原料。"
 #ann-bounty: " [信息] $1的悬赏为$2。"
+#and-more: 还有更多...
 #tut-default-0: 首先打开向导书，点击蓝图，拿好你的庇护所，然后放置庇护所。
 #tut-default-1: 接下来请把 4块面包、32个胡萝卜、32个猪排或32个土豆放到庇护所的箱子里.
 #tut-default-2: 庇护所会提供给你食物, 但煤炭商店会给你更多东西. 打开向导, 点击商店, 然后购买煤炭商店.
@@ -580,8 +603,8 @@
 #catapult-desc: 远程发射TNT
 #command_tent-name: 指挥部
 #command_tent-desc: 战争前哨中心。可以让你进攻附近的城镇。每15分钟生成1点能量。
-#hunting_lodge-name: 狩猎屋
-#hunting_lodge-desc: 在黑曜石方块上放置写有你的猎物名称的告示牌，右击黑曜石你就可以靠近猎物。
+#hunting-lodge-name: 狩猎屋
+#hunting-lodge-desc: 在中心方块上放置写有目标名的告示牌,然后右击告示牌来传送到离这名玩家200格远的地方.
 #memorial-name: 纪念馆
 #memorial-desc: 城镇居民重生的地方。可防止玩家受伤。
 #mobile_hospital-name: 流动医院
@@ -656,6 +679,9 @@
 #town_hall-desc: 城镇中心的建筑。每天提供384点能量。同时也是城镇之家。
 #warehouse-name: 仓库
 #warehouse-desc: 分配物品到有需求的区域内.
+#warehouse-toggle-on: 开启仓库供给
+#warehouse-toggle-off: 关闭仓库供给
+#warehouse-toggle-desc: 点击开关这片区域的仓库供给
 #item-jade-name: 绿宝石
 #item-jade-desc: 以1000元的价格在绿宝石商店兑换16绿宝石
 #farms-name: 农场
@@ -695,6 +721,72 @@
 #trade-mines-name: 贸易矿
 #trade-mines-desc: 可生产出售给其他城镇的矿物
 #defense-evolve-name: 进化之屋
-#defense-evolve-desc: 隐藏的建筑
+#defense-evolve-desc: 隐藏的不同建筑的进化版
 #evolve-name: 进化之屋
 #evolve-desc: 隐藏的建筑
+#plot7x7-name: 7x7土地
+#plot7x7-desc: 小于等于7x7大小的区域的占位符
+#plot11x11-name: 11x11土地
+#plot11x11-desc: 小于等于11x11大小的区域的占位符
+#plot15x15-name: 15x15土地
+#plot15x15-desc: 小于等于15x15大小的区域的占位符
+#plot19x19-name: 19x19土地
+#plot19x19-desc: 小于等于19x19大小的区域的占位符
+#housing-group: 住宅
+#defense-group: 防御工事
+#trap-group: 陷阱
+#arrowtrapgroup-group: 弓箭陷阱
+#publichousing-group: 公共住宅
+#idolgroup-group: 偶像
+#factory-group: 工厂
+#farm-group: 农场
+#raw-group: 原料生产
+#woodwork-group: 伐木场
+#allchalet-group: 任何木屋
+#basechalet-group: 非NPC木屋
+#allhousing-group: 任何住宅
+#npchousinggroup-group: NPC住宅
+#alldwelling-group: 任何寓所
+#basedwelling-group: 非NPC寓所
+#allestate-group: 任何房地产
+#baseestate-group: 非NPC房地产
+#allhouse-group: 任何房屋
+#basehouse-group: 非NPC房屋
+#allhovel-group: 任何棚屋
+#basehovel-group: 非NPC棚屋
+#allmanor-group: 任何庄园
+#basemanor-group: 非NPC庄园
+#allmansion-group: 任何宅邸
+#basemansion-group: 非NPC宅邸
+#allshack-group: 任何小屋
+#baseshack-group: 非NPC小屋
+#allvilla-group: 任何别墅
+#basevilla-group: 非NPC别墅
+#trademine-group: 贸易矿
+#trading-group: 贸易
+#mine-group: 矿业
+#offense-group: 侵略
+#basecenter-group: 基地
+#raidport-group: 强袭传送门
+#siegemachinegroup-group: 围攻机
+#townpowerreduce-group: 围攻设备
+#quarry-group: 采集场
+#tradeshop-group: 贸易商店
+#shop-group: 商店
+#oreshop-group: 矿物商店
+#superregion-group: 城镇
+#utility-group: 公共设施
+#town_center-group: 城镇中心
+#chat-channels: 聊天频道
+#chat-change-chat: 更改聊天频道自$1
+#friend-channel: 朋友
+#friend-channel-desc: 只有朋友才能听到你说话
+#global-channel: 全服聊天
+#global-channel-desc: 所有玩家
+#local-channel: 本地
+#local-channel-desc: 只有100格范围内的玩家听得到你说话
+#town-channel-desc: 只有在$1内的玩家听得到你说话
+#alliance-channel-desc: 只有在联盟$1内的玩家听得到你说话
+#chat-channel-set: 你正在频道$1内聊天
+#click-change-chat: 点击更改聊天频道
+#no-recipients: 没有人在$1聊天频道内

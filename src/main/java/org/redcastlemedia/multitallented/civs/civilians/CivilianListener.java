@@ -6,13 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import net.Indyuce.mmoitems.MMOItems;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -36,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -50,8 +46,13 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -63,12 +64,15 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DynmapHook;
-import org.redcastlemedia.multitallented.civs.util.PlaceHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.Indyuce.mmoitems.MMOItems;
 
 @CivsSingleton
 public class CivilianListener implements Listener {
@@ -314,7 +318,6 @@ public class CivilianListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!Util.isStarterBook(event.getItem())) {
             return;
         }
@@ -332,23 +335,24 @@ public class CivilianListener implements Listener {
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
             Set<Region> regionSet = RegionManager.getInstance().getContainingRegions(block.getLocation(), 0);
-            for (Region r : regionSet) {
+            if (!regionSet.isEmpty()) {
+                region = regionSet.iterator().next();
                 MenuManager.clearHistory(player.getUniqueId());
                 HashMap<String, String> params = new HashMap<>();
-                params.put("region", r.getId());
-                MenuManager.getInstance().openMenu(player, "region", params);
-                return;
+                params.put(Constants.REGION, region.getId());
+                MenuManager.getInstance().openMenu(player, Constants.REGION, params);
+            } else {
+                player.performCommand("cv");
             }
-            player.performCommand("cv");
-            return;
+        } else {
+            MenuManager.clearHistory(player.getUniqueId());
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.REGION, region.getId());
+            MenuManager.getInstance().openMenu(player, Constants.REGION, params);
         }
-        if (player.getGameMode() == GameMode.SURVIVAL) {
+        if (region != null) {
             StructureUtil.showGuideBoundingBox(player, region.getLocation(), region);
         }
-        MenuManager.clearHistory(player.getUniqueId());
-        HashMap<String, String> params = new HashMap<>();
-        params.put("region", region.getId());
-        MenuManager.getInstance().openMenu(player, "region", params);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -393,7 +397,6 @@ public class CivilianListener implements Listener {
                 }
                 CivilianManager.getInstance().saveCivilian(civilian);
             }
-//            location.getWorld().dropItemNaturally(location, itemStack);
         }
         return true;
     }
@@ -426,7 +429,7 @@ public class CivilianListener implements Listener {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             lore.add(cvItem.getDisplayName());
-            lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+            lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
         }
         BlockLogger blockLogger = BlockLogger.getInstance();
@@ -446,9 +449,9 @@ public class CivilianListener implements Listener {
             event.setCancelled(true);
             if (!event.getSource().getViewers().isEmpty()) {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
-                Civilian civilian = CivilianManager.getInstance().getCivilian(humanEntity.getUniqueId());
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity,
+                                LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
             }
         }
     }
@@ -497,9 +500,22 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler @SuppressWarnings("unused")
+    public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
+        UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
+    }
+
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onItemMoveEvent(InventoryMoveItemEvent event) {
         RegionManager.getInstance().removeCheckedRegion(event.getDestination().getLocation());
+        if (event.getDestination().getHolder() instanceof Chest) {
+            Location inventoryLocation = ((Chest) event.getDestination().getHolder()).getLocation();
+            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
+        }
+        if (event.getSource().getHolder() instanceof Chest) {
+            Location inventoryLocation = ((Chest) event.getSource().getHolder()).getLocation();
+            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
+        }
 //        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
 //            return;
 //        }
@@ -511,6 +527,10 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDragItem(InventoryDragEvent event) {
+        if (event.getView().getTopInventory().getHolder() instanceof Chest) {
+            Location inventoryLocation = ((Chest) event.getView().getTopInventory().getHolder()).getLocation();
+            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
+        }
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
@@ -527,14 +547,71 @@ public class CivilianListener implements Listener {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        ChatChannel chatChannel = civilian.getChatChannel();
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+            return;
+        }
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (!civilian.getFriends().contains(recipient.getUniqueId()) &&
+                        recipient != player) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.LOCAL) {
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient &&
+                        (!recipient.getWorld().equals(player.getWorld()) ||
+                        10000 < recipient.getLocation().distanceSquared(player.getLocation()))) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.TOWN) {
+            Town town = (Town) chatChannel.getTarget();
+            if (!town.getRawPeople().containsKey(player.getUniqueId())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient && !town.getRawPeople().containsKey(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
+            Alliance alliance = (Alliance) chatChannel.getTarget();
+            if (alliance.isInAlliance(civilian.getUuid())) {
+                civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
+                return;
+            }
+            for (Player recipient : new HashSet<>(event.getRecipients())) {
+                if (player != recipient && !alliance.isInAlliance(recipient.getUniqueId())) {
+                    event.getRecipients().remove(recipient);
+                }
+            }
+        }
+        if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
+                player.equals(event.getRecipients().iterator().next()))) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-recipients").replace("$1", chatChannel.getName(player)));
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCivilianClickItem(InventoryClickEvent event) {
+        if (event.getClickedInventory() != null) {
+            Location inventoryLocation = event.getClickedInventory().getLocation();
+            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
+        }
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
@@ -546,8 +623,10 @@ public class CivilianListener implements Listener {
 
         if (event.getView().getTopInventory().getHolder() instanceof DoubleChest) {
             DoubleChest doubleChest = (DoubleChest) event.getView().getTopInventory().getHolder();
-            RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getLeftSide()).getLocation());
-            RegionManager.getInstance().removeCheckedRegion(((Chest) doubleChest.getRightSide()).getLocation());
+            Location leftLocation = ((Chest) doubleChest.getLeftSide()).getLocation();
+            Location rightLocation = ((Chest) doubleChest.getRightSide()).getLocation();
+            RegionManager.getInstance().removeCheckedRegion(leftLocation);
+            RegionManager.getInstance().removeCheckedRegion(rightLocation);
         } else {
             if (event.getClickedInventory() != null &&
                     event.getClickedInventory().getType() != InventoryType.ENDER_CHEST &&
@@ -572,7 +651,7 @@ public class CivilianListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, "prevent-civs-item-share"));
+                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {
@@ -580,6 +659,6 @@ public class CivilianListener implements Listener {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-        CVItem.translateItem(civilian.getLocale(), itemStack);
+        CVItem.translateItem(civilian, itemStack);
     }
 }

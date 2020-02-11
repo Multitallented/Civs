@@ -18,9 +18,12 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.EvolveEffect;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class RegionTypeMenu extends CustomMenu {
         if (params.containsKey(Constants.REGION_TYPE)) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(params.get(Constants.REGION_TYPE));
             data.put(Constants.REGION_TYPE, regionType);
-            if (!regionType.getRebuild().isEmpty()) {
+            if (regionType.getRebuild() != null && !regionType.getRebuild().isEmpty()) {
                 data.put("rebuildRegion", regionType.getRebuild().get(0));
                 StringBuilder regionList = new StringBuilder();
                 for (String rebuildRegionString : regionType.getRebuild()) {
@@ -47,6 +50,17 @@ public class RegionTypeMenu extends CustomMenu {
             }
             if (regionType.getEffects().containsKey(EvolveEffect.KEY)) {
                 data.put("evolveRegion", regionType.getEffects().get(EvolveEffect.KEY).split("\\.")[0]);
+            }
+
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player != null && !StructureUtil.hasBoundingBoxShown(civilian.getUuid())) {
+                Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+                boolean infiniteBoundingBox = params.containsKey(Constants.INFINITE_BOUNDING_BOX);
+                if (region == null) {
+                    StructureUtil.showGuideBoundingBox(player, player.getLocation(), regionType, infiniteBoundingBox);
+                } else {
+                    StructureUtil.showGuideBoundingBox(player, region.getLocation(), regionType, infiniteBoundingBox);
+                }
             }
         }
         if (params.containsKey(Constants.SHOW_PRICE) && "true".equals(params.get(Constants.SHOW_PRICE))) {
@@ -62,7 +76,7 @@ public class RegionTypeMenu extends CustomMenu {
         LocaleManager localeManager = LocaleManager.getInstance();
         RegionType regionType = (RegionType) MenuManager.getData(civilian.getUuid(), Constants.REGION_TYPE);
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
+        if (player == null || regionType == null) {
             return new ItemStack(Material.AIR);
         }
         String localizedRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -79,14 +93,14 @@ public class RegionTypeMenu extends CustomMenu {
                         ": " + regionType.getEffectRadius());
             }
 
-            lore.addAll(Util.textWrap(regionType.getDescription(civilian.getLocale())));
+            lore.addAll(Util.textWrap(civilian, regionType.getDescription(civilian.getLocale())));
             shopIcon.setLore(lore);
             ItemStack itemStack = shopIcon.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("build-reqs".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", localizedRegionTypeName)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -133,7 +147,7 @@ public class RegionTypeMenu extends CustomMenu {
                 limitType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         limitType + LocaleConstants.GROUP_SUFFIX);
             }
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", "" + amount)
                     .replace("$2", "" + limit).replace("$3", limitType)));
 
@@ -142,7 +156,7 @@ public class RegionTypeMenu extends CustomMenu {
             return itemStack;
         } else if ("price".equals(menuIcon.getKey())) {
             boolean showPrice = (boolean) MenuManager.getData(civilian.getUuid(), Constants.SHOW_PRICE);
-            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, "civs.admin");
+            boolean isCivsAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
             boolean hasShopPerms = Civs.perm != null && Civs.perm.has(player, "civs.shop");
             String maxLimit = civilian.isAtMax(regionType);
             boolean isInShop = regionType.getInShop();
@@ -183,7 +197,7 @@ public class RegionTypeMenu extends CustomMenu {
             if (rebuildType != null) {
                 shopIcon = rebuildType.getShopIcon(civilian.getLocale());
                 shopIcon.getLore().clear();
-                shopIcon.getLore().addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                shopIcon.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         menuIcon.getDesc())));
             } else {
                 String groupName = regionType.getRebuild().get(0).toLowerCase();
@@ -307,7 +321,7 @@ public class RegionTypeMenu extends CustomMenu {
     private ItemStack getPowerOutputItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
         CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
         String powerOutput = "" + regionType.getUpkeeps().get(count).getPowerOutput();
-        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 menuIcon.getDesc()).replace("$1", powerOutput)));
         ItemStack itemStack = cvItem.createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
@@ -317,7 +331,7 @@ public class RegionTypeMenu extends CustomMenu {
     private ItemStack getPayoutItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
         CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
         String payout = Util.getNumberFormat(regionType.getUpkeeps().get(count).getPayout(), civilian.getLocale());
-        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 menuIcon.getDesc()).replace("$1", payout)));
         ItemStack itemStack = cvItem.createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
@@ -327,7 +341,7 @@ public class RegionTypeMenu extends CustomMenu {
     private ItemStack getPowerInputItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
         CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
         String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
-        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 menuIcon.getDesc()).replace("$1", powerInput)));
         ItemStack itemStack = cvItem.createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
@@ -336,7 +350,7 @@ public class RegionTypeMenu extends CustomMenu {
 
     private ItemStack replaceItemStackWithRegionTypeName(Civilian civilian, MenuIcon menuIcon, String localizedRegionTypeName, int count) {
         CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
-        cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                 menuIcon.getDesc()).replace("$1", localizedRegionTypeName)));
         ItemStack itemStack = cvItem.createItemStack();
         putActions(civilian, menuIcon, itemStack, count);

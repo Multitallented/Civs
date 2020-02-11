@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class GovListMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("governments")) {
             List<String> govList = (List<String>) MenuManager.getData(civilian.getUuid(), "govList");
@@ -79,12 +80,12 @@ public class GovListMenu extends CustomMenu {
                 if (govPower.get(govName) == null) {
                     return new ItemStack(Material.AIR);
                 }
-                cvItem = government.getIcon(civilian.getLocale(), false);
+                cvItem = government.getIcon(civilian, false);
                 cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "points")
                         .replace("$1", "" + govPower.get(govName)));
                 isLeaderboard = true;
             } else {
-                cvItem = government.getIcon(civilian.getLocale(), true);
+                cvItem = government.getIcon(civilian, true);
             }
             ItemStack itemStack = cvItem.createItemStack();
             if (isLeaderboard) {
@@ -109,7 +110,7 @@ public class GovListMenu extends CustomMenu {
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if ("select-gov".equals(actionString)) {
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             if (town == null) {
                 return true;
             }

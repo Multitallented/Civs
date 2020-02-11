@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -154,16 +155,18 @@ public class BlueprintsMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = civItem.clone();
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
-            lore.add(cvItem.getDisplayName());
+            lore.add(civItem.getDisplayName());
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
                         .getTranslationWithPlaceholders(player, "town-instructions")
                         .replace("$1", civItem.getProcessedName())));
             } else {
-                lore.addAll(Util.textWrap(Util.parseColors(civItem.getDescription(civilian.getLocale()))));
+                lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }
             cvItem.setLore(lore);
             cvItem.setQty(civilian.getStashItems().get(currentStashItemName));

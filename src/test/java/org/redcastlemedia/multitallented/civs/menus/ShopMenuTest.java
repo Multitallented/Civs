@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class ShopMenuTest extends TestUtil {
 
@@ -101,7 +102,7 @@ public class ShopMenuTest extends TestUtil {
     @Test @SuppressWarnings("unchecked")
     public void shopShouldContainTownLevelItems() {
         Town town = TownTests.loadTown("test", "settlement", new Location(TestUtil.world, 0, 0, 0));
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         Map<String, Object> data = MenuManager.menus.get("shop").createData(civilian, new HashMap<>());
         List<CivItem> shopItems = (List<CivItem>) data.get("shopItems");

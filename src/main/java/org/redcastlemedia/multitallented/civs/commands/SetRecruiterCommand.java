@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "setrecruiter" }) @SuppressWarnings("unused")
 public class SetRecruiterCommand implements CivCommand {
@@ -33,7 +34,7 @@ public class SetRecruiterCommand implements CivCommand {
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+            isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         } else {
             isAdmin = true;
         }
@@ -75,13 +76,13 @@ public class SetRecruiterCommand implements CivCommand {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
                 (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                        town.getRawPeople().get(civilian.getUuid()).contains("owner"));
+                        town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
 
         boolean colonialOverride = town.getColonialTown() != null;
         if (colonialOverride) {
             Town colonialTown = TownManager.getInstance().getTown(town.getColonialTown());
             if (civilian != null && (!colonialTown.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !colonialTown.getRawPeople().get(civilian.getUuid()).contains("owner"))) {
+                    !colonialTown.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER))) {
                 colonialOverride = false;
             }
         }

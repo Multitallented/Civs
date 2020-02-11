@@ -1,19 +1,23 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
@@ -25,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class ItemsTests extends TestUtil {
 
@@ -32,6 +37,11 @@ public class ItemsTests extends TestUtil {
     public void onBefore() {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
+    }
+
+    @After
+    public void after() {
+        TestUtil.world.setChunkLoaded(true);
     }
 
     @Test
@@ -99,7 +109,7 @@ public class ItemsTests extends TestUtil {
         TownTests.loadTownTypeHamlet2();
         Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);
         Town town = TownTests.loadTown("something", "hamlet2", location1);
-        town.getPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian,
                 ItemManager.getInstance().getItemType("shack2")));
@@ -155,7 +165,7 @@ public class ItemsTests extends TestUtil {
         TownTests.loadTownTypeTribe();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
         town.setVillagers(4);
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TownTests.loadTownTypeHamlet2();
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         assertTrue(ItemManager.getInstance().hasItemUnlocked(civilian, ItemManager.getInstance().getItemType("tribe")));
@@ -185,6 +195,43 @@ public class ItemsTests extends TestUtil {
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         Map<String, Integer> newItems = ItemManager.getInstance().getNewItems(civilian);
         assertFalse(newItems.containsKey("shelter"));
+    }
+
+    @Test
+    public void cvInventoryAddItemsShouldAddToCorrectIndexes() {
+        TestUtil.world.setChunkLoaded(false);
+        CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
+        ItemStack[] itemStacks = {
+                new ItemStack(Material.COBBLESTONE, 64),
+                new ItemStack(Material.COBBLESTONE, 32),
+                new ItemStack(Material.GRAVEL, 4)
+        };
+        cvInventory.addItem(itemStacks);
+        assertEquals(Material.GRAVEL, cvInventory.getItem(2).getType());
+        ItemStack[] itemStack2 = { new ItemStack(Material.COBBLESTONE, 4) };
+        cvInventory.addItem(itemStack2);
+        assertNull(cvInventory.getItem(3));
+        assertEquals(36, cvInventory.getItem(1).getAmount());
+        ItemStack[] itemStack3 = { new ItemStack(Material.COBBLESTONE, 64) };
+        cvInventory.addItem(itemStack3);
+        assertEquals(64, cvInventory.getItem(1).getAmount());
+        assertEquals(36, cvInventory.getItem(3).getAmount());
+        cvInventory.removeItem(itemStack2);
+        assertEquals(60, cvInventory.getItem(0).getAmount());
+    }
+
+    @Test
+    public void cvInventoryCheckItemsShouldNotAdd() {
+        TestUtil.world.setChunkLoaded(false);
+        CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
+        ItemStack[] itemStacks = {
+                new ItemStack(Material.COBBLESTONE, 64),
+                new ItemStack(Material.COBBLESTONE, 32),
+                new ItemStack(Material.GRAVEL, 4)
+        };
+        Map<Integer, ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
+        assertNull(cvInventory.getItem(0));
+        assertTrue(returnedItems.isEmpty());
     }
 
     private void loadSpellTypeBackflip() {

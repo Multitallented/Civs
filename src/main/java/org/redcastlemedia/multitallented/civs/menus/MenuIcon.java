@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -73,6 +76,7 @@ public class MenuIcon {
         this.desc = desc;
     }
 
+    @Deprecated
     public CVItem createCVItem(String locale, int count) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
         if (!name.isEmpty()) {
@@ -82,6 +86,22 @@ public class MenuIcon {
         }
         if (!desc.isEmpty()) {
             cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(locale, desc)));
+        }
+        return cvItem;
+    }
+
+    public CVItem createCVItem(Player player, int count) {
+        CVItem cvItem = CVItem.createCVItemFromString(icon);
+        if (!name.isEmpty()) {
+            String countString = count > 0 ? count + "" : "";
+
+            cvItem.setDisplayName(LocaleManager.getInstance()
+                    .getTranslationWithPlaceholders(player, name) + countString);
+        }
+        if (!desc.isEmpty()) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
+                    .getTranslationWithPlaceholders(player, desc)));
         }
         return cvItem;
     }

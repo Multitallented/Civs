@@ -11,13 +11,14 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "advancetut" })
 public class TutorialAdvanceCommand implements CivCommand {
 
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (Civs.perm == null || !Civs.perm.has(commandSender, "civs.admin")) {
+        if (Civs.perm == null || !Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION)) {
             sendMessage(commandSender, "no-permission", "You don't have permission to use /cv advancetut PlayerName");
             return true;
         }

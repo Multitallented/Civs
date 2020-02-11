@@ -23,8 +23,12 @@ import java.util.function.Predicate;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import lombok.Setter;
+
 public class WorldImpl implements World {
     private final String name;
+    @Setter
+    private boolean isChunkLoaded;
     public HashSet<Entity> nearbyEntities = new HashSet<>();
 
     public WorldImpl(String name) {
@@ -94,7 +98,7 @@ public class WorldImpl implements World {
 
     @Override
     public boolean isChunkLoaded(Chunk chunk) {
-        return true;
+        return isChunkLoaded;
     }
 
     @Override
@@ -109,7 +113,7 @@ public class WorldImpl implements World {
 
     @Override
     public boolean isChunkLoaded(int i, int i1) {
-        return false;
+        return isChunkLoaded;
     }
 
     @Override
@@ -174,7 +178,7 @@ public class WorldImpl implements World {
 
     @Override
     public boolean isChunkForceLoaded(int i, int i1) {
-        return false;
+        return true;
     }
 
     @Override

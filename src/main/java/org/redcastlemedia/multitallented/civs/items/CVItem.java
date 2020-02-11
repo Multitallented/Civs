@@ -4,16 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.MMOItem;
-import net.Indyuce.mmoitems.api.item.NBTItem;
+import net.mmogroup.mmolib.api.item.NBTItem;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -161,15 +165,18 @@ public class CVItem {
                 isCustomItem(itemStack.getItemMeta().getLore());
     }
 
-    public static void translateItem(String locale, ItemStack itemStack) {
+    public static void translateItem(Civilian civilian, ItemStack itemStack) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
         String nameString = ChatColor.stripColor(itemDisplayName
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
-        String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+        String displayName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "item-" + nameString + LocaleConstants.NAME_SUFFIX);
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + nameString);
-        lore.addAll(Util.textWrap(
-                LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+        lore.addAll(Util.textWrap(civilian,
+                LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
         itemStack.getItemMeta().setDisplayName(displayName);
         itemStack.getItemMeta().setLore(lore);
     }
@@ -271,6 +278,7 @@ public class CVItem {
             if (!lore.isEmpty()) {
                 itemStack.getItemMeta().setLore(lore);
             }
+            itemStack.setAmount(qty);
             return itemStack;
         }
 

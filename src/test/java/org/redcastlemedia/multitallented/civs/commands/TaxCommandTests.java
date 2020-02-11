@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class TaxCommandTests extends TestUtil {
 
@@ -22,7 +23,7 @@ public class TaxCommandTests extends TestUtil {
     @Test
     public void taxCommandShouldSetTax() {
         Town town = TownTests.loadTown("Summervale", "village", new Location(TestUtil.world, 0, 0, 0));
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TaxCommand taxCommand = new TaxCommand();
         String[] args = {"tax", "Summervale", "50"};
         taxCommand.runCommand(TestUtil.player, null, "cv", args);
@@ -32,7 +33,7 @@ public class TaxCommandTests extends TestUtil {
     @Test
     public void taxCommandShouldNotSetInvalidTax() {
         Town town = TownTests.loadTown("Summervale", "village", new Location(TestUtil.world, 0, 0, 0));
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TaxCommand taxCommand = new TaxCommand();
         String[] args = {"tax", "Summervale", "-20"};
         taxCommand.runCommand(TestUtil.player, null, "cv", args);

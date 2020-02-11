@@ -62,7 +62,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
 
     @Override
     public String getName() {
-        return "";
+        return null;
     }
 
     @Override

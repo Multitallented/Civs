@@ -189,6 +189,7 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
         return null;
     }
 
+
     @Override
     public boolean hasDamage() {
         return false;
@@ -218,4 +219,5 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     public Map<String, Object> serialize() {
         return null;
     }
+
 }

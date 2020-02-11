@@ -58,7 +58,7 @@ max_power-buff-desc: $1% aumento na capacidade máxima de poder
 cost-buff-desc: $1% valor de reembolso de todas $2
 shop: Loja
 buy-item: A venda
-price: Preço
+price: Preço $1
 buy: Comprar $1
 cancel: Cancelar
 item-bought: Parabéns! Você acabou de comprar $1 por $2

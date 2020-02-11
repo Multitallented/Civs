@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 public class CommandTests extends TestUtil {
 
@@ -54,7 +55,7 @@ public class CommandTests extends TestUtil {
                 new HashSet<>(), null, new ArrayList<>());
         TownTests.addGovernmentType(government);
         town.setGovernmentType("DICTATORSHIP");
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TownCommand townCommand = new TownCommand();
         String[] args = new String[3];
         args[0] = "town";
@@ -79,7 +80,7 @@ public class CommandTests extends TestUtil {
                 new HashSet<>(), null, new ArrayList<>());
         TownTests.addGovernmentType(government);
         town.setGovernmentType("DICTATORSHIP");
-        town.getRawPeople().put(TestUtil.player.getUniqueId(), "owner");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         TownCommand townCommand = new TownCommand();
         String[] args = new String[3];
         args[0] = "town";

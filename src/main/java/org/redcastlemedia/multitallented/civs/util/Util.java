@@ -2,12 +2,14 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -54,11 +57,11 @@ public final class Util {
         }
         HashMap<UUID, String> people = new HashMap<>(town.getRawPeople());
         for (UUID uuid : people.keySet()) {
-            if (people.get(uuid).contains("owner")) {
+            if (people.get(uuid).contains(Constants.OWNER)) {
                 town.getRawPeople().put(uuid, "member");
             }
         }
-        town.getRawPeople().put(newOwner, "owner");
+        town.getRawPeople().put(newOwner, Constants.OWNER);
         town.getIdiocracyScore().clear();
         if (save) {
             TownManager.getInstance().saveTown(town);
@@ -78,7 +81,7 @@ public final class Util {
                     highestMember = uuid;
                     highestMemberScore = score;
                 }
-            } else if (role.contains("owner")) {
+            } else if (role.contains(Constants.OWNER)) {
                 int score = Util.calculateMerit(uuid, town);
                 if (score < lowestOwnerScore) {
                     lowestOwnerScore = score;
@@ -88,7 +91,7 @@ public final class Util {
         }
         if (lowestOwner != null && highestMember != null && lowestOwnerScore < highestMemberScore) {
             town.setPeople(lowestOwner, "member");
-            town.setPeople(highestMember, "owner");
+            town.setPeople(highestMember, Constants.OWNER);
             if (save) {
                 TownManager.getInstance().saveTown(town);
             }
@@ -107,7 +110,7 @@ public final class Util {
         int score = town.getIdiocracyScore().getOrDefault(civilian.getUuid(), 0);
         UUID demoteMe = null;
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains("owner")) {
+            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 if (town.getIdiocracyScore().getOrDefault(uuid, 0) < score) {
                     demoteMe = uuid;
                     break;
@@ -116,7 +119,7 @@ public final class Util {
         }
         if (demoteMe != null) {
             town.setPeople(demoteMe, "member");
-            town.setPeople(player.getUniqueId(), "owner");
+            town.setPeople(player.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
             String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
@@ -139,7 +142,7 @@ public final class Util {
         int score = Util.calculateMerit(player.getUniqueId(), town);
         UUID demoteMe = null;
         for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains("owner")) {
+            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 if (Util.calculateMerit(uuid, town) < score) {
                     demoteMe = uuid;
                     break;
@@ -148,7 +151,7 @@ public final class Util {
         }
         if (demoteMe != null) {
             town.setPeople(demoteMe, "member");
-            town.setPeople(player.getUniqueId(), "owner");
+            town.setPeople(player.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(demoteMe);
             String name = offlinePlayer.getName() == null ? "???" : offlinePlayer.getName();
@@ -170,7 +173,7 @@ public final class Util {
             int townPoints = 0;
             for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
                 if (region.getRawPeople().containsKey(civilian.getUuid()) &&
-                        region.getRawPeople().get(civilian.getUuid()).contains("owner")) {
+                        region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                     RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                     townPoints += 4 * regionType.getLevel();
                 }
@@ -195,8 +198,16 @@ public final class Util {
         return xEq && yEq && zEq;
     }
 
-    public static ArrayList<String> textWrap(String input) {
+    public static List<String> textWrap(String input) {
         int lineLength = ConfigManager.getInstance().getLineBreakLength();
+        return textWrap(lineLength, input);
+    }
+
+    public static List<String> textWrap(Civilian civilian, String input) {
+        return textWrap(ConfigManager.getInstance().getLineBreakLength(civilian.getLocale()), input);
+    }
+
+    private static List<String> textWrap(int lineLength, String input) {
         int longestLength = (int) Math.ceil((double) lineLength * 0.625);
         int longestSection = 0;
         for (String subString : input.split(" ")) {
@@ -291,6 +302,9 @@ public final class Util {
         return inputString;
     }
     public static String parseColors(String input) {
+        if (input == null) {
+            return null;
+        }
         String returnInput = new String(input);
         for (ChatColor color : ChatColor.values()) {
             returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
@@ -356,10 +370,9 @@ public final class Util {
         final int RENDER_RANGE_SQUARED = 25600;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().equals(location.getWorld())) {
-                continue;
-            }
-            if (player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
+            if (location.getWorld() != null &&
+                    location.getWorld().equals(player.getWorld()) &&
+                    player.getLocation().distanceSquared(location) < RENDER_RANGE_SQUARED) {
                 return true;
             }
         }
@@ -384,32 +397,34 @@ public final class Util {
                 && getValidFileName(fileName).length()>0;
     }
 
-    public static String getValidFileName(String fileName) throws IllegalStateException {
-        String newFileName = fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
-        if(newFileName.length()==0)
-            throw new IllegalStateException(
-                    "File Name " + fileName + " results in a empty fileName!");
-        return newFileName;
+    public static String getValidFileName(String fileName) {
+        return fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
     }
     public static Locale getNumberFormatLocale(String locale) {
         Locale localeEnum = Locale.forLanguageTag(locale);
         if (localeEnum == null) {
-            Civs.logger.severe("Unable to find locale " + locale);
+            Civs.logger.log(Level.SEVERE, "Unable to find locale {0}", locale);
             return Locale.getDefault();
         }
         return localeEnum;
     }
     public static String getNumberFormat(double number, String locale) {
-        return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        String numberFormat = NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        if (numberFormat.isEmpty()) {
+            return NumberFormat.getCurrencyInstance().format(number);
+        } else {
+            return numberFormat;
+        }
     }
 
     public static int createPageButtons(Inventory inventory, int page, Civilian civilian, int totalSize) {
         LocaleManager localeManager = LocaleManager.getInstance();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
 
         //0 Prev button
         if (page > 0) {
             CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
                     "prev-button"));
             inventory.setItem(0, cvItem.createItemStack());
         }
@@ -418,14 +433,14 @@ public final class Util {
         //8 Next button
         if (startIndex + 36 < totalSize) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
                     "next-button"));
             inventory.setItem(8, cvItem1.createItemStack());
         }
         return startIndex;
     }
 
-    public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean containsItems(List<List<CVItem>> req, CVInventory inv) {
         if (req.isEmpty()) {
             return true;
         }
@@ -473,7 +488,7 @@ public final class Util {
         return bountyList;
     }
 
-    public static boolean removeItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean removeItems(List<List<CVItem>> req, CVInventory inv) {
         if (inv == null) {
             return false;
         }
@@ -540,7 +555,41 @@ public final class Util {
         return true;
     }
 
-    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, Inventory inv) {
+    public static ItemStack[] getItems(List<List<CVItem>> addItems) {
+        List<ItemStack> output = new ArrayList<>();
+        outer: for (List<CVItem> tempItems : addItems) {
+            double rand = Math.random();
+            double prevChance = 0;
+            for (CVItem item : tempItems) {
+                if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
+                    ItemStack is = item.createItemStack();
+                    is.setAmount(1);
+                    int amount = item.getQty();
+                    int max = is.getMaxStackSize();
+                    for (;;) {
+                        ItemStack isa;
+                        if (amount > max) {
+                            isa = item.createItemStack();
+                            isa.setAmount(max);
+                        } else {
+                            isa = item.createItemStack();
+                            isa.setAmount(amount);
+                        }
+                        output.add(isa);
+                        if (amount > max) {
+                            amount -= max;
+                        } else {
+                            continue outer;
+                        }
+                    }
+                }
+                prevChance += item.getChance();
+            }
+        }
+        return output.toArray(new ItemStack[0]);
+    }
+
+    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, CVInventory inv) {
         ArrayList<ItemStack> remainingItems = new ArrayList<>();
 
         outer: for (List<CVItem> tempItems : addItems) {
@@ -556,7 +605,7 @@ public final class Util {
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    for (ItemStack iss : inv) {
+                    for (ItemStack iss : inv.getContents()) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
@@ -599,7 +648,7 @@ public final class Util {
         return remainingItems;
     }
 
-    public static boolean isChestEmpty(Inventory inv) {
+    public static boolean isChestEmpty(CVInventory inv) {
         for (ItemStack item : inv.getContents()) {
             if (item != null) {
                 return false;
@@ -616,7 +665,7 @@ public final class Util {
     public static boolean hasOverride(Region region, Civilian civilian, Town town) {
         boolean override = false;
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, "civs.admin"));
+        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
         if (isAdmin) {
             return true;
         }
@@ -626,7 +675,7 @@ public final class Util {
             override = !regionType.getEffects().containsKey("cant_override") &&
                     townType.getEffects().containsKey("control_override") &&
                     town.getPeople().get(civilian.getUuid()) != null &&
-                    town.getPeople().get(civilian.getUuid()).contains("owner");
+                    town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
         return override;
     }

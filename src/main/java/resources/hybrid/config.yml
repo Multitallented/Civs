@@ -5,6 +5,9 @@ black-list-worlds:
 
 default-language: en
 line-break-length: 40
+line-break-length-per-language:
+  en: 40
+  zh: 25
 
 allow-civ-item-sharing: false
 
@@ -23,8 +26,10 @@ explosion-override: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 
-use-delayed-region-upkeep-in-unloaded-chunks: true
 disable-regions-in-unloaded-chunks: false
+##how often (minutes) should unloaded chunks be loaded to update chests?
+##higher number means less lag, lower number means potential item loss in the event of a crash
+unloaded-chest-refresh-rate: 10
 
 ## the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
@@ -170,6 +175,26 @@ bottom-guide-spacer: "--------------------------------------"
 civs-chat-prefix: "@{GREEN}[Civs]"
 prefix-all-text: ""
 civs-item-prefix: "Civs"
+
+chat-channels:
+  global:
+    enabled: true
+    icon: ENDER_CHEST
+  local:
+    enabled: true
+    icon: GRASS
+  friend:
+    enabled: true
+    icon: PLAYER_HEAD
+  town:
+    enabled: true
+    icon: BRICKS
+  nation:
+    enabled: true
+    icon: BLUE_BANNER
+  alliance:
+    enabled: true
+    icon: GOLDEN_SWORD
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"

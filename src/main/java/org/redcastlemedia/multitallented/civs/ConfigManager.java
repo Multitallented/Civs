@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
@@ -10,9 +11,12 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -135,8 +139,6 @@ public class ConfigManager {
     @Getter
     int minDistanceBetweenTowns;
     @Getter
-    boolean useAsyncUpkeeps;
-    @Getter
     boolean disableRegionsInUnloadedChunks;
     @Getter
     String defaultConfigSet;
@@ -144,6 +146,11 @@ public class ConfigManager {
     int minPopulationForGovTransition;
     @Getter
     int lineBreakLength;
+    Map<String, Integer> lineLengthMap;
+    @Getter
+    EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
+    @Getter
+    long unloadedChestRefreshRate;
 
     public ConfigManager() {
         loadDefaults();
@@ -216,22 +223,15 @@ public class ConfigManager {
     public boolean getFoodHealInCombat() { return allowFoodHealInCombat; }
     public long getTownGracePeriod() { return townGracePeriod; }
     public boolean getUseClassesAndSpells() { return useClassesAndSpells; }
+    public int getLineBreakLength(String locale) {
+        return lineLengthMap.getOrDefault(locale, lineBreakLength);
+    }
 
     public String getCivsChatPrefix() {
         return Util.parseColors(civsChatPrefix);
     }
     public String getCivsItemPrefix() {
         return Util.parseColors(civsItemPrefix + " ");
-    }
-
-    public List<String> getCustomItemDescription(String key) {
-        List<String> returnDescription = customItemDescriptions.get(key.toLowerCase());
-        if (returnDescription == null) {
-            ArrayList<String> returnLore = new ArrayList<>();
-            returnLore.add(key);
-            return returnLore;
-        }
-        return returnDescription;
     }
 
     public int getCreatureHealth(String type) {
@@ -364,11 +364,33 @@ public class ConfigManager {
             enterExitMessagesUseTitles = config.getBoolean("enter-exit-messages-use-titles", true);
             dropMoneyIfZeroBalance = config.getBoolean("always-drop-money-if-no-balance", false);
             minDistanceBetweenTowns = config.getInt("min-distance-between-towns", 10);
-            useAsyncUpkeeps = config.getBoolean("use-delayed-region-upkeep-in-unloaded-chunks", true);
             disableRegionsInUnloadedChunks = config.getBoolean("disable-regions-in-unloaded-chunks", false);
             defaultConfigSet = config.getString("default-config-set", "hybrid");
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
+            unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
+            lineLengthMap = new HashMap<>();
+            if (config.isSet("line-break-length-per-language")) {
+                for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
+                    lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
+                }
+            }
+            chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
+            if (config.isSet("chat-channels")) {
+                for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
+                    try {
+                        if (config.getBoolean("chat-channels." + chatChannel + ".enabled", false)) {
+                            chatChannels.put(ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase()),
+                                    config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name()));
+                        }
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "Invalid chat channel type {0}", chatChannel);
+                    }
+                }
+            }
+            if (chatChannels.isEmpty()) {
+                chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+            }
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -413,11 +435,14 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        lineLengthMap = new HashMap<>();
+        unloadedChestRefreshRate = 600000;
+        chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
+        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
         lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
         disableRegionsInUnloadedChunks = false;
-        useAsyncUpkeeps = true;
         minDistanceBetweenTowns = 10;
         dropMoneyIfZeroBalance = false;
         enterExitMessagesUseTitles = true;

@@ -60,7 +60,7 @@
 #cost-buff-desc: $1% de reembolso de costos para todos los/las $2
 #shop: Tienda
 #buy-item: En venta
-#price: Precio
+#price: Precio $1
 #buy: Comprar $1
 #cancel: Cancelar
 #item-bought: ¡Felicidades! Has comprado $1 por $2
@@ -192,6 +192,8 @@
 #town-ally-request-accepted: Se ha formado una alianza entre $1 y $2
 #town-ally-request-denied: Solicitud de alianza con $1 denegada
 #town-ally-removed: Se ha disuelto la alianza entre $1 y $2
+#decline-all: Rechazas la invitación
+#accept-invite: Aceptas la invitación
 #region-evolve: $1 evoluciona a $2
 #region-evolved: Tu $1 evolucionó a $2
 #anti-camp-active: El anti-camp de $1 ha sido activado
@@ -313,6 +315,7 @@
 #ann-missing-input: "[Info] Tu $1 necesita objetos. Haz click con el libro de Civs en él para ver
 #  qué reactivos / entradas necesita."
 #ann-bounty: "[Info] $1 tiene una recompensa de $2 por su cabeza."
+#and-more: Y más...
 #tut-default-0: Primero, abre tu libro, ve a planos, coge tu refugio, y colocalo.
 #tut-default-1: Luego, reúne 4 panes, 32 zanahorias, 32 chuletas o 32 papas. Ponlos en el
 #  cofre del refugio.
@@ -756,10 +759,10 @@
 #command_tent-name: Tienda de mando
 #command_tent-desc: El centro del puesto de avanzada. Te permite asediar una ciudad cercana. Crea
 #  1 de poder cada 15 minutos.
-#hunting_lodge-name: Pabellón de caza
-#hunting_lodge-desc: Al colocar un cartel sobre el bloque de obsidiana con el nombre de tu víctima,
-#  puedes hacer click derecho en la obsidiana para teletransportarte cerca de tu
-#  objetivo.
+#hunting-lodge-name: Pabellón de Caza
+#hunting-lodge-desc: Coloque un letrero en el bloque central con el nombre de su objetivo. Luego
+#  haga clic derecho sobre él para teletransportarse a 200 bloques de ese
+#  jugador.
 #memorial-name: Memorial
 #memorial-desc: Un lugar para que los miembros de la ciudad reaparezcan. También protege del
 #  daño.
@@ -895,7 +898,7 @@
 #trade-mines-name: Minas Comerciales
 #trade-mines-desc: Minas que producen artículos para vender en otras ciudades.
 #defense-evolve-name: Evolucionar
-#defense-evolve-desc: Formas evolucionadas ocultas de varios edificios.
+#defense-evolve-desc: Formas ocultas evolucionadas de varios edificios
 #evolve-name: Evolucionar
 #evolve-desc: Formas evolucionadas ocultas de varios edificios.
 #plot7x7-name: Parcela7x7
@@ -906,3 +909,61 @@
 #plot15x15-desc: Un marcador de posición para edificios 15x15 y más pequeños
 #plot19x19-name: Parcela19x19
 #plot19x19-desc: Un marcador de posición para edificios 19x19 y más pequeños
+#housing-group: Alojamiento
+#defense-group: Defensas
+#trap-group: Trampas
+#arrowtrapgroup-group: Trampas de Flecha
+#publichousing-group: Vivienda Pública
+#idolgroup-group: Estatuas
+#factory-group: Fabricación
+#farm-group: Granjas
+#raw-group: Producción de materia prima
+#woodwork-group: Almacén de Madera
+#allchalet-group: Ninguna Chalet
+#basechalet-group: No-NPC Chalet
+#allhousing-group: Ninguna Viviendas
+#npchousinggroup-group: NPC Viviendas
+#alldwelling-group: Ninguna Vivienda
+#basedwelling-group: No-NPC Vivienda
+#allestate-group: Ninguna Finca
+#baseestate-group: No-NPC Finca
+#allhouse-group: Ninguna Casa
+#basehouse-group: No-NPC Casa
+#allhovel-group: Ninguna Cabaña
+#basehovel-group: No-NPC Cabaña
+#allmanor-group: Ninguna Señorío
+#basemanor-group: No-NPC Señorío
+#allmansion-group: Ninguna Mansión
+#basemansion-group: No-NPC Mansión
+#allshack-group: Ninguna Choza
+#baseshack-group: No-NPC Choza
+#allvilla-group: Ninguna Pueblo
+#basevilla-group: No-NPC Pueblo
+#trademine-group: Mina Comerciale
+#trading-group: Comercio
+#mine-group: Minas
+#offense-group: Ofensa
+#basecenter-group: Acampar
+#raidport-group: Puertos de invasión
+#siegemachinegroup-group: Máquinas de asedio
+#townpowerreduce-group: Equipo de asedio
+#quarry-group: Canteras
+#tradeshop-group: Tiendas Comerciales
+#shop-group: Tiendas
+#oreshop-group: Tiendas de Mineral
+#superregion-group: Ciudades
+#utility-group: Servicios Públicos
+#town_center-group: Centro de la Ciudad
+#chat-channels: Canals de Charla
+#chat-change-chat: Cambiar el canal de chat de $1
+#friend-channel: Amigos
+#friend-channel-desc: Solo jugadores establecidos como amigos
+#global-channel: Global
+#global-channel-desc: Todos los jugadores
+#local-channel: Local
+#local-channel-desc: Solo jugadores dentro de 100 bloques
+#town-channel-desc: Solo jugadores en $1
+#alliance-channel-desc: Solo jugadores en alianza $1
+#chat-channel-set: Ahora estás chateando en el canal $1
+#click-change-chat: Haga clic para cambiar el canal de chat
+#no-recipients: No hay nadie en línea en el canal de chat $1

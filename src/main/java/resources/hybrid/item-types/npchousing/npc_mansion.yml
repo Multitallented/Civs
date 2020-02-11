@@ -37,7 +37,8 @@ effects:
 - block_liquid
 - block_fire
 - chest_use
-- housing:1
+- housing:2
+- villager:2
 
 towns:
 - village

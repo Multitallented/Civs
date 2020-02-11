@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.placeholderexpansion;
 
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -9,10 +9,12 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
+import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class PlaceHook extends PlaceholderExpansion {
 
@@ -31,6 +33,7 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String MAX_POWER = "max_power";
     private static final String POPULATION = "population";
     private static final String HOUSING = "housing";
+    private static final String CHAT_CHANNEL_NAME = "chatchannel";
 
     @Override
     public boolean canRegister() {
@@ -58,7 +61,7 @@ public class PlaceHook extends PlaceholderExpansion {
             return "";
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return routePlaceholder(civilian, identifier);
+        return routePlaceholder(civilian, identifier, player);
     }
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
@@ -66,10 +69,10 @@ public class PlaceHook extends PlaceholderExpansion {
             return "";
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        return routePlaceholder(civilian, identifier);
+        return routePlaceholder(civilian, identifier, player);
     }
 
-    private String routePlaceholder(Civilian civilian, String identifier) {
+    private String routePlaceholder(Civilian civilian, String identifier, OfflinePlayer player) {
         if (TOWN_NAME.equals(identifier)) {
             return getReplacement(civilian);
         } else if (POWER.equals(identifier)) {
@@ -110,6 +113,11 @@ public class PlaceHook extends PlaceholderExpansion {
             return "" + civilian.getPoints();
         } else if (MANA.equals(identifier)) {
             return "" + civilian.getMana();
+        } else if (CHAT_CHANNEL_NAME.equals(identifier)) {
+            if (ChatChannel.ChatChannelType.GLOBAL == civilian.getChatChannel().getChatChannelType()) {
+                return "";
+            }
+            return civilian.getChatChannel().getName(player);
         } else if (HIGHEST_BOUNTY.equals(identifier)) {
             Bounty bounty = civilian.getHighestBounty();
             if (bounty == null) {

@@ -412,7 +412,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         }
 
         Block block = r.getLocation().getBlock().getRelative(BlockFace.UP);
-        if (block.getType() != Material.WALL_SIGN) {
+        if (!(block.getState() instanceof Sign)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "raid-sign"));
             event.setCancelled(true);
