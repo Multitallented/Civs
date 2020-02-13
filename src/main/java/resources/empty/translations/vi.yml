@@ -58,7 +58,7 @@ max_power-buff-desc: Tăng $1% năng lượng tối đa
 cost-buff-desc: Hoàn trả $1% chi phí cho tất cả  $2
 shop: Cửa hàng
 buy-item: Mua
-price: Giá
+price: Giá $1
 buy: Mua $1
 cancel: Huỷ bỏ
 item-bought: Bạn mua thành công $1 với gia $2

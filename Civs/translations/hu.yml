@@ -57,7 +57,7 @@
 #cost-buff-desc: $1% pénzvisszatérítés minden $2-ra/re
 #shop: Bolt
 #buy-item: Eladó
-#price: Ár
+#price: $1 Ár
 #buy: $1 megvásárlása
 #cancel: Mégsem
 #item-bought: Gratulálok! Megvásároltad $1-t $2-ért
@@ -663,8 +663,8 @@
 #inn-name: Fogadó
 #inn-desc: 12 lakhatást biztosít és egy teleportot. Hasznos arra, hogy úgy adj lakosságot
 #  a városhoz, hogy ne kelljen külön házakat építeni.
-#jade_mine-name: Jade bánya
-#jade_mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
+#jade-mine-name: Jade bánya
+#jade-mine-desc: Jade-t készít, amelyet eladhatsz a Jade boltban. Nem építhető olyan városban,
 #  ahol van Jade bolt.
 #coal_mine-name: Szén bánya
 #coal_mine-desc: Szenet termel csákányok használatával. Helyezz egy minecart-ot a ládába, építs

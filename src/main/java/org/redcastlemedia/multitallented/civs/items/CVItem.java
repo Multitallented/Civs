@@ -278,6 +278,7 @@ public class CVItem {
             if (!lore.isEmpty()) {
                 itemStack.getItemMeta().setLore(lore);
             }
+            itemStack.setAmount(qty);
             return itemStack;
         }
 
