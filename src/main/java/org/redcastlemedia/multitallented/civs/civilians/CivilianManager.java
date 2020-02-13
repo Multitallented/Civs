@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,11 +43,6 @@ public class CivilianManager {
 
     public Collection<Civilian> getCivilians() {
         return civilians.values();
-    }
-
-    public ArrayList<Civilian> getSortedCivilians() {
-        sortCivilians();
-        return sortedCivilians;
     }
 
     private void loadAllCivilians() {
@@ -123,13 +119,13 @@ public class CivilianManager {
             return civilian;
         }
         File civilianFolder = new File(Civs.dataLocation, "players");
-        if (!civilianFolder.exists()) {
+        if (!civilianFolder.exists() && Bukkit.getPlayer(uuid) != null) {
             Civilian civilian = createDefaultCivilian(uuid);
             saveCivilian(civilian);
             return civilian;
         }
         File civilianFile = new File(civilianFolder, uuid + ".yml");
-        if (!civilianFile.exists()) {
+        if (!civilianFile.exists() && Bukkit.getPlayer(uuid) != null) {
             Civilian civilian = createDefaultCivilian(uuid);
             saveCivilian(civilian);
             return civilian;
@@ -199,9 +195,12 @@ public class CivilianManager {
 
             return civilian;
         } catch (Exception ex) {
-            Civs.logger.severe("Unable to read " + uuid + ".yml");
-            ex.printStackTrace();
-            return createDefaultCivilian(uuid);
+            Civs.logger.log(Level.SEVERE, "Unable to read " + uuid + ".yml", ex);
+            if (Bukkit.getPlayer(uuid) != null) {
+                return createDefaultCivilian(uuid);
+            } else {
+                return null;
+            }
         }
     }
     Civilian createDefaultCivilian(UUID uuid) {
