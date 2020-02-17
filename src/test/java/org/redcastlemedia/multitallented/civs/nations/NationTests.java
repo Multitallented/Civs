@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
@@ -74,6 +75,9 @@ public class NationTests extends TestUtil {
     @Test
     public void townJoiningAllianceShouldFormNation() {
         AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(
+                AllianceManager.getInstance().getAllAlliances().get(0), town2, true);
+        NationManager.getInstance().onAllianceFormed(allianceFormedEvent);
         Nation nation = NationManager.getInstance().getNationByTownName("town2");
         assertNotNull(nation);
     }

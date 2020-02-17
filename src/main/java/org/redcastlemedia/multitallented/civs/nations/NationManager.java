@@ -20,8 +20,11 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
+import org.redcastlemedia.multitallented.civs.events.AllianceDissolvedEvent;
+import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
@@ -514,7 +517,43 @@ public class NationManager implements Listener {
 
     }
 
+    @EventHandler
+    public void onAllianceFormed(AllianceFormedEvent event) {
+        checkAllianceForNationCreation(event.getAlliance());
+    }
+
+    @EventHandler
+    public void onAllianceDissolved(AllianceDissolvedEvent event) {
+
+    }
+
+    private void checkAllianceForNationCreation(Alliance alliance) {
+        int totalTownLevel = 0;
+        boolean noMembersAreInNation = true;
+        for (String townName : alliance.getMembers()) {
+            Nation nation = NationManager.getInstance().getNationByTownName(townName);
+            if (nation != null) {
+                noMembersAreInNation = false;
+                break;
+            }
+            Town town = TownManager.getInstance().getTown(townName);
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            totalTownLevel += townType.getLevel();
+        }
+        if (noMembersAreInNation && totalTownLevel >= ConfigManager.getInstance().getNationFormedAtTownLevel()) {
+            Town capitol = TownManager.getInstance().getTown(alliance.getMembers().iterator().next());
+            createNation(capitol);
+            Nation nation = NationManager.getInstance().getNationByTownName(capitol.getName());
+            for (String townName : alliance.getMembers()) {
+                if (!townName.equals(capitol.getName())) {
+                    nation.getMembers().add(townName);
+                }
+            }
+        }
+    }
+
     public void createNation(Town newTown) {
+        // TODO broadcast message
         Nation nation = new Nation();
         nation.setName(newTown.getName());
         nation.setCapitol(newTown.getName());
