@@ -9,7 +9,7 @@ back-button: 返回
 start-tutorial: 开启成就
 start-tutorial-desc: 完成成就获得金钱和物品
 skip: 关闭成就
-tutorial-click: 请查看 Civs 向导
+tutorial-click: 请查看城镇文明向导
 tutorial-wiki: 城镇文明插件百科
 click-info: 点击查看详情
 guide: 向导
@@ -50,8 +50,8 @@ merit-new-owner: 恭喜你！你胜过了$1。你现在是新的城主了！
 item-locked: 你暂未解锁这件物品。
 ai-invite: 你好, @$1 想要加入我的城镇吗?
 ai-help: $1可以带你到那个地方。
-cooldown-buff-desc: 所有 $2 的冷却减少$1%
-payout-buff-desc: 所有 $2的区域支出增加$1%
+cooldown-buff-desc: 所有$2 的冷却减少$1%
+payout-buff-desc: 所有$2的区域支出增加$1%
 power-buff-desc: "每日能量增加 $1% "
 max_power-buff-desc: 最大能量增加$1%
 cost-buff-desc: 所有$2的偿还消耗减少$1%
@@ -99,10 +99,10 @@ build-reqs: 建筑 $1 所需的方块
 reagents-title: 试剂
 reagents: $1 箱子里的所有你需要的物品
 upkeep-title: 投入
-upkeep: 所有 $1 消耗的物品
+upkeep: 所有$1消耗的物品
 output-title: 产出
-output: 所有 $1 创建的物品
-payout-title: 支付
+output: 所有$1创建的物品
+payout-title: 获得
 payout: 建造这片区域可获得 $$1
 power-input-title: 耗能
 power-input: 这片区域消耗$1点能量
@@ -279,7 +279,7 @@ hold-repair-item: 你必须手持你想要修复的物品
 player-not-found: 找不到 $1 这名玩家
 repeat-kill: $1 死太多次了. 你没有获得点数.
 kill-streak: $1 完成了连杀： $2
-kill-joy: $1 终极了 $2 的大杀特杀： $3
+kill-joy: $1 终结了 $2 的大杀特杀： $3
 death: 你死亡失去了 $1 点数
 kill: "击杀: $1"
 low-health: "残血奖励: $1"
@@ -672,7 +672,7 @@ embassy-desc: 每天提供192点能量。可作为城镇之家。
 library-name: 图书馆
 library-desc: 每天产出192点能量。每15分支产出2经验瓶。
 purifier-name: 净化器
-purifier-desc: 每15分钟将腐肉变为皮革并删除土豆的毒性。
+purifier-desc: 每15分钟将腐肉净化为皮革并去除土豆的毒性。
 smithy-name: 铁匠铺
 smithy-desc: 右击铁块来修复物品。每天消耗192点能量。
 town_hall-name: 城镇大厅

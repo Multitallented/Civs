@@ -790,7 +790,7 @@ hamlet-name: Деревня
 hamlet-desc: Второй уровень города. Требуется 5 населения.
 keep-name: Крепость
 keep-desc: Второй уровень осадной базы.
-metropolis-name: " Метрополия"
+metropolis-name: Метрополия
 metropolis-desc: Шестой уровень города. Требуется 50 населения.
 mining_colony-name: Шахтерская колония
 mining_colony-desc: Предотвращает появление монстров и дает эффект спешки.
@@ -935,7 +935,7 @@ oreshop-group: Магазины руды
 superregion-group: Города
 utility-group: Служебные здания
 town_center-group: Городской центр
-chat-channels: Канала чата
+chat-channels: Каналы чата
 chat-change-chat: Изменить канал чата с $1
 friend-channel: Друзья
 friend-channel-desc: Только друзьям

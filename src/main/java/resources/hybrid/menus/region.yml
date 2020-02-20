@@ -87,7 +87,7 @@ items:
     name: buy-region
     actions:
       - buy-region
-      - close
+      - refresh
   warehouse-enabled:
     index: 14
     icon: GREEN_WOOL

@@ -30,7 +30,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsMenu(name = "region")
+@CivsMenu(name = "region") @SuppressWarnings("unused")
 public class RegionMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -227,6 +227,26 @@ public class RegionMenu extends CustomMenu {
         } else if (actionString.equals("toggle-warehouse")) {
             Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
             region.setWarehouseEnabled(!region.isWarehouseEnabled());
+            RegionManager.getInstance().saveRegion(region);
+            return true;
+        } else if (actionString.equals("buy-region")) {
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+            if (Civs.econ == null || !Civs.econ.has(player, region.getForSale())) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "not-enough-money").replace("$1", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
+                return true;
+            }
+            region.getRawPeople().clear();
+            region.getRawPeople().put(civilian.getUuid(), Constants.OWNER);
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            Civs.econ.withdrawPlayer(player, region.getForSale());
+            String localName = LocaleManager.getInstance().getTranslationWithPlaceholders(player, regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            // TODO send message to region owner
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "region-bought").replace("$1", localName)
+                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
+            region.setForSale(-1);
             RegionManager.getInstance().saveRegion(region);
             return true;
         }
