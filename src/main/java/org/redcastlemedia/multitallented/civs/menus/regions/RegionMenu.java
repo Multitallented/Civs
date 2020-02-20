@@ -142,10 +142,11 @@ public class RegionMenu extends CustomMenu {
                     region.getType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    menuIcon.getName()));
+                    menuIcon.getName()).replace("$1", localizedRegionName)
+                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    menuIcon.getDesc()).replace("$1", localizedRegionName)
-                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()))));
+                    menuIcon.getDesc())));
+
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
