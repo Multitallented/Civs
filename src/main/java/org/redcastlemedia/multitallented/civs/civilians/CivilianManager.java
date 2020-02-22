@@ -119,15 +119,20 @@ public class CivilianManager {
             return civilian;
         }
         File civilianFolder = new File(Civs.dataLocation, "players");
-        if (!civilianFolder.exists() && Bukkit.getPlayer(uuid) != null) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (!civilianFolder.exists()) {
             Civilian civilian = createDefaultCivilian(uuid);
-            saveCivilian(civilian);
+            if (player != null) {
+                saveCivilian(civilian);
+            }
             return civilian;
         }
         File civilianFile = new File(civilianFolder, uuid + ".yml");
-        if (!civilianFile.exists() && Bukkit.getPlayer(uuid) != null) {
+        if (!civilianFile.exists()) {
             Civilian civilian = createDefaultCivilian(uuid);
-            saveCivilian(civilian);
+            if (player != null) {
+                saveCivilian(civilian);
+            }
             return civilian;
         }
         FileConfiguration civConfig = new YamlConfiguration();
@@ -154,7 +159,6 @@ public class CivilianManager {
             }
             int expOrbs = -1;
             if (Civs.getInstance() != null) {
-                Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     expOrbs = player.getTotalExperience();
                 }
@@ -196,11 +200,10 @@ public class CivilianManager {
             return civilian;
         } catch (Exception ex) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + uuid + ".yml", ex);
-            if (Bukkit.getPlayer(uuid) != null) {
-                return createDefaultCivilian(uuid);
-            } else {
-                return null;
+            if (civilianFile.exists()) {
+                civilianFile.delete();
             }
+            return createDefaultCivilian(uuid);
         }
     }
     Civilian createDefaultCivilian(UUID uuid) {
