@@ -2,14 +2,18 @@ package org.redcastlemedia.multitallented.civs.menus.regions;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -231,26 +235,49 @@ public class RegionMenu extends CustomMenu {
             RegionManager.getInstance().saveRegion(region);
             return true;
         } else if (actionString.equals("buy-region")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            if (Civs.econ == null || !Civs.econ.has(player, region.getForSale())) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "not-enough-money").replace("$1", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
-                return true;
-            }
-            region.getRawPeople().clear();
-            region.getRawPeople().put(civilian.getUuid(), Constants.OWNER);
-            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            Civs.econ.withdrawPlayer(player, region.getForSale());
-            String localName = LocaleManager.getInstance().getTranslationWithPlaceholders(player, regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
-            // TODO send message to region owner
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "region-bought").replace("$1", localName)
-                    .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
-            region.setForSale(-1);
-            RegionManager.getInstance().saveRegion(region);
+            sellRegion(civilian, region);
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
+    }
+
+    private void sellRegion(Civilian civilian, Region region) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (Civs.econ == null || !Civs.econ.has(player, region.getForSale())) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "not-enough-money").replace("$1", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
+            return;
+        }
+        region.getRawPeople().clear();
+        region.getRawPeople().put(civilian.getUuid(), Constants.OWNER);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        Civs.econ.withdrawPlayer(player, region.getForSale());
+        String localName = LocaleManager.getInstance().getTranslationWithPlaceholders(player, regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+
+        Set<UUID> owners = region.getOwners();
+        int split = owners.size();
+        if (split > 0 && Civs.econ != null) {
+            double cutOfTheSale = region.getForSale() / (double) split;
+            for (UUID ownerUuid : owners) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(ownerUuid);
+                if (offlinePlayer.hasPlayedBefore()) {
+                    Civs.econ.depositPlayer(offlinePlayer, cutOfTheSale);
+
+                    if (offlinePlayer.isOnline()) {
+                        Civilian ownerCiv = CivilianManager.getInstance().getCivilian(offlinePlayer.getUniqueId());
+                        ((Player) offlinePlayer).sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                                offlinePlayer, "region-sold").replace("$1", localName)
+                                .replace("$2", player.getDisplayName()).replace("$3", Util.getNumberFormat(cutOfTheSale, ownerCiv.getLocale())));
+                    }
+                }
+            }
+        }
+
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "region-bought").replace("$1", localName)
+                .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale())));
+        region.setForSale(-1);
+        RegionManager.getInstance().saveRegion(region);
     }
 }
