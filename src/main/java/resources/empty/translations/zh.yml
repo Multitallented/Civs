@@ -203,6 +203,7 @@ buy-region: 用$2 购买 $1
 regions-for-sale: 出售区域
 use-sell-command: 输入 /cv sell 价格
 region-bought: 你成功地用$2购买了$1
+region-sold: 你的$1卖给你$2你赚取了$3
 sort-by-level: 根据等级分类区域
 level: $1级
 rename-alliance: 重命名联盟
