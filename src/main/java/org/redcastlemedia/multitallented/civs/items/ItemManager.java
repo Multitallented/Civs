@@ -392,6 +392,12 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        if (config.isSet("commands-on-creation")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-creation"));
+        }
+        if (config.isSet("commands-on-destruction")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-destruction"));
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
