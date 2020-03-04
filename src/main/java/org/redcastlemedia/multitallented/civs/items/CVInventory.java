@@ -35,7 +35,6 @@ public class CVInventory {
         this.location = location;
         setInventory();
         if (this.valid) {
-            this.size = this.inventory.getSize();
             update();
         } else {
             this.size = 27;
@@ -51,6 +50,7 @@ public class CVInventory {
         try {
             Chest chest = (Chest) block.getState();
             this.inventory = chest.getInventory();
+            this.size = this.inventory.getSize();
         } catch (Exception e) {
             this.valid = false;
         }
@@ -75,6 +75,7 @@ public class CVInventory {
         if (!this.valid) {
             return;
         }
+        this.size = this.inventory.getSize();
         this.lastUnloadedModification = -1;
         for (int i = 0; i < getSize(); i++) {
             if (this.contents.containsKey(i)) {
@@ -146,7 +147,13 @@ public class CVInventory {
             }
             return this.inventory.getContents();
         } else {
-            ItemStack[] itemStacks = new ItemStack[getSize()];
+            int biggestIndex = 0;
+            for (Integer i : this.contents.keySet()) {
+                if (i > biggestIndex) {
+                    biggestIndex = i;
+                }
+            }
+            ItemStack[] itemStacks = new ItemStack[Math.max(getSize(), biggestIndex)];
             for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
                 itemStacks[entry.getKey()] = entry.getValue();
             }
