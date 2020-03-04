@@ -6,6 +6,8 @@ import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerSet;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
@@ -15,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
+//https://github.com/webbukkit/dynmap/wiki/Using-markers
 public class DynmapHook implements Listener {
     public static DynmapCommonAPI dynmapCommonAPI = null;
     private static MarkerSet markerSet = null;
@@ -101,4 +104,12 @@ public class DynmapHook implements Listener {
         createMarker(event.getTown(), townType);
     }
 
+    @EventHandler
+    public void onRegionCreated(RegionCreatedEvent event) {
+
+    }
+    @EventHandler
+    public void onRegionDestroyed(RegionDestroyedEvent event) {
+
+    }
 }
