@@ -229,7 +229,8 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEndermanPickup(EntityChangeBlockEvent event) {
-        if (event.getEntityType() != EntityType.ENDERMAN) {
+        if (event.getEntityType() != EntityType.ENDERMAN && event.getEntityType() != EntityType.WITHER_SKULL &&
+                event.getEntityType() != EntityType.WITHER) {
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), "block_break");
