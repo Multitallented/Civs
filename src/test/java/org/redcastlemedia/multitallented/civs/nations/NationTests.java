@@ -125,7 +125,19 @@ public class NationTests extends TestUtil {
 
     @Test
     public void lastTownLeaveNationShouldDestroyNation() {
+        NationManager.getInstance().createNation(town1);
+        Nation nation = NationManager.getInstance().getNation(town1.getName());
+        NationManager.getInstance().removeMemberFromNation(nation, town1);
+        assertNull(NationManager.getInstance().getNation(town1.getName()));
+    }
 
+    @Test
+    public void townShouldLeaveNation() {
+        NationManager.getInstance().createNation(town1);
+        Nation nation = NationManager.getInstance().getNation(town1.getName());
+        nation.getMembers().add(town2.getName());
+        NationManager.getInstance().removeMemberFromNation(nation, town2);
+        assertFalse(nation.getMembers().contains(town2.getName()));
     }
 
 //    @Test
@@ -183,11 +195,14 @@ public class NationTests extends TestUtil {
 
     @Test
     public void nationCapitolLeavingNationShouldSetNextBiggestTownAsCapitol() {
-
-    }
-
-    @Test
-    public void nationCapitolLeavingNationShouldDestroyNationIfNoOtherTowns() {
-
+        town1.setVillagers(10);
+        town2.setVillagers(8);
+        town3.setVillagers(9);
+        NationManager.getInstance().createNation(town1);
+        Nation nation = NationManager.getInstance().getNation(town1.getName());
+        nation.getMembers().add(town2.getName());
+        nation.getMembers().add(town3.getName());
+        NationManager.getInstance().removeMemberFromNation(nation, town1);
+        assertEquals(nation.getCapitol(), town3.getName());
     }
 }

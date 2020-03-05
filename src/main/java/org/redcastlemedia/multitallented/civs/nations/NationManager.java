@@ -588,4 +588,29 @@ public class NationManager implements Listener {
         ChunkClaim chunkClaim = ChunkClaim.fromLocation(location);
         return chunkClaim.getNation();
     }
+
+    public void removeMemberFromNation(Nation nation, Town town) {
+        if (!nation.getMembers().contains(town.getName())) {
+            return;
+        }
+        if (nation.getMembers().size() < 2) {
+            NationManager.getInstance().removeNation(nation);
+        }
+        nation.getMembers().remove(town.getName());
+        if (town.getName().equals(nation.getCapitol())) {
+            int highestPopulation = 0;
+            Town highestPopTown = null;
+            for (String townName : nation.getMembers()) {
+                Town currentTown = TownManager.getInstance().getTown(townName);
+                if (currentTown != null && currentTown.getPopulation() > highestPopulation) {
+                    highestPopTown = currentTown;
+                    highestPopulation = currentTown.getPopulation();
+                }
+            }
+            if (highestPopTown != null) {
+                nation.setCapitol(highestPopTown.getName());
+            }
+        }
+
+    }
 }
