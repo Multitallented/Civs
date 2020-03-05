@@ -98,7 +98,13 @@ public class NationTests extends TestUtil {
 
     @Test
     public void townInNationInAllianceEvolveShouldNotCreateNation() {
-
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceFormedEvent allianceFormedEvent = new AllianceFormedEvent(
+                AllianceManager.getInstance().getAllAlliances().get(0), town2, true);
+        NationManager.getInstance().createNation(town2);
+        NationManager.getInstance().onAllianceFormed(allianceFormedEvent);
+        Nation nation = NationManager.getInstance().getNationByTownName("town1");
+        assertNull(nation);
     }
 
     @Test

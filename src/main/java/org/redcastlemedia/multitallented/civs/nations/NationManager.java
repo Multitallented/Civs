@@ -21,8 +21,11 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.AllianceDissolvedEvent;
 import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationCreatedEvent;
@@ -499,22 +502,31 @@ public class NationManager implements Listener {
 
     @EventHandler
     public void onTownCreated(TownCreatedEvent event) {
-        TownType townType = event.getTownType();
-        Town newTown = event.getTown();
+        checkTownForNationCreated(event.getTown());
+    }
+
+    private boolean checkTownForNationCreated(Town newTown) {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(newTown.getType());
         int nationFormedAtTownLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
         int townLevel = townType.getLevel();
         if (nationFormedAtTownLevel <= townLevel) {
             NationManager.getInstance().createNation(newTown);
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "nation-created").replace("$1", newTown.getName()));
-            }
+            return true;
+        } else {
+            return false;
         }
     }
 
     @EventHandler
     public void onTownEvolve(TownEvolveEvent event) {
-
+        if (checkTownForNationCreated(event.getTown())) {
+            return;
+        }
+        for (Alliance alliance : AllianceManager.getInstance().getAlliances(event.getTown())) {
+            if (checkAllianceForNationCreation(alliance)) {
+                break;
+            }
+        }
     }
 
     @EventHandler
@@ -527,7 +539,7 @@ public class NationManager implements Listener {
 
     }
 
-    private void checkAllianceForNationCreation(Alliance alliance) {
+    private boolean checkAllianceForNationCreation(Alliance alliance) {
         int totalTownLevel = 0;
         boolean noMembersAreInNation = true;
         for (String townName : alliance.getMembers()) {
@@ -549,11 +561,12 @@ public class NationManager implements Listener {
                     nation.getMembers().add(townName);
                 }
             }
+            return true;
         }
+        return false;
     }
 
     public void createNation(Town newTown) {
-        // TODO broadcast message
         Nation nation = new Nation();
         nation.setName(newTown.getName());
         nation.setCapitol(newTown.getName());
@@ -562,6 +575,11 @@ public class NationManager implements Listener {
 
         nations.put(nation.getName(), nation);
         saveNation(nation);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "nation-created").replace("$1", nation.getName()));
+        }
         NationCreatedEvent nationCreatedEvent = new NationCreatedEvent(nation);
         Bukkit.getPluginManager().callEvent(nationCreatedEvent);
     }
