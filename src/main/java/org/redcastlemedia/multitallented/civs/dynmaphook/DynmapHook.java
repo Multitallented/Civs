@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs.dynmaphook;
 
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
@@ -14,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
@@ -24,7 +27,7 @@ public class DynmapHook implements Listener {
 
     public static boolean isMarkerAPIReady() {
         if (dynmapCommonAPI == null) {
-            return true;
+            return false;
         }
         return dynmapCommonAPI.markerAPIInitialized();
     }
@@ -36,7 +39,7 @@ public class DynmapHook implements Listener {
         }
     }
 
-    public static void createMarker(Town town, TownType townType) {
+    private static void createAreaMarker(Town town, TownType townType) {
         if (!isMarkerAPIReady()) {
             return;
         }
@@ -51,13 +54,23 @@ public class DynmapHook implements Listener {
         double z2 = centerZ - radius;
         double[] x = { x1, x2 };
         double[] z = { z1, z2 };
-        AreaMarker areaMarker = markerSet.createAreaMarker(markerId, "Dungeon1", false,
-                town.getLocation().getWorld().getName(), x, z, false);
+        AreaMarker areaMarker = markerSet.createAreaMarker(markerId, town.getName(), false,
+                town.getLocation().getWorld().getName(), x, z, true);
 
-        String defaultLocale = ConfigManager.getInstance().getDefaultLanguage();
-        areaMarker.setDescription(townType.getDescription(defaultLocale));
+        areaMarker.setDescription(town.getName());
     }
-    public static void deleteMarker(String townName) {
+
+    private static void createMarker(Location location, String label, String iconName) {
+        if (!isMarkerAPIReady()) {
+            return;
+        }
+        initMarkerSet();
+        MarkerIcon markerIcon = dynmapCommonAPI.getMarkerAPI().getMarkerIcon(iconName);
+        markerSet.createMarker(Region.locationToString(location), label, false,
+                location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), markerIcon, true);
+    }
+
+    private static void deleteMarker(String townName) {
         if (!isMarkerAPIReady()) {
             return;
         }
@@ -77,19 +90,19 @@ public class DynmapHook implements Listener {
 
     @EventHandler
     public void onTownCreation(TownCreatedEvent event) {
-        createMarker(event.getTown(), event.getTownType());
+        createAreaMarker(event.getTown(), event.getTownType());
     }
 
     @EventHandler
     public void onTownEvolve(TownEvolveEvent event) {
         deleteMarker(event.getTown().getName());
-        createMarker(event.getTown(), event.getNewTownType());
+        createAreaMarker(event.getTown(), event.getNewTownType());
     }
 
     @EventHandler
     public void onTownDevolve(TownDevolveEvent event) {
         deleteMarker(event.getTown().getName());
-        createMarker(event.getTown(), event.getTownType());
+        createAreaMarker(event.getTown(), event.getTownType());
     }
 
     @EventHandler
@@ -101,7 +114,7 @@ public class DynmapHook implements Listener {
     public void onTownRename(RenameTownEvent event) {
         deleteMarker(event.getOldName());
         TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
-        createMarker(event.getTown(), townType);
+        createAreaMarker(event.getTown(), townType);
     }
 
     @EventHandler
