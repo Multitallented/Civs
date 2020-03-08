@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -37,6 +38,8 @@ public class RegionType extends CivItem {
 
     @Getter
     private final boolean rebuildRequired;
+    @Getter @Setter
+    private String dynmapMarkerKey = "";
 
     public RegionType(String name,
                       CVItem icon,

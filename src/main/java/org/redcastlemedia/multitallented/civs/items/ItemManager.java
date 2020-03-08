@@ -392,6 +392,9 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        if (config.isSet("dynmap-marker")) {
+            regionType.setDynmapMarkerKey(config.getString("dynmap-marker"));
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

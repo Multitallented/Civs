@@ -5,9 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
@@ -70,7 +70,24 @@ public class DynmapHook implements Listener {
                 location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), markerIcon, true);
     }
 
-    private static void deleteMarker(String townName) {
+    private static void deleteRegionMarker(Location location) {
+        if (!isMarkerAPIReady()) {
+            return;
+        }
+        initMarkerSet();
+        String key = Region.locationToString(location);
+        Marker marker = null;
+        for (Marker cMarker : markerSet.getMarkers()) {
+            if (cMarker.getMarkerID().equals(key)) {
+                marker = cMarker;
+            }
+        }
+        if (marker != null) {
+            marker.deleteMarker();
+        }
+    }
+
+    private static void deleteTownMarker(String townName) {
         if (!isMarkerAPIReady()) {
             return;
         }
@@ -95,34 +112,38 @@ public class DynmapHook implements Listener {
 
     @EventHandler
     public void onTownEvolve(TownEvolveEvent event) {
-        deleteMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown().getName());
         createAreaMarker(event.getTown(), event.getNewTownType());
     }
 
     @EventHandler
     public void onTownDevolve(TownDevolveEvent event) {
-        deleteMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown().getName());
         createAreaMarker(event.getTown(), event.getTownType());
     }
 
     @EventHandler
     public void onTownDestroyedEvent(TownDestroyedEvent event) {
-        deleteMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown().getName());
     }
 
     @EventHandler
     public void onTownRename(RenameTownEvent event) {
-        deleteMarker(event.getOldName());
+        deleteTownMarker(event.getOldName());
         TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
         createAreaMarker(event.getTown(), townType);
     }
 
     @EventHandler
     public void onRegionCreated(RegionCreatedEvent event) {
-
+        if (!"".equals(event.getRegionType().getDynmapMarkerKey())) {
+            createMarker(event.getRegion().getLocation(),
+                    event.getRegionType().getProcessedName(),
+                    event.getRegionType().getDynmapMarkerKey());
+        }
     }
     @EventHandler
     public void onRegionDestroyed(RegionDestroyedEvent event) {
-
+        deleteRegionMarker(event.getRegion().getLocation());
     }
 }
