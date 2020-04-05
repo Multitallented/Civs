@@ -37,6 +37,10 @@ public class RegionType extends CivItem {
 
     @Getter
     private final boolean rebuildRequired;
+    @Getter
+    private final List<String> commandsOnCreation;
+    @Getter
+    private final List<String> commandsOnDestruction;
 
     public RegionType(String name,
                       CVItem icon,
@@ -94,6 +98,8 @@ public class RegionType extends CivItem {
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
         this.worlds = worlds;
+        this.commandsOnCreation = new ArrayList<>();
+        this.commandsOnDestruction = new ArrayList<>();
     }
     public String getName() {
         return name;
