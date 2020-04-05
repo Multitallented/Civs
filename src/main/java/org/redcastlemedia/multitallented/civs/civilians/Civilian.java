@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -96,7 +97,13 @@ public class Civilian {
     public UUID getUuid() {
         return uuid;
     }
-    public Set<CivClass> getCivClasses() { return civClasses; }
+    public Set<CivClass> getCivClasses() {
+        civClasses.remove(null);
+        if (civClasses.isEmpty()) {
+            civClasses.add(ClassManager.getInstance().createDefaultClass(uuid));
+        }
+        return civClasses;
+    }
     public String getLocale() {
         if (locale == null) {
             locale = ConfigManager.getInstance().getDefaultLanguage();
