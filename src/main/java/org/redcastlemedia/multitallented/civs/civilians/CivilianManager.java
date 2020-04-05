@@ -164,15 +164,14 @@ public class CivilianManager {
                 }
             }
 
-            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs,
-                    civConfig.getBoolean("ask-for-tutorial", true));
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
@@ -222,12 +221,12 @@ public class CivilianManager {
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
                 classes,
-                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
-        civilian.setTutorialProgress(-1);
+        civilian.setTutorialProgress(0);
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
@@ -254,7 +253,6 @@ public class CivilianManager {
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
 
-            civConfig.set("ask-for-tutorial", civilian.isAskForTutorial());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());

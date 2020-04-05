@@ -65,9 +65,6 @@ public class Civilian {
     private String tutorialPath;
 
     @Getter @Setter
-    private boolean askForTutorial;
-
-    @Getter @Setter
     private int tutorialProgress;
 
     @Getter @Setter
@@ -78,7 +75,7 @@ public class Civilian {
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-                    double points, int karma, int expOrbs, boolean askForTutorial) {
+                    double points, int karma, int expOrbs) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -93,7 +90,6 @@ public class Civilian {
         this.karma = karma;
         this.mana = 0;
         this.expOrbs = expOrbs;
-        this.askForTutorial = askForTutorial;
         this.chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
     }
 
