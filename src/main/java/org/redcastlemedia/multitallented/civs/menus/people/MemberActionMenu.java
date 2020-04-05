@@ -179,7 +179,7 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {
-            if (!(viewingSelf || personIsOwner)) {
+            if (!viewingSelf && !isOwner && !isAdmin) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("vote".equals(menuIcon.getKey())) {
