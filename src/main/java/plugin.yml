@@ -31,5 +31,5 @@ permissions:
       default: op
    civs.bypasspvp:
       description: Lets you bypass war machines, bounties, and other combat features
-      default: op
+      default: false
 loadafter: [Vault, PlaceholderAPI, MMOItems]
