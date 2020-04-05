@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.HashMap;
 
@@ -51,7 +52,7 @@ public class IntruderEffect implements Listener {
         }
 
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
             return;
         }
 
@@ -77,7 +78,7 @@ public class IntruderEffect implements Listener {
             return;
         }
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
             return;
         }
 
