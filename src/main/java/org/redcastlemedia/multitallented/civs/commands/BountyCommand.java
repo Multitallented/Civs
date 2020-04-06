@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "bounty" })
 public class BountyCommand implements CivCommand {
@@ -99,7 +100,7 @@ public class BountyCommand implements CivCommand {
             }
             return true;
         }
-        if (Civs.perm != null && Civs.perm.has(target, "civs.bypasspvp")) {
+        if (Civs.perm != null && Civs.perm.has(target, Constants.PVP_EXEMPT_PERMISSION)) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                         "invalid-target"));

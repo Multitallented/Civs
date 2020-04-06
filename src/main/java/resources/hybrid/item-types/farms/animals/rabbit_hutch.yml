@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: RABBIT_SPAWN_EGG
+dynmap-marker: dog
 name: Rabbit_Hutch
 max: 1
 price: 10

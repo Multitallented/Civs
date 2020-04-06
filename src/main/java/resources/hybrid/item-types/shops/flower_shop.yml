@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: AZURE_BLUET
+dynmap-marker: coins
 name: Flower_Shop
 max: 1
 price: 10

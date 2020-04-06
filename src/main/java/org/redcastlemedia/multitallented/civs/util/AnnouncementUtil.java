@@ -140,7 +140,7 @@ public final class AnnouncementUtil {
             }
 
             // check the guide
-            if (!civilian.isAskForTutorial() && civilian.getTutorialIndex() != -1 &&
+            if (civilian.getTutorialIndex() != -1 &&
                     civilian.getTutorialPath().equals("default") &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-achievement")) {
                 keys.add("ann-achievement");

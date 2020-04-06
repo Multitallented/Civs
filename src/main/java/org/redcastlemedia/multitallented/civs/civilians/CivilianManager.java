@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,11 +43,6 @@ public class CivilianManager {
 
     public Collection<Civilian> getCivilians() {
         return civilians.values();
-    }
-
-    public ArrayList<Civilian> getSortedCivilians() {
-        sortCivilians();
-        return sortedCivilians;
     }
 
     private void loadAllCivilians() {
@@ -123,15 +119,20 @@ public class CivilianManager {
             return civilian;
         }
         File civilianFolder = new File(Civs.dataLocation, "players");
+        Player player = Bukkit.getPlayer(uuid);
         if (!civilianFolder.exists()) {
             Civilian civilian = createDefaultCivilian(uuid);
-            saveCivilian(civilian);
+            if (player != null) {
+                saveCivilian(civilian);
+            }
             return civilian;
         }
         File civilianFile = new File(civilianFolder, uuid + ".yml");
         if (!civilianFile.exists()) {
             Civilian civilian = createDefaultCivilian(uuid);
-            saveCivilian(civilian);
+            if (player != null) {
+                saveCivilian(civilian);
+            }
             return civilian;
         }
         FileConfiguration civConfig = new YamlConfiguration();
@@ -158,21 +159,19 @@ public class CivilianManager {
             }
             int expOrbs = -1;
             if (Civs.getInstance() != null) {
-                Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     expOrbs = player.getTotalExperience();
                 }
             }
 
-            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs,
-                    civConfig.getBoolean("ask-for-tutorial", true));
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
@@ -199,8 +198,10 @@ public class CivilianManager {
 
             return civilian;
         } catch (Exception ex) {
-            Civs.logger.severe("Unable to read " + uuid + ".yml");
-            ex.printStackTrace();
+            Civs.logger.log(Level.SEVERE, "Unable to read " + uuid + ".yml", ex);
+            if (civilianFile.exists()) {
+                civilianFile.delete();
+            }
             return createDefaultCivilian(uuid);
         }
     }
@@ -220,12 +221,12 @@ public class CivilianManager {
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
                 classes,
-                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
-        civilian.setTutorialProgress(-1);
+        civilian.setTutorialProgress(0);
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
@@ -252,7 +253,6 @@ public class CivilianManager {
             civConfig.set("locale", civilian.getLocale());
             //TODO save other civilian file properties
 
-            civConfig.set("ask-for-tutorial", civilian.isAskForTutorial());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());

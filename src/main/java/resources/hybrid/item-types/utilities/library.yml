@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: BOOKSHELF
+dynmap-marker: bookshelf
 name: Library
 price: 1000
 max: 1

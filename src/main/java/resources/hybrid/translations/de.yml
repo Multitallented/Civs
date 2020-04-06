@@ -60,8 +60,8 @@ power-buff-desc: Täglicher Machtzuwachs um $1% erhöht.
 max_power-buff-desc: Maximale Macht um $1% erhöht.
 cost-buff-desc: Für alle $2 werden $1% der Kosten rückerstattet.
 shop: Shop
-buy-item: Zu verkaufen
-price: Preis
+buy-item: Kaufen
+price: Preis $1
 buy: Kaufe $1
 cancel: Abbrechen
 item-bought: Du hast $1 für $2 gekauft.
@@ -438,7 +438,7 @@ meritocracy-name: Meritokratie
 meritocracy-desc: Diktatur + Wer auch immer die meisten Gebäude und Killpunkte besitzt wird
   Stadtoberhaupt.
 oligarchy-name: Oligarchie
-oligarchy-desc: Diktatur + Man kann sich ins Stadteigentum rein- und rauskaufen.
+oligarchy-desc: Diktatur + Man kann sich in Stadteigentum rein- und rauskaufen.
 socialism-name: Sozialismus
 socialism-desc: Diktatur + Alle Versorgung, Farm, Fabrik und Abbaugebäude gehören der
   Allgemeinheit.
@@ -806,7 +806,7 @@ keep-desc: Das 2te Level der Belagerungsbasis
 metropolis-name: Metropole
 metropolis-desc: Das 6te Level einer Stadt. Benötigt 50 Population.
 mining_colony-name: Bergbaukolonie
-mining_colony-desc: "Verhindert das Spawnen von Monstern und gibt einen "
+mining_colony-desc: Verhindert das Spawnen von Monstern und gibt einen Abbauboost
 outpost-name: Außenposten
 outpost-desc: Das erste Level einer Belagerungsbasis
 settlement-name: Siedlung

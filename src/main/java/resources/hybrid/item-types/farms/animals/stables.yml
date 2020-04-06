@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: HORSE_SPAWN_EGG
+dynmap-marker: dog
 name: Stables
 max: 1
 price: 1500

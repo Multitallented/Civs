@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: DIRT
+dynmap-marker: minecart
 name: Dirt_Quarry
 price: 25
 groups:

@@ -58,7 +58,7 @@ max_power-buff-desc: Tăng $1% năng lượng tối đa
 cost-buff-desc: Hoàn trả $1% chi phí cho tất cả  $2
 shop: Cửa hàng
 buy-item: Mua
-price: Giá
+price: Giá $1
 buy: Mua $1
 cancel: Huỷ bỏ
 item-bought: Bạn mua thành công $1 với gia $2
@@ -190,6 +190,8 @@ town-ally-request-sent: Một lời đề nghị kết đồng minh đã đượ
 town-ally-request-accepted: $1 và $2 đã trở thành đồng minh của nhau
 town-ally-request-denied: Đề nghị kết đồng minh của $1 đã bị từ chối
 town-ally-removed: Liên minh giữa $1 và $2 đã bị tan rã
+decline-all: Từ chối tất cả lời mời
+accept-invite: Chấp nhận lời mời
 region-evolve: $1 phát triển thành $2
 region-evolved: $1 đã phát triển thành $2
 anti-camp-active: $1 đã được kích hoạt
@@ -309,6 +311,7 @@ ann-vote: "[Thông báo] Đừng quên bầu chọn cho chủ thị trấn tiế
 ann-karma: $1 đã trực tuyến. Nếu bạn có thể giết $1 bạn sẽ được thưởng
 ann-missing-input: $1 cần thêm vật phẩm. Vào giao diện của Civs để xem vật liệu cần thiết
 ann-bounty: $2 là số tiền thưởng cho cái đầu của $1
+and-more: Và nhiều thứ khác
 tut-default-0: Đầu tiền, mở giao diện của bạn, vào bản thiết kế, lấy Lều định cư ra và đặt nó
   xuống
 tut-default-1: Tiếp theo, thu thập 4 bánh mì, 32 cà rốt, 32 thịt cùng 32 khoai tây. Sau đó để
@@ -877,8 +880,8 @@ house-evolve-name: Phát triển
 house-evolve-desc: Các hình thức phát triển của các tòa nhà
 trade-mines-name: Mỏ thương mại
 trade-mines-desc: Các mỏ sản xuất các mặt hàng sẽ được bán ở các thị trấn khác.
-defense-evolve-name: Tiến hoá
-defense-evolve-desc: Ẩn hình dạng tiến hoá của các toà nhà khác nhau
+defense-evolve-name: Phát triển
+defense-evolve-desc: Các hình thức phát triển của các tòa nhà
 evolve-name: Tiến hoá
 evolve-desc: Ẩn hình dạng tiến hoá của các toà nhà khác nhau
 plot7x7-name: Khu đất 7x7
@@ -889,3 +892,60 @@ plot15x15-name: Khu đất 15x15
 plot15x15-desc: Thông số thể hiện cho khu vực 15x15 và nhỏ hơn
 plot19x19-name: Khu đất 19x19
 plot19x19-desc: Thông số thể hiện cho khu vực 19x19 và nhỏ hơn
+housing-group: Nhà ở
+defense-group: Phòng thủ
+trap-group: Bẫy
+arrowtrapgroup-group: Bẫy tên
+publichousing-group: Nhà công cộng
+idolgroup-group: Tượng
+factory-group: Nhà máy
+farm-group: Nông trại
+raw-group: Sản xuất vật phẩm thô
+woodwork-group: Xưởng gỗ
+allchalet-group: Nhà gỗ
+basechalet-group: Nhà NPC
+allhousing-group: Nhà ở
+npchousinggroup-group: Nhà cho NPC
+alldwelling-group: Nhà
+basedwelling-group: Nhà cho người chơi
+allestate-group: Nhà
+baseestate-group: Nhà cho người chơi
+allhouse-group: Nhà
+basehouse-group: Nhà cho người chơi
+allhovel-group: Nhà
+basehovel-group: Nhà cho người chơi
+allmanor-group: Nhà
+basemanor-group: Nhà cho người chơi
+allmansion-group: Nhà
+basemansion-group: Nhà cho người chơi
+allshack-group: Nhà
+baseshack-group: Nhà cho người chơi
+allvilla-group: Nhà
+basevilla-group: Nhà cho người chơi
+trademine-group: Trao đổi quặng
+trading-group: Trao đổi
+mine-group: Khu mỏ
+offense-group: Phòng thủ
+basecenter-group: Căn cứ
+raidport-group: Cổng dịch chuyển
+siegemachinegroup-group: Máy dậm
+townpowerreduce-group: Trang bị cho máy dậm
+quarry-group: Mỏ quặng
+tradeshop-group: Cửa hàng trao đổi
+shop-group: Cửa hàng
+oreshop-group: Cửa hàng quặng
+superregion-group: Thị trấn
+town_center-group: Trung tâm thị trấn
+chat-channels: Kênh nói chuyển
+chat-change-chat: Chuyển tới kênh nói chuyện
+friend-channel: Kênh bạn bè
+friend-channel-desc: Kênh nói chuyển với bạn bè
+global-channel: Toàn cầu
+global-channel-desc: Kênh nói chuyện cho tất cả
+local-channel: Khu vực
+local-channel-desc: Kênh nói chuyện cho các người chơi gần 100 khối xung quanh bạn
+town-channel-desc: Kệnh nói chuyện riêng của
+alliance-channel-desc: Kênh nói chuyện riêng của
+chat-channel-set: Bạn kết nói vào kệnh nói chuyện
+click-change-chat: Nhấn để chuyển kênh nói chuyện
+no-recipients: Không có ai trong kênh này cả

@@ -105,7 +105,7 @@ public class PortMenu extends CustomMenu {
             if (MenuManager.getData(civilian.getUuid(), "region") != null) {
                 ArrayList<String> actionStrings = new ArrayList<>();
                 actionStrings.add("set-teleport");
-                actions.get(civilian.getUuid()).put(itemStack, actionStrings);
+                putActionList(civilian, itemStack, actionStrings);
             } else {
                 putActions(civilian, menuIcon, itemStack, count);
             }

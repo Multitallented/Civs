@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -46,17 +47,19 @@ public class RegionListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
         RegionManager regionManager = RegionManager.getInstance();
 
-        if (ConfigManager.getInstance().getBlackListWorlds()
-                .contains(blockPlaceEvent.getBlockPlaced().getLocation().getWorld().getName())) {
-            return;
-        }
-
         if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
             return;
         }
         ItemStack heldItem = blockPlaceEvent.getItemInHand();
 
         if (!CVItem.isCivsItem(heldItem)) {
+            return;
+        }
+        if (ConfigManager.getInstance().getBlackListWorlds()
+                .contains(blockPlaceEvent.getBlockPlaced().getWorld().getName())) {
+            blockPlaceEvent.setCancelled(true);
+            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    blockPlaceEvent.getPlayer(), LocaleConstants.PERMISSION_DENIED));
             return;
         }
         CivItem civItem = CivItem.getFromItemStack(heldItem);

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: OBSIDIAN
+dynmap-marker: hammer
 name: Obsidian_Mine
 max: 1
 price: 500

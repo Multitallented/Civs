@@ -3,12 +3,20 @@ package org.redcastlemedia.multitallented.civs.civclass;
 
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class CivClass {
 
+    @Getter
     private final String type;
+    @Getter
     private final UUID uuid;
+    @Getter
     private final int id;
+    @Getter @Setter
     private int manaPerSecond;
+    @Getter @Setter
     private int maxMana;
 
     public CivClass(int id, UUID uuid, String type, int manaPerSecond, int maxMana) {
@@ -16,27 +24,6 @@ public class CivClass {
         this.uuid = uuid;
         this.type = type;
         this.manaPerSecond = manaPerSecond;
-        this.maxMana = maxMana;
-    }
-    public String getType() {
-        return type;
-    }
-    public UUID getUuid() {
-        return uuid;
-    }
-    public int getId() {
-        return id;
-    }
-    public int getManaPerSecond() {
-        return manaPerSecond;
-    }
-    public int getMaxMana() {
-        return maxMana;
-    }
-    public void setManaPerSecond(int manaPerSecond) {
-        this.manaPerSecond = manaPerSecond;
-    }
-    public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
     }
 }

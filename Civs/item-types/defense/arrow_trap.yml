@@ -37,7 +37,7 @@
 #- block_liquid
 #- block_fire
 #- arrow_turret:30.38.3
-#- evolve:arrowtrapfast.150
+#- evolve:arrow_trap_fast.150
 #
 #upkeep:
 #  0:

@@ -1,6 +1,7 @@
 type: region
 icon: GLASS
 shop-icon: GLASS
+dynmap-marker: construction
 name: Plot19x19
 qty: 1
 is-in-shop: false

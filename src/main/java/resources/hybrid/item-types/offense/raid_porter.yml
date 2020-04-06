@@ -1,5 +1,6 @@
 type: region
 icon: REDSTONE_BLOCK
+dynmap-marker: portal
 name: Raid_Porter
 max: 1
 price: 200

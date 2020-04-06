@@ -13,6 +13,11 @@
 #tutorial-wiki: Wiki do Civs
 #click-info: Clique para mais informações
 #guide: Guia
+#income: Entrada
+#income-desc: Seu $1 produziu $2 no ultimo dia e $3 na semana passada
+#rebuild: Reconstruir
+#rebuild-req-desc: Essa construção precisa ser construída em cima da seguinte construção
+#rebuild-opt-desc: Essa construção pode ser construída em cima da seguinte construção
 #guide-desc: Clique aqui para saber seu próximo objetivo
 #choose-path: Escolha seu caminho
 #new-owner-town: $1 substituiu $2 como dono de $3
@@ -94,11 +99,17 @@
 #build-reqs: Todos os blocos que necessitam ser colocados para construir $1
 #reagents-title: Reagentes
 #reagents: Todos os itens que você precisa no bau de $1
+#upkeep-title: Consumo
 #upkeep: Todos os itens consumidos por $1
+#output-title: Produção
 #output: Todos os itens criados por $1
+#payout-title: Pagamento
 #payout: Essa região ganha $$1
+#power-input-title: Consumo de Energia
 #power-input: Essa região consome $1 de poder
+#power-output-title: Produção de Energia
 #power-output: Essa região gera $1 de poder
+#power-history: Seu histórico de energia nos últimos $1 dias.
 #too-close-region: Sua $1 esta próxima de mais de uma $2
 #too-close-town: Sua $1 esta próxima de mais de uma outra vila
 #town-created: $1 foi construída
@@ -113,6 +124,10 @@
 #operation: Operação
 #region-working: Sua região esta funcionando corretamente
 #region-not-working: Tem algo faltando em sua região
+#filter-online: Filtrar por jogadores online apenas.
+#sort-alphabetical: Ordenar alfabeticamente
+#sort-points: Ordenar por pontos
+#sort-rank: Ordenar por rank
 #owner: Dono
 #member: Membro
 #guest: Convidado
@@ -155,6 +170,7 @@
 #town-power: "Poder: $1/$2"
 #port-warmup: Você será teletransportado em $1s
 #teleported: Você foi teletransportado!
+#location: Localização
 #location-set: $1 local selecionado
 #rename-town: Renomear vila
 #rename-desc: Use /cv rename nomeVelho nomeNovo
@@ -174,6 +190,7 @@
 #town-ally-request-accepted: Uma aliança foi formada entre $1 e $2
 #town-ally-request-denied: A proposta de aliança com $1 foi rejeitada
 #town-ally-removed: A aliança entre $1 e $2 foi dissolvida
+#region-evolve: $1 evolui para $2
 #region-evolved: Sua $1 evoluiu para uma $2
 #anti-camp-active: O anti-camp de $1 foi ativado
 #anti-camp-expired: O anti-camp de $1 acabou
@@ -238,6 +255,8 @@
 #raid-target-blocked: Teletransportador de ataque bloqueado
 #raid-porter-warning: ALERTA! $1 criou um $2 atacando $3
 #siege-built: ALERTA! $1 criou um $2 atacando $3
+#jammer-built: "@{RED}[ALERTA] Um $1 foi construído nas redondezas. Tenha cuidado ao
+#  teletransportar."
 #raid-remote: Foi dado a você um item para controlar $1
 #raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
 #no-blocks-above-chest: Não deve haver blocos acima do tórax central
@@ -249,6 +268,7 @@
 #missing-region-requirements: Sua $1 esta com falta de construções requeridas
 #friendly-fire: Você não pode atacar alguém da sua lista de amigos
 #limits: Limites
+#item-limit: Você tem $1 de $2 $3
 #region-limit-reached: Um $1 só pode ter $2 $3
 #region-in-biome: Você não pode construir uma $1 em um $2
 #not-enough-housing: Você precisa de mais habitações para convidar mais jogadores
@@ -267,6 +287,8 @@
 #killjoy-points: "Bônus por Killjoy: $1"
 #total-points: "Total de pontos: $1"
 #karma: "Karma: $1"
+#karma-desc: Karma é um medidor de infâmia. Quanto menor o karma, maior a recompensa por
+#  sua morte.
 #karma-gained: "Karma: +$1, $2 de dinheiro ganho"
 #karma-lost: "Karma: -$1, $2 de dinheiro perdido"
 #ann-limit: "[Info] Você tem $1 de $2 $3 construções"
@@ -487,7 +509,7 @@
 #  um trilho elétrico inclinado no começo da linha.
 #weapons_factory-name: Fábrica de Armas
 #weapons_factory-desc: Transforma 3 pólvoras e 5 areias em explosivos.
-#jammer_trap-name: Armadilha de Disrupção
+#jammer_trap-name: "Armadilha de Disrupção "
 #jammer_trap-desc: Uma construção que intercepta teletransportes que viajariam em um raio de 100
 #  blocos. Redireciona o destino para perto da armadilha.
 #chicken_coop-name: Galinheiro
@@ -650,8 +672,8 @@
 #inn-name: Pousada
 #inn-desc: Provê 12 habitações e um porto. Útil para adicionar pessoas à cidade sem ter
 #  que construir habitações primeiro.
-#jade_mine-name: Mina de Jade
-#jade_mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
+#jade-mine-name: Mina de Jade
+#jade-mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
 #  pode ser construída numa cidade com uma Loja de Jade.
 #coal_mine-name: Mina de Carvão
 #coal_mine-desc: Cria Carvão utilizando picaretas. Coloque um carrinho com baú no baú. Construa
@@ -808,6 +830,9 @@
 #warehouse-name: Armazém
 #warehouse-desc: Distribui itens de qualquer um dos seus muitos baús para regiões que precisem
 #  deles.
+#warehouse-toggle-on: "Carregamentos do Armazém: LIGADOS"
+#warehouse-toggle-off: "Carregamentos do Armazém: DESLIGADOS"
+#warehouse-toggle-desc: Clique para ativar ou desativar os carregamentos do Armazém para esta região.
 #item-jade-name: Jade
 #item-jade-desc: Entregue 16 Jades na loja de Jade por $1000
 #farms-name: Fazendas
@@ -853,7 +878,13 @@
 #house-evolve-desc: Casas evoluídas escondidas
 #trade-mines-name: Minas Comerciais
 #trade-mines-desc: Minas que produzem itens para serem vendidos em outras cidades.
-#defense-evolve-name: Evoluir
-#defense-evolve-desc: Formas evoluídas ocultas de vários edifícios.
 #evolve-name: Evoluir
 #evolve-desc: Formas evoluídas ocultas de vários edifícios.
+#plot7x7-name: Terreno 7x7
+#plot7x7-desc: Um molde para regiões 7x7 e menores
+#plot11x11-name: Terreno 11x11
+#plot11x11-desc: Um molde para regiões 11x11 e menores
+#plot15x15-name: Terreno 15x15
+#plot15x15-desc: Um molde para regiões 15x15 e menores
+#plot19x19-name: Terreno 19x19
+#plot19x19-desc: Um molde para regiões 19x19 e menores

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: FIREWORK_ROCKET
+dynmap-marker: factory
 name: fireworks_factory
 price: 200
 groups:

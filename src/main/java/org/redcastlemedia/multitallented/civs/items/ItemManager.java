@@ -171,6 +171,9 @@ public class ItemManager {
                 try {
                     FileConfiguration typeConfig = new YamlConfiguration();
                     typeConfig.load(file);
+                    if (!typeConfig.getBoolean("enabled", true)) {
+                        return;
+                    }
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
                     String itemName = file.getName().replace(".yml", "").toLowerCase();
@@ -392,6 +395,15 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        if (config.isSet("commands-on-creation")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-creation"));
+        }
+        if (config.isSet("commands-on-destruction")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-destruction"));
+        }
+        if (config.isSet("dynmap-marker")) {
+            regionType.setDynmapMarkerKey(config.getString("dynmap-marker"));
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
@@ -513,6 +525,9 @@ public class ItemManager {
             return true;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return false;
+        }
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
                 //perm=civs.admin

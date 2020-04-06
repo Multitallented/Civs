@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: BLUE_ORCHID
+dynmap-marker: flower
 name: Greenhouse
 price: 20
 groups:

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: GUNPOWDER
+dynmap-marker: hammer
 name: Gunpowder_Mine
 max: 1
 price: 2000

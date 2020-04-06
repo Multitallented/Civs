@@ -2,6 +2,7 @@ type: region
 icon: CHEST
 shop-icon: TNT
 name: Siege_Machine2
+dynmap-marker: bomb
 is-in-shop: false
 groups:
 - offense

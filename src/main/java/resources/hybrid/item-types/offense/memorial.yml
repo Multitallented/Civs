@@ -1,6 +1,7 @@
 type: region
 icon: STONE
 name: Memorial
+dynmap-marker: skull
 max: 1
 price: 750
 groups:

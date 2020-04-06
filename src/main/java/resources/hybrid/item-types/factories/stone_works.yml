@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: STONE_PICKAXE
+dynmap-marker: factory
 name: Stone_Works
 price: 20
 groups:

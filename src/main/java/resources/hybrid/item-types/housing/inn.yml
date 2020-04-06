@@ -1,5 +1,6 @@
 type: region
 icon: RED_BED
+dynmap-marker: bighouse
 name: Inn
 max: 2
 price: 750

@@ -20,7 +20,7 @@
  * Multitallented - Developer (Discord: N/A)
  * Clockworker - Documenter (Discord: Clockworker#3819)
 
-Discord Link: TBA
+Discord Link: [KDqVjdx](https://discord.gg/KDqVjdx)
 
 ---
 
