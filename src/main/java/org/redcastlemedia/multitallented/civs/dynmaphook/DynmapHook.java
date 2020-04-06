@@ -42,7 +42,7 @@ public class DynmapHook implements Listener {
 
     public static void initMarkerSet() {
         if (isMarkerAPIReady() && markerSet == null) {
-            markerSet = dynmapCommonAPI.getMarkerAPI().createMarkerSet("islandearth.markerset", "Dungeons",
+            markerSet = dynmapCommonAPI.getMarkerAPI().createMarkerSet("islandearth.markerset", "Civs",
                     dynmapCommonAPI.getMarkerAPI().getMarkerIcons(), false);
             for (Region region : RegionManager.getInstance().getAllRegions()) {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
