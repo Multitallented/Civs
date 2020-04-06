@@ -459,6 +459,7 @@ public class CivilianListener implements Listener {
     public void onPluginEnable(PluginEnableEvent event) {
         if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
+            DynmapHook.initMarkerSet();
             return;
         }
         if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&

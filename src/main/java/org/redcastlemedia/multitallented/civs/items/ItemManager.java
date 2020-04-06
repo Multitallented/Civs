@@ -171,6 +171,9 @@ public class ItemManager {
                 try {
                     FileConfiguration typeConfig = new YamlConfiguration();
                     typeConfig.load(file);
+                    if (!typeConfig.getBoolean("enabled", true)) {
+                        return;
+                    }
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
                     String itemName = file.getName().replace(".yml", "").toLowerCase();

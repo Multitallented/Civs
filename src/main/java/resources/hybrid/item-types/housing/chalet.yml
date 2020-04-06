@@ -1,7 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: MAGENTA_BED
-dynmap-marker: big house
+dynmap-marker: bighouse
 name: Chalet
 max: 2
 price: 1400

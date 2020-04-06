@@ -202,6 +202,7 @@ public class Civs extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) Bukkit.getPluginManager().getPlugin("dynmap");
+            DynmapHook.initMarkerSet();
         }
     }
 

@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.dynmaphook;
 
+import java.util.HashSet;
+
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +10,7 @@ import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
@@ -16,8 +19,13 @@ import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 //https://github.com/webbukkit/dynmap/wiki/Using-markers
@@ -32,10 +40,22 @@ public class DynmapHook implements Listener {
         return dynmapCommonAPI.markerAPIInitialized();
     }
 
-    private static void initMarkerSet() {
-        if (markerSet == null) {
+    public static void initMarkerSet() {
+        if (isMarkerAPIReady() && markerSet == null) {
             markerSet = dynmapCommonAPI.getMarkerAPI().createMarkerSet("islandearth.markerset", "Dungeons",
                     dynmapCommonAPI.getMarkerAPI().getMarkerIcons(), false);
+            for (Region region : RegionManager.getInstance().getAllRegions()) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (!"".equals(regionType.getDynmapMarkerKey())) {
+                    createMarker(region.getLocation(),
+                            LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
+                                    region.getType() + LocaleConstants.NAME_SUFFIX),
+                            regionType.getDynmapMarkerKey());
+                }
+            }
+            for (Town town : TownManager.getInstance().getTowns()) {
+                createAreaMarker(town, (TownType) ItemManager.getInstance().getItemType(town.getType()));
+            }
         }
     }
 
@@ -93,15 +113,11 @@ public class DynmapHook implements Listener {
         }
         initMarkerSet();
         String markerId = "globe_town" + townName;
-        AreaMarker marker = null;
-        for (AreaMarker cMarker : markerSet.getAreaMarkers()) {
+        for (AreaMarker cMarker : new HashSet<>(markerSet.getAreaMarkers())) {
             if (cMarker.getMarkerID().equals(markerId)) {
-                marker = cMarker;
+                cMarker.deleteMarker();
                 break;
             }
-        }
-        if (marker != null) {
-            marker.deleteMarker();
         }
     }
 
@@ -138,7 +154,8 @@ public class DynmapHook implements Listener {
     public void onRegionCreated(RegionCreatedEvent event) {
         if (!"".equals(event.getRegionType().getDynmapMarkerKey())) {
             createMarker(event.getRegion().getLocation(),
-                    event.getRegionType().getProcessedName(),
+                    LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
+                            event.getRegionType().getProcessedName() + LocaleConstants.NAME_SUFFIX),
                     event.getRegionType().getDynmapMarkerKey());
         }
     }
