@@ -298,11 +298,9 @@ public class TownManager {
     public void removeTown(Town town, boolean broadcast, boolean destroyRing) {
         if (broadcast) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                Civilian civ = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civ.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "town-destroyed").replace("$1", town.getName()));
             }
-        } else {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             TownDestroyedEvent townDestroyedEvent = new TownDestroyedEvent(town, townType);
             Bukkit.getPluginManager().callEvent(townDestroyedEvent);
@@ -351,7 +349,6 @@ public class TownManager {
         town.setMaxPower(childTownType.getMaxPower());
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(player, "devolve-town")
                     .replace("$1", town.getName())
