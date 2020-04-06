@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.util.*;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +28,7 @@ import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 public abstract class CustomMenu {
     protected HashSet<MenuIcon> itemIndexes;
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
-    protected HashMap<UUID, HashMap<ItemStack, List<String>>> actions = new HashMap<>();
+    protected HashMap<UUID, HashMap<String, List<String>>> actions = new HashMap<>();
     protected HashMap<UUID, CycleGUI> cycleItems = new HashMap<>();
     protected int size;
     private String name;
@@ -115,7 +116,18 @@ public abstract class CustomMenu {
                 currentActions.add(newAction);
             }
         }
-        actions.get(civilian.getUuid()).put(itemStack, currentActions);
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+    }
+
+    protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), actionList);
+    }
+
+    protected List<String> getActions(Civilian civilian, ItemStack itemStack) {
+        if (actions.containsKey(civilian.getUuid())) {
+            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName());
+        }
+        return new ArrayList<>();
     }
 
     public void addCycleItem(UUID uuid, int index, ItemStack is) {
@@ -159,7 +171,7 @@ public abstract class CustomMenu {
             }
             return;
         }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
+        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem.getType().name() + ":" + clickedItem.getItemMeta().getDisplayName());
         if (actionStrings == null || actionStrings.isEmpty()) {
             if (!event.isCancelled()) {
                 event.setCancelled(true);
@@ -168,7 +180,7 @@ public abstract class CustomMenu {
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
-            shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) | shouldCancel;
+            shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) || shouldCancel;
         }
         if (!event.isCancelled()) {
             event.setCancelled(true);

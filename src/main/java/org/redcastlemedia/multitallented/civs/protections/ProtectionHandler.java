@@ -118,7 +118,6 @@ public class ProtectionHandler implements Listener {
             if (isNotMember) {
                 return;
             }
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
             if (!radii.isValid()) {
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
@@ -229,7 +228,8 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEndermanPickup(EntityChangeBlockEvent event) {
-        if (event.getEntityType() != EntityType.ENDERMAN) {
+        if (event.getEntityType() != EntityType.ENDERMAN && event.getEntityType() != EntityType.WITHER_SKULL &&
+                event.getEntityType() != EntityType.WITHER) {
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), "block_break");
@@ -369,17 +369,8 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
         }
-        boolean setCancelled = !event.isCancelled() &&
-                shouldBlockActionEffect(event.getLocation(), null, "block_explosion", 5);
-        if (setCancelled) {
-            event.setCancelled(true);
-            return;
-        }
-        if (event.getEntity() instanceof Creeper) {
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_creeper", 5);
-        } else if (event.getEntity() instanceof Fireball) {
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_ghast", 5);
-        } else if (event.getEntity() instanceof TNTPrimed) {
+        boolean setCancelled = false;
+        if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
             Player player = null;
             if (tnt.getSource() instanceof Player) {
@@ -403,6 +394,24 @@ public class ProtectionHandler implements Listener {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
+        }
+        if (setCancelled) {
+            event.setCancelled(true);
+            return;
+        }
+        setCancelled = !event.isCancelled() &&
+                (shouldBlockActionEffect(event.getLocation(), null, "block_explosion", 5) ||
+                shouldBlockActionEffect(event.getLocation(), null, "power_shield", 5));
+        if (setCancelled) {
+            event.setCancelled(true);
+            return;
+        }
+        if (event.getEntity() instanceof Creeper) {
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_creeper", 5);
+        } else if (event.getEntity() instanceof Fireball) {
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_ghast", 5);
+        } else if (event.getEntity() instanceof Wither || event.getEntity() instanceof WitherSkull) {
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_wither", 5);
         }
         if (setCancelled) {
             event.setCancelled(true);

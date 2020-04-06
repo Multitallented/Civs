@@ -105,10 +105,10 @@ public class RegionListMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).put(itemStack, region);
             putActions(civilian, menuIcon, itemStack, count);
-            if (actions.get(civilian.getUuid()).get(itemStack).contains("view-region")) {
-                int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-region");
-                actions.get(civilian.getUuid()).get(itemStack).set(index,
-                        "menu:region?region=" + region.getId() + "&preserveData=true");
+            List<String> actionList = getActions(civilian, itemStack);
+            if (actionList.contains("view-region")) {
+                int index = actionList.indexOf("view-region");
+                actionList.set(index, "menu:region?region=" + region.getId() + "&preserveData=true");
             }
 
             return itemStack;

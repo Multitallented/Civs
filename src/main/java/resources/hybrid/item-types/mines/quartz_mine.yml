@@ -44,3 +44,5 @@ upkeep:
     output:
     - QUARTZ*6
 
+biomes:
+- NETHER

@@ -120,7 +120,7 @@ public class RecipeMenu extends CustomMenu {
                 if (cvItem.getGroup() != null) {
                     ArrayList<String> actionList = new ArrayList<>();
                     actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup() + "&regionType=" + regionType.getProcessedName());
-                    actions.get(civilian.getUuid()).put(itemStack, actionList);
+                    putActionList(civilian, itemStack, actionList);
                 }
             }
             if (firstStack != null) {

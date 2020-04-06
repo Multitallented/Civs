@@ -312,13 +312,13 @@ public class CivilianListener implements Listener {
                 (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
+        Player player = event.getPlayer();
+        if (!Util.isStarterBook(event.getItem())) {
+            return;
+        }
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(event.getPlayer().getWorld().getName())) {
             event.setCancelled(true);
-            return;
-        }
-        Player player = event.getPlayer();
-        if (!Util.isStarterBook(event.getItem())) {
             return;
         }
         event.setCancelled(true);
