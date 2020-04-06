@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PUMPKIN
+dynmap-marker: cutlery
 name: Pumpkin_Farm
 max: 1
 price: 300

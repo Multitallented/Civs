@@ -1,5 +1,6 @@
 type: region
 icon: WHITE_WOOL
+dynmap-marker: heart
 name: Hospital
 max: 1
 price: 800

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COCOA_BEANS
+dynmap-marker: cutlery
 name: Cocoa_Farm
 max: 1
 price: 250

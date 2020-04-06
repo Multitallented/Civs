@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: ACACIA_LOG
+dynmap-marker: tree
 name: Acacia_Lumberyard
 max: 2
 price: 100

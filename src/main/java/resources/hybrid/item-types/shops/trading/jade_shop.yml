@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: EMERALD
+dynmap-marker: coins
 name: Jade_Shop
 max: 1
 price: 500

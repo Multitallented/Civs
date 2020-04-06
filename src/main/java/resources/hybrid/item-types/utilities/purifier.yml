@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: ROTTEN_FLESH
+dynmap-marker: factory
 name: Purifier
 price: 5
 groups:

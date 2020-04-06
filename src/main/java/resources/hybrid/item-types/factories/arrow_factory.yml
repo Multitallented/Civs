@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: ARROW
+dynmap-marker: factory
 name: Arrow_Factory
 price: 100
 groups:

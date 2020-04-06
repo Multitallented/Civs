@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PRISMARINE_SHARD
+dynmap-marker: anchor
 name: Marine_Mine
 max: 1
 price: 150

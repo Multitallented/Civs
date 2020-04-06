@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COAL
+dynmap-marker: coins
 name: Coal_Shop
 max: 1
 price: 100

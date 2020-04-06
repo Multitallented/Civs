@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: SUGAR_CANE
+dynmap-marker: cutlery
 name: Sugar_Cane_Farm
 max: 1
 price: 250

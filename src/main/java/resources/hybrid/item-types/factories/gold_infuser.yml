@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: GOLD_NUGGET
+dynmap-marker: factory
 name: Gold_Infuser
 price: 200
 groups:

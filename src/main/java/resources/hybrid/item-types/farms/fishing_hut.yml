@@ -2,6 +2,7 @@ type: region
 icon: CHEST
 shop-icon: SALMON
 name: Fishing_Hut
+dynmap-marker: anchor
 max: 1
 price: 200
 groups:

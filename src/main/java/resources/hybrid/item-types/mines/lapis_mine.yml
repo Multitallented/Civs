@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: LAPIS_ORE
+dynmap-marker: hammer
 name: Lapis_Mine
 max: 1
 price: 300

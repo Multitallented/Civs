@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: LEATHER_BOOTS
+dynmap-marker: factory
 name: Boot_Grinder
 price: 20
 groups:

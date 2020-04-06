@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: NETHER_QUARTZ_ORE
+dynmap-marker: hammer
 name: Quartz_Mine
 max: 1
 price: 150

@@ -1,5 +1,6 @@
 type: region
 name: Bell_Tower
+dynmap-marker: light house
 icon: GLOWSTONE
 price: 1000
 max: 1
