@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: BLUE_BED
+dynmap-marker: big house
 name: Estate
 max: 2
 price: 16000

@@ -41,6 +41,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -64,6 +65,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -310,13 +312,13 @@ public class CivilianListener implements Listener {
                 (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
+        Player player = event.getPlayer();
+        if (!Util.isStarterBook(event.getItem())) {
+            return;
+        }
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(event.getPlayer().getWorld().getName())) {
             event.setCancelled(true);
-            return;
-        }
-        Player player = event.getPlayer();
-        if (!Util.isStarterBook(event.getItem())) {
             return;
         }
         event.setCancelled(true);
@@ -453,9 +455,12 @@ public class CivilianListener implements Listener {
             }
         }
     }
-
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
+        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
+            DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
+            return;
+        }
         if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
@@ -476,6 +481,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
+        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
+            DynmapHook.dynmapCommonAPI = null;
+        }
         if ("MMOItems".equals(event.getPlugin().getName()) &&
                 !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = null;

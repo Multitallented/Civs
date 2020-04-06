@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 name: Warehouse
+dynmap-marker: chest
 price: 1000
 groups:
 - utility

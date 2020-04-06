@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: FLINT
+dynmap-marker: factory
 name: Flint_Works
 price: 20
 groups:

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COAL_ORE
+dynmap-marker: hammer
 name: Coal_Mine
 max: 1
 price: 100

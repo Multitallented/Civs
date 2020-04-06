@@ -1,6 +1,7 @@
 type: region
 icon: OBSIDIAN
 shop-icon: OAK_SIGN
+dynmap-marker: king
 name: City_Hall
 price: 8000
 max: 1

@@ -158,14 +158,14 @@ public class MemberActionMenu extends CustomMenu {
             if (personRole.contains(Constants.MEMBER)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (!viewingSelf && personIsOwner && !role.contains(Constants.MEMBER)))) {
+            if (!(isAdmin || (!viewingSelf && isOwner && !role.contains(Constants.MEMBER)))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
             if (personRole.contains(Constants.GUEST)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (personIsOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
+            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-recruiter".equals(menuIcon.getKey())) {
@@ -175,11 +175,11 @@ public class MemberActionMenu extends CustomMenu {
             if (personRole.contains(Constants.RECRUITER)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (personIsOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
+            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {
-            if (!(viewingSelf || personIsOwner)) {
+            if (!viewingSelf && !isOwner && !isAdmin) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("vote".equals(menuIcon.getKey())) {

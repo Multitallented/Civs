@@ -398,6 +398,9 @@ public class ItemManager {
         if (config.isSet("commands-on-destruction")) {
             regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-destruction"));
         }
+        if (config.isSet("dynmap-marker")) {
+            regionType.setDynmapMarkerKey(config.getString("dynmap-marker"));
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

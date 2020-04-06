@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: BIRCH_LOG
+dynmap-marker: tree
 name: Birch_Lumberyard
 max: 2
 price: 100

@@ -9,6 +9,7 @@ public final class LocaleConstants {
     public static final String GROUP_SUFFIX = "-group";
     public static final String PREVENT_CIVS_ITEM_SHARE = "prevent-civs-item-share";
     public static final String REGION_PROTECTED = "region-protected";
+    public static final String PERMISSION_DENIED = "no-permission";
 
     private LocaleConstants() {
 

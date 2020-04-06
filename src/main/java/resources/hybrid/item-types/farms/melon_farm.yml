@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: MELON_SLICE
+dynmap-marker: cutlery
 name: Melon_Farm
 max: 1
 price: 100

@@ -17,8 +17,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
+import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -197,13 +199,19 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
+        Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
+        if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
+            DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) Bukkit.getPluginManager().getPlugin("dynmap");
+        }
     }
 
     private void instantiateSingletons() {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         FilterBuilder filterBuilder = new FilterBuilder();
         configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs"));
-        filterBuilder.includePackage("org.redcastlemedia.multitallented.civs").excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion");
+        filterBuilder.includePackage("org.redcastlemedia.multitallented.civs")
+                .excludePackage("org.redcastlemedia.multitallented.civs.dynmaphook")
+                .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion");
         configurationBuilder.filterInputsBy(filterBuilder);
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);

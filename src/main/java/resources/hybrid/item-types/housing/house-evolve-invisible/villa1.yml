@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: CYAN_BED
+dynmap-marker: big house
 name: Villa1
 max: 2
 price: 8000

@@ -118,7 +118,6 @@ public class ProtectionHandler implements Listener {
             if (isNotMember) {
                 return;
             }
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
             if (!radii.isValid()) {
                 List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),

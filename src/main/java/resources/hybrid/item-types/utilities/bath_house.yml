@@ -1,6 +1,7 @@
 type: region
 icon: CRAFTING_TABLE
 shop-icon: WATER_BUCKET
+dynmap-marker: basket
 name: Bath_House
 max: 1
 price: 700

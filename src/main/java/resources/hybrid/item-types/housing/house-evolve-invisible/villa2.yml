@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: CYAN_BED
+dynmap-marker: big house
 name: Villa2
 is-in-shop: false
 max: 2

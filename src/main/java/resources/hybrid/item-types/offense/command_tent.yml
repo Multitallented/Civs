@@ -1,6 +1,7 @@
 type: region
 icon: TNT
 shop-icon: BIRCH_FENCE_GATE
+dynmap-marker: tower
 name: Command_Tent
 max: 2
 price: 200

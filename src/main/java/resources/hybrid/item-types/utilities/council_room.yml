@@ -1,6 +1,7 @@
 type: region
 icon: OBSIDIAN
 shop-icon: OAK_SIGN
+dynmap-marker: king
 name: Council_Room
 price: 500
 max: 1

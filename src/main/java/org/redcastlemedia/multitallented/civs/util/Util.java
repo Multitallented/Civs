@@ -686,6 +686,9 @@ public final class Util {
     }
 
     public static void spawnRandomFirework(Player player) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
 

@@ -1,5 +1,6 @@
 type: region
 icon: BLACK_BED
+dynmap-marker: tower
 name: Barracks
 max: 2
 price: 750

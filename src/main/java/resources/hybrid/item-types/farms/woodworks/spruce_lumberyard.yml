@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: SPRUCE_LOG
+dynmap-marker: tree
 name: Spruce_Lumberyard
 max: 2
 price: 100

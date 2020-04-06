@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: ICE
+dynmap-marker: factory
 name: Ice_Maker
 price: 20
 groups:

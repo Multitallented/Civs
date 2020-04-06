@@ -1,6 +1,7 @@
 type: region
 icon: STONE
 name: Admin_Graveyard
+dynmap-marker: skull
 level: 1
 groups: []
 

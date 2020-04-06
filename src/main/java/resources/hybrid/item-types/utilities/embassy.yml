@@ -1,6 +1,7 @@
 type: region
 icon: OAK_SIGN
 shop-icon: PAPER
+dynmap-marker: portal
 name: Embassy
 price: 500
 max: 1

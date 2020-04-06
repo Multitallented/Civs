@@ -97,7 +97,7 @@ public class GovListMenu extends CustomMenu {
                 townList = townList.substring(0, townList.length() - 1);
                 ArrayList<String> theseActions = new ArrayList<>();
                 theseActions.add("menu:select-town?townList=" + townList);
-                actions.get(civilian.getUuid()).put(itemStack, theseActions);
+                putActionList(civilian, itemStack, theseActions);
             } else {
                 putActions(civilian, menuIcon, itemStack, count);
             }

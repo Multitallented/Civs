@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: LEATHER
+dynmap-marker: coins
 name: Leather_Shop
 max: 1
 price: 10

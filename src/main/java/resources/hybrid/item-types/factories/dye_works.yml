@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: INK_SAC
+dynmap-marker: factory
 name: Dye_Works
 price: 20
 groups:

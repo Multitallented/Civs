@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: DIAMOND
+dynmap-marker: coins
 name: Diamond_Shop
 max: 1
 price: 400

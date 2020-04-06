@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: APPLE
+dynmap-marker: tree
 name: Apple_Orchard
 price: 200
 groups:

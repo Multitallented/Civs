@@ -1,5 +1,6 @@
 type: region
 icon: QUARTZ_BLOCK
+dynmap-marker: church
 name: Church
 max: 1
 price: 800

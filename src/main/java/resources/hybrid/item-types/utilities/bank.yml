@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PAPER
+dynmap-marker: bank
 name: Bank
 price: 200
 groups:

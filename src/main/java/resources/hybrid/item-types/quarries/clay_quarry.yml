@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: CLAY_BALL
+dynmap-marker: minecart
 name: Clay_Quarry
 price: 100
 groups:
