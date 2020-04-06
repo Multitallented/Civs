@@ -126,7 +126,7 @@ public class IntruderEffect implements Listener {
                             "intruder-exit").replace("$1", playerName).replace("$2", town.getName());
                 }
                 p.sendMessage(Civs.getPrefix() + ChatColor.RED + message);
-                p.playSound(p.getLocation(), Sound.BLOCK_BELL_USE, 1, 1);
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
             }
         }
     }
