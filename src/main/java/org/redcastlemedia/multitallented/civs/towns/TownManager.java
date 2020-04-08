@@ -728,7 +728,8 @@ public class TownManager {
                 people,
                 townType.getPower(),
                 townType.getMaxPower(), housingCount, villagerCount, -1);
-            newTown.setChildLocations(childLocations);
+        newTown.setEffects(new HashMap<>(townType.getEffects()));
+        newTown.setChildLocations(childLocations);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {
