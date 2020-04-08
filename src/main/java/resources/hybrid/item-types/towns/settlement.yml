@@ -24,6 +24,8 @@ limits:
 - purifier:1
 - embassy:1
 - jammer_trap:0
+- barracks:1
+- inn:1
 
 build-radius: 40
 build-radius-y: 500

@@ -28,6 +28,8 @@ limits:
 - smithy:1
 - purifier:1
 - church:1
+- barracks:1
+- inn:1
 - warehouse:1
 - embassy:2
 - jammer_trap:0
