@@ -57,6 +57,8 @@ public class Region {
     private double forSale = -1;
     @Getter @Setter
     private boolean warehouseEnabled = true;
+    @Getter @Setter
+    private List<List<CVItem>> missingBlocks = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,

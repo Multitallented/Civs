@@ -132,14 +132,11 @@ public class ProtectionHandler implements Listener {
                         }
                         missingList.add(tempList);
                     }
-                    event.setCancelled(true);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "broke-own-region").replace("$1", region.getType()));
-                    HashMap<String, Object> data = new HashMap<>();
-                    data.put("items", missingList);
-                    data.put("page", 0);
-                    MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
-                    return;
+                    if (region.getMissingBlocks().isEmpty()) {
+                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                "broke-own-region").replace("$1", region.getType()));
+                    }
+                    region.setMissingBlocks(missingList);
                 }
             }
         }
@@ -180,6 +177,7 @@ public class ProtectionHandler implements Listener {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
+        // TODO remove block from region missing blocks
     }
 
     @EventHandler(ignoreCancelled = true)
