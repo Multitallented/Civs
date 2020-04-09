@@ -722,6 +722,9 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
+        if (!missingBlocks.isEmpty()) {
+            return false;
+        }
         if (checkTick && !shouldTick()) {
             return false;
         }

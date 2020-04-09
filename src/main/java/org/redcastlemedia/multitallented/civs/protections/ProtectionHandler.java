@@ -28,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @CivsSingleton
@@ -77,7 +79,7 @@ public class ProtectionHandler implements Listener {
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
         }
@@ -111,34 +113,36 @@ public class ProtectionHandler implements Listener {
             }
             Player player = event.getPlayer();
             boolean isNotMember = !region.getPeople().containsKey(player.getUniqueId());
-            if (isNotMember && !region.hasRequiredBlocks()) {
+            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
+            if (isNotMember && !radii.isValid()) {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
-            if (isNotMember) {
-                return;
-            }
-            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
-            if (!radii.isValid()) {
-                List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
-                        region.getLocation(),
-                        new ItemStack(event.getBlock().getType(), 1));
-                List<List<CVItem>> missingList = new ArrayList<>();
+            setMissingBlocks(event, region, player, isNotMember, radii);
+        }
+    }
 
-                if (missingBlocks != null && !missingBlocks.isEmpty()) {
-                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
-                        List<CVItem> tempList = new ArrayList<>();
-                        for (Material mat : missingMap.keySet()) {
-                            tempList.add(new CVItem(mat, missingMap.get(mat)));
-                        }
-                        missingList.add(tempList);
-                    }
-                    if (region.getMissingBlocks().isEmpty()) {
-                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "broke-own-region").replace("$1", region.getType()));
-                    }
-                    region.setMissingBlocks(missingList);
+    private void setMissingBlocks(BlockBreakEvent event, Region region, Player player, boolean isNotMember, RegionPoints radii) {
+        if (radii.isValid()) {
+            return;
+        }
+        List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
+                region.getLocation(),
+                new ItemStack(event.getBlock().getType(), 1));
+        List<List<CVItem>> missingList = new ArrayList<>();
+
+        if (missingBlocks != null && !missingBlocks.isEmpty()) {
+            for (HashMap<Material, Integer> missingMap : missingBlocks) {
+                List<CVItem> tempList = new ArrayList<>();
+                for (Map.Entry<Material, Integer> entry : missingMap.entrySet()) {
+                    tempList.add(new CVItem(entry.getKey(), entry.getValue()));
                 }
+                missingList.add(tempList);
             }
+            if (region.getMissingBlocks().isEmpty() && !isNotMember) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "broke-own-region").replace("$1", region.getType()));
+            }
+            region.setMissingBlocks(missingList);
         }
     }
 
@@ -169,15 +173,43 @@ public class ProtectionHandler implements Listener {
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), "block_build");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);
         }
-        if (event.isCancelled() && event.getPlayer() != null) {
+        if (event.isCancelled()) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+        } else {
+            Region region = RegionManager.getInstance().getRegionAt(event.getBlockPlaced().getLocation());
+            if (region != null) {
+                removeBlockFromMissingBlocks(region, event.getBlockPlaced().getType());
+            }
         }
-        // TODO remove block from region missing blocks
+    }
+
+    private void removeBlockFromMissingBlocks(Region region, Material type) {
+        int index1 = -1;
+        int index2 = -1;
+        for (int i = 0; i < region.getMissingBlocks().size(); i++) {
+            for (int j = 0; j < region.getMissingBlocks().get(i).size(); j++) {
+                Material currentMat = region.getMissingBlocks().get(i).get(j).getMat();
+                if (currentMat == type) {
+                    index1 = i;
+                    if (region.getMissingBlocks().get(i).size() != 1) {
+                        index2 = j;
+                    }
+                    break;
+                }
+            }
+        }
+        if (index1 != -1) {
+            if (index2 != -1) {
+                region.getMissingBlocks().get(index1).remove(index2);
+            } else {
+                region.getMissingBlocks().remove(index1);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -185,7 +217,7 @@ public class ProtectionHandler implements Listener {
         if (!event.getBlock().getType().equals(Material.CAKE)) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -200,8 +232,8 @@ public class ProtectionHandler implements Listener {
                 !ConfigManager.getInstance().isCheckWaterSpread()) {
             return;
         }
-        boolean shouldTakeActionFrom = shouldBlockAction(event.getBlock(), null, "block_liquid");
-        boolean shouldTakeActionTo = shouldBlockAction(event.getToBlock(), null, "block_liquid");
+        boolean shouldTakeActionFrom = shouldBlockAction(event.getBlock(), null, RegionEffectConstants.BLOCK_LIQUID);
+        boolean shouldTakeActionTo = shouldBlockAction(event.getToBlock(), null, RegionEffectConstants.BLOCK_LIQUID);
         boolean setCancelled = event.isCancelled() || (!shouldTakeActionFrom && shouldTakeActionTo);
         if (setCancelled) {
             event.setCancelled(true);
@@ -216,7 +248,7 @@ public class ProtectionHandler implements Listener {
         if (!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) {
             return;
         }
-        boolean shouldCancel = shouldBlockAction(event.getEntity().getLocation(), null, "deny_damage");
+        boolean shouldCancel = shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.DENY_DAMAGE);
         if (shouldCancel) {
             event.getDrops().clear();
             event.setDroppedExp(0);
@@ -229,7 +261,7 @@ public class ProtectionHandler implements Listener {
                 event.getEntityType() != EntityType.WITHER) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock().getLocation(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -240,7 +272,7 @@ public class ProtectionHandler implements Listener {
         if (event.getIgnitingBlock() == null) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getIgnitingBlock(), event.getPlayer(), "block_fire");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getIgnitingBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_FIRE);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -251,7 +283,7 @@ public class ProtectionHandler implements Listener {
     }
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -265,7 +297,7 @@ public class ProtectionHandler implements Listener {
         Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
         Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
         for (Block block : event.getBlocks()) {
-            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), "block_build", town, region);
+            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), RegionEffectConstants.BLOCK_BUILD, town, region);
             if (checkLocation) {
                 event.setCancelled(true);
                 return;
@@ -278,7 +310,7 @@ public class ProtectionHandler implements Listener {
         Town town = TownManager.getInstance().getTownAt(event.getBlock().getLocation());
         Region region = RegionManager.getInstance().getRegionAt(event.getBlock().getLocation());
         for (Block block : event.getBlocks()) {
-            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), "block_build", town, region);
+            boolean checkLocation = shouldBlockActionInferFromOrigin(block.getLocation(), RegionEffectConstants.BLOCK_BUILD, town, region);
             if (checkLocation) {
                 event.setCancelled(true);
                 return;
@@ -289,7 +321,7 @@ public class ProtectionHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
         boolean setCancelled = event.isCancelled() ||
-                shouldBlockAction(event.getBlock(), event.getPlayer(), "block_build");
+                shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -304,7 +336,7 @@ public class ProtectionHandler implements Listener {
         if (event.getRemover() instanceof Player) {
             player = (Player) event.getRemover();
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(), player, "block_break");
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(), player, RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled) {
             event.setCancelled(true);
         }
@@ -320,7 +352,7 @@ public class ProtectionHandler implements Listener {
             onPaintingBreak((HangingBreakByEntityEvent) event);
             return;
         }
-        shouldBlockAction(event.getEntity().getLocation(), null, "block_break");
+        shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.BLOCK_BREAK);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -330,10 +362,10 @@ public class ProtectionHandler implements Listener {
 
         if (event.getIgnitingBlock() != null) {
             location = event.getIgnitingBlock().getLocation();
-            shouldDeny = shouldBlockAction(location, event.getPlayer(), "block_fire");
+            shouldDeny = shouldBlockAction(location, event.getPlayer(), RegionEffectConstants.BLOCK_FIRE);
         } else if (event.getIgnitingEntity() != null) {
             location = event.getIgnitingEntity().getLocation();
-            shouldDeny = shouldBlockAction(location, event.getPlayer(), "block_fire");
+            shouldDeny = shouldBlockAction(location, event.getPlayer(), RegionEffectConstants.BLOCK_FIRE);
         } else {
             return;
         }
@@ -347,7 +379,7 @@ public class ProtectionHandler implements Listener {
         if (event.getSource().getType() != Material.FIRE) {
             return;
         }
-        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), "block_fire");
+        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), RegionEffectConstants.BLOCK_FIRE);
         if (shouldDeny) {
             event.setCancelled(true);
         }
@@ -355,7 +387,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
-        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), "block_break");
+        boolean shouldDeny = shouldBlockAction(event.getBlock().getLocation(), RegionEffectConstants.BLOCK_BREAK);
         if (shouldDeny) {
             event.setCancelled(true);
         }
@@ -373,13 +405,13 @@ public class ProtectionHandler implements Listener {
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
             }
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_tnt", 5);
-            if (shouldBlockActionEffect(event.getLocation(), null, "power_shield", 0)) {
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_TNT, 5);
+            if (shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.POWER_SHIELD, 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
                     int powerReduce = 1;
-                    if (town.getEffects().get("power_shield") != null) {
-                        powerReduce = Integer.parseInt(town.getEffects().get("power_shield"));
+                    if (town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
+                        powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
                     }
                     if (town.getPower() > 0) {
                         TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
@@ -397,18 +429,18 @@ public class ProtectionHandler implements Listener {
             return;
         }
         setCancelled = !event.isCancelled() &&
-                (shouldBlockActionEffect(event.getLocation(), null, "block_explosion", 5) ||
-                shouldBlockActionEffect(event.getLocation(), null, "power_shield", 5));
+                (shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_EXPLOSION, 5) ||
+                shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.POWER_SHIELD, 5));
         if (setCancelled) {
             event.setCancelled(true);
             return;
         }
         if (event.getEntity() instanceof Creeper) {
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_creeper", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_CREEPER, 5);
         } else if (event.getEntity() instanceof Fireball) {
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_ghast", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_GHAST, 5);
         } else if (event.getEntity() instanceof Wither || event.getEntity() instanceof WitherSkull) {
-            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, "block_wither", 5);
+            setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_WITHER, 5);
         }
         if (setCancelled) {
             event.setCancelled(true);
@@ -420,7 +452,7 @@ public class ProtectionHandler implements Listener {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), checkRegionBlocks, 1L);
     }
 
-    class CheckRegionBlocks implements Runnable {
+    static class CheckRegionBlocks implements Runnable {
         private final Location location;
         CheckRegionBlocks(Location location) {
             this.location = location;
@@ -428,15 +460,7 @@ public class ProtectionHandler implements Listener {
         @Override
         public void run() {
             RegionManager regionManager = RegionManager.getInstance();
-            Set<Region> tempArray = new HashSet<>();
-            for (Region region : regionManager.getContainingRegions(location, 5)) {
-//                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-//                if (Region.hasRequiredBlocksOnCenter(regionType, region.getLocation()).length == 0 &&
-//                        Region.hasRequiredBlocks(region.getType(), region.getLocation()).length == 0) {
-//                    tempArray.add(region);
-//                }
-                tempArray.add(region);
-            }
+            Set<Region> tempArray = regionManager.getContainingRegions(location, 5);
             for (Region region : tempArray) {
                 regionManager.removeRegion(region, true, true);
                 CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
@@ -446,7 +470,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_build");
+        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (cancel) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -456,7 +480,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketFillEvent event) {
-        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), "block_break");
+        boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (cancel) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() +
@@ -491,14 +515,14 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
                 mat == Material.IRON_TRAPDOOR) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "door_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.SIGN ||
                 mat == Material.WALL_SIGN) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "sign_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.SIGN_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
@@ -509,7 +533,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF ||
                 mat == Material.SHULKER_BOX) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "chest_use"));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
@@ -523,7 +547,7 @@ public class ProtectionHandler implements Listener {
         } else if (mat == Material.WHEAT ||
                 mat == Material.CARROT ||
                 mat == Material.POTATO) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_break", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
@@ -536,13 +560,13 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
                 mat == Material.OAK_BUTTON) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "button_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
             }
         } else {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, "block_use", null));
+            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
@@ -572,23 +596,20 @@ public class ProtectionHandler implements Listener {
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG) {
             return;
         }
-        boolean cancel = event.isCancelled() || shouldBlockAction(event.getLocation(), null, "deny_mob_spawn");
+        boolean cancel = event.isCancelled() || shouldBlockAction(event.getLocation(), null, RegionEffectConstants.DENY_MOB_SPAWN);
         if (cancel) {
             event.setCancelled(true);
         }
     }
 
     boolean shouldBlockActionEffect(Location location, Player player, String type, int mod) {
-//        if (player != null && Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION)) {
-//            return false;
-//        }
         if (player != null && player.getGameMode() == GameMode.CREATIVE) {
             return false;
         }
         Town town = TownManager.getInstance().getTownAt(location);
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
-            if (!region.effects.keySet().contains(type)) {
+            if (!region.effects.containsKey(type)) {
                 continue;
             }
             if (player == null) {
@@ -604,14 +625,14 @@ public class ProtectionHandler implements Listener {
             }
             if (role == null || (role.contains(Constants.MEMBER) &&
                     !Util.equivalentLocations(location, region.getLocation()) &&
-                    type.equals("block_break"))) {
+                    type.equals(RegionEffectConstants.BLOCK_BREAK))) {
                 return true;
             }
             return true;
         }
         if (town != null) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (!townType.getEffects().keySet().contains(type)) {
+            if (!townType.getEffects().containsKey(type)) {
                 return false;
             }
             boolean hasPower = town.getPower() > 0;
@@ -622,10 +643,6 @@ public class ProtectionHandler implements Listener {
             if (player == null) {
                 return true;
             }
-//            String role = town.getPeople().get(player.getUniqueId());
-//            if (role == null || (role.contains(Constants.MEMBER))) {
-//                return false;
-//            }
             return false;
         }
         return false;
@@ -659,11 +676,7 @@ public class ProtectionHandler implements Listener {
             }
         }
         Region region = regionManager.getRegionAt(location);
-        if (region == null ||
-                !region.effects.keySet().contains(type)) {
-            return false;
-        }
-        return true;
+        return region != null && region.effects.containsKey(type);
     }
 
     static boolean shouldBlockAction(Location location, Player player, String type, String pRole) {
@@ -725,7 +738,7 @@ public class ProtectionHandler implements Listener {
             return false;
         }
         if (Util.equivalentLocations(location, region.getLocation()) &&
-                type.equals("block_break")) {
+                type.equals(RegionEffectConstants.BLOCK_BREAK)) {
             return true;
         }
         if (pRole == null && (role.contains("ally") || role.contains(Constants.MEMBER))) {
@@ -777,7 +790,7 @@ public class ProtectionHandler implements Listener {
             }
         }
         if (Util.equivalentLocations(location, currentRegion.getLocation()) &&
-                type.equals("block_break")) {
+                type.equals(RegionEffectConstants.BLOCK_BREAK)) {
             return true;
         }
         return !currentRegion.equals(region);
