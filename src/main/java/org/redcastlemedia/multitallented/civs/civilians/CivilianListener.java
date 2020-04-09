@@ -562,6 +562,7 @@ public class CivilianListener implements Listener {
         if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
             return;
         }
+        event.setCancelled(true);
         if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.FRIEND) {
             for (Player recipient : new HashSet<>(event.getRecipients())) {
                 if (!civilian.getFriends().contains(recipient.getUniqueId()) &&
@@ -604,6 +605,10 @@ public class CivilianListener implements Listener {
                 player.equals(event.getRecipients().iterator().next()))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
+        } else {
+            for (Player currentPlayer : event.getRecipients()) {
+                currentPlayer.sendMessage("[" + chatChannel.getName(currentPlayer) + "] " + event.getMessage());
+            }
         }
     }
 

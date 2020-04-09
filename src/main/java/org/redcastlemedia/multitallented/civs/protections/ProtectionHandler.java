@@ -741,14 +741,15 @@ public class ProtectionHandler implements Listener {
             if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                     government.getGovernmentType() == GovernmentType.ANARCHY) {
                 role = Constants.OWNER;
-            } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
+            } else if (!role.contains(Constants.OWNER) &&
+                    (government.getGovernmentType() == GovernmentType.SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM) &&
                     (regionType.getGroups().contains("mine") ||
                     regionType.getGroups().contains("quarry") ||
                     regionType.getGroups().contains("farm") ||
                     regionType.getGroups().contains("factory"))) {
-                role = Constants.OWNER;
+                role = Constants.MEMBER;
             }
         }
         if (role.contains(Constants.OWNER)) {

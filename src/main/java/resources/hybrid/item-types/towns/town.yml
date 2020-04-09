@@ -34,8 +34,8 @@ limits:
 - church:1
 - bank:1
 - warehouse:1
-- barracks:1
-- inn:1
+- barracks:2
+- inn:2
 - jail:1
 - alchemical_lab:1
 - power_capacitor:2
