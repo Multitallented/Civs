@@ -84,8 +84,7 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled()) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
-        }
-        if (!event.isCancelled()) {
+        } else {
             if (event.getBlock().getType() == Material.CHEST) {
                 UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
             }

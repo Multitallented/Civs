@@ -1,4 +1,4 @@
-size: 18
+size: 27
 # variables:
 #  town: name of the town you're currently in
 #  region: id of the region you're currently in
@@ -36,27 +36,69 @@ items:
     name: community
     actions:
       - menu:community
-  town:
+  towns:
     index: 9
+    icon: RED_BED
+    name: towns
+    actions:
+      - menu:select-town?prevMenu=town
+  your-towns:
+    index: 10
+    icon: BLUE_BED
+    name: your-towns
+    actions:
+      - menu:select-town?prevMenu=town&uuid=$uuid$
+  alliances:
+    index: 11
+    icon: IRON_SWORD
+    name: alliances
+    actions:
+      - menu:alliance-list
+  players:
+    index: 12
+    icon: SIGN
+    name: players
+    actions:
+      - menu:people
+  regions-for-sale:
+    index: 13
+    icon: EMERALD
+    name: regions-for-sale
+    actions:
+      - menu:region-list?sell=true
+  ports:
+    index: 14
+    icon: ENDER_PEARL
+    name: ports
+    actions:
+      - menu:port
+  gov-leaderboard:
+    index: 15
+    icon: JUKEBOX
+    name: leaderboard
+    actions:
+      - menu:gov-list?leaderboard=true
+  town:
+    index: 18
     # name: town name
     # icon: town icon
     actions:
       - menu:town?town=$town$
   region:
-    index: 10
+    index: 19
     # name: region type
     # icon: region icon
     actions:
       - menu:region?region=$region$
   chat:
-    index: 16
+    index: 25
     icon: MAP
     name: chat-channels
     desc: click-change-chat
     actions:
       - menu:chat-channel-list
   language:
-    index: 17
+    index: 26
     icon: GRASS_BLOCK
     name: language-menu
     actions:
