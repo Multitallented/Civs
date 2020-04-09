@@ -607,7 +607,10 @@ public class CivilianListener implements Listener {
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
-                currentPlayer.sendMessage("[" + chatChannel.getName(currentPlayer) + "] " + event.getMessage());
+                currentPlayer.sendMessage(ConfigManager.getInstance().getChatChannelFormat()
+                        .replace("$channel$", chatChannel.getName(currentPlayer))
+                        .replace("$player$", player.getDisplayName())
+                        .replace("$message$", event.getMessage()));
             }
         }
     }
