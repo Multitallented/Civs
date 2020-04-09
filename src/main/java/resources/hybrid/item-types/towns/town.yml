@@ -40,7 +40,7 @@ limits:
 - alchemical_lab:1
 - power_capacitor:2
 - embassy:5
-- idolgroup:2
+- idolgroup:1
 - jammer_trap:0
 
 critical-build-reqs:
@@ -60,6 +60,6 @@ effects:
 - control_override
 - anticamp:2.1500.600 #2 damage for 25 minutes costs $600
 
-power: 1500
-max-power: 5100
+power: 770
+max-power: 15000
 

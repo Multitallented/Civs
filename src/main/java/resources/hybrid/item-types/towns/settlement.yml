@@ -39,5 +39,5 @@ effects:
 - block_explosion
 - anticamp:4.1800.100 #4 damage for 30 minutes costs $100
 
-power: 300
-max-power: 2040
+power: 150
+max-power: 3800

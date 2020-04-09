@@ -4,6 +4,7 @@ shop-icon: TNT
 name: Siege_Machine3
 dynmap-marker: bomb
 is-in-shop: false
+price: 500
 groups:
 - offense
 - siegemachinegroup
@@ -34,6 +35,6 @@ upkeep:
     - REDSTONE*1
     - COAL*1
     output:
-    - GRAVEL*1%70,TNT*1%30
-    - DIRT*1%40,COAL*1%30,REDSTONE*1%30
+    - GRAVEL*1%50,TNT*1%50
+    - COAL*1%50,REDSTONE*1%50
 

@@ -2,7 +2,7 @@ type: town
 icon: TNT
 name: Keep
 max: 2
-price: 1000
+price: 800
 group:
 - outpost
 level: 3

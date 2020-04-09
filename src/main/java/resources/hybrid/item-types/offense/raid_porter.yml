@@ -3,7 +3,7 @@ icon: REDSTONE_BLOCK
 dynmap-marker: portal
 name: Raid_Porter
 max: 1
-price: 200
+price: 150
 groups:
 - offense
 - raidport

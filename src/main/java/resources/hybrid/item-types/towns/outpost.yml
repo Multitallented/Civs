@@ -3,7 +3,7 @@ icon: TNT
 shop-icon: GUNPOWDER
 name: Outpost
 max: 2
-price: 600
+price: 500
 group:
 - outpost
 level: 2
