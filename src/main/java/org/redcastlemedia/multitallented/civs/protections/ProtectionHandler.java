@@ -448,23 +448,20 @@ public class ProtectionHandler implements Listener {
         }
 
         final Location location = event.getLocation();
-        CheckRegionBlocks checkRegionBlocks = new CheckRegionBlocks(location);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), checkRegionBlocks, 1L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                checkRegionBlocks(location);
+            }
+        }, 1L);
     }
 
-    static class CheckRegionBlocks implements Runnable {
-        private final Location location;
-        CheckRegionBlocks(Location location) {
-            this.location = location;
-        }
-        @Override
-        public void run() {
-            RegionManager regionManager = RegionManager.getInstance();
-            Set<Region> tempArray = regionManager.getContainingRegions(location, 5);
-            for (Region region : tempArray) {
-                regionManager.removeRegion(region, true, true);
-                CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
-            }
+    protected void checkRegionBlocks(Location location) {
+        RegionManager regionManager = RegionManager.getInstance();
+        Set<Region> tempArray = regionManager.getContainingRegions(location, 5);
+        for (Region region : tempArray) {
+            regionManager.removeRegion(region, true, true);
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
         }
     }
 
