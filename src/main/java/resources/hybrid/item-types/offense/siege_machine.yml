@@ -3,7 +3,7 @@ icon: CHEST
 shop-icon: TNT
 name: Siege_Machine
 dynmap-marker: bomb
-price: 500
+price: 250
 groups:
 - offense
 - siegemachinegroup

@@ -4,6 +4,7 @@ name: Raid_Porter_Active
 dynmap-marker: portal
 max: 1
 is-in-shop: false
+price: 150
 groups:
 - offense
 - raidport

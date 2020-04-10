@@ -51,6 +51,6 @@ effects:
 - control_override
 - anticamp:3.1800.200 #3 damage for 30 minutes costs $200
 
-power: 600
-max-power: 2460
+power: 250
+max-power: 7600
 

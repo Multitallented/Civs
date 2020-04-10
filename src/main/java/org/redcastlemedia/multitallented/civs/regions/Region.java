@@ -57,6 +57,8 @@ public class Region {
     private double forSale = -1;
     @Getter @Setter
     private boolean warehouseEnabled = true;
+    @Getter @Setter
+    private List<List<CVItem>> missingBlocks = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -720,6 +722,9 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
+        if (!missingBlocks.isEmpty()) {
+            return false;
+        }
         if (checkTick && !shouldTick()) {
             return false;
         }

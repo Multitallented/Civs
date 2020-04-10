@@ -33,7 +33,7 @@ items:
     name: operation
     desc: region-not-working
     actions:
-      - menu:recipe?regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
+      - menu:recipe?regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$&region=$region$
   location:
     index: 3
     icon: OAK_DOOR
@@ -104,4 +104,10 @@ items:
     actions:
       - toggle-warehouse
       - refresh
+  missing-blocks:
+    index: 17
+    icon: CRACKED_STONE_BRICKS
+    name: missing-region-requirements
+    actions:
+      - menu:recipe?region=$region$&recipe=broken
 

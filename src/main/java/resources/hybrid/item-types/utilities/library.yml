@@ -39,7 +39,7 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 2
+    power-output: 4
   1:
     reagents:
     - GLASS_BOTTLE*2

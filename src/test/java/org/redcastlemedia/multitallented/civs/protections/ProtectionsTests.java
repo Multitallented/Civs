@@ -236,8 +236,7 @@ public class ProtectionsTests extends TestUtil {
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0 , 0, -7);
         explodeInRegion(false, regionLocation);
         ProtectionHandler protectionHandler = new ProtectionHandler();
-        ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
-        checkRegionBlocks.run();
+        protectionHandler.checkRegionBlocks(regionLocation);
         assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 
@@ -246,8 +245,7 @@ public class ProtectionsTests extends TestUtil {
         Location regionLocation = new Location(Bukkit.getWorld("world"), -4 , 0, 0);
         explodeInRegion(false, regionLocation);
         ProtectionHandler protectionHandler = new ProtectionHandler();
-        ProtectionHandler.CheckRegionBlocks checkRegionBlocks = protectionHandler.new CheckRegionBlocks(regionLocation);
-        checkRegionBlocks.run();
+        protectionHandler.checkRegionBlocks(regionLocation);
         assertNull(RegionManager.getInstance().getRegionAt(regionLocation));
     }
 

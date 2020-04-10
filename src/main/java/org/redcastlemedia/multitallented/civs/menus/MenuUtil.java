@@ -42,6 +42,8 @@ public final class MenuUtil {
             item.setType(Material.JUNGLE_SIGN);
         } else if (mat == Material.ACACIA_WALL_SIGN) {
             item.setType(Material.ACACIA_SIGN);
+        } else if (mat == Material.COCOA) {
+            item.setType(Material.COCOA_BEANS);
         }
     }
     private static void divideByTwo(ItemStack item) {
