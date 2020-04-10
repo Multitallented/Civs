@@ -31,7 +31,7 @@ limits:
 - inn:4
 - jail:1
 - alchemical_lab:1
-- power_capacitor:8
+- vault:8
 - diamond_mine:1
 - obsidian_mine:1
 - ender_pearl_farm:1
@@ -57,5 +57,5 @@ effects:
 - potion:SATURATION.80
 - anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000
 
-power: 4800
-max-power: 24700
+power: 4000
+max-power: 20700
