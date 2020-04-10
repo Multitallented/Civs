@@ -280,7 +280,7 @@
 #player-not-found: "Player $1 not found"
 #repeat-kill: "$1 was killed too recently. No points awarded."
 #kill-streak: "$1 is on a killstreak of $2"
-#kill-joy: "$1 ended $2's killstreak of $3"
+#kill-joy: "$2 ended $1's killstreak of $3"
 #death: "You lost $1 points for dying"
 #kill: "Kill: $1"
 #low-health: "Low health bonus: $1"

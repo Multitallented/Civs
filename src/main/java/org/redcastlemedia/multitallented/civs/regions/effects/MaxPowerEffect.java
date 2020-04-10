@@ -32,7 +32,7 @@ public class MaxPowerEffect implements RegionCreatedListener, DestroyRegionListe
         if (town == null) {
             return;
         }
-        town.setMaxPower(town.getMaxPower() - region.getEffects().get(KEY));
+        town.setMaxPower(town.getMaxPower() - Integer.parseInt(region.getEffects().get(KEY)));
         TownManager.getInstance().saveTown(town);
     }
 
@@ -42,7 +42,7 @@ public class MaxPowerEffect implements RegionCreatedListener, DestroyRegionListe
         if (town == null) {
             return;
         }
-        town.setMaxPower(town.getMaxPower() + region.getEffects().get(KEY));
+        town.setMaxPower(town.getMaxPower() + Integer.parseInt(region.getEffects().get(KEY)));
         TownManager.getInstance().saveTown(town);
     }
 }
