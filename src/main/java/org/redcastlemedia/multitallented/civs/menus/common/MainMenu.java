@@ -53,6 +53,7 @@ public class MainMenu extends CustomMenu {
         if (town != null) {
             data.put("town", town);
         }
+        data.put("uuid", civilian.getUuid().toString());
         return data;
     }
 

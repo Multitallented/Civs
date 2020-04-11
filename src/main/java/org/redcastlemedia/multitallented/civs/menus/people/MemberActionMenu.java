@@ -172,7 +172,7 @@ public class MemberActionMenu extends CustomMenu {
             if (region != null) {
                 return new ItemStack(Material.AIR);
             }
-            if (personRole.contains(Constants.RECRUITER)) {
+            if (personRole.contains(Constants.RECRUITER) || personIsOwner) {
                 return new ItemStack(Material.AIR);
             }
             if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
