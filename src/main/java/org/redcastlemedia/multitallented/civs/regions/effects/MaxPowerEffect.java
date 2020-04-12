@@ -28,6 +28,9 @@ public class MaxPowerEffect implements RegionCreatedListener, DestroyRegionListe
 
     @Override
     public void destroyRegionHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town == null) {
             return;
@@ -38,6 +41,9 @@ public class MaxPowerEffect implements RegionCreatedListener, DestroyRegionListe
 
     @Override
     public void regionCreatedHandler(Region region) {
+        if (!region.getEffects().containsKey(KEY)) {
+            return;
+        }
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         if (town == null) {
             return;
