@@ -8,7 +8,7 @@
 #    index: 0
 #    icon: ENCHANTED_BOOK
 #    name: guide
-#    desc: guide-desc
+#    #desc: the next tutorial step
 #    actions:
 #      - print-tutorial
 #      - close

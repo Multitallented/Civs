@@ -79,10 +79,6 @@ public class CivilianListener implements Listener {
 
     private static CivilianListener civilianListener;
 
-    public CivilianListener() {
-
-    }
-
     public static CivilianListener getInstance() {
         if (civilianListener == null) {
             civilianListener = new CivilianListener();
@@ -97,19 +93,23 @@ public class CivilianListener implements Listener {
         civilianManager.loadCivilian(event.getPlayer());
         ConfigManager configManager = ConfigManager.getInstance();
         Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (configManager.getUseStarterBook()) {
-            boolean hasStarterBook = false;
-            for (ItemStack is : player.getInventory()) {
-                if (is != null && Util.isStarterBook(is)) {
-                    hasStarterBook = true;
-                    break;
-                }
+            giveMenuBookIfNoneInInventory(player);
+        }
+    }
+
+    public static void giveMenuBookIfNoneInInventory(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        boolean hasStarterBook = false;
+        for (ItemStack is : player.getInventory()) {
+            if (is != null && Util.isStarterBook(is)) {
+                hasStarterBook = true;
+                break;
             }
-            if (!hasStarterBook) {
-                ItemStack stack = Util.createStarterBook(civilian.getLocale());
-                player.getInventory().addItem(stack);
-            }
+        }
+        if (!hasStarterBook) {
+            ItemStack stack = Util.createStarterBook(civilian.getLocale());
+            player.getInventory().addItem(stack);
         }
     }
 
