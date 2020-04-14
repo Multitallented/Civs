@@ -182,6 +182,8 @@
 #friend-added: "$1 has been added to your friends list"
 #friend-removed: "$1 has been removed from your friends list"
 #bounty: "Set a bounty /cv bounty $1 amount"
+#click-me: ">>>Click me<<<"
+#bounty-command: "/cv bounty $1 amount"
 #town-ally: "Set $1 as allies"
 #town-unally: "Set $1 as enemies"
 #town-ally-invites: "You have town ally invites"

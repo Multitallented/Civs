@@ -101,6 +101,11 @@ public class MainMenu extends CustomMenu {
             if (!ConfigManager.getInstance().isUseGuide()) {
                 return new ItemStack(Material.AIR);
             }
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            cvItem.setLore(TutorialManager.getInstance().getNextTutorialStepMessage(civilian, false));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if (menuIcon.getKey().equals("shop")) {
             if (!player.isOp() &&
                     (Civs.perm == null || !Civs.perm.has(player, "civs.shop"))) {

@@ -8,7 +8,6 @@ items:
     index: 0
     icon: ENCHANTED_BOOK
     name: guide
-    desc: guide-desc
     actions:
       - print-tutorial
       - close

@@ -208,29 +208,39 @@ public class TutorialManager {
 
 
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        String rawMessage = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
-        if (rawMessage == null || rawMessage.isEmpty()) {
+        if (player == null || !player.isOnline()) {
             return;
         }
-        if (player != null && player.isOnline()) {
-            if (useHr) {
-                player.sendMessage("-----------------" + Civs.NAME + "-----------------");
-            }
-            List<String> messages = Util.parseColors(Util.textWrap(civilian, rawMessage));
-            for (String message : messages) {
-                player.sendMessage(Civs.getPrefix() + message);
-            }
-            if (useHr) {
-                player.sendMessage("--------------------------------------");
-            }
+        for (String message : getNextTutorialStepMessage(civilian, useHr)) {
+            player.sendMessage(Civs.getPrefix() + message);
         }
 
         String type = step.getType();
-        if ("choose".equals(type) && player != null) {
+        if ("choose".equals(type)) {
             player.closeInventory();
             MenuManager.getInstance().openMenu(player, "tutorial-choose-path", new HashMap<>());
         }
+    }
+
+    public List<String> getNextTutorialStepMessage(Civilian civilian, boolean useHr) {
+        List<String> messages = new ArrayList<>();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null || !player.isOnline()) {
+            return messages;
+        }
+        String rawMessage = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+        if (rawMessage == null || rawMessage.isEmpty()) {
+            return messages;
+        }
+        if (useHr) {
+            messages.add("-----------------" + Civs.NAME + "-----------------");
+        }
+        messages.addAll(Util.parseColors(Util.textWrap(civilian, rawMessage)));
+        if (useHr) {
+            messages.add("--------------------------------------");
+        }
+        return messages;
     }
 
 

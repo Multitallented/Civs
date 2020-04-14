@@ -63,7 +63,9 @@ items:
     icon: SKELETON_SKULL
     name: bounty
     # desc top 5 list of bounties
-    actions: []
+    actions:
+      - typing:click-me:bounty-command{$town$
+      - close
   destroy:
     index: 6
     icon: BARRIER
