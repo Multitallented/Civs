@@ -293,6 +293,7 @@
 #karma-desc: "Karma is a measure of infamy. The lower the karma, the higher the reward for their death."
 #karma-gained: "Karma: +$1, $2 money gained"
 #karma-lost: "Karma: -$1, $2 money lost"
+#combat-tagged: "@{RED}You have been combat tagged for $1s. Don't log off. Safe zones will not protect you."
 #ann-limit: "[Info] You have $1 of $2 $3 buildings."
 #ann-achievement: "[Info] Check the guide to see your next available achievement."
 #ann-town-join: "[Info] You can be a member of multiple towns. Usually towns love to add people."
