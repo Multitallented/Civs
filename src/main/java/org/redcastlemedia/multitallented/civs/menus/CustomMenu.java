@@ -256,7 +256,7 @@ public abstract class CustomMenu {
         } else if (key.equals("townType")) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
-        } else if (key.equals("uuid")) {
+        } else if (key.equals("uuid") && data instanceof UUID) {
             return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;
