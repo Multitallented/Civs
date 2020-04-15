@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @CivsMenu(name = Constants.TOWN) @SuppressWarnings("unused")
@@ -322,45 +323,35 @@ public class TownMenu extends CustomMenu {
             return true;
         }
         String townName = town.getName();
-        Object selectedTownObject = MenuManager.getData(civilian.getUuid(), Constants.SELECTED_TOWN);
-        Town selectedTown;
-        if (selectedTownObject == null) {
-            selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
-        } else if (selectedTownObject instanceof String) {
-            selectedTown = TownManager.getInstance().getTown((String) selectedTownObject);
-        } else {
-            selectedTown = (Town) selectedTownObject;
-        }
-        if ("ally".equals(actionString)) {
-            if (selectedTown == null || town.getAllyInvites().contains(selectedTown.getName())) {
-                return true;
-            }
-            town.getAllyInvites().add(selectedTown.getName());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "town-ally-request-sent").replace("$1", townName));
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
-                    Player pSend = Bukkit.getPlayer(uuid);
-                    if (pSend != null && pSend.isOnline()) {
-                        pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(pSend,
-                                "town-ally-request-sent").replace("$1", townName));
-                    }
+        if ("ally".equals(actionString) || "unally".equals(actionString)) {
+            Object selectedTownObject = MenuManager.getData(civilian.getUuid(), Constants.SELECTED_TOWN);
+            Town selectedTown;
+            if (selectedTownObject == null) {
+                Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+                if (towns.size() > 1) {
+                    String menuString = "menu:select-town?ally=" + "ally".equals(actionString) + "&allyTown=" + town.getName();
+                    return super.doActionAndCancel(civilian, menuString, clickedItem);
+                } else {
+                    selectedTown = towns.iterator().next();
                 }
+            } else if (selectedTownObject instanceof String) {
+                selectedTown = TownManager.getInstance().getTown((String) selectedTownObject);
+            } else {
+                selectedTown = (Town) selectedTownObject;
+            }
+            if ("ally".equals(actionString)) {
+                if (selectedTown != null) {
+                    AllianceManager.getInstance().sendAllyInvites(selectedTown, town, player);
+                }
+            } else {
+                if (selectedTown == null) {
+                    return true;
+                }
+                AllianceManager.getInstance().unAllyBroadcast(town, selectedTown);
             }
             return true;
-        } else if (actionString.equals("unally")) {
-            if (selectedTown == null) {
-                return true;
-            }
-            AllianceManager.getInstance().unAlly(selectedTown, town);
-            for (Player cPlayer : Bukkit.getOnlinePlayers()) {
-                cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(cPlayer, "town-ally-removed")
-                        .replace("$1", selectedTown.getName())
-                        .replace("$2", townName));
-            }
-            return true;
-        } else if (actionString.equals("join-revolt")) {
+        }
+        if (actionString.equals("join-revolt")) {
             CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
             if (!player.getInventory().contains(costItem.createItemStack())) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
