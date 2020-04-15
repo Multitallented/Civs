@@ -54,6 +54,7 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -180,17 +181,17 @@ public class CivilianListener implements Listener {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
         String itemName = processedName.replace(
                 ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
-        if (!MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints")) {
-            if (civilian.getStashItems().containsKey(itemName)) {
-                civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
-            } else {
-                civilian.getStashItems().put(itemName, 1);
-            }
-            CivilianManager.getInstance().saveCivilian(civilian);
+        player.closeInventory();
+        if (civilian.getStashItems().containsKey(itemName)) {
+            civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
+        } else {
+            civilian.getStashItems().put(itemName, 1);
         }
+        CivilianManager.getInstance().saveCivilian(civilian);
+        MenuManager.openMenuFromString(civilian, "blueprints");
         return true;
     }
 
