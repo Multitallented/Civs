@@ -56,6 +56,7 @@ out/
 target
 mavenVersion.xml
 testFiles
+dependency-reduced-pom.xml
 
 _windows/*
 codestyles/*

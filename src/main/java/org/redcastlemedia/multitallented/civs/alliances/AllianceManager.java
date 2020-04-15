@@ -220,6 +220,8 @@ public class AllianceManager implements Listener {
                     alliance.getMembers().contains(town2.getName());
             if (inAlliance) {
                 removeThese.add(alliance);
+            } else {
+                continue;
             }
             if (alliance.getMembers().size() > 2) {
                 Alliance alliance1 = new Alliance();
