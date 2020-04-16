@@ -39,4 +39,5 @@ upkeep:
     - GRAVEL*1%85,TNT*1%15
     - DIRT*1%70,COAL*1%15,REDSTONE*1%15
     exp: 1
+    payout: 2
 

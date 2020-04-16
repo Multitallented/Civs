@@ -32,6 +32,7 @@
 #- block_liquid
 #- block_fire
 #- conveyor:POTATO
+#- evolve:potato_farm1.288 # 1 day
 #period: 300 #5 minutes
 #upkeep:
 #  0:
@@ -44,5 +45,5 @@
 #    - POISONOUS_POTATO*3%50,POTATO%50
 #    - POISONOUS_POTATO*5%50,POTATO%50
 #    - POISONOUS_POTATO*8%50,POTATO%50
-#
+#    exp: 1
 #

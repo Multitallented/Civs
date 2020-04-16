@@ -42,7 +42,6 @@
 #    # desc which towns will be allied
 #    actions:
 #      - ally
-#      - refresh
 #  remove-ally:
 #    index: 3
 #    icon: CREEPER_HEAD
@@ -50,7 +49,6 @@
 #    # desc which towns will be allied
 #    actions:
 #      - unally
-#      - refresh
 #  population:
 #    index: 4
 #    icon: PLAYER_HEAD
@@ -77,7 +75,9 @@
 #    icon: PAPER
 #    name: rename-town
 #    desc: rename-desc
-#    actions: []
+#    actions:
+#      - typing:click-me:rename-command{$town$
+#      - close
 #  back:
 #    index: 8
 #  people:

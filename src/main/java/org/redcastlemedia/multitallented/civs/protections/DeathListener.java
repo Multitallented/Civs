@@ -183,9 +183,6 @@ public class DeathListener implements Listener {
         final Player player = event.getPlayer();
         final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Location respawnLocation = civilian.getRespawnPoint();
-        if (respawnLocation == null) {
-            return;
-        }
 
         if (ConfigManager.getInstance().getUseStarterBook()) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
@@ -195,6 +192,10 @@ public class DeathListener implements Listener {
                 }
             }, 5L);
         }
+        if (respawnLocation == null) {
+            return;
+        }
+
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);
         CivilianManager.getInstance().saveCivilian(civilian);

@@ -41,9 +41,6 @@ public class PlayerMenu extends CustomMenu {
             data.put("name", offlinePlayer.getName());
         }
         if (Civs.econ != null) {
-            System.out.println(Civs.econ.getBalance(offlinePlayer));
-            System.out.println(Util.getNumberFormat(Civs.econ.getBalance(offlinePlayer), civilian.getLocale()));
-            System.out.println(Civs.econ.getBalance(Bukkit.getPlayer(civilian.getUuid())));
             data.put("money", Util.getNumberFormat(Civs.econ.getBalance(offlinePlayer), civilian.getLocale()));
         }
         data.put("points", "" + civilian1.getPoints());

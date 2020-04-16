@@ -36,8 +36,6 @@ effects:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 1
-  1:
     input:
     - GOLD_INGOT*12 # 288 / day
     payout: 28          # $576 / day

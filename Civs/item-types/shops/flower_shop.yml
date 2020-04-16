@@ -26,12 +26,10 @@
 #period: 600 #10 minutes
 #upkeep:
 #  0:
-#    power-input: 1
-#  1:
 #    input:
 #    - DANDELION*2,POPPY*2,BLUE_ORCHID*2,ALLIUM*2,AZURE_BLUET*2,RED_TULIP*2,ORANGE_TULIP*2,WHITE_TULIP*2,PINK_TULIP*2,OXEYE_DAISY*2
 #    payout: 2 #$288 per day
-#  2:
+#  1:
 #    input:
 #      - DEAD_BUSH*2,FERN*2,LARGE_FERN*2,GRASS*2,TALL_GRASS*2
 #      - LILAC*2,ROSE_BUSH*2,PEONY*2,SUNFLOWER*2

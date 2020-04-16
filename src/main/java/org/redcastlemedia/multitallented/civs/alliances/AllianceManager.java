@@ -169,6 +169,9 @@ public class AllianceManager implements Listener {
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 "town-ally-request-sent").replace("$1", fromTown.getName()));
         for (UUID uuid : toTown.getRawPeople().keySet()) {
+            if (uuid.equals(player.getUniqueId())) {
+                continue;
+            }
             if (toTown.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 Player pSend = Bukkit.getPlayer(uuid);
                 if (pSend != null && pSend.isOnline()) {

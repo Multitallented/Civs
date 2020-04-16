@@ -10,9 +10,9 @@ groups:
 level: 1
 
 build-reqs:
-- TNT*5
+- TNT*2
 - g:sign*1
-- OBSIDIAN*10
+- OBSIDIAN*5
 - IRON_BARS*12
 - REDSTONE_WIRE*4
 

@@ -26,8 +26,6 @@
 #period: 600 #10 minutes
 #upkeep:
 #  0:
-#    power-input: 1
-#  1:
 #    input:
 #    - LEATHER*8
 #    payout: 2.5 # $360 per day

@@ -10,10 +10,11 @@ groups:
 - raidport
 
 build-reqs:
-  - TNT*5
-  - g:sign*1
-  - OBSIDIAN*9
-  - g:fence*12
+- TNT*2
+- g:sign*1
+- OBSIDIAN*5
+- g:fence*12
+- REDSTONE_WIRE*4
 
 build-radius: 3 #7x7x7
 effects:
