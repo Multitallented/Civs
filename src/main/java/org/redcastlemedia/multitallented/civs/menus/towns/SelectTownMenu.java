@@ -43,7 +43,8 @@ public class SelectTownMenu extends CustomMenu {
             }
         } else if (params.containsKey("ally")) {
             data.put("allyTown", params.get("allyTown"));
-            data.put("ally", params.get("ally").equals("true"));
+            boolean isAlly = params.get("ally").equals("true");
+            data.put("ally", isAlly);
             towns.addAll(TownManager.getInstance().getOwnedTowns(civilian));
         } else {
             towns.addAll(TownManager.getInstance().getTowns());
@@ -54,7 +55,7 @@ public class SelectTownMenu extends CustomMenu {
         data.put("maxPage", maxPage);
 
         for (String key : params.keySet()) {
-            if (key.equals("page") || key.equals("maxPage")) {
+            if (key.equals("page") || key.equals("maxPage") || "ally".equals(key)) {
                 continue;
             }
             data.put(key, params.get(key));
@@ -81,22 +82,24 @@ public class SelectTownMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
             if (isAllianceSelect) {
-                boolean isAllying = (boolean) MenuManager.getData(civilian.getUuid(), "ally");
-                menuIcon.getActions().clear();
-                if (isAllying) {
-                    menuIcon.getActions().add("ally");
+                boolean ally = (boolean) MenuManager.getData(civilian.getUuid(), "ally");
+                List<String> currentActions = new ArrayList<>();
+
+                if (ally) {
+                    currentActions.add("ally");
                 } else {
-                    menuIcon.getActions().add("unally");
+                    currentActions.add("unally");
                 }
-                menuIcon.getActions().add("close");
+                actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+            } else {
+                putActions(civilian, menuIcon, itemStack, count);
             }
-            putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null) {
@@ -105,9 +108,9 @@ public class SelectTownMenu extends CustomMenu {
         boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
         if (isAllianceSelect) {
             String townName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
-            Town toTown = TownManager.getInstance().getTown(townName);
+            Town fromTown = TownManager.getInstance().getTown(townName);
             String allianceTown = (String) MenuManager.getData(civilian.getUuid(), "allyTown");
-            Town fromTown = TownManager.getInstance().getTown(allianceTown);
+            Town toTown = TownManager.getInstance().getTown(allianceTown);
             if (toTown == null || fromTown == null) {
                 return true;
             }
@@ -116,6 +119,8 @@ public class SelectTownMenu extends CustomMenu {
             } else if ("unally".equals(actionString)) {
                 AllianceManager.getInstance().unAllyBroadcast(toTown, fromTown);
             }
+            player.closeInventory();
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }

@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -71,6 +72,20 @@ public class ProtectionHandler implements Listener {
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
         UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPortalCreate(PortalCreateEvent event) {
+        Player player = null;
+        System.out.println(event.getEntity() instanceof Player);
+        System.out.println(event.getEntity() instanceof HumanEntity);
+        if (event.getEntity() instanceof Player) {
+            player = (Player) event.getEntity();
+        }
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), player, RegionEffectConstants.BLOCK_BUILD);
+        if (setCancelled) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

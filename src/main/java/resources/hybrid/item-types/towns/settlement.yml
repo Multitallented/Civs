@@ -37,6 +37,7 @@ effects:
 - deny_mob_spawn
 - control_override
 - block_explosion
+- door_use
 - anticamp:4.1800.100 #4 damage for 30 minutes costs $100
 
 power: 150

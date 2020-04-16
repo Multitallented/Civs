@@ -26,6 +26,7 @@ build-radius-y: 500
 effects:
 - exempt_housing
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire

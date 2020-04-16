@@ -34,6 +34,7 @@ public class MainMenu extends CustomMenu {
     @Override
     public String beforeOpenMenu(Civilian civilian) {
         MenuManager.clearHistory(civilian.getUuid());
+        MenuManager.clearData(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
         if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
             return "tutorial-choose-path";

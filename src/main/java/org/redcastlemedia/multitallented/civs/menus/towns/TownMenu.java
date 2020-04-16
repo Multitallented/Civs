@@ -1,29 +1,37 @@
 package org.redcastlemedia.multitallented.civs.menus.towns;
 
-import org.bukkit.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.towns.GovTransition;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 @CivsMenu(name = Constants.TOWN) @SuppressWarnings("unused")
 public class TownMenu extends CustomMenu {
@@ -322,26 +330,18 @@ public class TownMenu extends CustomMenu {
         if (player == null || town == null) {
             return true;
         }
-        String townName = town.getName();
         if ("ally".equals(actionString) || "unally".equals(actionString)) {
-            Object selectedTownObject = MenuManager.getData(civilian.getUuid(), Constants.SELECTED_TOWN);
             Town selectedTown;
-            if (selectedTownObject == null) {
-                Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
-                if (towns.size() > 1) {
-                    String menuString = "menu:select-town?ally=" + "ally".equals(actionString) + "&allyTown=" + town.getName();
-                    return super.doActionAndCancel(civilian, menuString, clickedItem);
-                } else {
-                    selectedTown = towns.iterator().next();
-                }
-            } else if (selectedTownObject instanceof String) {
-                selectedTown = TownManager.getInstance().getTown((String) selectedTownObject);
+            Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+            if (towns.size() > 1) {
+                String menuString = "menu:select-town?ally=" + "ally".equals(actionString) + "&allyTown=" + town.getName();
+                return super.doActionAndCancel(civilian, menuString, clickedItem);
             } else {
-                selectedTown = (Town) selectedTownObject;
+                selectedTown = towns.iterator().next();
             }
             if ("ally".equals(actionString)) {
                 if (selectedTown != null) {
-                    AllianceManager.getInstance().sendAllyInvites(selectedTown, town, player);
+                    AllianceManager.getInstance().sendAllyInvites(town, selectedTown, player);
                 }
             } else {
                 if (selectedTown == null) {
@@ -349,6 +349,7 @@ public class TownMenu extends CustomMenu {
                 }
                 AllianceManager.getInstance().unAllyBroadcast(town, selectedTown);
             }
+            MenuManager.getInstance().refreshMenu(civilian);
             return true;
         }
         if (actionString.equals("join-revolt")) {

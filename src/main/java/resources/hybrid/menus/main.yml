@@ -29,12 +29,6 @@ items:
     name: regions
     actions:
       - menu:region-list
-  community:
-    index: 4
-    icon: BOOKSHELF
-    name: community
-    actions:
-      - menu:community
   towns:
     index: 9
     icon: RED_BED

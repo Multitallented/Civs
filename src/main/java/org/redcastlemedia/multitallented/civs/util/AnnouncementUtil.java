@@ -163,7 +163,7 @@ public final class AnnouncementUtil {
                 continue;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+            if (regionType.getUpkeeps().isEmpty() || region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
                 continue;
             }
             keys.add("ann-missing-input-" + region.getId());
