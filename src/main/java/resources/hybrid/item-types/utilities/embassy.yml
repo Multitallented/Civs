@@ -37,7 +37,7 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- port
+- port:member
 - deny_damage
 - cant_override
 

@@ -39,7 +39,7 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- port
+- port:town
 - cant_override
 - housing:2
 

@@ -47,7 +47,6 @@ public class PortMenu extends CustomMenu {
         List<Region> regions = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
 
-        outer:
         for (Region currentRegion : regionSet) {
             if (regions.contains(currentRegion) || currentRegion.equals(region)) {
                 continue;

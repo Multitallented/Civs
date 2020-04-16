@@ -209,7 +209,7 @@ public class PortCommand implements CivCommand {
                 } else if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
                     return false;
                 } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
-                        r.getPeople().get(uuid).contains("member"))) {
+                        r.getPeople().get(uuid).contains(Constants.MEMBER))) {
                     return false;
                 }
             }
