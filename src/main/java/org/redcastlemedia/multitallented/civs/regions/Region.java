@@ -59,6 +59,8 @@ public class Region {
     private boolean warehouseEnabled = true;
     @Getter @Setter
     private List<List<CVItem>> missingBlocks = new ArrayList<>();
+    @Getter
+    private List<String> chests = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,
