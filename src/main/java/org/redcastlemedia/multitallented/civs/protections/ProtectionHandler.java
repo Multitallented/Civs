@@ -76,13 +76,10 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPortalCreate(PortalCreateEvent event) {
-        Player player = null;
-        System.out.println(event.getEntity() instanceof Player);
-        System.out.println(event.getEntity() instanceof HumanEntity);
-        if (event.getEntity() instanceof Player) {
-            player = (Player) event.getEntity();
+        if (event.getReason() != PortalCreateEvent.CreateReason.OBC_DESTINATION) {
+            return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), player, RegionEffectConstants.BLOCK_BUILD);
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null, RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);
         }
