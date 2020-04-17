@@ -93,7 +93,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             config.set(Constants.CHESTS, locationList);
             config.save(dataFile);
         } catch (Exception e) {
-            Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
+            Civs.logger.log(Level.SEVERE, UNABLE_TO_SAVE_CHEST, r.getId());
             return;
         }
 
@@ -122,13 +122,13 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
         int x = (int) Math.round(lx - buildRadius);
         int y = (int) Math.round(ly - buildRadius);
-        y = y < 0 ? 0 : y;
+        y = Math.max(y, 0);
         int z = (int) Math.round(lz - buildRadius);
         int xMax = (int) Math.round(lx + buildRadius);
         int yMax = (int) Math.round(ly + buildRadius);
         World world = r.getLocation().getWorld();
         if (world != null) {
-            yMax = yMax > world.getMaxHeight() - 1 ? world.getMaxHeight() - 1 : yMax;
+            yMax = Math.min(yMax, world.getMaxHeight() - 1);
             int zMax = (int) Math.round(lz + buildRadius);
 
             for (int i = x; i < xMax; i++) {
@@ -144,30 +144,10 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
         }
 
-
-        File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
-        if (!dataFolder.exists()) {
-            return;
+        for (CVInventory cvInventory : chests) {
+            r.getChests().add(Region.blockLocationToString(cvInventory.getLocation()));
         }
-        File dataFile = new File(dataFolder, r.getId() + ".yml");
-        if (!dataFile.exists()) {
-            Civs.logger.log(Level.SEVERE, "Warehouse region file does not exist {0}.yml", r.getId());
-            return;
-        }
-        FileConfiguration config = new YamlConfiguration();
-        try {
-            config.load(dataFile);
-            ArrayList<String> locationList = new ArrayList<>();
-            for (CVInventory cvInventory : chests) {
-                locationList.add(Region.blockLocationToString(cvInventory.getLocation()));
-            }
-            config.set(Constants.CHESTS, locationList);
-            config.save(dataFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
-            return;
-        }
+        RegionManager.getInstance().saveRegion(r);
         checkExcessChests(r);
     }
 
@@ -235,7 +215,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
         }
 
-        // To avoid cluttering the center chest, move items to available chests
         if (RegionManager.getInstance().hasRegionChestChanged(r)) {
             tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
         }
@@ -243,7 +222,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
     private void populateRegionsNeedingDelivery(Region r, HashSet<Region> deliverTo, Town town) {
         for (Region re : TownManager.getInstance().getContainingRegions(town.getName())) {
-            if (re.getFailingUpkeeps().isEmpty() || !re.isWarehouseEnabled()) {
+            RegionType rt = (RegionType) ItemManager.getInstance().getItemType(re.getType());
+            if (re.getFailingUpkeeps().isEmpty() || rt.getUpkeeps().isEmpty() || !re.isWarehouseEnabled()) {
                 continue;
             }
             if (!regionOwnerIsMemberOfWarehouse(r, re)) {
@@ -284,29 +264,31 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                     deletedSomething;
         }
 
-        //Remove excess chests from the data file
-        deletefromfile: if (deletedSomething) {
-            File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
-            if (!dataFolder.exists()) {
-                break deletefromfile;
+        if (deletedSomething) {
+            removeExcessChestFromFiles(r);
+        }
+    }
+
+    private void removeExcessChestFromFiles(Region r) {
+        File dataFolder = new File(Civs.dataLocation, Constants.REGIONS);
+        if (!dataFolder.exists()) {
+            return;
+        }
+        File dataFile = new File(dataFolder, r.getId() + ".yml");
+        if (!dataFile.exists()) {
+            return;
+        }
+        FileConfiguration config = new YamlConfiguration();
+        try {
+            config.load(dataFile);
+            ArrayList<String> locationList = new ArrayList<>();
+            for (CVInventory inventoryLocation : invs.get(r)) {
+                locationList.add(Region.blockLocationToString(inventoryLocation.getLocation()));
             }
-            File dataFile = new File(dataFolder, r.getId() + ".yml");
-            if (!dataFile.exists()) {
-                break deletefromfile;
-            }
-            FileConfiguration config = new YamlConfiguration();
-            try {
-                config.load(dataFile);
-                ArrayList<String> locationList = new ArrayList<String>();
-                for (CVInventory inventoryLocation : invs.get(r)) {
-                    locationList.add(Region.blockLocationToString(inventoryLocation.getLocation()));
-                }
-                config.set(Constants.CHESTS, locationList);
-                config.save(dataFile);
-            } catch (Exception e) {
-                Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
-                return;
-            }
+            config.set(Constants.CHESTS, locationList);
+            config.save(dataFile);
+        } catch (Exception e) {
+            Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
         }
     }
 
@@ -336,8 +318,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 invs.put(r, tempLocations);
             } catch (Exception e) {
                 Civs.logger.log(Level.WARNING, UNABLE_TO_SAVE_CHEST, r.getId());
-                e.printStackTrace();
-                return;
+                Civs.logger.log(Level.WARNING, "Exception: ", e);
             }
         }
     }
@@ -475,7 +456,6 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
 
 
-        //move items from warehouse to needed region
         moveItemsFromWarehouseToRegion(region, destination, destinationInventory, itemsToMove);
     }
 
