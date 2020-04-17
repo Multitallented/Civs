@@ -510,7 +510,7 @@ public class RegionManager {
         if (rebuildRegion != null) {
             RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
             isPlot = rebuildType.getEffects().containsKey("plot") &&
-                    rebuildType.getBuildRadius() <= regionType.getBuildRadius() &&
+                    rebuildType.getBuildRadius() >= regionType.getBuildRadius() &&
                     rebuildRegion.getRawPeople().containsKey(civilian.getUuid());
         }
         if ((!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) ||

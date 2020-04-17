@@ -167,6 +167,9 @@ public class MemberActionMenu extends CustomMenu {
             if (personRole.contains(Constants.GUEST)) {
                 return new ItemStack(Material.AIR);
             }
+            if (town != null && region == null) {
+                return new ItemStack(Material.AIR);
+            }
             if (!isAdmin && (!isOwner || viewingSelf || cantAddOwners)) {
                 return new ItemStack(Material.AIR);
             }

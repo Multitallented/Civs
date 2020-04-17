@@ -236,11 +236,22 @@ public class Civilian {
     public String isAtMax(CivItem civItem) {
         String processedName = civItem.getProcessedName();
         int rebuildBonus = 0;
-        if (CivItem.ItemType.REGION == civItem.getItemType() && null != ((RegionType) civItem).getRebuild()) {
-            rebuildBonus = 1;
+        if (CivItem.ItemType.REGION == civItem.getItemType()) {
+            outer: for (CivItem civItem1 : ItemManager.getInstance().getAllItemTypes().values()) {
+                if (CivItem.ItemType.REGION != civItem1.getItemType()) {
+                    continue;
+                }
+                RegionType regionType = (RegionType) civItem1;
+                for (String rebuildString : regionType.getRebuild()) {
+                    if (rebuildString.equals(processedName)) {
+                        rebuildBonus = 1;
+                        break outer;
+                    }
+                }
+            }
         }
         boolean atMax = civItem.getCivMax() != -1 &&
-                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+                civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return civItem.getProcessedName();
         }
