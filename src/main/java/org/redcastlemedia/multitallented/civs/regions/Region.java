@@ -902,13 +902,15 @@ public class Region {
                         hasMoney = true;
                     }
                 } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                    double coopCut = payout * 0.1;
-                    town.setBankAccount(town.getBankAccount() + coopCut);
-                    HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                    Map<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town, this);
                     for (UUID uuid : payouts.keySet()) {
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                         Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
                         hasMoney = true;
+                    }
+                    if (hasMoney) {
+                        double coopCut = payout * 0.1;
+                        town.setBankAccount(town.getBankAccount() + coopCut);
                     }
                 }
             } else {

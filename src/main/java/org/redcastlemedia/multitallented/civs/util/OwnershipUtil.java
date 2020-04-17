@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -139,10 +140,14 @@ public final class OwnershipUtil {
         return amount;
     }
 
-    public static HashMap<UUID, Double> getCooperativeSplit(Town town) {
+    public static Map<UUID, Double> getCooperativeSplit(Town town, Region originRegion) {
         HashMap<UUID, Double> payoutSplit = new HashMap<>();
         int total = 0;
         for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+            if (region.equals(originRegion)) {
+                total++;
+                continue;
+            }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             int i=0;
             for (RegionUpkeep upkeep : regionType.getUpkeeps()) {
