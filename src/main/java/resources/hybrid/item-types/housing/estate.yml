@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: BLUE_BED
 dynmap-marker: bighouse
 name: Estate
-max: 2
 price: 16000
 groups:
 - housing

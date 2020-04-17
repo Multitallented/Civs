@@ -592,7 +592,7 @@ public class CivilianListener implements Listener {
             }
         } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
             Alliance alliance = (Alliance) chatChannel.getTarget();
-            if (alliance.isInAlliance(civilian.getUuid())) {
+            if (!alliance.isInAlliance(civilian.getUuid())) {
                 civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
                 return;
             }

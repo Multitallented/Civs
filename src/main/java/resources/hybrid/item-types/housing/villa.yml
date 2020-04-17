@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: CYAN_BED
 dynmap-marker: bighouse
 name: Villa
-max: 2
 price: 8000
 groups:
 - housing

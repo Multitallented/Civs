@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: PURPLE_BED
 dynmap-marker: bighouse
 name: Mansion
-max: 2
 price: 2000
 groups:
 - housing

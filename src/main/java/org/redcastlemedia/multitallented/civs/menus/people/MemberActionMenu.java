@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
@@ -100,6 +101,7 @@ public class MemberActionMenu extends CustomMenu {
         } else if (town != null) {
             isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
+            isOwner = isOwner || OwnershipUtil.hasColonialOverride(town, civilian);
         }
 
         boolean isVoteOnly = !isOwner && (governmentType == GovernmentType.CAPITALISM ||
@@ -165,7 +167,10 @@ public class MemberActionMenu extends CustomMenu {
             if (personRole.contains(Constants.GUEST)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.GUEST) && !cantAddOwners))) {
+            if (town != null && region == null) {
+                return new ItemStack(Material.AIR);
+            }
+            if (!isAdmin && (!isOwner || viewingSelf || cantAddOwners)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-recruiter".equals(menuIcon.getKey())) {

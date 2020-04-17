@@ -84,8 +84,7 @@ public class ChatChannelListMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(civilian.getChatChannel().getName(player));
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civilian.getChatChannel().getDesc(player))));
+            cvItem.setLore(Util.textWrap(civilian, civilian.getChatChannel().getDesc(player)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
