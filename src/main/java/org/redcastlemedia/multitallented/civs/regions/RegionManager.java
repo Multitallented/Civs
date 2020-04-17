@@ -307,6 +307,9 @@ public class RegionManager {
             } else {
                 regionConfig.set("sale", null);
             }
+            if (!region.getChests().isEmpty()) {
+                regionConfig.set(Constants.CHESTS, region.getChests());
+            }
 
             for (UUID uuid : region.getRawPeople().keySet()) {
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
@@ -376,6 +379,9 @@ public class RegionManager {
                     Long time = Long.parseLong(timeString);
                     region.getUpkeepHistory().put(time, regionConfig.getInt("upkeep-history." + timeString));
                 }
+            }
+            if (regionConfig.isSet(Constants.CHESTS)) {
+                region.getChests().addAll(regionConfig.getStringList(Constants.CHESTS));
             }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);
