@@ -76,7 +76,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPortalCreate(PortalCreateEvent event) {
-        if (event.getReason() != PortalCreateEvent.CreateReason.OBC_DESTINATION) {
+        if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null, RegionEffectConstants.BLOCK_BUILD);
