@@ -1,17 +1,20 @@
 type: region
 icon: REDSTONE_BLOCK
 name: Raid_Porter_Active
+dynmap-marker: portal
 max: 1
 is-in-shop: false
+price: 150
 groups:
 - offense
 - raidport
 
 build-reqs:
-  - TNT*5
-  - SIGN*1,WALL_SIGN*1
-  - OBSIDIAN*9
-  - g:fence*12
+- TNT*2
+- SIGN*1,WALL_SIGN*1
+- OBSIDIAN*5
+- IRON_BARS*12
+- REDSTONE_WIRE*4
 
 build-radius: 3 #7x7x7
 effects:

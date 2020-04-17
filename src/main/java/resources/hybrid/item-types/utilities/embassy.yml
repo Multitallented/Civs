@@ -1,6 +1,7 @@
 type: region
 icon: SIGN
 shop-icon: PAPER
+dynmap-marker: portal
 name: Embassy
 price: 500
 max: 1
@@ -36,7 +37,7 @@ effects:
 - block_fire
 - door_use
 - chest_use
-- port
+- port:member
 - deny_damage
 - cant_override
 

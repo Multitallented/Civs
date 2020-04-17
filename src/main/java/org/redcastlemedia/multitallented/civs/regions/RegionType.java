@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -37,6 +38,12 @@ public class RegionType extends CivItem {
 
     @Getter
     private final boolean rebuildRequired;
+    @Getter
+    private final List<String> commandsOnCreation;
+    @Getter
+    private final List<String> commandsOnDestruction;
+    @Getter @Setter
+    private String dynmapMarkerKey = "";
 
     public RegionType(String name,
                       CVItem icon,
@@ -94,6 +101,8 @@ public class RegionType extends CivItem {
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
         this.worlds = worlds;
+        this.commandsOnCreation = new ArrayList<>();
+        this.commandsOnDestruction = new ArrayList<>();
     }
     public String getName() {
         return name;

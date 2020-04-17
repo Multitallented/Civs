@@ -184,7 +184,8 @@ public class SetOwnerCommand implements CivCommand {
                     "owner-added-region").replace("$1", invitePlayer.getDisplayName())
                     .replace("$2", name));
         } else {
-            commandSender.sendMessage(Civs.getPrefix() + inviteUUID + " is now an owner of your " + name);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(inviteUUID);
+            commandSender.sendMessage(Civs.getPrefix() + offlinePlayer.getName() + " is now an owner of your " + name);
         }
         if (region != null && region.getPeople().get(invitee.getUniqueId()) != null &&
                 !region.getPeople().get(invitee.getUniqueId()).contains(Constants.OWNER)) {

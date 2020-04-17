@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
+import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
@@ -53,15 +55,19 @@ public class GovernmentManager {
         boolean govTypeFolderExists = govTypeFolder.exists();
         String path = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + GOV_TYPE_FOLDER_NAME;
         Reflections reflections = new Reflections(path , new ResourcesScanner());
-        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            FileConfiguration config;
-            if (govTypeFolderExists) {
-                config = FallbackConfigUtil.getConfigFullPath(
-                        new File(govTypeFolder, fileName), "/" + fileName);
-            } else {
-                config = FallbackConfigUtil.getConfigFullPath(null, "/" + fileName);
+        try {
+            for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
+                FileConfiguration config;
+                if (govTypeFolderExists) {
+                    config = FallbackConfigUtil.getConfigFullPath(
+                            new File(govTypeFolder, fileName), "/" + fileName);
+                } else {
+                    config = FallbackConfigUtil.getConfigFullPath(null, "/" + fileName);
+                }
+                loadGovType(config, fileName.substring(fileName.lastIndexOf("/") + 1).replace(".yml", ""));
             }
-            loadGovType(config, fileName.substring(fileName.lastIndexOf("/") + 1).replace(".yml", ""));
+        } catch (ReflectionsException reflectionsException) {
+            Civs.logger.log(Level.WARNING, "No government types found");
         }
         if (govTypeFolderExists) {
             for (File file : govTypeFolder.listFiles()) {

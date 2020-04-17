@@ -2,7 +2,9 @@ type: region
 icon: CHEST
 shop-icon: TNT
 name: Siege_Machine1
+dynmap-marker: bomb
 is-in-shop: false
+price: 300
 groups:
 - offense
 - siegemachinegroup
@@ -34,7 +36,8 @@ upkeep:
     - REDSTONE*3
     - COAL*3
     output:
-    - GRAVEL*1%90,TNT*1%10
-    - DIRT*1%80,COAL*1%10,REDSTONE*1%10
+    - GRAVEL*1%85,TNT*1%15
+    - DIRT*1%70,COAL*1%15,REDSTONE*1%15
     exp: 1
+    payout: 2
 

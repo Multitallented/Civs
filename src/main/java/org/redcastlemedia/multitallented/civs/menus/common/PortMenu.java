@@ -47,7 +47,6 @@ public class PortMenu extends CustomMenu {
         List<Region> regions = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
 
-        outer:
         for (Region currentRegion : regionSet) {
             if (regions.contains(currentRegion) || currentRegion.equals(region)) {
                 continue;
@@ -105,7 +104,7 @@ public class PortMenu extends CustomMenu {
             if (MenuManager.getData(civilian.getUuid(), "region") != null) {
                 ArrayList<String> actionStrings = new ArrayList<>();
                 actionStrings.add("set-teleport");
-                actions.get(civilian.getUuid()).put(itemStack, actionStrings);
+                putActionList(civilian, itemStack, actionStrings);
             } else {
                 putActions(civilian, menuIcon, itemStack, count);
             }

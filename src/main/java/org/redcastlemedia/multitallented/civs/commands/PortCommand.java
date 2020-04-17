@@ -38,6 +38,12 @@ public class PortCommand implements CivCommand {
         LocaleManager localeManager = LocaleManager.getInstance();
         ConfigManager configManager = ConfigManager.getInstance();
 
+        if (Civs.perm != null && !Civs.perm.has(player, Constants.PORT_PERMISSION)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                    LocaleConstants.PERMISSION_DENIED));
+            return true;
+        }
+
         final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!configManager.getPortDuringCombat() && civilian.isInCombat()) {
@@ -203,7 +209,7 @@ public class PortCommand implements CivCommand {
                 } else if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
                     return false;
                 } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
-                        r.getPeople().get(uuid).contains("member"))) {
+                        r.getPeople().get(uuid).contains(Constants.MEMBER))) {
                     return false;
                 }
             }

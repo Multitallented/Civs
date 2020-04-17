@@ -1,5 +1,6 @@
 type: region
 icon: QUARTZ_BLOCK
+dynmap-marker: church
 name: Church
 max: 1
 price: 800
@@ -32,7 +33,7 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 2
+    power-output: 4
 
 towns:
 - settlement

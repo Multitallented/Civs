@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: IRON_PICKAXE
+dynmap-marker: factory
 name: Iron_Works
 price: 150
 groups:

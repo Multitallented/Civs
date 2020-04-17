@@ -27,8 +27,6 @@
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    power-input: 1
-#  1:
 #    input:
 #    - COAL*6,CHARCOAL*30 # 144 coal or 720 charcoal / day
 #    payout: 18          # $432 / day

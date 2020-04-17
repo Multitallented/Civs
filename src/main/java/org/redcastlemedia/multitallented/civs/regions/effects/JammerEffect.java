@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class JammerEffect implements Listener, RegionCreatedListener {
         }
 
         Player player = event.getPlayer();
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
             return;
         }
 

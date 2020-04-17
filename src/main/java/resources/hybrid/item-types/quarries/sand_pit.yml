@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: SAND
+dynmap-marker: minecart
 name: Sand_Pit
 price: 80
 groups:
@@ -36,4 +37,3 @@ upkeep:
     - DIAMOND_SHOVEL
     output:
     - SAND*32
-

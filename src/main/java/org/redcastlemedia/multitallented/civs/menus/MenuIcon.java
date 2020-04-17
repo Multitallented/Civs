@@ -92,16 +92,16 @@ public class MenuIcon {
 
     public CVItem createCVItem(Player player, int count) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!name.isEmpty()) {
             String countString = count > 0 ? count + "" : "";
 
             cvItem.setDisplayName(LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, name) + countString);
+                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, name)) + countString);
         }
         if (!desc.isEmpty()) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, desc)));
+                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, desc))));
         }
         return cvItem;
     }

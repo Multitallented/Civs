@@ -68,26 +68,15 @@ public class ConfirmationMenu extends CustomMenu {
             } else if ("leave".equals(type)) {
                 if (town != null) {
                     town.getRawPeople().remove(civilian.getUuid());
-                    player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    player.sendMessage(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "you-left-town").replace("$1", town.getName()));
                     TownManager.getInstance().saveTown(town);
                 }
                 player.closeInventory();
-            } else if ("tutorial".equals(type)) {
-                civilian.setTutorialIndex(0);
-                civilian.setTutorialProgress(0);
-                civilian.setAskForTutorial(false);
-                CivilianManager.getInstance().saveCivilian(civilian);
-                TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
-                MenuManager.getInstance().openMenu(player, "main", new HashMap<>());
             }
             return true;
         } else if ("reject".equals(actionString)) {
-            if ("tutorial".equals(type)) {
-                civilian.setAskForTutorial(false);
-                CivilianManager.getInstance().saveCivilian(civilian);
-                return true;
-            }
+            // Do nothing here currently
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }

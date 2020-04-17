@@ -57,7 +57,7 @@ max_power-buff-desc: 最大能量增加$1%
 cost-buff-desc: 所有$2的偿还消耗减少$1%
 shop: 商店
 buy-item: 点击购买
-price: 价格
+price: 价格 $1
 buy: 购买 $1
 cancel: 取消
 item-bought: 恭喜你! 你用 $2 购买了 $1
@@ -203,6 +203,7 @@ buy-region: 用$2 购买 $1
 regions-for-sale: 出售区域
 use-sell-command: 输入 /cv sell 价格
 region-bought: 你成功地用$2购买了$1
+region-sold: 你的$1卖给你$2你赚取了$3
 sort-by-level: 根据等级分类区域
 level: $1级
 rename-alliance: 重命名联盟

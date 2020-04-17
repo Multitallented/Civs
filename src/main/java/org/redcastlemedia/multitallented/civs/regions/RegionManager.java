@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,6 +56,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
@@ -93,6 +95,8 @@ public class RegionManager {
     }
 
     public void addRegion(Region region) {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        runRegionCommands(region, regionType.getCommandsOnCreation());
         saveRegionNow(region);
         UUID worldUuid = region.getLocation().getWorld().getUID();
         if (!regions.containsKey(worldUuid)) {
@@ -171,7 +175,11 @@ public class RegionManager {
     }
 
     public void removeRegion(Region region, boolean broadcast, boolean checkCritReqs) {
-        broadcastRegionDestroyed(region, broadcast);
+        if (broadcast) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            runRegionCommands(region, regionType.getCommandsOnDestruction());
+            broadcastRegionDestroyed(region);
+        }
         for (Map.Entry<String, DestroyRegionListener> entry : this.destroyRegionListener.entrySet()) {
             entry.getValue().destroyRegionHandler(region);
         }
@@ -198,18 +206,16 @@ public class RegionManager {
         removeRegion(region);
     }
 
-    private void broadcastRegionDestroyed(Region region, boolean broadcast) {
-        if (broadcast) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (region.getLocation().getWorld() == null ||
-                        !region.getLocation().getWorld().equals(player.getWorld())) {
-                    continue;
-                }
-                if (player.getLocation().distance(region.getLocation()) < 25) {
-                    player.sendMessage(Civs.getPrefix() +
-                            LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-destroyed")
-                                    .replace("$1", region.getType()));
-                }
+    private void broadcastRegionDestroyed(Region region) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (region.getLocation().getWorld() == null ||
+                    !region.getLocation().getWorld().equals(player.getWorld())) {
+                continue;
+            }
+            if (player.getLocation().distance(region.getLocation()) < 25) {
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-destroyed")
+                                .replace("$1", region.getType()));
             }
         }
     }
@@ -754,6 +760,26 @@ public class RegionManager {
         StructureUtil.removeBoundingBox(civilian.getUuid());
         RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
         Bukkit.getPluginManager().callEvent(regionCreatedEvent);
+    }
+
+    private void runRegionCommands(Region region, List<String> commands) {
+        Set<UUID> owners = region.getOwners();
+        OfflinePlayer owner = null;
+        if (!owners.isEmpty()) {
+            owner = Bukkit.getOfflinePlayer(owners.iterator().next());
+        }
+        if (owner == null) {
+            return;
+        }
+        double x = region.getLocation().getX();
+        double y = region.getLocation().getY();
+        double z = region.getLocation().getZ();
+        for (String command : commands) {
+            String newCommand = command.replace("$x$", "" + x)
+                    .replace("$y$", "" + y).replace("$z$", "" + z);
+            newCommand = newCommand.replace("$name$", owner.getName());
+            CommandUtil.performCommand(owner, newCommand);
+        }
     }
 
     private boolean regionNotAllowedInFeudalTown(BlockPlaceEvent event, Player player, Town town) {

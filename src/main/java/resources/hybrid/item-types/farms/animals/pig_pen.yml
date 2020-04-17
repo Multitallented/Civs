@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PIG_SPAWN_EGG
+dynmap-marker: dog
 name: Pig_Pen
 max: 1
 price: 10

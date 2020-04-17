@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
+import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
 import java.io.File;
@@ -53,8 +54,13 @@ public class ItemManager {
         final String ITEM_TYPES_FOLDER_NAME = Constants.ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
-        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            loopThroughResources("/" + fileName);
+        try {
+            Set<String> resourcePaths = reflections.getResources(Pattern.compile(".*\\.yml"));
+            for (String fileName : resourcePaths) {
+                loopThroughResources("/" + fileName);
+            }
+        } catch (ReflectionsException reflectionsException) {
+            Civs.logger.log(Level.WARNING, "No resources found for item-types");
         }
         File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {
@@ -171,6 +177,9 @@ public class ItemManager {
                 try {
                     FileConfiguration typeConfig = new YamlConfiguration();
                     typeConfig.load(file);
+                    if (!typeConfig.getBoolean("enabled", true)) {
+                        return;
+                    }
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
                     String itemName = file.getName().replace(".yml", "").toLowerCase();
@@ -392,6 +401,15 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        if (config.isSet("commands-on-creation")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-creation"));
+        }
+        if (config.isSet("commands-on-destruction")) {
+            regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-destruction"));
+        }
+        if (config.isSet("dynmap-marker")) {
+            regionType.setDynmapMarkerKey(config.getString("dynmap-marker"));
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
@@ -513,6 +531,9 @@ public class ItemManager {
             return true;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return false;
+        }
         outer: for (String reqString : civItem.getCivReqs()) {
             for (String req : reqString.split("\\|")) {
                 //perm=civs.admin

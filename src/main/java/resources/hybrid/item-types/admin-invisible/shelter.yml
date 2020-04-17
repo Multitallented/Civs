@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: OAK_PLANKS
+dynmap-marker: bricks
 name: Shelter
 min: 1
 max: 1
@@ -17,7 +18,7 @@ effects:
 - block_fire
 - block_explosion
 - deny_damage
-- port:private
+- port:owner
 - bed
 - active:1209600 #2 weeks
 

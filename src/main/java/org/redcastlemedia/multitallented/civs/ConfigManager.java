@@ -162,6 +162,9 @@ public class ConfigManager {
     @Getter
     long unloadedChestRefreshRate;
 
+    @Getter
+    String chatChannelFormat;
+
     public ConfigManager() {
         loadDefaults();
     }
@@ -409,6 +412,7 @@ public class ConfigManager {
             if (chatChannels.isEmpty()) {
                 chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
             }
+            chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);

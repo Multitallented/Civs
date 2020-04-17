@@ -132,6 +132,8 @@ public abstract class TestUtil {
         when(player.getOpenInventory()).thenReturn(view);
         when(player.getServer()).thenReturn(server);
         when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
+        when(player.getPlayer()).thenReturn(player);
+        when(server.getOfflinePlayer(Matchers.any(UUID.class))).thenReturn(player);
         UUID uuid2 = new UUID(1,3);
         player2 = mock(Player.class);
         when(player2.getUniqueId()).thenReturn(uuid2);

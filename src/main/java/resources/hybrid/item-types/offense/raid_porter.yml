@@ -1,17 +1,18 @@
 type: region
 icon: REDSTONE_BLOCK
+dynmap-marker: portal
 name: Raid_Porter
 max: 1
-price: 200
+price: 150
 groups:
 - offense
 - raidport
 level: 1
 
 build-reqs:
-- TNT*5
+- TNT*2
 - g:sign*1
-- OBSIDIAN*10
+- OBSIDIAN*5
 - IRON_BARS*12
 - REDSTONE_WIRE*4
 

@@ -1,6 +1,7 @@
 type: region
 icon: CRAFTING_TABLE
 shop-icon: GREEN_BED
+dynmap-marker: default
 name: NPC_Dwelling
 max: 2
 price: 400

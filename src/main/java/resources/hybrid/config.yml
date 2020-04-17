@@ -176,6 +176,7 @@ civs-chat-prefix: "@{GREEN}[Civs]"
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
+chat-channel-format: "[$channel$]$player$: $message$"
 chat-channels:
   global:
     enabled: true

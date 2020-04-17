@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: OAK_LOG
+dynmap-marker: tree
 name: Oak_Lumberyard
 max: 2
 price: 100

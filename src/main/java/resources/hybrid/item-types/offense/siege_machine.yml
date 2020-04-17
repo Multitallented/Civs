@@ -2,7 +2,8 @@ type: region
 icon: CHEST
 shop-icon: TNT
 name: Siege_Machine
-price: 500
+dynmap-marker: bomb
+price: 250
 groups:
 - offense
 - siegemachinegroup

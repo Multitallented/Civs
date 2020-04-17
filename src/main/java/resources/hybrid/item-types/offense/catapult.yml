@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: TNT
+dynmap-marker: bomb
 name: Catapult
 price: 150
 groups:

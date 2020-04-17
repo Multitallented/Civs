@@ -31,17 +31,10 @@ public class CVInventory {
     @Getter
     private long lastUnloadedModification = -1;
 
-    public CVInventory(Inventory inventory, Location location) {
-        this.inventory = inventory;
-        this.size = inventory.getSize();
-        this.location = location;
-    }
-
     protected CVInventory(@NonNull Location location) {
         this.location = location;
         setInventory();
         if (this.valid) {
-            this.size = this.inventory.getSize();
             update();
         } else {
             this.size = 27;
@@ -57,6 +50,7 @@ public class CVInventory {
         try {
             Chest chest = (Chest) block.getState();
             this.inventory = chest.getInventory();
+            this.size = this.inventory.getSize();
         } catch (Exception e) {
             this.valid = false;
         }
@@ -64,12 +58,11 @@ public class CVInventory {
 
     // This method assumes the chunk is loaded
     public void update() {
+        setInventory();
         if (!this.valid) {
-            setInventory();
-            if (!this.valid) {
-                return;
-            }
+            return;
         }
+        this.contents.clear();
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack itemStack = inventory.getItem(i);
             if (itemStack != null && itemStack.getType() != Material.AIR) {
@@ -82,6 +75,7 @@ public class CVInventory {
         if (!this.valid) {
             return;
         }
+        this.size = this.inventory.getSize();
         this.lastUnloadedModification = -1;
         for (int i = 0; i < getSize(); i++) {
             if (this.contents.containsKey(i)) {
@@ -153,7 +147,13 @@ public class CVInventory {
             }
             return this.inventory.getContents();
         } else {
-            ItemStack[] itemStacks = new ItemStack[getSize()];
+            int biggestIndex = 0;
+            for (Integer i : this.contents.keySet()) {
+                if (i > biggestIndex) {
+                    biggestIndex = i;
+                }
+            }
+            ItemStack[] itemStacks = new ItemStack[Math.max(getSize(), biggestIndex)];
             for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
                 itemStacks[entry.getKey()] = entry.getValue();
             }

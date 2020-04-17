@@ -1,9 +1,10 @@
 type: region
 icon: CHEST
 shop-icon: GUNPOWDER
+dynmap-marker: hammer
 name: Gunpowder_Mine
 max: 1
-price: 2000
+price: 1000
 groups:
 - mine
 level: 1
@@ -31,12 +32,12 @@ upkeep:
     input:
     - IRON_PICKAXE
     output:
-    - GUNPOWDER*5
+    - GUNPOWDER*10
   1:
     reagents:
     - DIAMOND_PICKAXE
     input:
     - IRON_PICKAXE
     output:
-    - GUNPOWDER*7
+    - GUNPOWDER*15
 

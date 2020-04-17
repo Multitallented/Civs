@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -65,9 +66,6 @@ public class Civilian {
     private String tutorialPath;
 
     @Getter @Setter
-    private boolean askForTutorial;
-
-    @Getter @Setter
     private int tutorialProgress;
 
     @Getter @Setter
@@ -78,7 +76,7 @@ public class Civilian {
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-                    double points, int karma, int expOrbs, boolean askForTutorial) {
+                    double points, int karma, int expOrbs) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -93,14 +91,19 @@ public class Civilian {
         this.karma = karma;
         this.mana = 0;
         this.expOrbs = expOrbs;
-        this.askForTutorial = askForTutorial;
         this.chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
     }
 
     public UUID getUuid() {
         return uuid;
     }
-    public Set<CivClass> getCivClasses() { return civClasses; }
+    public Set<CivClass> getCivClasses() {
+        civClasses.remove(null);
+        if (civClasses.isEmpty()) {
+            civClasses.add(ClassManager.getInstance().createDefaultClass(uuid));
+        }
+        return civClasses;
+    }
     public String getLocale() {
         if (locale == null) {
             locale = ConfigManager.getInstance().getDefaultLanguage();
@@ -329,8 +332,12 @@ public class Civilian {
     }
 
     public int getCountNonStashItems(String name) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) {
+            return 0;
+        }
         int count = 0;
-        for (ItemStack is : Bukkit.getPlayer(uuid).getInventory()) {
+        for (ItemStack is : player.getInventory()) {
             if (!CVItem.isCivsItem(is)) {
                 continue;
             }

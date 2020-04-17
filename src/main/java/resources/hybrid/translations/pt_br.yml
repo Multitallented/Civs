@@ -58,7 +58,7 @@ max_power-buff-desc: $1% aumento na capacidade máxima de poder
 cost-buff-desc: $1% valor de reembolso de todas $2
 shop: Loja
 buy-item: A venda
-price: Preço
+price: Preço $1
 buy: Comprar $1
 cancel: Cancelar
 item-bought: Parabéns! Você acabou de comprar $1 por $2
@@ -88,7 +88,7 @@ friends: Amigos
 confirm: Confirmar
 reject: Rejeitar
 effects: Efeitos
-size: Tamanho
+size: TaSolarho
 range: Alcance
 build-reqs-title: Requisitos da construção
 population: População
@@ -190,6 +190,8 @@ town-ally-request-sent: Uma proposta de aliança foi enviada a $1
 town-ally-request-accepted: Uma aliança foi formada entre $1 e $2
 town-ally-request-denied: A proposta de aliança com $1 foi rejeitada
 town-ally-removed: A aliança entre $1 e $2 foi dissolvida
+decline-all: Rejeitar todos os convites
+accept-invite: Aceitar convite
 region-evolve: $1 evolui para $2
 region-evolved: Sua $1 evoluiu para uma $2
 anti-camp-active: O anti-camp de $1 foi ativado
@@ -311,6 +313,7 @@ ann-karma: "@{YELLOW}[Cuidado] $1 esta online. Se você matar $1, receberá uma 
 ann-missing-input: "[Info] Sua $1 precisa de itens. Use o livro do Civs para checar os
   reagentes/itens consumidos necessários."
 ann-bounty: "[Info] $1 tem uma recompensa de $2 cabeça dele ou dela."
+and-more: Adicionar mais
 tut-default-0: Primeiro, abra o livro, vá até Projetos, retire o Abrigo e coloque-o no chão.
 tut-default-1: Em seguida, colete 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no
   baú do abrigo.
@@ -878,6 +881,8 @@ house-evolve-name: Casa Evoluir
 house-evolve-desc: Casas evoluídas escondidas
 trade-mines-name: Minas Comerciais
 trade-mines-desc: Minas que produzem itens para serem vendidos em outras cidades.
+defense-evolve-name: Evoluir
+defense-evolve-desc: Evoluções escondidas de diversas construções
 evolve-name: Evoluir
 evolve-desc: Formas evoluídas ocultas de vários edifícios.
 plot7x7-name: Terreno 7x7
@@ -888,3 +893,61 @@ plot15x15-name: Terreno 15x15
 plot15x15-desc: Um molde para regiões 15x15 e menores
 plot19x19-name: Terreno 19x19
 plot19x19-desc: Um molde para regiões 19x19 e menores
+housing-group: Habitação
+defense-group: Defesas
+trap-group: Armadilhas
+arrowtrapgroup-group: Armadilhas de Flecha
+publichousing-group: Habitação Pública
+idolgroup-group: Idolos
+factory-group: Fábricas
+farm-group: Fazendas
+raw-group: Materiais de produção brutos
+woodwork-group: Lenharias
+allchalet-group: Qualquer Chalé
+basechalet-group: Chalé Não-NPC
+allhousing-group: Qualquer Habitação
+npchousinggroup-group: Habitação de NPC
+alldwelling-group: Qualquer Casa
+basedwelling-group: Casa Não-NPC
+allestate-group: Qualquer Palácio
+baseestate-group: Palácio Não-NPC
+allhouse-group: Qualquer Casa-grande
+basehouse-group: Casa-grande Não-NPC
+allhovel-group: Qualquer Cabana
+basehovel-group: Cabana Não-NPC
+allmanor-group: Qualquer Solar
+basemanor-group: Solar Não-NPC
+allmansion-group: Qualquer Mansão
+basemansion-group: Mansão Não-NPC
+allshack-group: Qualquer Barrraco
+baseshack-group: Barraco Não-NPC
+allvilla-group: Qualquer Vila
+basevilla-group: Vila Não-NPC
+trademine-group: Mina de Troca
+trading-group: Troca
+mine-group: Minas
+offense-group: Ofensivo
+basecenter-group: Base
+raidport-group: Teletransportadores de Ataque
+siegemachinegroup-group: Máquinas de Cerco
+townpowerreduce-group: Equipamento de Cerco
+quarry-group: Escavadoras
+tradeshop-group: Lojas de Troca
+shop-group: Lojas
+oreshop-group: Lojas de Minério
+superregion-group: Cidades
+utility-group: Utilidades
+town_center-group: Centro da Cidade
+chat-channels: Canais de Conversa
+chat-change-chat: Trocado canal de conversa de $1
+friend-channel: Amigos
+friend-channel-desc: Apenas jogadores definidos como amigos
+global-channel: Global
+global-channel-desc: Todos os jogadores
+local-channel: Local
+local-channel-desc: Apenas jogadores dentro de 100 blocos
+town-channel-desc: Apenas jogadores em $1
+alliance-channel-desc: Apenas jogadores na aliança $1
+chat-channel-set: Você esta agora conversando no canal $1
+click-change-chat: Clique para trocar de canal
+no-recipients: Não existe ninguém online no canal $1

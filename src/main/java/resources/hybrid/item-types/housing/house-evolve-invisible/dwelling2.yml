@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: GREEN_BED
+dynmap-marker: default
 name: Dwelling2
 max: 2
 price: 400
