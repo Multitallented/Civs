@@ -426,8 +426,9 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
                 destinationInventory.addItem(moveMe);
                 RegionManager.getInstance().removeCheckedRegion(destination);
                 for (Integer failingUpkeepIndex : new HashSet<>(destination.getFailingUpkeeps())) {
-                    if (destination.hasUpkeepItems(failingUpkeepIndex, false)) {
+                    if (destination.hasUpkeepItems(failingUpkeepIndex, true)) {
                         destination.getFailingUpkeeps().remove(failingUpkeepIndex);
+                        break;
                     }
                 }
 
