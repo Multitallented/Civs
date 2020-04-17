@@ -39,7 +39,6 @@ effects:
 - door_use
 - exclusive:barracks
 - housing:6
-- port
 
 period: 900 #15 minutes
 upkeep:
