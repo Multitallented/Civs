@@ -145,6 +145,15 @@ public final class OwnershipUtil {
         int total = 0;
         for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
             if (region.equals(originRegion)) {
+                Set<UUID> owners = region.getOwners();
+                for (UUID uuid : owners) {
+                    double amount = 1 / (double) owners.size();
+                    if (payoutSplit.containsKey(uuid)) {
+                        payoutSplit.put(uuid, payoutSplit.get(uuid) + amount);
+                    } else {
+                        payoutSplit.put(uuid, amount);
+                    }
+                }
                 total++;
                 continue;
             }

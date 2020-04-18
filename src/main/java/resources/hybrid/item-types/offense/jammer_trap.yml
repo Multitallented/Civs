@@ -2,7 +2,7 @@ type: region
 icon: SOUL_SAND
 name: Jammer_Trap
 max: 1
-price: 400
+price: 200
 groups:
   - offense
   - trap

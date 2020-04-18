@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -30,6 +31,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ItemsTests extends TestUtil {
 
@@ -232,6 +234,22 @@ public class ItemsTests extends TestUtil {
         Map<Integer, ItemStack> returnedItems = cvInventory.checkAddItems(itemStacks);
         assertNull(cvInventory.getItem(0));
         assertTrue(returnedItems.isEmpty());
+    }
+
+    @Test
+    public void cvInventoryShouldRemoveIndex() {
+        TestUtil.world.setChunkLoaded(false);
+        CVInventory cvInventory = new CVInventory(new Location(TestUtil.world, 0, 0, 0));
+        cvInventory.setItem(3, new ItemStack(Material.COAL, 6));
+        assertEquals(Material.COAL, cvInventory.getItem(3).getType());
+        List<List<CVItem>> inputs = new ArrayList<>();
+        List<CVItem> input = new ArrayList<>();
+        input.add(new CVItem(Material.COAL, 6));
+        input.add(new CVItem(Material.CHARCOAL, 30));
+        inputs.add(input);
+        assertTrue(Util.removeItems(inputs, cvInventory));
+        assertNull(cvInventory.getItem(3));
+        assertFalse(Util.containsItems(inputs, cvInventory));
     }
 
     private void loadSpellTypeBackflip() {
