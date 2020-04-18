@@ -547,6 +547,22 @@ public class RegionManager {
             rebuildTransition = true;
         }
 
+        String maxString = civilian.isAtMax(regionType, false);
+        if (rebuildRegion == null && maxString != null && !regionType.getRebuild().isEmpty()) {
+            event.setCancelled(true);
+            String rebuildLocalName;
+            if (ItemManager.getInstance().getItemType(regionType.getRebuild().get(0)) == null) {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.GROUP_SUFFIX);
+            } else {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.NAME_SUFFIX);
+            }
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslationWithPlaceholders(player, "rebuild-required")
+                            .replace("$1", localizedRegionName).replace("$2", rebuildLocalName));
+            return;
+        }
 
         Town town = TownManager.getInstance().getTownAt(location);
         if (regionNotAllowedInFeudalTown(event, player, town))  {
@@ -716,7 +732,7 @@ public class RegionManager {
                     !people.get(player.getUniqueId()).contains("ally") &&
                     !regionType.isRebuildRequired()) {
                 RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
-                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice() / 2);
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice());
             }
             removeRegion(rebuildRegion, false, false);
         } else {
