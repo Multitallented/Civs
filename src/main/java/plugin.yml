@@ -4,7 +4,7 @@ description: Allows you to create structures and towns.
 main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
 load: POSTWORLD
-version: 1.6.6
+version: 1.6.7
 api-version: 1.14
 depend: [Vault]
 softdepend:
