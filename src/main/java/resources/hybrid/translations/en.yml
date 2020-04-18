@@ -440,7 +440,7 @@ boot_grinder-desc: "Turns leather boots into leather. Place a storage minecart i
 stone_works-name: "Stone Works"
 stone_works-desc: "Automated crafting of stone tools. Place a storage minecart in the chest. Build rails from the Stone Works to a destination region. Place a sloped powered rail at the start."
 weapons_factory-name: "Weapons Factory"
-weapons_factory-desc: "Turns 3 gunpowder and 5 sand into explosives."
+weapons_factory-desc: "Turns gunpowder and sand into explosives."
 jammer_trap-name: "Jammer Trap"
 jammer_trap-desc: "A building that intercepts teleports that would travel within 100. Redirects the destination to nearby the jammer."
 chicken_coop-name: "Chicken Coop"
