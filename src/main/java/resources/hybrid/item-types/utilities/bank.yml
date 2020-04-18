@@ -3,7 +3,7 @@ icon: CHEST
 shop-icon: PAPER
 dynmap-marker: bank
 name: Bank
-price: 200
+price: 300
 groups:
 - utility
 level: 4
@@ -39,7 +39,7 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 2
+    power-output: 6
   1:
     reagents:
     - PAPER*1

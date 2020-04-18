@@ -345,7 +345,7 @@ public class TownManager {
         town.destroyRing(false, true);
         TownType childTownType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
         town.setType(childTownType.getProcessedName());
-        town.setPower(childTownType.getMaxPower());
+        town.setPower(childTownType.getMaxPower() / 2);
         town.setMaxPower(childTownType.getMaxPower());
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -728,7 +728,8 @@ public class TownManager {
                 people,
                 townType.getPower(),
                 townType.getMaxPower(), housingCount, villagerCount, -1);
-            newTown.setChildLocations(childLocations);
+        newTown.setEffects(new HashMap<>(townType.getEffects()));
+        newTown.setChildLocations(childLocations);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {

@@ -307,6 +307,9 @@ public class RegionManager {
             } else {
                 regionConfig.set("sale", null);
             }
+            if (!region.getChests().isEmpty()) {
+                regionConfig.set(Constants.CHESTS, region.getChests());
+            }
 
             for (UUID uuid : region.getRawPeople().keySet()) {
                 regionConfig.set("people." + uuid, region.getPeople().get(uuid));
@@ -376,6 +379,9 @@ public class RegionManager {
                     Long time = Long.parseLong(timeString);
                     region.getUpkeepHistory().put(time, regionConfig.getInt("upkeep-history." + timeString));
                 }
+            }
+            if (regionConfig.isSet(Constants.CHESTS)) {
+                region.getChests().addAll(regionConfig.getStringList(Constants.CHESTS));
             }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);
@@ -510,7 +516,7 @@ public class RegionManager {
         if (rebuildRegion != null) {
             RegionType rebuildType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
             isPlot = rebuildType.getEffects().containsKey("plot") &&
-                    rebuildType.getBuildRadius() <= regionType.getBuildRadius() &&
+                    rebuildType.getBuildRadius() >= regionType.getBuildRadius() &&
                     rebuildRegion.getRawPeople().containsKey(civilian.getUuid());
         }
         if ((!isPlot && rebuildRegion != null && regionType.getRebuild().isEmpty()) ||
@@ -541,6 +547,22 @@ public class RegionManager {
             rebuildTransition = true;
         }
 
+        String maxString = civilian.isAtMax(regionType);
+        if (rebuildRegion == null && maxString != null && !regionType.getRebuild().isEmpty()) {
+            event.setCancelled(true);
+            String rebuildLocalName;
+            if (ItemManager.getInstance().getItemType(regionType.getRebuild().get(0)) == null) {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.GROUP_SUFFIX);
+            } else {
+                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        regionType.getRebuild().get(0) + LocaleConstants.NAME_SUFFIX);
+            }
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslationWithPlaceholders(player, "rebuild-required")
+                            .replace("$1", localizedRegionName).replace("$2", rebuildLocalName));
+            return;
+        }
 
         Town town = TownManager.getInstance().getTownAt(location);
         if (regionNotAllowedInFeudalTown(event, player, town))  {
@@ -710,7 +732,7 @@ public class RegionManager {
                     !people.get(player.getUniqueId()).contains("ally") &&
                     !regionType.isRebuildRequired()) {
                 RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
-                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice() / 2);
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice());
             }
             removeRegion(rebuildRegion, false, false);
         } else {

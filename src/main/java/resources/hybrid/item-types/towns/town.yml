@@ -34,13 +34,13 @@ limits:
 - church:1
 - bank:1
 - warehouse:1
-- barracks:1
-- inn:1
+- barracks:2
+- inn:2
 - jail:1
 - alchemical_lab:1
-- power_capacitor:2
+- vault:1
 - embassy:5
-- idolgroup:2
+- idolgroup:1
 - jammer_trap:0
 
 critical-build-reqs:
@@ -52,6 +52,7 @@ build-radius: 110
 build-radius-y: 500
 effects:
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire
@@ -60,6 +61,6 @@ effects:
 - control_override
 - anticamp:2.1500.600 #2 damage for 25 minutes costs $600
 
-power: 1500
-max-power: 5100
+power: 770
+max-power: 14500
 

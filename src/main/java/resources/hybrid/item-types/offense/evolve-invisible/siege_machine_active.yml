@@ -4,6 +4,7 @@ shop-icon: TNT
 name: Siege_Machine_Active
 dynmap-marker: bomb
 is-in-shop: false
+price: 250
 groups:
 - offense
 - siegemachinegroup
@@ -38,4 +39,5 @@ upkeep:
     - GRAVEL*1%95,TNT*1%5
     - DIRT*1%90,COAL*1%5,REDSTONE*1%5
     exp: 1
+    payout: 2
 

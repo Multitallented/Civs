@@ -25,4 +25,4 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- hunt
+- hunt:60

@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
+import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
 import java.io.File;
@@ -49,12 +50,21 @@ public class ItemManager {
         loadAllItemTypes();
     }
 
+    public Map<String, CivItem> getAllItemTypes() {
+        return new HashMap<>(itemTypes);
+    }
+
     private void loadAllItemTypes() {
         final String ITEM_TYPES_FOLDER_NAME = Constants.ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;
         Reflections reflections = new Reflections(resourcePath, new ResourcesScanner());
-        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            loopThroughResources("/" + fileName);
+        try {
+            Set<String> resourcePaths = reflections.getResources(Pattern.compile(".*\\.yml"));
+            for (String fileName : resourcePaths) {
+                loopThroughResources("/" + fileName);
+            }
+        } catch (ReflectionsException reflectionsException) {
+            Civs.logger.log(Level.WARNING, "No resources found for item-types");
         }
         File itemTypesFolder = new File(Civs.dataLocation, ITEM_TYPES_FOLDER_NAME);
         if (itemTypesFolder.exists()) {

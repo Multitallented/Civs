@@ -2,7 +2,7 @@ type: town
 icon: TNT
 name: Keep
 max: 2
-price: 1000
+price: 800
 group:
 - outpost
 level: 3
@@ -27,6 +27,7 @@ build-radius-y: 500
 effects:
 - exempt_housing
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire

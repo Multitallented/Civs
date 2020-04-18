@@ -57,6 +57,10 @@ public class Region {
     private double forSale = -1;
     @Getter @Setter
     private boolean warehouseEnabled = true;
+    @Getter @Setter
+    private List<List<CVItem>> missingBlocks = new ArrayList<>();
+    @Getter
+    private List<String> chests = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -720,6 +724,9 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
+        if (!missingBlocks.isEmpty()) {
+            return false;
+        }
         if (checkTick && !shouldTick()) {
             return false;
         }
@@ -773,11 +780,6 @@ public class Region {
                 i++;
                 continue;
             }
-            hasItemUpkeep = true;
-            if (!runRegionUpkeepPayout(regionUpkeep)) {
-                i++;
-                continue;
-            }
             if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
                 Town town = TownManager.getInstance().getTownAt(location);
                 if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
@@ -795,6 +797,10 @@ public class Region {
                     TownManager.getInstance().saveTown(town);
                 }
             }
+            if (!runRegionUpkeepPayout(regionUpkeep)) {
+                i++;
+                continue;
+            }
             if (regionUpkeep.getCommand() != null && !regionUpkeep.getCommand().isEmpty()) {
                 Set<UUID> owners = getOwners();
                 if (!owners.isEmpty()) {
@@ -802,6 +808,7 @@ public class Region {
                     CommandUtil.performCommand(offlinePlayer, regionUpkeep.getCommand());
                 }
             }
+            hasItemUpkeep = true;
             if (chestInventory != null) {
                 if (ConfigManager.getInstance().isDebugLog()) {
                     DebugLogger.incrementRegion(this);
@@ -896,27 +903,31 @@ public class Region {
                         hasMoney = true;
                     }
                 } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                    double coopCut = payout * 0.1;
-                    town.setBankAccount(town.getBankAccount() + coopCut);
-                    HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                    Map<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town, this);
                     for (UUID uuid : payouts.keySet()) {
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                         Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
                         hasMoney = true;
                     }
+                    if (hasMoney) {
+                        double coopCut = payout * 0.1;
+                        town.setBankAccount(town.getBankAccount() + coopCut);
+                    }
                 }
             } else {
                 payout = payout / (double) getOwners().size();
-                for (UUID uuid : getOwners()) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                    if (payout == 0) {
-                        hasMoney = true;
-                    } else if (payout > 0) {
-                        Civs.econ.depositPlayer(player, payout);
-                        hasMoney = true;
-                    } else if (Civs.econ.has(player, payout)) {
-                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                        hasMoney = true;
+                if (payout == 0) {
+                    hasMoney = true;
+                } else {
+                    for (UUID uuid : getOwners()) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                        if (payout > 0) {
+                            Civs.econ.depositPlayer(player, payout);
+                            hasMoney = true;
+                        } else if (Civs.econ.has(player, payout)) {
+                            Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                            hasMoney = true;
+                        }
                     }
                 }
             }

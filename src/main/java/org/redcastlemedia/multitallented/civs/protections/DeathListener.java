@@ -94,10 +94,12 @@ public class DeathListener implements Listener {
             }
         }
 
-        long combatTagDuration = (long) ConfigManager.getInstance().getCombatTagDuration();
+        long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
         combatTagDuration *= 1000;
         if (!(event instanceof EntityDamageByEntityEvent)) {
             if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
                 civilian.setLastDamage(System.currentTimeMillis());
             } else {
                 civilian.setLastDamager(null);
@@ -137,7 +139,16 @@ public class DeathListener implements Listener {
                     return;
                 }
             }
-
+            if (!damagerCiv.isInCombat()) {
+                damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(damager,
+                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+            }
+            damagerCiv.setLastDamage(System.currentTimeMillis());
+            damagerCiv.setLastDamager(player.getUniqueId());
+        }
+        if (!civilian.isInCombat()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
         }
         civilian.setLastDamage(System.currentTimeMillis());
         if (damager == null) {
@@ -172,9 +183,6 @@ public class DeathListener implements Listener {
         final Player player = event.getPlayer();
         final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Location respawnLocation = civilian.getRespawnPoint();
-        if (respawnLocation == null) {
-            return;
-        }
 
         if (ConfigManager.getInstance().getUseStarterBook()) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
@@ -184,6 +192,10 @@ public class DeathListener implements Listener {
                 }
             }, 5L);
         }
+        if (respawnLocation == null) {
+            return;
+        }
+
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);
         CivilianManager.getInstance().saveCivilian(civilian);

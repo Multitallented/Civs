@@ -109,10 +109,12 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("upkeep-not-working".equals(menuIcon.getKey()) &&
-                region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+                region.getFailingUpkeeps().size() < regionType.getUpkeeps().size() &&
+                region.getMissingBlocks().isEmpty()) {
             return new ItemStack(Material.AIR);
         } else if ("upkeep-working".equals(menuIcon.getKey()) &&
-                region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size() ||
+                !region.getMissingBlocks().isEmpty())) {
             return new ItemStack(Material.AIR);
         } else if ("destroy".equals(menuIcon.getKey())) {
             boolean isIndestrucible = region.getEffects().containsKey("indestructible");
@@ -219,6 +221,18 @@ public class RegionMenu extends CustomMenu {
             if (region.isWarehouseEnabled() || !hasUpkeepsOrInput || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
+        } else if ("missing-blocks".equals(menuIcon.getKey())) {
+            if (region.getMissingBlocks().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            String localizedRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    region.getType() + LocaleConstants.NAME_SUFFIX);
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player, menuIcon.getName())
+                    .replace("$1", localizedRegionName));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

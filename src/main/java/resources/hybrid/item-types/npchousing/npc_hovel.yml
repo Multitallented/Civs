@@ -30,7 +30,6 @@ build-reqs:
 rebuild:
 - basehovel
 - npc_shack
-rebuild-required: true
 build-radius: 4 #9x9x9
 effects:
 - block_break

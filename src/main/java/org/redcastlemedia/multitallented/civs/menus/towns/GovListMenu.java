@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.menus.towns;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -37,17 +39,24 @@ public class GovListMenu extends CustomMenu {
                     townsByGov.put(currentGovName, new HashSet<>());
                 }
                 townsByGov.get(currentGovName).add(town);
-                if (govPower.containsKey(town.getGovernmentType())) {
+                if (govPower.containsKey(town.getGovernmentType().toLowerCase())) {
                     govPower.put(town.getGovernmentType().toLowerCase(), town.getPower() +
                             govPower.get(town.getGovernmentType().toLowerCase()));
                 } else {
                     govPower.put(town.getGovernmentType().toLowerCase(), town.getPower());
                 }
             }
+            for (String currentGovName : GovernmentManager.getInstance().getGovermentTypes()) {
+                if (!govPower.containsKey(currentGovName.toLowerCase())) {
+                    govList.remove(currentGovName);
+                }
+            }
             govList.sort(new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
-                    return govPower.getOrDefault(o2, 0).compareTo(govPower.getOrDefault(o1, 0));
+                    int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
+                    int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
+                    return Integer.compare(power2, power1);
                 }
             });
             data.put("townsByGov", townsByGov);
@@ -64,7 +73,14 @@ public class GovListMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("governments")) {
+            HashMap<String, Integer> govPower = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "govPower");
+            boolean isLeaderboard = govPower != null;
+
             List<String> govList = (List<String>) MenuManager.getData(civilian.getUuid(), "govList");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
@@ -74,16 +90,13 @@ public class GovListMenu extends CustomMenu {
             String govName = govList.get(startIndex + count);
             Government government = GovernmentManager.getInstance().getGovernment(govName);
             CVItem cvItem;
-            boolean isLeaderboard = false;
-            HashMap<String, Integer> govPower = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), "govPower");
-            if (govPower != null) {
-                if (govPower.get(govName) == null) {
+            if (isLeaderboard) {
+                if (govPower.get(govName.toLowerCase()) == null) {
                     return new ItemStack(Material.AIR);
                 }
                 cvItem = government.getIcon(civilian, false);
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "points")
-                        .replace("$1", "" + govPower.get(govName)));
-                isLeaderboard = true;
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "points")
+                        .replace("$1", "" + govPower.get(govName.toLowerCase())));
             } else {
                 cvItem = government.getIcon(civilian, true);
             }
@@ -91,7 +104,7 @@ public class GovListMenu extends CustomMenu {
             if (isLeaderboard) {
                 String townList = "";
                 HashMap<String, Set<Town>> townsByGov = (HashMap<String, Set<Town>>) MenuManager.getData(civilian.getUuid(), "townsByGov");
-                for (Town currentTown : townsByGov.get(govName)) {
+                for (Town currentTown : townsByGov.get(govName.toLowerCase())) {
                     townList += currentTown.getName() + ",";
                 }
                 townList = townList.substring(0, townList.length() - 1);

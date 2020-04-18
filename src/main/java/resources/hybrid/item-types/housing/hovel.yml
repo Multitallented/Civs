@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: BROWN_BED
 dynmap-marker: house
 name: Hovel
-max: 2
 price: 200
 groups:
 - housing

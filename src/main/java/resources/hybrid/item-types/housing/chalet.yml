@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: MAGENTA_BED
 dynmap-marker: bighouse
 name: Chalet
-max: 2
 price: 1400
 groups:
 - housing

@@ -30,7 +30,6 @@ build-reqs:
 rebuild:
 - basedwelling
 - npc_hovel
-rebuild-required: true
 build-radius: 5 #11x11x11
 effects:
 - block_break

@@ -53,4 +53,28 @@ public class LanguageTests extends TestUtil {
         CivilianListener civilianListener = new CivilianListener();
         civilianListener.onCivilianDropItem(playerDropItemEvent);
     }
+
+    @Test
+    public void keyWithoutVariablesShouldStillTranslate() {
+        String translation = LocaleManager.getInstance().getTranslation("en", "karma{");
+        assertEquals("Karma: $1", translation);
+    }
+
+    @Test
+    public void translationWithVariableShouldParse() {
+        String translation = LocaleManager.getInstance().getTranslation("en", "karma{2");
+        assertEquals("Karma: 2", translation);
+    }
+
+    @Test
+    public void translationWithoutMultipleVariableShouldParse() {
+        String translation = LocaleManager.getInstance().getTranslation("en", "karma{2,000");
+        assertEquals("Karma: 2,000", translation);
+    }
+
+    @Test
+    public void multipleKeysShouldDoMultipleTranslations() {
+        String translation = LocaleManager.getInstance().getTranslation("en", "karma{2,000");
+        assertEquals("Karma: 2,000", translation);
+    }
 }

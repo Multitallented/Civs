@@ -32,6 +32,8 @@ public final class MenuUtil {
             item.setType(Material.CARROT);
         } else if (mat == Material.WALL_SIGN) {
             item.setType(Material.SIGN);
+        } else if (mat == Material.COCOA) {
+            item.setType(Material.COCOA_BEANS);
         }
     }
     private static void divideByTwo(ItemStack item) {

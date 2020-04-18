@@ -229,7 +229,7 @@ public class PeopleMenu extends CustomMenu {
             Civilian currentCivilian = civilians.get(startIndex + count);
             Player currentPlayer = Bukkit.getPlayer(civilian.getUuid());
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(currentCivilian.getUuid());
-            if (Civs.perm != null && Civs.perm.playerHas(currentPlayer.getWorld().getName(), offlinePlayer, Constants.PVP_EXEMPT_PERMISSION)) {
+            if (Civs.perm != null && offlinePlayer.getPlayer() != null && Civs.perm.has(offlinePlayer.getPlayer(), Constants.PVP_EXEMPT_PERMISSION)) {
                 return new ItemStack(Material.AIR);
             }
             Player player = null;

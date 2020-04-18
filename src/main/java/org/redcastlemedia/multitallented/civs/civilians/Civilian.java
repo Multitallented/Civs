@@ -234,13 +234,18 @@ public class Civilian {
     }
 
     public String isAtMax(CivItem civItem) {
+        return isAtMax(civItem, false);
+    }
+
+    public String isAtMax(CivItem civItem, boolean isCountRebuild) {
         String processedName = civItem.getProcessedName();
         int rebuildBonus = 0;
-        if (CivItem.ItemType.REGION == civItem.getItemType() && null != ((RegionType) civItem).getRebuild()) {
+        if (isCountRebuild && CivItem.ItemType.REGION == civItem.getItemType() &&
+                null != ((RegionType) civItem).getRebuild() && !((RegionType) civItem).getRebuild().isEmpty()) {
             rebuildBonus = 1;
         }
         boolean atMax = civItem.getCivMax() != -1 &&
-                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+                civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return civItem.getProcessedName();
         }
