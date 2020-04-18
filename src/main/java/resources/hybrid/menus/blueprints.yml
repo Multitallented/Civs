@@ -1,6 +1,20 @@
 size: 36
 name: Blueprints
 items:
+  delete-on:
+    index: 1
+    icon: BARRIER
+    name: delete-on
+    actions:
+      - delete-mode
+      - refresh
+  delete-off:
+    index: 1
+    icon: ARROW
+    name: delete-off
+    actions:
+      - delete-mode
+      - refresh
   prev:
     index: 3
   next:
@@ -9,3 +23,5 @@ items:
     index: 8
   blueprints:
     index: 9-35
+    actions:
+      - delete

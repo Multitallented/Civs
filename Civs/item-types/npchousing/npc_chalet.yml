@@ -29,7 +29,6 @@
 #rebuild:
 #- basechalet
 #- npc_house
-#rebuild-required: true
 #build-radius: 8 #17x17x17
 #effects:
 #- block_break
