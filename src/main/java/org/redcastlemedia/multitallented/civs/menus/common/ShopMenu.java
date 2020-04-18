@@ -228,7 +228,7 @@ public class ShopMenu extends CustomMenu {
             civItem1.getLore().add(ChatColor.BLACK + folderType.getProcessedName());
             civItem1.getLore().addAll(Util.textWrap(civilian, localeManager.getTranslationWithPlaceholders(player, folderType.getProcessedName() + "-desc")));
         }
-        String maxLimit = civilian.isAtMax(civItem);
+        String maxLimit = civilian.isAtMax(civItem, true);
         if (civItem.getItemType() != CivItem.ItemType.FOLDER && maxLimit != null) {
             CVItem item = CVItem.createCVItemFromString(Material.BARRIER.name());
             item.setDisplayName(localeManager.getTranslationWithPlaceholders(player,

@@ -29,7 +29,6 @@
 #rebuild:
 #- basemansion
 #- npc_chalet
-#rebuild-required: true
 #build-radius: 10 #21x21x21
 #effects:
 #- block_break

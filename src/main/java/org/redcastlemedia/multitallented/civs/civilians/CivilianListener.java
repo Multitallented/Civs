@@ -27,6 +27,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -628,6 +629,7 @@ public class CivilianListener implements Listener {
         }
         boolean shiftClick = event.getClick().isShiftClick() && event.getClickedInventory() != null &&
                 event.getClickedInventory().equals(event.getWhoClicked().getInventory());
+        shiftClick = shiftClick || event.getClick() == ClickType.NUMBER_KEY;
         boolean dragToChest = event.getClickedInventory() != null &&
                 !event.getClickedInventory().equals(event.getWhoClicked().getInventory());
 

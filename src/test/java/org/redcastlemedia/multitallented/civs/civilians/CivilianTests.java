@@ -17,6 +17,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
@@ -74,6 +75,17 @@ public class CivilianTests extends TestUtil {
         PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent(TestUtil.player, item);
         CivilianListener.getInstance().onCivilianDropItem(playerDropItemEvent);
         assertTrue(civilian.getStashItems().containsKey("cobble"));
+    }
+
+    @Test
+    public void civilianShouldBeAtMaxWithoutRebuild() {
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        CivItem hovel = ItemManager.getInstance().getItemType("hovel");
+        assertNull(civilian.isAtMax(hovel, true));
+        assertEquals("housing", civilian.isAtMax(hovel));
     }
 
     public static void loadCivilian(Player player) {

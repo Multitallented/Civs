@@ -547,7 +547,7 @@ public class RegionManager {
             rebuildTransition = true;
         }
 
-        String maxString = civilian.isAtMax(regionType, false);
+        String maxString = civilian.isAtMax(regionType);
         if (rebuildRegion == null && maxString != null && !regionType.getRebuild().isEmpty()) {
             event.setCancelled(true);
             String rebuildLocalName;
