@@ -182,6 +182,10 @@ public class CivilianListener implements Listener {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
+        if (hasBlueprintsMenuOpen) {
+            return true;
+        }
         String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
         String itemName = processedName.replace(
                 ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
