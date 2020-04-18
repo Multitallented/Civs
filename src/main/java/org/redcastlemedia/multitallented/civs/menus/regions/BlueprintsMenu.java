@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -15,19 +14,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -138,8 +135,6 @@ public class BlueprintsMenu extends CustomMenu {
         if (player == null) {
             return new ItemStack(Material.AIR);
         }
-        boolean isDeleteMode = MenuManager.getAllData(civilian.getUuid()).containsKey("delete") &&
-                (boolean) MenuManager.getData(civilian.getUuid(), "delete");
         if (menuIcon.getKey().equals("blueprints")) {
             Map<String, Integer> stashItems = civilian.getStashItems();
             if (stashItems.isEmpty()) {
@@ -183,14 +178,6 @@ public class BlueprintsMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
-        } else if ("delete-on".equals(menuIcon.getKey())) {
-            if (isDeleteMode) {
-                return new ItemStack(Material.AIR);
-            }
-        } else if ("delete-off".equals(menuIcon.getKey())) {
-            if (!isDeleteMode) {
-                return new ItemStack(Material.AIR);
-            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
@@ -201,40 +188,4 @@ public class BlueprintsMenu extends CustomMenu {
             event.setCancelled(true);
         }
     }
-
-
-    @Override
-    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
-        if (actionString.equals("delete-on")) {
-            MenuManager.getAllData(civilian.getUuid()).put("delete", true);
-            return true;
-        } else if (actionString.equals("delete-off")) {
-            MenuManager.getAllData(civilian.getUuid()).remove("delete");
-            return true;
-        } else if ("delete".equals(actionString)) {
-            boolean isDeleteMode = MenuManager.getAllData(civilian.getUuid()).containsKey("delete") &&
-                    (boolean) MenuManager.getData(civilian.getUuid(), "delete");
-            if (isDeleteMode) {
-                CivItem civItem = CivItem.getFromItemStack(clickedItem);
-                if (civItem != null) {
-                    Player player = Bukkit.getPlayer(civilian.getUuid());
-                    String type = civItem.getProcessedName();
-                    if (civilian.getStashItems().containsKey(type)) {
-                        if (civilian.getStashItems().get(type) < 2) {
-                            civilian.getStashItems().remove(type);
-                        } else {
-                            civilian.getStashItems().put(type, civilian.getStashItems().get(type) - 1);
-                        }
-                    }
-                    if (Civs.econ != null && player != null) {
-                        Civs.econ.depositPlayer(player, civItem.getPrice());
-                    }
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                }
-                return true;
-            }
-        }
-        return super.doActionAndCancel(civilian, actionString, clickedItem);
-    }
-
 }

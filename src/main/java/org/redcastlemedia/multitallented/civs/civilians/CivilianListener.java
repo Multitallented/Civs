@@ -184,6 +184,12 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
         if (hasBlueprintsMenuOpen) {
+            CivItem civItem = CivItem.getFromItemStack(itemStack);
+            if (Civs.econ != null && civItem.getPrice() > 0) {
+                Civs.econ.depositPlayer(player, civItem.getPrice());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+            }
             return true;
         }
         String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
