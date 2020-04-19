@@ -14,13 +14,8 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 
-@CivsCommand(keys = "nation-icon") @SuppressWarnings("unused")
-public class NationIconCommand implements CivCommand {
-
-    //args
-    //0 nation-icon
-    //1 NationName
-
+@CivsCommand(keys = "nation-lore") @SuppressWarnings("unused")
+public class NationLoreCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -30,9 +25,9 @@ public class NationIconCommand implements CivCommand {
         Player player = (Player) commandSender;
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
-        if (itemStack.getType() == Material.AIR) {
+        if (itemStack.getType() != Material.WRITTEN_BOOK) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "hold-nation-icon"));
+                    "hold-lore"));
             return true;
         }
 
@@ -43,15 +38,14 @@ public class NationIconCommand implements CivCommand {
             return true;
         }
 
-        if (!OwnershipUtil.isAuthorized(player, nation)) {
+        if (OwnershipUtil.isAuthorized(player, nation)) {
             return true;
         }
 
-        nation.setIcon(itemStack);
+        nation.setLore(itemStack);
         nation.setLastRenamedBy(player.getUniqueId());
-        NationManager.getInstance().saveNation(nation);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "nation-icon-set").replace("$1", nation.getName()));
+                "lore-set").replace("$1", nation.getName()));
         return true;
     }
 }

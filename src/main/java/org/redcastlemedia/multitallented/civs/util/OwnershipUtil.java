@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
@@ -25,6 +26,24 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 public final class OwnershipUtil {
     private OwnershipUtil() {
 
+    }
+
+    public static boolean isAuthorized(Player player, Nation nation) {
+        boolean isAuthorized = false;
+        for (String townName : nation.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town.getRawPeople().containsKey(player.getUniqueId()) &&
+                    town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
+                isAuthorized = true;
+                break;
+            }
+        }
+        if (!isAuthorized) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-permission"));
+            return true;
+        }
+        return false;
     }
 
     public static boolean shouldDenyOwnershipOverSomeone(Town town, Civilian civilian, Civilian invitee, Player player) {

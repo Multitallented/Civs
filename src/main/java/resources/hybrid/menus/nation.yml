@@ -3,16 +3,17 @@ name: Nation
 # variables
 #  nation: name of the nation
 #  capitol: name of the capitol town
+# lastRenamed: uuid of the player who last modified the nation
 # actions
-#  get-constituion: gives the player a copy of the nation's constitution if they don't already have it
+#  get-lore: gives the player a copy of the nation's lore if they don't already have it
 #  join-nation: your town will join the nation (opens town select menu if you own multiple towns) and refreshes the menu
 #  leave-nation: leave nation (opens town select menu if you own multiple towns) and refreshes the menu
 items:
   icon:
     index: 0
-    # icon: nation icon TODO
+    # icon: nation icon
     # name: nation name
-    # desc: nation desc TODO
+    # desc: nation desc
     actions: []
   power:
     index: 1
@@ -24,7 +25,7 @@ items:
     index: 2
     # icon: nation capitol icon
     # name: nation capitol name
-    desc: nation-capitol-desc #TODO
+    # desc: nation capitol desc
     actions:
       - menu:town?town=$capitol$
   prev:
@@ -39,23 +40,33 @@ items:
     desc: set-nation-icon-desc
     actions:
       - command:cv nation-icon $nation$
-  set-info:
+  set-lore:
     index: 9
     name: set-nation-info-name
     desc: set-nation-info-desc
-    actions: []
+    actions:
+      - typing:click-me:nation-lore-command
+      - close
   constitution:
     index: 10
-    name: constitution #TODO
-    desc: constitution-desc #TODO
+    name: constitution{$nation$
+    desc: constitution-desc
     actions:
-      - get-constitution
+      - get-lore
   rename:
     index: 11
     icon: PAPER
-    name: rename-nation #TODO
-    desc: rename-nation-desc #TODO
-    actions: []
+    name: rename-nation
+    desc: rename-nation-desc
+    actions:
+      - typing:click-me:rename-nation-command{$nation$
+      - close
+  last-rename:
+    index: 12
+    # icon: player's head
+    # name: player's name
+    actions:
+      - menu:player?uuid=$lastRenamed$
   join-nation:
     index: 17
     icon: IRON_SWORD
@@ -74,6 +85,6 @@ items:
     index: 18-53
     # icon: town icon
     # name: town name
-    # desc: town power / gov-type
+    # desc: town power / gov-type # TODO
     actions:
       - menu:town?town=$itemName$

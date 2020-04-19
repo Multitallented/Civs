@@ -5,23 +5,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "nation-list") @SuppressWarnings("unused")
 public class NationListMenu extends CustomMenu {
