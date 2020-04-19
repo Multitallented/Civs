@@ -16,6 +16,7 @@ public final class Constants {
     public static final String ALLY = "ally";
     public static final String PORT = "port";
     public static final String TOWN = "town";
+    public static final String NATION = "nation";
     public static final String UUID = "uuid";
     public static final String CHESTS = "chests";
     public static final String EXCLUSIVE = "exclusive";
