@@ -10,13 +10,13 @@ items:
     icon: REDSTONE
     name: sort-power
     actions:
-      - menu:nation-list?sort=power
+      - menu:nation-list?sort=power #TODO
   sort-alphabetical:
     index: 1
     icon: MAP
     name: sort-alphabetical
     actions:
-      - menu:nation-list?sort=alphabetical
+      - menu:nation-list?sort=alphabetical #TODO
   prev:
     index: 3
   next:
