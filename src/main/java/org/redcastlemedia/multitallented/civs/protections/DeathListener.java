@@ -54,7 +54,8 @@ public class DeathListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (!ConfigManager.getInstance().isAllowTeleportInCombat()) {
+
+        if (!ConfigManager.getInstance().isAllowTeleportInCombat() && getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -75,6 +76,16 @@ public class DeathListener implements Listener {
                 }
             }
         }
+    }
+
+    private double getDistanceSquared(Location location1, Location location2) {
+        if (location1 == null || location2 == null) {
+            return 0;
+        }
+        if (!location1.getWorld().equals(location2.getWorld())) {
+            return 999999;
+        }
+        return location1.distanceSquared(location2);
     }
 
     @EventHandler

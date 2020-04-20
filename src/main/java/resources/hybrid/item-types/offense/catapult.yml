@@ -23,7 +23,7 @@ effects:
 - tnt_cannon:12
 - chest_use
 
-period: 15
+period: daily
 upkeep:
   0:
     reagents:
