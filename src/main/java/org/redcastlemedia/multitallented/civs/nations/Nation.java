@@ -25,15 +25,15 @@ public class Nation {
     private String name;
     @Getter @Setter
     private ItemStack icon;
-    @Getter
+    @Getter @Setter
     private Set<String> members = new HashSet<>();
     @Getter @Setter
     private String capitol;
     @Getter @Setter
     private UUID lastRenamedBy;
-    @Getter
+    @Getter @Setter
     private HashSet<String> effects = new HashSet<>();
-    @Getter
+    @Getter @Setter
     private HashMap<UUID, HashMap<String, ChunkClaim>> nationClaims = new HashMap<>();
     @Getter
     private String desc;
@@ -75,5 +75,16 @@ public class Nation {
             }
         }
         return power;
+    }
+
+    public int getMaxPower() {
+        int maxPower = 0;
+        for (String townName : members) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town != null) {
+                maxPower += town.getMaxPower();
+            }
+        }
+        return maxPower;
     }
 }

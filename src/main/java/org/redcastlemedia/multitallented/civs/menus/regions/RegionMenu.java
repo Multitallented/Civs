@@ -30,6 +30,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -65,6 +66,11 @@ public class RegionMenu extends CustomMenu {
             } else {
                 StructureUtil.showGuideBoundingBox(player, r.getLocation(), regionType, infiniteBoundingBox);
             }
+        }
+        if (region.shouldTick()) {
+            data.put("cooldown", AnnouncementUtil.formatTime(player, 0));
+        } else {
+            data.put("cooldown", AnnouncementUtil.formatTime(player, region.getSecondsTillNextTick()));
         }
         return data;
     }
@@ -183,33 +189,10 @@ public class RegionMenu extends CustomMenu {
             if (!isAdmin && !isOwner) {
                 return new ItemStack(Material.AIR);
             }
-            String localRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getName()));
-            HashMap<Integer, Integer> upkeepsWithinLastDay = region.getNumberOfUpkeepsWithin24Hours();
-            HashMap<Integer, Integer> upkeepsWithinLastWeek = region.getNumberOfUpkeepsWithin1Week();
-            double lastDayIncome = 0;
-            double lastWeekIncome = 0;
-            int i = 0;
-            for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-                if (regionUpkeep.getPayout() == 0) {
-                    i++;
-                    continue;
-                }
-                if (upkeepsWithinLastDay.containsKey(i)) {
-                    lastDayIncome += (double) upkeepsWithinLastDay.get(i) * regionUpkeep.getPayout();
-                }
-                if (upkeepsWithinLastWeek.containsKey(i)) {
-                    lastWeekIncome += (double) upkeepsWithinLastWeek.get(i) * regionUpkeep.getPayout();
-                }
-                i++;
-            }
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    menuIcon.getDesc()).replace("$1", localRegionTypeName)
-                    .replace("$2", NumberFormat.getCurrencyInstance().format(lastDayIncome))
-                    .replace("$3", NumberFormat.getCurrencyInstance().format(lastWeekIncome))));
+            cvItem.setLore(Util.textWrap(civilian, region.getIncome(player)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

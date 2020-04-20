@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
@@ -50,6 +51,8 @@ public class NationMenu extends CustomMenu {
             townList.add(town);
         }
         data.put("townList", townList);
+        data.put("power", nation.getPower());
+        data.put("maxPower", nation.getMaxPower());
 
         return data;
     }
@@ -69,7 +72,7 @@ public class NationMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("last-rename".equals(menuIcon.getKey())) {
-            if (nation.getLastRenamedBy() == null) {
+            if (!isAuthorized || nation.getLastRenamedBy() == null) {
                 return new ItemStack(Material.AIR);
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(nation.getLastRenamedBy());
@@ -113,7 +116,7 @@ public class NationMenu extends CustomMenu {
             Town town = townList.get(startIndex + count);
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
             cvItem.setDisplayName(town.getName());
-            cvItem.getLore().clear();
+            cvItem.setLore(Util.textWrap(civilian, town.getSummary(player)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

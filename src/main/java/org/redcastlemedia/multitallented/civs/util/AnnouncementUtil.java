@@ -242,7 +242,7 @@ public final class AnnouncementUtil {
 
     private static void sendToPlayer(Player player, String input) {
         BaseComponent message = Util.parseColorsComponent(input);
-        TextComponent unsub = new TextComponent("[X]");
+        TextComponent unsub = new TextComponent("[✘]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);
         unsub.setUnderlined(true);
@@ -250,14 +250,20 @@ public final class AnnouncementUtil {
         player.spigot().sendMessage(message);
     }
 
-    public static String formatTime(long duration) {
+    public static String formatTime(Player player, long duration) {
         if (duration < 60) {
-            return duration + "s";
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "time-seconds")
+                    .replace("$1", "" + duration);
         } else if (duration < 3600) {
-            return (int) (duration / 60) + "m " + (int) (duration % 60) + "s";
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "time-minutes")
+                    .replace("$1", "" + (int) (duration / 60))
+                    .replace("$2", "" + (int) (duration % 60));
         } else {
             int hours = (int) (duration / 3600);
-            return hours + "h " + (int) ((duration - hours * 3600) / 60) + "m " + (int) (duration % 60) + "s";
+            return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "time-hours")
+                    .replace("$1", "" + hours)
+                    .replace("$2", "" + (int) ((duration - hours * 3600) / 60))
+                    .replace("$3", "" + (int) (duration % 60));
         }
     }
 }

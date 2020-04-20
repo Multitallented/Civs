@@ -3,14 +3,18 @@ package org.redcastlemedia.multitallented.civs.towns;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
@@ -122,6 +126,27 @@ public class Town {
     }
     public void setChildLocations(List<Location> childLocations) {
         this.childLocations = childLocations;
+    }
+
+    public String getSummary(Player player) {
+        String localTownType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                type + LocaleConstants.NAME_SUFFIX);
+        StringBuilder ownerString = new StringBuilder();
+        for (Map.Entry<UUID, String> entry : people.entrySet()) {
+            if (entry.getValue() == null || !entry.getValue().contains(Constants.OWNER)) {
+                continue;
+            }
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(entry.getKey());
+            if (offlinePlayer.getName() != null) {
+                ownerString.append(offlinePlayer.getName()).append(", ");
+            }
+            ownerString = new StringBuilder(ownerString.substring(0, ownerString.length() - 2));
+        }
+
+        return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "town-summary")
+                .replace("$1", localTownType).replace("$2", ownerString.toString())
+                .replace("$3", "" + power).replace("$4", "" + maxPower)
+                .replace("$5", "" + getPopulation()).replace("$6", "" + getHousing());
     }
 
     public HashMap<UUID, String> getRawPeople() {

@@ -3,7 +3,9 @@ name: Nation
 # variables
 #  nation: name of the nation
 #  capitol: name of the capitol town
-# lastRenamed: uuid of the player who last modified the nation
+#  lastRenamed: uuid of the player who last modified the nation
+#  power: nation's power
+#  maxPower: nation's maxPower
 # actions
 #  get-lore: gives the player a copy of the nation's lore if they don't already have it
 #  join-nation: your town will join the nation (opens town select menu if you own multiple towns) and refreshes the menu
@@ -18,8 +20,7 @@ items:
   power:
     index: 1
     icon: GREEN_WOOL
-    name: nation-power #TODO
-    desc: nation-power-desc #TODO
+    name: town-power{$power$,,$maxPower$
     actions: []
   capitol:
     index: 2
@@ -29,19 +30,22 @@ items:
     actions:
       - menu:town?town=$capitol$
   prev:
-    index: 3
+    index: 4
   next:
-    index: 5
+    index: 6
   back:
     index: 8
   set-icon:
     index: 9
+    icon: BOOK
     name: set-nation-icon-name
     desc: set-nation-icon-desc
     actions:
       - command:cv nation-icon $nation$
+      - refresh
   set-lore:
     index: 9
+    icon: WRITABLE_BOOK
     name: set-nation-info-name
     desc: set-nation-info-desc
     actions:
@@ -49,6 +53,7 @@ items:
       - close
   constitution:
     index: 10
+    icon: WRITTEN_BOOK
     name: constitution{$nation$
     desc: constitution-desc
     actions:
@@ -67,24 +72,31 @@ items:
     # name: player's name
     actions:
       - menu:player?uuid=$lastRenamed$
+  set-capitol:
+    index: 13
+    icon: MAP
+    name: set-capitol
+    desc: set-capitol-desc
+    actions:
+      - set-capitol #TODO
   join-nation:
     index: 17
     icon: IRON_SWORD
-    name: join-nation #TODO
-    desc: join-nation-desc #TODO
+    name: join-nation
+    desc: join-nation-desc
     actions:
       - join-nation #TODO
   leave-nation:
     index: 17
     icon: CREEPER_HEAD
-    name: leave-nation #TODO
-    desc: leave-nation-desc #TODO
+    name: leave-nation
+    desc: leave-nation-desc
     actions:
       - leave-nation #TODO
   members:
     index: 18-53
     # icon: town icon
     # name: town name
-    # desc: town power / gov-type # TODO
+    # desc: town-desc
     actions:
       - menu:town?town=$itemName$

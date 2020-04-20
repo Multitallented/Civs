@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -18,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "region-list") @SuppressWarnings("unused")
 public class RegionListMenu extends CustomMenu {
@@ -79,6 +82,10 @@ public class RegionListMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("regions")) {
             List<Region> regions;
             if (MenuManager.getData(civilian.getUuid(), "regions") != null) {
@@ -104,6 +111,7 @@ public class RegionListMenu extends CustomMenu {
             if (town != null) {
                 cvItem.getLore().add(town.getName());
             }
+            cvItem.setLore(Util.textWrap(civilian, region.getSummary(player)));
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).put(itemStack, region);
             List<String> actionList = getActions(civilian, itemStack);

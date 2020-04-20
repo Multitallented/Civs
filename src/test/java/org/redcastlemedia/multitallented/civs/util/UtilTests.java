@@ -190,10 +190,10 @@ public class UtilTests extends TestUtil {
 
     @Test
     public void formatTimeShouldReturnCorrectFormat() {
-        assertEquals("54s", AnnouncementUtil.formatTime(54));
-        assertEquals("1m 22s", AnnouncementUtil.formatTime(82));
-        assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(4830));
-        assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(8430));
+        assertEquals("54s", AnnouncementUtil.formatTime(TestUtil.player, 54));
+        assertEquals("1m 22s", AnnouncementUtil.formatTime(TestUtil.player, 82));
+        assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(TestUtil.player, 4830));
+        assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(TestUtil.player, 8430));
     }
 
     @Test

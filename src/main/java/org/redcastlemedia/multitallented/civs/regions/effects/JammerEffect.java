@@ -52,10 +52,9 @@ public class JammerEffect implements Listener, RegionCreatedListener {
             if (offCooldown > System.currentTimeMillis()) {
                 event.setCancelled(true);
                 long cooldown = offCooldown - System.currentTimeMillis();
-                Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslation(civilian.getLocale(), "cooldown")
-                        .replace("$1", AnnouncementUtil.formatTime(cooldown)));
+                        .getTranslationWithPlaceholders(event.getPlayer(), "cooldown")
+                        .replace("$1", AnnouncementUtil.formatTime(event.getPlayer(), cooldown)));
                 return;
             } else {
                 cooldowns.remove(event.getPlayer().getUniqueId());

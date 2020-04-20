@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "select-town") @SuppressWarnings("unused")
 public class SelectTownMenu extends CustomMenu {
@@ -66,6 +67,10 @@ public class SelectTownMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (menuIcon.getKey().equals("towns")) {
             Set<Town> towns = (Set<Town>) MenuManager.getData(civilian.getUuid(), "towns");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
@@ -78,7 +83,7 @@ public class SelectTownMenu extends CustomMenu {
             Town town = townArray[startIndex + count];
             CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
             cvItem.setDisplayName(town.getName());
-            cvItem.getLore().clear();
+            cvItem.setLore(Util.textWrap(civilian, town.getSummary(player)));
             ItemStack itemStack = cvItem.createItemStack();
             boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
             if (isAllianceSelect) {

@@ -119,7 +119,7 @@ public class InviteTownCommand implements CivCommand {
                 .replace("$3", townName) + " ";
         TextComponent component = Util.parseColorsComponent(inviteMessage);
 
-        TextComponent acceptComponent = new TextComponent("[✓]");
+        TextComponent acceptComponent = new TextComponent("[✔]");
         acceptComponent.setColor(ChatColor.GREEN);
         acceptComponent.setUnderlined(true);
         acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv accept"));
