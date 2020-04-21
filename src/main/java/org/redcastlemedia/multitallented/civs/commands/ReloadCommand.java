@@ -32,7 +32,7 @@ public class ReloadCommand implements CivCommand {
             GovernmentManager.getInstance().reload();
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
-            new LocaleManager();
+            LocaleManager.getInstance().reload();
             CommonScheduler.setRun(true);
             commandSender.sendMessage(Civs.getPrefix() + "reloaded");
             return true;
