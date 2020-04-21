@@ -100,7 +100,10 @@ public class PermissionEffect implements Listener {
         if (player == null) {
             return;
         }
-        Civs.perm.playerAdd(player, permission);
+        String[] permissionSplit = permission.split(",,");
+        for (String currentPerm : permissionSplit) {
+            Civs.perm.playerAdd(player, currentPerm);
+        }
         permissionMap.put(uuid, permissions);
     }
 
@@ -114,7 +117,10 @@ public class PermissionEffect implements Listener {
             permissionMap.remove(uuid);
             return;
         }
-        Civs.perm.playerRemove(player, permission);
+        String[] permissionSplit = permission.split(",,");
+        for (String currentPerm : permissionSplit) {
+            Civs.perm.playerRemove(player, currentPerm);
+        }
         if (permissions.size() < 2) {
             permissionMap.remove(uuid);
             return;
@@ -133,7 +139,10 @@ public class PermissionEffect implements Listener {
             return;
         }
         for (String permission : permissions) {
-            Civs.perm.playerRemove(player, permission);
+            String[] permissionSplit = permission.split(",,");
+            for (String currentPerm : permissionSplit) {
+                Civs.perm.playerRemove(player, currentPerm);
+            }
         }
         permissionMap.remove(event.getPlayer().getUniqueId());
     }
