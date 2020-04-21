@@ -1,9 +1,7 @@
 package org.redcastlemedia.multitallented.civs.localization;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -11,7 +9,6 @@ import java.util.regex.Pattern;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -102,6 +99,11 @@ public class LocaleManager {
             return input;
         }
         return PlaceholderAPI.setPlaceholders(player, input);
+    }
+
+    public void reload() {
+        languageMap.clear();
+        loadAllConfigs();
     }
 
     private void loadAllConfigs() {
