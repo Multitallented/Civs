@@ -648,6 +648,8 @@
 #iron_shop-desc: "Sells 288 iron to the server for $576 per day."
 #leather_shop-name: "Leather Shop"
 #leather_shop-desc: "Sells leather to the server for $360 per day."
+#lapis_shop-name: "Lapis Shop"
+#lapis_shop-desc: "Sells lapis to the server for $600 per day"
 #city-name: "City"
 #city-desc: "The fifth level of a town. Requires 30 population."
 #hamlet-name: "Hamlet"
