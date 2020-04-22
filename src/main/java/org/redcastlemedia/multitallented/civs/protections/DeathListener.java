@@ -54,6 +54,10 @@ public class DeathListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
+        boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION);
+        if (isAdmin) {
+            return;
+        }
 
         if (!ConfigManager.getInstance().isAllowTeleportInCombat() && getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {

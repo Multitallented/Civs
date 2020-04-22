@@ -14,13 +14,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -40,6 +40,19 @@ public class HuntEffect implements Listener, CreateRegionListener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         cooldowns.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByBlockEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION || !(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        long cooldown = 20000;
+        if (cooldowns.containsKey(player.getUniqueId()) &&
+                cooldowns.get(player.getUniqueId()) + cooldown > System.currentTimeMillis()) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
@@ -191,7 +204,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
 
         return new Location(targetBlock.getWorld(),
                 (double) targetBlock.getX() + 0.5,
-                targetBlock.getY(),
+                (double) targetBlock.getY() + 0.5,
                 (double) targetBlock.getZ() + 0.5);
     }
 }

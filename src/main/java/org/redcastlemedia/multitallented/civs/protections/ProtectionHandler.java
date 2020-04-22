@@ -551,7 +551,13 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_TRAPDOOR ||
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
-                mat == Material.IRON_TRAPDOOR) {
+                mat == Material.IRON_TRAPDOOR ||
+                mat == Material.OAK_FENCE_GATE ||
+                mat == Material.DARK_OAK_FENCE_GATE ||
+                mat == Material.SPRUCE_FENCE_GATE ||
+                mat == Material.ACACIA_FENCE_GATE ||
+                mat == Material.JUNGLE_FENCE_GATE ||
+                mat == Material.BIRCH_FENCE_GATE) {
             boolean shouldBlock = shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null);
             if (shouldBlock) {
                 sendRegionProtectedMessage(player);
