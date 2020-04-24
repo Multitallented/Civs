@@ -18,7 +18,7 @@
 #effects:
 #- block_build
 #- block_break
-#- drain_power:1
+#- drain_power:1.10
 #- evolve:siege_machine1.3
 #- chest_use
 #

@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -53,8 +55,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
         String damageString = region.getEffects().get(KEY);
         int damage = 1;
+        int offlineDamage = 10;
         if (damageString != null) {
-            damage = Integer.parseInt(damageString);
+            String[] damageStringSplit = damageString.split("\\.");
+            damage = Integer.parseInt(damageStringSplit[0]);
+            if (damageStringSplit.length > 1) {
+                offlineDamage = Integer.parseInt(damageStringSplit[1]);
+            }
         }
 
         //Check if valid siege machine position
@@ -138,7 +145,19 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             }
         }, 15L);
 
-        TownManager.getInstance().setTownPower(town, town.getPower() - damage);
+        boolean hasOnlinePlayers = false;
+        for (UUID uuid : town.getRawPeople().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null && player.isOnline()) {
+                hasOnlinePlayers = true;
+                break;
+            }
+        }
+        if (hasOnlinePlayers) {
+            TownManager.getInstance().setTownPower(town, town.getPower() - offlineDamage);
+        } else {
+            TownManager.getInstance().setTownPower(town, town.getPower() - damage);
+        }
     }
 
     @EventHandler
