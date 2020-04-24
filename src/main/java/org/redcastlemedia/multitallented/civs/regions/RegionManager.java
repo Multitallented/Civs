@@ -352,8 +352,10 @@ public class RegionManager {
 
             double exp = regionConfig.getDouble("exp");
             HashMap<UUID, String> people = new HashMap<>();
-            for (String s : Objects.requireNonNull(regionConfig.getConfigurationSection("people")).getKeys(false)) {
-                people.put(UUID.fromString(s), regionConfig.getString("people." + s));
+            if (regionConfig.isSet("people")) {
+                for (String s : regionConfig.getConfigurationSection("people").getKeys(false)) {
+                    people.put(UUID.fromString(s), regionConfig.getString("people." + s));
+                }
             }
             RegionType regionType = (RegionType) ItemManager.getInstance()
                     .getItemType(Objects.requireNonNull(regionConfig.getString("type")).toLowerCase());

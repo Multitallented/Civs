@@ -43,7 +43,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageByBlockEvent event) {
+    public void onEntityDamage(EntityDamageEvent event) {
         if (event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION || !(event.getEntity() instanceof Player)) {
             return;
         }
