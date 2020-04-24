@@ -50,7 +50,9 @@ public class RecipeMenu extends CustomMenu {
             }
             if (items.isEmpty()) {
                 Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-                items = new ArrayList<>(region.getMissingBlocks());
+                if (!region.getMissingBlocks().isEmpty()) {
+                    items = new ArrayList<>(region.getMissingBlocks());
+                }
             }
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
