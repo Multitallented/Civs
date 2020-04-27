@@ -185,10 +185,25 @@
 #merchant:
 #  icon: DIAMOND*64
 #  steps:
+#    - type: build
+#      region: plot7x7
+#      rewards:
+#        money: 100
+#    - type: buy
+#      region: shack
+#      rewards:
+#        items:
+#          - OAK_LOG*64
+#          - OAK_LOG*64
+#          - GLASS*6
+#          - WHITE_WOOL*3
+#          - COBBLESTONE*64
 #    - type: upkeep
 #      region: shack
 #      rewards:
 #        money: 400
+#        items:
+#          - POTATO*64
 #    - type: buy
 #      region: hovel
 #      rewards:
@@ -231,7 +246,7 @@
 #          - BREAD*64
 #          - BREAD*64
 #          - BREAD*16
-#        money: 100
+#        money: 400
 #    - type: upkeep
 #      region: house1
 #      rewards:
@@ -254,6 +269,9 @@
 #      region: jade_shop
 #      rewards:
 #        items:
-#          - DIAMOND*3
-#        money: 700
+#          - DIAMOND*9
+#          - EMERALD*18
+#          - GOLD_INGOT*27
+#          - NETHER_STAR*1
+#        money: 1000
 #    - type: end
