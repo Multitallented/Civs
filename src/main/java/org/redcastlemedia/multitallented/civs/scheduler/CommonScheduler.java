@@ -158,11 +158,11 @@ public class CommonScheduler implements Runnable {
         }
 
         if (prevTown == null && town != null) {
-            enterTown(player, civilian, town, townType);
+            enterTown(player, town, townType);
         } else if (prevTown != null && town != null &&
                 !prevTown.equals(town)) {
             exitTown(player, civilian, prevTown, prevTownType);
-            enterTown(player, civilian, town, townType);
+            enterTown(player, town, townType);
         } else if (town == null && prevTown != null) {
             exitTown(player, civilian, prevTown, prevTownType);
         }
@@ -181,22 +181,26 @@ public class CommonScheduler implements Runnable {
         }
     }
 
-    private void enterTown(Player player, Civilian civilian, Town town, TownType townType) {
+    private void enterTown(Player player, Town town, TownType townType) {
         PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            govName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
         } else {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "town-enter").replace("$1", town.getName())
                     .replace("$2", govName));
+        }
+        if (!town.getPeople().containsKey(player.getUniqueId())) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "town-enter-warning"));
         }
     }
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
