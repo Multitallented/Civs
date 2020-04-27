@@ -176,6 +176,9 @@ public class PeopleMenu extends CustomMenu {
             public int compare(Civilian civilian1, Civilian civilian2) {
                 OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
                 OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
+                if (offlinePlayer1.getName() == null || offlinePlayer2.getName() == null) {
+                    return 0;
+                }
                 try {
                     return offlinePlayer1.getName().compareTo(offlinePlayer2.getName());
                 } catch (Exception e) {
