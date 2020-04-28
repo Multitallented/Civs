@@ -46,8 +46,10 @@ public class ChatChannelListMenu extends CustomMenu {
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.TOWN)) {
-            for (Town town : TownManager.getInstance().getOwnedTowns(civilian)) {
-                channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                    channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+                }
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
