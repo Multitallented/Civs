@@ -18,7 +18,7 @@ town-rings-crumble-to-gravel: true
 
 ##how long a town sits at zero before protection ends
 ##if destroy towns at zero is on, then this does nothing
-town-grace-period: 43200 #12 hours
+town-grace-period: 0 #no grace period
 
 ##ignore other plugins when checking if an explosion is cancelled
 ##before reducing power
