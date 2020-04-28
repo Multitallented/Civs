@@ -306,6 +306,9 @@ public class PeopleMenu extends CustomMenu {
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else {
+                if (uuid == null) {
+                    uuid = civilian.getUuid();
+                }
                 HashMap<String, String> params = new HashMap<>();
                 params.put("uuid", uuid.toString());
                 MenuManager.getInstance().openMenu(player, "player", params);
