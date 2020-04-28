@@ -60,9 +60,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         Town town = hasValidSign(l, rt, player.getUniqueId());
 
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (town == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "raid-sign"));
             return false;
         }
@@ -78,18 +77,17 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
             if (!isOnline) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-porter-offline")
+                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, "raid-porter-offline")
                         .replace("$1", town.getName()));
                 return false;
             }
         }
 
         for (Player player1 : Bukkit.getOnlinePlayers()) {
-            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
-            String raidLocalName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
+            String raidLocalName = LocaleManager.getInstance().getTranslationWithPlaceholders(player1,
                     rt.getProcessedName() + "-name");
             player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
-                    LocaleManager.getInstance().getTranslation(civilian1.getLocale(), "raid-porter-warning")
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player1, "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
                             .replace("$2", raidLocalName)
                             .replace("$3", town.getName()));
@@ -110,14 +108,13 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         l.getWorld().dropItemNaturally(l, raidRemote.createItemStack());
         player.sendMessage(Civs.getPrefix() + ChatColor.RED +
-                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-remote")
+                LocaleManager.getInstance().getTranslationWithPlaceholders(player, "raid-remote")
                 .replace("$1", rt.getName()));
         return true;
     }
 
     private Town hasValidSign(Location l, RegionType rt, UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         Block block = l.getBlock().getRelative(BlockFace.UP);
         BlockState state = block.getState();
         if (!(state instanceof Sign)) {
@@ -137,7 +134,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             town = TownManager.getInstance().getTown(sign.getLine(0));
         } catch (Exception e) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "raid-target-lost").replace("$1", sign.getLine(0))
                     .replace("$2", distance + ""));
             return null;
@@ -151,7 +148,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
             if (town == null) {
                 block.breakNaturally();
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "raid-target-lost").replace("$1", sign.getLine(0))
                         .replace("$2", distance + ""));
                 return null;
@@ -161,7 +158,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         if (townType.getBuildRadius() + distance < l.distance(town.getLocation())) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "raid-target-lost").replace("$1", town.getName())
                     .replace("$2", distance + ""));
             return null;
@@ -172,7 +169,6 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     @EventHandler
     public void onPlayerInRegion(PlayerInRegionEvent event) {
         Region r = event.getRegion();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getUuid());
         Player player = Bukkit.getPlayer(event.getUuid());
         if (!r.getEffects().containsKey(KEY)) {
             return;
@@ -208,7 +204,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             targetLoc = findTargetLocation(town);
 
             if (targetLoc == null) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "searching-for-target"));
                 return;
             }
@@ -221,7 +217,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
                 raidLocations.remove(r);
             }
             l.getBlock().getRelative(BlockFace.UP).breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "raid-target-blocked"));
             return;
         }
@@ -230,7 +226,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         r.runUpkeep();
         player.teleport(targetLoc);
         cooldowns.put(town, System.currentTimeMillis());
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 "teleported"));
     }
 
