@@ -525,7 +525,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityInteract(EntityInteractEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player || event.getEntityType() == EntityType.VILLAGER) {
             return;
         }
         boolean shouldDeny = handleInteract(event.getBlock(), null);

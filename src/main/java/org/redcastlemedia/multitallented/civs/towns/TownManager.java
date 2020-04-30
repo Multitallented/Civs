@@ -130,19 +130,15 @@ public class TownManager {
         } else {
             critReqs.add(region.getType().toLowerCase());
         }
-        outer: for (Region containedRegion :
+        for (Region containedRegion :
                 regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
             if (region.equals(containedRegion)) {
                 continue;
             }
-            if (critReqs.contains(region.getType().toLowerCase())) {
-                critReqs.remove(region.getType().toLowerCase());
-            }
+            critReqs.remove(region.getType().toLowerCase());
             RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
             for (String currentReq : containedType.getGroups()) {
-                if (critReqs.contains(currentReq)) {
-                    critReqs.remove(currentReq);
-                }
+                critReqs.remove(currentReq);
             }
         }
         if (!critReqs.isEmpty()) {
@@ -153,7 +149,7 @@ public class TownManager {
     public List<Town> checkIntersect(Location location, TownType townType, int modifier) {
         int buildRadius = townType.getBuildRadius() + modifier;
         int buildRadiusY = townType.getBuildRadiusY() + modifier;
-        List<Town> towns = new ArrayList<>();
+        List<Town> townArrayList = new ArrayList<>();
         for (Town town : getTowns()) {
             if (!location.getWorld().equals(town.getLocation().getWorld())) {
                 continue;
@@ -167,10 +163,10 @@ public class TownManager {
                             Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), 0) &&
                     Math.min(location.getY() + buildRadiusY, location.getWorld().getMaxHeight()) >=
                             Math.min(town.getLocation().getY() - currentTownType.getBuildRadiusY(), town.getLocation().getWorld().getMaxHeight())) {
-                towns.add(town);
+                townArrayList.add(town);
             }
         }
-        return towns;
+        return townArrayList;
     }
 
     private void loadTown(FileConfiguration config) {
