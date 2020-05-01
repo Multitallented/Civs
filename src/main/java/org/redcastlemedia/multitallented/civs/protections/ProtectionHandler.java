@@ -601,9 +601,7 @@ public class ProtectionHandler implements Listener {
                 checkRelative(clickedBlock, BlockFace.SOUTH);
                 checkRelative(clickedBlock, BlockFace.WEST);
             }
-        } else if (mat == Material.WHEAT ||
-                mat == Material.CARROT ||
-                mat == Material.POTATO) {
+        } else if (mat == Material.FARMLAND) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null);
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
