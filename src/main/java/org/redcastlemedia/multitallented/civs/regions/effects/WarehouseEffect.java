@@ -40,6 +40,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static final String KEY = "warehouse";
     public Map<Region, List<CVInventory>> invs = new HashMap<>();
     public Map<Region, HashMap<String, CVInventory>> availableItems = new HashMap<>();
+    private Map<Region, Long> cooldowns = new HashMap<>();
     private static WarehouseEffect instance = null;
 
     public static WarehouseEffect getInstance() {
@@ -132,6 +133,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
     public void onRegionDestroyed(RegionDestroyedEvent event) {
         availableItems.remove(event.getRegion());
         invs.remove(event.getRegion());
+        cooldowns.remove(event.getRegion());
     }
 
     public void refreshChest(Region region, Location location) {
@@ -170,6 +172,11 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         //declarations
         Region r            = event.getRegion();
         Location l          = r.getLocation();
+        if (cooldowns.containsKey(r) &&
+                System.currentTimeMillis() < cooldowns.get(r) + 60000) {
+            return;
+        }
+        cooldowns.put(r, System.currentTimeMillis());
 
         checkExcessChests(r);
 
