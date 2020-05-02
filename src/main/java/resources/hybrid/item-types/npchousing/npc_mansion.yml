@@ -3,7 +3,6 @@ icon: CRAFTING_TABLE
 shop-icon: PURPLE_BED
 dynmap-marker: bighouse
 name: NPC_Mansion
-max: 2
 price: 2000
 groups:
 - npchousinggroup

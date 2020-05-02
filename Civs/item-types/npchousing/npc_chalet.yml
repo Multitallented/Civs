@@ -2,7 +2,6 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: MAGENTA_BED
-#max: 2
 #price: 1400
 #groups:
 #- npchousinggroup

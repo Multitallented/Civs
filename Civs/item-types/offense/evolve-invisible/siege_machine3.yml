@@ -18,8 +18,7 @@
 #effects:
 #- block_build
 #- block_break
-#- drain_power:2.100 # 960 / day times 10 if online
-#- chest_use
+#- drain_power:4.40 # 960 / day times 10 if online
 #
 #towns:
 #- outpost
