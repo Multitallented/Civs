@@ -2,7 +2,6 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: PURPLE_BED
-#max: 2
 #price: 2000
 #groups:
 #- npchousinggroup

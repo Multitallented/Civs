@@ -20,9 +20,8 @@ build-radius: 3 #7x7x7
 effects:
 - block_build
 - block_break
-- drain_power:1.50
+- drain_power:2.20
 - evolve:siege_machine3.4
-- chest_use
 
 towns:
 - outpost

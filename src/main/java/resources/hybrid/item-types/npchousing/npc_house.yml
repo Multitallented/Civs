@@ -3,7 +3,6 @@ icon: CRAFTING_TABLE
 shop-icon: PINK_BED
 dynmap-marker: default
 name: NPC_House
-max: 2
 price: 800
 groups:
 - npchousinggroup
