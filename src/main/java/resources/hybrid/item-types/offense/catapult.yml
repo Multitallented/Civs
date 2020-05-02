@@ -20,7 +20,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- tnt_cannon:5
+- tnt_cannon:4
 - chest_use
 
 period: daily

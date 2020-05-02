@@ -68,6 +68,16 @@ public class DeathListener implements Listener {
             }
         }
 
+        if (PlayerTeleportEvent.TeleportCause.ENDER_PEARL.equals(event.getCause()) ||
+                PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT.equals(event.getCause())) {
+            Town fromTown = TownManager.getInstance().getTownAt(event.getFrom());
+            Town toTown = TownManager.getInstance().getTownAt(event.getTo());
+            if (isBlockedInTown(fromTown, player) || isBlockedInTown(toTown, player)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         if (!ConfigManager.getInstance().isAllowTeleportingOutOfHostileTowns()) {
             Town town = TownManager.getInstance().getTownAt(event.getFrom());
             if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
@@ -80,6 +90,18 @@ public class DeathListener implements Listener {
                 }
             }
         }
+    }
+
+    private boolean isBlockedInTown(Town town, Player player) {
+        if (town == null) {
+            return false;
+        }
+        if (town.getPeople().containsKey(player.getUniqueId())) {
+            return false;
+        }
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "no-tp-pearl-chorus"));
+        return true;
     }
 
     private double getDistanceSquared(Location location1, Location location2) {
