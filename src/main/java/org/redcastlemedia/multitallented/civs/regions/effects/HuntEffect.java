@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -21,11 +22,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -148,6 +152,13 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (targetPlayer == null) {
             return;
         }
+        if (ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+                TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId()).isEmpty()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-hunting-new-players"));
+            return;
+        }
+
 
         if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -162,6 +173,24 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (teleportTarget != null) {
             player.teleport(teleportTarget);
             messageNearbyPlayers(player, "hunting-players", null);
+            double karmaChange = ConfigManager.getInstance().getHuntKarma();
+            if (karmaChange != 0) {
+                Town town = TownManager.getInstance().getTownAt(targetPlayer.getLocation());
+                if (town == null) {
+                    Set<Town> townSet = TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId());
+                    int highestTownPopulation = 0;
+                    for (Town cTown : townSet) {
+                        int cPopulation = cTown.getPopulation();
+                        if (cPopulation > highestTownPopulation) {
+                            town = cTown;
+                            highestTownPopulation = cPopulation;
+                        }
+                    }
+                }
+                if (town != null) {
+                    TownManager.getInstance().exchangeKarma(town, player.getUniqueId(), -karmaChange);
+                }
+            }
             cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         }
     }

@@ -3,7 +3,7 @@ icon: CRAFTING_TABLE
 shop-icon: PURPLE_BED
 dynmap-marker: bighouse
 name: NPC_Mansion
-price: 2000
+price: 2500
 groups:
 - npchousinggroup
 - allchalet
@@ -12,7 +12,6 @@ level: 4
 
 pre-reqs:
 - member=village:town:city:metropolis
-- basemansion:built=1|npc_chalet:built=1
 
 build-reqs:
 - CHEST*8
@@ -36,8 +35,8 @@ effects:
 - block_liquid
 - block_fire
 - chest_use
-- housing:2
-- villager:2
+- housing:6
+- villager:6
 
 towns:
 - village

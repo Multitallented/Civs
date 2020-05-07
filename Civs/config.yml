@@ -1,24 +1,27 @@
 default-config-set: hybrid
 
 black-list-worlds:
-- Hub
+  - Hub
 
 default-language: en
 line-break-length: 40
+line-break-length-per-language:
+  en: 40
+  zh: 25
 
 allow-civ-item-sharing: false
 
-#put rings above towns
+##put rings above towns
 town-rings: true
 town-ring-material: "GLOWSTONE"
 town-rings-crumble-to-gravel: true
 
-#how long a town sits at zero before protection ends
-#if destroy towns at zero is on, then this does nothing
+##how long a town sits at zero before protection ends
+##if destroy towns at zero is on, then this does nothing
 town-grace-period: 0 #no grace period
 
-#ignore other plugins when checking if an explosion is cancelled
-#before reducing power
+##ignore other plugins when checking if an explosion is cancelled
+##before reducing power
 explosion-override: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
@@ -28,18 +31,18 @@ disable-regions-in-unloaded-chunks: false
 ##higher number means less lag, lower number means potential item loss in the event of a crash
 unloaded-chest-refresh-rate: 10
 
-# the max amount that an owner can tax per day of each town member (only certain gov types)
+## the max amount that an owner can tax per day of each town member (only certain gov types)
 max-town-tax: 100.0
-# the max amount that can be in a town bank (excluding taxes)
+## the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
 
 min-distance-between-towns: 10
 
 use-starter-book: true
 
-#whether or not the glass box should appear to show the region's boundaries
+##whether or not the glass box should appear to show the region's boundaries
 use-region-bounding-box: true
-#should region dimensions be shown with particles instead of glass?
+##should region dimensions be shown with particles instead of glass?
 use-particle-bounding-boxes: false
 
 price-multiplier: 1.0 #multiplier for prices before adding base price
@@ -49,37 +52,37 @@ exp-modifier: 0.2
 
 jail-time-seconds: 300
 
-#cooldown before spawning a new villager in seconds
+##cooldown before spawning a new villager in seconds
 villager-cooldown: 300
 
-#stops arrow turrets from shooting at monsters
+##stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
 
-#mobs killed in safe zones will not drop items
+##mobs killed in safe zones will not drop items
 stop-mobs-from-dropping-items-in-safe-zones: false
 
-#cooldown in seconds before killing the same player reduces the town power
+##cooldown in seconds before killing the same player reduces the town power
 death-grace-period-seconds: 60
-#how many seconds a player is considered in combat after taking or dealing damage
+##how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
-#how much damage should a player receive if they log out during combat
+##how much damage should a player receive if they log out during combat
 combat-log-out-percent-damage: 80
 
-#should food heal in combat?
+##should food heal in combat?
 allow-food-heal-in-combat: true
-#should players be able to teleport while in combat?
+##should players be able to teleport while in combat?
 allow-teleporting-during-combat: false
 
-#can a raidporter be built to raid a town with no online members
+##can a raidporter be built to raid a town with no online members
 allow-offline-raiding: true
-#can non-allied players teleport out of towns?
+##can non-allied players teleport out of towns?
 allow-teleporting-out-of-hostile-towns: true
 
-#use the class and spell system from Civs
-#this is an undocumented and unfinished feature
+##use the class and spell system from Civs
+##this is an undocumented and unfinished feature
 use-classes-and-spells: false
 
-#Should the town enter and exit messages be titles (or chat)
+##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
 
 points:
@@ -96,9 +99,12 @@ money:
   karma: 0.1
 karma-per-kill: 1
 karma-per-kill-streak: 1
-#How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
+##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
-#Should money be created if it can't be taken from the victim
+town-karma-depreciation-period-in-days: 7 #once a week
+hunt-karma: -250.0 # how much karma should a town get when using a building with hunt
+hunt-new-players: true # should players be able to hunt people that aren't in towns
+##Should money be created if it can't be taken from the victim
 always-drop-money-if-no-balance: false
 power-per-kill: 12
 power-per-npc-kill: 4
@@ -120,13 +126,13 @@ folders:
   trading: EMERALD_ORE
 
 levels:
-- DIRT
-- OAK_LOG
-- COAL_BLOCK
-- IRON_BLOCK
-- GOLD_BLOCK
-- EMERALD_BLOCK
-- DIAMOND_BLOCK
+  - DIRT
+  - OAK_LOG
+  - COAL_BLOCK
+  - IRON_BLOCK
+  - GOLD_BLOCK
+  - EMERALD_BLOCK
+  - DIAMOND_BLOCK
 
 item-groups:
   sign: OAK_SIGN,OAK_WALL_SIGN,BIRCH_SIGN,BIRCH_WALL_SIGN,SPRUCE_SIGN,SPRUCE_WALL_SIGN,DARK_OAK_SIGN,DARK_OAK_WALL_SIGN,ACACIA_SIGN,ACACIA_WALL_SIGN,JUNGLE_SIGN,JUNGLE_WALL_SIGN
@@ -150,7 +156,7 @@ groups:
   quarry: 12
   housing: 3
 
-#region port configs
+##region port configs
 port:
   mana: 0
   warmup: 5
@@ -199,10 +205,10 @@ default-gov-type: "DICTATORSHIP"
 # how many players need to be in a town before the gov type will auto transition
 # on new days
 min-population-for-auto-gov-transition: 4
-# for governments that use voting, for how long should a player be elected?
+## for governments that use voting, for how long should a player be elected?
 days-between-elections: 7
 use-announcements: true
 announcement-period: 240
 
-# do not turn this on unless you want to spam your console with potentially useless info
+## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false

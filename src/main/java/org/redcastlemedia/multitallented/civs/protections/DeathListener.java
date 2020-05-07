@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -149,10 +150,10 @@ public class DeathListener implements Listener {
         Player damager = null;
         if (entityDamageByEntityEvent.getDamager() instanceof Player) {
             damager = (Player) entityDamageByEntityEvent.getDamager();
-        } else if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
-            Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
-            if (arrow.getShooter() instanceof Player) {
-                damager = (Player) arrow.getShooter();
+        } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
+            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+            if (projectile.getShooter() instanceof Player) {
+                damager = (Player) projectile.getShooter();
             }
         }
         if (damager == null && civilian.getLastDamage() < 0) {
@@ -367,12 +368,15 @@ public class DeathListener implements Listener {
         int powerPerKill = ConfigManager.getInstance().getPowerPerKill();
         if (powerPerKill > 0 && !damagerCiv.isFriend(dyingCiv) &&
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
-            for (Town town : TownManager.getInstance().getTowns()) {
+            for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
                 if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
                         town.getPeople().get(dyingCiv.getUuid()).contains("ally")) {
                     continue;
                 }
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                double karmaChange = (double) powerPerKill / (double) town.getMaxPower() * townType.getPrice();
+                TownManager.getInstance().exchangeKarma(town, damagerCiv.getUuid(), karmaChange);
             }
         }
 
@@ -600,17 +604,17 @@ public class DeathListener implements Listener {
     }
 
     private Region findJailInTown(Player player, Location deathLocation, RegionManager regionManager, Region jail) {
-        if (jail != null) {
+        if (jail != null && jail.getEffects().containsKey("jail")) {
             return jail;
         }
         Town town = TownManager.getInstance().getTownAt(deathLocation);
         if (town == null) {
-            return jail;
+            return null;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         if (town.getPeople().containsKey(player.getUniqueId())) {
-            return jail;
+            return null;
         }
 
         for (Region r : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {

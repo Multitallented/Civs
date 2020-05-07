@@ -286,9 +286,12 @@ public class PeopleMenu extends CustomMenu {
             Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
             Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player == null) {
+                return true;
+            }
             Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
             if (region != null) {
-                if (invite != null && invite) {
+                if (invite != null && invite && clickedItem.getItemMeta() != null) {
                     player.performCommand("cv add " + clickedItem.getItemMeta().getDisplayName() + " " + region.getId());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
@@ -297,7 +300,7 @@ public class PeopleMenu extends CustomMenu {
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else if (town != null) {
-                if (invite != null && invite) {
+                if (invite != null && invite && clickedItem.getItemMeta() != null) {
                     player.performCommand("cv invite " + clickedItem.getItemMeta().getDisplayName() + " " + town.getName());
                 } else {
                     HashMap<String, String> params = new HashMap<>();

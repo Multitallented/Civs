@@ -2,7 +2,7 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: PURPLE_BED
-#price: 2000
+#price: 2500
 #groups:
 #- npchousinggroup
 #- allchalet
@@ -11,7 +11,6 @@
 #
 #pre-reqs:
 #- member=village:town:city:metropolis
-#- basemansion:built=1|npc_chalet:built=1
 #
 #build-reqs:
 #- CHEST*8
@@ -35,7 +34,8 @@
 #- block_liquid
 #- block_fire
 #- chest_use
-#- housing:1
+#- housing:6
+#- villager:6
 #
 #towns:
 #- village

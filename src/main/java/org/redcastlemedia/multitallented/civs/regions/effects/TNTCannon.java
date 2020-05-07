@@ -105,6 +105,14 @@ public class TNTCannon implements Listener, RegionCreatedListener {
             player.sendMessage(Civs.getPrefix() + "That " + region.getType() + " is reloading."); //TODO localize
             return;
         }
+
+        ItemStack chestItem = player.getInventory().getChestplate();
+        if (chestItem != null && chestItem.getType() == Material.ELYTRA) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "catapult-elytra-equipped"));
+            return;
+        }
+
         Block block = player.getTargetBlockExact(100, FluidCollisionMode.ALWAYS);
         if (block == null) {
             player.sendMessage(Civs.getPrefix() + "That target is too far away"); //TODO localize
@@ -118,6 +126,11 @@ public class TNTCannon implements Listener, RegionCreatedListener {
             player.sendMessage(Civs.getPrefix() + "That target is too close to shoot at."); //TODO localize
             return;
         }
+        boolean upkeepRan = region.runUpkeep(false);
+        if (!upkeepRan) {
+            return;
+        }
+
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
 
             /*Vector vector = new Vector((targetLocation.getX() - fireLocation.getX()) / periods,
@@ -167,8 +180,6 @@ public class TNTCannon implements Listener, RegionCreatedListener {
 //            FiredTNT ftnt = new FiredTNT(tnt, periods, fireLocation, targetLocation);
 //            firedTNT.put(tnt, ftnt);
         cooldowns.put(id, System.currentTimeMillis() + cooldown * 1000);
-
-        region.runUpkeep();
 
             /*player.sendMessage(ChatColor.GREEN + "[Townships] Dx: " + deltaX);
             player.sendMessage(ChatColor.GREEN + "[Townships] Velocity: " + newX + ", " + newY + ", " + newZ);

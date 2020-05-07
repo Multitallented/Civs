@@ -21,7 +21,7 @@
 #- block_build
 #- block_liquid
 #- block_fire
-#- potion:DAMAGE_RESISTANCE.240,INCREASE_DAMAGE.120,SPEED.180,GLOWING.180
+#- potion:REGENERATION.120,INCREASE_DAMAGE.120.2,SPEED.180,GLOWING.180
 #
 #pre-reqs:
 #- member=town:city:metropolis

@@ -79,7 +79,8 @@ public class RegionMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         Map<UUID, String> regionPeople = region.getPeople();
-        boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
+        boolean isMember = region.getRawPeople().containsKey(civilian.getUuid());
+        boolean isOwner = isMember &&
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
@@ -87,7 +88,7 @@ public class RegionMenu extends CustomMenu {
                 regionPeople.get(civilian.getUuid()).contains(Constants.OWNER));
         int personCount = 0;
         for (String role : region.getRawPeople().values()) {
-            if (role.contains(Constants.OWNER) || role.contains("member")) {
+            if (role.contains(Constants.OWNER) || role.contains(Constants.MEMBER)) {
                 personCount++;
             }
         }
@@ -123,7 +124,7 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {
-            if (!viewMembers) {
+            if (!viewMembers && !isMember) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("add-person".equals(menuIcon.getKey())) {

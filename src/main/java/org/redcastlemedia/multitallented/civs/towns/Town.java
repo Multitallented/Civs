@@ -11,6 +11,9 @@ import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
@@ -37,6 +40,12 @@ public class Town {
     private long lastDisable;
     private final int Y_LEVEL = 80;
     private int villagers;
+
+    @Getter @Setter
+    private double karma;
+
+    @Getter @Setter
+    private int daysSinceLastKarmaDepreciation;
 
     @Getter
     @Setter
@@ -451,5 +460,21 @@ public class Town {
                 z=0;
             }
         }, 4 * radius + 2);
+    }
+
+    public double getWorth() {
+        double value = 0;
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
+        value += townType.getPrice();
+        while (townType.getChild() != null && !townType.getChild().isEmpty()) {
+            townType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
+            value += townType.getPrice();
+        }
+        for (Region region : TownManager.getInstance().getContainingRegions(name)) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            value += regionType.getPrice();
+        }
+
+        return value;
     }
 }

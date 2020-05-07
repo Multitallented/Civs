@@ -105,9 +105,9 @@ public class ConfirmationMenu extends CustomMenu {
                 return;
             }
             TownManager.getInstance().removeTown(town, true);
-            if (ConfigManager.getInstance().getTownRings()) {
-                town.destroyRing(true, true);
-            }
+//            if (ConfigManager.getInstance().getTownRings()) {
+//                town.destroyRing(true, true);
+//            }
         }
     }
 
