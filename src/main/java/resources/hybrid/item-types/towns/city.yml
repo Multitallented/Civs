@@ -15,7 +15,7 @@ build-reqs:
 - city_hall:1
 - quarry:1
 - farm:3
-- utility:6
+- utility:2
 
 limits:
 - allshack:9

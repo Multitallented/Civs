@@ -3,7 +3,7 @@ icon: CRAFTING_TABLE
 shop-icon: BROWN_BED
 dynmap-marker: house
 name: NPC_Hovel
-price: 200
+price: 250
 groups:
 - npchousinggroup
 - allhovel
@@ -12,7 +12,6 @@ level: 2
 
 pre-reqs:
 - member=settlement:hamlet:village:town:city:metropolis
-- basehovel:built=1|npc_shack:built=1
 
 build-reqs:
 - CHEST*2
@@ -36,8 +35,8 @@ effects:
 - block_liquid
 - block_fire
 - chest_use
-- housing:1
-- villager:1
+- housing:2
+- villager:2
 
 towns:
 - settlement

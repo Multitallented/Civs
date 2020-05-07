@@ -193,6 +193,12 @@ public class TownManager {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
+        if (config.isSet("karma")) {
+            town.setKarma(config.getDouble("karma"));
+        }
+        if (config.isSet("days-since-depreciation")) {
+            town.setDaysSinceLastKarmaDepreciation(config.getInt("days-since-depreciation", 0));
+        }
         if (config.isSet("idiocracy-score")) {
             HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
             for (String uuidString : config.getConfigurationSection("idiocracy-score").getKeys(false)) {
@@ -332,6 +338,26 @@ public class TownManager {
         }
     }
 
+    public void exchangeKarma(Town town, UUID uuid, double amount) {
+        town.setKarma(town.getKarma() + amount);
+        saveTown(town);
+        Set<Town> deductionTowns = new HashSet<>();
+        for (Town town1 : new ArrayList<>(towns.values())) {
+            if (town1.getRawPeople().containsKey(uuid)) {
+                deductionTowns.add(town1);
+            }
+        }
+        double split = deductionTowns.size();
+        for (Town town1 : deductionTowns) {
+            if (town1.getWorth() > amount + Math.abs(town1.getKarma())) {
+                town1.setKarma(town1.getKarma() - (amount / split));
+                saveTown(town1);
+            } else {
+                split--;
+            }
+        }
+    }
+
     private void devolveTown(Town town, TownType townType) {
         if (townType.getChild() == null) {
             return;
@@ -407,6 +433,16 @@ public class TownManager {
         saveTown(town);
         invites.remove(uuid);
         return true;
+    }
+
+    public Set<Town> getTownsForPlayer(UUID uuid) {
+        Set<Town> townSet = new HashSet<>();
+        for (Town town : towns.values()) {
+            if (town.getRawPeople().containsKey(uuid)) {
+                townSet.add(town);
+            }
+        }
+        return townSet;
     }
 
     public Set<Region> getContainingRegions(String townName) {
@@ -485,6 +521,8 @@ public class TownManager {
             } else {
                 saveRevolt(town, config);
             }
+            config.set("karma", town.getKarma());
+            config.set("days-since-depreciation", town.getDaysSinceLastKarmaDepreciation());
             for (UUID key : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(key).contains("ally")) {
                     continue;
@@ -567,8 +605,8 @@ public class TownManager {
     public Set<Town> findCommonTowns(Civilian damagerCiv, Civilian dyingCiv) {
         HashSet<Town> commonTowns = new HashSet<>();
         for (Town town : sortedTowns) {
-            if (town.getPeople().containsKey(damagerCiv.getUuid()) &&
-                    town.getPeople().containsKey(dyingCiv.getUuid())) {
+            if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&
+                    town.getRawPeople().containsKey(dyingCiv.getUuid())) {
                 commonTowns.add(town);
             }
         }
@@ -692,6 +730,7 @@ public class TownManager {
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;
         String governmentType = null;
+        double karma = 0;
         int villagerCount = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
@@ -715,6 +754,9 @@ public class TownManager {
     //                intersectTown.destroyRing(false);
     //            }
             villagerCount = intersectTown.getVillagers();
+            karma = intersectTown.getKarma() + (childTownType.getPrice() / 2) - (townType.getPrice() / 2);
+        } else {
+            karma = -1 * townType.getPrice() / 2;
         }
 
         int housingCount = getHousingCount(newTownLocation, townType);
@@ -726,6 +768,7 @@ public class TownManager {
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         newTown.setEffects(new HashMap<>(townType.getEffects()));
         newTown.setChildLocations(childLocations);
+        newTown.setKarma(karma);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {
@@ -746,6 +789,8 @@ public class TownManager {
         townManager.saveTown(newTown);
         townManager.addTown(newTown);
         player.getInventory().remove(itemStack);
+
+
 
         if (childTownType != null) {
             TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);

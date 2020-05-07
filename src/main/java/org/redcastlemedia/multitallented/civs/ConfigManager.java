@@ -13,10 +13,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -151,6 +149,12 @@ public class ConfigManager {
     EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
     @Getter
     long unloadedChestRefreshRate;
+    @Getter
+    int townKarmaDepreciationPeriod;
+    @Getter
+    double huntKarma;
+    @Getter
+    boolean allowHuntNewPlayers;
 
     @Getter
     String chatChannelFormat;
@@ -372,6 +376,9 @@ public class ConfigManager {
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
             unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
+            townKarmaDepreciationPeriod = config.getInt("town-karma-depreciation-period-in-days", 7);
+            huntKarma = config.getDouble("hunt-karma", -250.0);
+            allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
             lineLengthMap = new HashMap<>();
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -439,6 +446,9 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        allowHuntNewPlayers = false;
+        townKarmaDepreciationPeriod = 7;
+        huntKarma = -250.0;
         lineLengthMap = new HashMap<>();
         unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);

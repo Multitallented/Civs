@@ -3,7 +3,7 @@ icon: CRAFTING_TABLE
 shop-icon: GREEN_BED
 dynmap-marker: default
 name: NPC_Dwelling
-price: 400
+price: 500
 groups:
 - npchousinggroup
 - alldwelling
@@ -12,7 +12,6 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- basedwelling:built=1|npc_hovel:built=1
 
 build-reqs:
 - CHEST*4
@@ -36,8 +35,8 @@ effects:
 - block_liquid
 - block_fire
 - chest_use
-- housing:1
-- villager:1
+- housing:3
+- villager:3
 
 towns:
 - hamlet

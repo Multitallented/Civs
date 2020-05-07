@@ -2,7 +2,7 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: PINK_BED
-#price: 800
+#price: 1000
 #groups:
 #- npchousinggroup
 #- allhouse
@@ -11,7 +11,6 @@
 #
 #pre-reqs:
 #- member=hamlet:village:town:city:metropolis
-#- basehouse:built=1|npc_dwelling:built=1
 #
 #build-reqs:
 #- CHEST*4
@@ -35,8 +34,8 @@
 #- block_liquid
 #- block_fire
 #- chest_use
-#- housing:1
-#- villager
+#- housing:4
+#- villager:4
 #
 #towns:
 #- hamlet

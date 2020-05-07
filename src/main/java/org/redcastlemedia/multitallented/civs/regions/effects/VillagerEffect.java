@@ -7,9 +7,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -194,6 +196,20 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
         TownManager.getInstance().setTownPower(town,
                 town.getPower() - ConfigManager.getInstance().getPowerPerNPCKill());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        double karmaChange = (double) ConfigManager.getInstance().getPowerPerNPCKill()
+                / (double) town.getMaxPower() * townType.getPrice();
+        if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+            Entity entity = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+            if (entity instanceof Player) {
+                TownManager.getInstance().exchangeKarma(town, entity.getUniqueId(), karmaChange);
+            } else if (entity instanceof Projectile) {
+                Projectile projectile = (Projectile) entity;
+                if (projectile.getShooter() instanceof Player) {
+                    TownManager.getInstance().exchangeKarma(town, ((Player) projectile.getShooter()).getUniqueId(), karmaChange);
+                }
+            }
+        }
     }
 
 }

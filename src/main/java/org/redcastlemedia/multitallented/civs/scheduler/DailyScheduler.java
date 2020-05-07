@@ -33,7 +33,32 @@ public class DailyScheduler implements Runnable {
         doTaxes();
         doVotes();
         addDailyPower();
+        depreciateTownKarma();
         TownTransitionUtil.checkTownTransitions();
+    }
+
+    private void depreciateTownKarma() {
+        long townKarmaDepreciationPeriod = ConfigManager.getInstance().getTownKarmaDepreciationPeriod();
+        for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            if (town.getKarma() < 2 && town.getKarma() > -2) {
+                town.setDaysSinceLastKarmaDepreciation(0);
+                TownManager.getInstance().saveTown(town);
+                continue;
+            }
+            if (town.getDaysSinceLastKarmaDepreciation() < townKarmaDepreciationPeriod) {
+                town.setDaysSinceLastKarmaDepreciation(town.getDaysSinceLastKarmaDepreciation() + 1);
+                TownManager.getInstance().saveTown(town);
+                continue;
+            }
+            town.setDaysSinceLastKarmaDepreciation(0);
+            double restingKarma = townType.getPrice() / 2;
+            double damages = town.getKarma() - restingKarma;
+            double newKarma = (damages / 2) + restingKarma;
+            newKarma = newKarma < 0 ? Math.ceil(newKarma) : Math.floor(newKarma);
+            town.setKarma(newKarma);
+            TownManager.getInstance().saveTown(town);
+        }
     }
 
     private void addDailyPower() {

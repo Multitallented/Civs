@@ -133,3 +133,9 @@ items:
     actions:
       - leave-revolt
       - refresh
+  karma:
+    index: 17
+    icon: SOUL_SAND
+    name: karma-display{$karma$,,$worth$
+    desc: karma-town-desc
+    actions: []
