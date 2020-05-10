@@ -16,7 +16,7 @@ items:
   next:
     index: 5
   chat-channels:
-    index: 9-27
+    index: 9-26
     # name: chat channel name
     # desc: desc of the channel
     actions:
