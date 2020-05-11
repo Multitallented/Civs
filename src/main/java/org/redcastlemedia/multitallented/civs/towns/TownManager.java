@@ -50,6 +50,9 @@ public class TownManager {
     }
 
     public void loadAllTowns() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
@@ -309,6 +312,7 @@ public class TownManager {
         }
         towns.remove(town.getName());
         sortedTowns.remove(town);
+        needsSaving.removeIf(cTown -> cTown.equals(town));
         if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
@@ -379,12 +383,16 @@ public class TownManager {
     }
 
     private void removeTownFile(String townName) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
         File townFile = new File(townFolder, townName + ".yml");
         townFile.delete();
+        Civs.logger.info(townFile.getName() + " was deleted");
     }
 
     public boolean hasGrace(Town town, boolean disable) {
@@ -392,13 +400,13 @@ public class TownManager {
         if (grace < 0 && disable) {
             long lastDisable = (ConfigManager.getInstance().getTownGracePeriod() * 1000) + System.currentTimeMillis();
             town.setLastDisable(lastDisable);
-            TownManager.getInstance().saveTown(town);
+            saveTown(town);
             return true;
         }
         if (!disable) {
             if (grace > -1) {
                 town.setLastDisable(-1);
-                TownManager.getInstance().saveTown(town);
+                saveTown(town);
             }
             return true;
         }
@@ -576,7 +584,6 @@ public class TownManager {
                 config.set("colonial-town", town.getColonialTown());
             }
 
-            //TODO save all town properties
             config.save(townFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -660,9 +667,8 @@ public class TownManager {
         }
         TownType townType = (TownType) civItem;
 
-        TownManager townManager = TownManager.getInstance();
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
-        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType, modifier);
+        List<Town> intersectTowns = checkIntersect(player.getLocation(), townType, modifier);
         if (intersectTowns.size() > 1 ||
                     (!intersectTowns.isEmpty() &&
                     (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
@@ -786,8 +792,8 @@ public class TownManager {
         } else {
             government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
         }
-        townManager.saveTown(newTown);
-        townManager.addTown(newTown);
+        saveTown(newTown);
+        addTown(newTown);
         player.getInventory().remove(itemStack);
 
 

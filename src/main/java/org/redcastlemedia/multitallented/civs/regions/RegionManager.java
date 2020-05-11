@@ -39,6 +39,7 @@ import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
 import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
@@ -207,9 +208,6 @@ public class RegionManager {
         }
         Bukkit.getPluginManager().callEvent(new RegionDestroyedEvent(region));
 
-        if (checkCritReqs) {
-            TownManager.getInstance().checkCriticalRequirements(region);
-        }
         Block block = region.getLocation().getBlock();
         if (block instanceof Chest) {
             ItemStack[] contents = ((Chest) block).getBlockInventory().getContents();
@@ -226,6 +224,10 @@ public class RegionManager {
         }
         BlockLogger.getInstance().removeBlock(region.getLocation());
         removeRegion(region);
+
+        if (checkCritReqs) {
+            TownManager.getInstance().checkCriticalRequirements(region);
+        }
     }
 
     private void broadcastRegionDestroyed(Region region) {
@@ -578,17 +580,8 @@ public class RegionManager {
         String maxString = civilian.isAtMax(regionType);
         if (rebuildRegion == null && maxString != null && !regionType.getRebuild().isEmpty()) {
             event.setCancelled(true);
-            String rebuildLocalName;
-            if (ItemManager.getInstance().getItemType(regionType.getRebuild().get(0)) == null) {
-                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                        regionType.getRebuild().get(0) + LocaleConstants.GROUP_SUFFIX);
-            } else {
-                rebuildLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                        regionType.getRebuild().get(0) + LocaleConstants.NAME_SUFFIX);
-            }
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslationWithPlaceholders(player, "rebuild-required")
-                            .replace("$1", localizedRegionName).replace("$2", rebuildLocalName));
+                    LocaleUtil.getTranslationMaxRebuild(maxString, regionType, localizedRegionName, player));
             return;
         }
 

@@ -62,7 +62,8 @@ public class RenameCommand implements CivCommand {
             }
             return true;
         }
-        if (player != null && !town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
+        if (player != null && (!town.getPeople().containsKey(player.getUniqueId()) ||
+                !town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER))) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "no-permission"));
             return true;
