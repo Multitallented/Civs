@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -376,7 +375,7 @@ public class DeathListener implements Listener {
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
                 TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
                 double karmaChange = (double) powerPerKill / (double) town.getMaxPower() * townType.getPrice();
-                TownManager.getInstance().exchangeKarma(town, damagerCiv.getUuid(), karmaChange);
+                TownManager.getInstance().exchangeHardship(town, damagerCiv.getUuid(), karmaChange);
             }
         }
 

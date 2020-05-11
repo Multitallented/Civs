@@ -150,7 +150,7 @@ public class ConfigManager {
     @Getter
     long unloadedChestRefreshRate;
     @Getter
-    int townKarmaDepreciationPeriod;
+    int hardshipDepreciationPeriod;
     @Getter
     double huntKarma;
     @Getter
@@ -376,7 +376,7 @@ public class ConfigManager {
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
             unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
-            townKarmaDepreciationPeriod = config.getInt("town-karma-depreciation-period-in-days", 7);
+            hardshipDepreciationPeriod = config.getInt("hardship-depreciation-period-in-days", 7);
             huntKarma = config.getDouble("hunt-karma", -250.0);
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
             lineLengthMap = new HashMap<>();
@@ -447,7 +447,7 @@ public class ConfigManager {
 
     private void loadDefaults() {
         allowHuntNewPlayers = false;
-        townKarmaDepreciationPeriod = 7;
+        hardshipDepreciationPeriod = 7;
         huntKarma = -250.0;
         lineLengthMap = new HashMap<>();
         unloadedChestRefreshRate = 600000;

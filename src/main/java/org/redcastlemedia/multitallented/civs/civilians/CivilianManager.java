@@ -176,6 +176,8 @@ public class CivilianManager {
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
+            civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
+            civilian.setHardship(civConfig.getDouble("hardship", 0));
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -251,8 +253,8 @@ public class CivilianManager {
             civConfig.load(civilianFile);
 
             civConfig.set("locale", civilian.getLocale());
-            //TODO save other civilian file properties
-
+            civConfig.set("hardship", civilian.getHardship());
+            civConfig.set("days-since-hardship-depreciation", civilian.getDaysSinceLastHardshipDepreciation());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());

@@ -21,24 +21,28 @@ public class TownCommand implements CivCommand {
         }
         Player player = (Player) commandSender;
         LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         //0 town
         //1 townName
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (args.length < 2 && town == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "specify-town-name"));
             return true;
         }
         String name = args.length > 1 ? args[1] : town.getName();
         if (!Util.validateFileName(name)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "specify-town-name"));
             return true;
         }
         name = Util.getValidFileName(name);
         TownManager.getInstance().placeTown(player, name, town);
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
     }
 }

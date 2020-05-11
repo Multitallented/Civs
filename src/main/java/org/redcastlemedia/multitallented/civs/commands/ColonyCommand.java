@@ -5,8 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -14,7 +12,7 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
-@CivsCommand(keys = { "colony" })
+@CivsCommand(keys = { "colony" }) @SuppressWarnings("unused")
 public class ColonyCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -22,7 +20,6 @@ public class ColonyCommand implements CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         //0 colony
         //1 colonyTown
@@ -58,5 +55,10 @@ public class ColonyCommand implements CivCommand {
                 "colony-town-set").replace("$1", colonyTown.getName())
                 .replace("$2", owningTown.getName()));
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
     }
 }

@@ -41,4 +41,9 @@ public class DepositBankCommand implements CivCommand {
                 .replace("$2", town.getName()));
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player && Civs.econ != null;
+    }
 }

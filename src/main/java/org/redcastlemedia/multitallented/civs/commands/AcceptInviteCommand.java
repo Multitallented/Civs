@@ -6,11 +6,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CivsCommand(keys = { "accept" }) @SuppressWarnings("unused")
@@ -52,4 +52,17 @@ public class AcceptInviteCommand implements CivCommand {
 
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        if (!(commandSender instanceof Player)) {
+            return false;
+        }
+        return Civs.perm == null || Civs.perm.has(commandSender, "civs.join");
+    }
+
+//    @Override
+//    public List<String> getNextWordList(CommandSender commandSender, String[] args) {
+//        return new ArrayList<>();
+//    }
 }

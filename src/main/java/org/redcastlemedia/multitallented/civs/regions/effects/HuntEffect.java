@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -188,7 +187,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
                     }
                 }
                 if (town != null) {
-                    TownManager.getInstance().exchangeKarma(town, player.getUniqueId(), -karmaChange);
+                    TownManager.getInstance().exchangeHardship(town, player.getUniqueId(), -karmaChange);
                 }
             }
             cooldowns.put(player.getUniqueId(), System.currentTimeMillis());

@@ -12,6 +12,8 @@ import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -38,12 +40,6 @@ public class Town {
     private HashMap<String, String> effects = new HashMap<>();
     private long lastDisable;
     private int villagers;
-
-    @Getter @Setter
-    private double karma;
-
-    @Getter @Setter
-    private int daysSinceLastKarmaDepreciation;
 
     @Getter
     @Setter
@@ -260,5 +256,15 @@ public class Town {
     public void createRing() {
         RingBuilder ringBuilder = new RingBuilder(this);
         ringBuilder.createRing();
+    }
+
+    public double getHardship() {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
+        double price = -1 * townType.getPrice();
+        for (UUID uuid : people.keySet()) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+            price += civilian.getHardship();
+        }
+        return price;
     }
 }

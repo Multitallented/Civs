@@ -198,7 +198,7 @@ public class RegionManager {
                         }
                     }
                     if (ownerUuid != null) {
-                        TownManager.getInstance().exchangeKarma(town, ownerUuid, regionType.getPrice() / split);
+                        TownManager.getInstance().exchangeHardship(town, ownerUuid, regionType.getPrice() / split);
                     }
                 }
             }

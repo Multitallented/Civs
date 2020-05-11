@@ -5,10 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -85,6 +83,11 @@ public class RenameCommand implements CivCommand {
             commandSender.sendMessage("Town has been renamed from " + oldTownName + " to " + newTownName);
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
         return true;
     }
 }
