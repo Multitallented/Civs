@@ -50,6 +50,9 @@ public class TownManager {
     }
 
     public void loadAllTowns() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
@@ -193,12 +196,6 @@ public class TownManager {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
         town.setGovernmentType(governmentType);
-        if (config.isSet("karma")) {
-            town.setKarma(config.getDouble("karma"));
-        }
-        if (config.isSet("days-since-depreciation")) {
-            town.setDaysSinceLastKarmaDepreciation(config.getInt("days-since-depreciation", 0));
-        }
         if (config.isSet("idiocracy-score")) {
             HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
             for (String uuidString : config.getConfigurationSection("idiocracy-score").getKeys(false)) {
@@ -309,6 +306,7 @@ public class TownManager {
         }
         towns.remove(town.getName());
         sortedTowns.remove(town);
+        needsSaving.removeIf(cTown -> cTown.equals(town));
         if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
@@ -338,26 +336,6 @@ public class TownManager {
         }
     }
 
-    public void exchangeKarma(Town town, UUID uuid, double amount) {
-        town.setKarma(town.getKarma() + amount);
-        saveTown(town);
-        Set<Town> deductionTowns = new HashSet<>();
-        for (Town town1 : new ArrayList<>(towns.values())) {
-            if (town1.getRawPeople().containsKey(uuid)) {
-                deductionTowns.add(town1);
-            }
-        }
-        double split = deductionTowns.size();
-        for (Town town1 : deductionTowns) {
-            if (town1.getWorth() > amount + Math.abs(town1.getKarma())) {
-                town1.setKarma(town1.getKarma() - (amount / split));
-                saveTown(town1);
-            } else {
-                split--;
-            }
-        }
-    }
-
     private void devolveTown(Town town, TownType townType) {
         if (townType.getChild() == null) {
             return;
@@ -379,12 +357,16 @@ public class TownManager {
     }
 
     private void removeTownFile(String townName) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
         File townFile = new File(townFolder, townName + ".yml");
         townFile.delete();
+        Civs.logger.info(townFile.getName() + " was deleted");
     }
 
     public boolean hasGrace(Town town, boolean disable) {
@@ -392,13 +374,13 @@ public class TownManager {
         if (grace < 0 && disable) {
             long lastDisable = (ConfigManager.getInstance().getTownGracePeriod() * 1000) + System.currentTimeMillis();
             town.setLastDisable(lastDisable);
-            TownManager.getInstance().saveTown(town);
+            saveTown(town);
             return true;
         }
         if (!disable) {
             if (grace > -1) {
                 town.setLastDisable(-1);
-                TownManager.getInstance().saveTown(town);
+                saveTown(town);
             }
             return true;
         }
@@ -521,8 +503,6 @@ public class TownManager {
             } else {
                 saveRevolt(town, config);
             }
-            config.set("karma", town.getKarma());
-            config.set("days-since-depreciation", town.getDaysSinceLastKarmaDepreciation());
             for (UUID key : town.getRawPeople().keySet()) {
                 if (town.getRawPeople().get(key).contains("ally")) {
                     continue;
@@ -576,7 +556,6 @@ public class TownManager {
                 config.set("colonial-town", town.getColonialTown());
             }
 
-            //TODO save all town properties
             config.save(townFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -646,7 +625,7 @@ public class TownManager {
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "hold-town"));
             return;
@@ -660,9 +639,8 @@ public class TownManager {
         }
         TownType townType = (TownType) civItem;
 
-        TownManager townManager = TownManager.getInstance();
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
-        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType, modifier);
+        List<Town> intersectTowns = checkIntersect(player.getLocation(), townType, modifier);
         if (intersectTowns.size() > 1 ||
                     (!intersectTowns.isEmpty() &&
                     (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
@@ -754,7 +732,6 @@ public class TownManager {
     //                intersectTown.destroyRing(false);
     //            }
             villagerCount = intersectTown.getVillagers();
-            karma = intersectTown.getKarma() + (childTownType.getPrice() / 2) - (townType.getPrice() / 2);
         } else {
             karma = -1 * townType.getPrice() / 2;
         }
@@ -768,7 +745,6 @@ public class TownManager {
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         newTown.setEffects(new HashMap<>(townType.getEffects()));
         newTown.setChildLocations(childLocations);
-        newTown.setKarma(karma);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {
@@ -786,8 +762,8 @@ public class TownManager {
         } else {
             government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
         }
-        townManager.saveTown(newTown);
-        townManager.addTown(newTown);
+        saveTown(newTown);
+        addTown(newTown);
         player.getInventory().remove(itemStack);
 
 

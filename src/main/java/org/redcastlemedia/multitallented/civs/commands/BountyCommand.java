@@ -126,4 +126,9 @@ public class BountyCommand implements CivCommand {
 
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.econ != null;
+    }
 }

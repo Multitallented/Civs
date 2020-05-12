@@ -71,4 +71,9 @@ public class ResetCommand implements CivCommand {
         commandSender.sendMessage(Civs.getPrefix() + "Completely removed " + args[1]);
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION);
+    }
 }

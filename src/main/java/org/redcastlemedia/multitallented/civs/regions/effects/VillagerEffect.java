@@ -202,11 +202,11 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
             Entity entity = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
             if (entity instanceof Player) {
-                TownManager.getInstance().exchangeKarma(town, entity.getUniqueId(), karmaChange);
+                CivilianManager.getInstance().exchangeHardship(town, entity.getUniqueId(), karmaChange);
             } else if (entity instanceof Projectile) {
                 Projectile projectile = (Projectile) entity;
                 if (projectile.getShooter() instanceof Player) {
-                    TownManager.getInstance().exchangeKarma(town, ((Player) projectile.getShooter()).getUniqueId(), karmaChange);
+                    CivilianManager.getInstance().exchangeHardship(town, ((Player) projectile.getShooter()).getUniqueId(), karmaChange);
                 }
             }
         }

@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -33,31 +35,26 @@ public class DailyScheduler implements Runnable {
         doTaxes();
         doVotes();
         addDailyPower();
-        depreciateTownKarma();
+        depreciateHardship();
         TownTransitionUtil.checkTownTransitions();
     }
 
-    private void depreciateTownKarma() {
-        long townKarmaDepreciationPeriod = ConfigManager.getInstance().getTownKarmaDepreciationPeriod();
-        for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
-            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            if (town.getKarma() < 2 && town.getKarma() > -2) {
-                town.setDaysSinceLastKarmaDepreciation(0);
-                TownManager.getInstance().saveTown(town);
+    private void depreciateHardship() {
+        long hardshipDepreciationPeriod = ConfigManager.getInstance().getHardshipDepreciationPeriod();
+        for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
+            if (civilian.getHardship() < 2 && civilian.getHardship() > -2) {
                 continue;
             }
-            if (town.getDaysSinceLastKarmaDepreciation() < townKarmaDepreciationPeriod) {
-                town.setDaysSinceLastKarmaDepreciation(town.getDaysSinceLastKarmaDepreciation() + 1);
-                TownManager.getInstance().saveTown(town);
+            if (civilian.getDaysSinceLastHardshipDepreciation() < hardshipDepreciationPeriod) {
+                civilian.setDaysSinceLastHardshipDepreciation(civilian.getDaysSinceLastHardshipDepreciation() + 1);
+                CivilianManager.getInstance().saveCivilian(civilian);
                 continue;
             }
-            town.setDaysSinceLastKarmaDepreciation(0);
-            double restingKarma = townType.getPrice() / 2;
-            double damages = town.getKarma() - restingKarma;
-            double newKarma = (damages / 2) + restingKarma;
-            newKarma = newKarma < 0 ? Math.ceil(newKarma) : Math.floor(newKarma);
-            town.setKarma(newKarma);
-            TownManager.getInstance().saveTown(town);
+            civilian.setDaysSinceLastHardshipDepreciation(0);
+
+            double newHardship = (civilian.getHardship() / 2.0);
+            civilian.setHardship(newHardship);
+            CivilianManager.getInstance().saveCivilian(civilian);
         }
     }
 

@@ -198,4 +198,9 @@ public class SetOwnerCommand implements CivCommand {
         }
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
 }

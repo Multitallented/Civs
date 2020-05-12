@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,6 +22,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -152,13 +153,24 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (targetPlayer == null) {
             return;
         }
-        if (ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+        if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
                 TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId()).isEmpty()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "no-hunting-new-players"));
             return;
         }
 
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Civilian targetCiv = CivilianManager.getInstance().getCivilian(targetPlayer.getUniqueId());
+        double hardhipThreshold = 20000;
+        if (Civs.econ != null) {
+            hardhipThreshold = Civs.econ.getBalance(targetPlayer);
+        }
+        if ( targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "hardship-too-high").replace("$1", targetPlayer.getDisplayName()));
+            return;
+        }
 
         if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -175,21 +187,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
             messageNearbyPlayers(player, "hunting-players", null);
             double karmaChange = ConfigManager.getInstance().getHuntKarma();
             if (karmaChange != 0) {
-                Town town = TownManager.getInstance().getTownAt(targetPlayer.getLocation());
-                if (town == null) {
-                    Set<Town> townSet = TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId());
-                    int highestTownPopulation = 0;
-                    for (Town cTown : townSet) {
-                        int cPopulation = cTown.getPopulation();
-                        if (cPopulation > highestTownPopulation) {
-                            town = cTown;
-                            highestTownPopulation = cPopulation;
-                        }
-                    }
-                }
-                if (town != null) {
-                    TownManager.getInstance().exchangeKarma(town, player.getUniqueId(), -karmaChange);
-                }
+                CivilianManager.getInstance().exchangeHardship(player.getUniqueId(), targetPlayer.getUniqueId(), karmaChange);
             }
             cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         }
@@ -232,8 +230,8 @@ public class HuntEffect implements Listener, CreateRegionListener {
         }
 
         return new Location(targetBlock.getWorld(),
-                (double) targetBlock.getX() + 0.5,
+                targetBlock.getX(),
                 (double) targetBlock.getY() + 0.5,
-                (double) targetBlock.getZ() + 0.5);
+                targetBlock.getZ());
     }
 }

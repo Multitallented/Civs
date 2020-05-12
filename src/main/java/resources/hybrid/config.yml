@@ -93,16 +93,17 @@ points:
   half-health: 0.5
   quarter-health: 1
 money:
-  killstreak: 1
-  killjoy: 1
-  kill: 1
-  karma: 0.1
-karma-per-kill: 1
-karma-per-kill-streak: 1
+  killstreak: 10
+  killjoy: 10
+  kill: 100
+  karma: 0.2
+hardship-per-kill: 500
+karma-per-kill: 50
+karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
-town-karma-depreciation-period-in-days: 7 #once a week
-hunt-karma: -250.0 # how much karma should a town get when using a building with hunt
+hardship-depreciation-period-in-days: 7 #once a week
+hunt-karma: 250.0 # how much karma should a town get when using a building with hunt
 hunt-new-players: true # should players be able to hunt people that aren't in towns
 ##Should money be created if it can't be taken from the victim
 always-drop-money-if-no-balance: false

@@ -177,7 +177,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         TownManager.getInstance().setTownPower(town, town.getPower() - damage);
         if (!region.getOwners().isEmpty()) {
             double karmaChange = (double) damage / (double) town.getMaxPower() * townType.getPrice();
-            TownManager.getInstance().exchangeKarma(town, region.getOwners().iterator().next(), karmaChange);
+            CivilianManager.getInstance().exchangeHardship(town, region.getOwners().iterator().next(), karmaChange);
         }
     }
 

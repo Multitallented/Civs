@@ -33,4 +33,9 @@ public class MenuCommand implements CivCommand {
         MenuManager.getInstance().openMenu(player, menuName, params);
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
+    }
 }

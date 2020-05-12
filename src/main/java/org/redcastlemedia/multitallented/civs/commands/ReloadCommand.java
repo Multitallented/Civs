@@ -41,4 +41,9 @@ public class ReloadCommand implements CivCommand {
             return true;
         }
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.perm != null && commandSender.hasPermission(Constants.ADMIN_PERMISSION);
+    }
 }

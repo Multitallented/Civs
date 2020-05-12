@@ -60,6 +60,12 @@ public class Civilian {
     private long lastKarmaDepreciation;
 
     @Getter @Setter
+    private double hardship;
+
+    @Getter @Setter
+    private int daysSinceLastHardshipDepreciation;
+
+    @Getter @Setter
     private int tutorialIndex;
 
     @Getter @Setter

@@ -1,4 +1,4 @@
-#size: 54
+#size: 27
 ## variables
 ## customActions
 ##  set-channel: sets the players chat channel to the selected item
@@ -16,7 +16,7 @@
 #  next:
 #    index: 5
 #  chat-channels:
-#    index: 9-53
+#    index: 9-26
 #    # name: chat channel name
 #    # desc: desc of the channel
 #    actions:
