@@ -375,7 +375,11 @@ public class DeathListener implements Listener {
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
                 TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
                 double karmaChange = (double) powerPerKill / (double) town.getMaxPower() * townType.getPrice();
-                TownManager.getInstance().exchangeHardship(town, damagerCiv.getUuid(), karmaChange);
+                CivilianManager.getInstance().exchangeHardship(town, damagerCiv.getUuid(), karmaChange);
+            }
+            double hardshipAmount = ConfigManager.getInstance().getHardshipPerKill();
+            if (hardshipAmount > 0) {
+                CivilianManager.getInstance().exchangeHardship(damager.getUniqueId(), player.getUniqueId(), hardshipAmount);
             }
         }
 

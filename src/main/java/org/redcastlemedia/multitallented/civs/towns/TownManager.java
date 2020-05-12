@@ -336,34 +336,6 @@ public class TownManager {
         }
     }
 
-    public void exchangeHardship(UUID attacker, UUID defender, double amount) {
-        if (attacker != null) {
-            Civilian attackerCiv = CivilianManager.getInstance().getCivilian(attacker);
-            attackerCiv.setHardship(attackerCiv.getHardship() - amount);
-            CivilianManager.getInstance().saveCivilian(attackerCiv);
-        }
-
-        if (defender != null) {
-            Civilian defenderCiv = CivilianManager.getInstance().getCivilian(defender);
-            defenderCiv.setHardship(defenderCiv.getHardship() + amount);
-            CivilianManager.getInstance().saveCivilian(defenderCiv);
-        }
-    }
-
-    public void exchangeHardship(Region region, UUID attacker, double amount) {
-        Set<UUID> defenders = region.getOwners();
-        for (UUID defender : defenders) {
-            exchangeHardship(attacker, defender, amount / (double) defenders.size());
-        }
-    }
-
-    public void exchangeHardship(Town town, UUID attacker, double amount) {
-        Set<UUID> defenders = town.getRawPeople().keySet();
-        for (UUID defender : defenders) {
-            exchangeHardship(attacker, defender, amount / (double) defenders.size());
-        }
-    }
-
     private void devolveTown(Town town, TownType townType) {
         if (townType.getChild() == null) {
             return;

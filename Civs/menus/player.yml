@@ -72,23 +72,29 @@
 #    name: karma{$karma$
 #    desc: karma-desc
 #    actions: []
-#  kills:
+#  hardship:
 #    index: 11
+#    icon: WITHER_SKELETON_SKULL
+#    name: hardship{$hardship$
+#    desc: hardship-desc
+#    actions: []
+#  kills:
+#    index: 12
 #    icon: PLAYER_HEAD
 #    name: kills{$kills$
 #    actions: []
 #  deaths:
-#    index: 12
+#    index: 13
 #    icon: SKELETON_SKULL
 #    name: deaths{$deaths$
 #    actions: []
 #  killstreak:
-#    index: 13
+#    index: 14
 #    icon: IRON_SWORD
 #    name: killstreak{$killstreak$
 #    actions: []
 #  highest-killstreak:
-#    index: 14
+#    index: 15
 #    icon: DIAMOND_SWORD
 #    name: highest-killstreak{$highest-killstreak$
 #    actions: []

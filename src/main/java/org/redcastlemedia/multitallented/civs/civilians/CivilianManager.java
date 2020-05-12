@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -336,5 +337,33 @@ public class CivilianManager {
             return;
         }
         playerFile.delete();
+    }
+
+    public void exchangeHardship(UUID attacker, UUID defender, double amount) {
+        if (attacker != null) {
+            Civilian attackerCiv = CivilianManager.getInstance().getCivilian(attacker);
+            attackerCiv.setHardship(attackerCiv.getHardship() - amount);
+            CivilianManager.getInstance().saveCivilian(attackerCiv);
+        }
+
+        if (defender != null) {
+            Civilian defenderCiv = CivilianManager.getInstance().getCivilian(defender);
+            defenderCiv.setHardship(defenderCiv.getHardship() + amount);
+            CivilianManager.getInstance().saveCivilian(defenderCiv);
+        }
+    }
+
+    public void exchangeHardship(Region region, UUID attacker, double amount) {
+        Set<UUID> defenders = region.getOwners();
+        for (UUID defender : defenders) {
+            exchangeHardship(attacker, defender, amount / (double) defenders.size());
+        }
+    }
+
+    public void exchangeHardship(Town town, UUID attacker, double amount) {
+        Set<UUID> defenders = town.getRawPeople().keySet();
+        for (UUID defender : defenders) {
+            exchangeHardship(attacker, defender, amount / (double) defenders.size());
+        }
     }
 }

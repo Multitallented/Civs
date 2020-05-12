@@ -176,32 +176,7 @@ public class RegionManager {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             runRegionCommands(region, regionType.getCommandsOnDestruction());
             broadcastRegionDestroyed(region);
-            Town town = TownManager.getInstance().getTownAt(region.getLocation());
-            if (town != null) {
-                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-                Set<Town> neighboringTowns = new HashSet<>();
-                for (Town town1 : TownManager.getInstance().getTowns()) {
-                    TownType townType1 = (TownType) ItemManager.getInstance().getItemType(town1.getType());
-                    int combinedRadii = townType.getBuildRadius() + townType1.getBuildRadius();
-                    if (town.getLocation().getWorld().equals(town1.getLocation().getWorld()) &&
-                            town.getLocation().distanceSquared(town1.getLocation()) < combinedRadii + 40000) {
-                        neighboringTowns.add(town1);
-                    }
-                }
-                double split = neighboringTowns.size();
-                for (Town town1 : neighboringTowns) {
-                    UUID ownerUuid = null;
-                    for (Map.Entry<UUID, String> entry : town1.getRawPeople().entrySet()) {
-                        if (entry.getValue().contains(Constants.OWNER)) {
-                            ownerUuid = entry.getKey();
-                            break;
-                        }
-                    }
-                    if (ownerUuid != null) {
-                        TownManager.getInstance().exchangeHardship(town, ownerUuid, regionType.getPrice() / split);
-                    }
-                }
-            }
+            CivilianManager.getInstance().exchangeHardship(region, null, regionType.getPrice());
         }
         for (Map.Entry<String, DestroyRegionListener> entry : this.destroyRegionListener.entrySet()) {
             entry.getValue().destroyRegionHandler(region);
