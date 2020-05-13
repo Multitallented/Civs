@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +18,7 @@ public class RingBuilder {
     private int z = 0;
     private static final int Y_LEVEL = 80;
     private final Town town;
+    private Set<String> locations = new HashSet<>();
 
     public RingBuilder(Town town) {
         this.town = town;
@@ -49,10 +52,10 @@ public class RingBuilder {
                 int asdf = (int) Math.sqrt(radius * radius - (x * x));
                 int zp = asdf + (int) l.getZ();
                 int zn = (int) l.getZ() - asdf;
-                world.getBlockAt(xp, yL, zp).setType(material);
-                world.getBlockAt(xn, yL, zp).setType(material);
-                world.getBlockAt(xp, yL, zn).setType(material);
-                world.getBlockAt(xn, yL, zn).setType(material);
+                setBlockAt(world, xp, yL, zp, material);
+                setBlockAt(world, xn, yL, zp, material);
+                setBlockAt(world, xp, yL, zn, material);
+                setBlockAt(world, xn, yL, zn, material);
 
             }
             x++;
@@ -63,14 +66,23 @@ public class RingBuilder {
                 int asdf = (int) Math.sqrt(radius * radius - (z * z));
                 int xp = asdf + (int) l.getX();
                 int xn = (int) l.getX() - asdf;
-                world.getBlockAt(xp, yL, zp).setType(material);
-                world.getBlockAt(xn, yL, zp).setType(material);
-                world.getBlockAt(xp, yL, zn).setType(material);
-                world.getBlockAt(xn, yL, zn).setType(material);
+                setBlockAt(world, xp, yL, zp, material);
+                setBlockAt(world, xn, yL, zp, material);
+                setBlockAt(world, xp, yL, zn, material);
+                setBlockAt(world, xn, yL, zn, material);
 
             }
             z++;
         } while (x <= radius && z <= radius);
+    }
+
+    private void setBlockAt(World world, int x, int y, int z, Material material) {
+        String locationString = x + ":" + y + ":" + z;
+        if (locations.contains(locationString)) {
+            return;
+        }
+        locations.add(locationString);
+        world.getBlockAt(x, y, z).setType(material);
     }
 
     public void destroyRing(boolean destroyAll, boolean useGravel) {
@@ -149,39 +161,15 @@ public class RingBuilder {
                 int zp = asdf + (int) l.getZ();
                 int zn = (int) l.getZ() - asdf;
                 if (setGravel) {
-                    Block block1 = world.getBlockAt(xp, yL, zp);
-                    if (block1.getType() == material) {
-                        block1.setType(Material.GRAVEL);
-                    }
-                    Block block2 = world.getBlockAt(xn, yL, zp);
-                    if (block2.getType() == material) {
-                        block2.setType(Material.GRAVEL);
-                    }
-                    Block block3 = world.getBlockAt(xp, yL, zn);
-                    if (block3.getType() == material) {
-                        block3.setType(Material.GRAVEL);
-                    }
-                    Block block4 = world.getBlockAt(xn, yL, zn);
-                    if (block4.getType() == material) {
-                        block4.setType(Material.GRAVEL);
-                    }
+                    setBlockAt(world, xp, yL, zp, Material.GRAVEL);
+                    setBlockAt(world, xn, yL, zp, Material.GRAVEL);
+                    setBlockAt(world, xp, yL, zn, Material.GRAVEL);
+                    setBlockAt(world, xn, yL, zn, Material.GRAVEL);
                 } else {
-                    Block block1 = world.getBlockAt(xp, yL, zp);
-                    if (block1.getType() == material) {
-                        block1.setType(Material.AIR);
-                    }
-                    Block block2 = world.getBlockAt(xn, yL, zp);
-                    if (block2.getType() == material) {
-                        block2.setType(Material.AIR);
-                    }
-                    Block block3 = world.getBlockAt(xp, yL, zn);
-                    if (block3.getType() == material) {
-                        block3.setType(Material.AIR);
-                    }
-                    Block block4 = world.getBlockAt(xn, yL, zn);
-                    if (block4.getType() == material) {
-                        block4.setType(Material.AIR);
-                    }
+                    setBlockAt(world, xp, yL, zp, Material.AIR);
+                    setBlockAt(world, xn, yL, zp, Material.AIR);
+                    setBlockAt(world, xp, yL, zn, Material.AIR);
+                    setBlockAt(world, xn, yL, zn, Material.AIR);
                 }
 
             }
@@ -193,15 +181,15 @@ public class RingBuilder {
                 int xp = asdf + (int) l.getX();
                 int xn = (int) l.getX() - asdf;
                 if (setGravel) {
-                    world.getBlockAt(xp, yL, zp).setType(Material.GRAVEL);
-                    world.getBlockAt(xn, yL, zp).setType(Material.GRAVEL);
-                    world.getBlockAt(xp, yL, zn).setType(Material.GRAVEL);
-                    world.getBlockAt(xn, yL, zn).setType(Material.GRAVEL);
+                    setBlockAt(world, xp, yL, zp, Material.GRAVEL);
+                    setBlockAt(world, xn, yL, zp, Material.GRAVEL);
+                    setBlockAt(world, xp, yL, zn, Material.GRAVEL);
+                    setBlockAt(world, xn, yL, zn, Material.GRAVEL);
                 } else {
-                    world.getBlockAt(xp, yL, zp).setType(Material.AIR);
-                    world.getBlockAt(xn, yL, zp).setType(Material.AIR);
-                    world.getBlockAt(xp, yL, zn).setType(Material.AIR);
-                    world.getBlockAt(xn, yL, zn).setType(Material.AIR);
+                    setBlockAt(world, xp, yL, zp, Material.AIR);
+                    setBlockAt(world, xn, yL, zp, Material.AIR);
+                    setBlockAt(world, xp, yL, zn, Material.AIR);
+                    setBlockAt(world, xn, yL, zn, Material.AIR);
                 }
 
 
