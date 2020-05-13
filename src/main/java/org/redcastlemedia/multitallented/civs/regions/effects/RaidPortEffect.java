@@ -1,6 +1,16 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -14,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
@@ -22,6 +31,8 @@ import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -29,10 +40,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
-
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
 
 @CivsSingleton
 public class RaidPortEffect implements Listener, CreateRegionListener {
@@ -83,6 +90,19 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
         }
 
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        double hardshipBuffer;
+        if (Civs.econ == null) {
+            hardshipBuffer = 20000;
+        } else {
+            hardshipBuffer = Civs.econ.getBalance(player);
+        }
+        if (town.getHardship() > civilian.getHardship() + hardshipBuffer) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "hardship-too-high").replace("$1", town.getName()));
+            return false;
+        }
+
         for (Player player1 : Bukkit.getOnlinePlayers()) {
             String raidLocalName = LocaleManager.getInstance().getTranslationWithPlaceholders(player1,
                     rt.getProcessedName() + "-name");
@@ -103,8 +123,11 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             defaultMessage += DiscordUtil.atAllTownOwners(town);
             DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
+        String raidLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                rt.getName() + LocaleConstants.NAME_SUFFIX);
         CVItem raidRemote = CVItem.createCVItemFromString("STICK");
-        raidRemote.setDisplayName("Controller " + rt.getName() + " " + Region.locationToString(l));
+        raidRemote.setDisplayName(raidLocalName);
+        raidRemote.getLore().add(ChatColor.BLACK + Region.locationToString(l));
 
         l.getWorld().dropItemNaturally(l, raidRemote.createItemStack());
         player.sendMessage(Civs.getPrefix() + ChatColor.RED +
@@ -368,8 +391,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         if (itemInHand.getType() != Material.STICK || !itemInHand.hasItemMeta()) {
             return;
         }
-        String[] displayName = ChatColor.stripColor(itemInHand.getItemMeta().getDisplayName()).split(" ");
-        if (!displayName[0].equals("Controller") || displayName.length < 3) {
+        List<String> lore = itemInHand.getItemMeta().getLore();
+        if (lore == null || lore.isEmpty()) {
             return;
         }
 
@@ -378,12 +401,12 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         RegionType rt;
         RegionManager rm = RegionManager.getInstance();
         try {
-            r = rm.getRegionAt(Region.idToLocation(displayName[2]));
+            r = rm.getRegionAt(Region.idToLocation(ChatColor.stripColor(lore.get(0))));
             if (r == null) {
                 return;
             }
             rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-            if (rt == null) {
+            if (rt == null || !rt.getEffects().containsKey(KEY)) {
                 return;
             }
         } catch (Exception e) {

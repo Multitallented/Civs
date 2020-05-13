@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -118,6 +119,27 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return;
         }
 
+        double hardshipBuffer = 0;
+        if (Civs.econ == null) {
+            hardshipBuffer += 20000;
+        }
+        Set<UUID> siegeMachineOwners = region.getOwners();
+        if (!siegeMachineOwners.isEmpty()) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(siegeMachineOwners.iterator().next());
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            hardshipBuffer = civilian.getHardship();
+
+            if (Civs.econ != null) {
+                hardshipBuffer += Civs.econ.getBalance(player);
+            }
+        }
+        if (town.getHardship() > hardshipBuffer) {
+            sign.setLine(1,"hardship");
+            sign.setLine(2,"limit");
+            sign.setLine(3,"exceeded");
+            return;
+        }
+
         Location spawnLoc = l.getBlock().getRelative(BlockFace.UP, 3).getLocation();
         Location loc = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 15, spawnLoc.getZ());
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
@@ -175,9 +197,11 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
     private void reducePowerAndExchangeKarma(Region region, int damage, Town town, TownType townType) {
         TownManager.getInstance().setTownPower(town, town.getPower() - damage);
+        double karmaChange = (double) damage / (double) town.getMaxPower() * townType.getPrice();
         if (!region.getOwners().isEmpty()) {
-            double karmaChange = (double) damage / (double) town.getMaxPower() * townType.getPrice();
             CivilianManager.getInstance().exchangeHardship(town, region.getOwners().iterator().next(), karmaChange);
+        } else {
+            CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
         }
     }
 
