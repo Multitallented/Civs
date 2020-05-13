@@ -708,8 +708,8 @@ public class TownManager {
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;
         String governmentType = null;
-        double karma = 0;
         int villagerCount = 0;
+        double bank = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
@@ -724,6 +724,7 @@ public class TownManager {
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
+            bank = intersectTown.getBankAccount();
             governmentType = intersectTown.getGovernmentType();
             childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
@@ -732,8 +733,6 @@ public class TownManager {
     //                intersectTown.destroyRing(false);
     //            }
             villagerCount = intersectTown.getVillagers();
-        } else {
-            karma = -1 * townType.getPrice() / 2;
         }
 
         int housingCount = getHousingCount(newTownLocation, townType);
@@ -745,6 +744,7 @@ public class TownManager {
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         newTown.setEffects(new HashMap<>(townType.getEffects()));
         newTown.setChildLocations(childLocations);
+        newTown.setBankAccount(bank);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {

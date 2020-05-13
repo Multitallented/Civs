@@ -32,7 +32,12 @@ public class CommandEffect implements Listener {
             return;
         }
         String command = event.getRegion().getEffects().get(ENTRY_KEY);
-        sendCommand(event.getUuid(), command);
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                sendCommand(event.getUuid(), command);
+            }
+        }, 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -62,7 +67,12 @@ public class CommandEffect implements Listener {
             return;
         }
         String command = event.getTownType().getEffects().get(ENTRY_KEY);
-        sendCommand(event.getUuid(), command);
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                sendCommand(event.getUuid(), command);
+            }
+        }, 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
