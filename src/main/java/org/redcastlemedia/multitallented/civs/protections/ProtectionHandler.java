@@ -514,7 +514,7 @@ public class ProtectionHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBucketEmpty(PlayerBucketFillEvent event) {
+    public void onBucketFill(PlayerBucketFillEvent event) {
         boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (cancel) {
             event.setCancelled(true);
