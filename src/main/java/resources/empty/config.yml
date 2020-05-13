@@ -107,8 +107,8 @@ hunt-karma: 250.0 # how much karma should a town get when using a building with 
 hunt-new-players: true # should players be able to hunt people that aren't in towns
 ##Should money be created if it can't be taken from the victim
 always-drop-money-if-no-balance: false
-power-per-kill: 12
-power-per-npc-kill: 4
+power-per-kill: 30
+power-per-npc-kill: 5
 
 folders:
   farms: STONE_HOE

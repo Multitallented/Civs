@@ -319,8 +319,8 @@ public class ConfigManager {
             moneyPerKarma = config.getDouble("money.karma", 0.1);
             karmaPerKill = config.getInt("karma-per-kill", 1);
             karmaPerKillStreak = config.getInt("karma-per-kill-streak", 1);
-            powerPerKill = config.getInt("power-per-kill", 1);
-            powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
+            powerPerKill = config.getInt("power-per-kill", 30);
+            powerPerNPCKill = config.getInt("power-per-npc-kill", 5);
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
@@ -507,8 +507,8 @@ public class ConfigManager {
         moneyPerKarma = 0.1;
         karmaPerKillStreak = 1;
         karmaPerKill = 1;
-        powerPerKill = 1;
-        powerPerNPCKill = 1;
+        powerPerKill = 30;
+        powerPerNPCKill = 5;
         villagerCooldown = 300;
         denyArrowTurretShootAtMobs = false;
         portMana = 0;

@@ -195,6 +195,7 @@ public class TownManager {
                 lastDisable);
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
+        town.setDevolvedToday(config.getBoolean("devolved-today", false));
         town.setGovernmentType(governmentType);
         if (config.isSet("idiocracy-score")) {
             HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
@@ -347,6 +348,7 @@ public class TownManager {
         town.setType(childTownType.getProcessedName());
         town.setPower(childTownType.getMaxPower() / 2);
         town.setMaxPower(childTownType.getMaxPower());
+        town.setDevolvedToday(true);
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
@@ -488,6 +490,7 @@ public class TownManager {
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
             config.set("people", null);
+            config.set("devolved-today", town.isDevolvedToday());
             if (town.isGovTypeChangedToday()) {
                 config.set("gov-type-changed-today", true);
             } else {

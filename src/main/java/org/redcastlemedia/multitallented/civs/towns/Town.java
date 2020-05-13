@@ -23,8 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Town {
-    @Getter
-    @Setter
+    @Getter @Setter
     private String type;
 
     private int maxPower;
@@ -41,37 +40,33 @@ public class Town {
     private long lastDisable;
     private int villagers;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private double bankAccount;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private double taxes;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private String governmentType;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private String colonialTown;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private long lastVote = 0;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private HashMap<UUID, HashMap<UUID, Integer>> votes = new HashMap<>();
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private boolean govTypeChangedToday;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private long lastActive;
+
+    @Getter @Setter
+    private boolean devolvedToday;
+
     @Getter @Setter
     private HashMap<UUID, Integer> idiocracyScore = new HashMap<>();
 
@@ -108,9 +103,6 @@ public class Town {
         this.villagers = villagers;
     }
 
-    public String getType() {
-        return type;
-    }
     public Location getLocation() {
         return location;
     }
@@ -259,8 +251,7 @@ public class Town {
     }
 
     public double getHardship() {
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
-        double price = -1 * townType.getPrice();
+        double price = 0;
         for (UUID uuid : people.keySet()) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
             price += civilian.getHardship();

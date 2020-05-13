@@ -292,6 +292,10 @@ public class CVInventory {
                 int amount = contentsToModify.get(i).getAmount();
                 contentsToModify.remove(i);
                 currentStack.setAmount(currentStack.getAmount() - amount);
+            } else {
+                itemStacks.remove(0);
+                contentsToModify.remove(i);
+                itemRemoved = true;
             }
         }
         return itemRemoved;
