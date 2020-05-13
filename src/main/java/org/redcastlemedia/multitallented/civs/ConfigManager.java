@@ -157,6 +157,8 @@ public class ConfigManager {
     boolean allowHuntNewPlayers;
     @Getter
     double hardshipPerKill;
+    @Getter
+    boolean useHardshipSystem;
 
     @Getter
     String chatChannelFormat;
@@ -382,6 +384,7 @@ public class ConfigManager {
             huntKarma = config.getDouble("hunt-karma", -250.0);
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
             hardshipPerKill = config.getDouble("hardship-per-kill", 500);
+            useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             lineLengthMap = new HashMap<>();
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
