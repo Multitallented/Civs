@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -109,6 +112,12 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return;
         }
 
+        if (town.isDevolvedToday()) {
+            sign.setLine(2, "max damage");
+            sign.setLine(3, "reached for today");
+            return;
+        }
+
         double hardshipBuffer = 0;
         if (Civs.econ == null) {
             hardshipBuffer += 20000;
@@ -127,6 +136,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             sign.setLine(1,"hardship");
             sign.setLine(2,"limit");
             sign.setLine(3,"exceeded");
+            sign.update();
             return;
         }
 

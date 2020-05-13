@@ -136,6 +136,6 @@ items:
   karma:
     index: 17
     icon: SOUL_SAND
-    name: karma-display{$karma$,,$worth$
+    name: karma-display{$hardship$,,$worth$
     desc: karma-town-desc
     actions: []

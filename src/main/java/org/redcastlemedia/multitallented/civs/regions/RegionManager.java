@@ -176,7 +176,7 @@ public class RegionManager {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             runRegionCommands(region, regionType.getCommandsOnDestruction());
             broadcastRegionDestroyed(region);
-            CivilianManager.getInstance().exchangeHardship(region, null, regionType.getPrice());
+            CivilianManager.getInstance().exchangeHardship(region, null, regionType.getPrice() / 2);
         }
         for (Map.Entry<String, DestroyRegionListener> entry : this.destroyRegionListener.entrySet()) {
             entry.getValue().destroyRegionHandler(region);

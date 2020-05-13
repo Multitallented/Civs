@@ -348,6 +348,15 @@ public class CivilianManager {
 
         if (defender != null) {
             Civilian defenderCiv = CivilianManager.getInstance().getCivilian(defender);
+
+            if (ConfigManager.getInstance().isUseHardshipSystem() &&
+                    Civs.econ != null && defenderCiv.getHardship() > 0) {
+                if (attacker != null) {
+                    Civs.econ.withdrawPlayer(Bukkit.getOfflinePlayer(attacker), amount);
+                }
+                Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(defender), amount);
+            }
+
             defenderCiv.setHardship(defenderCiv.getHardship() + amount);
             CivilianManager.getInstance().saveCivilian(defenderCiv);
         }

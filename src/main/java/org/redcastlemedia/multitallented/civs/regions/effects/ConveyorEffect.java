@@ -33,6 +33,7 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
+import java.util.logging.Level;
 
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
@@ -202,6 +203,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 }
                 RegionManager.getInstance().removeCheckedRegion(cacheDestinationRegions.get(r));
             } catch (Exception e) {
+                Civs.logger.log(Level.WARNING, "Exception from offline conveyor: ", e);
             }
             return;
         } else {

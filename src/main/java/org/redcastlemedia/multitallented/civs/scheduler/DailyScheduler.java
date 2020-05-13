@@ -32,6 +32,13 @@ public class DailyScheduler implements Runnable {
             }
         }
 
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (town.isDevolvedToday()) {
+                town.setDevolvedToday(false);
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+
         doTaxes();
         doVotes();
         addDailyPower();
