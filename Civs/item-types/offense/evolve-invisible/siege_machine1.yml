@@ -18,8 +18,8 @@
 #effects:
 #- block_build
 #- block_break
-#- drain_power:2.20
-#- evolve:siege_machine2.3
+#- drain_power:4
+#- evolve:siege_machine2.20
 #
 #towns:
 #- outpost

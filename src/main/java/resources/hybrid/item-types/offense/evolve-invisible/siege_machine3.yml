@@ -20,13 +20,13 @@ build-radius: 3 #7x7x7
 effects:
 - block_build
 - block_break
-- drain_power:4.40 # 960 / day
+- drain_power:10 # 400 / hour
 
 towns:
 - outpost
 - keep
 
-period: 180 # 3 minutes
+period: 90 # 1.5 minutes
 upkeep:
   0:
     input:

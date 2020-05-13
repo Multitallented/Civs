@@ -1,9 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,13 +16,12 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -39,7 +34,6 @@ import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 public class SiegeEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_drain_power";
     public static String KEY = "drain_power";
-    public static Set<Region> overchargedSiegeMachines = new HashSet<>();
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new SiegeEffect(), Civs.getInstance());
@@ -60,13 +54,9 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
         String damageString = region.getEffects().get(KEY);
         int damage = 1;
-        int overchargedDamage = 10;
         if (damageString != null) {
             String[] damageStringSplit = damageString.split("\\.");
             damage = Integer.parseInt(damageStringSplit[0]);
-            if (damageStringSplit.length > 1) {
-                overchargedDamage = Integer.parseInt(damageStringSplit[1]);
-            }
         }
 
         //Check if valid siege machine position
@@ -171,28 +161,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             }
         }, 15L);
 
-        if (!overchargedSiegeMachines.contains(region)) {
-            boolean hasOnlinePlayers = false;
-            int onlinePlayers = 0;
-            int townPopulation = town.getRawPeople().size();
-            for (UUID uuid : town.getRawPeople().keySet()) {
-                Player player = Bukkit.getPlayer(uuid);
-                if (player != null && player.isOnline()) {
-                    onlinePlayers++;
-                    if (townPopulation <= onlinePlayers || onlinePlayers > 2) {
-                        hasOnlinePlayers = true;
-                    }
-                }
-            }
-            if (hasOnlinePlayers) {
-                overchargedSiegeMachines.add(region);
-            }
-        }
-        if (overchargedSiegeMachines.contains(region)) {
-            reducePowerAndExchangeKarma(region, overchargedDamage, town, townType);
-        } else {
-            reducePowerAndExchangeKarma(region, damage, town, townType);
-        }
+        reducePowerAndExchangeKarma(region, damage, town, townType);
     }
 
     private void reducePowerAndExchangeKarma(Region region, int damage, Town town, TownType townType) {
@@ -203,11 +172,6 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         } else {
             CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
         }
-    }
-
-    @EventHandler
-    public void onRegionDestroyed(RegionDestroyedEvent event) {
-        overchargedSiegeMachines.remove(event.getRegion());
     }
 
     @EventHandler
