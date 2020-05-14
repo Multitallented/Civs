@@ -76,7 +76,7 @@ public class RegionEffectTests extends TestUtil {
         EntityDeathEvent entityDeathEvent = mock(EntityDeathEvent.class);
         when(entityDeathEvent.getEntity()).thenReturn(villager);
         villagerEffect.onVillagerDeath(entityDeathEvent);
-        assertEquals(296, this.town.getPower());
+        assertEquals(295, this.town.getPower());
     }
 
     @Test

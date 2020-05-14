@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: LIGHT_BLUE_BED
 dynmap-marker: bighouse
 name: Manor
-max: 2
 price: 4000
 groups:
 - housing

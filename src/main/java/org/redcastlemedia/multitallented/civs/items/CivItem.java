@@ -108,11 +108,17 @@ public abstract class CivItem extends CVItem {
     }
 
     public static CivItem getFromItemStack(ItemStack itemStack) {
+        if (itemStack.getItemMeta().getLore().size() < 2) {
+            return null;
+        }
         String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
         return ItemManager.getInstance().getItemType(processedName
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
     public static CivItem getFromItemStack(CVItem cvItem) {
+        if (cvItem.getLore().size() < 2) {
+            return null;
+        }
         String processedName = ChatColor.stripColor(cvItem.getLore().get(1));
         return ItemManager.getInstance().getItemType(processedName
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());

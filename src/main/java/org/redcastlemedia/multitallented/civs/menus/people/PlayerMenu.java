@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuConstants;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -47,6 +48,7 @@ public class PlayerMenu extends CustomMenu {
         data.put("kills", "" + civilian1.getKills());
         data.put("deaths", "" + civilian1.getDeaths());
         data.put("karma", "" + civilian1.getKarma());
+        data.put(MenuConstants.HARDSHIP, "" + Math.round(civilian1.getHardship()));
         data.put("killstreak", "" + civilian1.getKillStreak());
         data.put("highest-killstreak", "" + civilian1.getHighestKillStreak());
         return data;

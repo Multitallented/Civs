@@ -4,7 +4,7 @@ shop-icon: IRON_INGOT
 dynmap-marker: coins
 name: Iron_Shop
 max: 1
-price: 100
+price: 150
 groups:
 - shop
 - oreshop

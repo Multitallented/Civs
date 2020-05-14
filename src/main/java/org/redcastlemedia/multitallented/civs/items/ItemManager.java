@@ -50,6 +50,10 @@ public class ItemManager {
         loadAllItemTypes();
     }
 
+    public Map<String, CivItem> getAllItemTypes() {
+        return new HashMap<>(itemTypes);
+    }
+
     private void loadAllItemTypes() {
         final String ITEM_TYPES_FOLDER_NAME = Constants.ITEM_TYPES;
         String resourcePath = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + ITEM_TYPES_FOLDER_NAME;

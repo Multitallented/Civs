@@ -17,7 +17,7 @@
 #- block_build
 #- block_liquid
 #- block_fire
-#- potion:DAMAGE_RESISTANCE.240
+#- potion:INCREASE_DAMAGE.120
 #
 #pre-reqs:
 #- member=town:city:metropolis

@@ -79,7 +79,11 @@ public class CVInventory {
         this.lastUnloadedModification = -1;
         for (int i = 0; i < getSize(); i++) {
             if (this.contents.containsKey(i)) {
-                this.inventory.setItem(i, this.contents.get(i));
+                if (this.contents.get(i) == null) {
+                    this.inventory.setItem(i, new ItemStack(Material.AIR));
+                } else {
+                    this.inventory.setItem(i, this.contents.get(i));
+                }
             } else {
                 this.inventory.setItem(i, new ItemStack(Material.AIR));
             }
@@ -129,7 +133,7 @@ public class CVInventory {
             }
             this.inventory.setItem(i, itemStack);
         } else {
-            if (i > 0 && i < getSize()) {
+            if (i >= 0 && i < getSize()) {
                 if (itemStack != null) {
                     contents.put(i, itemStack);
                 } else {
@@ -288,6 +292,10 @@ public class CVInventory {
                 int amount = contentsToModify.get(i).getAmount();
                 contentsToModify.remove(i);
                 currentStack.setAmount(currentStack.getAmount() - amount);
+            } else {
+                itemStacks.remove(0);
+                contentsToModify.remove(i);
+                itemRemoved = true;
             }
         }
         return itemRemoved;

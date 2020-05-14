@@ -186,6 +186,15 @@ public class PortCommand implements CivCommand {
         return true;
     }
 
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        if (!(commandSender instanceof Player)) {
+            return false;
+        }
+        Player player = (Player) commandSender;
+        return Civs.perm == null || Civs.perm.has(player, Constants.PORT_PERMISSION);
+    }
+
 
     public static boolean canPort(Region r, UUID uuid, Town town) {
         try {

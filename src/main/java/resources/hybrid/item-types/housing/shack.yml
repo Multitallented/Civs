@@ -3,7 +3,6 @@ icon: CHEST
 shop-icon: YELLOW_BED
 dynmap-marker: house
 name: Shack
-max: 2
 price: 100
 groups:
 - housing

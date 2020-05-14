@@ -66,4 +66,9 @@ public class TaxCommand implements CivCommand {
 
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
+    }
 }

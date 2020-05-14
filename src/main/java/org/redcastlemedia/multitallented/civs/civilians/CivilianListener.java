@@ -27,6 +27,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -54,7 +55,6 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -181,6 +181,16 @@ public class CivilianListener implements Listener {
             return false;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
+        if (hasBlueprintsMenuOpen) {
+            CivItem civItem = CivItem.getFromItemStack(itemStack);
+            if (Civs.econ != null && civItem.getPrice() > 0) {
+                Civs.econ.depositPlayer(player, civItem.getPrice());
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+            }
+            return true;
+        }
         String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
         String itemName = processedName.replace(
                 ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
@@ -592,7 +602,7 @@ public class CivilianListener implements Listener {
             }
         } else if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.ALLIANCE) {
             Alliance alliance = (Alliance) chatChannel.getTarget();
-            if (alliance.isInAlliance(civilian.getUuid())) {
+            if (!alliance.isInAlliance(civilian.getUuid())) {
                 civilian.setChatChannel(new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null));
                 return;
             }
@@ -608,7 +618,7 @@ public class CivilianListener implements Listener {
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
-                currentPlayer.sendMessage(ConfigManager.getInstance().getChatChannelFormat()
+                currentPlayer.sendMessage(Util.parseColors(ConfigManager.getInstance().getChatChannelFormat())
                         .replace("$channel$", chatChannel.getName(currentPlayer))
                         .replace("$player$", player.getDisplayName())
                         .replace("$message$", event.getMessage()));
@@ -628,6 +638,7 @@ public class CivilianListener implements Listener {
         }
         boolean shiftClick = event.getClick().isShiftClick() && event.getClickedInventory() != null &&
                 event.getClickedInventory().equals(event.getWhoClicked().getInventory());
+        shiftClick = shiftClick || event.getClick() == ClickType.NUMBER_KEY;
         boolean dragToChest = event.getClickedInventory() != null &&
                 !event.getClickedInventory().equals(event.getWhoClicked().getInventory());
 

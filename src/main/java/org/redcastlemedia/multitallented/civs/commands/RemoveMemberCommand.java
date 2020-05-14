@@ -111,4 +111,9 @@ public class RemoveMemberCommand implements CivCommand {
         }
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
 }

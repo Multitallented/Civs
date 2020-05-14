@@ -39,7 +39,7 @@ public class MainMenu extends CustomMenu {
         MenuManager.clearHistory(civilian.getUuid());
         MenuManager.clearData(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
-        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+        if (!TutorialManager.getInstance().getPathIcons(civilian).isEmpty()) {
             return "tutorial-choose-path";
         }
         return null;

@@ -26,10 +26,11 @@ public class TutorialChoosePathMenu extends CustomMenu {
             data.put("page", 0);
         }
 
-        List<CVItem> itemList = TutorialManager.getInstance().getPaths(civilian);
+        List<CVItem> itemList = TutorialManager.getInstance().getPathIcons(civilian);
         int maxPage = (int) Math.ceil((double) itemList.size() / (double) itemsPerPage.get("paths"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
+        data.put("paths", TutorialManager.getInstance().getPaths(civilian));
         data.put("pathNames", new HashMap<ItemStack, String>());
         return data;
     }
@@ -37,7 +38,7 @@ public class TutorialChoosePathMenu extends CustomMenu {
     @Override
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if ("paths".equals(menuIcon.getKey())) {
-            List<CVItem> itemList = TutorialManager.getInstance().getPaths(civilian);
+            List<CVItem> itemList = TutorialManager.getInstance().getPathIcons(civilian);
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
             if (itemList.size() <= startIndex + count) {
@@ -45,8 +46,7 @@ public class TutorialChoosePathMenu extends CustomMenu {
             }
             CVItem cvItem = itemList.get(startIndex + count).clone();
             HashMap<ItemStack, String> pathNames = (HashMap<ItemStack, String>) MenuManager.getData(civilian.getUuid(), "pathNames");
-            String pathName = cvItem.getLore().get(0);
-            cvItem.getLore().clear();
+            String pathName = ((List<String>) MenuManager.getData(civilian.getUuid(), "paths")).get(startIndex + count);
             ItemStack itemStack = cvItem.createItemStack();
             pathNames.put(itemStack, pathName);
             putActions(civilian, menuIcon, itemStack, count);

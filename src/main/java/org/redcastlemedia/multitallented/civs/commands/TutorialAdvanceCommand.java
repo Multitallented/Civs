@@ -67,6 +67,11 @@ public class TutorialAdvanceCommand implements CivCommand {
         return true;
     }
 
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION);
+    }
+
     private void sendMessage(CommandSender commandSender, String key, String message) {
         Player player = null;
         if (commandSender instanceof Player) {

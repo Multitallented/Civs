@@ -22,14 +22,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
-@CivsSingleton
-public class TNTCannon implements Listener, CreateRegionListener {
-//    private final HashMap<TNTPrimed, FiredTNT> firedTNT = new HashMap<>();
+@CivsSingleton @SuppressWarnings("unused")
+public class TNTCannon implements Listener, RegionCreatedListener {
     private final String KEY = "tnt_cannon";
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
 
@@ -38,19 +38,28 @@ public class TNTCannon implements Listener, CreateRegionListener {
     }
 
     public TNTCannon() {
-        RegionManager.getInstance().addCreateRegionListener(KEY, this);
+        RegionManager.getInstance().addRegionCreatedListener(KEY, this);
     }
 
     @Override
-    public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
-        Location location = block.getLocation();
+    public void regionCreatedHandler(Region region) {
         ItemStack controllerWand = new ItemStack(Material.STICK, 1);
         ItemMeta im = controllerWand.getItemMeta();
-        im.setDisplayName("Cannon Controller " + Region.locationToString(location));
+        im.setDisplayName("Cannon Controller " + region.getId());
         controllerWand.setItemMeta(im);
 
-        location.getWorld().dropItemNaturally(block.getRelative(BlockFace.UP, 2).getLocation(), controllerWand);
-        return true;
+        region.getLocation().getWorld().dropItemNaturally(new Location(region.getLocation().getWorld(),
+                region.getLocation().getX(), region.getLocation().getY() + 2,
+                region.getLocation().getZ()), controllerWand);
+        if (!region.getRawPeople().isEmpty()) {
+            Player player = Bukkit.getPlayer(region.getRawPeople().keySet().iterator().next());
+            if (player != null) {
+                String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        region.getType() + LocaleConstants.NAME_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "raid-remote").replace("$1", localRegionName));
+            }
+        }
     }
 
     @EventHandler
@@ -96,6 +105,14 @@ public class TNTCannon implements Listener, CreateRegionListener {
             player.sendMessage(Civs.getPrefix() + "That " + region.getType() + " is reloading."); //TODO localize
             return;
         }
+
+        ItemStack chestItem = player.getInventory().getChestplate();
+        if (chestItem != null && chestItem.getType() == Material.ELYTRA) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "catapult-elytra-equipped"));
+            return;
+        }
+
         Block block = player.getTargetBlockExact(100, FluidCollisionMode.ALWAYS);
         if (block == null) {
             player.sendMessage(Civs.getPrefix() + "That target is too far away"); //TODO localize
@@ -109,6 +126,11 @@ public class TNTCannon implements Listener, CreateRegionListener {
             player.sendMessage(Civs.getPrefix() + "That target is too close to shoot at."); //TODO localize
             return;
         }
+        boolean upkeepRan = region.runUpkeep(false);
+        if (!upkeepRan) {
+            return;
+        }
+
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
 
             /*Vector vector = new Vector((targetLocation.getX() - fireLocation.getX()) / periods,
@@ -158,8 +180,6 @@ public class TNTCannon implements Listener, CreateRegionListener {
 //            FiredTNT ftnt = new FiredTNT(tnt, periods, fireLocation, targetLocation);
 //            firedTNT.put(tnt, ftnt);
         cooldowns.put(id, System.currentTimeMillis() + cooldown * 1000);
-
-        region.runUpkeep();
 
             /*player.sendMessage(ChatColor.GREEN + "[Townships] Dx: " + deltaX);
             player.sendMessage(ChatColor.GREEN + "[Townships] Velocity: " + newX + ", " + newY + ", " + newZ);

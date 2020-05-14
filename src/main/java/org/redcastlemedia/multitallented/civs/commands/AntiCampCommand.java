@@ -4,14 +4,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.AntiCampEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.RaidPortEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
-@CivsCommand(keys = { "anticamp" })
+@CivsCommand(keys = { "anticamp" }) @SuppressWarnings("unused")
 public class AntiCampCommand implements CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -62,10 +67,47 @@ public class AntiCampCommand implements CivCommand {
             return true;
         }
 
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        boolean raidPorterInRange = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            boolean hasRaidPortKey = region.getEffects().containsKey(RaidPortEffect.KEY) ||
+                    region.getEffects().containsKey(RaidPortEffect.CHARGING_KEY);
+            if (hasRaidPortKey && region.getLocation().distance(town.getLocation()) < townType.getBuildRadius() + 200) {
+                raidPorterInRange = true;
+                break;
+            }
+        }
+        if (!raidPorterInRange) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                    "no-anti-camp-duing-raidporter"));
+            return true;
+        }
+
         if (antiCampCost > 0 && Civs.econ != null) {
             Civs.econ.withdrawPlayer(player, antiCampCost);
         }
         AntiCampEffect.activateAntiCamp(civilian.getUuid(), town);
+        return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        if (!(commandSender instanceof Player)) {
+            return false;
+        }
+
+        Player player = (Player) commandSender;
+
+        Town town = TownManager.getInstance().getTownAt(player.getLocation());
+        if (town == null) {
+            return false;
+        }
+        if (!town.getEffects().containsKey(AntiCampEffect.KEY)) {
+            return false;
+        }
+        if (!AntiCampEffect.canActivateAntiCamp(player.getUniqueId(), town)) {
+            return false;
+        }
         return true;
     }
 }

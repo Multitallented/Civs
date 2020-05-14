@@ -46,8 +46,10 @@ public class ChatChannelListMenu extends CustomMenu {
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.TOWN)) {
-            for (Town town : TownManager.getInstance().getOwnedTowns(civilian)) {
-                channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                    channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+                }
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
@@ -84,8 +86,7 @@ public class ChatChannelListMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(civilian.getChatChannel().getName(player));
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civilian.getChatChannel().getDesc(player))));
+            cvItem.setLore(Util.textWrap(civilian, civilian.getChatChannel().getDesc(player)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

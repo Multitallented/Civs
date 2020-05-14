@@ -24,7 +24,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-@CivsCommand(keys = { "invite" })
+@CivsCommand(keys = { "invite" }) @SuppressWarnings("unused")
 public class InviteTownCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -128,5 +128,10 @@ public class InviteTownCommand implements CivCommand {
         invitee.spigot().sendMessage(component);
         townManager.addInvite(invitee.getUniqueId(), town);
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
     }
 }

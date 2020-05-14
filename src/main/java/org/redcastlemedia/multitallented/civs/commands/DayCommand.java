@@ -31,4 +31,9 @@ public class DayCommand implements CivCommand {
         commandSender.sendMessage(Civs.getPrefix() + "new day started");
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION);
+    }
 }

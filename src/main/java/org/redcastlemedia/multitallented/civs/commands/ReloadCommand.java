@@ -33,8 +33,8 @@ public class ReloadCommand implements CivCommand {
             GovernmentManager.getInstance().reload();
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
+            LocaleManager.getInstance().reload();
             NationManager.getInstance().reload();
-            new LocaleManager();
             CommonScheduler.setRun(true);
             commandSender.sendMessage(Civs.getPrefix() + "reloaded");
             return true;
@@ -42,5 +42,10 @@ public class ReloadCommand implements CivCommand {
             commandSender.sendMessage(ChatColor.RED + "Permission Denied!");
             return true;
         }
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return Civs.perm != null && commandSender.hasPermission(Constants.ADMIN_PERMISSION);
     }
 }

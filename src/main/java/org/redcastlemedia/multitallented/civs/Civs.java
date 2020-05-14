@@ -26,6 +26,7 @@ import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.RegionListener;
+import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
@@ -175,6 +176,7 @@ public class Civs extends JavaPlugin {
                 Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
+        new TabComplete(commandList);
     }
 
 //    private void initListeners() {

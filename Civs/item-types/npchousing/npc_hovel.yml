@@ -2,8 +2,7 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: BROWN_BED
-#max: 2
-#price: 200
+#price: 250
 #groups:
 #- npchousinggroup
 #- allhovel
@@ -12,7 +11,6 @@
 #
 #pre-reqs:
 #- member=settlement:hamlet:village:town:city:metropolis
-#- basehovel:built=1|npc_shack:built=1
 #
 #build-reqs:
 #- CHEST*2
@@ -29,7 +27,6 @@
 #rebuild:
 #- basehovel
 #- npc_shack
-#rebuild-required: true
 #build-radius: 4 #9x9x9
 #effects:
 #- block_break
@@ -37,8 +34,8 @@
 #- block_liquid
 #- block_fire
 #- chest_use
-#- housing:1
-#- villager
+#- housing:2
+#- villager:2
 #
 #towns:
 #- settlement
