@@ -28,6 +28,10 @@ public class ClaimMenu extends CustomMenu {
         if (params.containsKey("claim")) {
             ChunkClaim chunkClaim = ChunkClaim.fromLocation(Region.idToLocation(params.get("claim")));
             data.put("claim", chunkClaim);
+        } else {
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            ChunkClaim chunkClaim = ChunkClaim.fromLocation(player.getLocation());
+            data.put("claim", chunkClaim);
         }
         return data;
     }
