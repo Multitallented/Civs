@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,8 @@ public class NationListMenu extends CustomMenu {
         List<Nation> nationList = new ArrayList<>(NationManager.getInstance().getAllNations());
         if (params.containsKey("sort") && "power".equals(params.get("sort"))) {
             nationList.sort(Comparator.comparingInt(Nation::getPower));
+        } else if (params.containsKey("sort") && "alphabetical".equals(params.get("sort"))) {
+            nationList.sort(Comparator.comparing(Nation::getName));
         }
         data.put("nationList", nationList);
 
