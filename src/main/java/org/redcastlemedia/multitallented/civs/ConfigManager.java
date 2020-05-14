@@ -13,10 +13,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -151,6 +149,16 @@ public class ConfigManager {
     EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
     @Getter
     long unloadedChestRefreshRate;
+    @Getter
+    int hardshipDepreciationPeriod;
+    @Getter
+    double huntKarma;
+    @Getter
+    boolean allowHuntNewPlayers;
+    @Getter
+    double hardshipPerKill;
+    @Getter
+    boolean useHardshipSystem;
 
     @Getter
     String chatChannelFormat;
@@ -313,8 +321,8 @@ public class ConfigManager {
             moneyPerKarma = config.getDouble("money.karma", 0.1);
             karmaPerKill = config.getInt("karma-per-kill", 1);
             karmaPerKillStreak = config.getInt("karma-per-kill-streak", 1);
-            powerPerKill = config.getInt("power-per-kill", 1);
-            powerPerNPCKill = config.getInt("power-per-npc-kill", 1);
+            powerPerKill = config.getInt("power-per-kill", 30);
+            powerPerNPCKill = config.getInt("power-per-npc-kill", 5);
             villagerCooldown = config.getLong("villager-cooldown", 300);
             denyArrowTurretShootAtMobs = config.getBoolean("disable-arrow-turret-shooting-at-mobs", false);
             portMana = config.getInt("port.mana", 0);
@@ -372,6 +380,11 @@ public class ConfigManager {
             minPopulationForGovTransition = config.getInt("min-population-for-auto-gov-transition", 4);
             lineBreakLength = config.getInt("line-break-length", 40);
             unloadedChestRefreshRate = config.getLong("unloaded-chest-refresh-rate", 10) * 60000;
+            hardshipDepreciationPeriod = config.getInt("hardship-depreciation-period-in-days", 7);
+            huntKarma = config.getDouble("hunt-karma", -250.0);
+            allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
+            hardshipPerKill = config.getDouble("hardship-per-kill", 500);
+            useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             lineLengthMap = new HashMap<>();
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -439,6 +452,10 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        hardshipPerKill = 500;
+        allowHuntNewPlayers = false;
+        hardshipDepreciationPeriod = 7;
+        huntKarma = -250.0;
         lineLengthMap = new HashMap<>();
         unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
@@ -493,8 +510,8 @@ public class ConfigManager {
         moneyPerKarma = 0.1;
         karmaPerKillStreak = 1;
         karmaPerKill = 1;
-        powerPerKill = 1;
-        powerPerNPCKill = 1;
+        powerPerKill = 30;
+        powerPerNPCKill = 5;
         villagerCooldown = 300;
         denyArrowTurretShootAtMobs = false;
         portMana = 0;

@@ -16,4 +16,9 @@ public class BookCommand implements CivCommand {
         CivilianListener.giveMenuBookIfNoneInInventory((Player) commandSender);
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
+    }
 }

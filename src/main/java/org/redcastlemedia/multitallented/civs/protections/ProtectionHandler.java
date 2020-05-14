@@ -1,12 +1,45 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.*;
-import org.bukkit.event.*;
-import org.bukkit.event.block.*;
-import org.bukkit.event.entity.*;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Phantom;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Wither;
+import org.bukkit.entity.WitherSkull;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -20,14 +53,14 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -39,17 +72,9 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @CivsSingleton
 public class ProtectionHandler implements Listener {
@@ -488,7 +513,7 @@ public class ProtectionHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBucketEmpty(PlayerBucketFillEvent event) {
+    public void onBucketFill(PlayerBucketFillEvent event) {
         boolean cancel = shouldBlockAction(event.getBlockClicked().getLocation(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (cancel) {
             event.setCancelled(true);
@@ -499,7 +524,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityInteract(EntityInteractEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player || event.getEntityType() == EntityType.VILLAGER) {
             return;
         }
         handleInteract(event.getBlock(), null, event);
@@ -523,7 +548,13 @@ public class ProtectionHandler implements Listener {
                 mat == Material.DARK_OAK_TRAPDOOR ||
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
-                mat == Material.IRON_TRAPDOOR) {
+                mat == Material.IRON_TRAPDOOR ||
+                mat == Material.OAK_FENCE_GATE ||
+                mat == Material.DARK_OAK_FENCE_GATE ||
+                mat == Material.SPRUCE_FENCE_GATE ||
+                mat == Material.ACACIA_FENCE_GATE ||
+                mat == Material.JUNGLE_FENCE_GATE ||
+                mat == Material.BIRCH_FENCE_GATE) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
@@ -553,9 +584,7 @@ public class ProtectionHandler implements Listener {
                 checkRelative(clickedBlock, BlockFace.SOUTH);
                 checkRelative(clickedBlock, BlockFace.WEST);
             }
-        } else if (mat == Material.WHEAT ||
-                mat == Material.CARROT ||
-                mat == Material.POTATO) {
+        } else if (mat == Material.FARMLAND) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +

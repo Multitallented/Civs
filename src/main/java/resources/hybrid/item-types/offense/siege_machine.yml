@@ -22,7 +22,6 @@ effects:
 - block_build
 - charging_drain_power
 - evolve:siege_machine_active.2
-- chest_use
 
 towns:
 - outpost

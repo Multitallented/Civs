@@ -43,6 +43,8 @@ public class TownMenu extends CustomMenu {
             data.put(Constants.TOWN, town);
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             data.put(Constants.TOWN_TYPE, townType);
+            data.put("hardship", Util.getNumberFormat(town.getHardship(), civilian.getLocale()));
+            data.put("worth", Util.getNumberFormat(town.getWorth(), civilian.getLocale()));
         }
         if (params.containsKey(Constants.SELECTED_TOWN)) {
             if (!params.containsKey(Constants.TOWN)) {
@@ -51,6 +53,8 @@ public class TownMenu extends CustomMenu {
                 data.put(Constants.TOWN_TYPE, ItemManager.getInstance().getItemType(town.getType()));
                 Town selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
                 data.put(Constants.SELECTED_TOWN, selectedTown);
+                data.put("hardship", Util.getNumberFormat(town.getHardship(), civilian.getLocale()));
+                data.put("worth", Util.getNumberFormat(town.getWorth(), civilian.getLocale()));
             } else {
                 data.put(Constants.SELECTED_TOWN, TownManager.getInstance().getTown(params.get(Constants.SELECTED_TOWN)));
             }
@@ -66,7 +70,6 @@ public class TownMenu extends CustomMenu {
         if (selectedTown == null) {
             selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
         }
-        // TODO allow for alliance management when owning multiple towns
         boolean isAllied = selectedTown != null && selectedTown != town &&
                 AllianceManager.getInstance().isAllied(selectedTown, town);
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&

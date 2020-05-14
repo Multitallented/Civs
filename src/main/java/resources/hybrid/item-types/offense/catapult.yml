@@ -9,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- OBSIDIAN*16
+- OBSIDIAN*8
 - IRON_BARS*8
 - REDSTONE_BLOCK*2
 - TNT*4
@@ -20,10 +20,10 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- tnt_cannon:12
+- tnt_cannon:4
 - chest_use
 
-period: 15
+period: daily
 upkeep:
   0:
     reagents:

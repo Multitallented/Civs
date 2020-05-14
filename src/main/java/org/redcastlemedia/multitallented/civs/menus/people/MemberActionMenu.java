@@ -98,6 +98,10 @@ public class MemberActionMenu extends CustomMenu {
         if (region != null) {
             isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
                     region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
+            if (town != null) {
+                isOwner = isOwner || (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                        town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
+            }
         } else if (town != null) {
             isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);

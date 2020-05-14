@@ -55,7 +55,6 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.regions.BlueprintsMenu;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -619,7 +618,7 @@ public class CivilianListener implements Listener {
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
-                currentPlayer.sendMessage(ConfigManager.getInstance().getChatChannelFormat()
+                currentPlayer.sendMessage(Util.parseColors(ConfigManager.getInstance().getChatChannelFormat())
                         .replace("$channel$", chatChannel.getName(currentPlayer))
                         .replace("$player$", player.getDisplayName())
                         .replace("$message$", event.getMessage()));

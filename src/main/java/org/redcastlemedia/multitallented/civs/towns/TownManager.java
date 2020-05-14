@@ -50,6 +50,9 @@ public class TownManager {
     }
 
     public void loadAllTowns() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
@@ -130,19 +133,15 @@ public class TownManager {
         } else {
             critReqs.add(region.getType().toLowerCase());
         }
-        outer: for (Region containedRegion :
+        for (Region containedRegion :
                 regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {
             if (region.equals(containedRegion)) {
                 continue;
             }
-            if (critReqs.contains(region.getType().toLowerCase())) {
-                critReqs.remove(region.getType().toLowerCase());
-            }
+            critReqs.remove(region.getType().toLowerCase());
             RegionType containedType = (RegionType) ItemManager.getInstance().getItemType(containedRegion.getType());
             for (String currentReq : containedType.getGroups()) {
-                if (critReqs.contains(currentReq)) {
-                    critReqs.remove(currentReq);
-                }
+                critReqs.remove(currentReq);
             }
         }
         if (!critReqs.isEmpty()) {
@@ -153,7 +152,7 @@ public class TownManager {
     public List<Town> checkIntersect(Location location, TownType townType, int modifier) {
         int buildRadius = townType.getBuildRadius() + modifier;
         int buildRadiusY = townType.getBuildRadiusY() + modifier;
-        List<Town> towns = new ArrayList<>();
+        List<Town> townArrayList = new ArrayList<>();
         for (Town town : getTowns()) {
             if (!location.getWorld().equals(town.getLocation().getWorld())) {
                 continue;
@@ -167,10 +166,10 @@ public class TownManager {
                             Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), 0) &&
                     Math.min(location.getY() + buildRadiusY, location.getWorld().getMaxHeight()) >=
                             Math.min(town.getLocation().getY() - currentTownType.getBuildRadiusY(), town.getLocation().getWorld().getMaxHeight())) {
-                towns.add(town);
+                townArrayList.add(town);
             }
         }
-        return towns;
+        return townArrayList;
     }
 
     private void loadTown(FileConfiguration config) {
@@ -196,6 +195,7 @@ public class TownManager {
                 lastDisable);
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
+        town.setDevolvedToday(config.getBoolean("devolved-today", false));
         town.setGovernmentType(governmentType);
         if (config.isSet("idiocracy-score")) {
             HashMap<UUID, Integer> idiocracyScores = new HashMap<>();
@@ -307,6 +307,7 @@ public class TownManager {
         }
         towns.remove(town.getName());
         sortedTowns.remove(town);
+        needsSaving.removeIf(cTown -> cTown.equals(town));
         if (destroyRing && ConfigManager.getInstance().getTownRings()) {
             town.destroyRing(true, broadcast);
         }
@@ -347,6 +348,7 @@ public class TownManager {
         town.setType(childTownType.getProcessedName());
         town.setPower(childTownType.getMaxPower() / 2);
         town.setMaxPower(childTownType.getMaxPower());
+        town.setDevolvedToday(true);
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
@@ -357,12 +359,16 @@ public class TownManager {
     }
 
     private void removeTownFile(String townName) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File townFolder = new File(Civs.dataLocation, "towns");
         if (!townFolder.exists()) {
             townFolder.mkdir();
         }
         File townFile = new File(townFolder, townName + ".yml");
         townFile.delete();
+        Civs.logger.info(townFile.getName() + " was deleted");
     }
 
     public boolean hasGrace(Town town, boolean disable) {
@@ -370,13 +376,13 @@ public class TownManager {
         if (grace < 0 && disable) {
             long lastDisable = (ConfigManager.getInstance().getTownGracePeriod() * 1000) + System.currentTimeMillis();
             town.setLastDisable(lastDisable);
-            TownManager.getInstance().saveTown(town);
+            saveTown(town);
             return true;
         }
         if (!disable) {
             if (grace > -1) {
                 town.setLastDisable(-1);
-                TownManager.getInstance().saveTown(town);
+                saveTown(town);
             }
             return true;
         }
@@ -411,6 +417,16 @@ public class TownManager {
         saveTown(town);
         invites.remove(uuid);
         return true;
+    }
+
+    public Set<Town> getTownsForPlayer(UUID uuid) {
+        Set<Town> townSet = new HashSet<>();
+        for (Town town : towns.values()) {
+            if (town.getRawPeople().containsKey(uuid)) {
+                townSet.add(town);
+            }
+        }
+        return townSet;
     }
 
     public Set<Region> getContainingRegions(String townName) {
@@ -474,6 +490,7 @@ public class TownManager {
             config.set("type", town.getType());
             config.set("location", Region.locationToString(town.getLocation()));
             config.set("people", null);
+            config.set("devolved-today", town.isDevolvedToday());
             if (town.isGovTypeChangedToday()) {
                 config.set("gov-type-changed-today", true);
             } else {
@@ -542,7 +559,6 @@ public class TownManager {
                 config.set("colonial-town", town.getColonialTown());
             }
 
-            //TODO save all town properties
             config.save(townFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -571,8 +587,8 @@ public class TownManager {
     public Set<Town> findCommonTowns(Civilian damagerCiv, Civilian dyingCiv) {
         HashSet<Town> commonTowns = new HashSet<>();
         for (Town town : sortedTowns) {
-            if (town.getPeople().containsKey(damagerCiv.getUuid()) &&
-                    town.getPeople().containsKey(dyingCiv.getUuid())) {
+            if (town.getRawPeople().containsKey(damagerCiv.getUuid()) &&
+                    town.getRawPeople().containsKey(dyingCiv.getUuid())) {
                 commonTowns.add(town);
             }
         }
@@ -612,7 +628,7 @@ public class TownManager {
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
+        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
                     "hold-town"));
             return;
@@ -626,9 +642,8 @@ public class TownManager {
         }
         TownType townType = (TownType) civItem;
 
-        TownManager townManager = TownManager.getInstance();
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
-        List<Town> intersectTowns = townManager.checkIntersect(player.getLocation(), townType, modifier);
+        List<Town> intersectTowns = checkIntersect(player.getLocation(), townType, modifier);
         if (intersectTowns.size() > 1 ||
                     (!intersectTowns.isEmpty() &&
                     (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
@@ -697,6 +712,7 @@ public class TownManager {
         TownType childTownType = null;
         String governmentType = null;
         int villagerCount = 0;
+        double bank = 0;
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
@@ -711,6 +727,7 @@ public class TownManager {
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
             name = intersectTown.getName();
+            bank = intersectTown.getBankAccount();
             governmentType = intersectTown.getGovernmentType();
             childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
@@ -730,6 +747,7 @@ public class TownManager {
                 townType.getMaxPower(), housingCount, villagerCount, -1);
         newTown.setEffects(new HashMap<>(townType.getEffects()));
         newTown.setChildLocations(childLocations);
+        newTown.setBankAccount(bank);
         if (governmentType != null) {
             newTown.setGovernmentType(governmentType);
         } else {
@@ -747,9 +765,11 @@ public class TownManager {
         } else {
             government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
         }
-        townManager.saveTown(newTown);
-        townManager.addTown(newTown);
+        saveTown(newTown);
+        addTown(newTown);
         player.getInventory().remove(itemStack);
+
+
 
         if (childTownType != null) {
             TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);

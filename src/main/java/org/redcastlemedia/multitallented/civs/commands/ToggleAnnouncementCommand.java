@@ -20,4 +20,9 @@ public class ToggleAnnouncementCommand implements CivCommand {
         CivilianManager.getInstance().saveCivilian(civilian);
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
+    }
 }

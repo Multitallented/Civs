@@ -46,11 +46,15 @@ public class RecipeMenu extends CustomMenu {
             items = new ArrayList<>();
             String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
             for (String index : failingUpkeeps) {
-                items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+                if (!index.isEmpty()) {
+                    items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+                }
             }
             if (items.isEmpty()) {
                 Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-                items = new ArrayList<>(region.getMissingBlocks());
+                if (!region.getMissingBlocks().isEmpty()) {
+                    items = new ArrayList<>(region.getMissingBlocks());
+                }
             }
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);

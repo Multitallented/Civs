@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
+import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
@@ -169,6 +170,7 @@ public class Civs extends JavaPlugin {
                 Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
+        new TabComplete(commandList);
     }
 
 //    private void initListeners() {

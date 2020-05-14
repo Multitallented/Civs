@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsCommand(keys = { "add" })
+@CivsCommand(keys = { "add" }) @SuppressWarnings("unused")
 public class AddMemberCommand implements CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -85,4 +88,21 @@ public class AddMemberCommand implements CivCommand {
         RegionManager.getInstance().saveRegion(region);
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
+
+//    @Override
+//    public List<String> getNextWordList(CommandSender commandSender, String[] args) {
+//        List<String> returnList = new ArrayList<>();
+//        if (args.length < 2) {
+//
+//        }
+//        //1 player
+//        //2 regionname
+//        return null;
+//    }
+
 }

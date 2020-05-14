@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -14,11 +15,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -26,6 +29,8 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -40,6 +45,19 @@ public class HuntEffect implements Listener, CreateRegionListener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         cooldowns.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION || !(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        long cooldown = 20000;
+        if (cooldowns.containsKey(player.getUniqueId()) &&
+                cooldowns.get(player.getUniqueId()) + cooldown > System.currentTimeMillis()) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
@@ -135,6 +153,24 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (targetPlayer == null) {
             return;
         }
+        if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+                TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId()).isEmpty()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-hunting-new-players"));
+            return;
+        }
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Civilian targetCiv = CivilianManager.getInstance().getCivilian(targetPlayer.getUniqueId());
+        double hardhipThreshold = 20000;
+        if (Civs.econ != null) {
+            hardhipThreshold = Civs.econ.getBalance(targetPlayer);
+        }
+        if ( targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "hardship-too-high").replace("$1", targetPlayer.getDisplayName()));
+            return;
+        }
 
         if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -149,6 +185,10 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (teleportTarget != null) {
             player.teleport(teleportTarget);
             messageNearbyPlayers(player, "hunting-players", null);
+            double karmaChange = ConfigManager.getInstance().getHuntKarma();
+            if (karmaChange != 0) {
+                CivilianManager.getInstance().exchangeHardship(player.getUniqueId(), targetPlayer.getUniqueId(), karmaChange);
+            }
             cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         }
     }
@@ -190,8 +230,8 @@ public class HuntEffect implements Listener, CreateRegionListener {
         }
 
         return new Location(targetBlock.getWorld(),
-                (double) targetBlock.getX() + 0.5,
-                targetBlock.getY(),
-                (double) targetBlock.getZ() + 0.5);
+                targetBlock.getX(),
+                (double) targetBlock.getY() + 0.5,
+                targetBlock.getZ());
     }
 }

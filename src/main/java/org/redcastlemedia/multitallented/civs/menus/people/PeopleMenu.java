@@ -176,6 +176,9 @@ public class PeopleMenu extends CustomMenu {
             public int compare(Civilian civilian1, Civilian civilian2) {
                 OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
                 OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
+                if (offlinePlayer1.getName() == null || offlinePlayer2.getName() == null) {
+                    return 0;
+                }
                 try {
                     return offlinePlayer1.getName().compareTo(offlinePlayer2.getName());
                 } catch (Exception e) {
@@ -283,9 +286,12 @@ public class PeopleMenu extends CustomMenu {
             Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
             Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             Player player = Bukkit.getPlayer(civilian.getUuid());
+            if (player == null) {
+                return true;
+            }
             Boolean invite = (Boolean) MenuManager.getData(civilian.getUuid(), "invite");
             if (region != null) {
-                if (invite != null && invite) {
+                if (invite != null && invite && clickedItem.getItemMeta() != null) {
                     player.performCommand("cv add " + clickedItem.getItemMeta().getDisplayName() + " " + region.getId());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
@@ -294,7 +300,7 @@ public class PeopleMenu extends CustomMenu {
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else if (town != null) {
-                if (invite != null && invite) {
+                if (invite != null && invite && clickedItem.getItemMeta() != null) {
                     player.performCommand("cv invite " + clickedItem.getItemMeta().getDisplayName() + " " + town.getName());
                 } else {
                     HashMap<String, String> params = new HashMap<>();
@@ -303,6 +309,9 @@ public class PeopleMenu extends CustomMenu {
                     MenuManager.getInstance().openMenu(player, "member-action", params);
                 }
             } else {
+                if (uuid == null) {
+                    uuid = civilian.getUuid();
+                }
                 HashMap<String, String> params = new HashMap<>();
                 params.put("uuid", uuid.toString());
                 MenuManager.getInstance().openMenu(player, "player", params);
