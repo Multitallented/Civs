@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 public class RegionListMenuTest extends TestUtil {
@@ -21,6 +22,7 @@ public class RegionListMenuTest extends TestUtil {
     @Before
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
+        RegionManager.getInstance().reload();
         civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
     }
 
