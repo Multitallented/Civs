@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -180,8 +179,7 @@ public class Spell {
                 }
             }
         }
-
-        HashMap<String, ConfigurationSection> components = spellType.getComponents();
+        Map<String, ConfigurationSection> components = spellType.getComponents();
         HashSet<String> fulfilledRequirements = new HashSet<>();
         Collection<String> abilityKeys = components.keySet();
         List<String> sorted = new ArrayList<>();

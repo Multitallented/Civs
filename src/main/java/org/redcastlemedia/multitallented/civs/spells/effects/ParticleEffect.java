@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 public class ParticleEffect extends Effect {
     private int damage = 0;
@@ -15,24 +16,24 @@ public class ParticleEffect extends Effect {
     private String pattern;
     private Long duration;
 
-    public ParticleEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        this.particle = section.getString("particle", "reddust");
-        this.pattern = section.getString("pattern", "reddust");
-        this.duration = section.getLong("duration", 100);
+    public ParticleEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            this.particle = section.getString(SpellEffectConstants.PARTICLE, "reddust");
+            this.pattern = section.getString("pattern", "reddust");
+            this.duration = section.getLong(SpellConstants.DURATION, 100);
 
-        String tempTarget = section.getString("target", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            }
+        } else if (value instanceof String) {
+            this.particle = (String) value;
+            this.pattern = (String) value;
+            this.duration = 100L;
+            this.target = "self";
         }
-    }
-
-    public ParticleEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.particle = value;
-        this.pattern = value;
-        this.duration = 100L;
-        this.target = "self";
     }
 
     public boolean meetsRequirement() {
