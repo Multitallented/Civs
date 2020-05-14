@@ -309,6 +309,8 @@ hardship-too-high: "That action is not allowed. The hardship for $1 is too high.
 karma-gained: "Karma: +$1, $2 money gained"
 karma-lost: "Karma: -$1, $2 money lost"
 claims: "Claims"
+claim-desc: "Nations can claim land using the nation's power."
+claim-no-nation: "Unclaimed"
 cant-build-in-nation: "You can't build inside $1 claimed land."
 neutralized-claim: "$1's protections on this land have been removed."
 alliance-chunk-claimed: "This land has been claimed for the alliance $1"

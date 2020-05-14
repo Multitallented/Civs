@@ -221,6 +221,7 @@ alliance-claim-capture-seconds: 180
 claim-material: REDSTONE*64
 # How much power should an alliance have per land claim
 power-per-nation-claim: 1
+unclaimed-icon: "GRASS_BLOCK"
 nation-formed-at-town-level: 4
 nation-claim-effects:
   - "block_break"

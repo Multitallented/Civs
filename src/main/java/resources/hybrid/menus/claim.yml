@@ -7,17 +7,17 @@ name: Claim
 items:
   icon:
     index: 0
-    # icon: nation icon TODO
-    # name: nation name TODO
-    desc: claim-desc #TODO
+    # icon: nation icon
+    # name: nation name
+    desc: claim-desc
     actions: []
-  timer-ok:
+  timer-ok: # TODO
     index: 1
     icon: GREEN_WOOL
     name: claim-safe
     desc: claim-capture-desc
     actions: []
-  timer-bad:
+  timer-bad: # TODO
     index: 1
     icon: RED_WOOL
     name: claim-unsafe
@@ -26,7 +26,7 @@ items:
   claim-map:
     index: 7
     icon: GRASS_BLOCK
-    name: claim-map
+    name: claim-map # TODO
     actions:
       - menu:claim-map
   back:
@@ -34,7 +34,7 @@ items:
   capture-claim:
     index: 9
     icon: REDSTONE
-    name: capture-claim
-    desc: pay-capture-claim
+    name: capture-claim # TODO
+    desc: pay-capture-claim # TODO
     actions:
-      - capture-claim
+      - capture-claim # TODO

@@ -15,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
@@ -139,6 +138,15 @@ public class NationMenu extends CustomMenu {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "item-received"));
             }
+            return true;
+        } else if ("set-capitol".equals(actionString)) {
+            // TODO open select town menu
+            return true;
+        } else if ("leave-nation".equals(actionString)) {
+            // TODO open select town menu
+            return true;
+        } else if ("join-nation".equals(actionString)) {
+            // TODO open select town menu
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);

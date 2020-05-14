@@ -169,6 +169,8 @@ public class ConfigManager {
     double hardshipPerKill;
     @Getter
     boolean useHardshipSystem;
+    @Getter
+    String unclaimedIcon;
 
     @Getter
     String chatChannelFormat;
@@ -381,6 +383,7 @@ public class ConfigManager {
             if (nationClaimEffects.isEmpty()) {
                 nationClaimEffects = getDefaultAllianceEffects();
             }
+            unclaimedIcon = config.getString("unclaimed-icon", "GRASS_BLOCK");
             powerPerNationClaim = config.getDouble("power-per-nation-claim", 1);
             nationFormedAtTownLevel = config.getInt("nation-formed-at-town-level", 3);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
@@ -477,6 +480,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        unclaimedIcon = "GRASS_BLOCK";
         hardshipPerKill = 500;
         allowHuntNewPlayers = false;
         hardshipDepreciationPeriod = 7;
