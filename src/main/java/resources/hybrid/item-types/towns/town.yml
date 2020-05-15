@@ -59,6 +59,9 @@ effects:
 - block_explosion
 - control_override
 - anticamp:2.1500.600 #2 damage for 25 minutes costs $600
+- block_ghast
+- block_creeper
+- chest_use
 
 power: 770
 max-power: 14500

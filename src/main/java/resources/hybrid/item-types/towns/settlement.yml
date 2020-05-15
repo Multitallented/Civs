@@ -39,6 +39,9 @@ effects:
 - block_explosion
 - door_use
 - anticamp:4.1800.100 #4 damage for 30 minutes costs $100
+- block_ghast
+- block_creeper
+- chest_use
 
 power: 150
 max-power: 3800

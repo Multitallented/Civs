@@ -23,6 +23,7 @@
 #- block_explosion
 #- deny_mob_spawn
 #- potion:FAST_DIGGING.160
+#- chest_use
 #
 #power: 48
 #max-power: 48

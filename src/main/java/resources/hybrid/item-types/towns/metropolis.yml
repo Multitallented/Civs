@@ -56,6 +56,9 @@ effects:
 - control_override
 - potion:SATURATION.80
 - anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000
+- block_ghast
+- block_creeper
+- chest_use
 
 power: 4000
 max-power: 20700

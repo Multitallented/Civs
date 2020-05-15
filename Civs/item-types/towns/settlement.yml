@@ -36,6 +36,9 @@
 #- control_override
 #- block_explosion
 #- anticamp:4.1800.100 #4 damage for 30 minutes costs $100
+#- block_ghast
+#- block_creeper
+#- chest_use
 #
 #power: 300
 #max-power: 2040
