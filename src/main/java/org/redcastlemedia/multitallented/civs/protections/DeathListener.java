@@ -135,8 +135,10 @@ public class DeathListener implements Listener {
         combatTagDuration *= 1000;
         if (!(event instanceof EntityDamageByEntityEvent)) {
             if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+                if (!civilian.isInCombat()) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+                }
                 civilian.setLastDamage(System.currentTimeMillis());
             } else {
                 civilian.setLastDamager(null);
@@ -262,6 +264,8 @@ public class DeathListener implements Listener {
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         dyingCiv.setLastDamager(null);
         dyingCiv.setLastDamage(-1);
+
+        removePlayersFromCombat(dyingCiv);
 
         ArrayList<ItemStack> removeMe = new ArrayList<>();
         for (ItemStack is : event.getDrops()) {
@@ -604,6 +608,18 @@ public class DeathListener implements Listener {
                                 .replace("%amount", "" + pts));
             }
         }, interval);
+    }
+
+    private void removePlayersFromCombat(Civilian dyingCiv) {
+        for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+            if (civilian.getLastDamager() != null && civilian.getLastDamager().equals(dyingCiv.getUuid()) &&
+                    civilian.isInCombat()) {
+                civilian.setLastDamager(null);
+                civilian.setLastDamage(-1);
+                CivilianManager.getInstance().saveCivilian(civilian);
+            }
+        }
     }
 
     private Region findJailInTown(Player player, Location deathLocation, RegionManager regionManager, Region jail) {

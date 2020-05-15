@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,8 +28,8 @@ public class RepairEffect implements Listener {
     }
 
     private static final String KEY = "repair";
-    private HashSet<Material> getRequiredReagent(Material material) {
-        HashSet<Material> returnSet = new HashSet<>();
+    public static Set<Material> getRequiredReagent(Material material) {
+        Set<Material> returnSet = new HashSet<>();
         switch (material) {
             case WOODEN_HOE:
             case WOODEN_PICKAXE:
@@ -92,12 +93,15 @@ public class RepairEffect implements Listener {
             case FISHING_ROD:
                 returnSet.add(Material.STRING);
                 return returnSet;
+            case ELYTRA:
+                returnSet.add(Material.PHANTOM_MEMBRANE);
+                return returnSet;
             default:
                 return returnSet;
         }
     }
 
-    protected int getRepairCost(Material mat, double damage) {
+    public static int getRepairCost(Material mat, double damage) {
         int amt;
         switch (mat) {
             case WOODEN_SHOVEL:
@@ -220,7 +224,7 @@ public class RepairEffect implements Listener {
             event.setCancelled(true);
             return;
         }
-        HashSet<Material> reagents = getRequiredReagent(item.getType());
+        Set<Material> reagents = getRequiredReagent(item.getType());
         if (!reagents.isEmpty()) {
             boolean hasReagent = false;
             Material firstMat = reagents.iterator().next();

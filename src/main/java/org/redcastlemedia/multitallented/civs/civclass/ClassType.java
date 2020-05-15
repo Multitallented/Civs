@@ -3,12 +3,18 @@ package org.redcastlemedia.multitallented.civs.civclass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import lombok.Getter;
 
 public class ClassType extends CivItem {
     private final List<String> children;
     private final int manaPerSecond;
     private final int maxMana;
+    @Getter
+    private final Map<String, Integer> allowedActions = new HashMap<>();
 
     public ClassType(List<String> reqs,
                      String name,

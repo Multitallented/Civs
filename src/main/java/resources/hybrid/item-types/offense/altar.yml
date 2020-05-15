@@ -9,7 +9,8 @@ groups:
 level: 1
 
 build-reqs:
-- IRON_BLOCK*3
+- IRON_BLOCK*2
+- REDSTONE_BLOCK
 
 build-radius: 1
 
@@ -24,14 +25,57 @@ period: 3600 #1 hour
 upkeep:
   0:
     input:
-    - IRON_SWORD*1
+      - WOODEN_SWORD
     output:
-    - DIAMOND_SWORD*1
-    - DIAMOND_HELMET*1
-    - DIAMOND_CHESTPLATE*1
-    - DIAMOND_LEGGINGS*1
-    - DIAMOND_BOOTS*1
-    - BOW*1
-    - ARROW*32
-    payout: -300
+      - DIAMOND_SWORD
+      - GOLDEN_SWORD
+      - IRON_SWORD
+      - EXPERIENCE_BOTTLE*16
+    payout: -100
+  1:
+    input:
+      - STICK
+    output:
+      - BOW
+      - ARROW*64
+      - ARROW*64
+      - EXPERIENCE_BOTTLE*32
+    payout: -100
+  2:
+    input:
+      - WOODEN_AXE
+    output:
+      - DIAMOND_AXE
+      - GOLDEN_AXE
+      - IRON_AXE
+      - EXPERIENCE_BOTTLE*8
+    payout: -100
+  3:
+    input:
+      - KELP
+    output:
+      - TRIDENT
+      - EXPERIENCE_BOTTLE*16
+    payout: -100
+  4:
+    input:
+      - LEATHER
+    output:
+      - DIAMOND_HELMET
+      - DIAMOND_CHESTPLATE
+      - DIAMOND_LEGGINGS
+      - DIAMOND_BOOTS
+      - GOLDEN_HELMET
+      - GOLDEN_CHESTPLATE
+      - GOLDEN_LEGGINGS
+      - GOLDEN_BOOTS
+      - IRON_HELMET
+      - IRON_CHESTPLATE
+      - IRON_LEGGINGS
+      - IRON_BOOTS
+      - LEATHER_HELMET
+      - LEATHER_CHESTPLATE
+      - LEATHER_LEGGINGS
+      - LEATHER_BOOTS
+    payout: -200
 

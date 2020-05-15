@@ -13,11 +13,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -33,6 +35,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class Civilian {
 
+    @Getter
     private final UUID uuid;
     @Getter
     private final Map<CivItem, Integer> exp;
@@ -42,6 +45,7 @@ public class Civilian {
     private Map<String, Integer> stashItems;
     @Getter
     private final Map<String, CivState> states;
+    @Getter @Setter
     private Location respawnPoint = null;
     private long lastJail = 0;
     private int kills;
@@ -52,37 +56,36 @@ public class Civilian {
     private double points;
     private int karma;
     private int mana;
-    private int expOrbs;
+    @Getter @Setter
     private long lastDamage = -1;
+    @Getter @Setter
     private UUID lastDamager;
+    @Getter @Setter
     private Set<UUID> friends = new HashSet<>();
+    @Getter @Setter
     private List<Bounty> bounties = new ArrayList<>();
+    @Getter @Setter
     private long lastKarmaDepreciation;
-
     @Getter @Setter
     private double hardship;
-
     @Getter @Setter
     private int daysSinceLastHardshipDepreciation;
-
     @Getter @Setter
     private int tutorialIndex;
-
     @Getter @Setter
     private String tutorialPath;
-
     @Getter @Setter
     private int tutorialProgress;
-
     @Getter @Setter
     private boolean useAnnouncements;
-
     @Getter @Setter
     private ChatChannel chatChannel;
+    @Getter @Setter
+    private CivClass currentClass;
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
-                    double points, int karma, int expOrbs) {
+                    double points, int karma) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
@@ -96,13 +99,9 @@ public class Civilian {
         this.points = points;
         this.karma = karma;
         this.mana = 0;
-        this.expOrbs = expOrbs;
         this.chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
     public Set<CivClass> getCivClasses() {
         civClasses.remove(null);
         if (civClasses.isEmpty()) {
@@ -119,8 +118,6 @@ public class Civilian {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-    public Location getRespawnPoint() { return respawnPoint; }
-    public void setRespawnPoint(Location location) { this.respawnPoint = location; }
     public long getLastJail() { return lastJail; }
     public void refreshJail() { lastJail = System.currentTimeMillis(); }
     public int getKills() { return kills; }
@@ -138,40 +135,9 @@ public class Civilian {
     public int getKarma() { return karma; }
     public void setKarma(int karma) { this.karma = karma; }
     public int getMana() { return mana; }
-    public void setExpOrbs(int expOrbs) { this.expOrbs = expOrbs; }
     public void setMana(int mana) {
         this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
-        updateExpBar();
-    }
-    public long getLastDamage() {
-        return lastDamage;
-    }
-    public void setLastDamage(long lastDamage) {
-        this.lastDamage = lastDamage;
-    }
-    public UUID getLastDamager() {
-        return lastDamager;
-    }
-    public void setLastDamager(UUID lastDamager) {
-        this.lastDamager = lastDamager;
-    }
-    public List<Bounty> getBounties() {
-        return bounties;
-    }
-    public void setBounties(List<Bounty> bounties) {
-        this.bounties = bounties;
-    }
-    public Set<UUID> getFriends() {
-        return friends;
-    }
-    public void setFriends(Set<UUID> friends) {
-        this.friends = friends;
-    }
-    public long getLastKarmaDepreciation() {
-        return lastKarmaDepreciation;
-    }
-    public void setLastKarmaDepreciation(long lastKarmaDepreciation) {
-        this.lastKarmaDepreciation = lastKarmaDepreciation;
+        // TODO set mana bar
     }
 
     public boolean isInCombat() {
@@ -198,15 +164,6 @@ public class Civilian {
             return false;
         }
         return true;
-    }
-
-    private void updateExpBar() {
-        Player player = Bukkit.getPlayer(uuid);
-        if (mana > 99 || mana < 1) {
-            player.setTotalExperience(expOrbs);
-            return;
-        }
-        player.setTotalExperience(mana + 1288 + (mana > 33 ? 1 : 0) + (mana > 66 ? 1 : 0));
     }
 
     public int getLevel(CivItem civItem) {

@@ -158,12 +158,6 @@ public class CivilianManager {
                     exp.put(item, civConfig.getInt("exp." + key, 0));
                 }
             }
-            int expOrbs = -1;
-            if (Civs.getInstance() != null) {
-                if (player != null) {
-                    expOrbs = player.getTotalExperience();
-                }
-            }
 
             int tutorialIndex = civConfig.getInt("tutorial-index", -1);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
@@ -172,7 +166,7 @@ public class CivilianManager {
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
@@ -213,18 +207,11 @@ public class CivilianManager {
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
         Set<CivClass> classes = new HashSet<>();
         classes.add(defaultClass);
-        int expOrbs = -1;
-        if (Civs.getInstance() != null) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                expOrbs = player.getTotalExperience();
-            }
-        }
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
                 classes,
-                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(-1);

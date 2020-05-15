@@ -1,7 +1,13 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.enchantments.Enchantment;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +24,8 @@ public class CivClass {
     private int manaPerSecond;
     @Getter @Setter
     private int maxMana;
+    @Getter
+    private Map<Integer, String> selectedSpells = new HashMap<>();
 
     public CivClass(int id, UUID uuid, String type, int manaPerSecond, int maxMana) {
         this.id = id;
@@ -25,5 +33,15 @@ public class CivClass {
         this.type = type;
         this.manaPerSecond = manaPerSecond;
         this.maxMana = maxMana;
+    }
+
+    public int getMaxEnchantLevel(Enchantment enchantment) {
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
+        int level = classType.getAllowedActions().getOrDefault(enchantment.getKey().getKey(), -1);
+        for (String spellName : selectedSpells.values()) {
+            SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
+            level = Math.max(level, spellType.getAllowedActions().getOrDefault(enchantment.getKey().getKey(), -1));
+        }
+        return level;
     }
 }

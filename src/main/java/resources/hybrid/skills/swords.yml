@@ -1,0 +1,5 @@
+enabled: true
+icon: DIAMOND_SWORD
+exp-per-new-mob-killed: 100
+exp-repeat-decay: 5
+max-price-percent-reduction-altar-sword: 0.5

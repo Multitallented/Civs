@@ -1,0 +1,41 @@
+type: class
+name: default
+icon: PLAYER_HEAD
+is-in-shop: false
+level: 1
+groups: []
+
+children: []
+pre-reqs: []
+
+mana-title: mana
+mana-per-second: 1
+max-mana: 50
+
+allowed-actions:
+  - ITEM.BOW
+  - ITEM.DIAMOND_SWORD
+  - ITEM.DIAMOND_HEMLET
+  - ITEM.DIAMOND_CHESTPLATE
+  - ITEM.DIAMOND_LEGGINGS
+  - ITEM.DIAMOND_BOOTS
+  - ENCHANT.SHARPNESS.5
+  - ENCHANT.POWER.5
+  - ENCHANT.PROTECTION.4
+
+spells:
+  0:
+    - g:damage
+    - g:disable
+  1:
+    - g:debuff
+    - g:damage-over-time
+  2:
+    - g:buff
+    - g:chase
+    - g:heal
+  3:
+    - g:escape
+    - g:non-combat
+    - g:allowed-action
+

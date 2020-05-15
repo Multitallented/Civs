@@ -1,0 +1,33 @@
+icon: FERMENTED_SPIDER_EYE
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - item
+  - damage-over-time
+  - projectile
+  - non-combat
+  - allowed-action
+
+pre-reqs: []
+
+allowed-actions:
+  - POTION.POISON
+
+conditions:
+  cooldown: 10000
+  mana: 25
+
+components:
+  1:
+    costs:
+      cooldown: 10000
+      mana: 25
+
+    yield:
+      sound: BLOCK_BREWING_STAND_BREW
+      item:
+        mat: SPLASH_POTION
+        potion-type: POISON
+        potion-level: 1
+        potion-duration: 30000

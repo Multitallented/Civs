@@ -1,0 +1,55 @@
+type: class
+name: alchemist
+icon: SPLASH_POTION
+is-in-shop: false
+level: 1
+groups: []
+
+children: []
+pre-reqs:
+  - aquify:level=10|spoil:level=10|rust:level=10
+  - amplify:level=10|weakness:level=10
+  - skill:crafting=20
+  - skill:farming=10
+  - skill:exploring=15
+  - skill:axe=2
+
+mana-title: mana
+mana-per-second: 5
+max-mana: 100
+
+allowed-actions:
+  - ITEM.GOLD_AXE
+  - ITEM.DIAMOND_HEMLET
+  - ITEM.GOLD_CHESTPLATE
+  - ITEM.LEATHER_LEGGINGS
+  - ITEM.LEATHER_BOOTS
+  - ENCHANT.SHARPNESS.5
+  - ENCHANT.PROTECTION.3
+  - ENCHANT.FIRE_PROTECTION.4
+  - ENCHANT.FALL_PROTECTION.3
+
+spells:
+  0:
+    - aquify
+    - spoil
+    - rust
+  1:
+    - petrify
+    - heavy_drinker
+    - g:escape
+  2:
+    - amplify
+    - weakness
+  3:
+    - potion_poison
+    - potion_strength
+    - potion_harm
+    - potion_weakness
+  4:
+    - potion_regen
+    - potion_speed
+    - potion_heal
+    - potion_invis
+    - potion_fatigue
+

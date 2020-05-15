@@ -1,0 +1,5 @@
+enabled: true
+exp-per-new-biome: 500
+exp-for-nether: 1000
+exp-for-the-end: 3000
+max-price-percent-reduction-offense-buildings: 0.2

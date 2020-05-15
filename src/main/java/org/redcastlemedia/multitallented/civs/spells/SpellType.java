@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.CancelEffect;
@@ -32,7 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+
 public class SpellType extends CivItem {
+    @Getter
+    private final Map<String, Integer> allowedActions = new HashMap<>();
 
 
     public SpellType(List<String> reqs,
@@ -77,15 +80,10 @@ public class SpellType extends CivItem {
         }
     }
 
+    @Getter
     private final FileConfiguration config;
+    @Getter
     private final HashMap<String, ConfigurationSection> components;
-
-    public FileConfiguration getConfig() {
-        return config;
-    }
-    public Map<String, ConfigurationSection> getComponents() {
-        return components;
-    }
 
     public static Target getTarget(String type,
                                    String key,
