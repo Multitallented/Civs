@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: GOLD_ORE
+dynmap-marker: hammer
 name: Gold_Mine
 max: 1
 price: 350
@@ -18,7 +19,7 @@ towns:
 
 build-reqs:
 - IRON_BARS*2
-- IRON_ORE*4
+- GOLD_ORE*4
 - g:door*1
 - CHEST*2
 - FURNACE*2

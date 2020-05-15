@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 public class VelocityEffect extends Effect {
     private double multiplier = 0;
@@ -18,31 +19,34 @@ public class VelocityEffect extends Effect {
     private long exemptionTime = 60;
     private boolean pull = false;
 
-    public VelocityEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String configMultiplier = section.getString("multiplier", "1");
-        this.multiplier = (double) Math.round(Spell.getLevelAdjustedValue(configMultiplier, level, target, spell));
-        this.x = Spell.getLevelAdjustedValue(section.getString("x", "0"), level, target, spell);
-        this.y = Spell.getLevelAdjustedValue(section.getString("y", "1"), level, target, spell);
-        this.z = Spell.getLevelAdjustedValue(section.getString("z", "0"), level, target, spell);
-        this.pull = section.getBoolean("pull", false);
+    public VelocityEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            String configMultiplier = section.getString(SpellConstants.MULTIPLIER, "1");
+            if (configMultiplier != null) {
+                this.multiplier = (double) Math.round(Spell.getLevelAdjustedValue(configMultiplier, level, target, spell));
+            }
+            this.x = Spell.getLevelAdjustedValue(section.getString("x", "0"), level, target, spell);
+            this.y = Spell.getLevelAdjustedValue(section.getString("y", "1"), level, target, spell);
+            this.z = Spell.getLevelAdjustedValue(section.getString("z", "0"), level, target, spell);
+            this.pull = section.getBoolean("pull", false);
 
-        String tempTarget = section.getString("target", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
+            String tempTarget = section.getString("target", "not-a-string");
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = "self";
+            }
+        } else if (value instanceof String) {
+            this.multiplier = (int) Math.round(Spell.getLevelAdjustedValue((String) value, level, target, spell));
+            this.x = 0;
+            this.y = 1;
+            this.z = 0;
             this.target = "self";
+            this.exemptionTime = 60;
+            this.pull = false;
         }
-    }
-    public VelocityEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.multiplier = (int) Math.round(Spell.getLevelAdjustedValue(value, level, target, spell));
-        this.x = 0;
-        this.y = 1;
-        this.z = 0;
-        this.target = "self";
-        this.exemptionTime = 60;
-        this.pull = false;
     }
 
     public boolean meetsRequirement() {

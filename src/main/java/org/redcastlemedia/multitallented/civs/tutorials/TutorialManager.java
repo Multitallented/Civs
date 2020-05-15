@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -208,29 +209,39 @@ public class TutorialManager {
 
 
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        String rawMessage = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
-        if (rawMessage == null || rawMessage.isEmpty()) {
+        if (player == null || !player.isOnline()) {
             return;
         }
-        if (player != null && player.isOnline()) {
-            if (useHr) {
-                player.sendMessage("-----------------" + Civs.NAME + "-----------------");
-            }
-            List<String> messages = Util.parseColors(Util.textWrap(civilian, rawMessage));
-            for (String message : messages) {
-                player.sendMessage(Civs.getPrefix() + message);
-            }
-            if (useHr) {
-                player.sendMessage("--------------------------------------");
-            }
+        for (String message : getNextTutorialStepMessage(civilian, useHr)) {
+            player.sendMessage(Civs.getPrefix() + message);
         }
 
         String type = step.getType();
-        if ("choose".equals(type) && player != null) {
+        if ("choose".equals(type)) {
             player.closeInventory();
             MenuManager.getInstance().openMenu(player, "tutorial-choose-path", new HashMap<>());
         }
+    }
+
+    public List<String> getNextTutorialStepMessage(Civilian civilian, boolean useHr) {
+        List<String> messages = new ArrayList<>();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null || !player.isOnline()) {
+            return messages;
+        }
+        String rawMessage = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+        if (rawMessage == null || rawMessage.isEmpty()) {
+            return messages;
+        }
+        if (useHr) {
+            messages.add("-----------------" + Civs.NAME + "-----------------");
+        }
+        messages.addAll(Util.parseColors(Util.textWrap(civilian, rawMessage)));
+        if (useHr) {
+            messages.add("--------------------------------------");
+        }
+        return messages;
     }
 
 
@@ -249,7 +260,7 @@ public class TutorialManager {
         return tutorials.get(pathName);
     }
 
-    public List<CVItem> getPaths(Civilian civilian) {
+    public List<CVItem> getPathIcons(Civilian civilian) {
         ArrayList<CVItem> returnList = new ArrayList<>();
         if (civilian.getTutorialIndex() == -1) {
             return returnList;
@@ -279,15 +290,43 @@ public class TutorialManager {
             TutorialPath newPath = tutorials.get(pathKey);
             CVItem cvItem = newPath.getIcon();
             String name = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "tut-" + pathKey + "-name");
+                    "tut-" + pathKey + LocaleConstants.NAME_SUFFIX);
             cvItem.setDisplayName(name);
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(pathKey);
-            cvItem.setLore(lore);
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "tut-" + pathKey + LocaleConstants.DESC_SUFFIX)));
             returnList.add(cvItem);
         }
 
         return returnList;
+    }
+
+    public List<String> getPaths(Civilian civilian) {
+        ArrayList<String> returnList = new ArrayList<>();
+        if (civilian.getTutorialIndex() == -1) {
+            return returnList;
+        }
+        TutorialPath path = tutorials.get(civilian.getTutorialPath());
+        if (path == null) {
+            return returnList;
+        }
+        if (civilian.getTutorialIndex() >= path.getSteps().size()) {
+            civilian.setTutorialIndex(path.getSteps().size() - 1);
+        }
+        if (civilian.getTutorialIndex() < 0) {
+            civilian.setTutorialIndex(0);
+        }
+        TutorialStep step = path.getSteps().get(civilian.getTutorialIndex());
+        if (step == null) {
+            return returnList;
+        }
+        if (!"choose".equals(step.getType())) {
+            return returnList;
+        }
+        ArrayList<String> pathsList = step.getPaths();
+        if (pathsList == null) {
+            return returnList;
+        }
+        return pathsList;
     }
 
     public void printTutorial(HumanEntity player, Civilian civilian) {

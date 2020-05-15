@@ -4,7 +4,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 
 import java.util.HashMap;
 
@@ -18,6 +21,13 @@ public class MenuCommand implements CivCommand {
         }
         Player player = (Player) commandSender;
 
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.getTutorialIndex() == -1) {
+            TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, true);
+            civilian.setTutorialIndex(0);
+            CivilianManager.getInstance().saveCivilian(civilian);
+            return true;
+        }
         String menuName;
         HashMap<String, String> params = new HashMap<>();
         if (strings.length < 2) {
@@ -32,5 +42,10 @@ public class MenuCommand implements CivCommand {
         }
         MenuManager.getInstance().openMenu(player, menuName, params);
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
     }
 }

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: EMERALD_ORE
+dynmap-marker: scales
 name: Jade_Mine
 max: 1
 price: 600

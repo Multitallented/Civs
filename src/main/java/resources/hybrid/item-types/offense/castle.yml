@@ -1,6 +1,7 @@
 type: region
 icon: TNT
 shop-icon: STONE_BRICKS
+dynmap-marker: tower
 name: Castle
 max: 2
 price: 300

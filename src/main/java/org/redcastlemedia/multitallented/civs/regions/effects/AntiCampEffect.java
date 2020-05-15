@@ -10,6 +10,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -21,6 +23,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
 
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -54,15 +57,27 @@ public class AntiCampEffect implements Listener {
         lastDeath.put(uuid, lastDeaths);
     }
 
-    // TODO listen for town rename?
+    @EventHandler @SuppressWarnings("unused")
+    public void onTownRename(RenameTownEvent event) {
+        for (Map.Entry<UUID, String> entry : new HashMap<>(lastDeathTown).entrySet()) {
+            if (event.getOldName().equals(entry.getValue())) {
+                lastDeathTown.put(entry.getKey(), event.getNewName());
+            }
+        }
+        for (Map.Entry<String, Long> entry : new HashMap<>(lastPoison).entrySet()) {
+            if (event.getOldName().equals(entry.getKey())) {
+                lastPoison.put(event.getNewName(), entry.getValue());
+            }
+        }
+    }
 
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onPlayerQuit(PlayerQuitEvent event) {
         lastDeathTown.remove(event.getPlayer().getUniqueId());
         lastDeath.remove(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW) @SuppressWarnings("unused")
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -236,6 +251,11 @@ public class AntiCampEffect implements Listener {
 
                 p.damage(damage);
                 Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
+                if (!civilian.isInCombat()) {
+                    long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
+                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(p,
+                            "combat-tagged").replace("$1", "" + combatTagDuration));
+                }
                 civilian.setLastDamage(System.currentTimeMillis());
             }
         }

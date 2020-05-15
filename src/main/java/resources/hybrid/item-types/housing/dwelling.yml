@@ -1,8 +1,8 @@
 type: region
 icon: CHEST
 shop-icon: GREEN_BED
+dynmap-marker: default
 name: Dwelling
-max: 2
 price: 400
 groups:
 - housing

@@ -2,7 +2,7 @@ type: region
 name: Blindness_Trap
 shop-icon: SPLASH_POTION
 icon: STONE
-price: 200
+price: 100
 groups:
 - offense
 - trap

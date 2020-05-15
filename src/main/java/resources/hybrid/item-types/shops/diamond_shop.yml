@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: DIAMOND
+dynmap-marker: coins
 name: Diamond_Shop
 max: 1
 price: 400
@@ -33,8 +34,6 @@ effects:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 1
-  1:
     input:
     - DIAMOND*1 # 24 / day
     payout: 64          # $1536 / day

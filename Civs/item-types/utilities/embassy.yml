@@ -6,7 +6,7 @@
 #max: 1
 #groups:
 #- utility
-#level: 3
+#level: 2
 #
 #pre-reqs:
 #- member=settlement:hamlet:village:town:city:metropolis

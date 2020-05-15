@@ -2,7 +2,8 @@ type: region
 icon: CHEST
 shop-icon: TNT
 name: weapons_factory
-price: 750
+dynmap-marker: factory
+price: 500
 groups:
 - factory
 level: 3

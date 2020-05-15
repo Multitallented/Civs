@@ -117,4 +117,9 @@ public class SetMemberCommand implements CivCommand {
         }
         return true;
     }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
 }

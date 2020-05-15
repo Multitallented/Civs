@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -54,11 +54,26 @@ public class DeathListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (!ConfigManager.getInstance().isAllowTeleportInCombat()) {
+        boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION);
+        if (isAdmin) {
+            return;
+        }
+
+        if (!ConfigManager.getInstance().isAllowTeleportInCombat() && getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "in-combat"));
+                return;
+            }
+        }
+
+        if (PlayerTeleportEvent.TeleportCause.ENDER_PEARL.equals(event.getCause()) ||
+                PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT.equals(event.getCause())) {
+            Town fromTown = TownManager.getInstance().getTownAt(event.getFrom());
+            Town toTown = TownManager.getInstance().getTownAt(event.getTo());
+            if (isBlockedInTown(fromTown, player) || isBlockedInTown(toTown, player)) {
+                event.setCancelled(true);
                 return;
             }
         }
@@ -75,6 +90,28 @@ public class DeathListener implements Listener {
                 }
             }
         }
+    }
+
+    private boolean isBlockedInTown(Town town, Player player) {
+        if (town == null) {
+            return false;
+        }
+        if (town.getPeople().containsKey(player.getUniqueId())) {
+            return false;
+        }
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "no-tp-pearl-chorus"));
+        return true;
+    }
+
+    private double getDistanceSquared(Location location1, Location location2) {
+        if (location1 == null || location2 == null) {
+            return 0;
+        }
+        if (!location1.getWorld().equals(location2.getWorld())) {
+            return 999999;
+        }
+        return location1.distanceSquared(location2);
     }
 
     @EventHandler
@@ -94,10 +131,12 @@ public class DeathListener implements Listener {
             }
         }
 
-        long combatTagDuration = (long) ConfigManager.getInstance().getCombatTagDuration();
+        long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
         combatTagDuration *= 1000;
         if (!(event instanceof EntityDamageByEntityEvent)) {
             if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
                 civilian.setLastDamage(System.currentTimeMillis());
             } else {
                 civilian.setLastDamager(null);
@@ -110,10 +149,10 @@ public class DeathListener implements Listener {
         Player damager = null;
         if (entityDamageByEntityEvent.getDamager() instanceof Player) {
             damager = (Player) entityDamageByEntityEvent.getDamager();
-        } else if (entityDamageByEntityEvent.getDamager() instanceof Arrow) {
-            Arrow arrow = (Arrow) entityDamageByEntityEvent.getDamager();
-            if (arrow.getShooter() instanceof Player) {
-                damager = (Player) arrow.getShooter();
+        } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
+            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+            if (projectile.getShooter() instanceof Player) {
+                damager = (Player) projectile.getShooter();
             }
         }
         if (damager == null && civilian.getLastDamage() < 0) {
@@ -137,7 +176,16 @@ public class DeathListener implements Listener {
                     return;
                 }
             }
-
+            if (!damagerCiv.isInCombat()) {
+                damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(damager,
+                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+            }
+            damagerCiv.setLastDamage(System.currentTimeMillis());
+            damagerCiv.setLastDamager(player.getUniqueId());
+        }
+        if (!civilian.isInCombat()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
         }
         civilian.setLastDamage(System.currentTimeMillis());
         if (damager == null) {
@@ -172,9 +220,6 @@ public class DeathListener implements Listener {
         final Player player = event.getPlayer();
         final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Location respawnLocation = civilian.getRespawnPoint();
-        if (respawnLocation == null) {
-            return;
-        }
 
         if (ConfigManager.getInstance().getUseStarterBook()) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
@@ -184,6 +229,10 @@ public class DeathListener implements Listener {
                 }
             }, 5L);
         }
+        if (respawnLocation == null) {
+            return;
+        }
+
         event.setRespawnLocation(respawnLocation);
         civilian.setRespawnPoint(null);
         CivilianManager.getInstance().saveCivilian(civilian);
@@ -318,12 +367,19 @@ public class DeathListener implements Listener {
         int powerPerKill = ConfigManager.getInstance().getPowerPerKill();
         if (powerPerKill > 0 && !damagerCiv.isFriend(dyingCiv) &&
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
-            for (Town town : TownManager.getInstance().getTowns()) {
+            for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
                 if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
                         town.getPeople().get(dyingCiv.getUuid()).contains("ally")) {
                     continue;
                 }
                 TownManager.getInstance().setTownPower(town, town.getPower() - powerPerKill);
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                double karmaChange = (double) powerPerKill / (double) town.getMaxPower() * townType.getPrice();
+                CivilianManager.getInstance().exchangeHardship(town, damagerCiv.getUuid(), karmaChange);
+            }
+            double hardshipAmount = ConfigManager.getInstance().getHardshipPerKill();
+            if (hardshipAmount > 0) {
+                CivilianManager.getInstance().exchangeHardship(damager.getUniqueId(), player.getUniqueId(), hardshipAmount);
             }
         }
 
@@ -551,17 +607,17 @@ public class DeathListener implements Listener {
     }
 
     private Region findJailInTown(Player player, Location deathLocation, RegionManager regionManager, Region jail) {
-        if (jail != null) {
+        if (jail != null && jail.getEffects().containsKey("jail")) {
             return jail;
         }
         Town town = TownManager.getInstance().getTownAt(deathLocation);
         if (town == null) {
-            return jail;
+            return null;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         if (town.getPeople().containsKey(player.getUniqueId())) {
-            return jail;
+            return null;
         }
 
         for (Region r : regionManager.getContainingRegions(town.getLocation(), townType.getBuildRadius())) {

@@ -2,7 +2,9 @@ type: region
 icon: CHEST
 shop-icon: TNT
 name: Siege_Machine3
+dynmap-marker: bomb
 is-in-shop: false
+price: 500
 groups:
 - offense
 - siegemachinegroup
@@ -18,14 +20,13 @@ build-radius: 3 #7x7x7
 effects:
 - block_build
 - block_break
-- drain_power:2 # 960 / day
-- chest_use
+- drain_power:10 # 400 / hour
 
 towns:
 - outpost
 - keep
 
-period: 180 # 3 minutes
+period: 90 # 1.5 minutes
 upkeep:
   0:
     input:
@@ -33,6 +34,7 @@ upkeep:
     - REDSTONE*1
     - COAL*1
     output:
-    - GRAVEL*1%70,TNT*1%30
-    - DIRT*1%40,COAL*1%30,REDSTONE*1%30
+    - GRAVEL*1%50,TNT*1%50
+    - COAL*1%50,REDSTONE*1%50
+    payout: 4
 

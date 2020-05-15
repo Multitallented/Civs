@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COBBLESTONE
+dynmap-marker: minecart
 name: Cobble_Quarry
 price: 40
 groups:

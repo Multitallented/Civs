@@ -8,6 +8,7 @@ import org.bukkit.entity.Projectile;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
@@ -16,30 +17,30 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CancelEffect extends Effect {
-    private String target = "self";
-    private String abilityName = "self";
-    private boolean silent = false;
-    private List<String> whitelist = new ArrayList<String>();
-    private List<String> blacklist = new ArrayList<String>();
+    private String target;
+    private String abilityName;
+    private boolean silent;
+    private List<String> whitelist;
+    private List<String> blacklist;
     private ConfigurationSection config = null;
 
-    public CancelEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        this.silent = section.getBoolean("silent", false);
-        this.target = section.getString("target", "self");
-        this.abilityName = section.getString("ability", "self");
-        this.whitelist = section.getStringList("whitelist");
-        this.blacklist = section.getStringList("blacklist");
-        this.config = section;
-    }
-
-    public CancelEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.abilityName = value;
-        this.target = "self";
-        this.whitelist = new ArrayList<>();
-        this.blacklist = new ArrayList<>();
-        this.silent = false;
+    public CancelEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            this.silent = section.getBoolean(SpellConstants.SILENT, false);
+            this.target = section.getString(SpellConstants.TARGET, "self");
+            this.abilityName = section.getString(SpellConstants.ABILITY, "self");
+            this.whitelist = section.getStringList(SpellConstants.WHITELIST);
+            this.blacklist = section.getStringList(SpellConstants.BLACKLIST);
+            this.config = section;
+        } else if (value instanceof String) {
+            this.abilityName = (String) value;
+            this.target = "self";
+            this.whitelist = new ArrayList<>();
+            this.blacklist = new ArrayList<>();
+            this.silent = false;
+        }
     }
 
     public boolean meetsRequirement() {

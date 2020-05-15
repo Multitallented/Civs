@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -43,6 +42,8 @@ public class LocaleManager {
     @Deprecated
     public String getTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
+        String[] variables = getVariables(key);
+        key = key.split("\\{")[0];
         if (!languageMap.containsKey(language) ||
                 !languageMap.get(language).containsKey(key) ||
                 languageMap.get(language).get(key).isEmpty()) {
@@ -56,9 +57,27 @@ public class LocaleManager {
                 Civs.logger.log(Level.SEVERE, "Unable to find any translation for {0}", key);
                 return "";
             }
-            return Util.parseColors(textPrefix + translation);
+            return Util.parseColors(textPrefix + replaceVariables(translation, variables));
         }
-        return Util.parseColors(textPrefix + languageMap.get(language).get(key));
+        return Util.parseColors(textPrefix + replaceVariables(languageMap.get(language).get(key), variables));
+    }
+
+    private String[] getVariables(String key) {
+        if (!key.contains("{")) {
+            return new String[0];
+        }
+        String[] keySplit = key.split("\\{");
+        if (keySplit.length < 2) {
+            return new String[0];
+        }
+        return key.split("\\{")[1].split(",,");
+    }
+
+    private String replaceVariables(String translation, String[] vars) {
+        for (int i = 0; i < vars.length; i++) {
+            translation = translation.replace("$" + (i+1), vars[i]);
+        }
+        return translation;
     }
 
     @Deprecated
@@ -80,6 +99,11 @@ public class LocaleManager {
             return input;
         }
         return PlaceholderAPI.setPlaceholders(player, input);
+    }
+
+    public void reload() {
+        languageMap.clear();
+        loadAllConfigs();
     }
 
     private void loadAllConfigs() {

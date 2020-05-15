@@ -79,7 +79,8 @@ public class RegionMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         Map<UUID, String> regionPeople = region.getPeople();
-        boolean isOwner = region.getRawPeople().containsKey(civilian.getUuid()) &&
+        boolean isMember = region.getRawPeople().containsKey(civilian.getUuid());
+        boolean isOwner = isMember &&
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
@@ -87,7 +88,7 @@ public class RegionMenu extends CustomMenu {
                 regionPeople.get(civilian.getUuid()).contains(Constants.OWNER));
         int personCount = 0;
         for (String role : region.getRawPeople().values()) {
-            if (role.contains(Constants.OWNER) || role.contains("member")) {
+            if (role.contains(Constants.OWNER) || role.contains(Constants.MEMBER)) {
                 personCount++;
             }
         }
@@ -109,10 +110,12 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("upkeep-not-working".equals(menuIcon.getKey()) &&
-                region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+                region.getFailingUpkeeps().size() < regionType.getUpkeeps().size() &&
+                region.getMissingBlocks().isEmpty()) {
             return new ItemStack(Material.AIR);
         } else if ("upkeep-working".equals(menuIcon.getKey()) &&
-                region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size() ||
+                !region.getMissingBlocks().isEmpty())) {
             return new ItemStack(Material.AIR);
         } else if ("destroy".equals(menuIcon.getKey())) {
             boolean isIndestrucible = region.getEffects().containsKey("indestructible");
@@ -121,7 +124,7 @@ public class RegionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {
-            if (!viewMembers) {
+            if (!viewMembers && !isMember) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("add-person".equals(menuIcon.getKey())) {
@@ -219,6 +222,18 @@ public class RegionMenu extends CustomMenu {
             if (region.isWarehouseEnabled() || !hasUpkeepsOrInput || !isOwner) {
                 return new ItemStack(Material.AIR);
             }
+        } else if ("missing-blocks".equals(menuIcon.getKey())) {
+            if (region.getMissingBlocks().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            String localizedRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    region.getType() + LocaleConstants.NAME_SUFFIX);
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player, menuIcon.getName())
+                    .replace("$1", localizedRegionName));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

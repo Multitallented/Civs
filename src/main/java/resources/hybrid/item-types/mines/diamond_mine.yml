@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: DIAMOND_ORE
+dynmap-marker: diamond
 name: Diamond_Mine
 max: 1
 price: 2000

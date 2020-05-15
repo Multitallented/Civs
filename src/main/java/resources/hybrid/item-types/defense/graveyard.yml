@@ -1,5 +1,6 @@
 type: region
 icon: STONE
+dynmap-marker: skull
 name: Graveyard
 max: 1
 price: 2000

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 name: Warehouse
+dynmap-marker: chest
 price: 1000
 groups:
 - utility
@@ -38,5 +39,5 @@ effects:
 period: 900 #15 minutes
 upkeep:
   0:
-    power-output: 2
+    power-output: 4
 

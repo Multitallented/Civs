@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PUMPKIN
+dynmap-marker: cutlery
 name: Pumpkin_Farm
 max: 1
 price: 300
@@ -33,7 +34,16 @@ period: 600
 upkeep:
   0:
     reagents:
+    - STONE_HOE
+    output:
+    - PUMPKIN*4
+  1:
+    reagents:
     - IRON_HOE
     output:
+    - PUMPKIN*8
+  2:
+    reagents:
+    - DIAMOND_HOE
+    output:
     - PUMPKIN*16
-

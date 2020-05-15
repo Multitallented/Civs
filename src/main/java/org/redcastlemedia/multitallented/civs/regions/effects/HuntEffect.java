@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,31 +15,49 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @CivsSingleton
 public class HuntEffect implements Listener, CreateRegionListener {
     public static final String KEY = "hunt";
 
+    private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new HuntEffect(), Civs.getInstance());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        cooldowns.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION || !(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        long cooldown = 20000;
+        if (cooldowns.containsKey(player.getUniqueId()) &&
+                cooldowns.get(player.getUniqueId()) + cooldown > System.currentTimeMillis()) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
@@ -45,14 +67,16 @@ public class HuntEffect implements Listener, CreateRegionListener {
         }
         Location l = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
 
-        Player targetPlayer = hasValidSign(l, rt, player.getUniqueId());
+        Player targetPlayer = hasValidSign(l, player.getUniqueId());
 
         return targetPlayer != null;
     }
 
-    private Player hasValidSign(Location l, RegionType rt, UUID uuid) {
+    private Player hasValidSign(Location l, UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        if (player == null) {
+            return null;
+        }
         Block block = l.getBlock().getRelative(BlockFace.UP);
         BlockState state = block.getState();
         if (!(state instanceof Sign)) {
@@ -66,20 +90,20 @@ public class HuntEffect implements Listener, CreateRegionListener {
             targetPlayer = Bukkit.getPlayer(sign.getLine(0));
         } catch (Exception e) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "invalid-name"));
             return null;
         }
         if (targetPlayer == null || !targetPlayer.isOnline()) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "invalid-name"));
             return null;
         }
 
         if (!targetPlayer.getWorld().equals(player.getWorld())) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "target-not-in-world"));
             return null;
         }
@@ -106,9 +130,45 @@ public class HuntEffect implements Listener, CreateRegionListener {
         }
 
         Player player = event.getPlayer();
+
+        if (cooldowns.containsKey(player.getUniqueId())) {
+            long cooldown = 30;
+            String cooldownString = r.getEffects().get(KEY);
+            if (cooldownString != null && !cooldownString.isEmpty()) {
+                cooldown = Long.parseLong(cooldownString);
+            }
+            cooldown = cooldown * 1000;
+            if (cooldowns.get(player.getUniqueId()) + cooldown > System.currentTimeMillis()) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "cooldown").replace("$1", (cooldown / 1000) + "s"));
+                return;
+            } else {
+                cooldowns.remove(player.getUniqueId());
+            }
+        }
+
+
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-        Player targetPlayer = hasValidSign(r.getLocation(), regionType, player.getUniqueId());
+        Player targetPlayer = hasValidSign(r.getLocation(), player.getUniqueId());
         if (targetPlayer == null) {
+            return;
+        }
+        if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+                TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId()).isEmpty()) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-hunting-new-players"));
+            return;
+        }
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Civilian targetCiv = CivilianManager.getInstance().getCivilian(targetPlayer.getUniqueId());
+        double hardhipThreshold = 20000;
+        if (Civs.econ != null) {
+            hardhipThreshold = Civs.econ.getBalance(targetPlayer);
+        }
+        if ( targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "hardship-too-high").replace("$1", targetPlayer.getDisplayName()));
             return;
         }
 
@@ -125,6 +185,11 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (teleportTarget != null) {
             player.teleport(teleportTarget);
             messageNearbyPlayers(player, "hunting-players", null);
+            double karmaChange = ConfigManager.getInstance().getHuntKarma();
+            if (karmaChange != 0) {
+                CivilianManager.getInstance().exchangeHardship(player.getUniqueId(), targetPlayer.getUniqueId(), karmaChange);
+            }
+            cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         }
     }
 
@@ -164,7 +229,9 @@ public class HuntEffect implements Listener, CreateRegionListener {
             return null;
         }
 
-
-        return targetBlock.getLocation();
+        return new Location(targetBlock.getWorld(),
+                targetBlock.getX(),
+                (double) targetBlock.getY() + 0.5,
+                targetBlock.getZ());
     }
 }

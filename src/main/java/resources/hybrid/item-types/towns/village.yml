@@ -16,7 +16,6 @@ build-reqs:
 - quarry:1
 - farm:1
 - utility:2
-- allhousing:8
 
 limits:
 - allshack:6
@@ -47,6 +46,7 @@ build-radius: 80
 build-radius-y: 500
 effects:
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire
@@ -55,6 +55,6 @@ effects:
 - control_override
 - anticamp:2.1500.400 #2 damage for 25 minutes costs $400
 
-power: 1000
-max-power: 3120
+power: 550
+max-power: 9500
 

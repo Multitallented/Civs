@@ -142,7 +142,7 @@ public class RegionTypeListMenu extends CustomMenu {
                 }
                 action = new StringBuilder(action.substring(0, action.length() - 1));
                 actionList.add(action.toString());
-                actions.get(civilian.getUuid()).put(itemStack, actionList);
+                putActionList(civilian, itemStack, actionList);
             } else if (cvItem.getDisplayName().startsWith("f:")) {
                 String folderName = cvItem.getDisplayName().replace("f:", "");
                 cvItem.setDisplayName(folderName);
@@ -156,14 +156,14 @@ public class RegionTypeListMenu extends CustomMenu {
                 }
                 action = new StringBuilder(action.substring(0, action.length() - 1));
                 actionList.add(action.toString());
-                actions.get(civilian.getUuid()).put(itemStack, actionList);
+                putActionList(civilian, itemStack, actionList);
             } else {
                 itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
-                if (actions.get(civilian.getUuid()).get(itemStack).contains("view-type")) {
-                    int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-type");
-                    actions.get(civilian.getUuid()).get(itemStack).set(index,
-                            "menu:region-type?regionType=" + regionTypeNames.get(startIndex + count));
+                List<String> actionList = getActions(civilian, itemStack);
+                if (actionList.contains("view-type")) {
+                    int index = actionList.indexOf("view-type");
+                    actionList.set(index, "menu:region-type?regionType=" + regionTypeNames.get(startIndex + count));
                 }
             }
             return itemStack;

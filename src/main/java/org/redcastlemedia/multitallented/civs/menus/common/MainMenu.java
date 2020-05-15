@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -33,11 +34,9 @@ public class MainMenu extends CustomMenu {
     @Override
     public String beforeOpenMenu(Civilian civilian) {
         MenuManager.clearHistory(civilian.getUuid());
+        MenuManager.clearData(civilian.getUuid());
         StructureUtil.removeBoundingBox(civilian.getUuid());
-        if (civilian.isAskForTutorial() && ConfigManager.getInstance().isUseTutorial()) {
-            return "confirmation?type=tutorial";
-        }
-        if (!TutorialManager.getInstance().getPaths(civilian).isEmpty()) {
+        if (!TutorialManager.getInstance().getPathIcons(civilian).isEmpty()) {
             return "tutorial-choose-path";
         }
         return null;
@@ -55,6 +54,7 @@ public class MainMenu extends CustomMenu {
         if (town != null) {
             data.put("town", town);
         }
+        data.put("uuid", civilian.getUuid().toString());
         return data;
     }
 
@@ -102,6 +102,11 @@ public class MainMenu extends CustomMenu {
             if (!ConfigManager.getInstance().isUseGuide()) {
                 return new ItemStack(Material.AIR);
             }
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            cvItem.setLore(TutorialManager.getInstance().getNextTutorialStepMessage(civilian, false));
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if (menuIcon.getKey().equals("shop")) {
             if (!player.isOp() &&
                     (Civs.perm == null || !Civs.perm.has(player, "civs.shop"))) {
@@ -114,6 +119,54 @@ public class MainMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if (menuIcon.getKey().equals("your-towns")) {
+            boolean isInATown = false;
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                    isInATown = true;
+                    break;
+                }
+            }
+            if (!isInATown) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if (menuIcon.getKey().equals("alliances")) {
+            if (AllianceManager.getInstance().getAllAlliances().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if (menuIcon.getKey().equals("regions-for-sale")) {
+            boolean hasRegionsForSale = false;
+            for (Region r : RegionManager.getInstance().getAllRegions()) {
+                if (r.getForSale() != -1 && (!r.getRawPeople().containsKey(civilian.getUuid()) ||
+                        r.getRawPeople().get(civilian.getUuid()).contains("ally"))) {
+                    hasRegionsForSale = true;
+                    break;
+                }
+            }
+            if (!hasRegionsForSale) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if (menuIcon.getKey().equals("ports")) {
+            boolean hasPort = false;
+            for (Region region : RegionManager.getInstance().getAllRegions()) {
+                if (!region.getEffects().containsKey("port")) {
+                    continue;
+                }
+                if (!region.getPeople().containsKey(civilian.getUuid())) {
+                    continue;
+                }
+                //Don't show private ports
+                if (region.getEffects().get("port") != null &&
+                        !region.getPeople().get(civilian.getUuid()).contains("member") &&
+                        !region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                    continue;
+                }
+                hasPort = true;
+                break;
+            }
+            if (!hasPort) {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

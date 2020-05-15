@@ -140,7 +140,7 @@ public final class AnnouncementUtil {
             }
 
             // check the guide
-            if (!civilian.isAskForTutorial() && civilian.getTutorialIndex() != -1 &&
+            if (civilian.getTutorialIndex() != -1 &&
                     civilian.getTutorialPath().equals("default") &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-achievement")) {
                 keys.add("ann-achievement");
@@ -163,7 +163,7 @@ public final class AnnouncementUtil {
                 continue;
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
+            if (regionType.getUpkeeps().isEmpty() || region.getFailingUpkeeps().size() < regionType.getUpkeeps().size()) {
                 continue;
             }
             keys.add("ann-missing-input-" + region.getId());

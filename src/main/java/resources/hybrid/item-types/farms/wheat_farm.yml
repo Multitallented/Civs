@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: WHEAT
+dynmap-marker: cutlery
 name: Wheat_Farm
 max: 1
 price: 100

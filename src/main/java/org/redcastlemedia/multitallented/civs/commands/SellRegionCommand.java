@@ -58,6 +58,11 @@ public class SellRegionCommand implements CivCommand {
         return true;
     }
 
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
+    }
+
     private void setRegionNotForSale(Player player, Region region, double price) {
         region.setForSale(price);
         RegionManager.getInstance().saveRegion(region);

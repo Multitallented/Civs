@@ -15,7 +15,6 @@ build-reqs:
 - council_room:1
 - quarry:1
 - utility:1
-- allhousing:3
 
 limits:
 - allshack:6
@@ -28,6 +27,8 @@ limits:
 - smithy:1
 - purifier:1
 - church:1
+- barracks:1
+- inn:1
 - warehouse:1
 - embassy:2
 - jammer_trap:0
@@ -47,8 +48,9 @@ effects:
 - deny_mob_spawn
 - block_explosion
 - control_override
+- door_use
 - anticamp:3.1800.200 #3 damage for 30 minutes costs $200
 
-power: 600
-max-power: 2460
+power: 250
+max-power: 7600
 

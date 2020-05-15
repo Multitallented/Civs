@@ -6,23 +6,12 @@
 #groups:
 #- raw
 #- quarry
-#level: 2
-#
-#pre-reqs:
-#- member=settlement:hamlet:village:town:city:metropolis
+#level: 1
 #
 #build-reqs:
 #- DIRT*24,GRASS_BLOCK*24,COARSE_DIRT*24,PODZOL*24
 #- FURNACE*2
 #- CHEST*2
-#
-#towns:
-#- settlement
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
 #
 #build-radius: 3
 #

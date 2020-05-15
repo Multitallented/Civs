@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: JUNGLE_LOG
+dynmap-marker: tree
 name: Jungle_Lumberyard
 max: 2
 price: 100

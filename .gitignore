@@ -65,3 +65,4 @@ debugger.xml
 editor.xml
 vcs.xml
 ide.general.xml
+/dependency-reduced-pom.xml

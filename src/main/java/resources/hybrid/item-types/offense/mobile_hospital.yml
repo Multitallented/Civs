@@ -1,6 +1,7 @@
 type: region
 icon: WHITE_WOOL
 name: Mobile_Hospital
+dynmap-marker: heart
 max: 1
 price: 200
 groups:

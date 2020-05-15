@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -171,12 +172,13 @@ public class CivilianManager {
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs,
-                    civConfig.getBoolean("ask-for-tutorial", true));
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
+            civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
+            civilian.setHardship(civConfig.getDouble("hardship", 0));
             String stringRespawn = civConfig.getString("respawn");
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
@@ -222,12 +224,12 @@ public class CivilianManager {
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
                 classes,
-                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs, true);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
-        civilian.setTutorialIndex(0);
+        civilian.setTutorialIndex(-1);
         civilian.setUseAnnouncements(true);
-        civilian.setTutorialProgress(-1);
+        civilian.setTutorialProgress(0);
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
@@ -252,9 +254,8 @@ public class CivilianManager {
             civConfig.load(civilianFile);
 
             civConfig.set("locale", civilian.getLocale());
-            //TODO save other civilian file properties
-
-            civConfig.set("ask-for-tutorial", civilian.isAskForTutorial());
+            civConfig.set("hardship", civilian.getHardship());
+            civConfig.set("days-since-hardship-depreciation", civilian.getDaysSinceLastHardshipDepreciation());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
             civConfig.set("tutorial-progress", civilian.getTutorialProgress());
@@ -336,5 +337,42 @@ public class CivilianManager {
             return;
         }
         playerFile.delete();
+    }
+
+    public void exchangeHardship(UUID attacker, UUID defender, double amount) {
+        if (attacker != null) {
+            Civilian attackerCiv = CivilianManager.getInstance().getCivilian(attacker);
+            attackerCiv.setHardship(attackerCiv.getHardship() - amount);
+            CivilianManager.getInstance().saveCivilian(attackerCiv);
+        }
+
+        if (defender != null) {
+            Civilian defenderCiv = CivilianManager.getInstance().getCivilian(defender);
+
+            if (ConfigManager.getInstance().isUseHardshipSystem() &&
+                    Civs.econ != null && defenderCiv.getHardship() > 0) {
+                if (attacker != null) {
+                    Civs.econ.withdrawPlayer(Bukkit.getOfflinePlayer(attacker), amount);
+                }
+                Civs.econ.depositPlayer(Bukkit.getOfflinePlayer(defender), amount);
+            }
+
+            defenderCiv.setHardship(defenderCiv.getHardship() + amount);
+            CivilianManager.getInstance().saveCivilian(defenderCiv);
+        }
+    }
+
+    public void exchangeHardship(Region region, UUID attacker, double amount) {
+        Set<UUID> defenders = region.getOwners();
+        for (UUID defender : defenders) {
+            exchangeHardship(attacker, defender, amount / (double) defenders.size());
+        }
+    }
+
+    public void exchangeHardship(Town town, UUID attacker, double amount) {
+        Set<UUID> defenders = town.getRawPeople().keySet();
+        for (UUID defender : defenders) {
+            exchangeHardship(attacker, defender, amount / (double) defenders.size());
+        }
     }
 }

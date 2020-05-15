@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: RED_SAND
+dynmap-marker: minecart
 name: Red_Sand_Pit
 price: 80
 groups:
@@ -36,11 +37,3 @@ upkeep:
     - DIAMOND_SHOVEL
     output:
     - RED_SAND*32
-
-biomes:
-- BADLANDS
-- BADLANDS_PLATEAU
-- MODIFIED_BADLANDS_PLATEAU
-- WOODED_BADLANDS_PLATEAU
-- MODIFIED_WOODED_BADLANDS_PLATEAU
-- ERODED_BADLANDS

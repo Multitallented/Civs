@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: SHEEP_SPAWN_EGG
+dynmap-marker: dog
 name: Sheep_Farm
 max: 1
 price: 10

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COW_SPAWN_EGG
+dynmap-marker: dog
 name: Ranch
 max: 1
 price: 10

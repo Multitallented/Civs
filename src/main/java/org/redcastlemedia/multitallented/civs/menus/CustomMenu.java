@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.util.*;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,10 +25,13 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+
 public abstract class CustomMenu {
     protected HashSet<MenuIcon> itemIndexes;
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
-    protected HashMap<UUID, HashMap<ItemStack, List<String>>> actions = new HashMap<>();
+    protected HashMap<UUID, HashMap<String, List<String>>> actions = new HashMap<>();
     protected HashMap<UUID, CycleGUI> cycleItems = new HashMap<>();
     protected int size;
     private String name;
@@ -77,8 +81,11 @@ public abstract class CustomMenu {
         return inventory;
     }
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if (!menuIcon.getPerm().isEmpty()) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
             if (!player.isOp() && (Civs.perm == null || !Civs.perm.has(player, menuIcon.getPerm()))) {
                 return new ItemStack(Material.AIR);
             }
@@ -99,7 +106,7 @@ public abstract class CustomMenu {
             }
         }
 
-        ItemStack itemStack = menuIcon.createCVItem(civilian.getLocale(), count).createItemStack();
+        ItemStack itemStack = menuIcon.createCVItem(player, count).createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
         return itemStack;
     }
@@ -115,7 +122,18 @@ public abstract class CustomMenu {
                 currentActions.add(newAction);
             }
         }
-        actions.get(civilian.getUuid()).put(itemStack, currentActions);
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+    }
+
+    protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), actionList);
+    }
+
+    protected List<String> getActions(Civilian civilian, ItemStack itemStack) {
+        if (actions.containsKey(civilian.getUuid())) {
+            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName());
+        }
+        return new ArrayList<>();
     }
 
     public void addCycleItem(UUID uuid, int index, ItemStack is) {
@@ -159,7 +177,7 @@ public abstract class CustomMenu {
             }
             return;
         }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem);
+        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem.getType().name() + ":" + clickedItem.getItemMeta().getDisplayName());
         if (actionStrings == null || actionStrings.isEmpty()) {
             if (!event.isCancelled()) {
                 event.setCancelled(true);
@@ -168,7 +186,7 @@ public abstract class CustomMenu {
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
-            shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) | shouldCancel;
+            shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) || shouldCancel;
         }
         if (!event.isCancelled()) {
             event.setCancelled(true);
@@ -209,11 +227,20 @@ public abstract class CustomMenu {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(civilian.getUuid());
             PermissionUtil.applyPermission(offlinePlayer, actionString
                     .replace("permission:", ""));
+        } else if (actionString.startsWith("typing:")) {
+            actionString = replaceVariables(civilian, itemStack, actionString);
+            actionString = actionString.replace("typing:", "");
+            String[] actionStringSplit = actionString.split(":");
+            String linkText = LocaleManager.getInstance().getTranslationWithPlaceholders(player, actionStringSplit[0]);
+            String typingText = LocaleManager.getInstance().getTranslationWithPlaceholders(player, actionStringSplit[1]);
+            TextComponent textComponent = new TextComponent(linkText);
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, typingText));
+            player.spigot().sendMessage(textComponent);
         }
         return true;
     }
 
-    private String stringifyData(String key, Object data) {
+    public static String stringifyData(String key, Object data) {
         if (key.equals("town")) {
             Town town = (Town) data;
             return town.getName();
@@ -229,7 +256,7 @@ public abstract class CustomMenu {
         } else if (key.equals("townType")) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
-        } else if (key.equals("uuid")) {
+        } else if (key.equals("uuid") && data instanceof UUID) {
             return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;
@@ -238,11 +265,15 @@ public abstract class CustomMenu {
         }
     }
 
-    private String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
+    public static String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
         if (clickedItem.getItemMeta() != null) {
             actionString = actionString.replaceAll("\\$itemName\\$",
                     clickedItem.getItemMeta().getDisplayName());
         }
+        return replaceVariables(civilian, actionString);
+    }
+
+    public static String replaceVariables(Civilian civilian, String actionString) {
         Map<String, Object> data = MenuManager.getAllData(civilian.getUuid());
         for (String key : data.keySet()) {
             if (!actionString.contains("$" + key + "$")) {

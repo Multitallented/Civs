@@ -1,10 +1,13 @@
-default-config-set: empty
+default-config-set: hybrid
 
 black-list-worlds:
-- Hub
+  - Hub
 
 default-language: en
 line-break-length: 40
+line-break-length-per-language:
+  en: 40
+  zh: 25
 
 allow-civ-item-sharing: false
 
@@ -15,7 +18,7 @@ town-rings-crumble-to-gravel: true
 
 ##how long a town sits at zero before protection ends
 ##if destroy towns at zero is on, then this does nothing
-town-grace-period: 43200 #12 hours
+town-grace-period: 0 #no grace period
 
 ##ignore other plugins when checking if an explosion is cancelled
 ##before reducing power
@@ -90,18 +93,23 @@ points:
   half-health: 0.5
   quarter-health: 1
 money:
-  killstreak: 1
-  killjoy: 1
-  kill: 1
-  karma: 0.1
-karma-per-kill: 1
-karma-per-kill-streak: 1
+  killstreak: 10
+  killjoy: 10
+  kill: 100
+  karma: 0.2
+hardship-per-kill: 500
+karma-per-kill: 50
+karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
+hardship-should-pay-damages: true
+hardship-depreciation-period-in-days: 7 #once a week
+hunt-karma: 250.0 # how much karma should a town get when using a building with hunt
+hunt-new-players: true # should players be able to hunt people that aren't in towns
 ##Should money be created if it can't be taken from the victim
 always-drop-money-if-no-balance: false
-power-per-kill: 12
-power-per-npc-kill: 4
+power-per-kill: 30
+power-per-npc-kill: 5
 
 folders:
   farms: STONE_HOE
@@ -120,13 +128,13 @@ folders:
   trading: EMERALD_ORE
 
 levels:
-- DIRT
-- OAK_LOG
-- COAL_BLOCK
-- IRON_BLOCK
-- GOLD_BLOCK
-- EMERALD_BLOCK
-- DIAMOND_BLOCK
+  - DIRT
+  - OAK_LOG
+  - COAL_BLOCK
+  - IRON_BLOCK
+  - GOLD_BLOCK
+  - EMERALD_BLOCK
+  - DIAMOND_BLOCK
 
 item-groups:
   sign: SIGN,WALL_SIGN
@@ -173,6 +181,7 @@ civs-chat-prefix: "@{GREEN}[Civs]"
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
+chat-channel-format: "[$channel$]$player$: $message$"
 chat-channels:
   global:
     enabled: true

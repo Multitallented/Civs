@@ -1,6 +1,7 @@
 type: region
 name: Mill
 shop-icon: BREAD
+dynmap-marker: factory
 icon: CHEST
 price: 10
 max: 1
