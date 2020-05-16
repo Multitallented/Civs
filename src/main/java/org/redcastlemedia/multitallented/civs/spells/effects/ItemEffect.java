@@ -20,7 +20,6 @@ public class ItemEffect extends Effect {
     private String potionType;
     private String mat = "STONE";
     private String target = SpellConstants.SELF;
-    private boolean silent = false;
 
     public ItemEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
         super(spell, key, target, origin, level);
@@ -34,7 +33,6 @@ public class ItemEffect extends Effect {
             this.potionUpgraded = section.getBoolean("potion.upgraded", false);
             this.potionExtended = section.getBoolean("potion.ticks", false);
             String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
-            this.silent = section.getBoolean(SpellConstants.SILENT, false);
             if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
                 this.target = tempTarget;
             } else {
@@ -43,7 +41,6 @@ public class ItemEffect extends Effect {
         } else if (value instanceof String) {
             this.mat = (String) value;
             this.target = SpellConstants.SELF;
-            this.silent = false;
         }
     }
 
@@ -69,9 +66,6 @@ public class ItemEffect extends Effect {
             player.getInventory().addItem(itemStack);
         } else {
             player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
-        }
-        if (!this.silent) {
-
         }
     }
 }

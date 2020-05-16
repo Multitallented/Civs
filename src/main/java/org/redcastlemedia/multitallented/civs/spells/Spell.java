@@ -11,6 +11,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
@@ -209,9 +211,7 @@ public class Spell {
         }
 
         if (!delayed) {
-            //TODO localize this
-            String message = ChatColor.BLUE + Civs.getPrefix() + " " + caster.getDisplayName() + ChatColor.WHITE + " used " + ChatColor.RED + type;
-            caster.sendMessage(message);
+            caster.sendMessage(getSpellCastMessage(caster));
             for (String key : mappedTargets.keySet()) {
                 if (key.equals(SpellConstants.SELF)) {
                     continue;
@@ -220,11 +220,20 @@ public class Spell {
                     if (!(obj instanceof Player)) {
                         continue;
                     }
-                    ((Player) obj).sendMessage(message);
+                    Player cPlayer = (Player) obj;
+                    cPlayer.sendMessage(getSpellCastMessage(cPlayer));
                 }
             }
         }
         return true;
+    }
+
+    private String getSpellCastMessage(Player player) {
+        String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                type + LocaleConstants.NAME_SUFFIX);
+        return Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "spell-cast").replace("$1", caster.getDisplayName())
+                .replace("$2", localSpellName);
     }
 
     private void produceYield(boolean delayed, SpellType spellType, HashMap<String, Set<?>> mappedTargets, ConfigurationSection yieldSection) {
@@ -350,7 +359,6 @@ public class Spell {
             boolean isString = !yieldValueString.equals(SpellConstants.NOT_A_STRING) && !yieldValueString.contains("MemorySection");
 
 
-            //String targetKey = component.getTargetName();
             String targetKey = isString ? SpellConstants.SELF : yieldSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.SELF);
             Set<?> targetSet = mappedTargets.get(targetKey);
 
