@@ -7,6 +7,11 @@ import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 
@@ -43,6 +48,10 @@ public class CivClass {
     public boolean isItemAllowed(Material material) {
         int level = getAllowedLevel(material.getKey().getKey());
         return level > 0;
+    }
+
+    public int isPotionEffectAllowed(PotionEffectType potionEffectType) {
+        return getAllowedLevel(potionEffectType.getName());
     }
 
     private int getAllowedLevel(String key) {

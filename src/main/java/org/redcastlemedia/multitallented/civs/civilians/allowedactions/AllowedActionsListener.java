@@ -32,6 +32,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -301,10 +304,14 @@ public class AllowedActionsListener implements Listener {
         boolean isWeapon = RepairEffect.isWeapon(event.getCurrentItem().getType());
         boolean isShiftClickWithWeapon = isCraftingInventory &&
                 event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && isWeapon;
-        if ((isQuickbar && isPlace && isWeapon) || isShiftClickWithWeapon) {
-            if (cancelEventIfItemIsDisallowed(event, player, event.getCurrentItem())) {
-                return;
-            }
+        if (((isQuickbar && isPlace && isWeapon) || isShiftClickWithWeapon) &&
+                cancelEventIfItemIsDisallowed(event, player, event.getCurrentItem())) {
+            return;
+        }
+        if (((isQuickbar && isPlace) || (isCraftingInventory &&
+                event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY)) &&
+                cancelEventIfPotionIsDisallowed(event, player, event.getCurrentItem())) {
+            return;
         }
 
         /* Sometimes, Bukkit client places item in crafting without giving server event.
@@ -500,6 +507,41 @@ public class AllowedActionsListener implements Listener {
             return true;
         }
         cancelEventIfItemHasDisallowedEnchants(event, player, item);
+        return false;
+    }
+
+    private boolean cancelEventIfPotionIsDisallowed(Cancellable event, Player player, ItemStack item) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        ItemMeta itemMeta = item.getItemMeta();
+        if (!(itemMeta instanceof PotionMeta)) {
+            return false;
+        }
+        String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+        PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
+        if (potionEffectType != null) {
+            int level = civilian.getCurrentClass().isPotionEffectAllowed(potionEffectType);
+            int potionLevel = potionMeta.getBasePotionData().isUpgraded() ? 2 : 1;
+            if (level < potionLevel) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "action-not-allowed").replace("$1", localClassName)
+                        .replace("$2", potionEffectType.getName()));
+                return true;
+            }
+        }
+        for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+            int level = civilian.getCurrentClass().isPotionEffectAllowed(potionEffect.getType());
+            int potionLevel = potionEffect.getAmplifier();
+            if (level < potionLevel) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "action-not-allowed").replace("$1", localClassName)
+                        .replace("$2", potionEffect.getType().getName()));
+                return true;
+            }
+        }
         return false;
     }
 
