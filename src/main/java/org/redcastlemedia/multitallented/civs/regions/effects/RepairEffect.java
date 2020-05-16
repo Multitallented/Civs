@@ -166,6 +166,82 @@ public class RepairEffect implements Listener {
         }
     }
 
+    public static boolean isArmor(Material mat) {
+        switch (mat) {
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+            case DIAMOND_BOOTS:
+            case CHAINMAIL_BOOTS:
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+            case CHAINMAIL_HELMET:
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isHelmet(Material mat) {
+        switch (mat) {
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+            case CHAINMAIL_HELMET:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isChestplate(Material mat) {
+        switch (mat) {
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isLeggings(Material mat) {
+        switch (mat) {
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isBoots(Material mat) {
+        switch (mat) {
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+            case DIAMOND_BOOTS:
+            case CHAINMAIL_BOOTS:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getHand() == null) {
