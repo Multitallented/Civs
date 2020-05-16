@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
@@ -210,7 +211,6 @@ public class ItemManager {
         }
     }
     public CivItem loadClassType(FileConfiguration config, String name) {
-        //TODO load classestype properly
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         ClassType civItem = new ClassType(
                 config.getStringList("reqs"),
@@ -225,6 +225,8 @@ public class ItemManager {
                 config.getInt("max-mana", 100),
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
+        AllowedActionsUtil.loadAllowedActions(civItem.getAllowedActions(),
+                config.getStringList("allowed-actions"));
 
         itemTypes.put(name, civItem);
         return civItem;
@@ -246,6 +248,8 @@ public class ItemManager {
                 config,
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
+        AllowedActionsUtil.loadAllowedActions(spellType.getAllowedActions(),
+                config.getStringList("allowed-actions"));
         itemTypes.put(name.toLowerCase(), spellType);
         return spellType;
     }

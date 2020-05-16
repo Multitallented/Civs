@@ -12,7 +12,7 @@ groups:
 pre-reqs: []
 
 allowed-actions:
-  - POTION.POISON
+  - POISON
 
 conditions:
   cooldown: 10000

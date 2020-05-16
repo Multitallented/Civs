@@ -291,11 +291,20 @@ public class AllowedActionsListener implements Listener {
                 (isCraftingInventory && isPlace && event.getRawSlot() == SHIELD_CLICK_SLOT) ||
                 isShiftClickWithArmorOrShield) {
             PlayerInventory playerInventory = player.getInventory();
-            ItemStack item = null;
-            if (fixArmorOnEquip(event, action, player, playerInventory, item)) {
+            if (fixArmorOnEquip(event, action, player, playerInventory)) {
                 return;
             }
 
+        }
+
+        boolean isQuickbar = event.getSlotType() == InventoryType.SlotType.QUICKBAR;
+        boolean isWeapon = RepairEffect.isWeapon(event.getCurrentItem().getType());
+        boolean isShiftClickWithWeapon = isCraftingInventory &&
+                event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && isWeapon;
+        if ((isQuickbar && isPlace && isWeapon) || isShiftClickWithWeapon) {
+            if (cancelEventIfItemIsDisallowed(event, player, event.getCurrentItem())) {
+                return;
+            }
         }
 
         /* Sometimes, Bukkit client places item in crafting without giving server event.
@@ -445,8 +454,11 @@ public class AllowedActionsListener implements Listener {
         return newSlot0Amount;
     }
 
-    private boolean fixArmorOnEquip(InventoryClickEvent event, InventoryAction action, Player player, PlayerInventory playerInventory, ItemStack item) {
-
+    private boolean fixArmorOnEquip(InventoryClickEvent event,
+                                    InventoryAction action,
+                                    Player player,
+                                    PlayerInventory playerInventory) {
+        ItemStack item = null;
         final int SHIELD_SLOT = 40;
         switch (action) {
             case PLACE_ALL:
@@ -457,6 +469,9 @@ public class AllowedActionsListener implements Listener {
                 break;
             case MOVE_TO_OTHER_INVENTORY:
                 item = event.getCurrentItem();
+                if (item == null) {
+                    break;
+                }
                 Material material = item.getType();
                 if (RepairEffect.isHelmet(material) && playerInventory.getHelmet() != null)
                     return true;
@@ -481,7 +496,19 @@ public class AllowedActionsListener implements Listener {
         if (item == null) {
             return true;
         }
+        if (cancelEventIfItemIsDisallowed(event, player, item)) {
+            return true;
+        }
         cancelEventIfItemHasDisallowedEnchants(event, player, item);
+        return false;
+    }
+
+    private boolean cancelEventIfItemIsDisallowed(Cancellable event, Player player, ItemStack item) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.getCurrentClass().isItemAllowed(item.getType())) {
+            event.setCancelled(true);
+            return true;
+        }
         return false;
     }
 

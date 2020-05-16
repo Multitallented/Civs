@@ -242,6 +242,24 @@ public class RepairEffect implements Listener {
         }
     }
 
+    public static boolean isWeapon(Material type) {
+        switch (type) {
+            case DIAMOND_SWORD:
+            case IRON_SWORD:
+            case GOLDEN_SWORD:
+            case STONE_SWORD:
+            case DIAMOND_AXE:
+            case IRON_AXE:
+            case GOLDEN_AXE:
+            case STONE_AXE:
+            case TRIDENT:
+            case BOW:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getHand() == null) {
