@@ -66,3 +66,13 @@ editor.xml
 vcs.xml
 ide.general.xml
 /dependency-reduced-pom.xml
+
+# Emacs ignores
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*

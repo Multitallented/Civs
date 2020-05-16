@@ -674,6 +674,23 @@ public class RegionManager {
             }
         }
 
+	if (regionType.getEffects().containsKey(Constants.WONDER)) {
+	    for (Town globalTown : TownManager.getInstance().getTowns()) {
+		for (Region region : TownManager.getInstance().getContainingRegions(globalTown.getName())) {
+		    if (regionTypeName.equals(region.getType().toLowerCase())) {
+                        RegionType currentRegionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                        String currentRegionLocalizedName = LocaleManager.getInstance()
+                                .getTranslationWithPlaceholders(player, currentRegionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                        player.sendMessage(Civs.getPrefix() +
+                                localeManager.getTranslationWithPlaceholders(player, Constants.WONDER)
+                                        .replace("$1", localizedRegionName));
+                        event.setCancelled(true);
+                        return;
+                    }
+		}
+	    }
+	}
+
         for (String effect : regionType.getEffects().keySet()) {
             if (createRegionListeners.get(effect) != null &&
                     !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
@@ -751,6 +768,13 @@ public class RegionManager {
                         .replace("$1", localizedRegionName));
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
+
+	// Broadcasts wonder built to all players online
+	for (Player player1 : Bukkit.getOnlinePlayers()) {
+            player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player1, "wonder-built")
+                            .replace("$1", regionTypeName));
+        }
 
         Region region = new Region(regionType.getName(), people, location, radii, regionType.getEffects(), 0);
         addRegion(region);

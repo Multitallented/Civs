@@ -19,6 +19,7 @@ public final class Constants {
     public static final String UUID = "uuid";
     public static final String CHESTS = "chests";
     public static final String EXCLUSIVE = "exclusive";
+    public static final String WONDER    = "wonder";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String SHOW_PRICE = "showPrice";
     public static final String PAGE = "page";

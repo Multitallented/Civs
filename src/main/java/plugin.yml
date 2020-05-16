@@ -5,7 +5,7 @@ main: org.redcastlemedia.multitallented.civs.Civs
 name: Civs
 load: POSTWORLD
 version: ${project.version}
-api-version: 1.14
+api-version: 1.13
 depend: [Vault]
 softdepend:
 - PlaceholderAPI
