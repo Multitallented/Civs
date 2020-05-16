@@ -51,6 +51,9 @@ public class CivClass {
     }
 
     public int isPotionEffectAllowed(PotionEffectType potionEffectType) {
+        if (potionEffectType == PotionEffectType.GLOWING) {
+            return 2;
+        }
         return getAllowedLevel(potionEffectType.getName());
     }
 
