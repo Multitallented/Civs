@@ -28,6 +28,7 @@ components:
       sound: BLOCK_BREWING_STAND_BREW
       item:
         mat: SPLASH_POTION
-        potion-type: POISON
-        potion-level: 1
-        potion-duration: 30000
+        potion:
+          type: POISON
+          upgraded: true
+          extended: true
