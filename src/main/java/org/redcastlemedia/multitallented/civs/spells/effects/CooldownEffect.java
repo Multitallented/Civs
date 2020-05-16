@@ -77,11 +77,11 @@ public class CooldownEffect extends Effect {
             }
             return false;
         }
-        Long cooldown = (Long) rawDuration;
-        if (System.currentTimeMillis() < cooldown) {
+        long rawCooldown = (long) rawDuration;
+        if (System.currentTimeMillis() < rawCooldown) {
             if (!this.silent) {
                 player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + spell.getType() + " has " +
-                        ((int) ((System.currentTimeMillis() - cooldown) / -1000))  +
+                        ((int) ((System.currentTimeMillis() - rawCooldown) / -1000))  +
                         "s remaining cooldown");
             }
             return false;
