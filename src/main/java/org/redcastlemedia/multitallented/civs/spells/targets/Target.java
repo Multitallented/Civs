@@ -12,6 +12,7 @@ import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,7 +37,6 @@ public abstract class Target extends SpellComponent {
     public Location applyTargetSettings(Location currentLocation) {
         //jitter
         int level = getLevel();
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getSpell().getAbilityVariables();
         String jitter = config.getString("jitter");
         if (jitter != null) {
             String jX = jitter.split(";")[0];

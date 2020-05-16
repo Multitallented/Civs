@@ -144,12 +144,6 @@ public class CivilianListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCivilianGainExp(PlayerExpChangeEvent event) {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        civilian.setExpOrbs(event.getAmount());
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onCivilianUseExp(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
