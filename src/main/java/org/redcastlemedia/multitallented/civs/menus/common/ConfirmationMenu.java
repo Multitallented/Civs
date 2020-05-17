@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -19,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -118,7 +120,7 @@ public class ConfirmationMenu extends CustomMenu {
                 (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             player.closeInventory();
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-permission"));
+                    localeManager.getTranslationWithPlaceholders(player, "no-permission"));
             return true;
         }
         return false;
@@ -126,24 +128,29 @@ public class ConfirmationMenu extends CustomMenu {
 
     private void buyItem(CivItem civItem, Player player, Civilian civilian) {
         LocaleManager localeManager = LocaleManager.getInstance();
-        if (civItem.getPrice() > 0 && (Civs.econ == null ||
-                !Civs.econ.has(player, civItem.getPrice()))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "not-enough-money").replace("$1", civItem.getPrice() + ""));
-            player.closeInventory();
-            return;
-        }
+        double price = civItem.getPrice();
+        price *= 1.0 - SkillManager.getInstance().getTotalSkillDiscount(civilian, civItem);
 
-        if (Civs.econ == null) {
+        if (price > 0 && Civs.econ == null) {
             player.sendMessage(Civs.getPrefix() + " Econ plugin not enabled or hooked through Vault.");
             player.closeInventory();
             return;
         }
-        Civs.econ.withdrawPlayer(player, civItem.getPrice());
+
+        if (price > 0 && (Civs.econ != null && !Civs.econ.has(player, price))) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                    "not-enough-money").replace("$1", price + ""));
+            player.closeInventory();
+            return;
+        }
+
+        if (Civs.econ != null && price > 0) {
+            Civs.econ.withdrawPlayer(player, price);
+        }
         player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslation(civilian.getLocale(), "item-bought")
+                localeManager.getTranslationWithPlaceholders(player, "item-bought")
                         .replace("$1", civItem.getDisplayName())
-                        .replace("$2", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+                        .replace("$2", Util.getNumberFormat(price, civilian.getLocale())));
         player.closeInventory();
         CVItem purchasedItem = civItem.clone();
         boolean isTown = civItem.getItemType() == CivItem.ItemType.TOWN;
@@ -152,15 +159,15 @@ public class ConfirmationMenu extends CustomMenu {
         lore.add(ChatColor.BLACK + civilian.getUuid().toString());
         lore.add(purchasedItem.getDisplayName());
         if (isTown) {
-            lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
-                    .replace("$1", civItem.getProcessedName())));
+            lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslationWithPlaceholders(player,
+                    "town-instructions").replace("$1", civItem.getProcessedName())));
         } else if (isRegion) {
-            lore.addAll(Util.textWrap(civilian, Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    civItem.getProcessedName() + "-desc"))));
+            lore.addAll(Util.textWrap(civilian, Util.parseColors(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    civItem.getProcessedName() + LocaleConstants.DESC_SUFFIX))));
         }
         purchasedItem.setLore(lore);
-        purchasedItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                civItem.getProcessedName() + "-name"));
+        purchasedItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
         if (player.getInventory().firstEmpty() != -1) {
             player.getInventory().addItem(purchasedItem.createItemStack());
         } else {
