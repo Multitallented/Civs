@@ -1,5 +1,6 @@
 enabled: true
 exp-per-new-item: 100
+exp-repeat-decay: 99999
 max-reward: 0.2
 exceptions:
   NETHER: 1000
