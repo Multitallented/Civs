@@ -33,25 +33,19 @@ public class Skill {
         return (int) Math.round(10 * getExp() / skillType.getMaxExp());
     }
 
-    public void addAccomplishment(String key, Player player) {
-        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                type + LocaleConstants.SKILL_SUFFIX);
+    public double addAccomplishment(String key) {
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         if (!accomplishments.containsKey(key)) {
             double exp = skillType.getExp(key, 1);
             accomplishments.put(key, 1);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "exp-gained").replace("$1", "" + exp)
-                    .replace("$2", localSkillName));
+            return exp;
         }
         int count = accomplishments.get(key);
         double exp = skillType.getExp(key, count + 1.0);
         if (exp > 0) {
             accomplishments.put(key, count + 1);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "exp-gained").replace("$1", "" + exp)
-                    .replace("$2", localSkillName));
         }
+        return exp;
     }
 
     private double getExpInCategory(String category, int count) {

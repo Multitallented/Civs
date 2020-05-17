@@ -3,13 +3,16 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -19,11 +22,15 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -255,6 +262,37 @@ public class DeathListener implements Listener {
             return;
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) {
+            return;
+        }
+        Player player = event.getEntity().getKiller();
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        boolean isSword = RepairEffect.isSword(mainHand.getType());
+        boolean isAxe = RepairEffect.isAxe(mainHand.getType());
+        boolean isTrident = mainHand.getType() == Material.TRIDENT;
+        boolean isBow = mainHand.getType() == Material.BOW;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            double exp = 0;
+            boolean swordSkill = isSword && skill.getType().equalsIgnoreCase(CivSkills.SWORD.name());
+            boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
+            boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
+            boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
+            if (swordSkill || axeSkill || tridentSkill || bowSkill) {
+                exp = skill.addAccomplishment(event.getEntity().getType().name());
+            }
+            if (exp > 0) {
+                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "exp-gained").replace("$1", "" + exp)
+                        .replace("$2", localSkillName));
+            }
+        }
     }
 
     @EventHandler

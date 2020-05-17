@@ -102,7 +102,14 @@ public class CommonScheduler implements Runnable {
         Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
         if (skill != null) {
             Biome biome = player.getLocation().getBlock().getBiome();
-            skill.addAccomplishment(biome.name(), player);
+            double exp = skill.addAccomplishment(biome.name());
+            if (exp > 0) {
+                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "exp-gained").replace("$1", "" + exp)
+                        .replace("$2", localSkillName));
+            }
         }
 
     }

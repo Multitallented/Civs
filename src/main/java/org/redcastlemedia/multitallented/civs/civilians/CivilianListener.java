@@ -153,7 +153,17 @@ public class CivilianListener implements Listener {
         Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
         if (skill != null && event.getCurrentItem() != null &&
                 event.getCurrentItem().getType() != Material.AIR) {
-            skill.addAccomplishment(event.getCurrentItem().getType().name(), player);
+            double exp = 0;
+            for (int i = 0; i < event.getCurrentItem().getAmount(); i++) {
+                exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
+            }
+            if (exp > 0) {
+                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "exp-gained").replace("$1", "" + exp)
+                        .replace("$2", localSkillName));
+            }
         }
     }
 

@@ -3,6 +3,8 @@ package org.redcastlemedia.multitallented.civs;
 import static org.junit.Assert.assertEquals;
 
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.entity.EntityType;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -42,7 +44,7 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.CHEST.name(), 9);
         skill.getAccomplishments().put(Material.STICK.name(), 9);
-        double expectedDiscount = (1.0 - (60.0 / 2000.0 * 0.6)) * regionType.getPrice();
+        double expectedDiscount = (1.0 - (60.0 / 3000.0 * 0.6)) * regionType.getPrice();
         assertEquals(60.0, skill.getExp(), 0.1);
         assertEquals(expectedDiscount, SkillManager.getInstance().getSkillDiscountedPrice(civilian, regionType), 0.001);
     }
@@ -68,6 +70,6 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_FENCE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_FENCE_GATE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_SLAB.name(), 9);
-        assertEquals(3, skill.getLevel());
+        assertEquals(2, skill.getLevel());
     }
 }
