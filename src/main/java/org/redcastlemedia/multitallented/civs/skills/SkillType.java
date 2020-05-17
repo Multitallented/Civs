@@ -12,6 +12,7 @@ public class SkillType {
     private final String icon;
     private double expPerCategory;
     private double expRepeatDecay;
+    private double maxExp;
     private Map<String, Double> exceptions = new HashMap<>();
     private Map<String, Double> shopRewards = new HashMap<>();
 

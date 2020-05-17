@@ -14,4 +14,27 @@ public class Skill {
     public Skill(String type) {
         this.type = type;
     }
+
+    public double getExp() {
+        double exp = 0;
+        for (Map.Entry<String, Integer> accomplishment : accomplishments.entrySet()) {
+            exp += getExpInCategory(accomplishment.getKey(), accomplishment.getValue());
+        }
+        return exp;
+    }
+
+    private double getExpInCategory(String category, int count) {
+        if (count < 1) {
+            return 0;
+        }
+        SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        double exp = 0;
+        do {
+            double baseExp = skillType.getExceptions()
+                    .getOrDefault(category, skillType.getExpPerCategory());
+            exp += Math.max(0, baseExp - (skillType.getExpRepeatDecay() * (count - 1)));
+            count--;
+        } while (count > 0);
+        return exp;
+    }
 }

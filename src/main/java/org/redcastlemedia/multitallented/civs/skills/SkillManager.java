@@ -30,9 +30,7 @@ public class SkillManager {
     public static synchronized SkillManager getInstance() {
         if (skillManager == null) {
             skillManager = new SkillManager();
-            if (Civs.getInstance() != null) {
-                skillManager.loadAllSkills();
-            }
+            skillManager.loadAllSkills();
         }
         return skillManager;
     }
@@ -83,6 +81,7 @@ public class SkillManager {
                 config.getString("icon", "STONE"));
         skillType.setExpPerCategory(config.getDouble("exp-per-new-item", 100));
         skillType.setExpRepeatDecay(config.getDouble("exp-repeat-decay", 20));
+        skillType.setMaxExp(config.getDouble("max-exp", 2000));
         if (config.isSet("shop-rewards")) {
             Map<String, Double> shopRewards = new HashMap<>();
             for (String key : config.getConfigurationSection("shop-rewards").getKeys(false)) {
@@ -104,17 +103,18 @@ public class SkillManager {
         return skills.get(name);
     }
 
-    public double getTotalSkillDiscount(Civilian civilian, CivItem civItem) {
+    public double getSkillDiscountedPrice(Civilian civilian, CivItem civItem) {
         double discount = 0;
         for (Skill skill : civilian.getSkills().values()) {
             SkillType skillType = skills.get(skill.getType());
             for (Map.Entry<String, Double> entry : skillType.getShopRewards().entrySet()) {
                 if (civItem.getProcessedName().equals(entry.getKey()) ||
                         civItem.getGroups().contains(entry.getKey())) {
-                    discount += entry.getValue();
+                    double exp = skill.getExp();
+                    discount += entry.getValue() * exp / skillType.getMaxExp();
                 }
             }
         }
-        return discount;
+        return (1.0 - discount) * civItem.getPrice();
     }
 }

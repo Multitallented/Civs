@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -128,8 +127,7 @@ public class ConfirmationMenu extends CustomMenu {
 
     private void buyItem(CivItem civItem, Player player, Civilian civilian) {
         LocaleManager localeManager = LocaleManager.getInstance();
-        double price = civItem.getPrice();
-        price *= 1.0 - SkillManager.getInstance().getTotalSkillDiscount(civilian, civItem);
+        double price = SkillManager.getInstance().getSkillDiscountedPrice(civilian, civItem);
 
         if (price > 0 && Civs.econ == null) {
             player.sendMessage(Civs.getPrefix() + " Econ plugin not enabled or hooked through Vault.");

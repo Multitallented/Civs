@@ -39,6 +39,7 @@ import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 
 public abstract class TestUtil {
     public static WorldImpl world;
@@ -280,7 +281,7 @@ public abstract class TestUtil {
         Bukkit.setServer(server);
 
         MenuManager.getInstance();
-
+        SkillManager.getInstance();
         CivilianManager.getInstance().createDefaultCivilian(player);
         createDefaultClass();
         ConfigManager configManager = ConfigManager.getInstance();

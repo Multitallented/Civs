@@ -113,7 +113,7 @@ public class CommonScheduler implements Runnable {
                         .replace("$2", localSkillName));
             }
             int count = skill.getAccomplishments().get(biome.name());
-            double exp = skillType.getExp(biome.name(), count + 1);
+            double exp = skillType.getExp(biome.name(), count + 1.0);
             if (exp > 0) {
                 skill.getAccomplishments().put(biome.name(), count + 1);
                 String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
