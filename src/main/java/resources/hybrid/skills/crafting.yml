@@ -2,4 +2,4 @@ enabled: true
 icon: CRAFTING_TABLE
 exp-per-new-item: 100
 exp-repeat-decay: 20
-max-chance-for-duplicate: 0.4
+max-reward: 0.4

@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -121,7 +120,7 @@ public class Spell {
             }
         }*/
 
-        return useAbility(mappedTargets, false, new HashMap<String, ConfigurationSection>());
+        return useAbility(mappedTargets, false, new HashMap<>());
     }
 
     public boolean useAbilityFromListener(Player caster, int level, ConfigurationSection useSection, Object newTarget) {
@@ -148,12 +147,12 @@ public class Spell {
             }
         }
 
-        useAbility(mappedTargets, true, new HashMap<String, ConfigurationSection>());
+        useAbility(mappedTargets, true, new HashMap<>());
 
         return useSection.getBoolean("cancel", false);
     }
 
-    public boolean useAbility(HashMap<String, Set<?>> incomingTargets,
+    public boolean useAbility(Map<String, Set<?>> incomingTargets,
                               boolean delayed,
                               Map<String, ConfigurationSection> durationTargets) {
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
@@ -162,7 +161,6 @@ public class Spell {
             for (String key : durationTargets.keySet()) {
                 String targetName = durationTargets.get(key).getString("type", "nearby");
                 Target target = SpellType.getTarget(targetName, key, durationTargets.get(key), level, caster, this);
-//                Target abilityTarget = rpgen.getAbilityManager().getAbilityTarget(targetName);
                 if (target == null) {
                     continue;
                 }
@@ -175,8 +173,7 @@ public class Spell {
         Map<String, ConfigurationSection> components = spellType.getComponents();
         HashSet<String> fulfilledRequirements = new HashSet<>();
         Collection<String> abilityKeys = components.keySet();
-        List<String> sorted = new ArrayList<>();
-        sorted.addAll(abilityKeys);
+        List<String> sorted = new ArrayList<>(abilityKeys);
         Collections.sort(sorted);
         for (String componentName : sorted) {
             String compName = "";

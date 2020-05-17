@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.civilians;
+package org.redcastlemedia.multitallented.civs.skills;
 
 public enum CivSkills {
     CRAFTING,

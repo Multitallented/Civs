@@ -144,24 +144,6 @@ public class CivilianListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCivilianUseExp(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        if (civilian.getMana() < 1 || civilian.getMana() > 99) {
-            return;
-        }
-        Material mat = event.getClickedBlock().getType();
-        if (mat == Material.ANVIL ||
-                mat == Material.ENCHANTING_TABLE) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
-                    event.getPlayer(), "mana-use-exp"));
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
         if (checkDroppedItem(item.getItemStack(), event.getPlayer())) {
