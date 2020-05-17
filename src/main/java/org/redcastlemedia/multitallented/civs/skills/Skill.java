@@ -3,6 +3,11 @@ package org.redcastlemedia.multitallented.civs.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +31,27 @@ public class Skill {
     public int getLevel() {
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         return (int) Math.round(10 * getExp() / skillType.getMaxExp());
+    }
+
+    public void addAccomplishment(String key, Player player) {
+        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                type + LocaleConstants.SKILL_SUFFIX);
+        SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        if (!accomplishments.containsKey(key)) {
+            double exp = skillType.getExp(key, 1);
+            accomplishments.put(key, 1);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "exp-gained").replace("$1", "" + exp)
+                    .replace("$2", localSkillName));
+        }
+        int count = accomplishments.get(key);
+        double exp = skillType.getExp(key, count + 1.0);
+        if (exp > 0) {
+            accomplishments.put(key, count + 1);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "exp-gained").replace("$1", "" + exp)
+                    .replace("$2", localSkillName));
+        }
     }
 
     private double getExpInCategory(String category, int count) {

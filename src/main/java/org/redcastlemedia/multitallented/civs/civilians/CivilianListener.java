@@ -28,6 +28,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -58,6 +59,8 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -141,6 +144,17 @@ public class CivilianListener implements Listener {
         TownManager.getInstance().clearInvite(uuid);
         AnnouncementUtil.clearPlayer(uuid);
         StructureUtil.removeBoundingBox(uuid);
+    }
+
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
+    public void onCraftItem(CraftItemEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
+        if (skill != null && event.getCurrentItem() != null &&
+                event.getCurrentItem().getType() != Material.AIR) {
+            skill.addAccomplishment(event.getCurrentItem().getType().name(), player);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

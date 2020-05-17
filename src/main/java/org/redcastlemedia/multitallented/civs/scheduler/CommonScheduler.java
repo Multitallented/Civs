@@ -99,29 +99,10 @@ public class CommonScheduler implements Runnable {
 
     private void checkExploration(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (civilian.getSkills().containsKey(CivSkills.EXPLORATION.name())) {
+        Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
+        if (skill != null) {
             Biome biome = player.getLocation().getBlock().getBiome();
-            Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name());
-            SkillType skillType = SkillManager.getInstance().getSkillType(skill.getType());
-            if (!skill.getAccomplishments().containsKey(biome.name())) {
-                double exp = skillType.getExp(biome.name(), 1);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                skill.getAccomplishments().put(biome.name(), 1);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
-            int count = skill.getAccomplishments().get(biome.name());
-            double exp = skillType.getExp(biome.name(), count + 1.0);
-            if (exp > 0) {
-                skill.getAccomplishments().put(biome.name(), count + 1);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            skill.addAccomplishment(biome.name(), player);
         }
 
     }
