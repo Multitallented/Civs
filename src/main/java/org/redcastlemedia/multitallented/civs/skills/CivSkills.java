@@ -4,7 +4,7 @@ public enum CivSkills {
     CRAFTING,
     BUILDING,
     MONSTERS,
-    EXPLORING,
+    EXPLORATION,
     FOOD,
     MINING,
     FISHING,

@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -82,6 +83,8 @@ public class Civilian {
     private ChatChannel chatChannel;
     @Getter @Setter
     private CivClass currentClass;
+    @Getter @Setter
+    private HashMap<String, Skill> skills = new HashMap<>();
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,

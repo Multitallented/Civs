@@ -4,3 +4,4 @@ max-reward: 0.2
 exceptions:
   NETHER: 1000
   THE_END: 3000
+  MUSHROOM_FIELDS: 1000

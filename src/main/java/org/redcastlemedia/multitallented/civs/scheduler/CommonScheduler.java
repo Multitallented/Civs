@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -16,6 +17,10 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -86,9 +91,27 @@ public class CommonScheduler implements Runnable {
             if (ConfigManager.getInstance().isUseAnnouncements()) {
                 sendAnnouncement(player);
             }
+            checkExploration(player);
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }
+    }
+
+    private void checkExploration(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.getSkills().containsKey(CivSkills.EXPLORATION.name())) {
+            Biome biome = player.getLocation().getBlock().getBiome();
+            Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name());
+            SkillType skillType = SkillManager.getInstance().getSkillType(skill.getType());
+            if (!skill.getAccomplishments().containsKey(biome.name())) {
+                skill.getAccomplishments().put(biome.name(), 1);
+            }
+            int count = skill.getAccomplishments().get(biome.name());
+            if (skillType.getExp(biome.name(), count + 1) > 0) {
+                skill.getAccomplishments().put(biome.name(), count + 1);
+            }
+        }
+
     }
 
     private void sendAnnouncement(Player player) {
