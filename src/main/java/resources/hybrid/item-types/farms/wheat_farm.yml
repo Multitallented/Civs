@@ -38,11 +38,14 @@ upkeep:
     reagents:
     - STONE_HOE
     output:
-    - WHEAT*20
-    - DEAD_BUSH%50,WHEAT%50
-    - DEAD_BUSH*2%50,WHEAT%50
-    - DEAD_BUSH*3%50,WHEAT%50
-    - DEAD_BUSH*4%50,WHEAT%50
-    - DEAD_BUSH*6%50,WHEAT%50
-
-
+    - WHEAT*8
+  1:
+    reagents:
+    - IRON_HOE
+    output:
+    - WHEAT*16
+  2:
+    reagents:
+    - DIAMOND_HOE
+    output:
+    - WHEAT*24
