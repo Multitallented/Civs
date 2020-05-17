@@ -486,7 +486,7 @@
 #sugar_cane_farm-name: "Sugar Cane Farm"
 #sugar_cane_farm-desc: "Creates 16 sugarcane every 5 minutes. Place a storage minecart in the chest. Build rails from the Sugar Cane Farm to a destination region. Place a sloped powered rail at the start."
 #wheat_farm-name: "Wheat Farm"
-#wheat_farm-desc: "Produces wheat and dead bushes every 5 minutes. Place a storage minecart in the chest. Build rails from the Wheat Farm to a destination region. Place a sloped powered rail at the start."
+#wheat_farm-desc: "Produces wheat every 5 minutes. Place a storage minecart in the chest. Build rails from the Wheat Farm to a destination region. Place a sloped powered rail at the start."
 #shack-name: "Shack"
 #shack-desc: "The most basic house. Earns $122 per day by selling potatoes."
 #hovel-name: "Hovel"
