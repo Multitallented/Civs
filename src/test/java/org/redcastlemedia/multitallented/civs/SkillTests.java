@@ -41,8 +41,33 @@ public class SkillTests extends TestUtil {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("arrow_factory");
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.CHEST.name(), 9);
+        skill.getAccomplishments().put(Material.STICK.name(), 9);
         double expectedDiscount = (1.0 - (60.0 / 2000.0 * 0.6)) * regionType.getPrice();
         assertEquals(60.0, skill.getExp(), 0.1);
         assertEquals(expectedDiscount, SkillManager.getInstance().getSkillDiscountedPrice(civilian, regionType), 0.001);
+    }
+
+    @Test
+    public void levelShouldCalcCorrectly() {
+        skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
+        skill.getAccomplishments().put(Material.CHEST.name(), 9);
+        skill.getAccomplishments().put(Material.BREAD.name(), 9);
+        skill.getAccomplishments().put(Material.FURNACE.name(), 9);
+        skill.getAccomplishments().put(Material.STONE_PICKAXE.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
+        skill.getAccomplishments().put(Material.STONE_AXE.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_BOAT.name(), 9);
+        skill.getAccomplishments().put(Material.CRAFTING_TABLE.name(), 9);
+        skill.getAccomplishments().put(Material.RED_BED.name(), 9);
+        skill.getAccomplishments().put(Material.STICK.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_STAIRS.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_TRAPDOOR.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_BUTTON.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_PRESSURE_PLATE.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_DOOR.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_FENCE.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_FENCE_GATE.name(), 9);
+        skill.getAccomplishments().put(Material.OAK_SLAB.name(), 9);
+        assertEquals(3, skill.getLevel());
     }
 }

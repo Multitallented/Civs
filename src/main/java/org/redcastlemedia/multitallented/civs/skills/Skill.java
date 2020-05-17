@@ -23,6 +23,11 @@ public class Skill {
         return exp;
     }
 
+    public int getLevel() {
+        SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        return (int) Math.round(10 * getExp() / skillType.getMaxExp());
+    }
+
     private double getExpInCategory(String category, int count) {
         if (count < 1) {
             return 0;
