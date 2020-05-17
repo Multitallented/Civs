@@ -1,5 +1,5 @@
 enabled: true
-exp-per-new-item: 500
+exp-per-new-item: 100
 max-reward: 0.2
 exceptions:
   NETHER: 1000

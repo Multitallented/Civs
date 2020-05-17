@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.skills;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
@@ -78,7 +79,11 @@ public class SkillManager {
         skillType.setExpRepeatDecay(config.getDouble("exp-repeat-decay", 20));
         skillType.setMaxChance(config.getDouble("max-chance", 0.4));
         if (config.isSet("exceptions")) {
-            skillType.setExceptions(config.getStringList("exceptions"));
+            Map<String, Double> exceptions = new HashMap<>();
+            for (String key : config.getConfigurationSection("exceptions").getKeys(false)) {
+                exceptions.put(key, config.getDouble("exceptions." + key, skillType.getExpPerCategory()));
+            }
+            skillType.setExceptions(exceptions);
         }
         skills.put(skillName, skillType);
     }
