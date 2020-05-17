@@ -429,7 +429,7 @@ iron_works-desc: "Automated crafting of iron tools. Place a storage minecart in 
 lava_works-name: "Lava Works"
 lava_works-desc: "Automated lava creation. Place a storage minecart in the chest. Build rails from the Lava Works to a destination region. Place a sloped powered rail at the start."
 mill-name: "Mill"
-mill-desc: "Turns 2 into 1 bread every 30 seconds. Place a storage minecart in the chest. Build rails from the Mill to a destination region. Place a sloped powered rail at the start."
+mill-desc: "Turns 2 wheat into 1 bread every 30 seconds. Place a storage minecart in the chest. Build rails from the Mill to a destination region. Place a sloped powered rail at the start."
 boot_grinder-name: "Boot Grinder"
 boot_grinder-desc: "Turns leather boots into leather. Place a storage minecart in the chest. Build rails from the Boot Grinder to a destination region. Place a sloped powered rail at the start."
 stone_works-name: "Stone Works"
