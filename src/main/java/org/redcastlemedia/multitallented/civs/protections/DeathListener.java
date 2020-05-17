@@ -275,6 +275,7 @@ public class DeathListener implements Listener {
         boolean isAxe = RepairEffect.isAxe(mainHand.getType());
         boolean isTrident = mainHand.getType() == Material.TRIDENT;
         boolean isBow = mainHand.getType() == Material.BOW;
+        boolean isCrossbow = mainHand.getType() == Material.CROSSBOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         for (Skill skill : civilian.getSkills().values()) {
             double exp = 0;
@@ -282,7 +283,8 @@ public class DeathListener implements Listener {
             boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
             boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
             boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
-            if (swordSkill || axeSkill || tridentSkill || bowSkill) {
+            boolean crossbowSkill = isCrossbow && skill.getType().equalsIgnoreCase(CivSkills.CROSSBOW.name());
+            if (swordSkill || axeSkill || tridentSkill || bowSkill || crossbowSkill) {
                 exp = skill.addAccomplishment(event.getEntity().getType().name());
             }
             if (exp > 0) {

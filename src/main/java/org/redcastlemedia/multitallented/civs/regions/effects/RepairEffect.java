@@ -90,6 +90,7 @@ public class RepairEffect implements Listener {
                 returnSet.add(Material.DIAMOND);
                 return returnSet;
             case BOW:
+            case CROSSBOW:
             case FISHING_ROD:
                 returnSet.add(Material.STRING);
                 return returnSet;
@@ -126,6 +127,7 @@ public class RepairEffect implements Listener {
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 2.0D);
                 return Math.max(amt, 1);
             case BOW:
+            case CROSSBOW:
             case STONE_PICKAXE:
             case WOODEN_PICKAXE:
             case GOLDEN_PICKAXE:
@@ -254,6 +256,7 @@ public class RepairEffect implements Listener {
             case STONE_AXE:
             case TRIDENT:
             case BOW:
+            case CROSSBOW:
                 return true;
             default:
                 return false;

@@ -1,0 +1,18 @@
+enabled: true
+icon: CROSSBOW
+exp-per-new-item: 60
+exp-repeat-decay: 6
+max-exp: 3000
+exceptions:
+  PLAYER: 200
+  WITHER: 300
+  ENDER_DRAGON: 900
+  BLAZE: 90
+  GHAST: 120
+shop-rewards:
+  siege_machine: 0.2
+  temp_arrow_trap: 0.4
+  arrow_trap: 0.4
+  arrow_factory: 0.3
+  flint_works: 0.4
+  chicken_coop: 0.4
