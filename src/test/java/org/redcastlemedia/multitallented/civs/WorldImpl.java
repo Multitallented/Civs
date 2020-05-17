@@ -152,17 +152,7 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public boolean unloadChunk(int i, int i1, boolean b, boolean b1) {
-        return false;
-    }
-
-    @Override
     public boolean unloadChunkRequest(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean unloadChunkRequest(int i, int i1, boolean b) {
         return false;
     }
 
@@ -192,6 +182,32 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean addPluginChunkTicket(int i, int i1, Plugin plugin) {
+        return false;
+    }
+
+    @Override
+    public boolean removePluginChunkTicket(int i, int i1, Plugin plugin) {
+        return false;
+    }
+
+    @Override
+    public void removePluginChunkTickets(Plugin plugin) {
+
+    }
+
+    @Override
+    public Collection<Plugin> getPluginChunkTickets(int i, int i1) {
+        return null;
+    }
+
+    @Override
+    public Map<Plugin, Collection<Chunk>> getPluginChunkTickets() {
+        return null;
+    }
+
+
+    @Override
     public Item dropItem(Location location, ItemStack itemStack) {
         return null;
     }
@@ -207,7 +223,7 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public <T extends Arrow> T spawnArrow(Location location, Vector vector, float v, float v1, Class<T> aClass) {
+    public <T extends AbstractArrow> T spawnArrow(Location location, Vector vector, float v, float v1, Class<T> aClass) {
         return null;
     }
 
@@ -427,12 +443,27 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean createExplosion(double v, double v1, double v2, float v3, boolean b, boolean b1, Entity entity) {
+        return false;
+    }
+
+    @Override
     public boolean createExplosion(Location location, float v) {
         return false;
     }
 
     @Override
     public boolean createExplosion(Location location, float v, boolean b) {
+        return false;
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float v, boolean b, boolean b1) {
+        return false;
+    }
+
+    @Override
+    public boolean createExplosion(Location location, float v, boolean b, boolean b1, Entity entity) {
         return false;
     }
 
@@ -810,7 +841,22 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public int getViewDistance() {
+        return 0;
+    }
+
+    @Override
     public Spigot spigot() {
+        return null;
+    }
+
+    @Override
+    public Raid locateNearestRaid(Location location, int i) {
+        return null;
+    }
+
+    @Override
+    public List<Raid> getRaids() {
         return null;
     }
 

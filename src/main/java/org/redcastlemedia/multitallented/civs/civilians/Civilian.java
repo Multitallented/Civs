@@ -211,7 +211,7 @@ public class Civilian {
             rebuildBonus = 1;
         }
         boolean atMax = civItem.getCivMax() != -1 &&
-                civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return civItem.getProcessedName();
         }
