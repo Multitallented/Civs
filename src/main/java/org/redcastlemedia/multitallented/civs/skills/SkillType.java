@@ -13,7 +13,7 @@ public class SkillType {
     private double expPerCategory;
     private double expRepeatDecay;
     private Map<String, Double> exceptions = new HashMap<>();
-    private double maxChance;
+    private Map<String, Double> shopRewards = new HashMap<>();
 
     public SkillType(String name, String icon) {
         this.name = name;

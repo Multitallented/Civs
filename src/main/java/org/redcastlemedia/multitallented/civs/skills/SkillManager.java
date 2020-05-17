@@ -11,6 +11,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
@@ -81,7 +83,13 @@ public class SkillManager {
                 config.getString("icon", "STONE"));
         skillType.setExpPerCategory(config.getDouble("exp-per-new-item", 100));
         skillType.setExpRepeatDecay(config.getDouble("exp-repeat-decay", 20));
-        skillType.setMaxChance(config.getDouble("max-chance", 0.4));
+        if (config.isSet("shop-rewards")) {
+            Map<String, Double> shopRewards = new HashMap<>();
+            for (String key : config.getConfigurationSection("shop-rewards").getKeys(false)) {
+                shopRewards.put(key, config.getDouble("shop-rewards." + key, 0.1));
+            }
+            skillType.setShopRewards(shopRewards);
+        }
         if (config.isSet("exceptions")) {
             Map<String, Double> exceptions = new HashMap<>();
             for (String key : config.getConfigurationSection("exceptions").getKeys(false)) {
@@ -94,5 +102,19 @@ public class SkillManager {
 
     public SkillType getSkillType(String name) {
         return skills.get(name);
+    }
+
+    public double getTotalSkillDiscount(Civilian civilian, CivItem civItem) {
+        double discount = 0;
+        for (Skill skill : civilian.getSkills().values()) {
+            SkillType skillType = skills.get(skill.getType());
+            for (Map.Entry<String, Double> entry : skillType.getShopRewards().entrySet()) {
+                if (civItem.getProcessedName().equals(entry.getKey()) ||
+                        civItem.getGroups().contains(entry.getKey())) {
+                    discount += entry.getValue();
+                }
+            }
+        }
+        return discount;
     }
 }
