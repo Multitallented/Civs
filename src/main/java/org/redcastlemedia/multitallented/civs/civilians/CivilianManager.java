@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,6 +13,9 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -174,6 +176,22 @@ public class CivilianManager {
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
             civilian.setHardship(civConfig.getDouble("hardship", 0));
             String stringRespawn = civConfig.getString("respawn");
+            if (civConfig.isSet("skills")) {
+                for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
+                    Skill skill = new Skill(skillName);
+                    for (String accomplishment : civConfig.getConfigurationSection("skills." + skillName).getKeys(false)) {
+                        int level = civConfig.getInt("skills." + skillName + "." + accomplishment);
+                        skill.getAccomplishments().put(accomplishment, level);
+                    }
+                    civilian.getSkills().put(skillName, skill);
+                }
+            }
+            for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
+                if (!civilian.getSkills().containsKey(skillName)) {
+                    civilian.getSkills().put(skillName, new Skill(skillName));
+                }
+            }
+
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
             }
@@ -217,6 +235,10 @@ public class CivilianManager {
         civilian.setTutorialIndex(-1);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
+
+        for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
+            civilian.getSkills().put(skillName, new Skill(skillName));
+        }
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
@@ -276,6 +298,12 @@ public class CivilianManager {
             civConfig.set("karma", civilian.getKarma());
             civConfig.set("classes", classes);
             civConfig.set("locale", civilian.getLocale());
+            for (Skill skill : civilian.getSkills().values()) {
+                for (Map.Entry<String, Integer> entry : skill.getAccomplishments().entrySet()) {
+                    civConfig.set("skills." + skill.getType() + "." + entry.getKey(), entry.getValue());
+                }
+            }
+
             if (civilian.getBounties() != null && !civilian.getBounties().isEmpty()) {
                 for (int i = 0; i < civilian.getBounties().size(); i++) {
                     if (civilian.getBounties().get(i).getIssuer() != null) {

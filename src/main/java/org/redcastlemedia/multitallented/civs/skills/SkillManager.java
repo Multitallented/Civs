@@ -16,10 +16,14 @@ import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
+import lombok.Getter;
+
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class SkillManager {
     private static SkillManager skillManager = null;
-    private HashMap<String, SkillType> skills = new HashMap<>();
+
+    @Getter
+    private final HashMap<String, SkillType> skills = new HashMap<>();
 
     public static synchronized SkillManager getInstance() {
         if (skillManager == null) {
