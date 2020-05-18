@@ -21,6 +21,7 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String ROOT_ID = "civs";
     private static final String TOWN_NAME = "townname";
     private static final String KARMA = "karma";
+    private static final String HARDSHIP = "hardship";
     private static final String KILLS = "kills";
     private static final String KILLSTREAK = "killstreak";
     private static final String HIGHEST_KILLSTREAK = "highestkillstreak";
@@ -74,33 +75,35 @@ public class PlaceHook extends PlaceholderExpansion {
 
     private String routePlaceholder(Civilian civilian, String identifier, OfflinePlayer player) {
         if (TOWN_NAME.equals(identifier)) {
-            return getReplacement(civilian);
+            return TownManager.getInstance().getBiggestTown(civilian);
         } else if (POWER.equals(identifier)) {
-            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
                 return "-";
             }
             return "" + town.getPower();
         } else if (MAX_POWER.equals(identifier)) {
-            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
                 return "-";
             }
             return "" + town.getMaxPower();
         } else if (POPULATION.equals(identifier)) {
-            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
                 return "-";
             }
             return "" + town.getPopulation();
         } else if (HOUSING.equals(identifier)) {
-            Town town = TownManager.getInstance().getTown(getReplacement(civilian));
+            Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
                 return "-";
             }
             return "" + town.getHousing();
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
+        } else if (HARDSHIP.equals(identifier)) {
+            return "" + civilian.getHardship();
         } else if (KILLS.equals(identifier)) {
             return "" + civilian.getKills();
         } else if (KILLSTREAK.equals(identifier)) {
@@ -136,7 +139,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (NATION.equals(identifier)) {
             String nation = getNation(civilian);
             if (nation == null) {
-                return getReplacement(civilian);
+                return TownManager.getInstance().getBiggestTown(civilian);
             }
             return nation;
         } else {
@@ -160,24 +163,4 @@ public class PlaceHook extends PlaceholderExpansion {
         return null;
     }
 
-    private String getReplacement(Civilian civilian) {
-        Town town = TownManager.getInstance().isOwnerOfATown(civilian);
-        if (town != null) {
-            return town.getName();
-        } else {
-            int highestPopulation = 0;
-            Town highestTown = null;
-            for (Town to : TownManager.getInstance().getTowns()) {
-                if (!to.getPeople().containsKey(civilian.getUuid())) {
-                    continue;
-                }
-                int pop = to.getPopulation();
-                if (pop > highestPopulation) {
-                    highestTown = to;
-                    highestPopulation = pop;
-                }
-            }
-            return highestTown == null ? "-" : highestTown.getName();
-        }
-    }
 }

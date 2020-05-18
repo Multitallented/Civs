@@ -7,35 +7,38 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 import java.util.HashMap;
 
 public class FallEffect extends Effect {
     private float distance = 0;
-    private String target = "self";
+    private String target = SpellConstants.SELF;
     private boolean silent = false;
     private boolean setFall = false;
 
-    public FallEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String configDistance = section.getString("distance", "0");
-        this.distance = Math.round(Spell.getLevelAdjustedValue(configDistance, level, target, spell));
-        String tempTarget = section.getString("target", "not-a-string");
-        this.setFall = section.getBoolean("set", false);
-        this.silent = section.getBoolean("silent", false);
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
-            this.target = "self";
+    public FallEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            String configDistance = section.getString(SpellConstants.DISTANCE, "0");
+            if (configDistance != null) {
+                this.distance = Math.round(Spell.getLevelAdjustedValue(configDistance, level, target, spell));
+            }
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            this.setFall = section.getBoolean(SpellConstants.SET, false);
+            this.silent = section.getBoolean(SpellConstants.SILENT, false);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = SpellConstants.SELF;
+            }
+        } else if (value instanceof String) {
+            this.distance = Math.round(Spell.getLevelAdjustedValue((String) value, level, target, spell));
+            this.target = SpellConstants.SELF;
+            this.silent = false;
+            this.setFall = false;
         }
-    }
-
-    public FallEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.distance = Math.round(Spell.getLevelAdjustedValue(value, level, target, spell));
-        this.target = "self";
-        this.silent = false;
-        this.setFall = false;
     }
 
     public boolean meetsRequirement() {
@@ -49,7 +52,7 @@ public class FallEffect extends Effect {
 
         if (livingEntity.getFallDistance() < this.distance) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(ChatColor.RED + Civs.getPrefix() + " target isn't hasn't fallen " + this.distance + " blocks.");
+                origin.sendMessage(ChatColor.RED + Civs.getPrefix() + " target isn't hasn't fallen " + this.distance + " blocks.");
             }
             return false;
         }
@@ -72,7 +75,7 @@ public class FallEffect extends Effect {
 
     @Override
     public HashMap<String, Double> getVariables() {
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+        HashMap<String, Double> returnMap = new HashMap<>();
         Object target = getTarget();
         if (!(target instanceof LivingEntity)) {
             return returnMap;

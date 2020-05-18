@@ -11,6 +11,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 import java.util.HashMap;
@@ -25,29 +26,32 @@ public class CivPotionEffect extends Effect {
 
     private String target = "self";
 
-    public CivPotionEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        this.type = PotionEffectType.getByName(section.getString("type", "POISON"));
-        this.ticks = (int) Math.round(Spell.getLevelAdjustedValue("" + section.getInt("ticks", 40), level, target, spell));
-        this.level = (int) Math.round(Spell.getLevelAdjustedValue("" + section.getInt("level", 1), level, target, spell));
-        String tempTarget = section.getString("target", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
+    public CivPotionEffect(Spell spell, String key, Object target, Entity origin, int level, Object configSettings) {
+        super(spell, key, target, origin, level);
+        if (configSettings instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) configSettings;
+            this.type = PotionEffectType.getByName(section.getString("type", "POISON"));
+            this.ticks = (int) Math.round(Spell.getLevelAdjustedValue("" +
+                    section.getInt(SpellConstants.TICKS, 40), level, target, spell));
+            this.level = (int) Math.round(Spell.getLevelAdjustedValue("" +
+                    section.getInt(SpellConstants.LEVEL, 1), level, target, spell));
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = "self";
+            }
+            this.config = section;
+
+            this.potion = new PotionEffect(type, ticks, this.level);
+        } else if (configSettings instanceof String) {
+            this.type = PotionEffectType.getByName((String) configSettings);
+            this.ticks = 40;
+            this.level = 1;
             this.target = "self";
+
+            this.potion = new PotionEffect(type, ticks, this.level);
         }
-        this.config = section;
-
-        this.potion = new PotionEffect(type, ticks, this.level);
-    }
-    public CivPotionEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.type = PotionEffectType.getByName(value);
-        this.ticks = 40;
-        this.level = 1;
-        this.target = "self";
-
-        this.potion = new PotionEffect(type, ticks, this.level);
     }
 
     @Override
