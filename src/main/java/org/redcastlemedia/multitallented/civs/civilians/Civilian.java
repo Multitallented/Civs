@@ -365,4 +365,5 @@ public class Civilian {
     public boolean isFriend(Civilian friend) {
         return friends.contains(friend.getUuid());
     }
+
 }

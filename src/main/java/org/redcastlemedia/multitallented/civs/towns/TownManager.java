@@ -817,6 +817,27 @@ public class TownManager {
         return housingCount;
     }
 
+    public String getBiggestTown(Civilian civilian) {
+        Town town = getInstance().isOwnerOfATown(civilian);
+        if (town != null) {
+            return town.getName();
+        } else {
+            int highestPopulation = 0;
+            Town highestTown = null;
+            for (Town to : getInstance().getTowns()) {
+                if (!to.getPeople().containsKey(civilian.getUuid())) {
+                    continue;
+                }
+                int pop = to.getPopulation();
+                if (pop > highestPopulation) {
+                    highestTown = to;
+                    highestPopulation = pop;
+                }
+            }
+            return highestTown == null ? "-" : highestTown.getName();
+        }
+    }
+
     public Set<Region> getRegionsInTown(Town town) {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         return getRegionsInTown(town.getLocation(), townType.getBuildRadius(), townType.getBuildRadiusY());

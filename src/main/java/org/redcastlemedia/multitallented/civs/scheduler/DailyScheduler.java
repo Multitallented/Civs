@@ -59,7 +59,15 @@ public class DailyScheduler implements Runnable {
             }
             civilian.setDaysSinceLastHardshipDepreciation(0);
 
-            double newHardship = (civilian.getHardship() / 2.0);
+            double baseHardship = 0;
+            String townName = TownManager.getInstance().getBiggestTown(civilian);
+            if (townName != null) {
+                Town town = TownManager.getInstance().getTown(townName);
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                baseHardship = townType.getPrice() / (double) town.getRawPeople().size();
+            }
+
+            double newHardship = ((civilian.getHardship() - baseHardship) / 2.0) + baseHardship;
             civilian.setHardship(newHardship);
             CivilianManager.getInstance().saveCivilian(civilian);
         }
