@@ -79,8 +79,10 @@ public class AntiCheatManager implements Listener {
                 NCPExemptionManager.exemptPermanently(player, checkType);
             }
             Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
-                for (CheckType checkType : ncpChecks) {
-                    NCPExemptionManager.unexempt(player, checkType);
+                if (noCheatPlus != null) {
+                    for (CheckType checkType : ncpChecks) {
+                        NCPExemptionManager.unexempt(player, checkType);
+                    }
                 }
             }, duration / 50);
         }
