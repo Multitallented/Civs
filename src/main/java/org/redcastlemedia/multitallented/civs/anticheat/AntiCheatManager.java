@@ -20,6 +20,7 @@ import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import me.jinky.BAC;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
+import rip.reflex.api.event.ReflexCheckEvent;
 
 @CivsSingleton
 public class AntiCheatManager implements Listener {
@@ -91,7 +92,7 @@ public class AntiCheatManager implements Listener {
         Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> civilian.getExemptions().remove(exemptionType), duration / 50);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBACPlayerViolationEvent(PlayerViolationEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
@@ -102,12 +103,26 @@ public class AntiCheatManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWitherViolationEvent(ViolationEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         for (ExemptionType exemptionType : civilian.getExemptions()) {
             if (WitherACExemptionAssembler.mapExemptionTypeToCheckType(exemptionType).contains(event.getType())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onReflexCheckEvent(ReflexCheckEvent event) {
+        if (event.getResult().shouldCancel()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (ExemptionType exemptionType : civilian.getExemptions()) {
+            if (ReflexExemptionAssembler.mapExemptionTypeToCheats(exemptionType).contains(event.getCheat())) {
                 event.setCancelled(true);
             }
         }

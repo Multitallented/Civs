@@ -1,14 +1,10 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.anticheat.AntiCheatManager;
 import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
