@@ -99,6 +99,7 @@ public class AntiCheatManager implements Listener {
         for (ExemptionType exemptionType : civilian.getExemptions()) {
             if (SpartanExemptionAssembler.mapExemptionTypeToHackType(exemptionType).contains(event.getHackType())) {
                 event.setCancelled(true);
+                return;
             }
         }
     }
@@ -110,6 +111,7 @@ public class AntiCheatManager implements Listener {
         for (ExemptionType exemptionType : civilian.getExemptions()) {
             if (WitherACExemptionAssembler.mapExemptionTypeToCheckType(exemptionType).contains(event.getType())) {
                 event.setCancelled(true);
+                return;
             }
         }
     }
@@ -124,6 +126,19 @@ public class AntiCheatManager implements Listener {
         for (ExemptionType exemptionType : civilian.getExemptions()) {
             if (ReflexExemptionAssembler.mapExemptionTypeToCheats(exemptionType).contains(event.getCheat())) {
                 event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerViolation(me.konsolas.aac.api.PlayerViolationEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (ExemptionType exemptionType : civilian.getExemptions()) {
+            if (AACExemptionAssembler.mapExemptionTypeToHackTypes(exemptionType).contains(event.getHackType())) {
+                event.setCancelled(true);
+                return;
             }
         }
     }

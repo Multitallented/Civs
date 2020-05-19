@@ -17,6 +17,7 @@ public final class WitherACExemptionAssembler {
                 checkTypes.add(CheckType.FLY);
                 checkTypes.add(CheckType.SPEED);
                 break;
+            case FAST_PLACE:
             case FAST_BREAK:
                 checkTypes.add(CheckType.BUILD_ANGLE);
                 break;

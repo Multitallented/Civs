@@ -38,6 +38,10 @@
             <id>dynmap</id>
             <url>http://repo.mikeprimm.com/</url>
         </repository>
+        <repository>
+            <id>janmm14-public</id>
+            <url>https://repo.janmm14.de/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -139,6 +143,11 @@
             <artifactId>ReflexAPI</artifactId>
             <scope>system</scope>
             <systemPath>${basedir}/lib/ReflexAPI-v7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.janmm14</groupId>
+            <artifactId>aac-api</artifactId>
+            <version>4.2.0</version>
         </dependency>
 
         <dependency>
