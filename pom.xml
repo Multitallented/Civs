@@ -122,6 +122,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.gmail.olexorus.witherac.api</groupId>
+            <artifactId>WitherAC_API</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

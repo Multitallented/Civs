@@ -11,6 +11,8 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 
+import com.gmail.olexorus.witherac.api.ViolationEvent;
+
 import me.jinky.BAC;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
 
@@ -65,11 +67,22 @@ public class AntiCheatManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerViolationEvent(PlayerViolationEvent event) {
+    public void onBACPlayerViolationEvent(PlayerViolationEvent event) {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         for (ExemptionType exemptionType : civilian.getExemptions()) {
             if (SpartanExemptionAssembler.mapExemptionTypeToHackType(exemptionType).contains(event.getHackType())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onWitherViolationEvent(ViolationEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (ExemptionType exemptionType : civilian.getExemptions()) {
+            if (WitherACExemptionAssembler.mapExemptionTypeToCheckType(exemptionType).contains(event.getType())) {
                 event.setCancelled(true);
             }
         }
