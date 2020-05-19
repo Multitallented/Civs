@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.anticheat;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +15,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 
 import com.gmail.olexorus.witherac.api.ViolationEvent;
 
+import fr.neatmonster.nocheatplus.NoCheatPlus;
+import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import me.jinky.BAC;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
 
@@ -21,6 +26,7 @@ public class AntiCheatManager implements Listener {
 
     private static AntiCheatManager instance = null;
     private static BAC basicAntiCheat = null;
+    private static NoCheatPlus noCheatPlus = null;
 
     public static AntiCheatManager getInstance() {
         if (instance == null) {
@@ -38,6 +44,8 @@ public class AntiCheatManager implements Listener {
             basicAntiCheat = (BAC) Bukkit.getPluginManager().getPlugin("BasicAntiCheat");
         } else if (Bukkit.getPluginManager().isPluginEnabled("BAC")) {
             basicAntiCheat = (BAC) Bukkit.getPluginManager().getPlugin("BAC");
+        } else if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+            noCheatPlus = (NoCheatPlus) Bukkit.getPluginManager().getPlugin("NoCheatPlus");
         }
     }
 
@@ -45,6 +53,8 @@ public class AntiCheatManager implements Listener {
     public void onPluginEnable(PluginEnableEvent event) {
         if (event.getPlugin().getName().equals("BasicAntiCheat") || event.getPlugin().getName().equals("BAC")) {
             basicAntiCheat = (BAC) event.getPlugin();
+        } else if (event.getPlugin().getName().equals("NoCheatPlus")) {
+            noCheatPlus = (NoCheatPlus) event.getPlugin();
         }
     }
 
@@ -52,6 +62,8 @@ public class AntiCheatManager implements Listener {
     public void onPluginDisable(PluginDisableEvent event) {
         if (event.getPlugin().getName().equals("BasicAntiCheat") || event.getPlugin().getName().equals("BAC")) {
             basicAntiCheat = null;
+        } else if (event.getPlugin().getName().equals("NoCheatPlus")) {
+            noCheatPlus = null;
         }
     }
 
@@ -60,6 +72,17 @@ public class AntiCheatManager implements Listener {
 
         if (basicAntiCheat != null) {
             basicAntiCheat.EXEMPTHANDLER.addExemptionBlock(player, (int) duration);
+        }
+        if (noCheatPlus != null) {
+            Set<CheckType> ncpChecks = NCPExemptionAssembler.mapExemptionTypeToCheatTypes(exemptionType);
+            for (CheckType checkType : ncpChecks) {
+                NCPExemptionManager.exemptPermanently(player, checkType);
+            }
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                for (CheckType checkType : ncpChecks) {
+                    NCPExemptionManager.unexempt(player, checkType);
+                }
+            }, duration / 50);
         }
 
         civilian.getExemptions().add(exemptionType);

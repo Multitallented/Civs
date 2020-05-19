@@ -4,5 +4,6 @@ public enum ExemptionType {
     FLY,
     JESUS,
     KILL_AURA,
-    FAST_BREAK
+    FAST_BREAK,
+    FAST_PLACE
 }

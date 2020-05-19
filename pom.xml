@@ -128,6 +128,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus-parent</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
