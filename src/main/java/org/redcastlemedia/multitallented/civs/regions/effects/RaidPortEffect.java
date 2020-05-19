@@ -144,10 +144,12 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             return null;
         }
 
-        String stringDistance = rt.getEffects().get(KEY);
         int distance = 200;
-        if (stringDistance != null) {
-            distance = Integer.parseInt(stringDistance);
+        if (rt.getEffects().get(KEY) != null) {
+            String[] split = rt.getEffects().get(KEY).split("\\.");
+            if (!split[0].isEmpty()) {
+                distance = Integer.parseInt(split[0]);
+            }
         }
 
         Sign sign = (Sign) state;
@@ -210,7 +212,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         long cooldown = 20;
         if (r.getEffects().get(KEY) != null) {
-            cooldown = Long.parseLong(r.getEffects().get(KEY));
+            String[] split = r.getEffects().get(KEY).split("\\.");
+            if (split.length > 1) {
+                cooldown = Long.parseLong(split[1]);
+            }
         }
 
         if (cooldowns.containsKey(town) &&
