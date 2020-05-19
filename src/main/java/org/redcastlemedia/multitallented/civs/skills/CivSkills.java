@@ -7,13 +7,13 @@ public enum CivSkills {
     FOOD, // TODO
     MINING, // TODO
     FISHING, // TODO
-    SHIELD, // TODO
+    SHIELD,
     SWORD,
     AXE,
     TRIDENT,
     BOW,
     CROSSBOW,
-    ARMOR, // TODO
+    ARMOR,
     POTION, // TODO
     ENCHANT // TODO
 }

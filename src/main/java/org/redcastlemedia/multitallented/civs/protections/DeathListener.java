@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -226,6 +227,8 @@ public class DeathListener implements Listener {
         if (boots != null && RepairEffect.isBoots(boots.getType())) {
             armors.add(boots.getType());
         }
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD);
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.ARMOR.name())) {
                 double exp = 0;
@@ -233,6 +236,39 @@ public class DeathListener implements Listener {
                     exp += skill.addAccomplishment(mat.name());
                 }
 
+                if (exp > 0) {
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            } else if (hasShield && skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
+                double exp = skill.addAccomplishment("DAMAGE");
+                if (exp > 0) {
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDeflectArrow(ProjectileHitEvent event) {
+        if (!(event.getHitEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getHitEntity();
+        if (!player.isBlocking()) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
+                double exp = skill.addAccomplishment("BLOCKED");
                 if (exp > 0) {
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
