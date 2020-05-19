@@ -15,9 +15,11 @@ public final class SpartanExemptionAssembler {
         switch (exemptionType) {
             case FLY:
                 hackTypes.add(Enums.HackType.Fly);
+                hackTypes.add(Enums.HackType.IrregularMovements);
                 break;
             case JESUS:
                 hackTypes.add(Enums.HackType.Jesus);
+                hackTypes.add(Enums.HackType.IrregularMovements);
                 break;
             case KILL_AURA:
                 hackTypes.add(Enums.HackType.Criticals);
@@ -29,7 +31,7 @@ public final class SpartanExemptionAssembler {
                 hackTypes.add(Enums.HackType.Nuker);
                 break;
             default:
-                hackTypes.add(Enums.HackType.Jesus);
+                hackTypes.add(Enums.HackType.IrregularMovements);
                 break;
         }
         return hackTypes;

@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.anticheat.AntiCheatManager;
 import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -36,10 +37,7 @@ public class ExemptionEffect extends Effect {
             return;
         }
         Player player = (Player) origin;
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        final ExemptionType exemptionTypeFinal = this.exemptionType;
-        civilian.getExemptions().add(this.exemptionType);
-        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> civilian.getExemptions().remove(exemptionTypeFinal), this.duration / 50);
+        AntiCheatManager.getInstance().addExemption(player, this.exemptionType, this.duration);
     }
 
     @Override

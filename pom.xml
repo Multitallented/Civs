@@ -116,6 +116,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>me.jinky</groupId>
+            <artifactId>BAC</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
