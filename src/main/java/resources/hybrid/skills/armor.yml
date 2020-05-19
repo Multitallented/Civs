@@ -1,0 +1,15 @@
+enabled: true
+icon: DIAMOND_CHESTPLATE
+exp-per-new-item: 30
+exp-repeat-decay: 1
+max-exp: 3000
+shop-rewards:
+  defense: 0.2
+  idol: 0.5
+  statue: 0.4
+  monument: 0.5
+  vault: 0.3
+  bell_tower: 0.5
+  barracks: 0.6
+  church: 0.7
+  jail: 0.3
