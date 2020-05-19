@@ -110,6 +110,12 @@
             <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
             <version>1.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>me.vagdedes.spartan.api</groupId>
+            <artifactId>API</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
