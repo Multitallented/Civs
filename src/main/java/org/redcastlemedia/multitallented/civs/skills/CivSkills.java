@@ -4,7 +4,7 @@ public enum CivSkills {
     CRAFTING,
     BUILDING,
     EXPLORATION,
-    FOOD, // TODO
+    FOOD,
     MINING, // TODO
     FISHING, // TODO
     SHIELD,
@@ -14,6 +14,6 @@ public enum CivSkills {
     BOW,
     CROSSBOW,
     ARMOR,
-    POTION, // TODO
+    POTION,
     ENCHANT // TODO
 }
