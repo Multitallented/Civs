@@ -5,25 +5,25 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsCommand(keys = { "advancetut" })
+@CivsCommand(keys = { "advancetut" }) @SuppressWarnings("unused")
 public class TutorialAdvanceCommand implements CivCommand {
 
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (Civs.perm == null || !Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION)) {
-            sendMessage(commandSender, "no-permission", "You don't have permission to use /cv advancetut PlayerName");
+            Util.sendMessageToPlayerOrConsole(commandSender, "no-permission", "You don't have permission to use /cv advancetut PlayerName");
             return true;
         }
         if (args.length < 2) {
-            sendMessage(commandSender, "invalid-target", "Invalid command. Use /cv advancetut PlayerName");
+            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid command. Use /cv advancetut PlayerName");
             return true;
         }
 
@@ -32,7 +32,7 @@ public class TutorialAdvanceCommand implements CivCommand {
         String playerName = args[1];
         Player player = Bukkit.getPlayer(playerName);
         if (player == null || !player.isValid()) {
-            sendMessage(commandSender, "invalid-target", "Invalid target player. Did you spell the name right?");
+            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid target player. Did you spell the name right?");
             return true;
         }
 
@@ -70,21 +70,5 @@ public class TutorialAdvanceCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION);
-    }
-
-    private void sendMessage(CommandSender commandSender, String key, String message) {
-        Player player = null;
-        if (commandSender instanceof Player) {
-            player = (Player) commandSender;
-        }
-        if (player != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    civilian.getLocale(),
-                    key
-            ));
-        } else {
-            commandSender.sendMessage(message);
-        }
     }
 }
