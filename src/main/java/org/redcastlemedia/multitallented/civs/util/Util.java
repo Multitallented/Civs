@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -784,5 +785,18 @@ public final class Util {
         }
 
         return c;
+    }
+
+    public static void sendMessageToPlayerOrConsole(CommandSender commandSender, String key, String message) {
+        Player player = null;
+        if (commandSender instanceof Player) {
+            player = (Player) commandSender;
+        }
+        if (player != null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, key));
+        } else {
+            commandSender.sendMessage(message);
+        }
     }
 }
