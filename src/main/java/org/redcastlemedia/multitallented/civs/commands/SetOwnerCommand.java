@@ -22,11 +22,13 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 @CivsCommand(keys = { "setowner" })
-public class SetOwnerCommand implements CivCommand {
+public class SetOwnerCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -202,5 +204,27 @@ public class SetOwnerCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3 && commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+            if (region != null) {
+                suggestions.add(region.getId());
+                suggestions.addAll(getTownNames(args[2]));
+                return suggestions;
+            }
+        } else if (args.length == 3) {
+            return getTownNames(args[2]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

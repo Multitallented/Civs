@@ -75,6 +75,7 @@ public class TownManager {
     }
 
     public List<Town> getTowns() { return sortedTowns; }
+    public Set<String> getTownNames() { return towns.keySet(); }
     public Town getTown(String name) {
         return towns.get(name);
     }
