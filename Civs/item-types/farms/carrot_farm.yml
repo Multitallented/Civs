@@ -30,11 +30,20 @@
 #- block_liquid
 #- block_fire
 #- conveyor:CARROT
-#period: 500 # 5 minutes
+#period: 300 # 5 minutes
 #upkeep:
 #  0:
 #    reagents:
 #    - STONE_HOE
 #    output:
+#    - CARROT*8
+#  1:
+#    reagents:
+#    - IRON_HOE
+#    output:
 #    - CARROT*16
-#
+#  2:
+#    reagents:
+#    - DIAMOND_HOE
+#    output:
+#    - CARROT*24

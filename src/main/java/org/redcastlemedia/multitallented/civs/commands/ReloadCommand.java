@@ -18,7 +18,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "reload" }) @SuppressWarnings("unused")
-public class ReloadCommand implements CivCommand {
+public class ReloadCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if ((Civs.perm != null && commandSender.hasPermission(Constants.ADMIN_PERMISSION)) || commandSender.isOp()) {

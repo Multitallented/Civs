@@ -12,16 +12,16 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsCommand(keys = { "karma" }) @SuppressWarnings("unused")
-public class KarmaCommand extends CivCommand {
+@CivsCommand(keys = { "hardship" }) @SuppressWarnings("unused")
+public class HardshipCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (Civs.perm == null || !Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION)) {
-            Util.sendMessageToPlayerOrConsole(commandSender, "no-permission", "You don't have permission to use /cv karma PlayerName");
+            Util.sendMessageToPlayerOrConsole(commandSender, "no-permission", "You don't have permission to use /cv hardship PlayerName");
             return true;
         }
         if (args.length < 2) {
-            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid command. Use /cv karma PlayerName");
+            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid command. Use /cv hardship PlayerName");
             return true;
         }
 
@@ -31,19 +31,19 @@ public class KarmaCommand extends CivCommand {
             player = Bukkit.getOfflinePlayer(playerName);
         }
         if (!player.hasPlayedBefore()) {
-            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid command. Use /cv karma PlayerName");
+            Util.sendMessageToPlayerOrConsole(commandSender, "invalid-target", "Invalid command. Use /cv hardship PlayerName");
             return true;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (args.length < 3) {
-            Util.sendMessageToPlayerOrConsole(commandSender, "karma{" + civilian.getKarma(), "Karma: " + civilian.getKarma());
+            Util.sendMessageToPlayerOrConsole(commandSender, "hardship{" + civilian.getHardship(), "Hardship: " + civilian.getHardship());
             return true;
         }
 
-        int newKarma = Integer.parseInt(args[2]);
-        civilian.setKarma(newKarma);
+        int newHardship = Integer.parseInt(args[2]);
+        civilian.setHardship(newHardship);
         CivilianManager.getInstance().saveCivilian(civilian);
-        Util.sendMessageToPlayerOrConsole(commandSender, "karma{" + civilian.getKarma(), "Karma: " + civilian.getKarma());
+        Util.sendMessageToPlayerOrConsole(commandSender, "hardship{" + civilian.getHardship(), "Hardship: " + civilian.getHardship());
         return true;
     }
 

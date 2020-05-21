@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,7 +17,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "really" }) @SuppressWarnings("unused")
-public class ReallyCommand implements CivCommand {
+public class ReallyCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         boolean isPlayer = (commandSender instanceof Player);
@@ -94,5 +96,13 @@ public class ReallyCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getAllianceNames(args[1]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

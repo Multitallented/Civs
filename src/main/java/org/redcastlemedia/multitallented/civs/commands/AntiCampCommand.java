@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +20,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 @CivsCommand(keys = { "anticamp" }) @SuppressWarnings("unused")
-public class AntiCampCommand implements CivCommand {
+public class AntiCampCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -109,5 +112,17 @@ public class AntiCampCommand implements CivCommand {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            if (commandSender instanceof Player) {
+                return getTownNames(args[1]);
+            } else {
+                return getTownNamesForPlayer(args[1], (Player) commandSender);
+            }
+        }
+        return super.getWord(commandSender, args);
     }
 }

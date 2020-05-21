@@ -11,7 +11,7 @@ import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "newday" }) @SuppressWarnings("unused")
-public class DayCommand implements CivCommand {
+public class DayCommand extends CivCommand {
 
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {

@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,7 +18,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "bounty" })
-public class BountyCommand implements CivCommand {
+public class BountyCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -130,5 +133,18 @@ public class BountyCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return Civs.econ != null;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            List<String> suggestions = new ArrayList<>();
+            addAllOnlinePlayers(suggestions, args[1]);
+            suggestions.addAll(getTownNames(args[1]));
+            return suggestions;
+        } else if (args.length == 3) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }
