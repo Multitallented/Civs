@@ -37,6 +37,7 @@ public class SpellsTests extends TestUtil {
     @Test
     public void hungerSpellShouldReduceStamina() {
         Player player = mock(Player.class);
+        when(player.getDisplayName()).thenReturn("Someone");
         when(player.getFoodLevel()).thenReturn(20);
         ArgumentCaptor<Integer> staminaCapture = ArgumentCaptor.forClass(Integer.class);
         Spell spell = new Spell("hunger", player, 1);
@@ -66,6 +67,7 @@ public class SpellsTests extends TestUtil {
     public void hungerSpellShouldSetCooldown() {
         long currentTime = System.currentTimeMillis();
         Player player = mock(Player.class);
+        when(player.getDisplayName()).thenReturn("Someone");
         UUID uuid = new UUID(1,6);
         when(player.getUniqueId()).thenReturn(uuid);
         CivilianManager.getInstance().createDefaultCivilian(player);

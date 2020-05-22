@@ -46,8 +46,8 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.CHEST.name(), 9);
         skill.getAccomplishments().put(Material.STICK.name(), 9);
-        double expectedDiscount = (1.0 - (60.0 / 3000.0 * 0.6)) * regionType.getPrice();
-        assertEquals(60.0, skill.getExp(), 0.1);
+        double expectedDiscount = (1.0 - (90.0 / 3000.0 * 0.3)) * regionType.getPrice();
+        assertEquals(90.0, skill.getExp(), 0.1);
         assertEquals(expectedDiscount, SkillManager.getInstance().getSkillDiscountedPrice(civilian, regionType), 0.001);
     }
 
