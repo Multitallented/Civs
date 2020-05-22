@@ -9,12 +9,10 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @CivsCommand(keys = { "accept" }) @SuppressWarnings("unused")
-public class AcceptInviteCommand implements CivCommand {
+public class AcceptInviteCommand extends CivCommand {
 
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -60,9 +58,4 @@ public class AcceptInviteCommand implements CivCommand {
         }
         return Civs.perm == null || Civs.perm.has(commandSender, "civs.join");
     }
-
-//    @Override
-//    public List<String> getNextWordList(CommandSender commandSender, String[] args) {
-//        return new ArrayList<>();
-//    }
 }

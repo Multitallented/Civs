@@ -17,7 +17,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "add" }) @SuppressWarnings("unused")
-public class AddMemberCommand implements CivCommand {
+public class AddMemberCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -94,15 +94,21 @@ public class AddMemberCommand implements CivCommand {
         return true;
     }
 
-//    @Override
-//    public List<String> getNextWordList(CommandSender commandSender, String[] args) {
-//        List<String> returnList = new ArrayList<>();
-//        if (args.length < 2) {
-//
-//        }
-//        //1 player
-//        //2 regionname
-//        return null;
-//    }
-
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3 && commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+            if (region != null) {
+                suggestions.add(region.getId());
+                return suggestions;
+            }
+        }
+        return super.getWord(commandSender, args);
+    }
 }

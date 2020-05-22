@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -11,7 +13,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "karma" }) @SuppressWarnings("unused")
-public class KarmaCommand implements CivCommand {
+public class KarmaCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (Civs.perm == null || !Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION)) {
@@ -48,5 +50,13 @@ public class KarmaCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return Civs.perm != null && Civs.perm.has(commandSender, Constants.ADMIN_PERMISSION);
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }
