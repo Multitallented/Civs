@@ -41,7 +41,7 @@ public class Civilian {
     private final UUID uuid;
     @Getter
     private final Map<CivItem, Integer> exp;
-    private Set<CivClass> civClasses;
+    private Set<CivClass> civClasses = new HashSet<>();
     private String locale;
     @Getter @Setter
     private Map<String, Integer> stashItems;
@@ -89,13 +89,12 @@ public class Civilian {
     @Getter @Setter
     private HashMap<String, Skill> skills = new HashMap<>();
 
-    public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems, Set<CivClass> civClasses,
+    public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
                     double points, int karma) {
         this.uuid = uuid;
         this.locale = locale;
         this.stashItems = stashItems;
-        this.civClasses = civClasses;
         this.exp = exp;
         this.states = new HashMap<>();
         this.kills = kills;
@@ -108,13 +107,6 @@ public class Civilian {
         this.chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
     }
 
-    public Set<CivClass> getCivClasses() {
-        civClasses.remove(null);
-        if (civClasses.isEmpty()) {
-            civClasses.add(ClassManager.getInstance().createDefaultClass(uuid));
-        }
-        return civClasses;
-    }
     public String getLocale() {
         if (locale == null) {
             locale = ConfigManager.getInstance().getDefaultLanguage();
@@ -141,6 +133,14 @@ public class Civilian {
     public int getKarma() { return karma; }
     public void setKarma(int karma) { this.karma = karma; }
     public int getMana() { return mana; }
+    public Set<CivClass> getCivClasses() {
+        if (civClasses.isEmpty()) {
+            CivClass civClass = ClassManager.getInstance().createDefaultClass(uuid);
+            civClasses.add(civClass);
+            currentClass = civClass;
+        }
+        return civClasses;
+    }
     public void setMana(int mana) {
         this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
         // TODO set mana bar

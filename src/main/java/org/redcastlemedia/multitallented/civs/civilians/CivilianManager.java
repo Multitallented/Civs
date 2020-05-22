@@ -145,11 +145,6 @@ public class CivilianManager {
 
             ItemManager itemManager = ItemManager.getInstance();
             Map<String, Integer> items = itemManager.loadCivItems(civConfig);
-            Set<CivClass> classes = new HashSet<>();
-            ClassManager classManager = ClassManager.getInstance();
-            for (int id : civConfig.getIntegerList("classes")) {
-                classes.add(classManager.getCivClass(uuid, id));
-            }
             HashMap<CivItem, Integer> exp = new HashMap<>();
             ConfigurationSection section = civConfig.getConfigurationSection("exp");
             if (section != null) {
@@ -166,7 +161,7 @@ public class CivilianManager {
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
-            Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
+            Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
                     civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
@@ -224,12 +219,9 @@ public class CivilianManager {
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
         CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
-        Set<CivClass> classes = new HashSet<>();
-        classes.add(defaultClass);
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
-                classes,
                 new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");

@@ -43,6 +43,8 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton @SuppressWarnings("unused")
@@ -107,8 +109,33 @@ public class AllowedActionsListener implements Listener {
 
         final int returnedLevels = returningLevels;
 
+        addExpForEnchant(event);
+
         Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
                 () -> setCorrectEnchantItemsAndExp(player, limitedItem, returnedLevels), 1);
+    }
+
+    private void addExpForEnchant(EnchantItemEvent event) {
+        if (event.isCancelled() || event.getEnchantsToAdd().isEmpty()) {
+            return;
+        }
+        Player player = event.getEnchanter();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.ENCHANT.name())) {
+                double exp = 0;
+                for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
+                    exp += skill.addAccomplishment(entry.getKey().getKey().getKey() + entry.getValue());
+                }
+                if (exp > 0) {
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
     }
 
     private void setCorrectEnchantItemsAndExp(Player player, ItemStack limitedItem, int returnedLevels) {

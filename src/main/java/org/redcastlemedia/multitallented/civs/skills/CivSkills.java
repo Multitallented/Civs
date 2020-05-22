@@ -15,5 +15,5 @@ public enum CivSkills {
     CROSSBOW,
     ARMOR,
     POTION,
-    ENCHANT // TODO
+    ENCHANT
 }
