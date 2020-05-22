@@ -11,9 +11,11 @@ import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
+import org.redcastlemedia.multitallented.civs.spells.effects.ExemptionEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.FallEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.HealEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.IgniteEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.ItemEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.SoundEffect;
@@ -134,6 +136,10 @@ public class SpellType extends CivItem {
             return new TeleportEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.MANA)) {
             return new ManaEffect(spell, key, target, caster, level, config);
+        } else if (type.equals(SpellEffectConstants.ITEM)) {
+            return new ItemEffect(spell, key, target, caster, level, config);
+        } else if (type.equals(SpellEffectConstants.EXEMPTION)) {
+            return new ExemptionEffect(spell, key, target, caster, level, config);
         }
         return null;
     }

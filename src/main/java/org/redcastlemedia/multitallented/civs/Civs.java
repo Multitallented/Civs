@@ -18,7 +18,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
+import org.redcastlemedia.multitallented.civs.anticheat.AntiCheatManager;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
@@ -56,6 +59,7 @@ public class Civs extends JavaPlugin {
     public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
+    private TabComplete tabComplete;
 
     @Override
     public void onEnable() {
@@ -172,10 +176,15 @@ public class Civs extends JavaPlugin {
                 Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
-        new TabComplete(commandList);
+        tabComplete = new TabComplete(commandList);
     }
 
-//    private void initListeners() {
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        return tabComplete.onTabComplete(sender, command, alias, args);
+    }
+
+    //    private void initListeners() {
 //        Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 //    }

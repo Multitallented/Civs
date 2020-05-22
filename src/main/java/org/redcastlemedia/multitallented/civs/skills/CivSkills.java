@@ -2,18 +2,18 @@ package org.redcastlemedia.multitallented.civs.skills;
 
 public enum CivSkills {
     CRAFTING,
-    BUILDING, // TODO
+    BUILDING,
     EXPLORATION,
-    FOOD, // TODO
+    FOOD,
     MINING, // TODO
     FISHING, // TODO
-    SHIELD, // TODO
+    SHIELD,
     SWORD,
     AXE,
     TRIDENT,
     BOW,
-    CROSSBOW, // TODO
-    ARMOR, // TODO
-    POTION, // TODO
+    CROSSBOW,
+    ARMOR,
+    POTION,
     ENCHANT // TODO
 }

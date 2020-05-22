@@ -27,6 +27,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -37,18 +38,22 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -146,6 +151,71 @@ public class CivilianListener implements Listener {
         StructureUtil.removeBoundingBox(uuid);
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+        if (!(event.getPotion().getShooter() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getPotion().getShooter();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
+                double exp = 0;
+                for (PotionEffect potionEffect : event.getPotion().getEffects()) {
+                    exp += skill.addAccomplishment(potionEffect.getType().getName());
+                }
+                if (exp > 0) {
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (event.getItem().getType() == Material.POTION ||
+                event.getItem().getType() == Material.LINGERING_POTION) {
+            PotionMeta potionMeta = (PotionMeta) event.getItem().getItemMeta();
+            for (Skill skill : civilian.getSkills().values()) {
+                if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
+                    double exp = 0;
+                    if (potionMeta.getBasePotionData().getType().getEffectType() != null) {
+                        exp += skill.addAccomplishment(potionMeta.getBasePotionData().getType().getEffectType().getName());
+                    }
+                    for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                        exp += skill.addAccomplishment(potionEffect.getType().getName());
+                    }
+                    if (exp > 0) {
+                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                "exp-gained").replace("$1", "" + exp)
+                                .replace("$2", localSkillName));
+                    }
+                }
+            }
+        } else {
+            for (Skill skill : civilian.getSkills().values()) {
+                if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
+                    double exp = skill.addAccomplishment(event.getItem().getType().name());
+                    if (exp > 0) {
+                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                "exp-gained").replace("$1", "" + exp)
+                                .replace("$2", localSkillName));
+                    }
+                }
+            }
+        }
+    }
+
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCraftItem(CraftItemEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -163,6 +233,27 @@ public class CivilianListener implements Listener {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "exp-gained").replace("$1", "" + exp)
                         .replace("$2", localSkillName));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onRegionCreated(RegionCreatedEvent event) {
+        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getPrice() < 1) {
+            return;
+        }
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
+                double exp = skill.addAccomplishment(event.getRegion().getType());
+                if (exp > 0) {
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
             }
         }
     }

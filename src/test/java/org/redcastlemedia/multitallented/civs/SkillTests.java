@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;

@@ -17,6 +17,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsUtil;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -564,6 +565,17 @@ public class ItemManager {
                         }
                     }
                     continue;
+                //skill:crafting=20
+                } else if (req.startsWith("skill:")) {
+                    String[] reqSplit = req.split(":")[1].split("=");
+                    int level = Integer.parseInt(reqSplit[1]);
+                    String skillName = reqSplit[0];
+                    for (Skill skill : civilian.getSkills().values()) {
+                        if (skill.getType().equalsIgnoreCase(skillName) &&
+                                skill.getLevel() >= level) {
+                            continue outer;
+                        }
+                    }
                 //population=15
                 } else if (req.startsWith("population=")) {
                     int pop = Integer.parseInt(req.replace("population=", ""));

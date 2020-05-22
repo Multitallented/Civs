@@ -17,10 +17,12 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CivsCommand(keys = { "removemember" }) @SuppressWarnings("unused")
-public class RemoveMemberCommand implements CivCommand {
+public class RemoveMemberCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -115,5 +117,18 @@ public class RemoveMemberCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            List<String> suggestions = new ArrayList<>();
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3) {
+            return getTownNames(args[2]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

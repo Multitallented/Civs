@@ -9,7 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 
 @CivsCommand(keys = { "menu" })
-public class MenuCommand implements CivCommand {
+public class MenuCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {

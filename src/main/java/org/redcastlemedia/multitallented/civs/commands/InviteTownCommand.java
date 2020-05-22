@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +28,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 @CivsCommand(keys = { "invite" }) @SuppressWarnings("unused")
-public class InviteTownCommand implements CivCommand {
+public class InviteTownCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
@@ -133,5 +136,18 @@ public class InviteTownCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return commandSender instanceof Player;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            List<String> suggestions = new ArrayList<>();
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3) {
+            return new ArrayList<>(TownManager.getInstance().getTownNames());
+        }
+        return super.getWord(commandSender, args);
     }
 }

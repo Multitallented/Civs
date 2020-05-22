@@ -3,11 +3,6 @@ package org.redcastlemedia.multitallented.civs.skills;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "deposit" }) @SuppressWarnings("unused")
-public class DepositBankCommand implements CivCommand {
+public class DepositBankCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player) || args.length < 3 || Civs.econ == null) {
@@ -45,5 +48,16 @@ public class DepositBankCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return commandSender instanceof Player && Civs.econ != null;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getTownNames(args[1]);
+        }
+        if (args.length == 3) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }

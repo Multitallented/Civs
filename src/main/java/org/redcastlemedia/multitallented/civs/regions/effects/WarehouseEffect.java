@@ -200,9 +200,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
             }
         }
 
-        if (RegionManager.getInstance().hasRegionChestChanged(r)) {
-            tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
-        }
+        tidyCentralChest(r, UnloadedInventoryHandler.getInstance().getChestInventory(l), l);
     }
 
     private void populateRegionsNeedingDelivery(Region r, HashSet<Region> deliverTo, Town town) {

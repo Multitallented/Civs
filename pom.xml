@@ -38,6 +38,10 @@
             <id>dynmap</id>
             <url>http://repo.mikeprimm.com/</url>
         </repository>
+        <repository>
+            <id>janmm14-public</id>
+            <url>https://repo.janmm14.de/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -109,6 +113,41 @@
             <scope>system</scope>
             <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
             <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>me.vagdedes.spartan.api</groupId>
+            <artifactId>API</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.jinky</groupId>
+            <artifactId>BAC</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.gmail.olexorus.witherac.api</groupId>
+            <artifactId>WitherAC_API</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus-parent</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>rip.reflex.api</groupId>
+            <artifactId>ReflexAPI</artifactId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ReflexAPI-v7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.janmm14</groupId>
+            <artifactId>aac-api</artifactId>
+            <version>4.2.0</version>
         </dependency>
 
         <dependency>

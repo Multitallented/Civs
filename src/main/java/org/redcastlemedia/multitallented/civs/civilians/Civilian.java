@@ -17,6 +17,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
@@ -83,6 +84,8 @@ public class Civilian {
     private ChatChannel chatChannel;
     @Getter @Setter
     private CivClass currentClass;
+    @Getter
+    private final Set<ExemptionType> exemptions = new HashSet<>();
     @Getter @Setter
     private HashMap<String, Skill> skills = new HashMap<>();
 
@@ -365,4 +368,5 @@ public class Civilian {
     public boolean isFriend(Civilian friend) {
         return friends.contains(friend.getUuid());
     }
+
 }

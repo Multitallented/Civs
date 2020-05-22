@@ -1,0 +1,16 @@
+enabled: true
+icon: SHIELD
+exp-per-new-item: 62
+exp-repeat-decay: 1
+max-exp: 3000
+shop-rewards:
+  defense: 0.1
+  vault: 0.2
+  bell_tower: 0.3
+  church: 0.4
+  jail: 0.2
+  smithy: 0.5
+  council_room: 0.5
+  town_hall: 0.3
+  city_hall: 0.2
+  capitol: 0.1
