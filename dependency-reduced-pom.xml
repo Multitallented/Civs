@@ -94,10 +94,6 @@
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
     <repository>
-      <id>vault-repo</id>
-      <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-    </repository>
-    <repository>
       <id>placeholderapi</id>
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
@@ -150,12 +146,6 @@
       <artifactId>mockito-all</artifactId>
       <version>1.9.5</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.dynmap</groupId>
@@ -274,18 +264,25 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>Vault</artifactId>
+      <version>1.7</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/Vault.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>net.Indyuce.mmoitems</groupId>
       <artifactId>MMOItems</artifactId>
       <version>4.7.17</version>
       <scope>system</scope>
-      <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>
+      <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.mmogroup.mmolib</groupId>
       <artifactId>MMOLib</artifactId>
       <version>1.0.4</version>
       <scope>system</scope>
-      <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
+      <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
