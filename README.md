@@ -7,14 +7,31 @@
 
 ---
 **Permissions:**
-* civs.choose = Allows a player to pick a class (enabled by default).
-* civs.shop = Allows a player to buy items from the civs shop (enabled by default).
-* civs.join = Allows a player to join towns (enabled by defautl).
-* civs.admin = Allows an admin to bypass protection and ownership.
+| Permission                      | Type          | Description |
+| ------------------------------- |:-------------:| ----------- |
+| **civs.admin**                  | Admin Only    | Allows full control over Civs. Bypass and Admin features. | 
+| **civs.join**                   | Default True  | Allows the player to join a town.                         | 
+| **civs.choose**                 | Default True  | Class Selection permission. Currently does nothing.       |
+| **civs.shop**                   | Default True  | Needed to buy Civ items in the Shop Menu.                 |
+| **civs.create.admin_graveyard** | Custom        | Custom permission, allows you to buy an admin_graveyard. You can check this custom setup on: 'item-types/admin-invisible/admin_graveyard.yml' |
+| **my.civs.build.windmill**      | Custom        | This is a custom permission node, you can define it as a prerequisite for a custom build.           |---
 ---
 **Commands**
-* /cv = Opens the main menu from which you can do all Civs actions.
-* /cv invite <player> <town> = Invites a player to the selected Town.
+* /cv - opens the menu
+* /cv town <town name> - creates a town using the town type block you are holding at the location you are standing
+* /cv invite <player> <town name> - invite a player to your town
+* /cv toggleann - toggles on/off the periodic hints in chat
+* /cv accept - Accepts a town invite
+* /cv bounty <player|town name> <amount> - Sets a bounty on a player or town
+* /cv newday - Runs a new day cycle (civs.admin permission required)
+* /cv really <old name> <new name> - Renames an alliance
+* /cv reload - Reloads Civs (civs.admin permission required)
+* /cv advancetut <player name> - Advances the player one step further on their current tutorial path.
+* /cv rename <old name> <new name> - Renames a town
+* /cv reset <player name> - Deletes all regions and removes all player data for that player (civs.admin permission required)
+* /cv sell <amount> - Sells the region you are standing in (only works on sellable regions ie: housing)
+* /cv tax <town name> <amount> - Sets the daily tax for the town (only available to certain government types)
+* /cv withdraw <amount> - Withdraws money from the town bank (only available to town owners)
 ---
 **Team & Support:** We offer support via GitHub, but if you need to contact us directly, we also have a Discord Channel which you can join by clicking in  the link below, also here is the list of current team members:
  * Multitallented - Developer (Discord: N/A)
