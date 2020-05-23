@@ -1,4 +1,5 @@
 enabled: true
+icon: POTION
 exp-per-new-item: 40
 exp-repeat-decay: 2
 max-exp: 3000

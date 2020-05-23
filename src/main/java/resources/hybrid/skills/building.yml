@@ -1,5 +1,5 @@
 enabled: true
-icon: BOW
+icon: BRICKS
 exp-per-new-item: 60
 exp-repeat-decay: 12
 max-exp: 3000

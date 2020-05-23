@@ -1,4 +1,5 @@
 enabled: true
+icon: GRASS_BLOCK
 exp-per-new-item: 40
 exp-repeat-decay: 99999
 max-exp: 3000
