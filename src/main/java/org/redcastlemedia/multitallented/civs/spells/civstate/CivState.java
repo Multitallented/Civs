@@ -1,21 +1,14 @@
 package org.redcastlemedia.multitallented.civs.spells.civstate;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.civclass.CivClass;
-import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
-import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
 

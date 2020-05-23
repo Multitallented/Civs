@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.civclass;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+@CivsSingleton
 public class ClassManager {
     private static ClassManager classManager = null;
 
@@ -38,7 +40,12 @@ public class ClassManager {
                     int maxMana = classConfig.getInt("max-mana", 100);
 
                     Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-                    civilian.getCivClasses().add(new CivClass(id, uuid, className, manaPerSecond, maxMana));
+                    CivClass civClass = new CivClass(id, uuid, className, manaPerSecond, maxMana);
+                    if (classConfig.getBoolean("selected", false)) {
+                        civClass.setSelectedClass(true);
+                        civilian.setCurrentClass(civClass);
+                    }
+                    civilian.getCivClasses().add(civClass);
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
                     ex.printStackTrace();
@@ -48,6 +55,19 @@ public class ClassManager {
         } catch (Exception e) {
             Civs.logger.severe("Unable to load class files");
             return;
+        }
+        try {
+            for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
+                if (civilian.getCurrentClass() == null) {
+                    if (civilian.getCivClasses().isEmpty()) {
+                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid()));
+                    } else {
+                        civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Civs.logger.severe("Unable to set currentClass for civilians");
         }
     }
     public void saveClass(CivClass civClass) {
@@ -71,6 +91,7 @@ public class ClassManager {
             config.set("uuid", civClass.getUuid());
             config.set("mana-per-second", civClass.getManaPerSecond());
             config.set("max-mana", civClass.getMaxMana());
+            config.set("selected", civClass.isSelectedClass());
             for (Map.Entry<Integer, String> entry : civClass.getSelectedSpells().entrySet()) {
                 config.set("spells." + entry.getKey(), entry.getValue());
             }

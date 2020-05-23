@@ -30,6 +30,8 @@ public class CivClass {
     private int manaPerSecond;
     @Getter @Setter
     private int maxMana;
+    @Getter @Setter
+    private boolean selectedClass;
     @Getter
     private Map<Integer, String> selectedSpells = new HashMap<>();
 
