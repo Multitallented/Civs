@@ -124,7 +124,7 @@ public class DeathListener implements Listener {
         return location1.distanceSquared(location2);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
