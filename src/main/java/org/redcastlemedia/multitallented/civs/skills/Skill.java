@@ -45,7 +45,7 @@ public class Skill {
         StringBuilder stringBuilder = new StringBuilder();
         double currentExp = getCurrentLevelExp();
         double expToNextLevel = getExpToNextLevel();
-        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale);
+        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale) * 2;
         int progress = (int) Math.floor(currentExp / (currentExp + expToNextLevel) * lineBreakLength);
         for (int i = 0; i < progress; i++) {
             stringBuilder.append("|");
@@ -57,7 +57,7 @@ public class Skill {
         StringBuilder stringBuilder = new StringBuilder();
         double currentExp = getCurrentLevelExp();
         double expToNextLevel = getExpToNextLevel();
-        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale);
+        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale) * 2;
         int progress = (int) Math.floor(expToNextLevel / (currentExp + expToNextLevel) * lineBreakLength);
         for (int i = 0; i < progress; i++) {
             stringBuilder.append("|");

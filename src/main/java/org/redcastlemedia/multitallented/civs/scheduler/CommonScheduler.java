@@ -6,6 +6,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -92,6 +93,7 @@ public class CommonScheduler implements Runnable {
                 sendAnnouncement(player);
             }
             checkExploration(player);
+            AllowedActionsListener.dropInvalidArmorOrWeapons(player);
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }
@@ -104,6 +106,7 @@ public class CommonScheduler implements Runnable {
             Biome biome = player.getLocation().getBlock().getBiome();
             double exp = skill.addAccomplishment(biome.name());
             if (exp > 0) {
+                CivilianManager.getInstance().saveCivilian(civilian);
                 String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         skill.getType() + LocaleConstants.SKILL_SUFFIX);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,

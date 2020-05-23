@@ -165,6 +165,7 @@ public class CivilianListener implements Listener {
                     exp += skill.addAccomplishment(potionEffect.getType().getName());
                 }
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -192,6 +193,7 @@ public class CivilianListener implements Listener {
                         exp += skill.addAccomplishment(potionEffect.getType().getName());
                     }
                     if (exp > 0) {
+                        CivilianManager.getInstance().saveCivilian(civilian);
                         String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                                 skill.getType() + LocaleConstants.SKILL_SUFFIX);
                         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -205,6 +207,7 @@ public class CivilianListener implements Listener {
                 if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
                     double exp = skill.addAccomplishment(event.getItem().getType().name());
                     if (exp > 0) {
+                        CivilianManager.getInstance().saveCivilian(civilian);
                         String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                                 skill.getType() + LocaleConstants.SKILL_SUFFIX);
                         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -228,6 +231,7 @@ public class CivilianListener implements Listener {
                 exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
             }
             if (exp > 0) {
+                CivilianManager.getInstance().saveCivilian(civilian);
                 String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         skill.getType() + LocaleConstants.SKILL_SUFFIX);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -248,6 +252,7 @@ public class CivilianListener implements Listener {
             if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
                 double exp = skill.addAccomplishment(event.getRegion().getType());
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,

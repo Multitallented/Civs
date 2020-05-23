@@ -57,8 +57,8 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.STONE_AXE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_BOAT.name(), 9);
-        assertEquals(28, skill.getCurrentExpAsBar("en").length());
-        assertEquals(12, skill.getExpToNextLevelAsBar("en").length());
+        assertEquals(56, skill.getCurrentExpAsBar("en").length());
+        assertEquals(24, skill.getExpToNextLevelAsBar("en").length());
     }
 
     @Test
@@ -82,6 +82,6 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_FENCE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_FENCE_GATE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_SLAB.name(), 9);
-        assertEquals(2, skill.getLevel());
+        assertEquals(1, skill.getLevel());
     }
 }

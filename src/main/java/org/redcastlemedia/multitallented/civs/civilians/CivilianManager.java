@@ -283,6 +283,11 @@ public class CivilianManager {
                     classes.add(civClass.getId());
                 }
             }
+            for (Skill skill : civilian.getSkills().values()) {
+                for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {
+                    civConfig.set("skills." + skill.getType() + "." + accomplishment.getKey(), accomplishment.getValue());
+                }
+            }
             civConfig.set("kills", civilian.getKills());
             civConfig.set("kill-streak", civilian.getKillStreak());
             civConfig.set("deaths", civilian.getDeaths());
