@@ -57,15 +57,8 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.STONE_AXE.name(), 9);
         skill.getAccomplishments().put(Material.OAK_BOAT.name(), 9);
-        skill.getAccomplishments().put(Material.CRAFTING_TABLE.name(), 9);
-        skill.getAccomplishments().put(Material.RED_BED.name(), 9);
-        skill.getAccomplishments().put(Material.STICK.name(), 9);
-        System.out.println(skill.getTotalExp());
-        System.out.println(skill.getLevel());
-        System.out.println(skill.getCurrentLevelExp());
-        System.out.println(skill.getExpToNextLevel());
-        System.out.println(skill.getCurrentExpAsBar("en"));
-        System.out.println(skill.getExpToNextLevelAsBar("en"));
+        assertEquals(28, skill.getCurrentExpAsBar("en").length());
+        assertEquals(12, skill.getExpToNextLevelAsBar("en").length());
     }
 
     @Test
