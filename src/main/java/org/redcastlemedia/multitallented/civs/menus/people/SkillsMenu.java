@@ -74,11 +74,12 @@ public class SkillsMenu extends CustomMenu {
             lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "skill-bar")
                     .replace("$1", skill.getCurrentExpAsBar(civilian.getLocale()))
                     .replace("$2", skill.getExpToNextLevelAsBar(civilian.getLocale())));
+            double currentLevelExp = skill.getCurrentLevelExp();
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     skillType.getName() + LocaleConstants.SKILL_DESC_SUFFIX)
                     .replace("$1", "" + skill.getLevel())
-                    .replace("$2", "" + skill.getCurrentLevelExp())
-                    .replace("$3", "" + skill.getExpToNextLevel())));
+                    .replace("$2", "" + currentLevelExp)
+                    .replace("$3", "" + (skill.getExpToNextLevel() + currentLevelExp))));
             cvItem.setLore(lore);
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
