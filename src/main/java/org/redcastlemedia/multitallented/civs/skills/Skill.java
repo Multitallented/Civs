@@ -3,6 +3,8 @@ package org.redcastlemedia.multitallented.civs.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +17,7 @@ public class Skill {
         this.type = type;
     }
 
-    public double getExp() {
+    public double getTotalExp() {
         double exp = 0;
         for (Map.Entry<String, Integer> accomplishment : accomplishments.entrySet()) {
             exp += getExpInCategory(accomplishment.getKey(), accomplishment.getValue());
@@ -23,13 +25,56 @@ public class Skill {
         return exp;
     }
 
+    public double getCurrentLevelExp() {
+        double totalExp = getTotalExp();
+        int currentLevel = getLevel();
+        SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        double expForCurrentLevel = (double) currentLevel / 10.0 * skillType.getMaxExp();
+        return totalExp - expForCurrentLevel;
+    }
+
+    public double getExpToNextLevel() {
+        double totalExp = getTotalExp();
+        int currentLevel = getLevel();
+        SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        double expForNextLevel = Math.min(currentLevel + 1, 10) / 10.0 * skillType.getMaxExp();
+        return expForNextLevel - totalExp;
+    }
+
+    public String getCurrentExpAsBar(String locale) {
+        StringBuilder stringBuilder = new StringBuilder();
+        double currentExp = getCurrentLevelExp();
+        double expToNextLevel = getExpToNextLevel();
+        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale);
+        int progress = (int) Math.floor(currentExp / (currentExp + expToNextLevel) * lineBreakLength);
+        for (int i = 0; i < progress; i++) {
+            stringBuilder.append("|");
+        }
+        return stringBuilder.toString();
+    }
+
+    public String getExpToNextLevelAsBar(String locale) {
+        StringBuilder stringBuilder = new StringBuilder();
+        double currentExp = getCurrentLevelExp();
+        double expToNextLevel = getExpToNextLevel();
+        int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale);
+        int progress = (int) Math.floor(expToNextLevel / (currentExp + expToNextLevel) * lineBreakLength);
+        for (int i = 0; i < progress; i++) {
+            stringBuilder.append("|");
+        }
+        return stringBuilder.toString();
+    }
+
     public int getLevel() {
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
-        return (int) Math.round(10 * getExp() / skillType.getMaxExp());
+        return (int) Math.floor(10 * getTotalExp() / skillType.getMaxExp());
     }
 
     public double addAccomplishment(String key) {
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
+        if (getTotalExp() >= skillType.getMaxExp()) {
+            return 0;
+        }
         if (!accomplishments.containsKey(key)) {
             double exp = skillType.getExp(key, 1);
             accomplishments.put(key, 1);

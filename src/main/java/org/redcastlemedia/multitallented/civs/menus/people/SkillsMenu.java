@@ -35,8 +35,8 @@ public class SkillsMenu extends CustomMenu {
         UUID uuid = civilian.getUuid();
         if (params.containsKey("uuid")) {
             uuid =  UUID.fromString(params.get("uuid"));
-            data.put("uuid", uuid);
         }
+        data.put("uuid", uuid);
         List<Skill> skills = new ArrayList<>(CivilianManager.getInstance().getCivilian(uuid).getSkills().values());
         data.put("skills", skills);
         int maxPage = (int) Math.ceil((double) skills.size() / (double) itemsPerPage.get("skills"));
@@ -68,10 +68,18 @@ public class SkillsMenu extends CustomMenu {
             CVItem cvItem = CVItem.createCVItemFromString(skillType.getIcon());
             String localSkillName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
                     skillType.getName() + LocaleConstants.SKILL_SUFFIX);
+            cvItem.setQty(Math.max(1, skill.getLevel()));
             cvItem.setDisplayName(localSkillName);
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            List<String> lore = new ArrayList<>();
+            lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "skill-bar")
+                    .replace("$1", skill.getCurrentExpAsBar(civilian.getLocale()))
+                    .replace("$2", skill.getExpToNextLevelAsBar(civilian.getLocale())));
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     skillType.getName() + LocaleConstants.SKILL_DESC_SUFFIX)
-                    .replace("$1", "" + skill.getLevel())));
+                    .replace("$1", "" + skill.getLevel())
+                    .replace("$2", "" + skill.getCurrentLevelExp())
+                    .replace("$3", "" + skill.getExpToNextLevel())));
+            cvItem.setLore(lore);
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

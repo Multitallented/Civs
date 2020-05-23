@@ -1,4 +1,5 @@
 enabled: true
+icon: ENCHANTING_TABLE
 exp-per-new-item: 60
 exp-repeat-decay: 20
 max-exp: 3000
