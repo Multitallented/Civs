@@ -19,8 +19,6 @@ import fr.neatmonster.nocheatplus.NoCheatPlus;
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import me.jinky.BAC;
-import me.vagdedes.spartan.api.PlayerViolationEvent;
-import rip.reflex.api.event.ReflexCheckEvent;
 
 @CivsSingleton
 public class AntiCheatManager implements Listener {
@@ -47,15 +45,32 @@ public class AntiCheatManager implements Listener {
             basicAntiCheat = (BAC) Bukkit.getPluginManager().getPlugin("BAC");
         } else if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
             noCheatPlus = (NoCheatPlus) Bukkit.getPluginManager().getPlugin("NoCheatPlus");
+        } else if (Bukkit.getPluginManager().isPluginEnabled("Reflex")) {
+            new ReflexListener();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("Spartan")) {
+            new SpartanListener();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("WitherAC")) {
+            new WitherACListener();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("AAC")) {
+            new AACListener();
         }
     }
 
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
-        if (event.getPlugin().getName().equals("BasicAntiCheat") || event.getPlugin().getName().equals("BAC")) {
+        if (event.getPlugin().getName().equalsIgnoreCase("BasicAntiCheat") ||
+                event.getPlugin().getName().equalsIgnoreCase("BAC")) {
             basicAntiCheat = (BAC) event.getPlugin();
-        } else if (event.getPlugin().getName().equals("NoCheatPlus")) {
+        } else if (event.getPlugin().getName().equalsIgnoreCase("NoCheatPlus")) {
             noCheatPlus = (NoCheatPlus) event.getPlugin();
+        } else if (event.getPlugin().getName().equalsIgnoreCase("Reflex")) {
+            new ReflexListener();
+        } else if (event.getPlugin().getName().equalsIgnoreCase("Spartan")) {
+            new SpartanListener();
+        } else if (event.getPlugin().getName().equalsIgnoreCase("WitherAC")) {
+            new WitherACListener();
+        } else if (event.getPlugin().getName().equalsIgnoreCase("AAC")) {
+            new AACListener();
         }
     }
 
@@ -90,56 +105,5 @@ public class AntiCheatManager implements Listener {
 
         civilian.getExemptions().add(exemptionType);
         Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> civilian.getExemptions().remove(exemptionType), duration / 50);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onBACPlayerViolationEvent(PlayerViolationEvent event) {
-        Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (ExemptionType exemptionType : civilian.getExemptions()) {
-            if (SpartanExemptionAssembler.mapExemptionTypeToHackType(exemptionType).contains(event.getHackType())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onWitherViolationEvent(ViolationEvent event) {
-        Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (ExemptionType exemptionType : civilian.getExemptions()) {
-            if (WitherACExemptionAssembler.mapExemptionTypeToCheckType(exemptionType).contains(event.getType())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onReflexCheckEvent(ReflexCheckEvent event) {
-        if (event.getResult().shouldCancel()) {
-            return;
-        }
-        Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (ExemptionType exemptionType : civilian.getExemptions()) {
-            if (ReflexExemptionAssembler.mapExemptionTypeToCheats(exemptionType).contains(event.getCheat())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerViolation(me.konsolas.aac.api.PlayerViolationEvent event) {
-        Player player = event.getPlayer();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (ExemptionType exemptionType : civilian.getExemptions()) {
-            if (AACExemptionAssembler.mapExemptionTypeToHackTypes(exemptionType).contains(event.getHackType())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
     }
 }
