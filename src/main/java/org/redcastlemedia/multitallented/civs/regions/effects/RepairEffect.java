@@ -213,7 +213,6 @@ public class RepairEffect implements Listener {
             case "PROTECTION":
             case "PROJECTILE_PROTECTION":
             case "FIRE_PROTECTION":
-            case "FEATHER_FALLING":
             case "BLAST_PROTECTION":
             case "THORNS":
             case "KNOCKBACK":
