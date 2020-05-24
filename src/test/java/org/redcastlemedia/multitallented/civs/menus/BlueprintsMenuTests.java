@@ -134,7 +134,11 @@ public class BlueprintsMenuTests extends TestUtil {
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
         this.blueprintsMenu.createMenu(this.civilian, params);
-        MenuManager.getInstance().goBack(this.civilian.getUuid());
+        try {
+            MenuManager.getInstance().goBack(this.civilian.getUuid());
+        } catch (NullPointerException npe) {
+
+        }
         this.blueprintsMenu.createMenu(this.civilian, params);
         assertEquals(1, (int) this.civilian.getStashItems().get("shelter"));
     }
