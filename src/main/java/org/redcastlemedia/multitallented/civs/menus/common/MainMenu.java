@@ -7,12 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
@@ -117,6 +119,16 @@ public class MainMenu extends CustomMenu {
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
             ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("player".equals(menuIcon.getKey())) {
+            ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
+            skullMeta.setDisplayName(player.getDisplayName());
+            skullMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX)));
+            itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if (menuIcon.getKey().equals("your-towns")) {
