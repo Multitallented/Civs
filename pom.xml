@@ -23,10 +23,6 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
-        <repository>
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -85,9 +81,10 @@
 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
+            <artifactId>Vault</artifactId>
             <version>1.7</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Vault.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.dynmap</groupId>
@@ -100,14 +97,14 @@
             <groupId>net.Indyuce.mmoitems</groupId>
             <artifactId>MMOItems</artifactId>
             <scope>system</scope>
-            <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>
+            <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
             <version>4.7.17</version>
         </dependency>
         <dependency>
             <groupId>net.mmogroup.mmolib</groupId>
             <artifactId>MMOLib</artifactId>
             <scope>system</scope>
-            <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
+            <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
             <version>1.0.4</version>
         </dependency>
 
