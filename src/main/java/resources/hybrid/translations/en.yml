@@ -862,6 +862,7 @@ health: Health
 health-desc: "Max: $1"
 mana: Mana
 stamina: Stamina
+or: "OR"
 mana-desc: "Max: $1 Regen: $2"
 spell-slot-desc: "Left click to select a new spell.\nRight click to change the order these spells."
 spell-slot-desc-change-order: "Right click to switch the order of these spells."

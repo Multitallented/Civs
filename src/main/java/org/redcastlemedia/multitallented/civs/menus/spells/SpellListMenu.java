@@ -85,7 +85,7 @@ public class SpellListMenu extends CustomMenu {
             }
             SpellType spellType = itemArray[startIndex + count];
             CVItem cvItem = spellType.getShopIcon(civilian.getLocale());
-            List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(spellType, civilian);
+            List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(spellType, civilian, false);
             if (!unmetRequirements.isEmpty()) {
                 cvItem.getLore().addAll(unmetRequirements);
             }

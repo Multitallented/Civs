@@ -547,7 +547,7 @@ public class ItemManager {
     }
 
     public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
-        return getAllUnmetRequirements(civItem, civilian).isEmpty();
+        return getAllUnmetRequirements(civItem, civilian, true).isEmpty();
     }
 
     public void addMinItems(Civilian civilian) {
@@ -577,36 +577,50 @@ public class ItemManager {
         CivilianManager.getInstance().saveCivilian(civilian);
     }
 
-    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian) {
-        List<String> unmetRequirements = new ArrayList<>();
+    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian, boolean fast) {
+        List<String> allUnmetRequirements = new ArrayList<>();
         if (civItem.getCivReqs().isEmpty()) {
-            return unmetRequirements;
+            return allUnmetRequirements;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null) {
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "invalid-target"));
-            return unmetRequirements;
+            if (fast) {
+                allUnmetRequirements.add("invalid");
+            } else {
+                allUnmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "invalid-target"));
+            }
+            return allUnmetRequirements;
         }
 
         outer: for (String reqString : civItem.getCivReqs()) {
+            List<String> unmetRequirements = new ArrayList<>();
             for (String req : reqString.split("\\|")) {
+                if (!fast && unmetRequirements.size() % 2 > 0) {
+                    unmetRequirements.add(" " + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "or") + " ");
+                }
                 //perm=civs.admin
                 if (req.startsWith("perm=")) {
-                    checkPermissionRequirement(unmetRequirements, player, req);
+                    if (checkPermissionRequirement(unmetRequirements, player, req, fast)) {
+                        continue outer;
+                    }
                     continue;
                     //member=settlement:town:...
                 } else if (req.startsWith("member=")) {
-                    checkMemberOfTownRequirement(civilian, unmetRequirements, player, req);
+                    if (checkMemberOfTownRequirement(civilian, unmetRequirements, player, req, fast)) {
+                        continue outer;
+                    }
                     continue;
                     //skill:crafting=20
                 } else if (req.startsWith("skill:")) {
-                    if (checkSkillRequirement(player, civilian, req, unmetRequirements)) {
+                    if (checkSkillRequirement(player, civilian, req, unmetRequirements, fast)) {
                         continue outer;
                     }
+                    continue;
                     //population=15
                 } else if (req.startsWith("population=")) {
-                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req)) {
+                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req, fast)) {
                         continue outer;
                     }
                     continue;
@@ -614,7 +628,7 @@ public class ItemManager {
                 String[] splitReq = req.split(":");
                 //house:???
                 if (splitReq.length < 2) {
-                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq)) {
+                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq, fast)) {
                         continue outer;
                     }
                     continue;
@@ -622,7 +636,7 @@ public class ItemManager {
                 String[] reqParams = splitReq[1].split("=");
                 //shack:built=1
                 if (reqParams[0].equals("built")) {
-                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams)) {
+                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, fast)) {
                         continue outer;
                     }
                     //bash:level=4
@@ -631,7 +645,7 @@ public class ItemManager {
                     if (reqItem == null) {
                         continue;
                     }
-                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem)) {
+                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, fast)) {
                         continue outer;
                     }
                     //house:has=2
@@ -640,23 +654,38 @@ public class ItemManager {
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
-                        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                splitReq[0] + LocaleConstants.NAME_SUFFIX);
-                        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "req-item").replace("$1", localItemName));
+                        if (fast) {
+                            unmetRequirements.add("has");
+                        } else {
+                            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
+                            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                    "req-item").replace("$1", localItemName));
+                        }
                     }
                     //hamlet:population=15
                 } else if (reqParams[0].equals("population")) {
-                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1])) {
+                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], fast)) {
                         continue outer;
                     }
                 }
             }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("- ");
+            for (int i = 0; i < unmetRequirements.size() - 1; i++) {
+                stringBuilder.append(unmetRequirements.get(i));
+            }
+            allUnmetRequirements.add(stringBuilder.toString());
         }
-        return unmetRequirements;
+        List<String> returnString = new ArrayList<>();
+        for (String unmetReq : allUnmetRequirements) {
+            returnString.addAll(Util.textWrap(civilian, unmetReq));
+        }
+        return returnString;
     }
 
-    private boolean checkSpecificTownPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String anotherString, String reqParam) {
+    private boolean checkSpecificTownPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                                           String anotherString, String reqParam, boolean fast) {
         int requirement = Integer.parseInt(reqParam);
         for (Town town : TownManager.getInstance().getTowns()) {
             if (!town.getType().equalsIgnoreCase(anotherString) ||
@@ -668,51 +697,71 @@ public class ItemManager {
                 return true;
             }
         }
-        String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                anotherString + LocaleConstants.NAME_SUFFIX);
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "population-req").replace("$1", localTownName)
-                .replace("$2", "" + requirement));
+        if (fast) {
+            unmetRequirements.add("pop");
+        } else {
+            String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    anotherString + LocaleConstants.NAME_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "population-req").replace("$1", localTownName)
+                    .replace("$2", "" + requirement));
+        }
         return false;
     }
 
-    private boolean checkItemLevelRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] reqParams, CivItem reqItem) {
+    private boolean checkItemLevelRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                              String[] reqParams, CivItem reqItem, boolean fast) {
         int level = civilian.getLevel(reqItem);
         if (level >= Integer.parseInt(reqParams[1])) {
             return true;
         }
-        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                reqItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "req-skill-level").replace("$1", localItemName)
-                .replace("$2", reqParams[1]));
+        if (fast) {
+            unmetRequirements.add("level");
+        } else {
+            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    reqItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "req-skill-level").replace("$1", localItemName)
+                    .replace("$2", reqParams[1]));
+        }
         return false;
     }
 
-    private boolean checkBuildRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq, String[] reqParams) {
+    private boolean checkBuildRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq,
+                                          String[] reqParams, boolean fast) {
         if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
             return true;
         }
-        String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                splitReq[0] + LocaleConstants.NAME_SUFFIX);
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "req-build").replace("$1", localRegionName));
+        if (fast) {
+            unmetRequirements.add("build");
+        } else {
+            String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "req-build").replace("$1", localRegionName));
+        }
         return false;
     }
 
-    private boolean checkOwnershipRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq) {
+    private boolean checkOwnershipRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                              String[] splitReq, boolean fast) {
         if (civilian.getCountStashItems(splitReq[0]) > 0 ||
                 civilian.getCountNonStashItems(splitReq[0]) > 0) {
             return true;
         }
-        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                splitReq[0] + LocaleConstants.NAME_SUFFIX);
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "req-item").replace("$1", localItemName));
+        if (fast) {
+            unmetRequirements.add("own");
+        } else {
+            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "req-item").replace("$1", localItemName));
+        }
         return false;
     }
 
-    private boolean checkPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String req) {
+    private boolean checkPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                               String req, boolean fast) {
         int pop = Integer.parseInt(req.replace("population=", ""));
         for (Town town : TownManager.getInstance().getTowns()) {
             if (!town.getPeople().containsKey(civilian.getUuid()) ||
@@ -723,16 +772,20 @@ public class ItemManager {
                 return true;
             }
         }
-        String town = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "town");
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "population-req").replace("$1", town)
-                .replace("$2", "" + pop));
+        if (fast) {
+            unmetRequirements.add("pop");
+        } else {
+            String town = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "town");
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "population-req").replace("$1", town)
+                    .replace("$2", "" + pop));
+        }
         return false;
     }
 
     private boolean checkSkillRequirement(Player player, Civilian civilian, String req,
-                                          List<String> unmetRequirements) {
+                                          List<String> unmetRequirements, boolean fast) {
         String[] reqSplit = req.split(":")[1].split("=");
         int level = Integer.parseInt(reqSplit[1]);
         String skillName = reqSplit[0];
@@ -742,15 +795,20 @@ public class ItemManager {
                 return true;
             }
         }
-        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                skillName + LocaleConstants.NAME_SUFFIX);
-        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                "req-skill-level").replace("$1", localSkillName)
+        if (fast) {
+            unmetRequirements.add("skill");
+        } else {
+            String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    skillName + LocaleConstants.NAME_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "req-skill-level").replace("$1", localSkillName)
                     .replace("$2", "" + level));
+        }
         return false;
     }
 
-    private void checkMemberOfTownRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String req) {
+    private boolean checkMemberOfTownRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                              String req, boolean fast) {
         String[] townTypeStrings = req.replace("member=", "").split(":");
         Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
         boolean isMember = false;
@@ -762,27 +820,36 @@ public class ItemManager {
             }
         }
         if (!isMember) {
-            StringBuilder townTypesNames = new StringBuilder();
-            for (String townType : townTypes) {
-                townTypesNames.append(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        townType + LocaleConstants.NAME_SUFFIX)).append(", ");
+            if (fast) {
+                unmetRequirements.add("town");
+            } else {
+                StringBuilder townTypesNames = new StringBuilder();
+                for (String townType : townTypes) {
+                    townTypesNames.append(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            townType + LocaleConstants.NAME_SUFFIX)).append(", ");
+                }
+                townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
+                unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "req-member-of-town") + townTypesNames.toString());
             }
-            townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "req-member-of-town") + townTypesNames.toString());
+            return false;
         }
+        return true;
     }
 
-    private void checkPermissionRequirement(List<String> unmetRequirements, Player player, String req) {
+    private boolean checkPermissionRequirement(List<String> unmetRequirements, Player player, String req, boolean fast) {
         String permission = req.replace("perm=", "");
         if (Civs.perm == null ||
                 !Civs.perm.has(player, permission)) {
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "no-permission"));
-            return;
-        } else {
-            return;
+            if (fast) {
+                unmetRequirements.add("perm");
+            } else {
+                unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "no-permission"));
+            }
+            return false;
         }
+        return true;
     }
 
     public ArrayList<CivItem> getItemsByLevel(int level) {
