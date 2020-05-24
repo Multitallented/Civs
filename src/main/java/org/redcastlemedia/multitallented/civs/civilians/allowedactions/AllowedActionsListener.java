@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -109,10 +112,12 @@ public class AllowedActionsListener implements Listener {
 
         final int returnedLevels = returningLevels;
 
-        addExpForEnchant(event);
+        if (!event.isCancelled()) {
+            addExpForEnchant(event);
 
-        Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
-                () -> setCorrectEnchantItemsAndExp(player, limitedItem, returnedLevels), 1);
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
+                    () -> setCorrectEnchantItemsAndExp(player, limitedItem, returnedLevels), 1);
+        }
     }
 
     private void addExpForEnchant(EnchantItemEvent event) {
@@ -128,6 +133,7 @@ public class AllowedActionsListener implements Listener {
                     exp += skill.addAccomplishment(entry.getKey().getKey().getKey() + entry.getValue());
                 }
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -194,14 +200,19 @@ public class AllowedActionsListener implements Listener {
             if (enchants == 0) {
                 int maxEnchantLevel = civilian.getCurrentClass().getMaxEnchantLevel(enchantment);
                 if (maxEnchantLevel < level) {
-                    event.setExpLevelCost(event.getExpLevelCost() - returnedXP);
-                    event.getItem().removeEnchantment(enchantment);
+                    int levelCost = event.getExpLevelCost() - returnedXP;
+                    if (levelCost < 1) {
+                        event.setCancelled(true);
+                    } else {
+                        event.setExpLevelCost(levelCost);
+                        event.getItem().removeEnchantment(enchantment);
 
-                    if (maxEnchantLevel > 0) {
-                        toAdd.put(enchantment, maxEnchantLevel);
-                        int addedXP = (int)(0.5F + (xpPerLevel * maxEnchantLevel));
-                        event.setExpLevelCost(event.getExpLevelCost() + addedXP);
-                        enchants++;
+                        if (maxEnchantLevel > 0) {
+                            toAdd.put(enchantment, maxEnchantLevel);
+                            int addedXP = (int)(0.5F + (xpPerLevel * maxEnchantLevel));
+                            event.setExpLevelCost(event.getExpLevelCost() + addedXP);
+                            enchants++;
+                        }
                     }
 
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
@@ -221,7 +232,7 @@ public class AllowedActionsListener implements Listener {
         return enchants;
     }
 
-    private void reduceOrRemoveEnchants(ItemStack itemStack, Player player, Civilian civilian, String localClassName) {
+    private static void reduceOrRemoveEnchants(ItemStack itemStack, Player player, Civilian civilian, String localClassName) {
         for (Map.Entry<Enchantment, Integer> entry : itemStack.getItemMeta().getEnchants().entrySet()) {
             Enchantment enchantment = entry.getKey();
             int level = entry.getValue();
@@ -321,23 +332,27 @@ public class AllowedActionsListener implements Listener {
                 (isCraftingInventory && isPlace && event.getRawSlot() == SHIELD_CLICK_SLOT) ||
                 isShiftClickWithArmorOrShield) {
             PlayerInventory playerInventory = player.getInventory();
-            if (fixArmorOnEquip(event, action, player, playerInventory)) {
+            if (!fixArmorOnEquip(event, action, player, playerInventory)) {
                 return;
             }
 
         }
 
         boolean isQuickbar = event.getSlotType() == InventoryType.SlotType.QUICKBAR;
-        boolean isWeapon = RepairEffect.isWeapon(event.getCurrentItem().getType());
+        ItemStack itemStack = event.getCursor();
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            itemStack = event.getCurrentItem();
+        }
+        boolean isWeapon = RepairEffect.isWeapon(itemStack.getType());
         boolean isShiftClickWithWeapon = isCraftingInventory &&
                 event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && isWeapon;
         if (((isQuickbar && isPlace && isWeapon) || isShiftClickWithWeapon) &&
-                cancelEventIfItemIsDisallowed(event, player, event.getCurrentItem())) {
+                cancelEventIfItemIsDisallowed(event, player, itemStack)) {
             return;
         }
         if (((isQuickbar && isPlace) || (isCraftingInventory &&
                 event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY)) &&
-                cancelEventIfPotionIsDisallowed(event, player, event.getCurrentItem())) {
+                cancelEventIfPotionIsDisallowed(event, player, itemStack)) {
             return;
         }
 
@@ -358,6 +373,84 @@ public class AllowedActionsListener implements Listener {
                 prevXP.put(player.getUniqueId(), curXP);
             }
         }
+    }
+
+    public static void dropInvalidArmorOrWeapons(Player player)  {
+        if (player.getGameMode() != GameMode.SURVIVAL ||
+                (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        checkInvalidItem(player, civilian, player.getInventory().getItemInMainHand());
+        checkInvalidItem(player, civilian, player.getInventory().getHelmet());
+        checkInvalidItem(player, civilian, player.getInventory().getChestplate());
+        checkInvalidItem(player, civilian, player.getInventory().getLeggings());
+        checkInvalidItem(player, civilian, player.getInventory().getBoots());
+        checkInvalidItem(player, civilian, player.getInventory().getItemInOffHand());
+    }
+
+    public static void checkInvalidItem(Player player, Civilian civilian, ItemStack itemStack) {
+        if (itemStack == null) {
+            return;
+        }
+        String disallowed = fixOrTestItem(itemStack, civilian, true);
+        if (disallowed == null) {
+            disallowed = checkPotionEffects(itemStack, player, civilian);
+        }
+        if (disallowed == null && !civilian.getCurrentClass().isItemAllowed(itemStack.getType())) {
+            disallowed = itemStack.getType().name();
+        }
+        if (disallowed != null) {
+            boolean removed = player.getInventory().removeItem(itemStack).isEmpty();
+            if (!removed && player.getInventory().getHelmet() != null && itemStack.isSimilar(player.getInventory().getHelmet())) {
+                player.getInventory().setHelmet(new ItemStack(Material.AIR));
+                removed = true;
+            }
+            if (!removed && player.getInventory().getChestplate() != null && itemStack.isSimilar(player.getInventory().getChestplate())) {
+                player.getInventory().setChestplate(new ItemStack(Material.AIR));
+                removed = true;
+            }
+            if (!removed && player.getInventory().getLeggings() != null && itemStack.isSimilar(player.getInventory().getLeggings())) {
+                player.getInventory().setLeggings(new ItemStack(Material.AIR));
+                removed = true;
+            }
+            if (!removed && player.getInventory().getBoots() != null && itemStack.isSimilar(player.getInventory().getBoots())) {
+                player.getInventory().setBoots(new ItemStack(Material.AIR));
+                removed = true;
+            }
+            if (removed) {
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "action-not-allowed").replace("$1", localClassName)
+                        .replace("$2", disallowed));
+            }
+        }
+    }
+
+    private static String checkPotionEffects(ItemStack item, Player player, Civilian civilian) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (!(itemMeta instanceof PotionMeta)) {
+            return null;
+        }
+        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+        PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
+        if (potionEffectType != null) {
+            int level = civilian.getCurrentClass().isPotionEffectAllowed(potionEffectType);
+            int potionLevel = potionMeta.getBasePotionData().isUpgraded() ? 2 : 1;
+            if (level < potionLevel) {
+                return potionEffectType.getName();
+            }
+        }
+        for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+            int level = civilian.getCurrentClass().isPotionEffectAllowed(potionEffect.getType());
+            int potionLevel = potionEffect.getAmplifier();
+            if (level < potionLevel) {
+                return potionEffect.getType().getName();
+            }
+        }
+        return null;
     }
 
     private void handleAnvilCraftResult(InventoryClickEvent event, InventoryAction action, Player player, InventoryType inventoryType) {
@@ -574,15 +667,20 @@ public class AllowedActionsListener implements Listener {
 
     private boolean cancelEventIfItemIsDisallowed(Cancellable event, Player player, ItemStack item) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (civilian.getCurrentClass().isItemAllowed(item.getType())) {
+        if (!civilian.getCurrentClass().isItemAllowed(item.getType())) {
             event.setCancelled(true);
+
+            String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                    civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    player, "action-not-allowed").replace("$1", localClassName)
+                    .replace("$2", item.getType().name()));
             return true;
         }
         return false;
     }
 
     private boolean isPlace(InventoryAction action) {
-        boolean isPlace = false;
         switch (action) {
             case PLACE_ALL:
             case PLACE_SOME:
@@ -591,46 +689,13 @@ public class AllowedActionsListener implements Listener {
             case MOVE_TO_OTHER_INVENTORY: // could be..
             case HOTBAR_SWAP:
             case HOTBAR_MOVE_AND_READD:
-                isPlace = true;
-                break;
+                return true;
             default:
-                break;
+                return false;
         }
-        return isPlace;
     }
 
     static Map <UUID, Long> lastMsg = new HashMap<>();
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEntityItemPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getEntity();
-        if (player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
-                Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
-            return;
-        }
-        ItemStack item = event.getItem().getItemStack();
-
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String disallowedEnchant = fixOrTestItem (item, civilian, true);
-        if (disallowedEnchant != null) {
-            event.setCancelled (true);
-
-            Long lastTime = lastMsg.get(player.getUniqueId());
-            long currTime = System.currentTimeMillis();
-
-            if (lastTime == null || currTime - lastTime > 2000) {
-                lastMsg.put(player.getUniqueId(), currTime);
-                String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "action-not-allowed").replace("$1", localClassName)
-                        .replace("$2", disallowedEnchant));
-            }
-        }
-    }
 
     @EventHandler (ignoreCancelled = true)
     public void onPlayerHeldItem(PlayerItemHeldEvent event) {
@@ -684,8 +749,11 @@ public class AllowedActionsListener implements Listener {
         event.setCancelled(true);
     }
 
-    private String fixOrTestItem(ItemStack itemStack, Civilian civilian, boolean testOnly) {
+    private static String fixOrTestItem(ItemStack itemStack, Civilian civilian, boolean testOnly) {
         String disallowed = null;
+        if (itemStack == null || itemStack.getItemMeta() == null) {
+            return null;
+        }
         for (Map.Entry<Enchantment, Integer> entry : itemStack.getItemMeta().getEnchants().entrySet()) {
             int maxLevel = civilian.getCurrentClass().getMaxEnchantLevel(entry.getKey());
             if (maxLevel < entry.getValue()) {

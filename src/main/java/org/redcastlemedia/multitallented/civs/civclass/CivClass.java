@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 
 import lombok.Getter;
@@ -44,24 +45,30 @@ public class CivClass {
     }
 
     public int getMaxEnchantLevel(Enchantment enchantment) {
+        if (!RepairEffect.isCombatEnchantment(enchantment)) {
+            return 999999;
+        }
         return getAllowedLevel(enchantment.getKey().getKey());
     }
 
     public boolean isItemAllowed(Material material) {
-        int level = getAllowedLevel(material.getKey().getKey());
+        if (!RepairEffect.isArmor(material) && !RepairEffect.isWeapon(material)) {
+            return true;
+        }
+        int level = getAllowedLevel(material.getKey().getKey().toUpperCase());
         return level > 0;
     }
 
     public int isPotionEffectAllowed(PotionEffectType potionEffectType) {
         if (potionEffectType == PotionEffectType.GLOWING) {
-            return 2;
+            return 999999;
         }
         return getAllowedLevel(potionEffectType.getName());
     }
 
     private int getAllowedLevel(String key) {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
-        int level = classType.getAllowedActions().getOrDefault(key, -1);
+        int level = classType.getAllowedActions().getOrDefault(key.toUpperCase(), -1);
         for (String spellName : selectedSpells.values()) {
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
             level = Math.max(level, spellType.getAllowedActions().getOrDefault(key, -1));

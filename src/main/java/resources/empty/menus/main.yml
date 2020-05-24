@@ -83,6 +83,13 @@ items:
     # icon: region icon
     actions:
       - menu:region?region=$region$
+  player:
+    index: 24
+    #icon: player's head
+    #name: your name
+    #desc: your class
+    actions:
+      - menu:player?uuid=$uuid$
   chat:
     index: 25
     icon: MAP

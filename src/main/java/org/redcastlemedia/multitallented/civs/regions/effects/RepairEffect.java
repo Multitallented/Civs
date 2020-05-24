@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -207,6 +208,32 @@ public class RepairEffect implements Listener {
                 return false;
         }
     }
+
+    public static boolean isCombatEnchantment(Enchantment enchantment) {
+        switch (enchantment.getKey().getKey().toUpperCase()) {
+            case "SHARPNESS":
+            case "PROTECTION":
+            case "PROJECTILE_PROTECTION":
+            case "FIRE_PROTECTION":
+            case "BLAST_PROTECTION":
+            case "THORNS":
+            case "KNOCKBACK":
+            case "FIRE_ASPECT":
+            case "SWEEPING":
+            case "POWER":
+            case "PUNCH":
+            case "FLAME":
+            case "IMPALING":
+            case "CHANNELING":
+            case "MULTISHOT":
+            case "QUICK_CHARGE":
+            case "PIERCING":
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static boolean isChestplate(Material mat) {
         switch (mat) {
             case LEATHER_CHESTPLATE:

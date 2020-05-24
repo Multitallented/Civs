@@ -124,7 +124,7 @@ public class DeathListener implements Listener {
         return location1.distanceSquared(location2);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
@@ -132,7 +132,9 @@ public class DeathListener implements Listener {
         Player player = (Player) event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        checkArmorSkill(player);
+        if (event.getDamage() > 0) {
+            checkArmorSkill(player);
+        }
 
         if (!civilian.isInCombat()) {
             boolean setCancelled = event.isCancelled() ||
@@ -237,6 +239,7 @@ public class DeathListener implements Listener {
                 }
 
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -246,6 +249,7 @@ public class DeathListener implements Listener {
             } else if (hasShield && skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
                 double exp = skill.addAccomplishment("DAMAGE");
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -270,6 +274,7 @@ public class DeathListener implements Listener {
             if (skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
                 double exp = skill.addAccomplishment("BLOCKED");
                 if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
                     String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             skill.getType() + LocaleConstants.SKILL_SUFFIX);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -365,6 +370,7 @@ public class DeathListener implements Listener {
                 exp = skill.addAccomplishment(event.getEntity().getType().name());
             }
             if (exp > 0) {
+                CivilianManager.getInstance().saveCivilian(civilian);
                 String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         skill.getType() + LocaleConstants.SKILL_SUFFIX);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
