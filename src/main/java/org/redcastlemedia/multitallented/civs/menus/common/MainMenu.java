@@ -11,6 +11,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -131,6 +133,17 @@ public class MainMenu extends CustomMenu {
             itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("class".equals(menuIcon.getKey())) {
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                CivClass civClass = civilian.getCurrentClass();
+                ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+                CVItem cvItem = classType.getShopIcon(civilian.getLocale());
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                return new ItemStack(Material.AIR);
+            }
         } else if (menuIcon.getKey().equals("your-towns")) {
             boolean isInATown = false;
             for (Town town : TownManager.getInstance().getTowns()) {

@@ -1,0 +1,126 @@
+size: 18
+name: Class
+# variables:
+#  class: class id
+#  className: class name
+#  classTypeName: class type name
+#  allowedItems: list of allowed items
+#  classManaName: the class' name for mana
+#  maxHealth: the class max health
+#  maxMana: max mana
+#  manaRegen: mana regen
+#  level: class level
+# actions:
+#  change-order: swap spell with the spell you click on next
+#  spend-exp: transfer player exp to class exp
+items:
+  icon:
+    index: 0
+    # icon: class shop-icon
+    # name: class name
+    # desc: class desc
+    actions: []
+  class-type:
+    index: 1
+    icon: WRITABLE_BOOK
+    name: {$classTypeName$
+    desc: click-info
+    actions:
+      - menu:class-type?classType=$classTypeName$
+  level:
+    index: 2
+    icon: EXPERIENCE_BOTTLE
+    name: level{$level$
+    desc: level-up
+    actions:
+      - spend-exp
+      - refresh
+  allowed-items:
+    index: 3
+    icon: CHEST
+    name: allowed-items
+    desc: allowed-items-desc{$classTypeName$
+    actions:
+      - menu:item-list?items=$allowedItems$
+  mana:
+    index: 4
+    icon: POTION
+    name: {$classManaName$
+    desc: mana-desc{$maxMana$,,$manaRegen$
+    actions: []
+  health:
+    index: 5
+    icon: COOKED_BEEF
+    name: health
+    desc: health-desc{$maxHealth$
+    actions: []
+  destroy:
+    index: 6
+    icon: BARRIER
+    name: destroy
+    actions:
+      - menu:confirmation?class=$class$&type=destroy
+  change-class:
+    index: 7
+    icon: ENCHANTING_TABLE
+    name: change-class
+    desc: change-class-desc
+    actions:
+      - menu:class-list
+  back:
+    index: 8
+  spell^1:
+    index: 9
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=1
+    actions-right-click:
+      - change-order1
+  spell^2:
+    index: 10
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=2
+    actions-right-click:
+      - change-order2
+  spell^3:
+    index: 11
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=3
+    actions-right-click:
+      - change-order3
+  spell^4:
+    index: 12
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=4
+    actions-right-click:
+      - change-order4
+  spell^5:
+    index: 13
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=5
+    actions-right-click:
+      - change-order5
+  spell^6:
+    index: 14
+    icon: ENDER_CHEST
+    name: empty-spell-slot
+    desc: empty-spell-slot-desc
+    actions:
+      - menu:spell-list?class=$class$&slot=6
+    actions-right-click:
+      - change-order6
+

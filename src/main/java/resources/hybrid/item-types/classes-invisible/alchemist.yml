@@ -30,23 +30,23 @@ allowed-actions:
   - FALL_PROTECTION.3
 
 spells:
-  0:
+  1:
     - aquify
     - spoil
     - rust
-  1:
+  2:
     - petrify
     - heavy_drinker
     - g:escape
-  2:
+  3:
     - amplify
     - weakness
-  3:
+  4:
     - potion_poison
     - potion_strength
     - potion_harm
     - potion_weakness
-  4:
+  5:
     - potion_regen
     - potion_speed
     - potion_heal

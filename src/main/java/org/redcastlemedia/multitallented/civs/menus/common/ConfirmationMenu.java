@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -40,11 +42,19 @@ public class ConfirmationMenu extends CustomMenu {
         if (params.containsKey("type")) {
             data.put("type", params.get("type"));
         }
-        if (params.containsKey("region")) {
-            data.put("region", RegionManager.getInstance().getRegionById(params.get("region")));
+        if (params.containsKey(Constants.REGION)) {
+            data.put(Constants.REGION, RegionManager.getInstance().getRegionById(params.get(Constants.REGION)));
         }
-        if (params.containsKey("town")) {
-            data.put("town", TownManager.getInstance().getTown(params.get("town")));
+        if (params.containsKey(Constants.TOWN)) {
+            data.put(Constants.TOWN, TownManager.getInstance().getTown(params.get(Constants.TOWN)));
+        }
+        if (params.containsKey(Constants.CLASS)) {
+            for (CivClass civClass : civilian.getCivClasses()) {
+                if (civClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                    data.put(Constants.CLASS, civClass);
+                    break;
+                }
+            }
         }
         return data;
     }
@@ -55,8 +65,8 @@ public class ConfirmationMenu extends CustomMenu {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("confirm".equals(actionString)) {
             CivItem civItem = (CivItem) MenuManager.getData(civilian.getUuid(), "item");
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             if (type == null) {
                 return true;
             }
@@ -64,8 +74,14 @@ public class ConfirmationMenu extends CustomMenu {
                 buyItem(civItem, player, civilian);
                 player.closeInventory();
             } else if ("destroy".equals(type)) {
-                destroyRegionOrTown(region, town, civilian, player);
-                player.closeInventory();
+                if (region == null && town == null) {
+                    CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
+                    ClassManager.getInstance().deleteClass(civClass);
+                    player.closeInventory();
+                } else {
+                    destroyRegionOrTown(region, town, civilian, player);
+                    player.closeInventory();
+                }
             } else if ("leave".equals(type)) {
                 if (town != null) {
                     town.getRawPeople().remove(civilian.getUuid());

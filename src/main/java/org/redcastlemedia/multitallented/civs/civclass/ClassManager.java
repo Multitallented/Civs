@@ -1,18 +1,23 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 @CivsSingleton
 public class ClassManager {
@@ -45,6 +50,7 @@ public class ClassManager {
                         civClass.setSelectedClass(true);
                         civilian.setCurrentClass(civClass);
                     }
+                    civClass.setLevel(classConfig.getInt("level", 0));
                     civilian.getCivClasses().add(civClass);
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
@@ -60,7 +66,7 @@ public class ClassManager {
             for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
                 if (civilian.getCurrentClass() == null) {
                     if (civilian.getCivClasses().isEmpty()) {
-                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid()));
+                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid(), civilian.getLocale()));
                     } else {
                         civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
                     }
@@ -92,6 +98,7 @@ public class ClassManager {
             config.set("mana-per-second", civClass.getManaPerSecond());
             config.set("max-mana", civClass.getMaxMana());
             config.set("selected", civClass.isSelectedClass());
+            config.set("level", civClass.getLevel());
             for (Map.Entry<Integer, String> entry : civClass.getSelectedSpells().entrySet()) {
                 config.set("spells." + entry.getKey(), entry.getValue());
             }
@@ -116,7 +123,7 @@ public class ClassManager {
         return i;
     }
 
-    public CivClass createDefaultClass(UUID uuid) {
+    public CivClass createDefaultClass(UUID uuid, String locale) {
         String className = ConfigManager.getInstance().getDefaultClass();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
         if (classType == null) {
@@ -128,9 +135,12 @@ public class ClassManager {
                     "",
                     new ArrayList<>(),
                     new ArrayList<>(),
-                    5, 100, true, 1);
+                    5, 100, true, 1, 20,
+                    LocaleManager.getInstance().getTranslation(locale, "mana"));
         }
-        return new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
+        CivClass civClass = new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
+        civClass.resetSpellSlotOrder();
+        return civClass;
     }
 
     public static ClassManager getInstance() {
@@ -138,5 +148,53 @@ public class ClassManager {
             classManager = new ClassManager();
         }
         return classManager;
+    }
+
+    public List<ClassType> getUnlockedClasses(Civilian civilian) {
+        List<ClassType> unlockedClasses = new ArrayList<>();
+        for (CivItem civItem : ItemManager.getInstance().getAllItemTypes().values()) {
+            if (civItem.getItemType() != CivItem.ItemType.CLASS ||
+                    !ItemManager.getInstance().hasItemUnlocked(civilian, civItem)) {
+                continue;
+            }
+            unlockedClasses.add((ClassType) civItem);
+        }
+        return unlockedClasses;
+    }
+
+    public void loadPlayer(Player player, Civilian civilian) {
+        CivClass civClass = civilian.getCurrentClass();
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+        player.setHealthScale(20);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(classType.getMaxHealth());
+    }
+
+    public void deleteClass(CivClass civClass) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(civClass.getUuid());
+        civilian.getCivClasses().remove(civClass);
+        if (civilian.getCurrentClass().equals(civClass)) {
+            civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
+        }
+        File classFolder = new File(Civs.dataLocation, "class-data");
+        if (!classFolder.exists()) {
+            classFolder.mkdir();
+        }
+        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        if (classFile.exists()) {
+            if (!classFile.delete()) {
+                Civs.logger.log(Level.SEVERE, "Unable to delete class {0}", classFile.getName());
+            }
+        }
+    }
+
+    public void createNewClass(Civilian civilian, ClassType classType) {
+        CivClass civClass = new CivClass(getNextId(), civilian.getUuid(),
+                classType.getProcessedName(), classType.getManaPerSecond(), classType.getMaxMana());
+        civClass.resetSpellSlotOrder();
+        civilian.getCurrentClass().setSelectedClass(false);
+        civClass.setSelectedClass(true);
+        civilian.setCurrentClass(civClass);
+        civilian.getCivClasses().add(civClass);
+        saveClass(civClass);
     }
 }

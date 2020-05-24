@@ -11,6 +11,7 @@ pre-reqs: []
 mana-title: mana
 mana-per-second: 1
 max-mana: 50
+max-health: 18
 
 allowed-actions:
   - BOW
@@ -27,17 +28,17 @@ allowed-actions:
   - PROTECTION.4
 
 spells:
-  0:
+  1:
     - g:damage
     - g:disable
-  1:
+  2:
     - g:debuff
     - g:damage-over-time
-  2:
+  3:
     - g:buff
     - g:chase
     - g:heal
-  3:
+  4:
     - g:escape
     - g:non-combat
     - g:allowed-action
