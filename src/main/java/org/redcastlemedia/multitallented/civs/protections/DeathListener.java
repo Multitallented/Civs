@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
@@ -132,10 +133,6 @@ public class DeathListener implements Listener {
         Player player = (Player) event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (event.getDamage() > 0) {
-            checkArmorSkill(player);
-        }
-
         if (!civilian.isInCombat()) {
             boolean setCancelled = event.isCancelled() ||
                     ProtectionHandler.shouldBlockAction(player.getLocation(), "deny_damage");
@@ -143,6 +140,10 @@ public class DeathListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+
+        if (event.getDamage() > 0) {
+            checkArmorSkill(player);
         }
 
         long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();

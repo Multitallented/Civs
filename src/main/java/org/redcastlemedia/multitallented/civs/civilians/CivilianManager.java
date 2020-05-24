@@ -81,6 +81,7 @@ public class CivilianManager {
     void loadCivilian(Player player) {
         Civilian civilian = loadFromFileCivilian(player.getUniqueId());
         civilians.put(player.getUniqueId(), civilian);
+        ClassManager.getInstance().loadPlayer(player, civilian);
     }
     public void createDefaultCivilian(Player player) {
         Civilian civilian = createDefaultCivilian(player.getUniqueId());
@@ -106,7 +107,6 @@ public class CivilianManager {
     void unloadCivilian(Player player) {
         Civilian civilian = getCivilian(player.getUniqueId());
         saveCivilian(civilian);
-//        civilian.setMana(100);
 //        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
@@ -218,7 +218,7 @@ public class CivilianManager {
     }
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
-        CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
+        CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid, configManager.getDefaultLanguage());
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
@@ -228,6 +228,7 @@ public class CivilianManager {
         civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
+        civilian.setCurrentClass(defaultClass);
 
         for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
             civilian.getSkills().put(skillName, new Skill(skillName));

@@ -8,11 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -25,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
+import javassist.CtClass;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -35,6 +38,7 @@ public abstract class CustomMenu {
     protected HashMap<UUID, CycleGUI> cycleItems = new HashMap<>();
     protected int size;
     private String name;
+    private HashMap<UUID, HashMap<String, List<String>>> rightClickActions = new HashMap<>();
 
     public abstract Map<String, Object> createData(Civilian civilian, Map<String, String> params);
 
@@ -63,6 +67,7 @@ public abstract class CustomMenu {
     }
     public Inventory createMenu(Civilian civilian) {
         actions.put(civilian.getUuid(), new HashMap<>());
+        rightClickActions.put(civilian.getUuid(), new HashMap<>());
         Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getName());
         HashMap<String, Integer> duplicateCount = new HashMap<>();
         for (MenuIcon menuIcon : itemIndexes) {
@@ -123,6 +128,18 @@ public abstract class CustomMenu {
             }
         }
         actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+        List<String> currentRightClickActions = new ArrayList<>();
+        if (menuIcon.getRightClickActions().isEmpty()) {
+            currentRightClickActions.add(menuIcon.getKey());
+        } else {
+            for (String action : menuIcon.getRightClickActions()) {
+                String newAction = action.replace("$count$", "" + count);
+                newAction = newAction.replace("$itemName$",
+                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                currentRightClickActions.add(newAction);
+            }
+        }
+        rightClickActions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentRightClickActions);
     }
 
     protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
@@ -168,7 +185,10 @@ public abstract class CustomMenu {
     public void onInventoryClick(InventoryClickEvent event) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getWhoClicked().getUniqueId());
         ItemStack clickedItem = event.getCurrentItem();
-        if (!actions.containsKey(civilian.getUuid())) {
+        if (event.getClick().isLeftClick() && !actions.containsKey(civilian.getUuid())) {
+            return;
+        }
+        if (event.getClick().isRightClick() && !rightClickActions.containsKey(civilian.getUuid())) {
             return;
         }
         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
@@ -177,7 +197,12 @@ public abstract class CustomMenu {
             }
             return;
         }
-        List<String> actionStrings = actions.get(civilian.getUuid()).get(clickedItem.getType().name() + ":" + clickedItem.getItemMeta().getDisplayName());
+        List<String> actionStrings;
+        if (event.getClick().isRightClick()) {
+            actionStrings = rightClickActions.get(civilian.getUuid()).get(clickedItem.getType().name() + ":" + clickedItem.getItemMeta().getDisplayName());
+        } else {
+            actionStrings = actions.get(civilian.getUuid()).get(clickedItem.getType().name() + ":" + clickedItem.getItemMeta().getDisplayName());
+        }
         if (actionStrings == null || actionStrings.isEmpty()) {
             if (!event.isCancelled()) {
                 event.setCancelled(true);
@@ -260,6 +285,8 @@ public abstract class CustomMenu {
             return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;
+        } else if (data instanceof CivClass) {
+            return "" + ((CivClass) data).getId();
         } else {
             return "";
         }

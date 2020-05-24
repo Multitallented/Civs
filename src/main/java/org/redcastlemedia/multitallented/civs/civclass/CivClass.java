@@ -7,10 +7,6 @@ import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
@@ -33,8 +29,12 @@ public class CivClass {
     private int maxMana;
     @Getter @Setter
     private boolean selectedClass;
+    @Getter @Setter
+    private int level = 0;
     @Getter
     private Map<Integer, String> selectedSpells = new HashMap<>();
+    @Getter
+    private Map<Integer, Integer> spellSlotOrder = new HashMap<>();
 
     public CivClass(int id, UUID uuid, String type, int manaPerSecond, int maxMana) {
         this.id = id;
@@ -74,5 +74,11 @@ public class CivClass {
             level = Math.max(level, spellType.getAllowedActions().getOrDefault(key, -1));
         }
         return level;
+    }
+
+    public void resetSpellSlotOrder() {
+        for (int i = 1; i < 7; i++) {
+            spellSlotOrder.put(i, i);
+        }
     }
 }

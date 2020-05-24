@@ -10,6 +10,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -79,8 +81,12 @@ public class PortCommand extends CivCommand {
 
         if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
             int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+            String manaTitle = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    classType.getManaTitle());
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "need-more-mana").replace("$1", manaNeeded + ""));
+                    "need-more-mana").replace("$1", manaNeeded + "")
+                    .replace("$2", manaTitle));
             return true;
         }
 
@@ -154,8 +160,12 @@ public class PortCommand extends CivCommand {
 
                 if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
                     int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
+                    ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                    String manaTitle = LocaleManager.getInstance().getTranslationWithPlaceholders(p,
+                            classType.getManaTitle());
                     p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "need-more-mana").replace("$1", manaNeeded + ""));
+                            "need-more-mana").replace("$1", manaNeeded + "")
+                            .replace("$2", manaTitle));
                     return;
                 } else {
                     civilian.setMana(civilian.getMana() - ConfigManager.getInstance().getPortMana());

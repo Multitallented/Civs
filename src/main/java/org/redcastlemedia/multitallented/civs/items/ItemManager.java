@@ -15,6 +15,8 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsUtil;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
@@ -225,10 +227,19 @@ public class ItemManager {
                 config.getInt("mana-per-second", 1),
                 config.getInt("max-mana", 100),
                 config.getBoolean("is-in-shop", true),
-                config.getInt("level", 1));
+                config.getInt("level", 1),
+                config.getInt("max-health", 20),
+                config.getString("mana-title", "mana"));
         AllowedActionsUtil.loadAllowedActions(civItem.getAllowedActions(),
                 config.getStringList("allowed-actions"));
 
+        if (config.isSet("spells")) {
+            int i = 1;
+            for (String slotKey : config.getConfigurationSection("spells").getKeys(false)) {
+                civItem.getSpellSlots().put(i, config.getStringList("spells." + slotKey));
+                i++;
+            }
+        }
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -536,117 +547,7 @@ public class ItemManager {
     }
 
     public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
-        if (civItem.getCivReqs().isEmpty()) {
-            return true;
-        }
-        Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
-            return false;
-        }
-        outer: for (String reqString : civItem.getCivReqs()) {
-            for (String req : reqString.split("\\|")) {
-                //perm=civs.admin
-                if (req.startsWith("perm=")) {
-                    String permission = req.replace("perm=", "");
-                    if (Civs.perm != null &&
-                            Civs.perm.has(player, permission)) {
-                        continue outer;
-                    } else {
-                        continue;
-                    }
-                //member=settlement:town:...
-                } else if (req.startsWith("member=")) {
-                    String[] townTypeStrings = req.replace("member=", "").split(":");
-                    Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
-                    for (Town town : TownManager.getInstance().getTowns()) {
-                        if (townTypes.contains(town.getType()) &&
-                                town.getPeople().containsKey(civilian.getUuid())) {
-                            continue outer;
-                        }
-                    }
-                    continue;
-                //skill:crafting=20
-                } else if (req.startsWith("skill:")) {
-                    String[] reqSplit = req.split(":")[1].split("=");
-                    int level = Integer.parseInt(reqSplit[1]);
-                    String skillName = reqSplit[0];
-                    for (Skill skill : civilian.getSkills().values()) {
-                        if (skill.getType().equalsIgnoreCase(skillName) &&
-                                skill.getLevel() >= level) {
-                            continue outer;
-                        }
-                    }
-                //population=15
-                } else if (req.startsWith("population=")) {
-                    int pop = Integer.parseInt(req.replace("population=", ""));
-                    for (Town town : TownManager.getInstance().getTowns()) {
-                        if (!town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                            continue;
-                        }
-                        if (pop <= town.getPopulation()) {
-                            continue outer;
-                        }
-                    }
-                    continue;
-                }
-                String[] splitReq = req.split(":");
-                //house:???
-                if (splitReq.length < 2) {
-                    if (civilian.getCountStashItems(splitReq[0]) > 0 ||
-                            civilian.getCountNonStashItems(splitReq[0]) > 0) {
-                        continue outer;
-                    } else {
-                        continue;
-                    }
-                }
-                String[] reqParams = splitReq[1].split("=");
-                //shack:built=1
-                if (reqParams[0].equals("built")) {
-                    if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        continue;
-                    }
-                //bash:level=4
-                } else if (reqParams[0].equals("level")) {
-                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
-                    if (reqItem == null || civilian.getExp().get(reqItem) == null) {
-                        continue;
-                    }
-                    int level = civilian.getLevel(reqItem);
-                    if (level >= Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        continue;
-                    }
-                //house:has=2
-                } else if (reqParams[0].equals("has")) {
-                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
-                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        continue;
-                    }
-                //hamlet:population=15
-                } else if (reqParams[0].equals("population")) {
-                    int requirement = Integer.parseInt(reqParams[1]);
-                    for (Town town : TownManager.getInstance().getTowns()) {
-                        if (!town.getType().equalsIgnoreCase(splitReq[0]) ||
-                                !town.getPeople().containsKey(civilian.getUuid()) ||
-                                !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                            continue;
-                        }
-                        if (requirement <= town.getPopulation()) {
-                            continue outer;
-                        }
-                    }
-                    continue;
-                }
-            }
-            return false;
-        }
-        return true;
+        return getAllUnmetRequirements(civItem, civilian).isEmpty();
     }
 
     public void addMinItems(Civilian civilian) {
@@ -674,6 +575,214 @@ public class ItemManager {
             civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
         }
         CivilianManager.getInstance().saveCivilian(civilian);
+    }
+
+    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian) {
+        List<String> unmetRequirements = new ArrayList<>();
+        if (civItem.getCivReqs().isEmpty()) {
+            return unmetRequirements;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    "invalid-target"));
+            return unmetRequirements;
+        }
+
+        outer: for (String reqString : civItem.getCivReqs()) {
+            for (String req : reqString.split("\\|")) {
+                //perm=civs.admin
+                if (req.startsWith("perm=")) {
+                    checkPermissionRequirement(unmetRequirements, player, req);
+                    continue;
+                    //member=settlement:town:...
+                } else if (req.startsWith("member=")) {
+                    checkMemberOfTownRequirement(civilian, unmetRequirements, player, req);
+                    continue;
+                    //skill:crafting=20
+                } else if (req.startsWith("skill:")) {
+                    if (checkSkillRequirement(player, civilian, req, unmetRequirements)) {
+                        continue outer;
+                    }
+                    //population=15
+                } else if (req.startsWith("population=")) {
+                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req)) {
+                        continue outer;
+                    }
+                    continue;
+                }
+                String[] splitReq = req.split(":");
+                //house:???
+                if (splitReq.length < 2) {
+                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq)) {
+                        continue outer;
+                    }
+                    continue;
+                }
+                String[] reqParams = splitReq[1].split("=");
+                //shack:built=1
+                if (reqParams[0].equals("built")) {
+                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams)) {
+                        continue outer;
+                    }
+                    //bash:level=4
+                } else if (reqParams[0].equals("level")) {
+                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                    if (reqItem == null) {
+                        continue;
+                    }
+                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem)) {
+                        continue outer;
+                    }
+                    //house:has=2
+                } else if (reqParams[0].equals("has")) {
+                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
+                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    } else {
+                        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                splitReq[0] + LocaleConstants.NAME_SUFFIX);
+                        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                                "req-item").replace("$1", localItemName));
+                    }
+                    //hamlet:population=15
+                } else if (reqParams[0].equals("population")) {
+                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1])) {
+                        continue outer;
+                    }
+                }
+            }
+        }
+        return unmetRequirements;
+    }
+
+    private boolean checkSpecificTownPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String anotherString, String reqParam) {
+        int requirement = Integer.parseInt(reqParam);
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.getType().equalsIgnoreCase(anotherString) ||
+                    !town.getPeople().containsKey(civilian.getUuid()) ||
+                    !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                continue;
+            }
+            if (requirement <= town.getPopulation()) {
+                return true;
+            }
+        }
+        String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                anotherString + LocaleConstants.NAME_SUFFIX);
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "population-req").replace("$1", localTownName)
+                .replace("$2", "" + requirement));
+        return false;
+    }
+
+    private boolean checkItemLevelRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] reqParams, CivItem reqItem) {
+        int level = civilian.getLevel(reqItem);
+        if (level >= Integer.parseInt(reqParams[1])) {
+            return true;
+        }
+        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                reqItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "req-skill-level").replace("$1", localItemName)
+                .replace("$2", reqParams[1]));
+        return false;
+    }
+
+    private boolean checkBuildRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq, String[] reqParams) {
+        if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
+            return true;
+        }
+        String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                splitReq[0] + LocaleConstants.NAME_SUFFIX);
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "req-build").replace("$1", localRegionName));
+        return false;
+    }
+
+    private boolean checkOwnershipRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq) {
+        if (civilian.getCountStashItems(splitReq[0]) > 0 ||
+                civilian.getCountNonStashItems(splitReq[0]) > 0) {
+            return true;
+        }
+        String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                splitReq[0] + LocaleConstants.NAME_SUFFIX);
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "req-item").replace("$1", localItemName));
+        return false;
+    }
+
+    private boolean checkPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String req) {
+        int pop = Integer.parseInt(req.replace("population=", ""));
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.getPeople().containsKey(civilian.getUuid()) ||
+                    !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                continue;
+            }
+            if (pop <= town.getPopulation()) {
+                return true;
+            }
+        }
+        String town = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "town");
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "population-req").replace("$1", town)
+                .replace("$2", "" + pop));
+        return false;
+    }
+
+    private boolean checkSkillRequirement(Player player, Civilian civilian, String req,
+                                          List<String> unmetRequirements) {
+        String[] reqSplit = req.split(":")[1].split("=");
+        int level = Integer.parseInt(reqSplit[1]);
+        String skillName = reqSplit[0];
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(skillName) &&
+                    skill.getLevel() >= level) {
+                return true;
+            }
+        }
+        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                skillName + LocaleConstants.NAME_SUFFIX);
+        unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                "req-skill-level").replace("$1", localSkillName)
+                    .replace("$2", "" + level));
+        return false;
+    }
+
+    private void checkMemberOfTownRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String req) {
+        String[] townTypeStrings = req.replace("member=", "").split(":");
+        Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
+        boolean isMember = false;
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (townTypes.contains(town.getType()) &&
+                    town.getRawPeople().containsKey(civilian.getUuid())) {
+                isMember = true;
+                break;
+            }
+        }
+        if (!isMember) {
+            StringBuilder townTypesNames = new StringBuilder();
+            for (String townType : townTypes) {
+                townTypesNames.append(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        townType + LocaleConstants.NAME_SUFFIX)).append(", ");
+            }
+            townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "req-member-of-town") + townTypesNames.toString());
+        }
+    }
+
+    private void checkPermissionRequirement(List<String> unmetRequirements, Player player, String req) {
+        String permission = req.replace("perm=", "");
+        if (Civs.perm == null ||
+                !Civs.perm.has(player, permission)) {
+            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "no-permission"));
+            return;
+        } else {
+            return;
+        }
     }
 
     public ArrayList<CivItem> getItemsByLevel(int level) {

@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 public final class Constants {
     public static final String REGIONS = "regions";
     public static final String REGION = "region";
+    public static final String CLASS = "class";
     public static final String REGION_TYPE = "regionType";
     public static final String TOWN_TYPE = "townType";
     public static final String SELECTED_TOWN = "selectedTown";

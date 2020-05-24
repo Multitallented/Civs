@@ -135,7 +135,7 @@ public class Civilian {
     public int getMana() { return mana; }
     public Set<CivClass> getCivClasses() {
         if (civClasses.isEmpty()) {
-            CivClass civClass = ClassManager.getInstance().createDefaultClass(uuid);
+            CivClass civClass = ClassManager.getInstance().createDefaultClass(uuid, locale);
             civClasses.add(civClass);
             currentClass = civClass;
         }
