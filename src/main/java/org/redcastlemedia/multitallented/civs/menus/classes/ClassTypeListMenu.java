@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "class-type-list") @SuppressWarnings("unused")
 public class ClassTypeListMenu extends CustomMenu {
@@ -72,7 +73,7 @@ public class ClassTypeListMenu extends CustomMenu {
 
             CVItem cvItem = classType.getShopIcon(civilian.getLocale());
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("unlocked")) {
-                List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(classType, civilian);
+                List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(classType, civilian, false);
                 if (!unmetRequirements.isEmpty()) {
                     cvItem.getLore().addAll(unmetRequirements);
                 }
