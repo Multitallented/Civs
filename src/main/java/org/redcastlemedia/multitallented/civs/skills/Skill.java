@@ -28,6 +28,7 @@ public class Skill {
     public double getCurrentLevelExp() {
         double totalExp = getTotalExp();
         int currentLevel = getLevel();
+        currentLevel = currentLevel >= 10 ? 9 : currentLevel;
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         double expForCurrentLevel = (double) currentLevel / 10.0 * skillType.getMaxExp();
         return totalExp - expForCurrentLevel;

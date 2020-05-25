@@ -84,4 +84,25 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_SLAB.name(), 9);
         assertEquals(1, skill.getLevel());
     }
+
+    @Test
+    public void maxLevelSkillShouldDisplayCorrectly() {
+        Skill skill = new Skill("sword");
+        skill.getAccomplishments().put("COW", 10);
+        skill.getAccomplishments().put("ZOMBIE", 10);
+        skill.getAccomplishments().put("CHICKEN", 3);
+        skill.getAccomplishments().put("PIG", 10);
+        skill.getAccomplishments().put("SHEEP", 10);
+        skill.getAccomplishments().put("SALMON", 5);
+        skill.getAccomplishments().put("CREEPER", 10);
+        skill.getAccomplishments().put("SKELETON", 10);
+        skill.getAccomplishments().put("SPIDER", 9);
+        skill.getAccomplishments().put("SQUID", 1);
+        skill.getAccomplishments().put("ENDERMAN", 2);
+        skill.getAccomplishments().put("PHANTOM", 1);
+        skill.getAccomplishments().put("BEE", 1);
+        civilian.getSkills().put("sword", skill);
+        assertEquals(0, skill.getExpToNextLevel(), 0.01);
+        assertEquals(300, skill.getCurrentLevelExp(), 0.01);
+    }
 }
