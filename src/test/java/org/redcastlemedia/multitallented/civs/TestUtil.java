@@ -289,7 +289,6 @@ public abstract class TestUtil {
         MenuManager.getInstance();
         SkillManager.getInstance();
         CivilianManager.getInstance().createDefaultCivilian(player);
-        createDefaultClass();
         ConfigManager configManager = ConfigManager.getInstance();
         configManager.useStarterBook = false;
         initialized = true;
@@ -307,11 +306,6 @@ public abstract class TestUtil {
         lore.add(name);
         is.getItemMeta().setLore(lore);
         return is;
-    }
-
-    public static void createDefaultClass() {
-        FileConfiguration config = new YamlConfiguration();
-        ItemManager.getInstance().loadClassType(config, "default");
     }
 
     public static Block createBlock(Material mat, Location location) {

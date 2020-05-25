@@ -47,6 +47,7 @@ public class Skill {
         double expToNextLevel = getExpToNextLevel();
         int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale) * 2;
         int progress = (int) Math.floor(currentExp / (currentExp + expToNextLevel) * lineBreakLength);
+        progress = Math.min(progress, lineBreakLength);
         for (int i = 0; i < progress; i++) {
             stringBuilder.append("|");
         }
@@ -59,6 +60,7 @@ public class Skill {
         double expToNextLevel = getExpToNextLevel();
         int lineBreakLength = ConfigManager.getInstance().getLineBreakLength(locale) * 2;
         int progress = (int) Math.floor(expToNextLevel / (currentExp + expToNextLevel) * lineBreakLength);
+        progress = Math.min(progress, lineBreakLength);
         for (int i = 0; i < progress; i++) {
             stringBuilder.append("|");
         }
