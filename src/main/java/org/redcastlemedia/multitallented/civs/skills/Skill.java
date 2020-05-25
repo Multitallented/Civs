@@ -31,7 +31,7 @@ public class Skill {
         currentLevel = currentLevel >= 10 ? 9 : currentLevel;
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         double expForCurrentLevel = (double) currentLevel / 10.0 * skillType.getMaxExp();
-        return totalExp - expForCurrentLevel;
+        return Math.min(skillType.getMaxExp() / 10.0, totalExp - expForCurrentLevel);
     }
 
     public double getExpToNextLevel() {
@@ -39,7 +39,7 @@ public class Skill {
         int currentLevel = getLevel();
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         double expForNextLevel = Math.min(currentLevel + 1, 10) / 10.0 * skillType.getMaxExp();
-        return expForNextLevel - totalExp;
+        return Math.max(expForNextLevel - totalExp, 0);
     }
 
     public String getCurrentExpAsBar(String locale) {
