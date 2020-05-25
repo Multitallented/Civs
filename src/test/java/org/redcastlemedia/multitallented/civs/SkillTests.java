@@ -97,10 +97,10 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put("CREEPER", 10);
         skill.getAccomplishments().put("SKELETON", 10);
         skill.getAccomplishments().put("SPIDER", 9);
-        skill.getAccomplishments().put("SQUID", 1);
+        skill.getAccomplishments().put("SQUID", 10);
         skill.getAccomplishments().put("ENDERMAN", 2);
-        skill.getAccomplishments().put("PHANTOM", 1);
-        skill.getAccomplishments().put("BEE", 1);
+        skill.getAccomplishments().put("PHANTOM", 10);
+        skill.getAccomplishments().put("BEE", 10);
         civilian.getSkills().put("sword", skill);
         assertEquals(0, skill.getExpToNextLevel(), 0.01);
         assertEquals(300, skill.getCurrentLevelExp(), 0.01);
