@@ -215,9 +215,9 @@ public class DeathListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Set<Material> armors = new HashSet<>();
         ItemStack helmet = player.getInventory().getHelmet();
-        ItemStack chestPlate = player.getInventory().getHelmet();
-        ItemStack leggings = player.getInventory().getHelmet();
-        ItemStack boots = player.getInventory().getHelmet();
+        ItemStack chestPlate = player.getInventory().getChestplate();
+        ItemStack leggings = player.getInventory().getLeggings();
+        ItemStack boots = player.getInventory().getBoots();
         if (helmet != null && RepairEffect.isHelmet(helmet.getType())) {
             armors.add(helmet.getType());
         }
@@ -231,7 +231,8 @@ public class DeathListener implements Listener {
             armors.add(boots.getType());
         }
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
-        boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD);
+        boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD) &&
+                player.isBlocking();
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.ARMOR.name())) {
                 double exp = 0;
