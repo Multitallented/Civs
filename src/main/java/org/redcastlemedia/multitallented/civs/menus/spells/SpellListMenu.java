@@ -2,8 +2,10 @@ package org.redcastlemedia.multitallented.civs.menus.spells;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -56,9 +58,11 @@ public class SpellListMenu extends CustomMenu {
             data.put("slot", selectedSlot);
         }
         if (selectedClass != null && selectedSlot > -1) {
-            spellTypeList.addAll(SpellManager.getInstance().getSpellsForSlot(selectedClass, selectedSlot));
+            Set<SpellType> spellSet = new HashSet<>(SpellManager.getInstance().getSpellsForSlot(selectedClass, selectedSlot));
+            spellTypeList.addAll(spellSet);
         } else if (selectedClass != null) {
-            spellTypeList.addAll(SpellManager.getInstance().getSpellsForClass(selectedClass));
+            Set<SpellType> spellSet = new HashSet<>(SpellManager.getInstance().getSpellsForClass(selectedClass));
+            spellTypeList.addAll(spellSet);
         }
         data.put("spells", spellTypeList);
         data.put("spellMap", new HashMap<ItemStack, SpellType>());
@@ -84,7 +88,7 @@ public class SpellListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             SpellType spellType = itemArray[startIndex + count];
-            CVItem cvItem = spellType.getShopIcon(civilian.getLocale());
+            CVItem cvItem = spellType.getShopIcon(player);
             List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(spellType, civilian, false);
             if (!unmetRequirements.isEmpty()) {
                 cvItem.getLore().addAll(unmetRequirements);

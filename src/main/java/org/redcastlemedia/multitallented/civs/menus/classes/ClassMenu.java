@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -51,7 +52,8 @@ public class ClassMenu extends CustomMenu {
                 classType.getManaTitle());
         data.put("className", localClassName + civClass.getId());
         data.put("classTypeName", localClassName);
-        data.put("allowedActions", getAllowedActionsString(classType.getAllowedActions()));
+        String allowedItemsString = getAllowedActionsString(classType.getAllowedActions());
+        data.put("allowedItems", allowedItemsString);
         data.put("classManaName", manaTitle);
         data.put("maxHealth", classType.getMaxHealth());
         data.put("maxMana", classType.getMaxMana());
@@ -74,7 +76,7 @@ public class ClassMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
-            CVItem cvItem = classType.getShopIcon(civilian.getLocale());
+            CVItem cvItem = classType.getShopIcon(player);
             cvItem.setDisplayName(cvItem.getDisplayName() + civClass.getId());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -88,7 +90,7 @@ public class ClassMenu extends CustomMenu {
             index = civClass.getSpellSlotOrder().get(index);
             if (civClass.getSelectedSpells().containsKey(index)) {
                 String spellName = civClass.getSelectedSpells().get(index);
-                CVItem cvItem = ItemManager.getInstance().getItemType(spellName).getShopIcon(civilian.getLocale());
+                CVItem cvItem = ItemManager.getInstance().getItemType(spellName).getShopIcon(player);
                 cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "spell-slot-desc")));
                 if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
@@ -146,6 +148,7 @@ public class ClassMenu extends CustomMenu {
             }
             player.setLevel(Math.max(0, player.getLevel() - 1));
             civClass.setLevel(civClass.getLevel() + 1);
+            MenuManager.getAllData(civilian.getUuid()).put("level", civClass.getLevel());
             ClassManager.getInstance().saveClass(civClass);
             return true;
         }
@@ -155,7 +158,7 @@ public class ClassMenu extends CustomMenu {
     private String getAllowedActionsString(Map<String, Integer> allowedActions) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, Integer> entry : allowedActions.entrySet()) {
-            stringBuilder.append(entry.getKey());
+            stringBuilder.append(entry.getKey()).append(".");
             stringBuilder.append(entry.getValue());
             stringBuilder.append(",");
         }

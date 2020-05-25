@@ -23,9 +23,9 @@ public class CivClass {
     private final UUID uuid;
     @Getter
     private final int id;
-    @Getter @Setter
+    @Setter
     private int manaPerSecond;
-    @Getter @Setter
+    @Setter
     private int maxMana;
     @Getter @Setter
     private boolean selectedClass;
@@ -36,12 +36,28 @@ public class CivClass {
     @Getter
     private Map<Integer, Integer> spellSlotOrder = new HashMap<>();
 
-    public CivClass(int id, UUID uuid, String type, int manaPerSecond, int maxMana) {
+    public CivClass(int id, UUID uuid, String type) {
         this.id = id;
         this.uuid = uuid;
         this.type = type;
-        this.manaPerSecond = manaPerSecond;
-        this.maxMana = maxMana;
+        this.manaPerSecond = -1;
+        this.maxMana = -1;
+    }
+
+    public int getMaxMana() {
+        if (maxMana == -1) {
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
+            return classType.getMaxMana();
+        }
+        return maxMana;
+    }
+
+    public int getManaPerSecond() {
+        if (manaPerSecond == -1) {
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
+            return classType.getManaPerSecond();
+        }
+        return manaPerSecond;
     }
 
     public int getMaxEnchantLevel(Enchantment enchantment) {
