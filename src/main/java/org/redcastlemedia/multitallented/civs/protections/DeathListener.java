@@ -142,7 +142,11 @@ public class DeathListener implements Listener {
             }
         }
 
-        if (event.getDamage() > 0) {
+        if (event.getDamage() > 0 && event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION &&
+                event.getCause() != EntityDamageEvent.DamageCause.FALL &&
+                event.getCause() != EntityDamageEvent.DamageCause.CONTACT &&
+                event.getCause() != EntityDamageEvent.DamageCause.DROWNING &&
+                event.getCause() != EntityDamageEvent.DamageCause.VOID) {
             checkArmorSkill(player);
         }
 
