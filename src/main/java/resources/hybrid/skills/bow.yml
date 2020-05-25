@@ -1,6 +1,6 @@
 enabled: true
 icon: BOW
-exp-per-new-item: 60
+exp-per-new-item: 54
 exp-repeat-decay: 6
 max-exp: 3000
 exceptions:
