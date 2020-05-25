@@ -19,15 +19,18 @@ public final class AllowedActionsUtil {
                 String[] matSplit = action.split("_");
                 if (matSplit.length > 1) {
                     switch (matSplit[0]) {
-                        case "GOLDEN":
-                            allowedActions.put("LEATHER_" + matSplit[1], 1);
-                            allowedActions.put("STONE_" + matSplit[1], 1);
-                        case "IRON":
-                            allowedActions.put("GOLDEN_" + matSplit[1], 1);
-                        case "DIAMOND":
-                            allowedActions.put("IRON_" + matSplit[1], 1);
                         case "NETHERITE":
+                            allowedActions.put("NETHERITE_" + matSplit[1], 1);
+                        case "DIAMOND":
                             allowedActions.put("DIAMOND_" + matSplit[1], 1);
+                        case "IRON":
+                            allowedActions.put("IRON_" + matSplit[1], 1);
+                        case "GOLDEN":
+                            allowedActions.put("GOLDEN_" + matSplit[1], 1);
+                        case "LEATHER":
+                            allowedActions.put("LEATHER_" + matSplit[1], 1);
+                        case "STONE":
+                            allowedActions.put("STONE_" + matSplit[1], 1);
                             break;
                         default:
                             break;

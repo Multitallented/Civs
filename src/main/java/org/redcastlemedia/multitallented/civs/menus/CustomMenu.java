@@ -288,7 +288,7 @@ public abstract class CustomMenu {
         } else if (data instanceof CivClass) {
             return "" + ((CivClass) data).getId();
         } else {
-            return "";
+            return "" + data;
         }
     }
 

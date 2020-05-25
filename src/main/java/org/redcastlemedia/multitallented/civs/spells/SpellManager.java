@@ -22,14 +22,17 @@ public class SpellManager {
         List<SpellType> spellTypeList = new ArrayList<>();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(selectedClass.getType());
 
-        for (String spellKey : classType.getSpellSlots().get(selectedSlot)) {
-            if (spellKey.startsWith("g:")) {
-                for (CivItem civItem : ItemManager.getInstance()
-                        .getItemGroup(spellKey.replace("g:", ""))) {
-                    spellTypeList.add((SpellType) civItem);
+        List<String> spells = classType.getSpellSlots().get(selectedSlot);
+        if (spells != null) {
+            for (String spellKey : spells) {
+                if (spellKey != null && spellKey.startsWith("g:")) {
+                    for (CivItem civItem : ItemManager.getInstance()
+                            .getItemGroup(spellKey.replace("g:", ""))) {
+                        spellTypeList.add((SpellType) civItem);
+                    }
+                } else if (spellKey != null) {
+                    spellTypeList.add((SpellType) ItemManager.getInstance().getItemType(spellKey));
                 }
-            } else {
-                spellTypeList.add((SpellType) ItemManager.getInstance().getItemType(spellKey));
             }
         }
         return spellTypeList;

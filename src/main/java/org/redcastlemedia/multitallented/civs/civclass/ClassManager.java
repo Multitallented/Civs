@@ -28,6 +28,10 @@ public class ClassManager {
         loadClasses();
     }
 
+    public void reload() {
+        loadClasses();
+    }
+
     void loadClasses() {
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
@@ -45,7 +49,9 @@ public class ClassManager {
                     int maxMana = classConfig.getInt("max-mana", 100);
 
                     Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
-                    CivClass civClass = new CivClass(id, uuid, className, manaPerSecond, maxMana);
+                    CivClass civClass = new CivClass(id, uuid, className);
+                    civClass.setManaPerSecond(manaPerSecond);
+                    civClass.setMaxMana(maxMana);
                     if (classConfig.getBoolean("selected", false)) {
                         civClass.setSelectedClass(true);
                         civilian.setCurrentClass(civClass);
@@ -94,7 +100,7 @@ public class ClassManager {
         try {
             config.set("id", civClass.getId());
             config.set("type", civClass.getType());
-            config.set("uuid", civClass.getUuid());
+            config.set("uuid", civClass.getUuid().toString());
             config.set("mana-per-second", civClass.getManaPerSecond());
             config.set("max-mana", civClass.getMaxMana());
             config.set("selected", civClass.isSelectedClass());
@@ -125,20 +131,7 @@ public class ClassManager {
 
     public CivClass createDefaultClass(UUID uuid, String locale) {
         String className = ConfigManager.getInstance().getDefaultClass();
-        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
-        if (classType == null) {
-            classType = new ClassType(new ArrayList<>(),
-                    "default",
-                    CVItem.createCVItemFromString("STONE"),
-                    CVItem.createCVItemFromString("STONE"),
-                    0,
-                    "",
-                    new ArrayList<>(),
-                    new ArrayList<>(),
-                    5, 100, true, 1, 20,
-                    LocaleManager.getInstance().getTranslation(locale, "mana"));
-        }
-        CivClass civClass = new CivClass(getNextId(), uuid, className, classType.getManaPerSecond(), classType.getMaxMana());
+        CivClass civClass = new CivClass(getNextId(), uuid, className);
         civClass.resetSpellSlotOrder();
         return civClass;
     }
@@ -188,8 +181,7 @@ public class ClassManager {
     }
 
     public void createNewClass(Civilian civilian, ClassType classType) {
-        CivClass civClass = new CivClass(getNextId(), civilian.getUuid(),
-                classType.getProcessedName(), classType.getManaPerSecond(), classType.getMaxMana());
+        CivClass civClass = new CivClass(getNextId(), civilian.getUuid(), classType.getProcessedName());
         civClass.resetSpellSlotOrder();
         civilian.getCurrentClass().setSelectedClass(false);
         civClass.setSelectedClass(true);

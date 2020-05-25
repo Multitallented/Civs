@@ -29,6 +29,7 @@ public class ClassListMenu extends CustomMenu {
         Map<String, Object> data = new HashMap<>();
 
         List<CivClass> classes = new ArrayList<>(civilian.getCivClasses());
+        classes.remove(civilian.getCurrentClass());
         if (params.containsKey("page")) {
             data.put("page", Integer.parseInt(params.get("page")));
         } else {
@@ -60,7 +61,7 @@ public class ClassListMenu extends CustomMenu {
             }
             CivClass civClass = itemArray[startIndex + count];
             ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
-            CVItem cvItem = classType.getShopIcon(civilian.getLocale());
+            CVItem cvItem = classType.getShopIcon(player);
             cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "level").replace("$1", "" + civClass.getLevel()));
             ItemStack itemStack = cvItem.createItemStack();

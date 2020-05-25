@@ -15,13 +15,13 @@ allowed-actions:
   - POISON
 
 conditions:
-  cooldown: 10000
+  cooldown: 20000
   mana: 25
 
 components:
   1:
     costs:
-      cooldown: 10000
+      cooldown: 20000
       mana: 25
 
     yield:

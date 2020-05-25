@@ -15,18 +15,20 @@ pre-reqs:
   - skill:axe=2
 
 mana-title: mana
-mana-per-second: 5
-max-mana: 100
+mana-per-second: 2
+max-mana: 500
+max-health: 28
 
 allowed-actions:
   - GOLDEN_AXE
-  - DIAMOND_HEMLET
+  - DIAMOND_HELMET
   - GOLDEN_CHESTPLATE
   - LEATHER_LEGGINGS
   - LEATHER_BOOTS
   - SHARPNESS.5
   - PROTECTION.3
   - FIRE_PROTECTION.4
+  - BLAST_PROTECTION.4
   - FALL_PROTECTION.3
 
 spells:

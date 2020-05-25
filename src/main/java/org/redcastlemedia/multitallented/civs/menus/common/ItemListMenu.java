@@ -6,13 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 
 @CivsMenu(name = "item-list") @SuppressWarnings("unused")
 public class ItemListMenu extends CustomMenu {
@@ -29,7 +33,10 @@ public class ItemListMenu extends CustomMenu {
         if (params.containsKey("items")) {
             String[] splitItems = params.get("items").split(",");
             for (String itemString : splitItems) {
-                items.add(convertItemStringToCVItem(itemString));
+                CVItem cvItem = convertItemStringToCVItem(itemString);
+                if (cvItem != null) {
+                    items.add(cvItem);
+                }
             }
         }
 
@@ -60,10 +67,21 @@ public class ItemListMenu extends CustomMenu {
     }
 
     private CVItem convertItemStringToCVItem(String itemString) {
-        if (itemString.contains("\\.")) {
-            return new CVItem(Material.ENCHANTED_BOOK, 1, 100, itemString);
-        } else {
-            return CVItem.createCVItemFromString(itemString);
+        String[] itemSplit = itemString.split("\\.");
+        PotionEffectType potionEffectType = PotionEffectType.getByName(itemSplit[0]);
+        if (potionEffectType != null) {
+            return new CVItem(Material.POTION, 1, 100, itemString);
         }
+        Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(itemSplit[0].toLowerCase()));
+        if (enchantment != null) {
+            return new CVItem(Material.ENCHANTED_BOOK, 1, 100, itemString);
+        }
+        try {
+            Material material = Material.valueOf(itemSplit[0]);
+            return new CVItem(material, 1, 100, itemString);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            // Do nothing
+        }
+        return null;
     }
 }

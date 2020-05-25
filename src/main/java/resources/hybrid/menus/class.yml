@@ -20,15 +20,8 @@ items:
     # name: class name
     # desc: class desc
     actions: []
-  class-type:
-    index: 1
-    icon: WRITABLE_BOOK
-    name: {$classTypeName$
-    desc: click-info
-    actions:
-      - menu:class-type?classType=$classTypeName$
   level:
-    index: 2
+    index: 1
     icon: EXPERIENCE_BOTTLE
     name: level{$level$
     desc: level-up
@@ -36,20 +29,20 @@ items:
       - spend-exp
       - refresh
   allowed-items:
-    index: 3
+    index: 2
     icon: CHEST
     name: allowed-items
     desc: allowed-items-desc{$classTypeName$
     actions:
       - menu:item-list?items=$allowedItems$
   mana:
-    index: 4
+    index: 3
     icon: POTION
-    name: {$classManaName$
+    name: "{$classManaName$"
     desc: mana-desc{$maxMana$,,$manaRegen$
     actions: []
   health:
-    index: 5
+    index: 4
     icon: COOKED_BEEF
     name: health
     desc: health-desc{$maxHealth$
