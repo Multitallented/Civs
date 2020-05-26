@@ -726,8 +726,6 @@ public class AllowedActionsListener implements Listener {
         Spell spell = new Spell(spellType.getProcessedName(), player, civilian.getLevel(spellType));
         if (spell.useAbility()) {
             player.sendMessage(Civs.getPrefix() + spell.getSpellCastMessage(player));
-        } else {
-            // TODO send fail message
         }
     }
 

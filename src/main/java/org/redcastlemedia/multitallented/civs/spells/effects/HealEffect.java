@@ -1,7 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -9,10 +10,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
-
-import java.util.HashMap;
 
 public class HealEffect extends Effect {
     private int heal = 0;
@@ -44,14 +44,18 @@ public class HealEffect extends Effect {
         Entity origin = getOrigin();
         if (!(target instanceof LivingEntity)) {
             if (!this.silent && origin instanceof Player) {
-                origin.sendMessage(ChatColor.RED + Civs.getPrefix() + " target cant't be healed.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
             }
             return false;
         }
         LivingEntity livingEntity = (LivingEntity) target;
         if (livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() - livingEntity.getHealth() < this.heal) {
             if (!this.silent && origin instanceof Player) {
-                origin.sendMessage(ChatColor.RED + Civs.getPrefix() + " already has enough health.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
             }
             return false;
         }
@@ -64,25 +68,14 @@ public class HealEffect extends Effect {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) target;
-        Player player = null;
-        if (livingEntity instanceof Player) {
-            player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
-        }
         EntityRegainHealthEvent event = new EntityRegainHealthEvent(livingEntity, this.heal, EntityRegainHealthEvent.RegainReason.CUSTOM);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            if (player != null) {
-//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
-            }
             return;
         }
         double health = livingEntity.getHealth();
         double maxHealth = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         livingEntity.setHealth(Math.min(maxHealth, health + event.getAmount()));
-//        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
-//        }
     }
 
     @Override

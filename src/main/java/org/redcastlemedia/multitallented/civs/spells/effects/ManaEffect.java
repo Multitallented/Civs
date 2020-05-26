@@ -4,8 +4,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
@@ -47,7 +51,12 @@ public class ManaEffect extends Effect {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasMana = civilian.getMana() >= this.mana;
         if (!hasMana && !this.silent) {
-            //TODO send not enough mana message
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+            String localManaName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    classType.getManaTitle());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "need-more-mana").replace("$1", "" + (this.mana - civilian.getMana()))
+                    .replace("$1", localManaName));
         }
         return hasMana;
     }
@@ -61,9 +70,6 @@ public class ManaEffect extends Effect {
         Player player = (Player) target;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         civilian.setMana(civilian.getMana() + this.mana);
-        if (!this.silent) {
-            //TODO send mana added message
-        }
     }
 
     @Override
