@@ -13,10 +13,11 @@ public final class ReflexExemptionAssembler {
         Set<Cheat> cheats = new HashSet<>();
         switch(exemptionType) {
             case FLY:
-                cheats.add(Cheat.Fly);
+                cheats.add(Cheat.Speed);
+                cheats.add(Cheat.ElytraMove);
                 break;
             case FALL:
-                cheats.add(Cheat.Fall);
+                cheats.add(Cheat.ElytraMove);
                 break;
             case JESUS:
                 cheats.add(Cheat.ElytraMove);
