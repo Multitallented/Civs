@@ -116,4 +116,11 @@ items:
       - menu:spell-list?class=$class$&slot=6
     actions-right-click:
       - change-order6
+  spell-bar:
+    index: 17
+    icon: REDSTONE_TORCH
+    name: spells
+    desc: spell-command
+    actions:
+      - command:cv spells
 

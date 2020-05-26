@@ -32,13 +32,10 @@ spells:
     - g:damage
     - g:disable
   2:
-    - g:debuff
-    - g:damage-over-time
-  3:
     - g:buff
     - g:chase
     - g:heal
-  4:
+  3:
     - g:escape
     - g:non-combat
     - g:allowed-action
