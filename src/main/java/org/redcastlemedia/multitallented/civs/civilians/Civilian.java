@@ -174,6 +174,13 @@ public class Civilian {
         return true;
     }
 
+    public void addExp(CivItem civItem, int amount) {
+        if (civItem == null || exp == null) {
+            return;
+        }
+        exp.merge(civItem, amount, Integer::sum);
+    }
+
     public int getLevel(CivItem civItem) {
         if (civItem == null || exp == null || exp.get(civItem) == null) {
             return 1;

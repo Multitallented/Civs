@@ -259,7 +259,8 @@ public class ItemManager {
                 config.getStringList("groups"),
                 config,
                 config.getBoolean("is-in-shop", true),
-                config.getInt("level", 1));
+                config.getInt("level", 1),
+                config.getInt("exp-per-use", 0));
         AllowedActionsUtil.loadAllowedActions(spellType.getAllowedActions(),
                 config.getStringList("allowed-actions"));
         itemTypes.put(name.toLowerCase(), spellType);
