@@ -535,7 +535,7 @@ public class ProtectionHandler implements Listener {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
             return;
         }
-        if (CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
+        if (player != null && CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
             CivItem civItem = CivItem.getFromItemStack(player.getInventory().getItemInMainHand());
             if (civItem.getItemType() == CivItem.ItemType.SPELL) {
                 event.setCancelled(true);
