@@ -27,11 +27,12 @@ components:
     yield:
       sound: BLOCK_METAL_BREAK
       cancel: all
+      cleanse: BOTH
       potion^1:
         type: SLOW
-        ticks: 80
+        ticks: 100
         level: 8
       potion^2:
         type: DAMAGE_RESISTANCE
-        ticks: 80
+        ticks: 100
         level: 8
