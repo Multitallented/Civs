@@ -8,6 +8,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.CancelEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.CleanseEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
@@ -144,6 +145,8 @@ public class SpellType extends CivItem {
             return new ItemEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.EXEMPTION)) {
             return new ExemptionEffect(spell, key, target, caster, level, config);
+        } else if (type.equals(SpellEffectConstants.CLEANSE)) {
+            return new CleanseEffect(spell, key, target, caster, level, config);
         }
         return null;
     }

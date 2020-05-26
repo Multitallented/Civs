@@ -18,7 +18,7 @@ public class ExemptionEffect extends Effect {
         super(spell, key, target, origin, level);
         if (configuration instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection) configuration;
-            duration = section.getLong(SpellConstants.DURATION, 5) * 1000;
+            duration = section.getLong(SpellConstants.DURATION, 1) * 1000;
             exemptionType = ExemptionType.valueOf(section.getString("exemption", "FLY"));
         } else if (configuration instanceof String) {
             exemptionType = ExemptionType.valueOf((String) configuration);

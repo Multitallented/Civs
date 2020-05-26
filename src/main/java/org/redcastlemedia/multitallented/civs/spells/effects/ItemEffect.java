@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,6 +19,8 @@ public class ItemEffect extends Effect {
 
     private boolean potionExtended;
     private boolean potionUpgraded;
+    private boolean transformHeldItem;
+    private List<String> transformReq;
     private String potionType;
     private String mat = "STONE";
     private String target = SpellConstants.SELF;
@@ -28,6 +33,8 @@ public class ItemEffect extends Effect {
             if (matString != null) {
                 this.mat = matString;
             }
+            this.transformHeldItem = section.getBoolean("transform", false);
+            this.transformReq = section.getStringList("transform-reqs");
             this.potionType = section.getString("potion.type", null);
             this.potionUpgraded = section.getBoolean("potion.upgraded", false);
             this.potionExtended = section.getBoolean("potion.ticks", false);
@@ -40,11 +47,22 @@ public class ItemEffect extends Effect {
         } else if (value instanceof String) {
             this.mat = (String) value;
             this.target = SpellConstants.SELF;
+            this.transformHeldItem = false;
+            this.transformReq = new ArrayList<>();
         }
     }
 
     public boolean meetsRequirement() {
-        return true;
+        if (!this.transformHeldItem) {
+            return true;
+        }
+        Object target = getTarget();
+        if (!(target instanceof Player)) {
+            return false;
+        }
+        Player player = (Player) target;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        return this.transformReq.contains(itemStack.getType().name().toUpperCase());
     }
     public void apply() {
         Object target = getTarget();
@@ -52,6 +70,12 @@ public class ItemEffect extends Effect {
             return;
         }
         Player player = (Player) target;
+        if (this.transformHeldItem) {
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (!this.transformReq.contains(itemStack.getType().name().toUpperCase())) {
+                return;
+            }
+        }
         CVItem cvItem = CVItem.createCVItemFromString(this.mat);
         ItemStack itemStack = cvItem.createItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -61,10 +85,14 @@ public class ItemEffect extends Effect {
             potionMeta.setBasePotionData(new PotionData(potionEffectType, this.potionExtended, this.potionUpgraded));
             itemStack.setItemMeta(potionMeta);
         }
-        if (player.getInventory().firstEmpty() > -1) {
-            player.getInventory().addItem(itemStack);
+        if (this.transformHeldItem) {
+            player.getInventory().setItemInMainHand(itemStack);
         } else {
-            player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+            if (player.getInventory().firstEmpty() > -1) {
+                player.getInventory().addItem(itemStack);
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+            }
         }
     }
 }

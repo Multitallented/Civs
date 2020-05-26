@@ -66,7 +66,7 @@ public class CivPotionEffect extends Effect {
 
     @Override
     public void apply() {
-        Object target = getOrigin();
+        Object target = getTarget();
         if (!(target instanceof LivingEntity)) {
             return;
         }
