@@ -57,6 +57,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -533,6 +534,13 @@ public class ProtectionHandler implements Listener {
     private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
             return;
+        }
+        if (CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
+            CivItem civItem = CivItem.getFromItemStack(player.getInventory().getItemInMainHand());
+            if (civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+                return;
+            }
         }
         Material mat = clickedBlock.getType();
         if (mat == Material.OAK_DOOR ||
