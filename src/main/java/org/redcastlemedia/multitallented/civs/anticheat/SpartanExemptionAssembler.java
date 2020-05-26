@@ -19,6 +19,9 @@ public final class SpartanExemptionAssembler {
                 hackTypes.add(Enums.HackType.Velocity);
                 hackTypes.add(Enums.HackType.Sprint);
                 break;
+            case FALL:
+                hackTypes.add(Enums.HackType.IrregularMovements);
+                break;
             case JESUS:
                 hackTypes.add(Enums.HackType.Jesus);
                 hackTypes.add(Enums.HackType.IrregularMovements);

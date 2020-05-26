@@ -109,6 +109,9 @@ public class SpellListMenu extends CustomMenu {
             if (civClass != null && MenuManager.getAllData(civilian.getUuid()).containsKey("slot")) {
                 SpellType spellType = ((HashMap<ItemStack, SpellType>) MenuManager.getData(civilian.getUuid(), "spellMap"))
                         .get(itemStack);
+                if (!ItemManager.getInstance().hasItemUnlocked(civilian, spellType)) {
+                    return true;
+                }
                 int slot = (int) MenuManager.getData(civilian.getUuid(), "slot");
                 civClass.getSelectedSpells().put(civClass.getSpellSlotOrder().get(slot),
                         spellType.getProcessedName());

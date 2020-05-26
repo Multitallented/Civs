@@ -76,6 +76,7 @@ import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
+import org.redcastlemedia.multitallented.civs.util.SpellUtil;
 import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -139,6 +140,9 @@ public class CivilianListener implements Listener {
             } else {
                 player.damage(penalty);
             }
+        }
+        if (!civilian.getCombatBar().isEmpty()) {
+            SpellUtil.removeCombatBar(player, civilian);
         }
         CivilianManager.getInstance().unloadCivilian(player);
         CommonScheduler.getLastRegion().remove(uuid);

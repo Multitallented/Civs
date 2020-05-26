@@ -14,6 +14,8 @@ public final class AACExemptionAssembler {
         switch (exemptionType) {
             case FLY:
                 hackTypes.add(HackType.MOVE);
+                break;
+            case FALL:
                 hackTypes.add(HackType.NOFALL);
                 break;
             case JESUS:
@@ -38,7 +40,6 @@ public final class AACExemptionAssembler {
                 hackTypes.add(HackType.FASTUSE);
                 break;
             default:
-                hackTypes.add(HackType.DERP);
                 break;
         }
         return hackTypes;

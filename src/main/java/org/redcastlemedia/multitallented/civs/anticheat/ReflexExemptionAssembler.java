@@ -12,7 +12,12 @@ public final class ReflexExemptionAssembler {
     public static Set<Cheat> mapExemptionTypeToCheats(ExemptionType exemptionType) {
         Set<Cheat> cheats = new HashSet<>();
         switch(exemptionType) {
-            case FLY:;
+            case FLY:
+                cheats.add(Cheat.Fly);
+                break;
+            case FALL:
+                cheats.add(Cheat.Fall);
+                break;
             case JESUS:
                 cheats.add(Cheat.ElytraMove);
                 cheats.add(Cheat.Speed);
@@ -27,7 +32,6 @@ public final class ReflexExemptionAssembler {
                 cheats.add(Cheat.BlockActions);
                 break;
             default:
-                cheats.add(Cheat.Speed);
                 break;
         }
         return cheats;

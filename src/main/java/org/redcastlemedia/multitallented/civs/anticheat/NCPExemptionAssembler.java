@@ -16,6 +16,8 @@ public final class NCPExemptionAssembler {
             case FLY:
                 checks.add(CheckType.MOVING_SURVIVALFLY);
                 checks.add(CheckType.MOVING);
+                break;
+            case FALL:
                 checks.add(CheckType.MOVING_NOFALL);
                 break;
             case JESUS:
@@ -32,7 +34,6 @@ public final class NCPExemptionAssembler {
                 checks.add(CheckType.BLOCKPLACE);
                 break;
             default:
-                checks.add(CheckType.COMBINED);
                 break;
         }
         return checks;

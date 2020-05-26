@@ -25,7 +25,6 @@ public final class WitherACExemptionAssembler {
                 checkTypes.add(CheckType.REACH);
                 break;
             default:
-                checkTypes.add(CheckType.SPEED);
                 break;
         }
         return checkTypes;

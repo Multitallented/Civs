@@ -38,6 +38,8 @@ import lombok.Getter;
 public class SpellType extends CivItem {
     @Getter
     private final Map<String, Integer> allowedActions = new HashMap<>();
+    @Getter
+    private int expPerUse = 0;
 
 
     public SpellType(List<String> reqs,
@@ -52,7 +54,8 @@ public class SpellType extends CivItem {
                      List<String> groups,
                      FileConfiguration config,
                      boolean isInShop,
-                     int level) {
+                     int level,
+                     int expPerUse) {
         super(reqs,
                 false,
                 ItemType.SPELL,
@@ -80,6 +83,7 @@ public class SpellType extends CivItem {
                 components.put(key, currentSection);
             }
         }
+        this.expPerUse = expPerUse;
     }
 
     @Getter

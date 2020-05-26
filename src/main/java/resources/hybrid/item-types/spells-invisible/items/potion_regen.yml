@@ -1,10 +1,10 @@
-icon: FERMENTED_SPIDER_EYE
+icon: GOLDEN_APPLE
 type: spell
 is-in-shop: false
 level: 1
 groups:
   - item
-  - damage-over-time
+  - heal
   - projectile
   - non-combat
   - allowed-action
@@ -12,7 +12,7 @@ groups:
 pre-reqs: []
 
 allowed-actions:
-  - POISON
+  - REGENERATION
 
 exp-per-use: 15
 
@@ -29,8 +29,8 @@ components:
     yield:
       sound: BLOCK_BREWING_STAND_BREW
       item:
-        mat: SPLASH_POTION
+        mat: POTION
         potion:
-          type: POISON
+          type: REGENERATION
           upgraded: true
           extended: false

@@ -88,6 +88,8 @@ public class Civilian {
     private final Set<ExemptionType> exemptions = new HashSet<>();
     @Getter @Setter
     private HashMap<String, Skill> skills = new HashMap<>();
+    @Getter
+    private Map<Integer, ItemStack> combatBar = new HashMap<>();
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -170,6 +172,13 @@ public class Civilian {
             return false;
         }
         return true;
+    }
+
+    public void addExp(CivItem civItem, int amount) {
+        if (civItem == null || exp == null) {
+            return;
+        }
+        exp.merge(civItem, amount, Integer::sum);
     }
 
     public int getLevel(CivItem civItem) {

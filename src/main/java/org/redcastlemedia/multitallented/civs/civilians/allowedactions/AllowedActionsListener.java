@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -19,9 +18,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -43,11 +39,14 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton @SuppressWarnings("unused")
@@ -704,12 +703,33 @@ public class AllowedActionsListener implements Listener {
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             return;
         }
-        ItemStack item = player.getInventory().getItem (event.getNewSlot());
+        ItemStack item = player.getInventory().getItem(event.getNewSlot());
 
         if (item == null) {
             return;
         }
+        checkForSpellCasting(player, item, event);
         cancelEventIfItemHasDisallowedEnchants(event, player, item);
+    }
+
+    private void checkForSpellCasting(Player player, ItemStack item, PlayerItemHeldEvent event) {
+        if (!CivItem.isCivsItem(item)) {
+            return;
+        }
+        CivItem civItem = CivItem.getFromItemStack(item);
+        if (civItem.getItemType() != CivItem.ItemType.SPELL) {
+            return;
+        }
+        event.setCancelled(true);
+        SpellType spellType = (SpellType) civItem;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Spell spell = new Spell(spellType.getProcessedName(), player, civilian.getLevel(spellType));
+        if (spell.useAbility()) {
+            player.sendMessage(Civs.getPrefix() + spell.getSpellCastMessage(player));
+            if (spellType.getExpPerUse() > 0) {
+                civilian.addExp(spellType, spellType.getExpPerUse());
+            }
+        }
     }
 
     private void cancelEventIfItemHasDisallowedEnchants(Cancellable event, Player player, ItemStack item) {

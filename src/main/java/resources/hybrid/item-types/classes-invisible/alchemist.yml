@@ -7,16 +7,16 @@ groups: []
 
 children: []
 pre-reqs:
-  - aquify:level=10|spoil:level=10|rust:level=10
-  - amplify:level=10|weakness:level=10
-  - skill:crafting=20
-  - skill:farming=10
-  - skill:exploring=15
+  - aquify:level=1|spoil:level=1|rust:level=1
+  - amplify:level=1|weakness:level=1
+  - skill:crafting=7
+  - skill:food=9
+  - skill:exploration=5
   - skill:axe=2
 
 mana-title: mana
 mana-per-second: 2
-max-mana: 500
+max-mana: 400
 max-health: 28
 
 allowed-actions:

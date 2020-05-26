@@ -225,7 +225,7 @@ public class Spell {
         return true;
     }
 
-    private String getSpellCastMessage(Player player) {
+    public String getSpellCastMessage(Player player) {
         String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                 type + LocaleConstants.NAME_SUFFIX);
         return Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
