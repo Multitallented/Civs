@@ -308,6 +308,14 @@ public class AllowedActionsListener implements Listener {
         if (event.getAction() == InventoryAction.NOTHING || event.getCurrentItem() == null) {
             return;
         }
+        if (CivItem.isCivsItem(event.getCurrentItem())) {
+            CivItem civItem = CivItem.getFromItemStack(event.getCurrentItem());
+            if (civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         Inventory inv = event.getInventory();
         final InventoryAction action = event.getAction();
         boolean isPlace = isPlace(action);
