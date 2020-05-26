@@ -128,6 +128,18 @@ components:
         type: SLOW
         ticks: 120
         level: 200
+      exemption:
+        exemption: KILL_AURA # FLY FALL FAST_BREAK FAST_PLACE JESUS SPEED
+        duration: 1 # seconds
+      item:
+        mat: POTION
+        transform: true
+        transform-reqs:
+          - POTION
+        potion:
+          type: POISON
+          upgraded: true
+          extended: false
       sound:
         sound: CAT_PURREOW #default to EXPLODE
         volume: 1.5 #default to 1

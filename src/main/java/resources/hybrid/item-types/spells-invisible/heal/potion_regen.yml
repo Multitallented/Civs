@@ -3,10 +3,7 @@ type: spell
 is-in-shop: false
 level: 1
 groups:
-  - item
   - heal
-  - projectile
-  - non-combat
   - allowed-action
 
 pre-reqs: []

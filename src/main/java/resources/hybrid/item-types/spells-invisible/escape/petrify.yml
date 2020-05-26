@@ -2,9 +2,7 @@ icon: COBBLESTONE
 type: spell
 is-in-shop: false
 level: 1
-groups:
-  - escape
-  - cleanse
+groups: []
 
 pre-reqs:
   - skill:armor=5
@@ -12,7 +10,7 @@ pre-reqs:
 
 allowed-actions: []
 
-exp-per-use: 15
+exp-per-use: 25
 
 conditions:
   cooldown: 45000
@@ -30,9 +28,24 @@ components:
       cleanse: BOTH
       potion^1:
         type: SLOW
-        ticks: 100
+        ticks: 40
         level: 8
       potion^2:
         type: DAMAGE_RESISTANCE
-        ticks: 100
+        ticks: 40
         level: 8
+      duration:
+        duration: 80
+        period: 20
+        section:
+          1:
+            yield:
+              cleanse: BOTH
+              potion^3:
+                type: SLOW
+                ticks: 40
+                level: 8
+              potion^4:
+                type: DAMAGE_RESISTANCE
+                ticks: 40
+                level: 8

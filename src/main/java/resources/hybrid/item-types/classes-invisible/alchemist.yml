@@ -7,10 +7,8 @@ groups: []
 
 children: []
 pre-reqs:
-  - aquify:level=1|spoil:level=1|rust:level=1
-  - amplify:level=1|weakness:level=1
-  - skill:crafting=7
-  - skill:food=9
+  - skill:crafting=6
+  - skill:food=8
   - skill:exploration=5
   - skill:axe=2
 

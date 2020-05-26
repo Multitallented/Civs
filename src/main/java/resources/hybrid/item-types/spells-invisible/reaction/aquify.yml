@@ -1,0 +1,47 @@
+icon: COBBLESTONE
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs:
+  - skill:food=7
+
+allowed-actions: []
+
+exp-per-use: 15
+
+targets:
+  vector1:
+    type: vector
+    range: 30
+    penetration: true
+    allow-multiple: false
+    cancel-if-empty: true
+
+conditions:
+  cooldown: 5000
+  mana: 10
+
+components:
+  1:
+    costs:
+      cooldown: 5000
+      mana: 10
+
+    yield:
+      sound:
+        sound: ITEM_BUCKET_WATER
+        target: vector1
+      item:
+        target: vector1
+        mat: BUCKET
+        transform: true
+        transform-reqs:
+          - MILK_BUCKET
+          - LAVA_BUCKET
+          - COD_BUCKET
+          - SALMON_BUCKET
+          - PUFFERFISH_BUCKET
+          - TROPICAL_FISH_BUCKET
+
