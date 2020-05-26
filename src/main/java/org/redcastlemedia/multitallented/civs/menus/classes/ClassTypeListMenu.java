@@ -93,6 +93,9 @@ public class ClassTypeListMenu extends CustomMenu {
         if ("switch-class".equals(actionString)) {
             ClassType classType = ((HashMap<ItemStack, ClassType>) MenuManager.getData(civilian.getUuid(), "classMap"))
                     .get(itemStack);
+            if (!ItemManager.getInstance().hasItemUnlocked(civilian, classType)) {
+                return true;
+            }
             ClassManager.getInstance().createNewClass(civilian, classType);
             MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civilian.getCurrentClass());
             return true;

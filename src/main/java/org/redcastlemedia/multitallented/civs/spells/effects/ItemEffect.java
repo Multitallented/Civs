@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
@@ -29,7 +28,7 @@ public class ItemEffect extends Effect {
             if (matString != null) {
                 this.mat = matString;
             }
-            this.potionType = section.getString("potion.type");
+            this.potionType = section.getString("potion.type", null);
             this.potionUpgraded = section.getBoolean("potion.upgraded", false);
             this.potionExtended = section.getBoolean("potion.ticks", false);
             String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);

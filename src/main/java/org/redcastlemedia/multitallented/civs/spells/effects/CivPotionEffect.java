@@ -74,12 +74,8 @@ public class CivPotionEffect extends Effect {
         Player player = null;
         if (livingEntity instanceof Player) {
             player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
         }
         livingEntity.addPotionEffect(this.potion);
-        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
-        }
         if (player == null) {
             return;
         }
