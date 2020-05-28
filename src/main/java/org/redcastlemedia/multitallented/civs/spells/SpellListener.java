@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,18 +11,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 import java.util.HashMap;
 
-/**
- *
- * @author Multitallented
- */
+@CivsSingleton
 public class SpellListener implements Listener {
 
     private final HashMap<LivingEntity, AbilityListen> damageListeners = new HashMap<LivingEntity, AbilityListen>();
@@ -30,9 +29,13 @@ public class SpellListener implements Listener {
 
     public SpellListener() {
         spellListener = this;
+        Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
     }
 
     public static SpellListener getInstance() {
+        if (spellListener == null) {
+            new SpellListener();
+        }
         return spellListener;
     }
 

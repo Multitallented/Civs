@@ -1,5 +1,16 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,17 +22,11 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
 
 @CivsSingleton
 public class ClassManager {
     private static ClassManager classManager = null;
+    private static Map<UUID, Set<CivClass>> classes = new HashMap<>();
 
     public ClassManager() {
         this.classManager = this;
@@ -48,16 +53,31 @@ public class ClassManager {
                     int manaPerSecond = classConfig.getInt("mana-per-second", 1);
                     int maxMana = classConfig.getInt("max-mana", 100);
 
-                    Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
                     CivClass civClass = new CivClass(id, uuid, className);
                     civClass.setManaPerSecond(manaPerSecond);
                     civClass.setMaxMana(maxMana);
                     if (classConfig.getBoolean("selected", false)) {
                         civClass.setSelectedClass(true);
-                        civilian.setCurrentClass(civClass);
                     }
                     civClass.setLevel(classConfig.getInt("level", 0));
-                    civilian.getCivClasses().add(civClass);
+                    if (!classes.containsKey(uuid)) {
+                        classes.put(uuid, new HashSet<>());
+                    }
+                    if (classConfig.isSet("slots")) {
+                        for (String key : classConfig.getConfigurationSection("slots").getKeys(false)) {
+                            int index = Integer.parseInt(key);
+                            int mappedIndex = classConfig.getInt("slots." + key);
+                            civClass.getSpellSlotOrder().put(index, mappedIndex);
+                        }
+                    }
+                    if (classConfig.isSet("spells")) {
+                        for (String key : classConfig.getConfigurationSection("spells").getKeys(false)) {
+                            int index = Integer.parseInt(key);
+                            String mappedSpell = classConfig.getString("spells." + key);
+                            civClass.getSelectedSpells().put(index, mappedSpell);
+                        }
+                    }
+                    classes.get(uuid).add(civClass);
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
                     ex.printStackTrace();
@@ -104,6 +124,12 @@ public class ClassManager {
             config.set("mana-per-second", civClass.getManaPerSecond());
             config.set("max-mana", civClass.getMaxMana());
             config.set("selected", civClass.isSelectedClass());
+            for (Map.Entry<Integer, Integer> entry : civClass.getSpellSlotOrder().entrySet()) {
+                config.set("slots." + entry.getKey(), entry.getValue());
+            }
+            for (Map.Entry<Integer, String> entry : civClass.getSelectedSpells().entrySet()) {
+                config.set("spells." + entry.getKey(), entry.getValue());
+            }
             config.set("level", civClass.getLevel());
             for (Map.Entry<Integer, String> entry : civClass.getSelectedSpells().entrySet()) {
                 config.set("spells." + entry.getKey(), entry.getValue());
@@ -156,6 +182,19 @@ public class ClassManager {
     }
 
     public void loadPlayer(Player player, Civilian civilian) {
+        if (classes.containsKey(civilian.getUuid())) {
+            for (CivClass civClass : classes.get(civilian.getUuid())) {
+                if (civClass.isSelectedClass()) {
+                    civilian.setCurrentClass(civClass);
+                }
+                civilian.getCivClasses().add(civClass);
+            }
+        } else {
+            CivClass civClass1 = createDefaultClass(civilian.getUuid(), civilian.getLocale());
+            civClass1.setSelectedClass(true);
+            civilian.getCivClasses().add(civClass1);
+            civilian.setCurrentClass(civClass1);
+        }
         CivClass civClass = civilian.getCurrentClass();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
         player.setHealthScale(20);
@@ -183,7 +222,10 @@ public class ClassManager {
     public void createNewClass(Civilian civilian, ClassType classType) {
         CivClass civClass = new CivClass(getNextId(), civilian.getUuid(), classType.getProcessedName());
         civClass.resetSpellSlotOrder();
+        civClass.setMaxMana(classType.getMaxMana());
+        civClass.setManaPerSecond(classType.getManaPerSecond());
         civilian.getCurrentClass().setSelectedClass(false);
+        saveClass(civilian.getCurrentClass());
         civClass.setSelectedClass(true);
         civilian.setCurrentClass(civClass);
         civilian.getCivClasses().add(civClass);

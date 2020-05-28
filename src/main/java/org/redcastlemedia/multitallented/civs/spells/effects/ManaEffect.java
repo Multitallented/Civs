@@ -1,10 +1,14 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -12,8 +16,6 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
-
-import java.util.HashMap;
 
 public class ManaEffect extends Effect {
     private int mana;
@@ -56,7 +58,7 @@ public class ManaEffect extends Effect {
                     classType.getManaTitle());
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "need-more-mana").replace("$1", "" + (this.mana - civilian.getMana()))
-                    .replace("$1", localManaName));
+                    .replace("$2", localManaName));
         }
         return hasMana;
     }
@@ -83,6 +85,40 @@ public class ManaEffect extends Effect {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         returnMap.put("mana", (double) civilian.getMana());
         return returnMap;
+    }
+
+    public static String getManaBar(Civilian civilian) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return "";
+        }
+        CivClass civClass = civilian.getCurrentClass();
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+        double currentMana = civilian.getMana();
+        double maxMana = civClass.getMaxMana();
+        final double LENGTH = 60;
+        int progress = maxMana > 0 ? (int) Math.ceil(currentMana / maxMana * LENGTH) : (int) LENGTH;
+        String localeMana = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                classType.getManaTitle());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(ChatColor.DARK_BLUE);
+        stringBuilder.append(localeMana);
+        stringBuilder.append(": (");
+        stringBuilder.append(currentMana);
+        stringBuilder.append("/");
+        stringBuilder.append(maxMana);
+        stringBuilder.append(") ");
+        stringBuilder.append(ChatColor.BLUE);
+        for (int i = 0; i < Math.min(progress, LENGTH); i++) {
+            stringBuilder.append("|");
+        }
+        if (progress < LENGTH) {
+            stringBuilder.append(ChatColor.RED);
+            for (int i = progress; i < LENGTH; i++) {
+                stringBuilder.append("|");
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }

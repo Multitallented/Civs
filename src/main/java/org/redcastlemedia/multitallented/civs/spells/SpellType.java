@@ -33,6 +33,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import lombok.Getter;
 
@@ -115,6 +116,9 @@ public class SpellType extends CivItem {
                                    Object target,
                                    Player caster,
                                    Spell spell) {
+        if (type.contains("^")) {
+            type = type.split("\\^")[0];
+        }
         if (type.equals(SpellEffectConstants.DAMAGE)) {
             return new DamageEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.COOLDOWN)) {
@@ -148,6 +152,12 @@ public class SpellType extends CivItem {
         } else if (type.equals(SpellEffectConstants.CLEANSE)) {
             return new CleanseEffect(spell, key, target, caster, level, config);
         }
+        Civs.logger.log(Level.SEVERE, "Unable to find effect type {0}", type);
+        StackTraceElement[] lines = Thread.currentThread().getStackTrace();
+        for (StackTraceElement line : lines) {
+            System.out.println(line.toString());
+        }
+
         return null;
     }
 }

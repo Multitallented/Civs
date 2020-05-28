@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -87,10 +86,12 @@ public class ClassMenu extends CustomMenu {
             int length = menuIcon.getKey().length();
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             int index = Integer.parseInt(menuIcon.getKey().substring(length - 1, length));
-            index = civClass.getSpellSlotOrder().get(index);
-            if (civClass.getSelectedSpells().containsKey(index)) {
-                String spellName = civClass.getSelectedSpells().get(index);
-                CVItem cvItem = ItemManager.getInstance().getItemType(spellName).getShopIcon(player);
+            int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
+            if (civClass.getSelectedSpells().containsKey(mappedIndex)) {
+                String spellName = civClass.getSelectedSpells().get(mappedIndex);
+                SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
+                CVItem cvItem = spellType.getShopIcon(player);
+                cvItem.setDisplayName(cvItem.getDisplayName() + index);
                 cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "spell-slot-desc")));
                 if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
@@ -100,10 +101,13 @@ public class ClassMenu extends CustomMenu {
                 ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
-            } else if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
+            } else {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "spell-slot-desc-change-order"));
+                cvItem.setDisplayName(cvItem.getDisplayName() + index);
+                if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "spell-slot-desc-change-order"));
+                }
                 ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
@@ -122,11 +126,11 @@ public class ClassMenu extends CustomMenu {
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
                 int swap = (int) MenuManager.getData(civilian.getUuid(), "swap");
-                swap = civClass.getSpellSlotOrder().get(swap);
+                swap = civClass.getSpellSlotOrder().getOrDefault(swap, swap);
                 int length = actionString.length();
                 int index = Integer.parseInt(actionString.substring(length - 1, length));
-                index = civClass.getSpellSlotOrder().get(index);
-                if (index != swap) {
+                int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
+                if (mappedIndex != swap) {
                     civClass.getSpellSlotOrder().put(index, swap);
                     civClass.getSpellSlotOrder().put(swap, index);
                     ClassManager.getInstance().saveClass(civClass);
@@ -134,7 +138,7 @@ public class ClassMenu extends CustomMenu {
             } else {
                 int length = actionString.length();
                 int index = Integer.parseInt(actionString.substring(length - 1, length));
-                index = civClass.getSpellSlotOrder().get(index);
+                index = civClass.getSpellSlotOrder().getOrDefault(index, index);
                 MenuManager.getAllData(civilian.getUuid()).put("swap", index);
             }
             MenuManager.getInstance().refreshMenu(civilian);

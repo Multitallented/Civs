@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -80,6 +81,10 @@ public class SpellListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             List<SpellType> items = (List<SpellType>) MenuManager.getData(civilian.getUuid(), "spells");
+            if (items.isEmpty() && count == 0) {
+                // TODO add something that says you haven't unlocked any skills yet?
+                return new ItemStack(Material.AIR);
+            }
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
             int startIndex = page * menuIcon.getIndex().size();
             SpellType[] itemArray = new SpellType[items.size()];
@@ -113,8 +118,9 @@ public class SpellListMenu extends CustomMenu {
                     return true;
                 }
                 int slot = (int) MenuManager.getData(civilian.getUuid(), "slot");
-                civClass.getSelectedSpells().put(civClass.getSpellSlotOrder().get(slot),
+                civClass.getSelectedSpells().put(civClass.getSpellSlotOrder().getOrDefault(slot, slot),
                         spellType.getProcessedName());
+                ClassManager.getInstance().saveClass(civClass);
                 return true;
             }
         }

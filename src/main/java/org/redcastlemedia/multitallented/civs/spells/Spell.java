@@ -188,9 +188,9 @@ public class Spell {
                 continue;
             }
 
-            ConfigurationSection filterSection = filterTargets(mappedTargets, currentComponent);
+            filterTargets(mappedTargets, currentComponent);
 
-            createVariables(mappedTargets, currentComponent, filterSection);
+            createVariables(mappedTargets, currentComponent);
 
             boolean costsMet = isCostsMet(mappedTargets, fulfilledRequirements, componentName, currentComponent);
 
@@ -368,7 +368,9 @@ public class Spell {
                 } else {
                     component = SpellType.getEffect(yieldName, key, yieldSection.getConfigurationSection(key), level, target, caster, this);
                 }
-                component.apply();
+                if (component != null) {
+                    component.apply();
+                }
             }
         }
     }
@@ -433,10 +435,10 @@ public class Spell {
         return costsMet;
     }
 
-    private void createVariables(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent, ConfigurationSection filterSection) {
+    private void createVariables(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent) {
         ConfigurationSection varSection = currentComponent.getConfigurationSection("variables");
         if (varSection != null) {
-            varLoop: for (String key : varSection.getKeys(false)) {
+            for (String key : varSection.getKeys(false)) {
                 String varName = "";
                 if (!key.contains("^")) {
                     varName += key;
@@ -463,7 +465,7 @@ public class Spell {
                     if (!varValueString.equals(SpellConstants.NOT_A_STRING) && !varValueString.contains("MemorySection")) {
                         component = SpellType.getEffect(varName, key, varValueString, level, target, caster, this);
                     } else {
-                        ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
+                        ConfigurationSection currentConfigSection = varSection.getConfigurationSection(key);
                         component = SpellType.getEffect(varName, key, currentConfigSection, level, target, caster, this);
                     }
                     HashMap<String, Double> currentVars = component.getVariables(target, caster, level, this);
@@ -474,52 +476,47 @@ public class Spell {
         }
     }
 
-    @Nullable
-    private ConfigurationSection filterTargets(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent) {
+    private void filterTargets(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent) {
         ConfigurationSection filterSection = currentComponent.getConfigurationSection("filters");
-        if (filterSection != null) {
-            for (String key : filterSection.getKeys(false)) {
-                String filterName = "";
-                if (!key.contains("^")) {
-                    filterName += key;
-                } else {
-                    filterName = key.split("\\^")[0];
-                }
-                String filterValueString = filterSection.getString(filterName, SpellConstants.NOT_A_STRING);
-                Effect component;
-                boolean invert = key.endsWith("^not");
+        if (filterSection == null) {
+            return;
+        }
+        for (String key : filterSection.getKeys(false)) {
+            String filterName = "";
+            if (!key.contains("^")) {
+                filterName += key;
+            } else {
+                filterName = key.split("\\^")[0];
+            }
+            String filterValueString = filterSection.getString(filterName, SpellConstants.NOT_A_STRING);
+            Effect component;
+            boolean invert = key.endsWith("^not");
 
-                boolean isSection = filterValueString.equals(SpellConstants.NOT_A_STRING) || filterValueString.contains("MemorySection");
-                String targetKey = SpellConstants.SELF;
-                if (isSection) {
-                    String tempTarget = filterSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
-                    if (!tempTarget.equals(SpellConstants.NOT_A_STRING)) {
-                        targetKey = tempTarget;
-                    }
+            boolean isSection = filterValueString.equals(SpellConstants.NOT_A_STRING) || filterValueString.contains("MemorySection");
+            String targetKey = SpellConstants.SELF;
+            if (isSection) {
+                String tempTarget = filterSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+                if (!tempTarget.equals(SpellConstants.NOT_A_STRING)) {
+                    targetKey = tempTarget;
                 }
-                Set<?> targetSet = mappedTargets.get(targetKey);
-                if (targetSet == null || targetSet.isEmpty()) {
-                    continue;
+            }
+            Set<?> targetSet = mappedTargets.get(targetKey);
+            if (targetSet == null || targetSet.isEmpty()) {
+                continue;
+            }
+            for (Object target : new HashSet<>(targetSet)) {
+                if (!filterValueString.equals(SpellConstants.NOT_A_STRING) && !filterValueString.contains("MemorySection")) {
+                    component = SpellType.getEffect(filterName, key, filterValueString, level, target, caster, this);
+                } else {
+                    ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
+                    component = SpellType.getEffect(filterName, key, currentConfigSection, level, target, caster, this);
                 }
-                HashSet<Object> removeMe = new HashSet<>();
-                for (Object target : targetSet) {
-                    if (!filterValueString.equals(SpellConstants.NOT_A_STRING) && !filterValueString.contains("MemorySection")) {
-                        component = SpellType.getEffect(filterName, key, filterValueString, level, target, caster, this);
-                    } else {
-                        ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
-                        component = SpellType.getEffect(filterName, key, currentConfigSection, level, target, caster, this);
-                    }
-                    boolean meetsRequirement = component.meetsRequirement();
-                    if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
-                        removeMe.add(target);
-                    }
-                }
-                for (Object removeTarget : removeMe) {
-                    targetSet.remove(removeTarget);
+                boolean meetsRequirement = component.meetsRequirement();
+                if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
+                    targetSet.remove(target);
                 }
             }
         }
-        return filterSection;
     }
 
     public boolean removeAbility(HashMap<String, Set<?>> mappedTargets,
@@ -549,9 +546,8 @@ public class Spell {
         try {
             return Double.parseDouble(configString);
         } catch (Exception e) {
-
+            return 0;
         }
-        return 0;
     }
     private static String replaceAllVariables(String input, int level, Object target, Spell spell) {
         input = input.replace("$level$", "" + level);

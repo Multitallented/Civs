@@ -19,5 +19,6 @@ public enum BuiltInCivStates {
     NO_INCOMING_PVE,
     NO_OUTGOING_DAMAGE,
     NO_INCOMING_DAMAGE,
+    INSTANT_DRINK,
     NO_DAMAGE
 }

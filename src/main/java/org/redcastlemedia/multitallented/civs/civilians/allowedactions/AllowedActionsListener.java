@@ -707,16 +707,16 @@ public class AllowedActionsListener implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onPlayerHeldItem(PlayerItemHeldEvent event) {
         final Player player = event.getPlayer();
-        if (player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
-                Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
-            return;
-        }
         ItemStack item = player.getInventory().getItem(event.getNewSlot());
-
         if (item == null) {
             return;
         }
         checkForSpellCasting(player, item, event);
+
+        if (player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
+                Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
+            return;
+        }
         cancelEventIfItemHasDisallowedEnchants(event, player, item);
     }
 

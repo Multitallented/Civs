@@ -15,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
-import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -171,6 +170,7 @@ public class CivilianManager {
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
             civilian.setHardship(civConfig.getDouble("hardship", 0));
+            civilian.setMana(civConfig.getInt("mana", 0));
             String stringRespawn = civConfig.getString("respawn");
             if (civConfig.isSet("skills")) {
                 for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
@@ -258,6 +258,7 @@ public class CivilianManager {
 
             civConfig.set("locale", civilian.getLocale());
             civConfig.set("hardship", civilian.getHardship());
+            civConfig.set("mana", civilian.getMana());
             civConfig.set("days-since-hardship-depreciation", civilian.getDaysSinceLastHardshipDepreciation());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
@@ -276,13 +277,11 @@ public class CivilianManager {
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
             List<Integer> classes = new ArrayList<>();
-            if (civilian.getCivClasses() != null) {
-                for (CivClass civClass : civilian.getCivClasses()) {
-                    if (civClass == null) {
-                        continue;
-                    }
-                    classes.add(civClass.getId());
+            for (CivClass civClass : civilian.getCivClasses()) {
+                if (civClass == null) {
+                    continue;
                 }
+                classes.add(civClass.getId());
             }
             for (Skill skill : civilian.getSkills().values()) {
                 for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {

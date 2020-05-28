@@ -5,8 +5,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -126,5 +128,83 @@ public class CivPotionEffect extends Effect {
             }
         }
         return returnMap;
+    }
+
+    private static final int MIN = 1200;
+    public static PotionEffect getPotionEffect(PotionMeta pm) {
+        PotionType pt = pm.getBasePotionData().getType();
+        PotionEffectType pet = pt.getEffectType();
+        if (pet == null) {
+            return null;
+        }
+        boolean extended = pm.getBasePotionData().isExtended();
+        boolean upgraded = pm.getBasePotionData().isUpgraded();
+        boolean irregular = isIrregular(pet);
+        boolean negative = isNegative(pet);
+
+
+        if(!extended && !upgraded && !irregular) {
+            return negative ? new PotionEffect(pet, (int) (MIN * 1.5), 0) : new PotionEffect(pet, MIN * 3, 0);
+        }else if(!extended && upgraded && !irregular) {
+            return negative ? new PotionEffect(pet, 400, 3) : new PotionEffect(pet, (int) (MIN * 1.5D), 1); // hard code slowness 4 in because its the only negative semi-irregular potion effect
+        }else if(extended && !upgraded && !irregular) {
+            return negative ? new PotionEffect(pet, MIN * 4, 0) : new PotionEffect(pet, MIN * 8, 0);
+        }else if(pt.equals(PotionType.REGEN) || pt.equals(PotionType.POISON)) {
+            return extended ? new PotionEffect(pet, (int) (MIN * 1.5), 0) : upgraded ? negative ? new PotionEffect(pet, (int) (21.6 * 20), 1): new PotionEffect(pet, 22*20, 1) : new PotionEffect(pet, 45 * 20, 0) ;
+        }else if(pt.equals(PotionType.INSTANT_DAMAGE) || pt.equals(PotionType.INSTANT_HEAL)) {
+            return upgraded ? new PotionEffect(pet, 1, 1) : new PotionEffect(pet, 1, 0);
+        }else if(pt.equals(PotionType.LUCK)) {
+            return new PotionEffect(pet, 5 * MIN, 0);
+        }else if(pt.equals(PotionType.TURTLE_MASTER)) {
+            return null; // make sure in your method you do something about this. Since turtle master gives two potion effects, you have to handle this outside of this method.
+        }
+
+
+
+        return new PotionEffect(pet, MIN, 0);
+    }
+
+
+    public static boolean isNegative(PotionEffectType pet) {
+        for(PotionType type: getNegativePotions()) {
+            if(type.getEffectType().equals(pet)) return true;
+        }
+        return false;
+    }
+
+
+    private static PotionType[] getNegativePotions() {
+        // Slow falling is not a negative put has stats effects simular to a negative potion.
+        return new PotionType[] {PotionType.INSTANT_DAMAGE, PotionType.POISON, PotionType.SLOWNESS, PotionType.WEAKNESS, PotionType.SLOW_FALLING};
+    }
+
+    public static boolean isIrregular(PotionEffectType pet) {
+
+        for(PotionType potionType : getIrregularPotions()) {
+            if(potionType.getEffectType() != null &&
+                    potionType.getEffectType().equals(pet)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static PotionType[] getIrregularPotions() {
+        return new PotionType[] {PotionType.REGEN, PotionType.LUCK, PotionType.POISON, PotionType.TURTLE_MASTER, PotionType.INSTANT_DAMAGE, PotionType.INSTANT_HEAL};
+    }
+
+    public static boolean isUnusable(PotionType type) {
+        for (PotionType pt: getUnusable()) {
+            if (pt.equals(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static PotionType[] getUnusable() {
+        return new PotionType[] {PotionType.AWKWARD, PotionType.WATER, PotionType.THICK, PotionType.MUNDANE};
     }
 }

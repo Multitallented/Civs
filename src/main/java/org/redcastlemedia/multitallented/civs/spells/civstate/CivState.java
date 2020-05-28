@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells.civstate;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,8 +11,11 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
+
+import lombok.Getter;
 
 /**
  *
@@ -24,6 +29,8 @@ public class CivState {
     private final String CONFIG_STRING;
     private final Spell SPELL;
     private final HashMap<String, Object> VARS;
+    @Getter
+    private final Set<BuiltInCivStates> builtInCivStates = new HashSet<>();
 
     public CivState(Spell spell, String componentName, int durationId, int periodId, String configString, HashMap<String, Object> vars) {
         this.durationId = durationId;
@@ -85,21 +92,23 @@ public class CivState {
             return;
         }
         Player player = (Player) origin;
-        Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (!champion.getStates().containsKey(SPELL.getType() + "." + COMPONENT_NAME)) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!civilian.getStates().containsKey(SPELL.getType() + "." + COMPONENT_NAME)) {
             return;
         }
         Effect component;
 
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(SPELL.getType());
-        int level = champion.getLevel(spellType);
-        if (CONFIG != null) {
-            component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG, level, null, player, SPELL);
-        } else {
-            component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG_STRING, level, null, player, SPELL);
-        }
-        if (component != null && (CONFIG != null || CONFIG_STRING != null)) {
-            component.remove(player, level, SPELL);
+        int level = civilian.getLevel(spellType);
+        if (!COMPONENT_NAME.startsWith(SpellConstants.DURATION) && !COMPONENT_NAME.startsWith("damage-listener")) {
+            if (CONFIG != null) {
+                component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG, level, null, player, SPELL);
+            } else {
+                component = SpellType.getEffect(COMPONENT_NAME, "", CONFIG_STRING, level, null, player, SPELL);
+            }
+            if (component != null && (CONFIG != null || CONFIG_STRING != null)) {
+                component.remove(player, level, SPELL);
+            }
         }
         if (durationId > -1) {
             Bukkit.getScheduler().cancelTask(durationId);

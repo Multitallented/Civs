@@ -31,7 +31,10 @@ public class SpellManager {
                         spellTypeList.add((SpellType) civItem);
                     }
                 } else if (spellKey != null) {
-                    spellTypeList.add((SpellType) ItemManager.getInstance().getItemType(spellKey));
+                    SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellKey);
+                    if (spellType != null) {
+                        spellTypeList.add(spellType);
+                    }
                 }
             }
         }

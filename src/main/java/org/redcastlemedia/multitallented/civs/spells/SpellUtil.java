@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.spells;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public final class SpellUtil {
     private SpellUtil() {
@@ -19,7 +19,8 @@ public final class SpellUtil {
     public static void enableCombatBar(Player player, Civilian civilian) {
         for (Map.Entry<Integer, String> entry : civilian.getCurrentClass().getSelectedSpells().entrySet()) {
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(entry.getValue());
-            int index = civilian.getCurrentClass().getSpellSlotOrder().get(entry.getKey());
+            int index = civilian.getCurrentClass().getSpellSlotOrder()
+                    .getOrDefault(entry.getKey(), entry.getKey());
             civilian.getCombatBar().put(index, player.getInventory().getItem(index - 1));
             CVItem cvItem = spellType.clone();
             cvItem.getLore().clear();
@@ -28,7 +29,7 @@ public final class SpellUtil {
             cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "switch-spell-cast")));
 
-            player.getInventory().getContents()[index] = cvItem.createItemStack();
+            player.getInventory().setItem(index, cvItem.createItemStack());
         }
     }
 

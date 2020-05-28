@@ -13,14 +13,12 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
-import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
-import org.redcastlemedia.multitallented.civs.civclass.ClassType;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -28,12 +26,13 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
+import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 public class Civilian {
 
@@ -41,7 +40,8 @@ public class Civilian {
     private final UUID uuid;
     @Getter
     private final Map<CivItem, Integer> exp;
-    private Set<CivClass> civClasses = new HashSet<>();
+    @Getter
+    private final Set<CivClass> civClasses = new HashSet<>();
     private String locale;
     @Getter @Setter
     private Map<String, Integer> stashItems;
@@ -135,17 +135,13 @@ public class Civilian {
     public int getKarma() { return karma; }
     public void setKarma(int karma) { this.karma = karma; }
     public int getMana() { return mana; }
-    public Set<CivClass> getCivClasses() {
-        if (civClasses.isEmpty()) {
-            CivClass civClass = ClassManager.getInstance().createDefaultClass(uuid, locale);
-            civClasses.add(civClass);
-            currentClass = civClass;
-        }
-        return civClasses;
-    }
     public void setMana(int mana) {
-        this.mana = mana < 0 ? 0 : mana > 100 ? 100 : mana;
-        // TODO set mana bar
+        this.mana = Math.max(mana, 0);
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null && player.isOnline()) {
+            String message = ManaEffect.getManaBar(this);
+            ActionBarUtil.sendActionBar(player, message);
+        }
     }
 
     public boolean isInCombat() {

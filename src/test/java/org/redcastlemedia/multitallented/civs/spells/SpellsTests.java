@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
@@ -53,7 +54,7 @@ public class SpellsTests extends TestUtil {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType("alchemist");
         assertFalse(classType.getSpellSlots().isEmpty());
         assertFalse(classType.getSpellSlots().get(2).isEmpty());
-        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 3).isEmpty());
+        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 2).isEmpty());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -13,8 +13,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.HashSet;

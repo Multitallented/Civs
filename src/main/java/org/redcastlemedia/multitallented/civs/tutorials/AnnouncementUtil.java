@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.tutorials;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +31,8 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public final class AnnouncementUtil {
     private static HashMap<UUID, HashSet<String>> alreadySentMessages = new HashMap<>();

@@ -20,12 +20,10 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
-import org.redcastlemedia.multitallented.civs.skills.SkillManager;
-import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,19 +148,10 @@ public class CommonScheduler implements Runnable {
 
     void incrementMana(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        double maxMana = 0;
-        double maxManaPerSecond = 0;
-        for (CivClass civClass : civilian.getCivClasses()) {
-            maxMana = Math.max(maxMana, civClass.getMaxMana());
-            maxManaPerSecond = Math.max(maxManaPerSecond, civClass.getManaPerSecond());
-        }
-        setConvertedMana(civilian, maxMana, maxManaPerSecond);
-    }
-    void setConvertedMana(Civilian civilian, double maxMana, double manaPerSecond) {
-        if (civilian.getMana() < 100 && manaPerSecond > 0) {
-            double currentConvertedMana = (double) civilian.getMana() / 100 * maxMana;
-            int newMana = (int) ((currentConvertedMana + manaPerSecond) / maxMana * 100);
-            civilian.setMana(newMana);
+        int maxMana = civilian.getCurrentClass().getMaxMana();
+        int maxManaPerSecond = civilian.getCurrentClass().getManaPerSecond();
+        if (civilian.getMana() < maxMana) {
+            civilian.setMana(Math.min(maxMana, civilian.getMana() + maxManaPerSecond));
         }
     }
     void playerInTown(Player player) {
