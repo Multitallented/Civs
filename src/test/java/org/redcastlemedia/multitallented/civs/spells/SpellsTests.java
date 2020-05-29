@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,6 +47,13 @@ public class SpellsTests extends TestUtil {
         assertFalse(classType.getSpellSlots().isEmpty());
         assertFalse(classType.getSpellSlots().get(2).isEmpty());
         assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 2).isEmpty());
+    }
+
+    @Test
+    public void varShouldBeCreatedFromConfig() {
+        HashMap<String, Set<?>> mappedTargets = new HashMap<>();
+        HashSet<Object> targets = new HashSet<>();
+
     }
 
     @Test
