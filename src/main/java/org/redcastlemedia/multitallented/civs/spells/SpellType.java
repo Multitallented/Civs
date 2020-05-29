@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.CancelEffect;
@@ -17,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.spells.effects.IgniteEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.SoundEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.SpellEffectConstants;
 import org.redcastlemedia.multitallented.civs.spells.effects.StaminaEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.TeleportEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.VelocityEffect;
@@ -28,6 +30,7 @@ import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpellType extends CivItem {
 
@@ -80,7 +83,7 @@ public class SpellType extends CivItem {
     public FileConfiguration getConfig() {
         return config;
     }
-    public HashMap<String, ConfigurationSection> getComponents() {
+    public Map<String, ConfigurationSection> getComponents() {
         return components;
     }
 
@@ -102,72 +105,36 @@ public class SpellType extends CivItem {
 
     public static Effect getEffect(String type,
                                    String key,
-                                   String config,
+                                   Object config,
                                    int level,
                                    Object target,
                                    Player caster,
                                    Spell spell) {
-        if (type.equals("damage")) {
+        if (type.equals(SpellEffectConstants.DAMAGE)) {
             return new DamageEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("cooldown")) {
+        } else if (type.equals(SpellEffectConstants.COOLDOWN)) {
             return new CooldownEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("potion")) {
+        } else if (type.equals(SpellEffectConstants.POTION)) {
             return new CivPotionEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("stamina")) {
+        } else if (type.equals(SpellEffectConstants.STAMINA)) {
             return new StaminaEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("velocity")) {
+        } else if (type.equals(SpellEffectConstants.VELOCITY)) {
             return new VelocityEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("cancel")) {
+        } else if (type.equals(SpellEffectConstants.CANCEL)) {
             return new CancelEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("sound")) {
+        } else if (type.equals(SpellEffectConstants.SOUND)) {
             return new SoundEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("particle")) {
+        } else if (type.equals(SpellEffectConstants.PARTICLE)) {
             return new ParticleEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("fall")) {
+        } else if (type.equals(SpellEffectConstants.FALL)) {
             return new FallEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("heal")) {
+        } else if (type.equals(SpellEffectConstants.HEAL)) {
             return new HealEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("ignite")) {
+        } else if (type.equals(SpellEffectConstants.IGNITE)) {
             return new IgniteEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("teleport")) {
+        } else if (type.equals(SpellEffectConstants.TELEPORT)) {
             return new TeleportEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("mana")) {
-            return new ManaEffect(spell, key, target, caster, level, config);
-        }
-        return null;
-    }
-    public static Effect getEffect(String type,
-                                   String key,
-                                   ConfigurationSection config,
-                                   int level,
-                                   Object target,
-                                   Player caster,
-                                   Spell spell) {
-        if (type.equals("damage")) {
-            return new DamageEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("cooldown")) {
-            return new CooldownEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("potion")) {
-            return new CivPotionEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("stamina")) {
-            return new StaminaEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("velocity")) {
-            return new VelocityEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("cancel")) {
-            return new CancelEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("sound")) {
-            return new SoundEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("particle")) {
-            return new ParticleEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("fall")) {
-            return new FallEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("heal")) {
-            return new HealEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("ignite")) {
-            return new IgniteEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("teleport")) {
-            return new TeleportEffect(spell, key, target, caster, level, config);
-        } else if (type.equals("mana")) {
+        } else if (type.equals(SpellEffectConstants.MANA)) {
             return new ManaEffect(spell, key, target, caster, level, config);
         }
         return null;

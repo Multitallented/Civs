@@ -17,16 +17,7 @@ public abstract class Effect extends SpellComponent {
                   String key,
                   Object target,
                   Entity origin,
-                  int level,
-                  ConfigurationSection section) {
-        super(spell, key, target, origin, level);
-    }
-    public Effect(Spell spell,
-                  String key,
-                  Object target,
-                  Entity origin,
-                  int level,
-                  String configString) {
+                  int level) {
         super(spell, key, target, origin, level);
     }
 

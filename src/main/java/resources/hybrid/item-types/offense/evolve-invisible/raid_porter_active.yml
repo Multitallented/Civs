@@ -20,7 +20,7 @@ build-radius: 3 #7x7x7
 effects:
 - block_break
 - block_build
-- raid_port:20 # 20 second cooldown
+- raid_port:200.20 # 200 range 20 second cooldown
 - temporary:1800 # 30 minutes
 - bypass_hostile_port
 - port:member

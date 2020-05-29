@@ -94,10 +94,6 @@
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
     <repository>
-      <id>vault-repo</id>
-      <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-    </repository>
-    <repository>
       <id>placeholderapi</id>
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
@@ -114,16 +110,12 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.13.2-R0.1-SNAPSHOT</version>
+      <version>1.14.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
           <artifactId>commons-lang</artifactId>
           <groupId>commons-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>json-simple</artifactId>
-          <groupId>com.googlecode.json-simple</groupId>
         </exclusion>
         <exclusion>
           <artifactId>guava</artifactId>
@@ -154,12 +146,6 @@
       <artifactId>mockito-all</artifactId>
       <version>1.9.5</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.dynmap</groupId>
@@ -236,6 +222,10 @@
           <groupId>net.sf.trove4j</groupId>
         </exclusion>
         <exclusion>
+          <artifactId>json-simple</artifactId>
+          <groupId>com.googlecode.json-simple</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>emoji-java</artifactId>
           <groupId>com.vdurmont</groupId>
         </exclusion>
@@ -268,28 +258,31 @@
           <groupId>com.google.code.gson</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>json-simple</artifactId>
-          <groupId>com.googlecode.json-simple</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>guava</artifactId>
           <groupId>com.google.guava</groupId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>Vault</artifactId>
+      <version>1.7</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/Vault.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>net.Indyuce.mmoitems</groupId>
       <artifactId>MMOItems</artifactId>
       <version>4.7.17</version>
       <scope>system</scope>
-      <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>
+      <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.mmogroup.mmolib</groupId>
       <artifactId>MMOLib</artifactId>
       <version>1.0.4</version>
       <scope>system</scope>
-      <systemPath>${basedir}/../dependencies/MMOLib.jar</systemPath>
+      <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

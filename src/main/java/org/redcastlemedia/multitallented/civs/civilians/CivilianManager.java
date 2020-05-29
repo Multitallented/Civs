@@ -39,6 +39,7 @@ public class CivilianManager {
     public void reload() {
         civilians.clear();
         sortedCivilians.clear();
+        listNeedsToBeSorted = true;
         loadAllCivilians();
     }
 
@@ -51,15 +52,15 @@ public class CivilianManager {
         if (!civilianFolder.exists()) {
             return;
         }
-        try {
-            for (File currentFile : civilianFolder.listFiles()) {
+        for (File currentFile : civilianFolder.listFiles()) {
+            try {
                 UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
                 Civilian civilian = loadFromFileCivilian(uuid);
                 civilians.put(uuid, civilian);
                 sortedCivilians.add(civilian);
+            } catch (Exception npe) {
+                Civs.logger.log(Level.SEVERE, "Unable to load civilian", npe);
             }
-        } catch (NullPointerException npe) {
-
         }
         listNeedsToBeSorted = true;
         sortCivilians();

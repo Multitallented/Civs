@@ -9,8 +9,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
-import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 
 import java.util.HashMap;
 
@@ -21,32 +21,36 @@ public class CooldownEffect extends Effect {
     private boolean silent = false;
     private ConfigurationSection config = null;
 
-    public CooldownEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String configDamage = section.getString("cooldown", "5000");
-        this.silent = section.getBoolean("silent", false);
-        this.cooldown = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
-        String tempTarget = section.getString("target", "not-a-string");
-        String abilityName = section.getString("ability", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
+    public CooldownEffect(Spell spell, String key, Object target, Entity origin, int level, Object config) {
+        super(spell, key, target, origin, level);
+        if (config instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) config;
+            String configDamage = section.getString(SpellEffectConstants.COOLDOWN, "5000");
+            this.silent = section.getBoolean(SpellConstants.SILENT, false);
+            if (configDamage != null) {
+                this.cooldown = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
+            } else {
+                this.cooldown = 10000;
+            }
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            String configAbilityName = section.getString(SpellConstants.ABILITY, SpellConstants.NOT_A_STRING);
+            if (tempTarget != null && !tempTarget.equals(SpellConstants.NOT_A_STRING)) {
+                this.target = tempTarget;
+            } else {
+                this.target = "self";
+            }
+            if (configAbilityName != null && !configAbilityName.equals("not-a-string")) {
+                this.abilityName = configAbilityName;
+            } else {
+                this.abilityName = "self";
+            }
+            this.config = section;
+        } else if (config instanceof String) {
+            this.cooldown = (int) Math.round(Spell.getLevelAdjustedValue((String) config, level, target, spell));
             this.target = "self";
-        }
-        if (!abilityName.equals("not-a-string")) {
-            this.abilityName = abilityName;
-        } else {
             this.abilityName = "self";
+            this.silent = false;
         }
-        this.config = section;
-    }
-
-    public CooldownEffect(Spell spell, String key, Object target, Entity origin, int level, String config) {
-        super(spell, key, target, origin, level, config);
-        this.cooldown = (int) Math.round(Spell.getLevelAdjustedValue(config, level, target, spell));
-        this.target = "self";
-        this.abilityName = "self";
-        this.silent = false;
     }
 
     @Override

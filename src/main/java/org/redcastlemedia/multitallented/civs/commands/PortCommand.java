@@ -21,11 +21,12 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
 @CivsCommand(keys = { Constants.PORT, "spawn", "home" })
-public class PortCommand implements CivCommand {
+public class PortCommand extends CivCommand {
     private HashMap<UUID, Long> cooldowns = new HashMap<>();
 
     @Override
@@ -184,6 +185,14 @@ public class PortCommand implements CivCommand {
             }
         }, delay);
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getTownNames(args[1]);
+        }
+        return super.getWord(commandSender, args);
     }
 
     @Override

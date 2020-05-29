@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,20 +28,19 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 @CivsCommand(keys = { "invite" }) @SuppressWarnings("unused")
-public class InviteTownCommand implements CivCommand {
+public class InviteTownCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage(Civs.getPrefix() + "Unable to invite for non-players");
-            return true;
+        Player player = null;
+        Civilian civilian = null;
+        if (commandSender instanceof Player) {
+            player = (Player) commandSender;
+            civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         }
-        Player player = (Player) commandSender;
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (strings.length < 3) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "specify-player-town"));
+            Util.sendMessageToPlayerOrConsole(commandSender, "specify-player-town", "Usage: /cv invite PlayerName TownName");
             return true;
         }
 
@@ -51,17 +53,16 @@ public class InviteTownCommand implements CivCommand {
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTown(townName);
         if (town == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "town-not-exist").replace("$1", townName));
+            Util.sendMessageToPlayerOrConsole(commandSender, "town-not-exist{" + townName, townName + " does not exist");
             return true;
         }
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-        boolean inviteAnyone = town.getRawPeople().containsKey(civilian.getUuid()) &&
+        boolean inviteAnyone = player == null || (town.getRawPeople().containsKey(civilian.getUuid()) &&
                 !town.getRawPeople().get(civilian.getUuid()).contains("foreign") &&
                 (government.getGovernmentType() == GovernmentType.ANARCHY ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
-                        government.getGovernmentType() == GovernmentType.LIBERTARIAN);
-        if (Civs.perm != null && !Civs.perm.has(player, Constants.ADMIN_PERMISSION) &&
+                        government.getGovernmentType() == GovernmentType.LIBERTARIAN));
+        if (player != null && Civs.perm != null && !Civs.perm.has(player, Constants.ADMIN_PERMISSION) &&
                 !inviteAnyone) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
                     (!town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
@@ -73,21 +74,19 @@ public class InviteTownCommand implements CivCommand {
         }
         Player invitee = Bukkit.getPlayer(playerName);
         if (invitee == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "player-not-online").replace("$1", playerName));
+            Util.sendMessageToPlayerOrConsole(commandSender, "player-not-online{" + playerName, playerName + " isn't online");
             return true;
         }
         if (town.getRawPeople().keySet().contains(invitee.getUniqueId()) &&
                 !town.getRawPeople().get(invitee.getUniqueId()).contains("ally")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                    "already-member").replace("$1", player.getDisplayName())
-                    .replace("$2", townName));
+            Util.sendMessageToPlayerOrConsole(commandSender, "already-member{" + invitee.getDisplayName() + ",," + townName,
+                    invitee.getDisplayName() + " is already a member of " + townName);
             return true;
         }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-        boolean adminBypass = Civs.perm != null &&
+        boolean adminBypass = player == null || (Civs.perm != null &&
                 (Civs.perm.has(invitee, Constants.ADMIN_PERMISSION) ||
-                Civs.perm.has(player, Constants.ADMIN_PERMISSION));
+                Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
         if (!townType.getEffects().containsKey(HousingEffect.HOUSING_EXCEPT) &&
                 !adminBypass && town.getPopulation() >= town.getHousing()) {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
@@ -104,17 +103,17 @@ public class InviteTownCommand implements CivCommand {
             if ((government.getGovernmentType() == GovernmentType.TRIBALISM ||
                     otherGov.getGovernmentType() == GovernmentType.TRIBALISM) &&
                     !AllianceManager.getInstance().isAllied(town, otherTown)) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
-                        player,
-                        "tribalism-no-invite").replace("$1", invitee.getDisplayName())
-                        .replace("$2", otherTown.getName()));
+                Util.sendMessageToPlayerOrConsole(commandSender, "tribalism-no-invite{" +
+                        invitee.getDisplayName() + ",," + otherTown.getName(),
+                        "Your tribalism town does not allow you to invite people from unallied " + otherTown.getName());
                 return true;
             }
         }
 
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "invite-sent"));
+        Util.sendMessageToPlayerOrConsole(commandSender, "invite-sent", "Invite sent");
+        String senderName = player == null ? "Console" : player.getDisplayName();
         String inviteMessage = Civs.getRawPrefix() + localeManager.getRawTranslationWithPlaceholders(invitee,
-                "invite-player").replace("$1", player.getDisplayName())
+                "invite-player").replace("$1", senderName)
                 .replace("$2", town.getType())
                 .replace("$3", townName) + " ";
         TextComponent component = Util.parseColorsComponent(inviteMessage);
@@ -133,5 +132,18 @@ public class InviteTownCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return commandSender instanceof Player;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            List<String> suggestions = new ArrayList<>();
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3) {
+            return new ArrayList<>(TownManager.getInstance().getTownNames());
+        }
+        return super.getWord(commandSender, args);
     }
 }

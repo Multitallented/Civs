@@ -21,17 +21,21 @@ public class TabComplete implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         List<String> keys = new ArrayList<>();
-        if (args.length < 1) {
+        if (args.length < 2) {
             for (Map.Entry<String, CivCommand> commandEntry : commands.entrySet()) {
-                if (commandEntry.getValue().canUseCommand(commandSender)) {
+                if (commandEntry.getValue().canUseCommand(commandSender) &&
+                        (args.length < 1 || commandEntry.getKey().startsWith(args[0]))) {
                     keys.add(commandEntry.getKey());
                 }
             }
             return keys;
+        } else {
+            CivCommand civCommand = commands.get(args[0]);
+            if (civCommand != null) {
+                keys.addAll(civCommand.getWord(commandSender, args));
+            }
         }
-//        if (commands.containsKey(args[0])) {
-//            return commands.get(args[0]).getNextWordList(commandSender, args);
-//        }
+
         return keys;
     }
 }
