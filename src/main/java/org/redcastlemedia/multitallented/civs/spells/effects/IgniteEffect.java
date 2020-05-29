@@ -106,9 +106,8 @@ public class IgniteEffect extends Effect {
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }

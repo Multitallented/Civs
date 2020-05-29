@@ -170,7 +170,6 @@ public class CivilianManager {
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
             civilian.setHardship(civConfig.getDouble("hardship", 0));
-            civilian.setMana(civConfig.getInt("mana", 0));
             String stringRespawn = civConfig.getString("respawn");
             if (civConfig.isSet("skills")) {
                 for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
@@ -204,6 +203,7 @@ public class CivilianManager {
                 }
                 civilian.setFriends(friendSet);
             }
+            civilian.setMana(civConfig.getInt("mana", 0), false);
 
             ItemManager.getInstance().addMinItems(civilian);
 

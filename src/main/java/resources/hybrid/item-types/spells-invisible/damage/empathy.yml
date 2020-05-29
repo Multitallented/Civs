@@ -35,6 +35,8 @@ components:
       mana: 35
 
     yield:
+      mana: -35
+      cooldown: 15000
       exemption: KILL_AURA
       sound:
         sound: ENTITY_ENDERMAN_TELEPORT
@@ -42,5 +44,5 @@ components:
       damage:
         target: vector1
         ignore-armor: true
-        damage: "$heal^1#maxHealth$-$heal^1#health$*0.6"
+        damage: "($heal^1#maxHealth$-$heal^1#health$)*0.6"
 

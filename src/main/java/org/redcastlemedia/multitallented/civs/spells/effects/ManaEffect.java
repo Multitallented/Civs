@@ -71,12 +71,12 @@ public class ManaEffect extends Effect {
         }
         Player player = (Player) target;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        civilian.setMana(civilian.getMana() + this.mana);
+        int maxMana = civilian.getCurrentClass().getMaxMana();
+        civilian.setMana(Math.min(maxMana, Math.max(0, civilian.getMana() + this.mana)));
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Object target = getTarget();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
         HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof Player)) {
             return returnMap;

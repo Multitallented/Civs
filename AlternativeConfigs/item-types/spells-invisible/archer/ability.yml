@@ -132,7 +132,7 @@ components:
         exemption: KILL_AURA # FLY FALL FAST_BREAK FAST_PLACE JESUS SPEED
         duration: 1 # seconds
       item:
-        mat: POTION
+        item: POTION
         transform: true
         transform-reqs:
           - POTION

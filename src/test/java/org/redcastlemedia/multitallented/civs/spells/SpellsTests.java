@@ -12,9 +12,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -51,9 +53,36 @@ public class SpellsTests extends TestUtil {
 
     @Test
     public void varShouldBeCreatedFromConfig() {
+        HashMap<String, Set<?>> mappedTargets = getBasicTargetMap();
+        ConfigurationSection section = new MemoryConfiguration();
+        section.set("variables.heal^1.target", "self");
+        Spell spell = new Spell("empathy", TestUtil.player, 1);
+        spell.createVariables(mappedTargets, section);
+        assertNotNull(spell.getAbilityVariables().get("heal^1"));
+    }
+
+    @NotNull
+    private HashMap<String, Set<?>> getBasicTargetMap() {
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
         HashSet<Object> targets = new HashSet<>();
+        targets.add(TestUtil.player);
+        mappedTargets.put("self", targets);
+        return mappedTargets;
+    }
 
+    @Test
+    public void costsShouldBeMet() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.setMana(60);
+        HashMap<String, Set<?>> mappedTargets = getBasicTargetMap();
+        HashSet<String> fulfilledRequirements = new HashSet<>();
+        String componentName = "1";
+        ConfigurationSection config = new MemoryConfiguration();
+        config.set("costs.mana", 35);
+        Spell spell = new Spell("empathy", TestUtil.player, 1);
+        boolean costsMet = spell.isCostsMet(mappedTargets, fulfilledRequirements, componentName, config);
+        assertTrue(costsMet);
+        assertEquals(60, civilian.getMana());
     }
 
     @Test

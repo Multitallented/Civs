@@ -151,7 +151,13 @@ public class CommonScheduler implements Runnable {
         int maxMana = civilian.getCurrentClass().getMaxMana();
         int maxManaPerSecond = civilian.getCurrentClass().getManaPerSecond();
         if (civilian.getMana() < maxMana) {
-            civilian.setMana(Math.min(maxMana, civilian.getMana() + maxManaPerSecond));
+            int newMana = Math.min(maxMana, civilian.getMana() + maxManaPerSecond);
+            ManaChangeEvent manaChangeEvent = new ManaChangeEvent(civilian.getUuid(), newMana,
+                    ManaChangeEvent.ManaChangeReason.NATURAL_REGEN);
+            Bukkit.getPluginManager().callEvent(manaChangeEvent);
+            if (!manaChangeEvent.isCancelled()) {
+                civilian.setMana(newMana);
+            }
         }
     }
     void playerInTown(Player player) {

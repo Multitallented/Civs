@@ -110,9 +110,8 @@ public class CivPotionEffect extends Effect {
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
-        Object target = getTarget();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }
@@ -123,7 +122,7 @@ public class CivPotionEffect extends Effect {
         for (PotionEffect potionEffect : livingEntity.getActivePotionEffects()) {
             if (potionEffect.getType().equals(this.type)) {
                 returnMap.put("ticks", (double) potionEffect.getDuration());
-                returnMap.put("level", (double) potionEffect.getAmplifier());
+                returnMap.put(SpellConstants.LEVEL, (double) potionEffect.getAmplifier());
                 break;
             }
         }

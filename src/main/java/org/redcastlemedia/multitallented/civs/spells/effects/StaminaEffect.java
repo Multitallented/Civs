@@ -89,14 +89,13 @@ public class StaminaEffect extends Effect {
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
-        Object target = getTarget();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof Player)) {
             return returnMap;
         }
         Player player = (Player) target;
-        returnMap.put("stamina", (double) player.getFoodLevel());
+        returnMap.put(SpellEffectConstants.STAMINA, (double) player.getFoodLevel());
         return returnMap;
     }
 }

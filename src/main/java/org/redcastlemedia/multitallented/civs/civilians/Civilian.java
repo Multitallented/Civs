@@ -136,9 +136,12 @@ public class Civilian {
     public void setKarma(int karma) { this.karma = karma; }
     public int getMana() { return mana; }
     public void setMana(int mana) {
+        setMana(mana, true);
+    }
+    public void setMana(int mana, boolean setManaBar) {
         this.mana = Math.max(mana, 0);
         Player player = Bukkit.getPlayer(uuid);
-        if (player != null && player.isOnline()) {
+        if (setManaBar && player != null && player.isOnline()) {
             String message = ManaEffect.getManaBar(this);
             ActionBarUtil.sendActionBar(player, message);
         }

@@ -18,11 +18,9 @@ conditions:
 
 components:
   1:
-    costs:
-      cooldown: 45000
-      mana: 60
-
     yield:
+      mana: -60
+      cooldown: 45000
       sound: BLOCK_METAL_BREAK
       cancel: all
       cleanse: BOTH
@@ -38,7 +36,7 @@ components:
         duration: 80
         period: 20
         section:
-          1:
+          2:
             yield:
               cleanse: BOTH
               potion^3:

@@ -19,14 +19,12 @@ conditions:
 
 components:
   1:
-    costs:
-      cooldown: 20000
-      mana: 25
-
     yield:
+      mana: -25
+      cooldown: 20000
       sound: BLOCK_BREWING_STAND_BREW
       item:
-        mat: POTION
+        item: POTION
         potion:
           type: REGENERATION
           upgraded: true

@@ -87,7 +87,7 @@ public class CivClass {
         int level = classType.getAllowedActions().getOrDefault(key.toUpperCase(), -1);
         for (String spellName : selectedSpells.values()) {
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
-            level = Math.max(level, spellType.getAllowedActions().getOrDefault(key, -1));
+            level = Math.max(level, spellType.getAllowedActions().getOrDefault(key.toUpperCase(), -1));
         }
         return level;
     }

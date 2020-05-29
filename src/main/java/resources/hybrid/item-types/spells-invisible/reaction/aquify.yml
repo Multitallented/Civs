@@ -25,17 +25,15 @@ conditions:
 
 components:
   1:
-    costs:
-      cooldown: 5000
-      mana: 10
-
     yield:
+      mana: -10
+      cooldown: 5000
       sound:
         sound: ITEM_BUCKET_WATER
         target: vector1
       item:
         target: vector1
-        mat: BUCKET
+        item: BUCKET
         transform: true
         transform-reqs:
           - MILK_BUCKET

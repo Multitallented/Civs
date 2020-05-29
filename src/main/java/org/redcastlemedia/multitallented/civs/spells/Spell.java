@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -375,67 +374,66 @@ public class Spell {
         }
     }
 
-    private boolean isCostsMet(HashMap<String, Set<?>> mappedTargets, HashSet<String> fulfilledRequirements, String componentName, ConfigurationSection currentComponent) {
+    protected boolean isCostsMet(HashMap<String, Set<?>> mappedTargets, HashSet<String> fulfilledRequirements, String componentName, ConfigurationSection currentComponent) {
         ConfigurationSection costSection = currentComponent.getConfigurationSection("costs");
         boolean costsMet = true;
-        if (costSection != null) {
-            costLoop: for (String key : costSection.getKeys(false)) {
-                String costName = "";
-                if (!key.contains("^")) {
-                    costName += key;
-                } else {
-                    costName = key.split("\\^")[0];
-                }
-                boolean invert = key.endsWith("^not");
-                String costValueString = costSection.getString(key, SpellConstants.NOT_A_STRING);
-                Effect component;
+        if (costSection == null) {
+            fulfilledRequirements.add(componentName);
+            return true;
+        }
+        costLoop: for (String key : costSection.getKeys(false)) {
+            String costName = "";
+            if (!key.contains("^")) {
+                costName += key;
+            } else {
+                costName = key.split("\\^")[0];
+            }
+            boolean invert = key.endsWith("^not");
+            String costValueString = costSection.getString(key, SpellConstants.NOT_A_STRING);
+            Effect component;
 
-                if (costName.equals("inherit")) {
-                    boolean inheritFullfilled = fulfilledRequirements.contains(costValueString);
-                    if ((!invert && !inheritFullfilled) || (invert && inheritFullfilled)) {
-                        Civs.logger.info(key + " cost not met");
-                        costsMet = false;
-                        break;
-                    }
-                    continue;
-                }
-                //component = getAbilityComponent(costName, level);
-
-                //String targetKey = component.getTargetName();
-                boolean isString = !costValueString.equals(SpellConstants.NOT_A_STRING) && !costValueString.contains("MemorySection");
-                String targetKey = isString ? SpellConstants.SELF : costSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.SELF);
-                Set<?> targetSet = mappedTargets.get(targetKey);
-                if (targetSet == null || targetSet.isEmpty()) {
-                    costsMet = invert;
+            if (costName.equals("inherit")) {
+                boolean inheritFullfilled = fulfilledRequirements.contains(costValueString);
+                if ((!invert && !inheritFullfilled) || (invert && inheritFullfilled)) {
+                    Civs.logger.info(key + " cost not met");
+                    costsMet = false;
                     break;
                 }
-                for (Object target : targetSet) {
-                    if (isString) {
-                        component = SpellType.getEffect(costName, key, costValueString, level, target, caster, this);
-                    } else {
-                        ConfigurationSection currentConfigSection = costSection.getConfigurationSection(key);
-                        component = SpellType.getEffect(costName, key, currentConfigSection, level, target,  caster,this);
-                    }
+                continue;
+            }
+            //component = getAbilityComponent(costName, level);
 
-                    boolean meetsRequirement = component.meetsRequirement();
-//						System.out.println(key + ": " + meetsRequirement);
-                    if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
-                        costsMet = false;
-                        break costLoop;
-                    }
+            //String targetKey = component.getTargetName();
+            boolean isString = !costValueString.equals(SpellConstants.NOT_A_STRING) && !costValueString.contains("MemorySection");
+            String targetKey = isString ? SpellConstants.SELF : costSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.SELF);
+            Set<?> targetSet = mappedTargets.get(targetKey);
+            if (targetSet == null || targetSet.isEmpty()) {
+                costsMet = invert;
+                break;
+            }
+            for (Object target : targetSet) {
+                if (isString) {
+                    component = SpellType.getEffect(costName, key, costValueString, level, target, caster, this);
+                } else {
+                    ConfigurationSection currentConfigSection = costSection.getConfigurationSection(key);
+                    component = SpellType.getEffect(costName, key, currentConfigSection, level, target,  caster,this);
+                }
+
+                boolean meetsRequirement = component.meetsRequirement();
+                if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
+                    costsMet = false;
+                    break costLoop;
                 }
             }
+        }
 
-            if (costsMet) {
-                fulfilledRequirements.add(componentName);
-            }
-        } else {
+        if (costsMet) {
             fulfilledRequirements.add(componentName);
         }
         return costsMet;
     }
 
-    protected void createVariables(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent, ConfigurationSection filterSection) {
+    protected void createVariables(HashMap<String, Set<?>> mappedTargets, ConfigurationSection currentComponent) {
         ConfigurationSection varSection = currentComponent.getConfigurationSection("variables");
         if (varSection == null) {
             return;
@@ -469,13 +467,13 @@ public class Spell {
                 if (!varValueString.equals(SpellConstants.NOT_A_STRING) && !varValueString.contains("MemorySection")) {
                     component = SpellType.getEffect(varName, key, varValueString, level, target, caster, this);
                 } else {
-                    ConfigurationSection currentConfigSection = filterSection.getConfigurationSection(key);
+                    ConfigurationSection currentConfigSection = varSection.getConfigurationSection(key);
                     component = SpellType.getEffect(varName, key, currentConfigSection, level, target, caster, this);
                 }
                 HashMap<String, Double> currentVars = component.getVariables(target, caster, level, this);
                 currentComponentVars.put(target, currentVars);
             }
-            abilityVariables.put(varName, currentComponentVars);
+            abilityVariables.put(key, currentComponentVars);
         }
     }
 
@@ -568,7 +566,11 @@ public class Spell {
                     }
                     Map<String, Double> componentVars = targetVars.get(target);
                     if (componentVars == null) {
-                        continue;
+                        if (targetVars.isEmpty()) {
+                            continue;
+                        } else {
+                            componentVars = targetVars.values().iterator().next();
+                        }
                     }
                     Double var = componentVars.get(inputParts[i].split("#")[1]);
                     if (var == null) {
