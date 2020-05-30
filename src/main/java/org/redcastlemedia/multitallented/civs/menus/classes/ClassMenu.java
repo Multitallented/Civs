@@ -21,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -125,21 +126,26 @@ public class ClassMenu extends CustomMenu {
         if (actionString.startsWith("change-order")) {
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
-                int swap = (int) MenuManager.getData(civilian.getUuid(), "swap");
-                swap = civClass.getSpellSlotOrder().getOrDefault(swap, swap);
-                int length = actionString.length();
-                int index = Integer.parseInt(actionString.substring(length - 1, length));
-                int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
-                if (mappedIndex != swap) {
-                    civClass.getSpellSlotOrder().put(index, swap);
-                    civClass.getSpellSlotOrder().put(swap, index);
-                    ClassManager.getInstance().saveClass(civClass);
+                if (!civilian.getCombatBar().isEmpty()) {
+                    SpellUtil.removeCombatBar(player, civilian);
+                }
+                int mappedSwap = (int) MenuManager.getData(civilian.getUuid(), "swap");
+                MenuManager.getAllData(civilian.getUuid()).remove("swap");
+                int unmappedSwap = -1;
+                for (Map.Entry<Integer, Integer> entry : civClass.getSpellSlotOrder().entrySet()) {
+                    if (entry.getValue() == mappedSwap) {
+                        unmappedSwap = entry.getKey();
+                    }
+                }
+                if (unmappedSwap != -1) {
+                    int length = actionString.length();
+                    int index = Integer.parseInt(actionString.substring(length - 1, length));
+                    swapSpellSlots(civClass, mappedSwap, index);
                 }
             } else {
                 int length = actionString.length();
-                int index = Integer.parseInt(actionString.substring(length - 1, length));
-                index = civClass.getSpellSlotOrder().getOrDefault(index, index);
-                MenuManager.getAllData(civilian.getUuid()).put("swap", index);
+                int mappedIndex = Integer.parseInt(actionString.substring(length - 1, length));
+                MenuManager.getAllData(civilian.getUuid()).put("swap", mappedIndex);
             }
             MenuManager.getInstance().refreshMenu(civilian);
             return true;
@@ -157,6 +163,17 @@ public class ClassMenu extends CustomMenu {
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
+    }
+
+    protected static void swapSpellSlots(CivClass civClass, int unmappedSwap, int index) {
+        int mappedSwap = civClass.getSpellSlotOrder().get(unmappedSwap);
+        int mappedIndex = civClass.getSpellSlotOrder().get(index);
+
+        if (index != unmappedSwap) {
+            civClass.getSpellSlotOrder().put(index, mappedSwap);
+            civClass.getSpellSlotOrder().put(unmappedSwap, mappedIndex);
+            ClassManager.getInstance().saveClass(civClass);
+        }
     }
 
     private String getAllowedActionsString(Map<String, Integer> allowedActions) {

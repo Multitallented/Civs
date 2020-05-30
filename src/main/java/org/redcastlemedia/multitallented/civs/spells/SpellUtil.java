@@ -3,7 +3,9 @@ package org.redcastlemedia.multitallented.civs.spells;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -18,10 +20,15 @@ public final class SpellUtil {
 
     public static void enableCombatBar(Player player, Civilian civilian) {
         for (Map.Entry<Integer, String> entry : civilian.getCurrentClass().getSelectedSpells().entrySet()) {
+            int index = entry.getKey();
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(entry.getValue());
-            int index = civilian.getCurrentClass().getSpellSlotOrder()
-                    .getOrDefault(entry.getKey(), entry.getKey());
-            civilian.getCombatBar().put(index, player.getInventory().getItem(index - 1));
+            int mappedIndex = civilian.getCurrentClass().getSpellSlotOrder()
+                    .getOrDefault(index, index);
+            ItemStack itemStack = player.getInventory().getItem(mappedIndex - 1);
+            if (itemStack == null) {
+                itemStack = new ItemStack(Material.AIR);
+            }
+            civilian.getCombatBar().put(index, itemStack);
             CVItem cvItem = spellType.clone();
             cvItem.getLore().clear();
             cvItem.getLore().add(ChatColor.BLACK + civilian.getUuid().toString());
@@ -29,17 +36,16 @@ public final class SpellUtil {
             cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "switch-spell-cast")));
 
-            player.getInventory().setItem(index, cvItem.createItemStack());
+            player.getInventory().setItem(mappedIndex - 1, cvItem.createItemStack());
         }
     }
 
     public static void removeCombatBar(Player player, Civilian civilian) {
         CivClass civClass = civilian.getCurrentClass();
-        for (Map.Entry<Integer, Integer> entry : civClass.getSpellSlotOrder().entrySet()) {
-            if (civClass.getSelectedSpells().containsKey(entry.getKey())) {
-                player.getInventory().getContents()[entry.getValue() - 1] =
-                        civilian.getCombatBar().get(entry.getValue());
-            }
+        for (Integer index : civClass.getSelectedSpells().keySet()) {
+            int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
+            ItemStack itemStack = civilian.getCombatBar().getOrDefault(index, new ItemStack(Material.AIR));
+            player.getInventory().setItem(mappedIndex - 1, itemStack);
         }
         civilian.getCombatBar().clear();
     }

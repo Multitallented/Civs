@@ -19,10 +19,10 @@ conditions:
 components:
   1:
     yield:
+      cancel: all
       mana: -60
       cooldown: 45000
       sound: BLOCK_METAL_BREAK
-      cancel: all
       cleanse: BOTH
       potion^1:
         type: SLOW

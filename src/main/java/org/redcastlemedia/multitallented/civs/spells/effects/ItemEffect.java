@@ -90,7 +90,6 @@ public class ItemEffect extends Effect {
             player.getInventory().setItemInMainHand(itemStack);
         } else {
             if (player.getInventory().firstEmpty() > -1) {
-                System.out.println(itemStack.getType().name() + "*" + itemStack.getAmount());
                 player.getInventory().addItem(itemStack);
             } else {
                 player.getWorld().dropItemNaturally(player.getLocation(), itemStack);

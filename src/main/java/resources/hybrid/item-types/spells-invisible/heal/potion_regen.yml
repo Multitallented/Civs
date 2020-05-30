@@ -26,6 +26,6 @@ components:
       item:
         item: POTION
         potion:
-          type: REGENERATION
+          type: REGEN
           upgraded: true
           extended: false

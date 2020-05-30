@@ -64,7 +64,7 @@ public class CivClass {
         if (!RepairEffect.isCombatEnchantment(enchantment)) {
             return 999999;
         }
-        return getAllowedLevel(enchantment.getKey().getKey());
+        return getAllowedLevel(enchantment.getKey().getKey().toUpperCase());
     }
 
     public boolean isItemAllowed(Material material) {
@@ -79,15 +79,15 @@ public class CivClass {
         if (potionEffectType == PotionEffectType.GLOWING) {
             return 999999;
         }
-        return getAllowedLevel(potionEffectType.getName());
+        return getAllowedLevel(potionEffectType.getName().toUpperCase());
     }
 
     private int getAllowedLevel(String key) {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
-        int level = classType.getAllowedActions().getOrDefault(key.toUpperCase(), -1);
+        int level = classType.getAllowedActions().getOrDefault(key, -1);
         for (String spellName : selectedSpells.values()) {
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
-            level = Math.max(level, spellType.getAllowedActions().getOrDefault(key.toUpperCase(), -1));
+            level = Math.max(level, spellType.getAllowedActions().getOrDefault(key, -1));
         }
         return level;
     }

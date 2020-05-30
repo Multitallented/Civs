@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,9 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton
 public class ClassManager {
@@ -189,6 +193,9 @@ public class ClassManager {
                 }
                 civilian.getCivClasses().add(civClass);
             }
+            if (civilian.getCurrentClass() == null) {
+                ClassManager.getInstance().switchClass(civilian, civilian.getCivClasses().iterator().next());
+            }
         } else {
             CivClass civClass1 = createDefaultClass(civilian.getUuid(), civilian.getLocale());
             civClass1.setSelectedClass(true);
@@ -205,8 +212,14 @@ public class ClassManager {
         Civilian civilian = CivilianManager.getInstance().getCivilian(civClass.getUuid());
         civilian.getCivClasses().remove(civClass);
         if (civilian.getCurrentClass().equals(civClass)) {
-            civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
+            Player player = Bukkit.getPlayer(civClass.getUuid());
+            if (!civilian.getCombatBar().isEmpty() && player != null) {
+                SpellUtil.removeCombatBar(player, civilian);
+            }
+            CivClass newCurrentClass = civilian.getCivClasses().iterator().next();
+            ClassManager.getInstance().switchClass(civilian, newCurrentClass);
         }
+        CivilianManager.getInstance().saveCivilian(civilian);
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
@@ -220,6 +233,13 @@ public class ClassManager {
     }
 
     public void createNewClass(Civilian civilian, ClassType classType) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return;
+        }
+        if (!civilian.getCombatBar().isEmpty()) {
+            SpellUtil.removeCombatBar(player, civilian);
+        }
         CivClass civClass = new CivClass(getNextId(), civilian.getUuid(), classType.getProcessedName());
         civClass.resetSpellSlotOrder();
         civClass.setMaxMana(classType.getMaxMana());
@@ -230,5 +250,25 @@ public class ClassManager {
         civilian.setCurrentClass(civClass);
         civilian.getCivClasses().add(civClass);
         saveClass(civClass);
+    }
+
+    public void switchClass(Civilian civilian, CivClass civClass) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return;
+        }
+        if (!civilian.getCombatBar().isEmpty()) {
+            SpellUtil.removeCombatBar(player, civilian);
+        }
+        civilian.setCurrentClass(civClass);
+        for (CivClass civClass1 : civilian.getCivClasses()) {
+            if (!civClass1.equals(civClass) && civClass1.isSelectedClass()) {
+                civClass1.setSelectedClass(false);
+                ClassManager.getInstance().saveClass(civClass1);
+            }
+        }
+        civClass.setSelectedClass(true);
+        ClassManager.getInstance().saveClass(civClass);
+        ClassManager.getInstance().loadPlayer(player, civilian);
     }
 }

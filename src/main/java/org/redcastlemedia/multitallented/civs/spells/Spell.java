@@ -241,112 +241,11 @@ public class Spell {
                 yieldName = key.split("\\^")[0];
             }
 
-            if (yieldName.equals("damage-listener")) {
-                final ConfigurationSection damageListenerSection = yieldSection.getConfigurationSection(key);
-                final ConfigurationSection damageListenerConfig = spellType.getConfig().getConfigurationSection("listeners." + key);
-                if (damageListenerConfig == null) {
-                    continue;
-                }
-
-                long delay = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, null, this));
-                long duration = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("duration", 0), level, null, this));
-                final Player finalCaster = caster;
-                final int finalLevel = level;
-                int delayId = -1;
-                int durationId = -1;
-                final Civilian finalChampion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
-                final String finalName = type;
-                final String finalKey = key;
-                final Spell spell = this;
-                final String finalYieldName = yieldName;
-                if (duration > 0) {
-                    durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            SpellListener.getInstance().removeDamageListener(finalCaster);
-                            finalChampion.getStates().remove(finalName + "." + finalKey);
-                        }
-                    }, delay + duration);
-                }
-                if (delayId < -1) {
-                    delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            SpellListener.getInstance().addDamageListener(finalCaster, finalLevel, damageListenerConfig, spell);
-
-                        }
-                    }, delay);
-                } else {
-                    SpellListener.getInstance().addDamageListener(caster, level, damageListenerConfig, spell);
-                    HashMap<String, Object> listenerVars = new HashMap<>();
-
-                    CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig, listenerVars);
-                    finalChampion.getStates().put(finalName + "." + finalKey, state);
-                }
+            if (createDamageListenerYield(spellType, yieldSection, key, yieldName)) {
                 continue;
             }
 
-            if (yieldName.equals("duration") && !delayed) {
-                final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
-                long delay = Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, null, this));
-                long duration = Math.round(getLevelAdjustedValue("" + durationSection.getLong("duration", 0), level, null, this));
-                long period = Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, null, this));
-                int durationId = -1;
-                int periodId = -1;
-                final Player finalCaster = caster;
-                final HashMap<String, Set<?>> finalMappedTargets = mappedTargets;
-                final String finalName = type;
-                final String finalKey = key;
-                final HashMap<String, ConfigurationSection> durationAbilities = new HashMap<>();
-                for (String durationKey : durationSection.getConfigurationSection("section").getKeys(false)) {
-                    durationAbilities.put(durationKey, durationSection.getConfigurationSection("section." + durationKey));
-                }
-                final HashMap<String, ConfigurationSection> mappedDurationTargets = new HashMap<>();
-                ConfigurationSection newTargets = durationSection.getConfigurationSection("targets");
-                if (newTargets != null) {
-                    for (String durationKey : durationSection.getConfigurationSection("targets").getKeys(false)) {
-                        mappedDurationTargets.put(durationKey, durationSection.getConfigurationSection("targets." + durationKey));
-                    }
-                }
-                if (period > 0) {
-                    periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            useAbility(finalMappedTargets, true, durationAbilities);
-                        }
-                    }, delay, period);
-                }
-                if (delay > 0 && period < 1) {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            useAbility(finalMappedTargets, true, durationAbilities);
-                        }
-                    }, delay + duration);
-                } else {
-                    useAbility(mappedTargets, true, durationAbilities);
-                }
-
-                final int finalPeriodId = periodId;
-                if (duration > 0) {
-                    durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            removeAbility(finalMappedTargets, durationAbilities);
-                            Bukkit.getScheduler().cancelTask(finalPeriodId);
-                            Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
-                            CivState state = champion.getStates().get(finalName + "." + finalKey);
-                            if (state != null) {
-                                state.remove(finalCaster);
-                                champion.getStates().remove(finalName + "." + finalKey);
-                            }
-                        }
-                    }, delay + duration);
-                }
-
-                Civilian civilian = CivilianManager.getInstance().getCivilian(caster.getUniqueId());
-                civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId, new HashMap<String, Object>()));
-
+            if (createDurationYield(delayed, mappedTargets, yieldSection, key, yieldName)) {
                 continue;
             }
 
@@ -372,6 +271,124 @@ public class Spell {
                 }
             }
         }
+    }
+
+    private boolean createDamageListenerYield(SpellType spellType, ConfigurationSection yieldSection, String key, String yieldName) {
+        if (!yieldName.equalsIgnoreCase("damage-listener")) {
+            return false;
+        }
+        final ConfigurationSection damageListenerSection = yieldSection.getConfigurationSection(key);
+        final ConfigurationSection damageListenerConfig = spellType.getConfig().getConfigurationSection("listeners." + key);
+        if (damageListenerConfig == null) {
+            return true;
+        }
+
+        long delay = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, null, this));
+        long duration = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("duration", 0), level, null, this));
+        final Player finalCaster = caster;
+        final int finalLevel = level;
+        int delayId = -1;
+        int durationId = -1;
+        final Civilian finalChampion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
+        final String finalName = type;
+        final String finalKey = key;
+        final Spell spell = this;
+        final String finalYieldName = yieldName;
+        if (duration > 0) {
+            durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    SpellListener.getInstance().removeDamageListener(finalCaster);
+                    finalChampion.getStates().remove(finalName + "." + finalKey);
+                }
+            }, delay + duration);
+        }
+        if (delayId < -1) {
+            delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    SpellListener.getInstance().addDamageListener(finalCaster, finalLevel, damageListenerConfig, spell);
+
+                }
+            }, delay);
+        } else {
+            SpellListener.getInstance().addDamageListener(caster, level, damageListenerConfig, spell);
+            HashMap<String, Object> listenerVars = new HashMap<>();
+
+            CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig, listenerVars);
+            finalChampion.getStates().put(finalName + "." + finalKey, state);
+        }
+        return true;
+    }
+
+    private boolean createDurationYield(boolean delayed, HashMap<String, Set<?>> mappedTargets, ConfigurationSection yieldSection, String key, String yieldName) {
+        if (!yieldName.equalsIgnoreCase("duration")) {
+            return false;
+        }
+        if (delayed) {
+            return true;
+        }
+        final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
+        long delay = Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, null, this));
+        long duration = Math.round(getLevelAdjustedValue("" + durationSection.getLong("duration", 0), level, null, this));
+        long period = Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, null, this));
+        int durationId = -1;
+        int periodId = -1;
+        final Player finalCaster = caster;
+        final HashMap<String, Set<?>> finalMappedTargets = mappedTargets;
+        final String finalName = type;
+        final String finalKey = key;
+        final HashMap<String, ConfigurationSection> durationAbilities = new HashMap<>();
+        for (String durationKey : durationSection.getConfigurationSection("section").getKeys(false)) {
+            durationAbilities.put(durationKey, durationSection.getConfigurationSection("section." + durationKey));
+        }
+        final HashMap<String, ConfigurationSection> mappedDurationTargets = new HashMap<>();
+        ConfigurationSection newTargets = durationSection.getConfigurationSection("targets");
+        if (newTargets != null) {
+            for (String durationKey : durationSection.getConfigurationSection("targets").getKeys(false)) {
+                mappedDurationTargets.put(durationKey, durationSection.getConfigurationSection("targets." + durationKey));
+            }
+        }
+        if (period > 0) {
+            periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    useAbility(finalMappedTargets, true, durationAbilities);
+                }
+            }, delay, period);
+        }
+        if (delay > 0 && period < 1) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    useAbility(finalMappedTargets, true, durationAbilities);
+                }
+            }, delay + duration);
+        } else {
+            useAbility(mappedTargets, true, durationAbilities);
+        }
+
+        final int finalPeriodId = periodId;
+        if (duration > 0) {
+            durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    removeAbility(finalMappedTargets, durationAbilities);
+                    Bukkit.getScheduler().cancelTask(finalPeriodId);
+                    Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
+                    CivState state = champion.getStates().get(finalName + "." + finalKey);
+                    if (state != null) {
+                        state.remove(finalCaster);
+                        champion.getStates().remove(finalName + "." + finalKey);
+                    }
+                }
+            }, delay + duration);
+        }
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(caster.getUniqueId());
+        civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId, new HashMap<String, Object>()));
+
+        return true;
     }
 
     protected boolean isCostsMet(HashMap<String, Set<?>> mappedTargets, HashSet<String> fulfilledRequirements, String componentName, ConfigurationSection currentComponent) {

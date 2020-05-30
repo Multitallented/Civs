@@ -83,18 +83,9 @@ public class ClassListMenu extends CustomMenu {
 
             CivClass civClass = ((HashMap<ItemStack, CivClass>) MenuManager.getData(civilian.getUuid(), "classMap"))
                     .get(itemStack);
-            if (civClass != civilian.getCurrentClass()) {
-                civilian.setCurrentClass(civClass);
-                for (CivClass civClass1 : civilian.getCivClasses()) {
-                    if (!civClass1.equals(civClass) && civClass1.isSelectedClass()) {
-                        civClass1.setSelectedClass(false);
-                        ClassManager.getInstance().saveClass(civClass1);
-                    }
-                }
-                civClass.setSelectedClass(true);
-                ClassManager.getInstance().saveClass(civClass);
+            if (!civClass.equals(civilian.getCurrentClass())) {
+                ClassManager.getInstance().switchClass(civilian, civClass);
                 MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civClass);
-                ClassManager.getInstance().loadPlayer(player, civilian);
                 return true;
             }
         }

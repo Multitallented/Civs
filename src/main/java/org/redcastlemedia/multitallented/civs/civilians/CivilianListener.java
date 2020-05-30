@@ -269,6 +269,12 @@ public class CivilianListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
+        if (CVItem.isCivsItem(item.getItemStack())) {
+            CivItem civItem = CivItem.getFromItemStack(item.getItemStack());
+            if (civItem != null && civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+            }
+        }
         if (checkDroppedItem(item.getItemStack(), event.getPlayer())) {
             item.remove();
         }
@@ -279,10 +285,13 @@ public class CivilianListener implements Listener {
                 !CVItem.isCivsItem(itemStack)) {
             return false;
         }
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
+        if (civItem == null) {
+            return false;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
         if (hasBlueprintsMenuOpen) {
-            CivItem civItem = CivItem.getFromItemStack(itemStack);
             if (Civs.econ != null && civItem.getPrice() > 0) {
                 Civs.econ.depositPlayer(player, civItem.getPrice());
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
@@ -290,9 +299,7 @@ public class CivilianListener implements Listener {
             }
             return true;
         }
-        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
-        String itemName = processedName.replace(
-                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
+        String itemName = civItem.getProcessedName();
         player.closeInventory();
         if (civilian.getStashItems().containsKey(itemName)) {
             civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
