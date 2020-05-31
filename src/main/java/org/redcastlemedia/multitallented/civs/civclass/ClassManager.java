@@ -96,7 +96,7 @@ public class ClassManager {
             for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
                 if (civilian.getCurrentClass() == null) {
                     if (civilian.getCivClasses().isEmpty()) {
-                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid(), civilian.getLocale()));
+                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid()));
                     } else {
                         civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
                     }
@@ -159,13 +159,6 @@ public class ClassManager {
         return i;
     }
 
-    public CivClass createDefaultClass(UUID uuid, String locale) {
-        String className = ConfigManager.getInstance().getDefaultClass();
-        CivClass civClass = new CivClass(getNextId(), uuid, className);
-        civClass.resetSpellSlotOrder();
-        return civClass;
-    }
-
     public static ClassManager getInstance() {
         if (classManager == null) {
             classManager = new ClassManager();
@@ -197,7 +190,7 @@ public class ClassManager {
                 ClassManager.getInstance().switchClass(civilian, civilian.getCivClasses().iterator().next());
             }
         } else {
-            CivClass civClass1 = createDefaultClass(civilian.getUuid(), civilian.getLocale());
+            CivClass civClass1 = createDefaultClass(civilian.getUuid());
             civClass1.setSelectedClass(true);
             civilian.getCivClasses().add(civClass1);
             civilian.setCurrentClass(civClass1);
@@ -233,6 +226,13 @@ public class ClassManager {
                 Civs.logger.log(Level.SEVERE, "Unable to delete class {0}", classFile.getName());
             }
         }
+    }
+
+    public CivClass createDefaultClass(UUID uuid) {
+        String className = ConfigManager.getInstance().getDefaultClass();
+        CivClass civClass = new CivClass(getNextId(), uuid, className);
+        civClass.resetSpellSlotOrder();
+        return civClass;
     }
 
     public void createNewClass(Civilian civilian, ClassType classType) {

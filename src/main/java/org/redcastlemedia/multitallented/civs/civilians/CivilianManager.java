@@ -219,7 +219,6 @@ public class CivilianManager {
     }
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
-        CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid, configManager.getDefaultLanguage());
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
@@ -229,7 +228,6 @@ public class CivilianManager {
         civilian.setTutorialIndex(-1);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
-        civilian.setCurrentClass(defaultClass);
 
         for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
             civilian.getSkills().put(skillName, new Skill(skillName));
