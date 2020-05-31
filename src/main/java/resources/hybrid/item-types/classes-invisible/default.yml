@@ -38,5 +38,4 @@ spells:
   3:
     - g:escape
     - g:non-combat
-    - g:allowed-action
 

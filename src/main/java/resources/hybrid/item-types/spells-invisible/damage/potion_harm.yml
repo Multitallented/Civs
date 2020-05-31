@@ -1,14 +1,15 @@
-icon: SPIDER_EYE
+icon: RED_MUSHROOM
 type: spell
 is-in-shop: false
 level: 1
 groups:
-  - damage-over-time
+  - damage
 
-pre-reqs: []
+pre-reqs:
+  - potion_poison:level=5
 
 allowed-actions:
-  - POISON.99
+  - HARM.99
 
 exp-per-use: 15
 
@@ -25,6 +26,6 @@ components:
       item:
         item: SPLASH_POTION
         potion:
-          type: POISON
+          type: INSTANT_DAMAGE
           upgraded: true
           extended: false

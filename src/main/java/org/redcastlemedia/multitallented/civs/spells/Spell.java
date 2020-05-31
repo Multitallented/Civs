@@ -2,9 +2,11 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -44,85 +46,81 @@ public class Spell {
         tempSet.add(caster);
         mappedTargets.put(SpellConstants.SELF, tempSet);
 
-
-        ConfigurationSection conditionsConfig = config.getConfigurationSection("conditions");
-        if (conditionsConfig != null) {
-            for (String key : conditionsConfig.getKeys(false)) {
-                String conditionName = "";
-                if (!key.contains("^")) {
-                    conditionName += key;
-                } else {
-                    conditionName = key.split("\\^")[0];
-                }
-                String costValueString = conditionsConfig.getString(key, SpellConstants.NOT_A_STRING);
-                boolean invert = key.endsWith("^not");
-                boolean isSection = costValueString.equals(SpellConstants.NOT_A_STRING) || costValueString.contains("MemorySection");
-                String targetKey = SpellConstants.SELF;
-                if (isSection) {
-                    String tempTarget = conditionsConfig.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
-                    if (!tempTarget.equals(SpellConstants.NOT_A_STRING)) {
-                        targetKey = tempTarget;
-                    }
-                }
-                Set<?> targetSet = mappedTargets.get(targetKey);
-                if (targetSet == null || targetSet.isEmpty()) {
-                    continue;
-                }
-                for (Object target : targetSet) {
-                    Effect component;
-                    if (!costValueString.equals(SpellConstants.NOT_A_STRING) && !costValueString.contains("MemorySection")) {
-                        component = SpellType.getEffect(conditionName, key, costValueString, level, target, caster, this);
-                    } else {
-                        ConfigurationSection currentConfigSection = conditionsConfig.getConfigurationSection(key);
-                        component = SpellType.getEffect(conditionName, key, currentConfigSection, level, target, caster, this);
-                    }
-                    boolean meetsRequirement;
-                    try {
-                        meetsRequirement = component.meetsRequirement();
-                    } catch (NullPointerException npe) {
-                        Civs.logger.severe("Failed to find component " + conditionName + " in spell " + type);
-                        meetsRequirement = false;
-                    }
-                    if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        ConfigurationSection targetSections = config.getConfigurationSection("targets");
-        if (targetSections != null) {
-            for (String key : targetSections.getKeys(false)) {
-                ConfigurationSection targetSection = targetSections.getConfigurationSection(key);
-                String targetName = targetSection.getString("type", "nearby");
-                Target target = SpellType.getTarget(targetName, key, targetSection, level, caster, this);
-                try {
-                    mappedTargets.put(key, target.getTargets());
-                } catch (NullPointerException npe) {
-                    Civs.logger.severe("Failed to find target " + targetName + " in spell " + type);
-                    return false;
-                }
-                if (targetSection.getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
-                    return false;
-                }
-            }
-        }
-        /*for (String key : this.targetSchema.keySet()) {
-            String targetName = this.targetSchema.get(key).getString("type", "nearby");
-            Target abilityTarget = SpellType.getTarget(targetName, key);
-            if (abilityTarget == null) {
-                continue;
-            }
-            mappedTargets.put(key, abilityTarget.getTargets(caster, this.targetSchema.get(key), level, abilityVariables));
-            if (this.targetSchema.get(key).getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
-                return false;
-            }
-        }*/
-
-        return useAbility(mappedTargets, false, new HashMap<>());
+        return useAbility(mappedTargets, false, config);
     }
 
-    public boolean useAbilityFromListener(Player caster, int level, ConfigurationSection useSection, Object newTarget) {
+    private boolean isFailingOrMapTargets(ConfigurationSection config, Map<String, Set<?>> mappedTargets) {
+        ConfigurationSection targetSections = config.getConfigurationSection("targets");
+        if (targetSections == null) {
+            return false;
+        }
+        for (String key : targetSections.getKeys(false)) {
+            ConfigurationSection targetSection = targetSections.getConfigurationSection(key);
+            String targetName = targetSection.getString("type", "nearby");
+            Target target = SpellType.getTarget(targetName, key, targetSection, level, caster, this);
+            try {
+                mappedTargets.put(key, target.getTargets());
+            } catch (NullPointerException npe) {
+                Civs.logger.severe("Failed to find target " + targetName + " in spell " + type);
+                return true;
+            }
+            if (targetSection.getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isFailingConditions(ConfigurationSection config, HashMap<String, Set<?>> mappedTargets) {
+        ConfigurationSection conditionsConfig = config.getConfigurationSection("conditions");
+        if (conditionsConfig == null) {
+            return false;
+        }
+        for (String key : conditionsConfig.getKeys(false)) {
+            String conditionName = "";
+            if (!key.contains("^")) {
+                conditionName += key;
+            } else {
+                conditionName = key.split("\\^")[0];
+            }
+            String costValueString = conditionsConfig.getString(key, SpellConstants.NOT_A_STRING);
+            boolean invert = key.endsWith("^not");
+            boolean isSection = costValueString.equals(SpellConstants.NOT_A_STRING) || costValueString.contains("MemorySection");
+            String targetKey = SpellConstants.SELF;
+            if (isSection) {
+                String tempTarget = conditionsConfig.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+                if (!tempTarget.equals(SpellConstants.NOT_A_STRING)) {
+                    targetKey = tempTarget;
+                }
+            }
+            Set<?> targetSet = mappedTargets.get(targetKey);
+            if (targetSet == null || targetSet.isEmpty()) {
+                continue;
+            }
+            for (Object target : targetSet) {
+                Effect component;
+                if (!costValueString.equals(SpellConstants.NOT_A_STRING) && !costValueString.contains("MemorySection")) {
+                    component = SpellType.getEffect(conditionName, key, costValueString, level, target, caster, this);
+                } else {
+                    ConfigurationSection currentConfigSection = conditionsConfig.getConfigurationSection(key);
+                    component = SpellType.getEffect(conditionName, key, currentConfigSection, level, target, caster, this);
+                }
+                boolean meetsRequirement;
+                try {
+                    meetsRequirement = component.meetsRequirement();
+                } catch (NullPointerException npe) {
+                    Civs.logger.severe("Failed to find component " + conditionName + " in spell " + type);
+                    meetsRequirement = false;
+                }
+                if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean useAbilityFromListener(Player caster, ConfigurationSection useSection, Object newTarget) {
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
         HashSet<LivingEntity> tempSet = new HashSet<>();
         tempSet.add(caster);
@@ -130,63 +128,36 @@ public class Spell {
         HashSet<Object> tempTarget = new HashSet<>();
         tempTarget.add(newTarget);
         mappedTargets.put(SpellConstants.TARGET, tempTarget);
-        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
 
-        ConfigurationSection targetSections = spellType.getConfig().getConfigurationSection("targets");
-        for (String key : targetSections.getKeys(false)) {
-            ConfigurationSection targetSection = targetSections.getConfigurationSection(key);
-            String targetName = targetSection.getString("type", "nearby");
-            Target abilityTarget = SpellType.getTarget(targetName, key, targetSection, level, caster, this);
-            if (abilityTarget == null) {
-                continue;
-            }
-            mappedTargets.put(key, abilityTarget.getTargets());
-            if (targetSection.getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
-                return false;
-            }
-        }
-
-        useAbility(mappedTargets, true, new HashMap<>());
+        useAbility(mappedTargets, true, useSection);
 
         return useSection.getBoolean("cancel", false);
     }
 
     public boolean useAbility(Map<String, Set<?>> incomingTargets,
                               boolean delayed,
-                              Map<String, ConfigurationSection> durationTargets) {
+                              ConfigurationSection abilitySection) {
         SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(type);
         HashMap<String, Set<?>> mappedTargets = new HashMap<>(incomingTargets);
-        if (durationTargets != null) {
-            for (String key : durationTargets.keySet()) {
-                String targetName = durationTargets.get(key).getString("type", "nearby");
-                Target target = SpellType.getTarget(targetName, key, durationTargets.get(key), level, caster, this);
-                if (target == null) {
-                    continue;
-                }
-                mappedTargets.put(key, target.getTargets());
-                if (durationTargets.get(key).getBoolean("cancel-if-empty", false) && mappedTargets.get(key).isEmpty()) {
-                    return false;
-                }
-            }
+
+        if (isFailingConditions(abilitySection, mappedTargets)) {
+            return false;
         }
-        Map<String, ConfigurationSection> components = spellType.getComponents();
+
+        if (isFailingOrMapTargets(abilitySection, mappedTargets)) {
+            return false;
+        }
+        ConfigurationSection componentSection = abilitySection.getConfigurationSection("components");
+        if (componentSection == null) {
+            return false;
+        }
         HashSet<String> fulfilledRequirements = new HashSet<>();
-        Collection<String> abilityKeys = components.keySet();
-        List<String> sorted = new ArrayList<>(abilityKeys);
-        Collections.sort(sorted);
-        for (String componentName : sorted) {
-            String compName = "";
-            if (!componentName.contains("\\.")) {
-                compName += componentName;
-            } else {
-                compName = componentName.split("\\.")[0];
-            }
-            ConfigurationSection currentComponent = components.get(compName);
+        for (String componentName : componentSection.getKeys(false)) {
+
+            ConfigurationSection currentComponent = componentSection.getConfigurationSection(componentName);
             if (currentComponent == null) {
-                Civs.logger.severe("Unable to find componentSection " + compName + " for spell " + type);
                 continue;
             }
-
             filterTargets(mappedTargets, currentComponent);
 
             createVariables(mappedTargets, currentComponent);
@@ -339,9 +310,7 @@ public class Spell {
         final String finalName = type;
         final String finalKey = key;
         final HashMap<String, ConfigurationSection> durationAbilities = new HashMap<>();
-        for (String durationKey : durationSection.getConfigurationSection("section").getKeys(false)) {
-            durationAbilities.put(durationKey, durationSection.getConfigurationSection("section." + durationKey));
-        }
+        final ConfigurationSection durationSectionEffects = durationSection.getConfigurationSection("section");
         final HashMap<String, ConfigurationSection> mappedDurationTargets = new HashMap<>();
         ConfigurationSection newTargets = durationSection.getConfigurationSection("targets");
         if (newTargets != null) {
@@ -353,7 +322,7 @@ public class Spell {
             periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    useAbility(finalMappedTargets, true, durationAbilities);
+                    useAbility(finalMappedTargets, true, durationSectionEffects);
                 }
             }, delay, period);
         }
@@ -361,11 +330,11 @@ public class Spell {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    useAbility(finalMappedTargets, true, durationAbilities);
+                    useAbility(finalMappedTargets, true, durationSectionEffects);
                 }
             }, delay + duration);
         } else {
-            useAbility(mappedTargets, true, durationAbilities);
+            useAbility(mappedTargets, true, durationSectionEffects);
         }
 
         final int finalPeriodId = periodId;
@@ -386,7 +355,7 @@ public class Spell {
         }
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(caster.getUniqueId());
-        civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId, new HashMap<String, Object>()));
+        civilian.getStates().put(type + "." + key, new CivState(this, key, durationId, periodId, new HashMap<>()));
 
         return true;
     }

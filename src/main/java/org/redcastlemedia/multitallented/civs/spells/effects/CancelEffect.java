@@ -82,12 +82,12 @@ public class CancelEffect extends Effect {
         }
         Player player = (Player) target;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String newAbilityName = abilityName.equals("self") ? ability.getType() : abilityName;
+        String spellTypeName = abilityName.equals("self") ? ability.getType() : abilityName;
         HashSet<String> removeMe = new HashSet<>();
         for (String key : civilian.getStates().keySet()) {
             String currentAbilityName = key.split("\\.")[0];
             String currentComponentName = key.split("\\.")[1];
-            if (!abilityName.equals("all") && !currentAbilityName.equals(newAbilityName)) {
+            if (!abilityName.equals("all") && !currentAbilityName.equals(spellTypeName)) {
                 continue;
             }
             if (!whitelist.isEmpty() && !whitelist.contains(currentComponentName)) {

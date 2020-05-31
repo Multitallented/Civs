@@ -5,11 +5,13 @@ level: 1
 groups: []
 
 pre-reqs:
-  - skill:food=7
+  - skill:crafting=3
+  - skill:potion=3
+  - alchemist:level=15
 
 allowed-actions: []
 
-exp-per-use: 15
+exp-per-use: 50
 
 targets:
   vector1:
@@ -42,4 +44,11 @@ components:
           - SALMON_BUCKET
           - PUFFERFISH_BUCKET
           - TROPICAL_FISH_BUCKET
-
+      item^1:
+        target: vector1
+        item: GLASS_BOTTLE
+        transform: true
+        transform-reqs:
+          - POTION
+          - SPLASH_POTION
+          - LINGERING_POTION

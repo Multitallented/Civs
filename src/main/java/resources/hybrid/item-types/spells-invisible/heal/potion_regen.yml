@@ -4,12 +4,11 @@ is-in-shop: false
 level: 1
 groups:
   - heal
-  - allowed-action
 
 pre-reqs: []
 
 allowed-actions:
-  - REGENERATION
+  - REGENERATION.99
 
 exp-per-use: 15
 

@@ -271,4 +271,11 @@ public class ClassManager {
         ClassManager.getInstance().saveClass(civClass);
         ClassManager.getInstance().loadPlayer(player, civilian);
     }
+
+    public void unloadPlayer(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!civilian.getCombatBar().isEmpty()) {
+            SpellUtil.removeCombatBar(player, civilian);
+        }
+    }
 }

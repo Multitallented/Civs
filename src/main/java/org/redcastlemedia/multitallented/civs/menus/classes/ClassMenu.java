@@ -52,7 +52,12 @@ public class ClassMenu extends CustomMenu {
                 classType.getManaTitle());
         data.put("className", localClassName + civClass.getId());
         data.put("classTypeName", localClassName);
-        String allowedItemsString = getAllowedActionsString(classType.getAllowedActions());
+        Map<String, Integer> allowedActionMap = new HashMap<>(classType.getAllowedActions());
+        for (String spellName : civClass.getSelectedSpells().values()) {
+            SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
+            allowedActionMap.putAll(spellType.getAllowedActions());
+        }
+        String allowedItemsString = getAllowedActionsString(allowedActionMap);
         data.put("allowedItems", allowedItemsString);
         data.put("classManaName", manaTitle);
         data.put("maxHealth", classType.getMaxHealth());
@@ -87,12 +92,17 @@ public class ClassMenu extends CustomMenu {
             int length = menuIcon.getKey().length();
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             int index = Integer.parseInt(menuIcon.getKey().substring(length - 1, length));
+            if ((index - 1) * 4 > civClass.getLevel()) {
+                return new ItemStack(Material.AIR);
+            }
             int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
             if (civClass.getSelectedSpells().containsKey(mappedIndex)) {
                 String spellName = civClass.getSelectedSpells().get(mappedIndex);
                 SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
                 CVItem cvItem = spellType.getShopIcon(player);
                 cvItem.setDisplayName(cvItem.getDisplayName() + index);
+                cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "level").replace("$1", "" + civilian.getLevel(spellType)));
                 cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                         "spell-slot-desc")));
                 if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {

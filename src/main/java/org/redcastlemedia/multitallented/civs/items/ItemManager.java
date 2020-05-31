@@ -216,7 +216,7 @@ public class ItemManager {
     public CivItem loadClassType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         ClassType civItem = new ClassType(
-                config.getStringList("reqs"),
+                config.getStringList("pre-reqs"),
                 name,
                 icon,
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
@@ -247,7 +247,7 @@ public class ItemManager {
     public CivItem loadSpellType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         SpellType spellType = new SpellType(
-                config.getStringList("reqs"),
+                config.getStringList("pre-reqs"),
                 name,
                 icon.getMat(),
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
@@ -597,6 +597,9 @@ public class ItemManager {
         outer: for (String reqString : civItem.getCivReqs()) {
             List<String> unmetRequirements = new ArrayList<>();
             for (String req : reqString.split("\\|")) {
+                if (fast && !unmetRequirements.isEmpty()) {
+                    break outer;
+                }
                 if (!fast && unmetRequirements.size() % 2 > 0) {
                     unmetRequirements.add(" " + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                             "or") + " ");
@@ -673,7 +676,7 @@ public class ItemManager {
             }
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("- ");
-            for (int i = 0; i < unmetRequirements.size() - 1; i++) {
+            for (int i = 0; i < unmetRequirements.size(); i++) {
                 stringBuilder.append(unmetRequirements.get(i));
             }
             allUnmetRequirements.add(stringBuilder.toString());
@@ -800,7 +803,7 @@ public class ItemManager {
             unmetRequirements.add("skill");
         } else {
             String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    skillName + LocaleConstants.NAME_SUFFIX);
+                    skillName + LocaleConstants.SKILL_SUFFIX);
             unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
                     "req-skill-level").replace("$1", localSkillName)
                     .replace("$2", "" + level));

@@ -1,30 +1,30 @@
-icon: SPIDER_EYE
+icon: FERMENTED_SPIDER_EYE
 type: spell
 is-in-shop: false
 level: 1
 groups:
-  - damage-over-time
+  - disable
 
 pre-reqs: []
 
 allowed-actions:
-  - POISON.99
+  - WEAKNESS.99
 
 exp-per-use: 15
 
 conditions:
-  cooldown: 20000
-  mana: 25
+  cooldown: 75000
+  mana: 50
 
 components:
   1:
     yield:
-      mana: -25
-      cooldown: 20000
+      mana: -50
+      cooldown: 75000
       sound: BLOCK_BREWING_STAND_BREW
       item:
         item: SPLASH_POTION
         potion:
-          type: POISON
-          upgraded: true
-          extended: false
+          type: WEAKNESS
+          upgraded: false
+          extended: true

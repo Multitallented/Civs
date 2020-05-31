@@ -73,25 +73,11 @@ public class SpellType extends CivItem {
                 isInShop,
                 level);
         this.config = config;
-        this.components = new HashMap<>();
-        ConfigurationSection componentSection = config.getConfigurationSection("components");
-        if (componentSection == null) {
-            Civs.logger.severe("Failed to load spell type " + name + " no components");
-            return;
-        }
-        for (String key : componentSection.getKeys(false)) {
-            ConfigurationSection currentSection = componentSection.getConfigurationSection(key);
-            if (currentSection != null) {
-                components.put(key, currentSection);
-            }
-        }
         this.expPerUse = expPerUse;
     }
 
     @Getter
     private final FileConfiguration config;
-    @Getter
-    private final HashMap<String, ConfigurationSection> components;
 
     public static Target getTarget(String type,
                                    String key,

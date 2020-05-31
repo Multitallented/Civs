@@ -10,6 +10,7 @@ import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -30,6 +31,9 @@ public final class SpellUtil {
             }
             civilian.getCombatBar().put(index, itemStack);
             CVItem cvItem = spellType.clone();
+            String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    spellType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            cvItem.setDisplayName(localSpellName);
             cvItem.getLore().clear();
             cvItem.getLore().add(ChatColor.BLACK + civilian.getUuid().toString());
             cvItem.getLore().add(ChatColor.BLACK + spellType.getProcessedName());

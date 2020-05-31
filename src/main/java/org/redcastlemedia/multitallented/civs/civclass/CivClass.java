@@ -84,12 +84,13 @@ public class CivClass {
 
     private int getAllowedLevel(String key) {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
-        int level = classType.getAllowedActions().getOrDefault(key, -1);
+        int allowedLevel = classType.getAllowedActions().getOrDefault(key, -1);
         for (String spellName : selectedSpells.values()) {
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
-            level = Math.max(level, spellType.getAllowedActions().getOrDefault(key, -1));
+            int spellLevel = spellType.getAllowedActions().getOrDefault(key, -1);
+            allowedLevel = Math.max(allowedLevel, spellLevel);
         }
-        return level;
+        return allowedLevel;
     }
 
     public void resetSpellSlotOrder() {

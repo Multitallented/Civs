@@ -1,14 +1,16 @@
-icon: SPIDER_EYE
+icon: SUGAR
 type: spell
 is-in-shop: false
 level: 1
 groups:
-  - damage-over-time
+  - chase
 
-pre-reqs: []
+pre-reqs:
+  - skill:potion=3
+  - skill:exploration=7
 
 allowed-actions:
-  - POISON.99
+  - SPEED.99
 
 exp-per-use: 15
 
@@ -23,8 +25,8 @@ components:
       cooldown: 20000
       sound: BLOCK_BREWING_STAND_BREW
       item:
-        item: SPLASH_POTION
+        item: POTION
         potion:
-          type: POISON
+          type: SPEED
           upgraded: true
           extended: false

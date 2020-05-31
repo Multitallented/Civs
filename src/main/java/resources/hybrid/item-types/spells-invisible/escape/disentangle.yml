@@ -1,0 +1,63 @@
+icon: CREEPER_BANNER_PATTERN
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - escape
+
+pre-reqs:
+  - skill:food=3
+  - backflip:level=8
+  - skill:exploration=4
+
+allowed-actions: []
+
+exp-per-use: 20
+
+targets:
+  vector1:
+    type: vector
+    range: 20
+    penetration: true
+    allow-multiple: false
+    cancel-if-empty: true
+
+conditions:
+  cooldown: 14000
+  mana: 20
+
+components:
+  1:
+    yield:
+      mana: -20
+      cooldown: 14000
+      cleanse: HARMFUL
+      exemption^0: FLY
+      exemption^2: FALL
+      exemption^1:
+        exemption: FLY
+        target: vector1
+      exemption^3:
+        exemption: FALL
+        target: vector1
+      sound^1:
+        sound: ENTITY_MAGMA_CUBE_JUMP
+      sound^2:
+        sound: ENTITY_MAGMA_CUBE_JUMP
+        target: vector1
+      velocity^1:
+        y: 1
+        multiplier: -2
+      velocity^2:
+        target: vector1
+        y: 1
+        multiplier: -2
+      duration^1:
+        delay: 10
+        section:
+          components:
+            2:
+              fall: -10
+              fall^1:
+                target: vector1
+                distance: -10

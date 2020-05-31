@@ -59,7 +59,7 @@ public class SpellListMenu extends CustomMenu {
             data.put("slot", selectedSlot);
         }
         if (selectedClass != null && selectedSlot > -1) {
-            Set<SpellType> spellSet = new HashSet<>(SpellManager.getInstance().getSpellsForSlot(selectedClass, selectedSlot));
+            Set<SpellType> spellSet = new HashSet<>(SpellManager.getInstance().getSpellsForSlot(selectedClass, selectedSlot, true));
             spellTypeList.addAll(spellSet);
         } else if (selectedClass != null) {
             Set<SpellType> spellSet = new HashSet<>(SpellManager.getInstance().getSpellsForClass(selectedClass));
@@ -94,6 +94,8 @@ public class SpellListMenu extends CustomMenu {
             }
             SpellType spellType = itemArray[startIndex + count];
             CVItem cvItem = spellType.getShopIcon(player);
+            cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    "level").replace("$1", "" + civilian.getLevel(spellType)));
             List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(spellType, civilian, false);
             if (!unmetRequirements.isEmpty()) {
                 cvItem.getLore().addAll(unmetRequirements);

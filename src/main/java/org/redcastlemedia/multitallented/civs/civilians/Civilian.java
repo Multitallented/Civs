@@ -181,6 +181,16 @@ public class Civilian {
     }
 
     public int getLevel(CivItem civItem) {
+        if (civItem != null && civItem.getItemType() == CivItem.ItemType.CLASS) {
+            int level = 0;
+            for (CivClass civClass : civClasses) {
+                if (civClass.getType().equalsIgnoreCase(civItem.getProcessedName())) {
+                    level = Math.max(level, civClass.getLevel());
+                }
+            }
+            return level;
+        }
+
         if (civItem == null || exp == null || exp.get(civItem) == null) {
             return 1;
         }

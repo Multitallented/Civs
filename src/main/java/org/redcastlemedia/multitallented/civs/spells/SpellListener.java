@@ -68,7 +68,7 @@ public class SpellListener implements Listener {
             return;
         }
         AbilityListen abilityListener = damageListeners.get(livingEntity);
-        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getLevel(), abilityListener.getConfig(), event.getEntity())) {
+        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getConfig(), event.getEntity())) {
             event.setCancelled(true);
         }
     }
@@ -81,7 +81,7 @@ public class SpellListener implements Listener {
         } else {
             return;
         }
-        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getLevel(), abilityListener.getConfig(), event.getEntity())) {
+        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getConfig(), event.getEntity())) {
             event.setCancelled(true);
         }
     }

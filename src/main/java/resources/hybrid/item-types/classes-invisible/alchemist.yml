@@ -7,10 +7,11 @@ groups: []
 
 children: []
 pre-reqs:
-  - skill:crafting=6
-  - skill:food=8
-  - skill:exploration=5
-  - skill:axe=2
+  - skill:crafting=3
+  - skill:food=4
+  - skill:exploration=2
+  - skill:axe=1
+  - potion_weakness:level=3
 
 mana-title: mana
 mana-per-second: 2
@@ -31,24 +32,23 @@ allowed-actions:
 
 spells:
   1:
-    - aquify
+    - evaporate
     - spoil
-    - rust
+    - rust # TODO
   2:
     - petrify
-    - heavy_drinker
+    - fast_drinker # TODO
     - g:escape
+    - potion_invis
   3:
-    - amplify
-    - weakness
+    - potion_weakness
+    - amplify # TODO
   4:
     - potion_poison
     - potion_strength
     - potion_harm
-    - potion_weakness
   5:
     - potion_regen
     - potion_speed
     - potion_heal
-    - potion_invis
 

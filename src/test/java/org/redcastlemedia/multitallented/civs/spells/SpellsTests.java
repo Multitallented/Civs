@@ -48,7 +48,7 @@ public class SpellsTests extends TestUtil {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType("default");
         assertFalse(classType.getSpellSlots().isEmpty());
         assertFalse(classType.getSpellSlots().get(2).isEmpty());
-        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 2).isEmpty());
+        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 2, false).isEmpty());
     }
 
     @Test
@@ -92,7 +92,14 @@ public class SpellsTests extends TestUtil {
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType("alchemist");
         assertFalse(classType.getSpellSlots().isEmpty());
         assertFalse(classType.getSpellSlots().get(2).isEmpty());
-        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 2).isEmpty());
+        assertFalse(SpellManager.getInstance().getSpellsForSlot(civClass, 4, false).isEmpty());
+    }
+
+    @Test
+    public void potionHealShouldNotBeUnlocked() {
+        SpellType potionHeal = (SpellType) ItemManager.getInstance().getItemType("potion_heal");
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        assertFalse(ItemManager.getInstance().hasItemUnlocked(civilian, potionHeal));
     }
 
     @Test
