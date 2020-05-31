@@ -86,6 +86,16 @@ public class ClassMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("level".equals(menuIcon.getKey())) {
+            CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+            if (civClass.getLevel() >= classType.getMaxLevel()) {
+                CVItem cvItem = menuIcon.createCVItem(player, count);
+                cvItem.getLore().clear();
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "level-up-max")));
+                return cvItem.createItemStack();
+            }
         } else if ("destroy".equals(menuIcon.getKey()) && civilian.getCivClasses().size() < 2) {
             return new ItemStack(Material.AIR);
         } else if (menuIcon.getKey().startsWith("spell^")) {

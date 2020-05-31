@@ -220,6 +220,9 @@ public class ClassManager {
             ClassManager.getInstance().switchClass(civilian, newCurrentClass);
         }
         CivilianManager.getInstance().saveCivilian(civilian);
+        if (classes.containsKey(civilian.getUuid())) {
+            classes.get(civilian.getUuid()).remove(civClass);
+        }
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
@@ -249,6 +252,10 @@ public class ClassManager {
         civClass.setSelectedClass(true);
         civilian.setCurrentClass(civClass);
         civilian.getCivClasses().add(civClass);
+        if (!classes.containsKey(civilian.getUuid())) {
+            classes.put(civilian.getUuid(), new HashSet<>());
+        }
+        classes.get(civilian.getUuid()).add(civClass);
         saveClass(civClass);
     }
 

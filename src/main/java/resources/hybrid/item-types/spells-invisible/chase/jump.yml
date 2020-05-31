@@ -25,9 +25,9 @@ components:
       sound^1: ENTITY_MAGMA_CUBE_JUMP
       velocity^1:
         y: 1
-        multiplier: 2
+        multiplier: 1
       duration^1:
-        delay: 10
+        delay: 1
         section:
           components:
             2:

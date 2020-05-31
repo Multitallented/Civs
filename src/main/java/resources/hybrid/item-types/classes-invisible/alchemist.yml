@@ -17,6 +17,7 @@ mana-title: mana
 mana-per-second: 2
 max-mana: 400
 max-health: 28
+max-level: 20
 
 allowed-actions:
   - GOLDEN_AXE
@@ -32,9 +33,9 @@ allowed-actions:
 
 spells:
   1:
-    - evaporate
-    - spoil
-    - rust # TODO
+    - potion_poison
+    - potion_strength
+    - potion_harm
   2:
     - petrify
     - fast_drinker # TODO
@@ -44,11 +45,10 @@ spells:
     - potion_weakness
     - amplify # TODO
   4:
-    - potion_poison
-    - potion_strength
-    - potion_harm
-  5:
     - potion_regen
     - potion_speed
     - potion_heal
+  5:
+    - evaporate
+    - spoil
 

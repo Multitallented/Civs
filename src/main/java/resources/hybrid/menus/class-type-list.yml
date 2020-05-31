@@ -5,12 +5,6 @@ name: NewClass
 # actions
 #  switch-class: switches your class to a new class
 items:
-  new-class:
-    index: 0
-    icon: ENDER_CHEST
-    name: view-all-classes
-    actions:
-      - menu:class-type-list
   prev:
     index: 4
   back:

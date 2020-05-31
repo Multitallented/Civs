@@ -233,6 +233,7 @@ public class ItemManager {
         AllowedActionsUtil.loadAllowedActions(civItem.getAllowedActions(),
                 config.getStringList("allowed-actions"));
 
+        civItem.setMaxLevel(config.getInt("max-level", 25));
         if (config.isSet("spells")) {
             int i = 1;
             for (String slotKey : config.getConfigurationSection("spells").getKeys(false)) {
@@ -601,8 +602,9 @@ public class ItemManager {
                     break outer;
                 }
                 if (!fast && unmetRequirements.size() % 2 > 0) {
-                    unmetRequirements.add(" " + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "or") + " ");
+                    unmetRequirements.add(ChatColor.GOLD + " " +
+                            LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "or") + " " + ChatColor.RED);
                 }
                 //perm=civs.admin
                 if (req.startsWith("perm=")) {
@@ -675,6 +677,7 @@ public class ItemManager {
                 }
             }
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(ChatColor.RED);
             stringBuilder.append("- ");
             for (int i = 0; i < unmetRequirements.size(); i++) {
                 stringBuilder.append(unmetRequirements.get(i));

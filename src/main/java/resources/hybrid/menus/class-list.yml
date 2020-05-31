@@ -11,7 +11,7 @@ items:
     name: new-class
     desc: new-class-desc
     actions:
-      - menu:class-type-list?unlocked=true
+      - menu:class-type-list
   prev:
     index: 4
   back:

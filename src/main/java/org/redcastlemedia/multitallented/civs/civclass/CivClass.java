@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.potion.PotionEffectType;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
@@ -83,6 +84,9 @@ public class CivClass {
     }
 
     private int getAllowedLevel(String key) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+            return 999999;
+        }
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(type);
         int allowedLevel = classType.getAllowedActions().getOrDefault(key, -1);
         for (String spellName : selectedSpells.values()) {
