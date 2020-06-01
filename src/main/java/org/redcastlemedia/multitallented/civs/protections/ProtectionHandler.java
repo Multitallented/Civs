@@ -68,6 +68,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -118,6 +119,15 @@ public class ProtectionHandler implements Listener {
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
@@ -208,10 +218,18 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
             return;
         }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);

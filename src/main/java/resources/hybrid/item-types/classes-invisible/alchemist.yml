@@ -16,17 +16,17 @@ pre-reqs:
 mana-title: mana
 mana-per-second: 2
 max-mana: 400
-max-health: 28
-max-level: 20
+max-health: 30
+max-level: 16
 
 allowed-actions:
   - GOLDEN_AXE
   - DIAMOND_HELMET
-  - GOLDEN_CHESTPLATE
-  - LEATHER_LEGGINGS
-  - LEATHER_BOOTS
+  - IRON_CHESTPLATE
+  - GOLDEN_LEGGINGS
+  - GOLDEN_BOOTS
   - SHARPNESS.5
-  - PROTECTION.3
+  - PROTECTION.4
   - FIRE_PROTECTION.4
   - BLAST_PROTECTION.4
   - FALL_PROTECTION.3
@@ -38,7 +38,7 @@ spells:
     - potion_harm
   2:
     - petrify
-    - fast_drinker # TODO
+    - chug
     - g:escape
     - potion_invis
   3:

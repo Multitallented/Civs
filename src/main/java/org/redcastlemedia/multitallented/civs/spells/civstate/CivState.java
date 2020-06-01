@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.spells.civstate;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -28,11 +29,11 @@ public class CivState {
     private final ConfigurationSection CONFIG;
     private final String CONFIG_STRING;
     private final Spell SPELL;
-    private final HashMap<String, Object> VARS;
+    private final Map<String, Object> VARS;
     @Getter
-    private final Set<BuiltInCivStates> builtInCivStates = new HashSet<>();
+    private final Set<BuiltInCivState> builtInCivStates = new HashSet<>();
 
-    public CivState(Spell spell, String componentName, int durationId, int periodId, String configString, HashMap<String, Object> vars) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, String configString, Map<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
@@ -41,7 +42,7 @@ public class CivState {
         this.SPELL = spell;
         this.VARS = vars;
     }
-    public CivState(Spell spell, String componentName, int durationId, int periodId, ConfigurationSection config, HashMap<String, Object> vars) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, ConfigurationSection config, Map<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
@@ -50,7 +51,7 @@ public class CivState {
         this.SPELL = spell;
         this.VARS = vars;
     }
-    public CivState(Spell spell, String componentName, int durationId, int periodId, HashMap<String, Object> vars) {
+    public CivState(Spell spell, String componentName, int durationId, int periodId, Map<String, Object> vars) {
         this.durationId = durationId;
         this.periodId = periodId;
         this.COMPONENT_NAME = componentName;
@@ -81,7 +82,7 @@ public class CivState {
     }
     public ConfigurationSection getConfig() { return this.CONFIG; }
     public String getConfigString() { return this.CONFIG_STRING; }
-    public HashMap<String, Object> getVars() {
+    public Map<String, Object> getVars() {
         return this.VARS;
     }
 
@@ -116,5 +117,6 @@ public class CivState {
         if (periodId > -1) {
             Bukkit.getScheduler().cancelTask(periodId);
         }
+        civilian.getStates().remove(SPELL.getType() + "." + COMPONENT_NAME);
     }
 }

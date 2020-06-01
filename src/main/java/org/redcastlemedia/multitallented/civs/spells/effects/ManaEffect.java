@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 public class ManaEffect extends Effect {
     private int mana;
@@ -72,6 +73,10 @@ public class ManaEffect extends Effect {
         Player player = (Player) target;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         int maxMana = civilian.getCurrentClass().getMaxMana();
+        if ((this.mana > 0 && civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_GAIN)) ||
+                (this.mana < 0 && civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_LOSS))) {
+            return;
+        }
         civilian.setMana(Math.min(maxMana, Math.max(0, civilian.getMana() + this.mana)));
     }
 

@@ -30,14 +30,9 @@ components:
             2:
               yield:
                 cleanse: BOTH
-                potion^3:
-                  type: SLOW
-                  ticks: 40
-                  level: 8
-                potion^4:
-                  type: DAMAGE_RESISTANCE
-                  ticks: 40
-                  level: 8
+                civstate:
+                  type: STUN
+                  duration: 2000
                 potion^1:
                   type: GLOWING
                   ticks: 40

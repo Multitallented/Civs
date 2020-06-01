@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.spells;
 import java.util.HashMap;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class SpellComponent {
     private final Spell spell;
@@ -30,7 +31,7 @@ public abstract class SpellComponent {
     public Object getTarget() { return target; }
     public Entity getOrigin() { return origin; }
 
-    public void remove(Entity origin, int level, Spell spell) {
+    public void remove(LivingEntity origin, int level, Spell spell) {
         //Optional override
     }
     public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {

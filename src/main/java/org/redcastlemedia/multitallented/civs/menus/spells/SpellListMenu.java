@@ -22,8 +22,10 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "spell-list") @SuppressWarnings("unused")
@@ -120,8 +122,16 @@ public class SpellListMenu extends CustomMenu {
                     return true;
                 }
                 int slot = (int) MenuManager.getData(civilian.getUuid(), "slot");
+
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                String oldSpellName = civClass.getSelectedSpells().get(civClass.getSpellSlotOrder().getOrDefault(slot, slot));
+                if (oldSpellName != null) {
+                    SpellManager.removePassiveSpell(civilian, player, oldSpellName);
+                }
                 civClass.getSelectedSpells().put(civClass.getSpellSlotOrder().getOrDefault(slot, slot),
                         spellType.getProcessedName());
+                SpellManager.initPassiveSpell(civilian, spellType, player);
+
                 ClassManager.getInstance().saveClass(civClass);
                 return true;
             }

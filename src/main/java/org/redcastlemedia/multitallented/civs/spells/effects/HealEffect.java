@@ -10,9 +10,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 public class HealEffect extends Effect {
     private int heal = 0;
@@ -59,6 +62,13 @@ public class HealEffect extends Effect {
             }
             return false;
         }
+        if (livingEntity instanceof Player) {
+            Player player = (Player) livingEntity;
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            if (civilian.hasBuiltInState(BuiltInCivState.NO_HEAL)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -68,6 +78,13 @@ public class HealEffect extends Effect {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) target;
+        if (livingEntity instanceof Player) {
+            Player player = (Player) livingEntity;
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            if (civilian.hasBuiltInState(BuiltInCivState.NO_HEAL)) {
+                return;
+            }
+        }
         EntityRegainHealthEvent event = new EntityRegainHealthEvent(livingEntity, this.heal, EntityRegainHealthEvent.RegainReason.CUSTOM);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {

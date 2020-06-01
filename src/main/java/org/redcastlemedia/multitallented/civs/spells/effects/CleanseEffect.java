@@ -42,9 +42,9 @@ public class CleanseEffect extends Effect {
         for (PotionEffect potionEffect : new HashSet<>(livingEntity.getActivePotionEffects())) {
             if (this.cleanseTypeEnum == CleanseTypeEnum.BOTH ||
                     ((this.cleanseTypeEnum == CleanseTypeEnum.HARMFUL &&
-                    isHarmful(potionEffect.getType())) ||
+                    isHarmful(potionEffect)) ||
                     (this.cleanseTypeEnum == CleanseTypeEnum.BENEFICIAL &&
-                    isBeneficial(potionEffect.getType())))) {
+                    isBeneficial(potionEffect)))) {
                 livingEntity.removePotionEffect(potionEffect.getType());
             }
         }
@@ -63,13 +63,28 @@ public class CleanseEffect extends Effect {
         }
         for (PotionEffect potionEffect : livingEntity.getActivePotionEffects()) {
             if ((this.cleanseTypeEnum == CleanseTypeEnum.HARMFUL &&
-                    isHarmful(potionEffect.getType())) ||
+                    isHarmful(potionEffect)) ||
                     (this.cleanseTypeEnum == CleanseTypeEnum.BENEFICIAL &&
-                            isBeneficial(potionEffect.getType()))) {
+                            isBeneficial(potionEffect))) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean isHarmful(PotionEffect potionEffect) {
+        if (potionEffect.getAmplifier() > 0) {
+            return isHarmful(potionEffect.getType());
+        } else {
+            return isHarmfulNegative(potionEffect.getType());
+        }
+    }
+    public static boolean isBeneficial(PotionEffect potionEffect) {
+        if (potionEffect.getAmplifier() > 0) {
+            return isHarmful(potionEffect.getType());
+        } else {
+            return isBeneficialNegative(potionEffect.getType());
+        }
     }
 
     public static boolean isHarmful(PotionEffectType potionEffectType) {
@@ -114,6 +129,55 @@ public class CleanseEffect extends Effect {
             case "SLOW_FALLING":
             case "SPEED":
             case "WATER_BREATHING":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isHarmfulNegative(PotionEffectType potionEffectType) {
+        switch (potionEffectType.getName().toUpperCase()) {
+            case "BAD_OMEN":
+            case "BLINDNESS":
+            case "CONFUSION":
+            case "GLOWING":
+            case "FIRE_RESISTANCE":
+            case "DAMAGE_RESISTANCE":
+            case "INCREASE_DAMAGE":
+            case "HEALTH_BOOST":
+            case "HARM":
+            case "HUNGER":
+            case "JUMP":
+            case "POISON":
+            case "FAST_DIGGING":
+            case "SPEED":
+            case "UNLUCK":
+            case "WITHER":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isBeneficialNegative(PotionEffectType potionEffectType) {
+        switch (potionEffectType.getName().toUpperCase()) {
+            case "ABSORPTION":
+            case "CONDUIT_POWER":
+            case "DOLPHINS_GRACE":
+            case "SLOW_DIGGING":
+            case "HERO_OF_THE_VILLAGE":
+            case "HEAL":
+            case "INVISIBILITY":
+            case "JUMP":
+            case "LEVITATION":
+            case "LUCK":
+            case "NIGHT_VISION":
+            case "REGENERATION":
+            case "SATURATION":
+            case "SLOW_FALLING":
+            case "SLOW":
+            case "WATER_BREATHING":
+            case "WEAKNESS":
                 return true;
             default:
                 return false;

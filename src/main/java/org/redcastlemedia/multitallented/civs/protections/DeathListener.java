@@ -40,6 +40,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -125,11 +126,45 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        Player damager = null;
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+            if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+                damager = (Player) entityDamageByEntityEvent.getDamager();
+            } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+                if (projectile.getShooter() instanceof Player) {
+                    damager = (Player) projectile.getShooter();
+                }
+            }
+
+            if (damager != null) {
+                Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
+                if (damagerCiv.hasBuiltInState(BuiltInCivState.NO_OUTGOING_DAMAGE)) {
+                    event.setCancelled(true);
+                    damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                            damager, "spell-block"));
+                    return;
+                }
+            }
+        }
+
+
+
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (civilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_DAMAGE)) {
+            event.setCancelled(true);
+            if (damager != null) {
+                damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        damager, "spell-block"));
+            }
+            return;
+        }
 
         if (!civilian.isInCombat()) {
             boolean setCancelled = event.isCancelled() ||
@@ -162,17 +197,6 @@ public class DeathListener implements Listener {
                 civilian.setLastDamage(-1);
             }
             return;
-        }
-        EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
-
-        Player damager = null;
-        if (entityDamageByEntityEvent.getDamager() instanceof Player) {
-            damager = (Player) entityDamageByEntityEvent.getDamager();
-        } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
-            if (projectile.getShooter() instanceof Player) {
-                damager = (Player) projectile.getShooter();
-            }
         }
         if (damager == null && civilian.getLastDamage() < 0) {
             return;
@@ -294,6 +318,13 @@ public class DeathListener implements Listener {
         Player player = event.getPlayer();
         Location location = player.getLocation();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (civilian.hasBuiltInState(BuiltInCivState.NO_COMMANDS)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
 
         long jailTime = ConfigManager.getInstance().getJailTime();
         if (civilian.getLastJail() + jailTime < System.currentTimeMillis()) {

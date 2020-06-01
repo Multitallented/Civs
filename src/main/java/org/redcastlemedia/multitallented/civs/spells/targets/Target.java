@@ -5,10 +5,13 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,4 +72,16 @@ public abstract class Target extends SpellComponent {
     }
 
     public abstract Set<?> getTargets();
+
+    public static void filterOutUntargetables(Set<LivingEntity> returnSet) {
+        for (LivingEntity livingEntity : new HashSet<>(returnSet)) {
+            if (livingEntity instanceof Player) {
+                Player cPlayer = (Player) livingEntity;
+                Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
+                    returnSet.remove(livingEntity);
+                }
+            }
+        }
+    }
 }

@@ -38,7 +38,7 @@ public class CivStateListener implements Listener {
     }
 
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void instantDrinkListener(PlayerInteractEvent event) {
         if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) ||
                 event.getItem() == null) {
@@ -47,13 +47,7 @@ public class CivStateListener implements Listener {
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        boolean hasInstantDrink = false;
-        for (CivState civState : civilian.getStates().values()) {
-            if (civState.getBuiltInCivStates().contains(BuiltInCivStates.INSTANT_DRINK)) {
-                hasInstantDrink = true;
-                break;
-            }
-        }
+        boolean hasInstantDrink = civilian.hasBuiltInState(BuiltInCivState.INSTANT_DRINK);
         if (!hasInstantDrink) {
             return;
         }

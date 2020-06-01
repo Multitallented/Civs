@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -148,6 +149,10 @@ public class CommonScheduler implements Runnable {
 
     void incrementMana(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_NATURAL) ||
+                civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_GAIN)) {
+            return;
+        }
         int maxMana = civilian.getCurrentClass().getMaxMana();
         int maxManaPerSecond = civilian.getCurrentClass().getManaPerSecond();
         if (civilian.getMana() < maxMana) {

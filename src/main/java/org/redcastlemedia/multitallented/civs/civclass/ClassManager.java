@@ -24,6 +24,8 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.spells.SpellManager;
+import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
@@ -196,9 +198,15 @@ public class ClassManager {
             civilian.setCurrentClass(civClass1);
         }
         CivClass civClass = civilian.getCurrentClass();
-        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
-        player.setHealthScale(20);
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(classType.getMaxHealth());
+        for (String spellName : civClass.getSelectedSpells().values()) {
+            SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
+            SpellManager.initPassiveSpell(civilian, spellType, player);
+        }
+        if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+            player.setHealthScale(20);
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(classType.getMaxHealth());
+        }
     }
 
     public void deleteClass(CivClass civClass) {
@@ -267,6 +275,7 @@ public class ClassManager {
         if (!civilian.getCombatBar().isEmpty()) {
             SpellUtil.removeCombatBar(player, civilian);
         }
+        SpellManager.removePassiveSpells(civilian);
         civilian.setCurrentClass(civClass);
         for (CivClass civClass1 : civilian.getCivClasses()) {
             if (!civClass1.equals(civClass) && civClass1.isSelectedClass()) {

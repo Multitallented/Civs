@@ -25,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -171,6 +172,15 @@ public class Civilian {
             return false;
         }
         return true;
+    }
+
+    public boolean hasBuiltInState(BuiltInCivState builtInCivState) {
+        for (CivState state : states.values()) {
+            if (state.getVars().containsKey(builtInCivState.name())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addExp(CivItem civItem, int amount) {

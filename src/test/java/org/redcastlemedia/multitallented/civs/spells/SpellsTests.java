@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,11 +35,19 @@ import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 public class SpellsTests extends TestUtil {
 
+    private Civilian civilian;
+
     @Before
     public void setup() {
         if (ItemManager.getInstance().getItemType("hunger") == null) {
             loadSpellTypeHunger();
         }
+        civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+    }
+
+    @After
+    public void teardown() {
+        civilian.getStates().clear();
     }
 
     @Test
@@ -59,6 +68,20 @@ public class SpellsTests extends TestUtil {
         Spell spell = new Spell("empathy", TestUtil.player, 1);
         spell.createVariables(mappedTargets, section);
         assertNotNull(spell.getAbilityVariables().get("heal^1"));
+    }
+
+    @Test
+    public void civStateShouldBeAddedForPassiveSpell() {
+        SpellType spellType = (SpellType) ItemManager.getInstance().getItemType("chug");
+        SpellManager.initPassiveSpell(civilian, spellType, TestUtil.player);
+        boolean hasState = false;
+        for (CivState state : civilian.getStates().values()) {
+            if (state.getVars().containsKey("INSTANT_DRINK")) {
+                hasState = true;
+                break;
+            }
+        }
+        assertTrue(hasState);
     }
 
     @NotNull

@@ -49,7 +49,7 @@ public class ParticleEffect extends Effect {
     }
 
     @Override
-    public void remove() {
+    public void remove(LivingEntity livingEntity, int level, Spell spell) {
         Bukkit.getScheduler().cancelTask(this.taskId);
         Bukkit.getScheduler().cancelTask(this.cancelTaskId);
     }

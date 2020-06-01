@@ -266,16 +266,16 @@ public class Spell {
         final Spell spell = this;
         final String finalYieldName = yieldName;
         if (duration > 0) {
-            durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+            durationId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
                     SpellListener.getInstance().removeDamageListener(finalCaster);
                     finalChampion.getStates().remove(finalName + "." + finalKey);
                 }
-            }, delay + duration);
+            }, delay + duration).getTaskId();
         }
         if (delayId < -1) {
-            delayId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
                     SpellListener.getInstance().addDamageListener(finalCaster, finalLevel, damageListenerConfig, spell);
@@ -571,5 +571,11 @@ public class Spell {
             }
         }
         return input;
+    }
+
+    public static void addSelfToTargetMapping(Map<String, Set<?>> mappedTargets, Player self) {
+        Set<Object> targetSet = new HashSet<>();
+        targetSet.add(self);
+        mappedTargets.put(SpellConstants.SELF, targetSet);
     }
 }

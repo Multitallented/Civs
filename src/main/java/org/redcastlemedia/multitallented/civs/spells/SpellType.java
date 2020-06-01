@@ -8,6 +8,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.spells.effects.CancelEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.CivStateEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CleanseEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
@@ -137,6 +138,8 @@ public class SpellType extends CivItem {
             return new ExemptionEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.CLEANSE)) {
             return new CleanseEffect(spell, key, target, caster, level, config);
+        } else if (type.equals(SpellEffectConstants.CIVSTATE)) {
+            return new CivStateEffect(spell, key, target, caster, level, config);
         }
         Civs.logger.log(Level.SEVERE, "Unable to find effect type {0}", type);
         StackTraceElement[] lines = Thread.currentThread().getStackTrace();

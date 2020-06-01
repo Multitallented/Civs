@@ -17,6 +17,8 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 import java.util.HashMap;
 
@@ -52,8 +54,13 @@ public class SpellListener implements Listener {
         }
         SpellType spellType = (SpellType) civItem;
         Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.NO_OUTGOING_SPELLS)) {
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
+
         Spell spell = new Spell(civItem.getProcessedName(), event.getPlayer(), civilian.getLevel(spellType));
-        //TODO should I add this to a spell manager? Spells dont persist
         spell.useAbility();
     }
 

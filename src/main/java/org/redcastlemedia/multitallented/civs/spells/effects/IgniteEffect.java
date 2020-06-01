@@ -96,13 +96,8 @@ public class IgniteEffect extends Effect {
     }
 
     @Override
-    public void remove() {
-        Entity origin = getOrigin();
-        if (!(origin instanceof LivingEntity)) {
-            return;
-        }
-        LivingEntity livingEntity = (LivingEntity) origin;
-        livingEntity.setFireTicks(0);
+    public void remove(LivingEntity origin, int level, Spell spell) {
+        origin.setFireTicks(0);
     }
 
     @Override

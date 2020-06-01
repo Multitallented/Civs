@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.spells.effects;
 import java.util.HashMap;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
 
@@ -24,7 +25,7 @@ public abstract class Effect extends SpellComponent {
 
     public abstract boolean meetsRequirement();
 
-    public void remove() {
+    public void remove(LivingEntity origin, int level, Spell spell) {
         //Optional override
     }
     @Override

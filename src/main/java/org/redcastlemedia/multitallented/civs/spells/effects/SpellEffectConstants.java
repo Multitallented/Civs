@@ -17,6 +17,7 @@ public final class SpellEffectConstants {
     public static final String ITEM = "item";
     public static final String EXEMPTION = "exemption";
     public static final String CLEANSE = "cleanse";
+    public static final String CIVSTATE = "civstate";
 
     private SpellEffectConstants() {
 
