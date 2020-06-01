@@ -25,6 +25,7 @@ allowed-actions:
   - DIAMOND_LEGGINGS
   - DIAMOND_BOOTS
   - SHARPNESS.5
+  - PIERCING.5
   - POWER.5
   - PROTECTION.4
 

@@ -7,7 +7,7 @@ groups:
 
 pre-reqs:
   - skill:food=3
-  - backflip:level=8
+  - backflip:level=9
   - skill:exploration=4
 
 allowed-actions: []

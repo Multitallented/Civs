@@ -1,1 +1,46 @@
+type: class
+name: elemental
+icon: BLAZE_POWDER
 is-in-shop: false
+level: 1
+groups: []
+
+children: []
+pre-reqs:
+  - skill:exploration=5
+
+mana-title: heat
+mana-per-second: 10
+max-mana: 50
+max-health: 16
+max-level: 16
+
+allowed-actions:
+  - CROSSBOW
+  - TRIDENT
+  - GOLDEN_SWORD
+  - FIRE_ASPECT.2
+  - DIAMOND_AXE
+  - DIAMOND_HELMET
+  - DIAMOND_CHESTPLATE
+  - DIAMOND_LEGGINGS
+  - DIAMOND_BOOTS
+  - SHARPNESS.2
+  - PIERCING.3
+  - PROTECTION.4
+  - KNOCKBACK.2
+  - FLAME.2
+
+spells:
+  1:
+    - g:escape
+    - quicken
+  2:
+    - burning-presence
+  3:
+    - dodge
+  4:
+    - g:escape
+  5:
+    - sap-strength
+

@@ -27,4 +27,4 @@ components:
         potion:
           type: WEAKNESS
           upgraded: false
-          extended: true
+          extended: false

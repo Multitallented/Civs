@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.spells.targets;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,22 +11,14 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
-import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-public class AreaTarget extends Target {
-    public AreaTarget(Spell spell,
-                      String key,
-                      Entity origin,
-                      int level,
-                      ConfigurationSection config) {
+public class NearbyTarget extends Target {
+    public NearbyTarget(Spell spell,
+                        String key,
+                        Entity origin,
+                        int level,
+                        ConfigurationSection config) {
         super(spell, key, origin, level, config);
     }
 

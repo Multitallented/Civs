@@ -456,7 +456,15 @@ public class Spell {
                     ConfigurationSection currentConfigSection = varSection.getConfigurationSection(key);
                     component = SpellType.getEffect(varName, key, currentConfigSection, level, target, caster, this);
                 }
-                HashMap<String, Double> currentVars = component.getVariables(target, caster, level, this);
+                HashMap<String, Double> currentVars;
+                if (component != null) {
+                    currentVars = component.getVariables(target, caster, level, this);
+                } else {
+                    currentVars = new HashMap<>();
+                    if (!isSection) {
+                        currentVars.put("var", getLevelAdjustedValue(varValueString, level, target, this));
+                    }
+                }
                 currentComponentVars.put(target, currentVars);
             }
             abilityVariables.put(key, currentComponentVars);

@@ -1,0 +1,48 @@
+icon: ROSE_BUSH
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs: []
+
+allowed-actions: []
+
+exp-per-use: 25
+
+conditions:
+  cooldown: 55000
+  mana: 30
+
+components:
+  1:
+    variables:
+      power^1: "0"
+    yield:
+      cooldown: 55000
+      mana: -30
+      duration:
+        duration: 200
+        period: 40
+        delay: 40
+        section:
+          targets:
+            nearby1:
+              cancel-if-empty: true
+              radius: 9
+              range: 0
+              max-targets: 1
+          components:
+            2:
+              variables:
+                power^1: "$power^1#var$ + 1"
+              yield:
+                potion^1:
+                  target: nearby1
+                  type: WEAKNESS
+                  level: "$power^1#var$"
+                  duration: 40
+                potion^2:
+                  type: INCREASE_DAMAGE
+                  level: "$power^1#var$"
+                  duration: 40

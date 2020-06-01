@@ -154,13 +154,15 @@ components:
         delay: 20-$level$ #default 0
         duration: 160+$level$*20 #default 0
         period: 80+$rand$*10 #default 0
-        targets:
-          vector2:
-            type: vector
-            range: 6
         section:
-          2:
-            nocheat: MOVING_SURVIVALFLY
+          targets:
+            vector2:
+              type: vector
+              range: 6
+          components:
+            2:
+              yield:
+                nocheat: MOVING_SURVIVALFLY
       damage-listener: #this doesn't work yet
         delay: 20-$level$ #delay not working yet
         duration: 80+$rand$*20

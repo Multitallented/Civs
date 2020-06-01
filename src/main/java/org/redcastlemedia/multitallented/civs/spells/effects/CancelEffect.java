@@ -46,7 +46,6 @@ public class CancelEffect extends Effect {
     public boolean meetsRequirement() {
         Spell spell = getSpell();
         Object target = getTarget();
-        //TODO allow this to target mobs
         if (!(target instanceof Player)) {
             return false;
         }

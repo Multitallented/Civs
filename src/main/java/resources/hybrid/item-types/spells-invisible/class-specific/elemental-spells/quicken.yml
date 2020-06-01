@@ -1,0 +1,45 @@
+icon: ORANGE_DYE
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs: []
+
+allowed-actions: []
+
+exp-per-use: 15
+
+conditions:
+  cooldown: 5000
+  mana: 10
+
+components:
+  1:
+    yield:
+      mana: -10
+      cooldown: 5000
+      sound: ENTITY_PARROT_IMITATE_BLAZE
+      particle:
+        particle: FLAME
+        pattern: fairy wings
+        duration: 6000
+      potion^2:
+        type: SLOW
+        ticks: 120
+        level: 2
+      potion^1:
+        type: GLOWING
+        ticks: 120
+      duration:
+        delay: 120
+        section:
+          components:
+            2:
+              yield:
+                particle: EXPLOSION_LARGE
+                sound: ENTITY_HORSE_ANGRY
+                potion^1:
+                  type: SLOW
+                  ticks: 6000
+                  level: -2
