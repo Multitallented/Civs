@@ -69,7 +69,7 @@ public class ClassTypeListMenu extends CustomMenu {
             }
             ClassType classType = itemArray[startIndex + count];
 
-            CVItem cvItem = classType.getShopIcon(civilian.getLocale());
+            CVItem cvItem = classType.getShopIcon(player);
             if (!MenuManager.getAllData(civilian.getUuid()).containsKey("unlocked")) {
                 List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(classType, civilian, false);
                 if (!unmetRequirements.isEmpty()) {
