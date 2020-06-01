@@ -47,6 +47,7 @@ import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton @SuppressWarnings("unused")
@@ -731,6 +732,12 @@ public class AllowedActionsListener implements Listener {
         event.setCancelled(true);
         SpellType spellType = (SpellType) civItem;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN) ||
+                civilian.hasBuiltInState(BuiltInCivState.NO_OUTGOING_SPELLS)) {
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
         Spell spell = new Spell(spellType.getProcessedName(), player, civilian.getLevel(spellType));
         if (spell.useAbility()) {
             if (spellType.getExpPerUse() > 0) {

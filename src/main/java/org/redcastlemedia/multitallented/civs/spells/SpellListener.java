@@ -61,7 +61,11 @@ public class SpellListener implements Listener {
         }
 
         Spell spell = new Spell(civItem.getProcessedName(), event.getPlayer(), civilian.getLevel(spellType));
-        spell.useAbility();
+        if (spell.useAbility()) {
+            if (spellType.getExpPerUse() > 0) {
+                civilian.addExp(spellType, spellType.getExpPerUse());
+            }
+        }
     }
 
     @EventHandler

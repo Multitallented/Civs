@@ -106,7 +106,7 @@ public class CivPotionEffect extends Effect {
             state = new CivState(getSpell(), super.getKey(), durationId, -1, "" + this.ticks, variables);
         }
 
-        champion.getStates().put(getSpell().getType() + "." + super.getKey(), state);
+        champion.getStates().put(stateName, state);
     }
 
     @Override

@@ -50,17 +50,18 @@ public class CivStateEffect extends Effect {
             state.remove(civilian);
             civilian.getStates().remove(stateName);
         }
+        Map<String, Object> variables = new HashMap<>();
+        variables.put(builtInCivState.name(), true);
+        CivState civState = new CivState(getSpell(), super.getKey(), -1, -1, (String) null, variables);
         if (duration > 0) {
             cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    state.remove(player);
+                    civState.remove(player);
                 }
-            }, this.duration).getTaskId();
+            }, this.duration / 50).getTaskId();
         }
-        Map<String, Object> variables = new HashMap<>();
-        variables.put(builtInCivState.name(), true);
-        CivState civState = new CivState(getSpell(), super.getKey(), cancelTaskId, -1, (String) null, variables);
+        civState.setDurationId(cancelTaskId);
         civilian.getStates().put(stateName, civState);
     }
 
@@ -92,12 +93,10 @@ public class CivStateEffect extends Effect {
         int durationInTicks = (int) (duration / 50);
         switch (builtInCivState) {
             case STUN:
-                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, durationInTicks, 4));
-                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, durationInTicks, 4));
                 livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, durationInTicks, 1));
             case ROOT:
-                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, durationInTicks, 4));
-                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, durationInTicks, -2));
+                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, durationInTicks, 8));
+                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, durationInTicks, -4));
         }
     }
 

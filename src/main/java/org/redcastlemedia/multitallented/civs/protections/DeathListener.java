@@ -140,7 +140,8 @@ public class DeathListener implements Listener {
 
             if (damager != null) {
                 Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
-                if (damagerCiv.hasBuiltInState(BuiltInCivState.NO_OUTGOING_DAMAGE)) {
+                if (damagerCiv.hasBuiltInState(BuiltInCivState.NO_OUTGOING_DAMAGE) ||
+                        damagerCiv.hasBuiltInState(BuiltInCivState.STUN)) {
                     event.setCancelled(true);
                     damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
                             damager, "spell-block"));
