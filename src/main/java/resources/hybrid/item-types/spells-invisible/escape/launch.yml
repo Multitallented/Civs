@@ -42,6 +42,7 @@ components:
         sound: ENTITY_GENERIC_EXPLODE
         volume: 1.5
         pitch: 0.75
+      exemption^2: KILL_AURA
       damage:
         target: nearby1
         damage: 10

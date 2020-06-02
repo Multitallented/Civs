@@ -4,8 +4,10 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class ClassType extends CivItem {
     private final Map<Integer, List<String>> spellSlots = new HashMap<>();
     @Setter
     private int maxLevel;
+    private final Set<String> classPermissions = new HashSet<>();
 
     public ClassType(List<String> reqs,
                      String name,

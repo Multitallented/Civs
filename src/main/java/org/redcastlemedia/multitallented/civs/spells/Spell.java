@@ -301,7 +301,7 @@ public class Spell {
         }
         final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
         long delay = Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, null, this));
-        long duration = Math.round(getLevelAdjustedValue("" + durationSection.getLong("duration", 0), level, null, this));
+        long ticks = Math.round(getLevelAdjustedValue("" + durationSection.getLong("ticks", 0), level, null, this));
         long period = Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, null, this));
         int durationId = -1;
         int periodId = -1;
@@ -332,13 +332,13 @@ public class Spell {
                 public void run() {
                     useAbility(finalMappedTargets, true, durationSectionEffects);
                 }
-            }, delay + duration);
+            }, delay + ticks);
         } else {
             useAbility(mappedTargets, true, durationSectionEffects);
         }
 
         final int finalPeriodId = periodId;
-        if (duration > 0) {
+        if (ticks > 0) {
             durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
                 @Override
                 public void run() {
@@ -351,7 +351,7 @@ public class Spell {
                         champion.getStates().remove(finalName + "." + finalKey);
                     }
                 }
-            }, delay + duration);
+            }, delay + ticks);
         }
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(caster.getUniqueId());

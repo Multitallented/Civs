@@ -22,7 +22,7 @@ components:
       cooldown: 55000
       mana: -30
       duration:
-        duration: 150
+        ticks: 150
         period: 40
         delay: 40
         section:

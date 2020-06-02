@@ -13,11 +13,14 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -31,6 +34,7 @@ import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
+import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -83,7 +87,7 @@ public class Civilian {
     private boolean useAnnouncements;
     @Getter @Setter
     private ChatChannel chatChannel;
-    @Getter @Setter
+    @Getter
     private CivClass currentClass;
     @Getter
     private final Set<ExemptionType> exemptions = new HashSet<>();
@@ -145,6 +149,24 @@ public class Civilian {
         if (setManaBar && player != null && player.isOnline()) {
             String message = ManaEffect.getManaBar(this);
             ActionBarUtil.sendActionBar(player, message);
+        }
+    }
+
+    public void setCurrentClass(CivClass civClass) {
+        ClassType classTypeOld = (ClassType) ItemManager.getInstance().getItemType(currentClass.getType());
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        Player player = offlinePlayer.getPlayer();
+        if (Civs.perm != null && player != null) {
+            for (String permission : classTypeOld.getClassPermissions()) {
+                Civs.perm.playerRemove(player, permission);
+            }
+        }
+        currentClass = civClass;
+        ClassType classTypeNew = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+        if (Civs.perm != null && player != null) {
+            for (String permission : classTypeNew.getClassPermissions()) {
+                Civs.perm.playerAdd(player, permission);
+            }
         }
     }
 

@@ -22,7 +22,7 @@ public class ExemptionEffect extends Effect {
             exemptionType = ExemptionType.valueOf(section.getString("exemption", "FLY"));
         } else if (configuration instanceof String) {
             exemptionType = ExemptionType.valueOf((String) configuration);
-            duration = 5000;
+            duration = 1000;
         }
     }
 

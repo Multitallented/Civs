@@ -23,7 +23,7 @@ components:
       cooldown: 45000
       sound: BLOCK_METAL_BREAK
       duration:
-        duration: 180
+        ticks: 180
         period: 20
         section:
           components:
