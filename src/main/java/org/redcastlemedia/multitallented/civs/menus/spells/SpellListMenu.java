@@ -22,10 +22,8 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
-import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "spell-list") @SuppressWarnings("unused")

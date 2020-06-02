@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
-public class Helix implements CivParticleEffect {
+public class Helix extends CivParticleEffect {
     boolean up;
     float height;
     int step;

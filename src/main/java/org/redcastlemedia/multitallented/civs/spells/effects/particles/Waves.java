@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
-public class Waves implements CivParticleEffect {
+public class Waves extends CivParticleEffect {
     private final double RADIUS = 1.1; // radius between player and rods
     private final int U_PER_WAVE = 4; // Amount of "U's" per wave.
     private final double MAX_HEIGHT_DIFF = 0.5; // Max height diff between columns

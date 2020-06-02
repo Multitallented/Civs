@@ -89,7 +89,7 @@ public class SpellType extends CivItem {
                                    Spell spell) {
         if (type.equals("vector")) {
             return new VectorTarget(spell, key, caster, level, config);
-        } else if (type.equals("area")) {
+        } else if (type.equals("nearby")) {
             return new NearbyTarget(spell, key, caster, level, config);
         } else if (type.equals("block")) {
             return new BlockTarget(spell, key, caster, level, config);
@@ -143,11 +143,6 @@ public class SpellType extends CivItem {
             return new CivStateEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.EFFECT)) {
             return new EffectEffect(spell, key, target, caster, level, config);
-        }
-        Civs.logger.log(Level.SEVERE, "Unable to find effect type {0}", type);
-        StackTraceElement[] lines = Thread.currentThread().getStackTrace();
-        for (StackTraceElement line : lines) {
-            System.out.println(line.toString());
         }
 
         return null;

@@ -15,15 +15,14 @@ condition:
 
 components:
   0:
-    condition:
+    costs:
       cancel^1: {}
     yield:
-      cooldown: 3000
       cancel^0: {}
   1:
-    conditions:
+    costs:
       mana: 20
-      cancel^not: {}
+      inherit^not: "0"
     yield:
       cooldown: 3000
       duration:

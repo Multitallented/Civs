@@ -27,7 +27,7 @@ components:
         y: 1
         multiplier: 1
       duration^1:
-        delay: 1
+        delay: 3
         section:
           components:
             2:

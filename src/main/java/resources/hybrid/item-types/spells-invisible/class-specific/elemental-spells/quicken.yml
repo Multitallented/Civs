@@ -24,10 +24,9 @@ components:
         particle: FLAME
         pattern: fairy wings
         duration: 6000
-      potion^2:
-        type: SLOW
-        ticks: 120
-        level: 2
+      civstate:
+        type: ROOT
+        duration: 6000
       potion^1:
         type: GLOWING
         ticks: 120
@@ -37,9 +36,11 @@ components:
           components:
             2:
               yield:
-                particle: EXPLOSION_LARGE
+                particle:
+                  particle: EXPLOSION_LARGE
+                  count: 3
                 sound: ENTITY_HORSE_ANGRY
                 potion^1:
-                  type: SLOW
+                  type: SPEED
                   ticks: 6000
-                  level: -2
+                  level: 2

@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.spells.effects.particles.FairyWing
 import org.redcastlemedia.multitallented.civs.spells.effects.particles.FallingAura;
 import org.redcastlemedia.multitallented.civs.spells.effects.particles.Helix;
 import org.redcastlemedia.multitallented.civs.spells.effects.particles.Single;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.Spider;
 import org.redcastlemedia.multitallented.civs.spells.effects.particles.Waves;
 
 import lombok.Getter;
@@ -117,6 +118,8 @@ public class ParticleEffect extends Effect {
                 return new FairyWings();
             case "falling aura":
                 return new FallingAura();
+            case "spider":
+                return new Spider();
             case "single":
             default:
                 return new Single();

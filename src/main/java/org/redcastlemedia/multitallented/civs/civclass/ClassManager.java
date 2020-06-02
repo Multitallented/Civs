@@ -27,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
+import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton
@@ -211,6 +212,11 @@ public class ClassManager {
 
     public void deleteClass(CivClass civClass) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(civClass.getUuid());
+        for (CivClass civClass1 : new HashSet<>(civilian.getCivClasses())) {
+            if (civClass1.getId() == civClass.getId()) {
+                civilian.getCivClasses().remove(civClass1);
+            }
+        }
         civilian.getCivClasses().remove(civClass);
         if (civilian.getCurrentClass().equals(civClass)) {
             Player player = Bukkit.getPlayer(civClass.getUuid());
@@ -292,6 +298,9 @@ public class ClassManager {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!civilian.getCombatBar().isEmpty()) {
             SpellUtil.removeCombatBar(player, civilian);
+        }
+        for (CivState state : new HashSet<>(civilian.getStates().values())) {
+            state.remove(player);
         }
     }
 }

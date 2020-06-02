@@ -96,7 +96,10 @@ public class CivPotionEffect extends Effect {
         int durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                champion.getStates().get(stateName).remove(livingEntity);
+                CivState cState = champion.getStates().get(stateName);
+                if (cState != null) {
+                    cState.remove(livingEntity);
+                }
             }
         }, this.ticks);
 

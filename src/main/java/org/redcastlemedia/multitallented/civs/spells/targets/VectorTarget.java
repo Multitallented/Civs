@@ -73,11 +73,18 @@ public class VectorTarget extends Target {
                     }
                 }
 
+                if (target instanceof Player) {
+                    Player cPlayer = (Player) target;
+                    Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                    if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
+                        continue;
+                    }
+                }
+
                 returnSet.add((LivingEntity) target);
             }
         }
 
-        filterOutUntargetables(returnSet);
         return returnSet;
     }
 }

@@ -1,4 +1,4 @@
-icon: LEATHER_BOOTS
+icon: SOUL_SAND
 type: spell
 is-in-shop: false
 level: 1
@@ -12,12 +12,6 @@ allowed-actions: []
 
 exp-per-use: 20
 
-targets:
-  nearby1:
-    type: nearby
-    range: 0
-    radius: 7
-
 conditions:
   cooldown: 30000
   mana: 25
@@ -29,16 +23,22 @@ components:
       cooldown: 30000
       sound:
         sound: ENTITY_PHANTOM_FLAP
-        volume: 1.5
+        volume: 3
       duration:
-        delay: 10
+        delay: 20
         section:
+          targets:
+            nearby1:
+              type: nearby
+              range: 0
+              radius: 7
           components:
             2:
-              sound:
-                sound: ENTITY_PHANTOM_AMBIENT
-                volume: 3
-              civstate:
-                target: nearby1
-                type: STUN
-                duration: 3000
+              yield:
+                sound:
+                  sound: ENTITY_PHANTOM_AMBIENT
+                  volume: 3
+                civstate:
+                  target: nearby1
+                  type: STUN
+                  duration: 4000

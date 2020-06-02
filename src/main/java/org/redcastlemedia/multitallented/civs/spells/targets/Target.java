@@ -72,16 +72,4 @@ public abstract class Target extends SpellComponent {
     }
 
     public abstract Set<?> getTargets();
-
-    public static void filterOutUntargetables(Set<LivingEntity> returnSet) {
-        for (LivingEntity livingEntity : new HashSet<>(returnSet)) {
-            if (livingEntity instanceof Player) {
-                Player cPlayer = (Player) livingEntity;
-                Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
-                if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
-                    returnSet.remove(livingEntity);
-                }
-            }
-        }
-    }
 }

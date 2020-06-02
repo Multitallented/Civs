@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
-public class Single implements CivParticleEffect {
+public class Single extends CivParticleEffect {
     @Override
     public void update(LivingEntity livingEntity, ParticleEffect particleEffect) {
         Location location = livingEntity.getLocation().clone().add(0, 1, 0);

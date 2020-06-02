@@ -56,6 +56,7 @@ public class CancelEffect extends Effect {
         for (String key : civilian.getStates().keySet()) {
             String currentAbilityName = key.split("\\.")[0];
             String currentComponentName = key.split("\\.")[1];
+            System.out.println("cancel req: " + key);
             if (!abilityName.equals("all") && !currentAbilityName.equals(newAbilityName)) {
                 continue;
             }
@@ -65,17 +66,17 @@ public class CancelEffect extends Effect {
             if (!blacklist.isEmpty() && blacklist.contains(currentComponentName)) {
                 continue;
             }
+            System.out.println("cancel req met " + getKey() + " / " + key);
             return true;
         }
 
+        System.out.println("cancel req fail " + getKey());
         return false;
     }
 
     public void apply() {
         Spell ability = getSpell();
         Object target = getTarget();
-        Entity origin = getOrigin();
-        //TODO allow this to target mobs
         if (!(target instanceof Player)) {
             return;
         }
@@ -95,20 +96,21 @@ public class CancelEffect extends Effect {
             if (!blacklist.isEmpty() && blacklist.contains(currentComponentName)) {
                 continue;
             }
+            System.out.println("cancelling: " + getKey() + " / " + key);
             removeMe.add(key);
         }
         for (String key : removeMe) {
             CivState currentState = civilian.getStates().get(key);
-            if (origin instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) origin;
-                SpellListener.getInstance().removeDamageListener(livingEntity);
-            }
-            if (origin instanceof Projectile) {
-                Projectile projectile = (Projectile) origin;
-                SpellListener.getInstance().removeProjectileListener(projectile);
-            }
+            // TODO fix damage listener cancelling
+//            if (origin instanceof LivingEntity) {
+//                LivingEntity livingEntity = (LivingEntity) origin;
+//                SpellListener.getInstance().removeDamageListener(livingEntity);
+//            }
+//            if (origin instanceof Projectile) {
+//                Projectile projectile = (Projectile) origin;
+//                SpellListener.getInstance().removeProjectileListener(projectile);
+//            }
             currentState.remove(target);
-            civilian.getStates().remove(key);
         }
     }
 }

@@ -11,7 +11,11 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 public class NearbyTarget extends Target {
     public NearbyTarget(Spell spell,
@@ -51,6 +55,13 @@ public class NearbyTarget extends Target {
             if (maxTargets > 0 && returnSet.size() >= maxTargets) {
                 break;
             }
+            if (target instanceof Player) {
+                Player cPlayer = (Player) target;
+                Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
+                    continue;
+                }
+            }
 
             if (target != player &&
                     target instanceof LivingEntity) {
@@ -58,7 +69,6 @@ public class NearbyTarget extends Target {
                 returnSet.add((LivingEntity) target);
             }
         }
-        filterOutUntargetables(returnSet);
         return returnSet;
     }
 

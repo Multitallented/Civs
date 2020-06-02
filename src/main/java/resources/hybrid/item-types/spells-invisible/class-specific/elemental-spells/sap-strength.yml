@@ -22,7 +22,7 @@ components:
       cooldown: 55000
       mana: -30
       duration:
-        duration: 200
+        duration: 150
         period: 40
         delay: 40
         section:
@@ -37,6 +37,25 @@ components:
               variables:
                 power^1: "$power^1#var$ + 1"
               yield:
+                particle^1:
+                  target: nearby1
+                  pattern: waves
+                  particle: REDSTONE
+                  red: 115
+                  green: 3
+                  blue: 252
+                  count: 50
+                  size: 1
+                  duration: 40
+                particle^2:
+                  pattern: falling aura
+                  particle: REDSTONE
+                  red: 115
+                  green: 3
+                  blue: 252
+                  count: 50
+                  size: 1
+                  duration: 40
                 potion^1:
                   target: nearby1
                   type: WEAKNESS

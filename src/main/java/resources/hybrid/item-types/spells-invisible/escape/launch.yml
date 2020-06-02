@@ -1,4 +1,4 @@
-icon: LEATHER_BOOTS
+icon: TNT
 type: spell
 is-in-shop: false
 level: 1
@@ -47,13 +47,13 @@ components:
         damage: 10
       velocity^1:
         y: 1
-        multiplier: 4
+        multiplier: 3
       potion^1:
         type: SLOW_FALLING
-        duration: 200
+        duration: 240
         level: 1
       duration^1:
-        delay: 1
+        delay: 20
         section:
           components:
             2:

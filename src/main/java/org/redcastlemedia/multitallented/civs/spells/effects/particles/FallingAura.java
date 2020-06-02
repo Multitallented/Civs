@@ -3,7 +3,7 @@ package org.redcastlemedia.multitallented.civs.spells.effects.particles;
 import org.bukkit.entity.LivingEntity;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
-public class FallingAura implements CivParticleEffect {
+public class FallingAura extends CivParticleEffect {
     @Override
     public void update(LivingEntity livingEntity, ParticleEffect particleEffect) {
         for (int i=0; i<5; i++) {
