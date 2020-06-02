@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -68,6 +69,8 @@ import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -136,6 +139,7 @@ public class ProtectionHandler implements Listener {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
+            checkMiningSkill(civilian, event.getBlock().getType());
             if (event.getBlock().getType() == Material.CHEST) {
                 UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
             }
@@ -167,6 +171,47 @@ public class ProtectionHandler implements Listener {
                 removeRegionIfNotIndestructible(region, regionType, event);
             }
             setMissingBlocks(event, region, player, isNotMember, radii);
+        }
+    }
+
+    private void checkMiningSkill(Civilian civilian, Material type) {
+        if (!blockIsOre(type)) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        ItemStack mainItem = player.getInventory().getItemInMainHand();
+        if (mainItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            return;
+        }
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.MINING.name())) {
+                double exp = skill.addAccomplishment(type.name());
+                if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
+    private boolean blockIsOre(Material type) {
+        switch (type) {
+            case COAL_ORE:
+            case IRON_ORE:
+            case DIAMOND_ORE:
+            case GOLD_ORE:
+            case REDSTONE_ORE:
+            case EMERALD_ORE:
+            case LAPIS_ORE:
+            case NETHER_QUARTZ_ORE:
+            case GLOWSTONE:
+                return true;
+            default:
+                return false;
         }
     }
 
