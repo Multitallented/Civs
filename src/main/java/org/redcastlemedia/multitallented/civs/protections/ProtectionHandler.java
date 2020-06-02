@@ -175,7 +175,7 @@ public class ProtectionHandler implements Listener {
     }
 
     private void checkMiningSkill(Civilian civilian, Material type) {
-        if (!blockIsOre(type)) {
+        if (type == null || !blockIsOre(type)) {
             return;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
