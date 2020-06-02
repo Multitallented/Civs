@@ -44,24 +44,20 @@ components:
                   red: 115
                   green: 3
                   blue: 252
-                  count: 50
-                  size: 1
-                  duration: 40
-                particle^2:
-                  pattern: falling aura
-                  particle: REDSTONE
-                  red: 115
-                  green: 3
-                  blue: 252
-                  count: 50
-                  size: 1
-                  duration: 40
+                  duration: 2000
+                  particle^2:
+                    pattern: falling aura
+                    particle: REDSTONE
+                    red: 115
+                    green: 3
+                    blue: 252
+                    duration: 2000
                 potion^1:
                   target: nearby1
                   type: WEAKNESS
                   level: "$power^1#var$"
-                  duration: 40
+                  ticks: 40
                 potion^2:
                   type: INCREASE_DAMAGE
                   level: "$power^1#var$"
-                  duration: 40
+                  ticks: 40

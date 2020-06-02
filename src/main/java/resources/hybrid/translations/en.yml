@@ -931,6 +931,6 @@ sap-strength-desc: "Mana: 30 Cooldown: 55s Radius: 9\nFor every 2s you stay in r
 launch-name: "Launch"
 launch-desc: "Mana: 30 Cooldown: 1m Radius: 6\nDeal 10 damage in a radius and launch yourself high in to the air with slow falling."
 screech-name: "Screech"
-screech-desc: "Mana: 25 Cooldown: 30s Radius: 7\nAfter a second delay, stun all targets around you for 4s."
+screech-desc: "Mana: 25 Cooldown: 30s Radius: 7\nAfter a half second delay, stun all targets around you for 3s."
 dodge-name: "Dodge"
 dodge-desc: "Mana: 10 Cooldown: 5s\nMake yourself invulnerable for 1s."
