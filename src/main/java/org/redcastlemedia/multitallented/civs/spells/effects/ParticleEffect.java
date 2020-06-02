@@ -162,7 +162,7 @@ public class ParticleEffect extends Effect {
             case SPIT:
             case SQUID_INK:
             case BUBBLE_POP:
-                location.getWorld().spawnParticle(particleType, location, 0, x, y, z, 1);
+                location.getWorld().spawnParticle(particleType, location, 0, x, y, z);
                 return;
             default:
                 location.getWorld().spawnParticle(particleType, location, count);

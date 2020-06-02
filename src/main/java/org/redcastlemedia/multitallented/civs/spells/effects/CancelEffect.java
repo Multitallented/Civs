@@ -17,9 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CancelEffect extends Effect {
-    private String target;
     private String abilityName;
-    private boolean silent;
     private List<String> whitelist;
     private List<String> blacklist;
     private ConfigurationSection config = null;
@@ -28,18 +26,14 @@ public class CancelEffect extends Effect {
         super(spell, key, target, origin, level);
         if (value instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection) value;
-            this.silent = section.getBoolean(SpellConstants.SILENT, false);
-            this.target = section.getString(SpellConstants.TARGET, "self");
             this.abilityName = section.getString(SpellConstants.ABILITY, "self");
             this.whitelist = section.getStringList(SpellConstants.WHITELIST);
             this.blacklist = section.getStringList(SpellConstants.BLACKLIST);
             this.config = section;
         } else if (value instanceof String) {
             this.abilityName = (String) value;
-            this.target = "self";
             this.whitelist = new ArrayList<>();
             this.blacklist = new ArrayList<>();
-            this.silent = false;
         }
     }
 
@@ -56,7 +50,6 @@ public class CancelEffect extends Effect {
         for (String key : civilian.getStates().keySet()) {
             String currentAbilityName = key.split("\\.")[0];
             String currentComponentName = key.split("\\.")[1];
-            System.out.println("cancel req: " + key);
             if (!abilityName.equals("all") && !currentAbilityName.equals(newAbilityName)) {
                 continue;
             }
@@ -66,11 +59,9 @@ public class CancelEffect extends Effect {
             if (!blacklist.isEmpty() && blacklist.contains(currentComponentName)) {
                 continue;
             }
-            System.out.println("cancel req met " + getKey() + " / " + key);
             return true;
         }
 
-        System.out.println("cancel req fail " + getKey());
         return false;
     }
 
@@ -96,7 +87,6 @@ public class CancelEffect extends Effect {
             if (!blacklist.isEmpty() && blacklist.contains(currentComponentName)) {
                 continue;
             }
-            System.out.println("cancelling: " + getKey() + " / " + key);
             removeMe.add(key);
         }
         for (String key : removeMe) {

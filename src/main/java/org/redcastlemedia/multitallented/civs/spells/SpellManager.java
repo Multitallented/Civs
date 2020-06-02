@@ -75,11 +75,10 @@ public class SpellManager {
 
     public static void removePassiveSpell(Civilian civilian, Player player, String spellName) {
         SpellType oldSpell = (SpellType) ItemManager.getInstance().getItemType(spellName);
-        if (oldSpell.getConfig().isSet("passives")){
+        if (oldSpell != null && oldSpell.getConfig() != null && oldSpell.getConfig().isSet("passives")){
             for (Map.Entry<String, CivState> entry : new HashSet<>(civilian.getStates().entrySet())) {
                 String currentAbilityName = entry.getKey().split("\\.")[0];
                 if (oldSpell.getProcessedName().equalsIgnoreCase(currentAbilityName)) {
-                    System.out.println("remove passive " + oldSpell.getProcessedName());
                     civilian.getStates().remove(entry.getKey());
                     entry.getValue().remove(player);
                 }
@@ -93,7 +92,6 @@ public class SpellManager {
             String currentAbilityName = entry.getKey().split("\\.")[0];
             SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(currentAbilityName);
             if (spellType.getConfig().isSet("passives")) {
-                System.out.println("remove passive " + spellType.getProcessedName());
                 civilian.getStates().remove(entry.getKey());
                 entry.getValue().remove(player);
             }
@@ -101,7 +99,7 @@ public class SpellManager {
     }
 
     public static void initPassiveSpell(Civilian civilian, SpellType spellType, Player player) {
-        if (spellType.getConfig().isSet("passives")) {
+        if (spellType != null && spellType.getConfig() != null && spellType.getConfig().isSet("passives")) {
             Spell spell = new Spell(spellType.getProcessedName(),
                     Bukkit.getPlayer(civilian.getUuid()), civilian.getLevel(spellType));
             Map<String, Set<?>> mappedTargets = new HashMap<>();

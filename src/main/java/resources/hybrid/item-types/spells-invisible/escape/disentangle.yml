@@ -41,14 +41,14 @@ components:
       duration:
         delay: 1
         section:
+          targets:
+            block1:
+              type: block
+              x: "Math.abs($teleport#x$ - $teleport^1#x$) / 2"
+              y: "Math.abs($teleport#y$ - $teleport^1#y$) / 2"
+              z: "Math.abs($teleport#z$ - $teleport^1#z$) / 2"
           components:
             1:
-              targets:
-                block1:
-                  type: block
-                  x: "Math.abs($teleport#x$ - $teleport^1#x$) / 2"
-                  y: "Math.abs($teleport#y$ - $teleport^1#y$) / 2"
-                  z: "Math.abs($teleport#z$ - $teleport^1#z$) / 2"
               yield:
                 sound^3:
                   target: block1
@@ -56,6 +56,7 @@ components:
                 particle:
                   particle: EXPLOSION_LARGE
                   target: block1
+                  count: 2
       exemption^1:
         exemption: FLY
         target: vector1

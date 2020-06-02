@@ -21,6 +21,9 @@ components:
       mana: -10
       cooldown: 5000
       sound: ENTITY_BAT_TAKEOFF
+      potion^1:
+        type: GLOWING
+        ticks: 20
       civstate:
         type: NO_INCOMING_DAMAGE
         duration: 1000

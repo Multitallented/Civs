@@ -27,9 +27,6 @@ components:
       civstate:
         type: ROOT
         duration: 6000
-      potion^1:
-        type: GLOWING
-        ticks: 120
       duration:
         delay: 120
         section:

@@ -45,10 +45,10 @@ components:
                   green: 3
                   blue: 252
                   duration: 2000
-                  particle^2:
-                    pattern: falling aura
-                    particle: PORTAL
-                    duration: 2000
+                particle^2:
+                  pattern: falling aura
+                  particle: PORTAL
+                  duration: 2000
                 potion^1:
                   target: nearby1
                   type: WEAKNESS
