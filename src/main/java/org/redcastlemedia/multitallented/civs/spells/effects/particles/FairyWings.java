@@ -21,8 +21,8 @@ public class FairyWings extends CivParticleEffect {
     };
 
     @Override
-    public void update(LivingEntity livingEntity, ParticleEffect particleEffect) {
-        drawShape(livingEntity, particleEffect, shape);
+    public void update(Object target, Location location, ParticleEffect particleEffect) {
+        drawShape(location, particleEffect, shape);
     }
 
     @Override

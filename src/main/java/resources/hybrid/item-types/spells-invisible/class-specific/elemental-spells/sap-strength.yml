@@ -47,10 +47,7 @@ components:
                   duration: 2000
                   particle^2:
                     pattern: falling aura
-                    particle: REDSTONE
-                    red: 115
-                    green: 3
-                    blue: 252
+                    particle: PORTAL
                     duration: 2000
                 potion^1:
                   target: nearby1

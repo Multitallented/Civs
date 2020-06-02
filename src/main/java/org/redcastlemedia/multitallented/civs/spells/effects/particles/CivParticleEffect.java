@@ -1,16 +1,14 @@
 package org.redcastlemedia.multitallented.civs.spells.effects.particles;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
 public abstract class CivParticleEffect {
-    public abstract void update(LivingEntity livingEntity, ParticleEffect particleEffect);
+    public abstract void update(Object target, Location location, ParticleEffect particleEffect);
     public abstract long getRepeatDelay(ParticleEffect particleEffect);
 
-    protected void drawShape(LivingEntity livingEntity, ParticleEffect particleEffect, boolean[][] shape) {
-        Location location = livingEntity.getLocation();
+    protected void drawShape(Location location, ParticleEffect particleEffect, boolean[][] shape) {
         double space = 0.2;
         double defX = location.getX() - (space * shape[0].length / 2) + space;
         double x = defX;

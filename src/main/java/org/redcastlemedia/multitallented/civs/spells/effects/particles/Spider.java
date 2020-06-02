@@ -1,6 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells.effects.particles;
 
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
 public class Spider extends CivParticleEffect {
@@ -19,8 +19,8 @@ public class Spider extends CivParticleEffect {
     };
 
     @Override
-    public void update(LivingEntity livingEntity, ParticleEffect particleEffect) {
-        drawShape(livingEntity, particleEffect, shape);
+    public void update(Object target, Location location, ParticleEffect particleEffect) {
+        drawShape(location, particleEffect, shape);
     }
 
 

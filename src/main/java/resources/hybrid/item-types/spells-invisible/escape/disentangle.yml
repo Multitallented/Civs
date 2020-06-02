@@ -5,10 +5,10 @@ level: 1
 groups:
   - escape
 
-pre-reqs:
-  - skill:food=3
-  - backflip:level=9
-  - skill:exploration=4
+pre-reqs: []
+#  - skill:food=3
+#  - backflip:level=9
+#  - skill:exploration=4
 
 allowed-actions: []
 
@@ -28,12 +28,34 @@ conditions:
 
 components:
   1:
+    variables:
+      teleport:
+        target: vector1
+      teleport^1: {}
     yield:
       mana: -20
       cooldown: 14000
       cleanse: HARMFUL
       exemption^0: FLY
       exemption^2: FALL
+      duration:
+        delay: 1
+        section:
+          components:
+            1:
+              targets:
+                block1:
+                  type: block
+                  x: "Math.abs($teleport#x$ - $teleport^1#x$) / 2"
+                  y: "Math.abs($teleport#y$ - $teleport^1#y$) / 2"
+                  z: "Math.abs($teleport#z$ - $teleport^1#z$) / 2"
+              yield:
+                sound^3:
+                  target: block1
+                  sound: ENTITY_GENERIC_EXPLODE
+                particle:
+                  particle: EXPLOSION_LARGE
+                  target: block1
       exemption^1:
         exemption: FLY
         target: vector1

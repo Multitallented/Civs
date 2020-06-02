@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -76,21 +77,28 @@ public class ParticleEffect extends Effect {
     public void apply() {
         Object target = getTarget();
 
-        if (!(target instanceof LivingEntity)) {
+        Location location = null;
+        if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) target;
+            location = livingEntity.getLocation();
+        } else if (target instanceof Block) {
+            location = ((Block) target).getLocation();
+        }
+        if (location == null) {
             return;
         }
-        LivingEntity livingEntity = (LivingEntity) target;
+        final Location l = location;
         long repeatDelay = this.pattern.getRepeatDelay(this);
         if (repeatDelay > 0) {
             this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(),
-                    () -> onUpdate(livingEntity), repeatDelay, repeatDelay);
+                    () -> pattern.update(target, l, this), repeatDelay, repeatDelay);
 
             if (this.duration > 0) {
                 this.cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
                         () -> Bukkit.getScheduler().cancelTask(taskId), this.duration / 50).getTaskId();
             }
         } else {
-            onUpdate(livingEntity);
+            this.pattern.update(target, location, this);
         }
     }
 
@@ -102,10 +110,6 @@ public class ParticleEffect extends Effect {
         if (this.cancelTaskId > -1) {
             Bukkit.getScheduler().cancelTask(this.cancelTaskId);
         }
-    }
-
-    private void onUpdate(LivingEntity target) {
-        this.pattern.update(target, this);
     }
 
     private CivParticleEffect getParticleEffectByName(String name) {

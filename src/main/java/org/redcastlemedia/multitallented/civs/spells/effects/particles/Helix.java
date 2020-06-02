@@ -16,7 +16,7 @@ public class Helix extends CivParticleEffect {
     }
 
     @Override
-    public void update(LivingEntity livingEntity, ParticleEffect particleEffect) {
+    public void update(Object target, Location location, ParticleEffect particleEffect) {
         if (up) {
             if (height < 2)
                 height += 0.05;
@@ -34,9 +34,9 @@ public class Helix extends CivParticleEffect {
         v.setX(Math.cos(angle) * 1.1);
         v.setZ(Math.sin(angle) * 1.1);
         step += 4;
-        Location location = livingEntity.getLocation().clone().add(v).add(0, height, 0);
+        Location location1 = location.clone().add(v).add(0, height, 0);
         particleEffect.spawnParticle(particleEffect.getParticleType(),
-                location,
+                location1,
                 particleEffect.getRed(), particleEffect.getGreen(), particleEffect.getBlue(),
                 particleEffect.getCount(), particleEffect.getSize(),
                 0, 0, 0,
