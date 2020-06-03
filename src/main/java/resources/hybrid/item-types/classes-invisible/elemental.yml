@@ -30,6 +30,7 @@ allowed-actions:
   - PROTECTION.4
   - KNOCKBACK.2
   - FLAME.2
+  - SWEEPING_EDGE.5
 
 spells:
   1:

@@ -21,6 +21,12 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @CivsSingleton
 public class SpellListener implements Listener {
@@ -84,59 +90,49 @@ public class SpellListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onListenerProjectile(EntityDamageByEntityEvent event) {
-        AbilityListen abilityListener;
-        if (projectileListeners.containsKey(event.getDamager())) {
-            abilityListener = projectileListeners.get(event.getDamager());
-        } else {
+        if (!(event.getDamager() instanceof Projectile)) {
             return;
         }
-        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getConfig(), event.getEntity())) {
+        for (Map.Entry<Projectile, AbilityListen> entry : new HashMap<>(projectileListeners).entrySet()) {
+            if (!entry.getKey().isValid() || entry.getKey().isDead()) {
+                projectileListeners.remove(entry.getKey());
+            }
+            if (!entry.getKey().equals(event.getDamager())) {
+                continue;
+            }
+            Map<String, Set<?>> mappedTargets = new HashMap<>();
+            Set<Object> selfSet = new HashSet<>();
+            selfSet.add(entry.getValue().getCaster());
+            mappedTargets.put(SpellConstants.SELF, selfSet);
+            Set<Object> targetSet = new HashSet<>();
+            targetSet.add(event.getEntity());
+            mappedTargets.put(entry.getValue().getKey(), targetSet);
             event.setCancelled(true);
+            event.getDamager().remove();
+            entry.getValue().spell.useAbility(mappedTargets, true, entry.getValue().getConfig());
+            break;
         }
     }
 
-    public void addDamageListener(LivingEntity livingEntity, int level, ConfigurationSection section, Spell spell, Player caster) {
-        damageListeners.put(livingEntity, new AbilityListen(spell,caster, livingEntity, level, section));
+    public void addDamageListener(LivingEntity livingEntity, int level, ConfigurationSection section, Spell spell, Player caster, String key) {
+        damageListeners.put(livingEntity, new AbilityListen(livingEntity, level, section, caster, spell, key));
     }
-    public boolean removeDamageListener(LivingEntity livingEntity) {
-        return damageListeners.remove(livingEntity) != null;
+    public void removeDamageListener(LivingEntity livingEntity) {
+        damageListeners.remove(livingEntity);
     }
-    public void addProjectileListener(Projectile livingEntity, int level, ConfigurationSection section, Spell spell) {
-        projectileListeners.put(livingEntity, new AbilityListen(spell,null, livingEntity, level, section));
-    }
-    public boolean removeProjectileListener(Projectile livingEntity) {
-        return projectileListeners.remove(livingEntity) != null;
+    public void addProjectileListener(Projectile livingEntity, int level, ConfigurationSection section, Spell spell, String key, Player caster) {
+        projectileListeners.put(livingEntity, new AbilityListen(livingEntity, level, section, caster, spell, key));
     }
 
-    private class AbilityListen {
+    @AllArgsConstructor @Getter
+    private static class AbilityListen {
         private final Object target;
         private final int level;
         private final ConfigurationSection config;
         private final Player caster;
         private final Spell spell;
-
-        public AbilityListen(Spell spell, Player caster, Object target, int level, ConfigurationSection config) {
-            this.caster = caster;
-            this.target = target;
-            this.level = level;
-            this.config = config;
-            this.spell = spell;
-        }
-
-        public Player getCaster() {
-            return caster;
-        }
-        public Object getTarget() {
-            return target;
-        }
-        public int getLevel() {
-            return level;
-        }
-        public ConfigurationSection getConfig() {
-            return config;
-        }
-        public Spell getSpell() { return spell; }
+        private final String key;
     }
 }
