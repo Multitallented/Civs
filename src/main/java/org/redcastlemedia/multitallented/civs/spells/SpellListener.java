@@ -2,9 +2,12 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -74,35 +77,48 @@ public class SpellListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onListenerDamage(EntityDamageEvent event) {
-        if (!ConfigManager.getInstance().getUseClassesAndSpells() || event.isCancelled() ||
+    @EventHandler(ignoreCancelled = true)
+    public void onListenerDamage(EntityDamageByEntityEvent event) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
                 event.getDamage() < 1 || !(event.getEntity() instanceof LivingEntity)) {
             return;
         }
-        LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!damageListeners.containsKey(livingEntity)) {
-            return;
-        }
-        AbilityListen abilityListener = damageListeners.get(livingEntity);
-        if (abilityListener.spell.useAbilityFromListener(abilityListener.getCaster(), abilityListener.getConfig(), event.getEntity())) {
-            event.setCancelled(true);
+        if (event.getDamager() instanceof Projectile) {
+            handleProjectile(event);
+        } else if (event.getDamager() instanceof LivingEntity) {
+            LivingEntity damage = (LivingEntity) event.getDamager();
+
+            if (!damageListeners.containsKey(damage)) {
+                return;
+            }
+            AbilityListen abilityListener = damageListeners.get(damage);
+            if (abilityListener.getConfig().isSet("projectile")) {
+                return;
+            }
+            if (abilityListener.spell.useAbilityFromListener(damage, abilityListener.getConfig(), event.getEntity(), abilityListener.getKey())) {
+                event.setCancelled(true);
+            }
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onListenerProjectile(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Projectile)) {
-            return;
-        }
+    private void handleProjectile(EntityDamageByEntityEvent event) {
+        Projectile projectile = (Projectile) event.getDamager();
+
         for (Map.Entry<Projectile, AbilityListen> entry : new HashMap<>(projectileListeners).entrySet()) {
             if (!entry.getKey().isValid() || entry.getKey().isDead()) {
                 projectileListeners.remove(entry.getKey());
             }
-            if (!entry.getKey().equals(event.getDamager())) {
+            if (!entry.getKey().equals(projectile)) {
                 continue;
             }
-            if (entry.getValue().spell.useAbilityFromListener(entry.getValue().getCaster(), entry.getValue().getConfig(), event.getEntity())) {
+            if (entry.getValue().getConfig().isSet("projectile")) {
+                EntityType entityType = EntityType.valueOf(entry.getValue().getConfig().getString("projectile", "ARROW"));
+                if (projectile.getType() != entityType) {
+                    continue;
+                }
+            }
+            if (entry.getValue().spell.useAbilityFromListener(entry.getValue().getCaster(), entry.getValue().getConfig(), event.getEntity(),
+                    entry.getValue().getKey())) {
                 event.setCancelled(true);
                 event.getDamager().remove();
             }

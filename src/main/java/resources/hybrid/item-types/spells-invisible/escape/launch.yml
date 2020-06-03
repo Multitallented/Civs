@@ -6,7 +6,7 @@ groups:
   - escape
 
 pre-reqs:
-  - backflip:level=5
+  - backflip:level=16
 
 allowed-actions: []
 
@@ -53,9 +53,23 @@ components:
         type: SLOW_FALLING
         duration: 240
         level: 1
+      duration^2:
+        delay: 60
+        section:
+          components:
+            2:
+              yield:
+                fall: -50
       duration^1:
         delay: 20
         section:
           components:
-            2:
-              fall: -50
+            3:
+              yield:
+                fall: -50
+                particle^3:
+                  particle: REDSTONE
+                  red: 255
+                  green: 255
+                  blue: 255
+                  pattern: fairy wings

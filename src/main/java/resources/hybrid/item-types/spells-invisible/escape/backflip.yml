@@ -9,7 +9,7 @@ pre-reqs: []
 
 allowed-actions: []
 
-exp-per-use: 20
+exp-per-use: 10
 
 conditions:
   cooldown: 10000
@@ -22,6 +22,10 @@ components:
       cooldown: 10000
       exemption: FLY
       exemption^1: FALL
+      particle:
+        particle: SNOW_SHOVEL
+        duration: 1000
+        period: 2
       sound^1: ENTITY_MAGMA_CUBE_JUMP
       velocity^1:
         y: 1
@@ -31,4 +35,5 @@ components:
         section:
           components:
             2:
-              fall: -10
+              yield:
+                fall: -10

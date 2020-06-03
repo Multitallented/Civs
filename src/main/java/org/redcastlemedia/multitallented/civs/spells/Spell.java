@@ -123,14 +123,14 @@ public class Spell {
         return false;
     }
 
-    public boolean useAbilityFromListener(Player caster, ConfigurationSection useSection, Object newTarget) {
+    public boolean useAbilityFromListener(LivingEntity origin, ConfigurationSection useSection, Object newTarget, String key) {
         HashMap<String, Set<?>> mappedTargets = new HashMap<>();
         HashSet<LivingEntity> tempSet = new HashSet<>();
-        tempSet.add(caster);
+        tempSet.add(origin);
         mappedTargets.put(SpellConstants.SELF, tempSet);
         HashSet<Object> tempTarget = new HashSet<>();
         tempTarget.add(newTarget);
-        mappedTargets.put(SpellConstants.TARGET, tempTarget);
+        mappedTargets.put(key, tempTarget);
 
         useAbility(mappedTargets, true, useSection);
 
@@ -294,7 +294,9 @@ public class Spell {
                     .normalize();
             pr.setVelocity(direction.multiply(speed));
             pr.setShooter(livingEntity);
-            SpellListener.getInstance().addProjectileListener(pr, level, projectileSection.getConfigurationSection("section"), this, key, caster);
+            if (projectileSection.isSet("section")) {
+                SpellListener.getInstance().addProjectileListener(pr, level, projectileSection.getConfigurationSection("section"), this, key, caster);
+            }
         }
     }
 
@@ -449,15 +451,30 @@ public class Spell {
                 }
                 continue;
             }
-            //component = getAbilityComponent(costName, level);
-
-            //String targetKey = component.getTargetName();
             boolean isString = !costValueString.equals(SpellConstants.NOT_A_STRING) && !costValueString.contains("MemorySection");
             String targetKey = isString ? SpellConstants.SELF : costSection.getConfigurationSection(key).getString(SpellConstants.TARGET, SpellConstants.SELF);
             Set<?> targetSet = mappedTargets.get(targetKey);
             if (targetSet == null || targetSet.isEmpty()) {
                 costsMet = invert;
                 break;
+            }
+            if (costName.equals("value")) {
+                for (Object target : targetSet) {
+                    String value;
+                    if (isString) {
+                        value = replaceAllVariables(costValueString, level, target, this);
+                    } else {
+                        ConfigurationSection currentConfigSection = costSection.getConfigurationSection(key);
+                        value = replaceAllVariables(currentConfigSection.getString("value", ""), level, target, this);
+                    }
+
+                    boolean meetsRequirement = !value.isEmpty() && !value.equals("0") && !value.equals("false");
+                    if ((!meetsRequirement && !invert) || (meetsRequirement && invert)) {
+                        costsMet = false;
+                        break costLoop;
+                    }
+                }
+                continue;
             }
             for (Object target : targetSet) {
                 if (isString) {

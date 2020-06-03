@@ -80,7 +80,8 @@ components:
         section:
           components:
             2:
-              fall: -10
-              fall^1:
-                target: vector1
-                distance: -10
+              yield:
+                fall: -10
+                fall^1:
+                  target: vector1
+                  distance: -10

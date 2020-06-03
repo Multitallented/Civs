@@ -1,0 +1,46 @@
+icon: COBWEB
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - disable
+
+pre-reqs: []
+
+allowed-actions: []
+
+exp-per-use: 15
+
+passives:
+  components:
+    1:
+      variables:
+        webbedchance: 0
+      yield:
+        damage-listener:
+          section:
+            projectile: ARROW
+            components:
+              2:
+                costs:
+                  value: "$rand$ > (0.75 + $webbedchance$)"
+                yield:
+                  civstate:
+                    target: damage-listener
+                    type: ROOT
+                    duration: 1000
+                  sound:
+                    sound: ENTITY_SILVERFISH_AMBIENT
+                    target: damage-listener
+                  duration:
+                    delay: 1
+                    section:
+                      components:
+                        4:
+                          variables:
+                            webbedchance: "$webbedchance$ + 0.05"
+              3:
+                costs:
+                  inherit^not: 2
+                variables:
+                  webbedchance: "$webbedchance$ - 0.05"

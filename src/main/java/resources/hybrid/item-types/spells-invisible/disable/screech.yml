@@ -38,6 +38,9 @@ components:
                 sound:
                   sound: ENTITY_PHANTOM_AMBIENT
                   volume: 3
+                particle:
+                  particle: SMOKE_LARGE
+                  count: 3
                 civstate:
                   target: nearby1
                   type: STUN

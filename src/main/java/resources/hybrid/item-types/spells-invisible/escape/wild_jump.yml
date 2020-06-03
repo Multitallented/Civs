@@ -1,11 +1,12 @@
-icon: LEATHER_BOOTS
+icon: RABBIT_HIDE
 type: spell
 is-in-shop: false
 level: 1
 groups:
-  - chase
+  - escape
 
-pre-reqs: []
+pre-reqs:
+  - backflip:level=7
 
 allowed-actions: []
 
@@ -25,15 +26,24 @@ components:
       sound^1: ENTITY_MAGMA_CUBE_JUMP
       particle:
         particle: SNOW_SHOVEL
-        duration: 1000
+        duration: 1500
         period: 2
       velocity^1:
         y: 1
-        multiplier: 1
+        x: "$rand$ * 2 - 1"
+        z: "$rand$ * 2 - 1"
+        multiplier: "$rand$ * 2 + 0.2"
+      duration^2:
+        delay: 20
+        section:
+          components:
+            2:
+              yield:
+                fall: -30
       duration^1:
         delay: 3
         section:
           components:
             2:
               yield:
-                fall: -10
+                fall: -30
