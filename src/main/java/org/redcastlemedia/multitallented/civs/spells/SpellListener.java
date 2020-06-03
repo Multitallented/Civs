@@ -97,8 +97,8 @@ public class SpellListener implements Listener {
         }
     }
 
-    public void addDamageListener(LivingEntity livingEntity, int level, ConfigurationSection section, Spell spell) {
-        damageListeners.put(livingEntity, new AbilityListen(spell,null, livingEntity, level, section));
+    public void addDamageListener(LivingEntity livingEntity, int level, ConfigurationSection section, Spell spell, Player caster) {
+        damageListeners.put(livingEntity, new AbilityListen(spell,caster, livingEntity, level, section));
     }
     public boolean removeDamageListener(LivingEntity livingEntity) {
         return damageListeners.remove(livingEntity) != null;

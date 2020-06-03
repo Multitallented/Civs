@@ -2,11 +2,9 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -170,7 +168,7 @@ public class Spell {
             if (yieldSection == null || !costsMet) {
                 continue;
             }
-            produceYield(delayed, spellType, mappedTargets, yieldSection);
+            produceYield(delayed, mappedTargets, yieldSection);
         }
 
         if (fulfilledRequirements.isEmpty()) {
@@ -203,7 +201,7 @@ public class Spell {
                 .replace("$2", localSpellName);
     }
 
-    private void produceYield(boolean delayed, SpellType spellType, HashMap<String, Set<?>> mappedTargets, ConfigurationSection yieldSection) {
+    private void produceYield(boolean delayed, HashMap<String, Set<?>> mappedTargets, ConfigurationSection yieldSection) {
         for (String key : yieldSection.getKeys(false)) {
             String yieldName = "";
             if (!key.contains("^")) {
@@ -212,7 +210,7 @@ public class Spell {
                 yieldName = key.split("\\^")[0];
             }
 
-            if (createDamageListenerYield(spellType, yieldSection, key, yieldName)) {
+            if (createDamageListener(yieldSection, key, yieldName, mappedTargets)) {
                 continue;
             }
 
@@ -244,18 +242,14 @@ public class Spell {
         }
     }
 
-    private boolean createDamageListenerYield(SpellType spellType, ConfigurationSection yieldSection, String key, String yieldName) {
+    private boolean createDamageListener(ConfigurationSection yieldSection, String key, String yieldName, HashMap<String, Set<?>> mappedTargets) {
         if (!yieldName.equalsIgnoreCase("damage-listener")) {
             return false;
         }
         final ConfigurationSection damageListenerSection = yieldSection.getConfigurationSection(key);
-        final ConfigurationSection damageListenerConfig = spellType.getConfig().getConfigurationSection("listeners." + key);
-        if (damageListenerConfig == null) {
-            return true;
-        }
 
         long delay = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, null, this));
-        long duration = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("duration", 0), level, null, this));
+        long ticks = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("ticks", 0), level, null, this));
         final Player finalCaster = caster;
         final int finalLevel = level;
         int delayId = -1;
@@ -265,30 +259,42 @@ public class Spell {
         final String finalKey = key;
         final Spell spell = this;
         final String finalYieldName = yieldName;
-        if (duration > 0) {
-            durationId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    SpellListener.getInstance().removeDamageListener(finalCaster);
-                    finalChampion.getStates().remove(finalName + "." + finalKey);
-                }
-            }, delay + duration).getTaskId();
-        }
-        if (delayId < -1) {
-            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    SpellListener.getInstance().addDamageListener(finalCaster, finalLevel, damageListenerConfig, spell);
 
-                }
-            }, delay);
-        } else {
-            SpellListener.getInstance().addDamageListener(caster, level, damageListenerConfig, spell);
-            HashMap<String, Object> listenerVars = new HashMap<>();
+        String targetKey = damageListenerSection.getString(SpellConstants.TARGET, SpellConstants.SELF);
+        Set<?> targetSet = mappedTargets.get(targetKey);
+        for (Object target : targetSet) {
+            if (!(target instanceof LivingEntity)) {
+                continue;
+            }
+            if (ticks > 0) {
+                durationId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        SpellListener.getInstance().removeDamageListener((LivingEntity) target);
+                        finalChampion.getStates().remove(finalName + "." + finalKey);
+                    }
+                }, delay + ticks).getTaskId();
+            }
+            if (delayId < -1) {
+                Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        SpellListener.getInstance().addDamageListener((LivingEntity) target, finalLevel,
+                                damageListenerSection.getConfigurationSection("section"), spell, finalCaster);
 
-            CivState state = new CivState(this, finalYieldName, durationId, -1, damageListenerConfig, listenerVars);
-            finalChampion.getStates().put(finalName + "." + finalKey, state);
+                    }
+                }, delay);
+            } else {
+                SpellListener.getInstance().addDamageListener((LivingEntity) target, level,
+                        damageListenerSection.getConfigurationSection("section"), spell, caster);
+                HashMap<String, Object> listenerVars = new HashMap<>();
+
+                CivState state = new CivState(this, finalYieldName, durationId, -1,
+                        damageListenerSection.getConfigurationSection("section"), listenerVars);
+                finalChampion.getStates().put(finalName + "." + finalKey, state);
+            }
         }
+
         return true;
     }
 

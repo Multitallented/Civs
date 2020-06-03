@@ -23,7 +23,7 @@ public class ClassType extends CivItem {
     private final Map<Integer, List<String>> spellSlots = new HashMap<>();
     @Setter
     private int maxLevel;
-    private final Set<String> classPermissions = new HashSet<>();
+    private final Map<String, Integer> classPermissions = new HashMap<>();
 
     public ClassType(List<String> reqs,
                      String name,

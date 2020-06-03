@@ -231,7 +231,9 @@ public class ItemManager {
                 config.getInt("max-health", 20),
                 config.getString("mana-title", "mana"));
         if (config.isSet("permissions")) {
-            civItem.getClassPermissions().addAll(config.getStringList("permissions"));
+            for (String key : config.getConfigurationSection("permissions").getKeys(false)) {
+                civItem.getClassPermissions().put(key, config.getInt("permissions." + key, 0));
+            }
         }
         AllowedActionsUtil.loadAllowedActions(civItem.getAllowedActions(),
                 config.getStringList("allowed-actions"));

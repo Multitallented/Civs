@@ -176,8 +176,16 @@ public class ClassMenu extends CustomMenu {
                         "not-enough-levels").replace("$1", "" + Math.max(1, civClass.getLevel() - player.getLevel())));
                 return true;
             }
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
             player.setLevel(Math.max(0, player.getLevel() - 1));
             civClass.setLevel(civClass.getLevel() + 1);
+            if (Civs.perm != null) {
+                for (Map.Entry<String, Integer> entry : classType.getClassPermissions().entrySet()) {
+                    if (entry.getValue() == civClass.getLevel()) {
+                        Civs.perm.playerAdd(player, entry.getKey());
+                    }
+                }
+            }
             MenuManager.getAllData(civilian.getUuid()).put("level", civClass.getLevel());
             ClassManager.getInstance().saveClass(civClass);
             return true;

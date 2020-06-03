@@ -153,19 +153,26 @@ public class Civilian {
     }
 
     public void setCurrentClass(CivClass civClass) {
-        ClassType classTypeOld = (ClassType) ItemManager.getInstance().getItemType(currentClass.getType());
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         Player player = offlinePlayer.getPlayer();
-        if (Civs.perm != null && player != null) {
-            for (String permission : classTypeOld.getClassPermissions()) {
-                Civs.perm.playerRemove(player, permission);
+        if (currentClass != null) {
+            CivItem civItem = ItemManager.getInstance().getItemType(currentClass.getType());
+            if (civItem != null && Civs.perm != null && player != null) {
+                ClassType classTypeOld = (ClassType) civItem;
+                for (Map.Entry<String, Integer> entry : classTypeOld.getClassPermissions().entrySet()) {
+                    if (civClass.getLevel() >= entry.getValue()) {
+                        Civs.perm.playerRemove(player, entry.getKey());
+                    }
+                }
             }
         }
         currentClass = civClass;
         ClassType classTypeNew = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
         if (Civs.perm != null && player != null) {
-            for (String permission : classTypeNew.getClassPermissions()) {
-                Civs.perm.playerAdd(player, permission);
+            for (Map.Entry<String, Integer> entry : classTypeNew.getClassPermissions().entrySet()) {
+                if (currentClass.getLevel() >= entry.getValue()) {
+                    Civs.perm.playerAdd(player, entry.getKey());
+                }
             }
         }
     }
