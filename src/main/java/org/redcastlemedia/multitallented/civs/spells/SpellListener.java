@@ -102,17 +102,10 @@ public class SpellListener implements Listener {
             if (!entry.getKey().equals(event.getDamager())) {
                 continue;
             }
-            Map<String, Set<?>> mappedTargets = new HashMap<>();
-            Set<Object> selfSet = new HashSet<>();
-            selfSet.add(entry.getValue().getCaster());
-            mappedTargets.put(SpellConstants.SELF, selfSet);
-            Set<Object> targetSet = new HashSet<>();
-            targetSet.add(event.getEntity());
-            mappedTargets.put(entry.getValue().getKey(), targetSet);
-            event.setCancelled(true);
-            event.getDamager().remove();
-            entry.getValue().spell.useAbility(mappedTargets, true, entry.getValue().getConfig());
-            break;
+            if (entry.getValue().spell.useAbilityFromListener(entry.getValue().getCaster(), entry.getValue().getConfig(), event.getEntity())) {
+                event.setCancelled(true);
+                event.getDamager().remove();
+            }
         }
     }
 
