@@ -103,7 +103,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (HARDSHIP.equals(identifier)) {
-            return "" + civilian.getHardship();
+            return "" + (int) civilian.getHardship();
         } else if (KILLS.equals(identifier)) {
             return "" + civilian.getKills();
         } else if (KILLSTREAK.equals(identifier)) {
@@ -113,7 +113,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (DEATHS.equals(identifier)) {
             return "" + civilian.getDeaths();
         } else if (POINTS.equals(identifier)) {
-            return "" + civilian.getPoints();
+            return "" + (int) civilian.getPoints();
         } else if (MANA.equals(identifier)) {
             return "" + civilian.getMana();
         } else if (CHAT_CHANNEL_NAME.equals(identifier)) {
