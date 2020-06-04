@@ -6,7 +6,7 @@ groups:
   - escape
 
 pre-reqs:
-  - backflip:level=7
+  - backflip:level=6
 
 allowed-actions: []
 
@@ -30,9 +30,9 @@ components:
         period: 2
       velocity^1:
         y: 1
-        x: "$rand$ * 2 - 1"
-        z: "$rand$ * 2 - 1"
-        multiplier: "$rand$ * 2 + 0.2"
+        x: "$rand$ * 4 - 2"
+        z: "$rand$ * 4 - 2"
+        multiplier: "$rand$ * 1.5 + 0.2"
       duration^2:
         delay: 20
         section:

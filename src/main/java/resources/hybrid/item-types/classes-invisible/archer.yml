@@ -1,5 +1,5 @@
 type: class
-name: alchemist
+name: archer
 icon: BOW
 is-in-shop: false
 level: 1
@@ -34,10 +34,10 @@ allowed-actions:
 
 spells:
   1:
-    - arrow-storm
-    - burst-shot #TODO
-    - homing-arrow #TODO
-    - long-shot #TODO
+    - arrow_storm
+    - burst_shot #TODO
+    - homing_arrow #TODO
+    - long_shot #TODO
   2:
     - g:escape
   3:
@@ -46,6 +46,6 @@ spells:
     - flare #TODO
     - g:damage-over-time
   5:
-    - carpet-bomb #TODO
+    - carpet_bomb #TODO
     - strafe #TODO
-    - bring-the-rain #TODO
+    - bring_the_rain #TODO

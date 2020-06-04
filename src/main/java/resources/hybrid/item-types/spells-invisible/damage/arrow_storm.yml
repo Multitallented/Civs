@@ -19,20 +19,20 @@ conditions:
 components:
   1:
     variables:
-      arrowcount: 0
+      arrowcount^1: 0
     yield:
       mana: -25
       cooldown: 20000
       duration:
-        period: 2
-        ticks: 20
+        period: 4
+        ticks: 17
         section:
           components:
             2:
               variables:
-                arrowcount: "$arrowcount$ + 1"
+                arrowcount: "$arrowcount^1#var$ + 1"
               yield:
                 sound: ENTITY_ARROW_SHOOT
                 projectile:
-                  speed: "0.5 + $arrowcount$ * 0.05"
-                  spread: "16 + $arrowcount$ * 2"
+                  speed: "$arrowcount^1#var$ * 0.25 + 2"
+                  spread: "$arrowcount^1#var$ * 2 + 16"

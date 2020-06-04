@@ -23,7 +23,7 @@ passives:
             components:
               2:
                 costs:
-                  value: "$rand$ > (0.75 + $webbedchance$)"
+                  value: "$rand$ > (0.75 + $webbedchance#var$)"
                 yield:
                   civstate:
                     target: damage-listener
@@ -38,9 +38,9 @@ passives:
                       components:
                         4:
                           variables:
-                            webbedchance: "$webbedchance$ + 0.05"
+                            webbedchance: "$webbedchance#var$ + 0.05"
               3:
                 costs:
                   inherit^not: 2
                 variables:
-                  webbedchance: "$webbedchance$ - 0.05"
+                  webbedchance: "$webbedchance#var$ - 0.05"

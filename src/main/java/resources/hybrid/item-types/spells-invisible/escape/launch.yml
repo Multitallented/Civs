@@ -6,7 +6,7 @@ groups:
   - escape
 
 pre-reqs:
-  - backflip:level=16
+  - backflip:level=10
 
 allowed-actions: []
 

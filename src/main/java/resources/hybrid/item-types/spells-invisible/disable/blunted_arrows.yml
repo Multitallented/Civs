@@ -28,7 +28,7 @@ passives:
             components:
               2:
                 costs:
-                  value: "$rand$ > (0.75 + $luckyblunted$)"
+                  value: "$rand$ > (0.75 + $luckyblunted#var$)"
                 yield:
                   civstate:
                     target: damage-listener
@@ -43,9 +43,9 @@ passives:
                       components:
                         4:
                           variables:
-                            luckyblunted: "$luckyblunted$ + 0.05"
+                            luckyblunted: "$luckyblunted#var$ + 0.05"
               3:
                 costs:
                   inherit^not: 2
                 variables:
-                  luckyblunted: "$luckyblunted$ - 0.05"
+                  luckyblunted: "$luckyblunted#var$ - 0.05"
