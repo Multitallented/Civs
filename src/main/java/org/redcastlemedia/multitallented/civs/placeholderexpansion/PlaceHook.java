@@ -35,7 +35,7 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String POPULATION = "population";
     private static final String HOUSING = "housing";
     private static final String CHAT_CHANNEL_NAME = "chatchannel";
-    private static final String TOWN_BANK = "townbank"
+    private static final String TOWN_BANK = "townbank";
 
     @Override
     public boolean canRegister() {
