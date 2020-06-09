@@ -92,8 +92,10 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (POPULATION.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
-                return "-";
-           
+                return "-";  
+        } 
+        return "" + town.getPopulation();
+
         } else if (TOWN_BANK.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
