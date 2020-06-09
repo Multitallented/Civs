@@ -10,6 +10,7 @@ public final class LocaleConstants {
     public static final String PREVENT_CIVS_ITEM_SHARE = "prevent-civs-item-share";
     public static final String REGION_PROTECTED = "region-protected";
     public static final String PERMISSION_DENIED = "no-permission";
+    public static final String INVALID_TARGET = "invalid-target";
 
     private LocaleConstants() {
 
