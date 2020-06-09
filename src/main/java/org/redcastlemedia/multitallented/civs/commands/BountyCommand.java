@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -54,13 +55,18 @@ public class BountyCommand extends CivCommand {
         if (amount < 1) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                        "invalid-target"));
+                        LocaleConstants.INVALID_TARGET));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
             }
             return true;
         }
         if (player != null) {
+            if (Civs.perm != null && !Civs.perm.has(player, Constants.BOUNTY_PLAYER_PERMISSION)) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                        LocaleConstants.PERMISSION_DENIED));
+                return true;
+            }
             double balance = Civs.econ.getBalance(player);
             if (balance < amount) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
@@ -74,7 +80,12 @@ public class BountyCommand extends CivCommand {
             if (civilian != null) {
                 if (town.getPeople().containsKey(civilian.getUuid())) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                            "invalid-target"));
+                            LocaleConstants.INVALID_TARGET));
+                    return true;
+                }
+                if (Civs.perm != null && !Civs.perm.has(player, Constants.BOUNTY_TOWN_PERMISSION)) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                            LocaleConstants.PERMISSION_DENIED));
                     return true;
                 }
 

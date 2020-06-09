@@ -590,7 +590,7 @@ public class DeathListener implements Listener {
                 public void run() {
                     player.sendMessage(Civs.getPrefix() +
                             localeManager.getTranslationWithPlaceholders(dPlayer, "killjoy-points")
-                                    .replace("%amount", "" + killJoyPts));
+                                    .replace("$1", "" + killJoyPts));
                 }
             }, interval);
             interval += 10L;
@@ -601,7 +601,7 @@ public class DeathListener implements Listener {
             public void run() {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslationWithPlaceholders(dPlayer, "total-points")
-                                .replace("%amount", "" + pts));
+                                .replace("$1", "" + pts));
             }
         }, interval);
     }
