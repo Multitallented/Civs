@@ -135,8 +135,6 @@ public class DeathListener implements Listener {
         combatTagDuration *= 1000;
         if (!(event instanceof EntityDamageByEntityEvent)) {
             if (civilian.getLastDamage() > System.currentTimeMillis() - combatTagDuration) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
                 civilian.setLastDamage(System.currentTimeMillis());
             } else {
                 civilian.setLastDamager(null);
@@ -176,12 +174,14 @@ public class DeathListener implements Listener {
                     return;
                 }
             }
-            if (!damagerCiv.isInCombat()) {
-                damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(damager,
-                        "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+            if (damager != player) {
+                if (!damagerCiv.isInCombat()) {
+                    damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(damager,
+                            "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
+                }
+                damagerCiv.setLastDamage(System.currentTimeMillis());
+                damagerCiv.setLastDamager(player.getUniqueId());
             }
-            damagerCiv.setLastDamage(System.currentTimeMillis());
-            damagerCiv.setLastDamager(player.getUniqueId());
         }
         if (!civilian.isInCombat()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
