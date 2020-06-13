@@ -23,8 +23,8 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <id>ender-zone</id> <!-- Vault Repo -->
+            <url>https://ci.ender.zone/plugin/repository/everything</url>
         </repository>
         <repository>
             <id>placeholderapi</id>

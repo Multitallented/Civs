@@ -433,6 +433,11 @@ public class CivilianListener implements Listener {
                 TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
             }
             event.setCancelled(true);
+            String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(),
+                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslationWithPlaceholders(event.getPlayer(),
+                    "town-instructions").replace("$1", localTownName));
             return;
         }
         CVItem cvItem = CVItem.createFromItemStack(is);
@@ -443,6 +448,15 @@ public class CivilianListener implements Listener {
             lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onPlaceBlockLogger(BlockPlaceEvent event) {
+        ItemStack is = event.getItemInHand();
+        if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
+            return;
+        }
+        CVItem cvItem = CVItem.createFromItemStack(is);
         BlockLogger blockLogger = BlockLogger.getInstance();
         blockLogger.putBlock(Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation())), cvItem);
     }
