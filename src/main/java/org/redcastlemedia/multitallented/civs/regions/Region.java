@@ -820,7 +820,12 @@ public class Region {
                 Set<UUID> owners = getOwners();
                 if (!owners.isEmpty()) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owners.iterator().next());
-                    CommandUtil.performCommand(offlinePlayer, regionUpkeep.getCommand());
+                    String regionCommand = regionUpkeep.getCommand();
+                    regionCommand = regionCommand.replace("$region_x$", "" + location.getX());
+                    regionCommand = regionCommand.replace("$region_y$", "" + location.getY());
+                    regionCommand = regionCommand.replace("$region_z$", "" + location.getZ());
+
+                    CommandUtil.performCommand(offlinePlayer, regionCommand);
                 }
             }
             hasItemUpkeep = true;
