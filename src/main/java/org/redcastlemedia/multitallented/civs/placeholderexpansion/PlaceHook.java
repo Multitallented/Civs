@@ -35,6 +35,7 @@ public class PlaceHook extends PlaceholderExpansion {
     private static final String POPULATION = "population";
     private static final String HOUSING = "housing";
     private static final String CHAT_CHANNEL_NAME = "chatchannel";
+    private static final String TOWN_BANK = "townbank";
 
     @Override
     public boolean canRegister() {
@@ -91,9 +92,17 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (POPULATION.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
+                return "-";  
+        } 
+        return "" + town.getPopulation();
+
+        } else if (TOWN_BANK.equals(identifier)) {
+            Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
+            if (town == null) {
                 return "-";
             }
-            return "" + town.getPopulation();
+            return "" + Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
+        
         } else if (HOUSING.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
