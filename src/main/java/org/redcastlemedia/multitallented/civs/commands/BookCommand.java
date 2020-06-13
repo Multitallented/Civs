@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 
 @CivsCommand(keys = { "book" })
-public class BookCommand implements CivCommand {
+public class BookCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {

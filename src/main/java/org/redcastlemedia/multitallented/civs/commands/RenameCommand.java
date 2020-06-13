@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "rename" }) @SuppressWarnings("unused")
-public class RenameCommand implements CivCommand {
+public class RenameCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -89,5 +92,13 @@ public class RenameCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getTownNames(args[1]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

@@ -1,11 +1,15 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -15,7 +19,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "bounty" })
-public class BountyCommand implements CivCommand {
+public class BountyCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -51,13 +55,18 @@ public class BountyCommand implements CivCommand {
         if (amount < 1) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                        "invalid-target"));
+                        LocaleConstants.INVALID_TARGET));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
             }
             return true;
         }
         if (player != null) {
+            if (Civs.perm != null && !Civs.perm.has(player, Constants.BOUNTY_PLAYER_PERMISSION)) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                        LocaleConstants.PERMISSION_DENIED));
+                return true;
+            }
             double balance = Civs.econ.getBalance(player);
             if (balance < amount) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
@@ -71,7 +80,12 @@ public class BountyCommand implements CivCommand {
             if (civilian != null) {
                 if (town.getPeople().containsKey(civilian.getUuid())) {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
-                            "invalid-target"));
+                            LocaleConstants.INVALID_TARGET));
+                    return true;
+                }
+                if (Civs.perm != null && !Civs.perm.has(player, Constants.BOUNTY_TOWN_PERMISSION)) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                            LocaleConstants.PERMISSION_DENIED));
                     return true;
                 }
 
@@ -130,5 +144,18 @@ public class BountyCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return Civs.econ != null;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            List<String> suggestions = new ArrayList<>();
+            addAllOnlinePlayers(suggestions, args[1]);
+            suggestions.addAll(getTownNames(args[1]));
+            return suggestions;
+        } else if (args.length == 3) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }

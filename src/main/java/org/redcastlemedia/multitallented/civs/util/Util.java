@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -457,7 +458,7 @@ public final class Util {
                         continue;
                     }
 
-                    if (orReq.equivalentItem(iss, true)) {
+                    if (orReq.equivalentItem(iss, orReq.getDisplayName() != null, !orReq.getLore().isEmpty())) {
                         if ((iss.getAmount() + amount) >= orReq.getQty()) {
                             continue outer;
                         } else {
@@ -517,7 +518,7 @@ public final class Util {
             boolean removeIndex = false;
             outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
                 for (CVItem hsItem : hsItems) {
-                    if (hsItem.equivalentItem(item, true)) {
+                    if (hsItem.equivalentItem(item, hsItem.getDisplayName() != null, !hsItem.getLore().isEmpty())) {
 
                         if (item.getAmount() > hsItem.getQty()) {
                             reduceItems.put(i, hsItem.getQty());
@@ -623,7 +624,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (item.equivalentItem(iss)) {
+                        if (item.equivalentItem(iss, item.getDisplayName() != null, !item.getLore().isEmpty())) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());
@@ -779,5 +780,18 @@ public final class Util {
         }
 
         return c;
+    }
+
+    public static void sendMessageToPlayerOrConsole(CommandSender commandSender, String key, String message) {
+        Player player = null;
+        if (commandSender instanceof Player) {
+            player = (Player) commandSender;
+        }
+        if (player != null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, key));
+        } else {
+            commandSender.sendMessage(message);
+        }
     }
 }

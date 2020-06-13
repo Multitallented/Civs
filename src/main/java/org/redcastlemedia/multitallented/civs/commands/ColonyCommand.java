@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "colony" }) @SuppressWarnings("unused")
-public class ColonyCommand implements CivCommand {
+public class ColonyCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player) || args.length < 3) {
@@ -60,5 +63,16 @@ public class ColonyCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return commandSender instanceof Player;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getTownNames(args[1]);
+        }
+        if (args.length == 3) {
+            return getTownNames(args[2]);
+        }
+        return super.getWord(commandSender, args);
     }
 }
