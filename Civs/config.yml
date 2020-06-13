@@ -9,6 +9,8 @@ line-break-length-per-language:
   en: 40
   zh: 25
 
+##Do not enable this unless you have tested it
+##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false
 
 ##put rings above towns
@@ -26,6 +28,8 @@ explosion-override: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 
+##Should chunks containing region chests be loaded at all times
+keep-region-chunks-loaded: true
 disable-regions-in-unloaded-chunks: false
 ##how often (minutes) should unloaded chunks be loaded to update chests?
 ##higher number means less lag, lower number means potential item loss in the event of a crash
