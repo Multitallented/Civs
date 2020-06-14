@@ -3,10 +3,10 @@
 #icon: CHEST
 #shop-icon: OBSIDIAN
 #max: 1
-#price: 500
+#price: 1000
 #groups:
 #- mine
-#level: 6
+#level: 7
 #
 #pre-reqs:
 #- member=city:metropolis

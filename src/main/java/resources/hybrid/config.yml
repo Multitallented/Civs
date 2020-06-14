@@ -1,7 +1,7 @@
 default-config-set: hybrid
 
 black-list-worlds:
-- Hub
+  - Hub
 
 default-language: en
 line-break-length: 40
@@ -9,6 +9,8 @@ line-break-length-per-language:
   en: 40
   zh: 25
 
+##Do not enable this unless you have tested it
+##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false
 
 ##put rings above towns
@@ -26,6 +28,8 @@ explosion-override: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 
+##Should chunks containing region chests be loaded at all times
+keep-region-chunks-loaded: true
 disable-regions-in-unloaded-chunks: false
 ##how often (minutes) should unloaded chunks be loaded to update chests?
 ##higher number means less lag, lower number means potential item loss in the event of a crash
@@ -129,13 +133,13 @@ folders:
   trading: EMERALD_ORE
 
 levels:
-- DIRT
-- OAK_LOG
-- COAL_BLOCK
-- IRON_BLOCK
-- GOLD_BLOCK
-- EMERALD_BLOCK
-- DIAMOND_BLOCK
+  - DIRT
+  - OAK_LOG
+  - COAL_BLOCK
+  - IRON_BLOCK
+  - GOLD_BLOCK
+  - EMERALD_BLOCK
+  - DIAMOND_BLOCK
 
 item-groups:
   sign: SIGN,WALL_SIGN

@@ -24,6 +24,10 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
+            <id>ender-zone</id> <!-- Vault Repo -->
+            <url>https://ci.ender.zone/plugin/repository/everything</url>
+        </repository>
+        <repository>
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -90,10 +94,9 @@
 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
+            <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/Vault.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.dynmap</groupId>
