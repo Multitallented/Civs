@@ -458,7 +458,7 @@ public final class Util {
                         continue;
                     }
 
-                    if (orReq.equivalentItem(iss, true)) {
+                    if (orReq.equivalentItem(iss, orReq.getDisplayName() != null, !orReq.getLore().isEmpty())) {
                         if ((iss.getAmount() + amount) >= orReq.getQty()) {
                             continue outer;
                         } else {
@@ -518,7 +518,7 @@ public final class Util {
             boolean removeIndex = false;
             outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
                 for (CVItem hsItem : hsItems) {
-                    if (hsItem.equivalentItem(item, true)) {
+                    if (hsItem.equivalentItem(item, hsItem.getDisplayName() != null, !hsItem.getLore().isEmpty())) {
 
                         if (item.getAmount() > hsItem.getQty()) {
                             reduceItems.put(i, hsItem.getQty());
@@ -624,7 +624,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (item.equivalentItem(iss)) {
+                        if (item.equivalentItem(iss, item.getDisplayName() != null, !item.getLore().isEmpty())) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());

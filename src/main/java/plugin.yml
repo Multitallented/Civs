@@ -17,6 +17,12 @@ commands:
     description: Civs commands
     usage: /<command>
 permissions:
+  civs.bounty.player:
+    description: Allows you to set bounties on players
+    default: true
+  civs.bounty.town:
+    description: Allows you to set bounties on towns
+    default: true
   civs.join:
     description: Allows players to join towns
     default: true

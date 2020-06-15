@@ -28,6 +28,8 @@ public final class Constants {
     public static final String ADMIN_INVISIBLE = "civs.invis";
     public static final String PVP_EXEMPT_PERMISSION = "civs.bypasspvp";
     public static final String PORT_PERMISSION = "civs.port";
+    public static final String BOUNTY_PLAYER_PERMISSION = "civs.bounty.player";
+    public static final String BOUNTY_TOWN_PERMISSION = "civs.bounty.town";
 
     private Constants() {
 

@@ -92,9 +92,9 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (POPULATION.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
-                return "-";  
-        } 
-        return "" + town.getPopulation();
+                return "-";
+            }
+            return "" + town.getPopulation();
 
         } else if (TOWN_BANK.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
@@ -102,7 +102,7 @@ public class PlaceHook extends PlaceholderExpansion {
                 return "-";
             }
             return "" + Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
-        
+
         } else if (HOUSING.equals(identifier)) {
             Town town = TownManager.getInstance().getTown(TownManager.getInstance().getBiggestTown(civilian));
             if (town == null) {
@@ -112,7 +112,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (KARMA.equals(identifier)) {
             return "" + civilian.getKarma();
         } else if (HARDSHIP.equals(identifier)) {
-            return "" + civilian.getHardship();
+            return "" + (int) civilian.getHardship();
         } else if (KILLS.equals(identifier)) {
             return "" + civilian.getKills();
         } else if (KILLSTREAK.equals(identifier)) {
@@ -122,7 +122,7 @@ public class PlaceHook extends PlaceholderExpansion {
         } else if (DEATHS.equals(identifier)) {
             return "" + civilian.getDeaths();
         } else if (POINTS.equals(identifier)) {
-            return "" + civilian.getPoints();
+            return "" + (int) civilian.getPoints();
         } else if (MANA.equals(identifier)) {
             return "" + civilian.getMana();
         } else if (CHAT_CHANNEL_NAME.equals(identifier)) {
