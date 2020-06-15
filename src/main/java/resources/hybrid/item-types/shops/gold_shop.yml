@@ -4,7 +4,7 @@ shop-icon: GOLD_INGOT
 dynmap-marker: coins
 name: Gold_Shop
 max: 1
-price: 200
+price: 500
 groups:
 - shop
 - oreshop
@@ -38,5 +38,5 @@ upkeep:
   0:
     input:
     - GOLD_INGOT*12 # 288 / day
-    payout: 28          # $576 / day
+    payout: 48          # $1152 / day
 

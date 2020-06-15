@@ -3,7 +3,7 @@ icon: GLOWSTONE
 shop-icon: DIAMOND_BLOCK
 name: Metropolis
 max: 1
-price: 120000
+price: 200000
 groups:
 - superregion
 level: 7
@@ -18,23 +18,17 @@ build-reqs:
 - utility:2
 
 limits:
-- arrowtrapgroup:22
-- npchousing:43
-- library:1
-- smithy:1
-- purifier:1
-- church:4
-- bank:1
-- warehouse:3
+- arrowtrapgroup:28
+- library:6
+- smithy:3
+- purifier:6
+- church:10
+- bank:3
+- warehouse:6
 - barracks:4
 - inn:4
 - jail:1
-- alchemical_lab:1
-- vault:8
-- diamond_mine:1
-- obsidian_mine:1
-- ender_pearl_farm:1
-- blaze_sifter:1
+- vault:60
 - idolgroup:8
 - jammer_trap:0
 
@@ -42,7 +36,7 @@ critical-build-reqs:
 - town_center
 
 child: city
-child-population: 50
+child-population: 160
 build-radius: 200
 build-radius-y: 500
 effects:

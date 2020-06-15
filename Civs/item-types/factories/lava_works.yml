@@ -2,42 +2,44 @@
 #type: region
 #icon: CHEST
 #shop-icon: LAVA_BUCKET
+#dynmap-marker: factory
+#name: Lava_Works
 #price: 600
 #groups:
-#- factory
+#  - factory
 #level: 6
 #
 #pre-reqs:
-#- member=city:metropolis
+#  - member=city:metropolis
 #
 #build-reqs:
-#- LAVA*6
-#- g:window*2
-#- g:door*1
-#- g:roof*20
-#- g:primary*55
-#- g:secondary*10
+#  - LAVA*6
+#  - g:window*2
+#  - g:door*1
+#  - g:roof*20
+#  - g:primary*55
+#  - g:secondary*10
 #
 #towns:
-#- city
-#- metropolis
+#  - city
+#  - metropolis
 #
 #build-radius: 3
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:LAVA_BUCKET
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:LAVA_BUCKET
 #
 #period: 15 #15 seconds
 #upkeep:
 #  0:
 #    reagents:
-#    - WATER_BUCKET
+#      - WATER_BUCKET
 #    input:
-#    - BUCKET
+#      - BUCKET
 #    output:
-#    - LAVA_BUCKET
+#      - LAVA_BUCKET
 #
