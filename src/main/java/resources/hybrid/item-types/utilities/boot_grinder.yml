@@ -6,6 +6,7 @@ name: Boot_Grinder
 price: 20
 groups:
 - factory
+- utilities
 level: 3
 
 pre-reqs:
