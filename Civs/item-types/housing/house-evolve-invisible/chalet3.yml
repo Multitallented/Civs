@@ -2,18 +2,20 @@
 #type: region
 #icon: CHEST
 #shop-icon: MAGENTA_BED
+#dynmap-marker: bighouse
+#name: Chalet1
 #max: 2
 #price: 1400
 #is-in-shop: false
 #groups:
-#- housing
-#- allchalet
-#- basechalet
-#- allhousing
+#  - housing
+#  - allchalet
+#  - basechalet
+#  - allhousing
 #level: 4
 #
 #pre-reqs:
-#- member=village:town:city:metropolis
+#  - member=village:town:city:metropolis
 #
 #build-reqs:
 #  - CHEST*8
@@ -29,20 +31,20 @@
 #
 #build-radius: 8 #17x17x17
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- housing:1
-#- buyable
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - housing:1
+#  - buyable
 #
 #towns:
-#- village
-#- town
-#- city
-#- metropolis
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:
@@ -50,18 +52,18 @@
 #    power-input: 1
 #  1:
 #    input: #2.11
-#    - BREAD*5  # 120 or 1.875 stacks / day
-#    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
+#      - BREAD*5  # 120 or 1.875 stacks / day
+#      - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
 #    payout: 18.6 # $303.84 + 144 = 447.84 / day
 #    exp: 1
 #  2:
 #    input:
-#    - CARROT*12   # 288 or 4.5 stacks / day
-#    - COOKIE*24   # 576 or 9 stacks / day
+#      - CARROT*12   # 288 or 4.5 stacks / day
+#      - COOKIE*24   # 576 or 9 stacks / day
 #    payout: 15.7 # $244.8 + 132 = 376.8 / day
 #  3:
 #    input: #.32
-#    - MELON_SLICE*24 # 576 or 9 stacks / day
+#      - MELON_SLICE*24 # 576 or 9 stacks / day
 #    payout: 8.24 # $197.76 / day
 #    exp: 1
 #

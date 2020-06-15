@@ -2,26 +2,28 @@
 #type: region
 #icon: OBSIDIAN
 #shop-icon: PLAYER_HEAD
+#dynmap-marker: cross
+#name: Hunting_Lodge
 #price: 400
 #max: 1
 #groups:
-#- offense
+#  - offense
 #level: 1
 #
 #build-reqs:
-#- g:sign*1
-#- CHEST*2
-#- g:door*1
-#- g:window*4
-#- g:roof*25
-#- g:secondary*12
-#- g:primary*45
+#  - g:sign*1
+#  - CHEST*2
+#  - g:door*1
+#  - g:window*4
+#  - g:roof*25
+#  - g:secondary*12
+#  - g:primary*45
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- hunt
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - hunt:60

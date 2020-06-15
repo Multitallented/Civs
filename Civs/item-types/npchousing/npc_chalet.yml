@@ -2,48 +2,50 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: MAGENTA_BED
-#price: 1400
+#dynmap-marker: default
+#name: NPC_Chalet
+#price: 1600
 #groups:
-#- npchousinggroup
-#- allchalet
-#- allhousing
+#  - npchousinggroup
+#  - allchalet
+#  - allhousing
 #level: 4
 #
 #pre-reqs:
-#- member=village:town:city:metropolis
+#  - member=village:town:city:metropolis
 #
 #build-reqs:
-#- CHEST*8
-#- g:door*1
-#- g:window*8
-#- g:bed*1
-#- g:sign*1
-#- FURNACE*2
-#- CRAFTING_TABLE
-#- g:roof*85
-#- g:secondary*65
-#- g:primary*200
+#  - CHEST*8
+#  - g:door*1
+#  - g:window*8
+#  - g:bed*1
+#  - g:sign*1
+#  - FURNACE*2
+#  - CRAFTING_TABLE
+#  - g:roof*85
+#  - g:secondary*65
+#  - g:primary*200
 #
 #rebuild:
-#- basechalet
-#- npc_house
+#  - basechalet
+#  - npc_house
 #build-radius: 8 #17x17x17
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- chest_use
-#- housing:1
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - chest_use
+#  - housing:5
+#  - villager:5
 #
 #towns:
-#- village
-#- town
-#- city
-#- metropolis
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 7200 #2 hour
 #upkeep:
 #  0:
 #    power-input: 1
-#

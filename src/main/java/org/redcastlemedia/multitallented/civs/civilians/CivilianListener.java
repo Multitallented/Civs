@@ -529,6 +529,9 @@ public class CivilianListener implements Listener {
     @EventHandler @SuppressWarnings("unused")
     public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
         UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
+        if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
+            event.getRegion().getLocation().getChunk().setForceLoaded(false);
+        }
     }
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")

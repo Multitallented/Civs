@@ -2,43 +2,45 @@
 #type: region
 #icon: OBSIDIAN
 #shop-icon: SIGN
+#dynmap-marker: king
+#name: City_Hall
 #price: 8000
 #max: 1
 #groups:
-#- utility
-#- town_center
+#  - utility
+#  - town_center
 #level: 5
 #
 #pre-reqs:
-#- member=town:city:metropolis
+#  - member=town:city:metropolis
 #
 #towns:
-#- town
-#- city
-#- metropolis
+#  - town
+#  - city
+#  - metropolis
 #
 #build-reqs:
-#- CHEST*8
-#- g:door*2
-#- g:window*8
-#- g:stairs*4
-#- g:roof*70
-#- BOOKSHELF*12
-#- g:sign*10
-#- g:secondary*55
-#- g:primary*175
+#  - CHEST*8
+#  - g:door*2
+#  - g:window*8
+#  - g:stairs*4
+#  - g:roof*70
+#  - BOOKSHELF*12
+#  - g:sign*10
+#  - g:secondary*55
+#  - g:primary*175
 #build-radius: 5 # 11x19x11
 #build-radius-y: 9
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- port
-#- cant_override
-#- housing:2
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - port:town
+#  - cant_override
+#  - housing:2
 #
 #rebuild: town_hall
 #rebuild-required: true

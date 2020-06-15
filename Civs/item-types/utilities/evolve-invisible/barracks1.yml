@@ -1,0 +1,50 @@
+#enabled: true
+#type: region
+#icon: BLACK_BED
+#dynmap-marker: tower
+#name: Barracks
+#max: 2
+#price: 550
+#groups:
+#  - publichousing
+#  - utility
+#level: 3
+#
+#pre-reqs:
+#  - barracks:built=1
+#  - member=hamlet:village:town:city:metropolis
+#
+#towns:
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
+#
+#rebuild: inn
+#rebuild-required: true
+#build-radius: 7 #15x15x15
+#build-reqs:
+#  - IRON_BARS*12
+#  - g:door*7
+#  - g:sign*6
+#  - g:bed*6
+#  - CHEST*6
+#  - FURNACE*6
+#  - CRAFTING_TABLE*6
+#  - g:roof*75
+#  - g:primary*250
+#  - g:secondary*45
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_fire
+#  - door_use
+#  - exclusive:inn
+#  - housing:6
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 5

@@ -2,18 +2,20 @@
 #type: region
 #icon: CHEST
 #shop-icon: LIGHT_BLUE_BED
+#dynmap-marker: bighouse
+#name: Manor1
 #is-in-shop: false
 #max: 2
 #price: 4000
 #groups:
-#- housing
-#- allmanor
-#- basemanor
-#- allhousing
+#  - housing
+#  - allmanor
+#  - basemanor
+#  - allhousing
 #level: 5
 #
 #pre-reqs:
-#- member=town:city:metropolis
+#  - member=town:city:metropolis
 #
 #build-reqs:
 #  - CHEST*8
@@ -29,41 +31,41 @@
 #
 #build-radius: 12 #25x25x25
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- housing:1
-#- evolve:manor2.24
-#- buyable
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - housing:1
+#  - evolve:manor2.24
+#  - buyable
 #
 #towns:
-#- town
-#- city
-#- metropolis
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    power-input: 1
+#    power-input: 2
 #  1:
 #    input: #2.11
-#    - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
+#      - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
 #    payout: 20.8 # $500 / day
 #  2:
 #    input:
-#    - COOKIE*20 # 480 or 7.5 stacks / day
+#      - COOKIE*20 # 480 or 7.5 stacks / day
 #    payout: 18.4 # $432 / day
 #  3:
 #    input:
-#    - COOKED_BEEF*4,BEEF*24 # 576 or 9 stacks / day
+#      - COOKED_BEEF*4,BEEF*24 # 576 or 9 stacks / day
 #    payout: 4.2 # $100.8 / day
 #  4:
 #    input:
-#    - MILK_BUCKET # 24 stacks / day
+#      - MILK_BUCKET # 24 stacks / day
 #    output:
-#    - BUCKET
+#      - BUCKET
 #    payout: 10.2 # $244 / day
 #    exp: 1

@@ -61,4 +61,3 @@
 #    input:
 #      - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
 #    payout: 5.2 # $100.8 / day
-#

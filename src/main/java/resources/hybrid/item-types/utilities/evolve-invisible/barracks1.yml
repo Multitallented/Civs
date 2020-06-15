@@ -4,12 +4,13 @@ dynmap-marker: tower
 name: Barracks
 max: 2
 price: 550
-is-in-shop: false
 groups:
 - publichousing
+- utility
 level: 3
 
 pre-reqs:
+- barracks:built=1
 - member=hamlet:village:town:city:metropolis
 
 towns:
