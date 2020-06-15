@@ -2,38 +2,42 @@
 #type: region
 #icon: CHEST
 #shop-icon: TNT
+#name: Siege_Machine_Active
+#dynmap-marker: bomb
 #is-in-shop: false
+#price: 250
 #groups:
-#- offense
-#- siegemachinegroup
-#- townpowerreduce
+#  - offense
+#  - siegemachinegroup
+#  - townpowerreduce
 #
 #build-reqs:
-#- TNT*5
-#- SIGN*1,WALL_SIGN*1
-#- OBSIDIAN*9
-#- g:fence*12
+#  - TNT*5
+#  - g:sign*1
+#  - OBSIDIAN*9
+#  - g:fence*12
 #
 #build-radius: 3 #7x7x7
 #effects:
-#- block_build
-#- block_break
-#- drain_power:2
-#- evolve:siege_machine1.20
+#  - block_build
+#  - block_break
+#  - drain_power:2
+#  - evolve:siege_machine1.20
 #
 #towns:
-#- outpost
-#- keep
+#  - outpost
+#  - keep
 #
 #period: 180 # 3 minutes
 #upkeep:
 #  0:
 #    input:
-#    - TNT*1
-#    - REDSTONE*4
-#    - COAL*4
+#      - TNT*1
+#      - REDSTONE*4
+#      - COAL*4
 #    output:
-#    - GRAVEL*1%95,TNT*1%5
-#    - DIRT*1%90,COAL*1%5,REDSTONE*1%5
+#      - GRAVEL*1%95,TNT*1%5
+#      - DIRT*1%90,COAL*1%5,REDSTONE*1%5
 #    exp: 1
+#    payout: 2
 #

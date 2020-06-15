@@ -2,36 +2,37 @@
 #type: region
 #icon: CHEST
 #shop-icon: DIAMOND_CHESTPLATE
+#name: Altar
 #price: 100
 #max: 1
 #groups:
-#- offense
+#  - offense
 #level: 1
 #
 #build-reqs:
-#- IRON_BLOCK*3
+#  - IRON_BLOCK*3
 #
 #build-radius: 1
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- chest_use
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - chest_use
 #
 #period: 3600 #1 hour
 #upkeep:
 #  0:
 #    input:
-#    - IRON_SWORD*1
+#      - IRON_SWORD*1
 #    output:
-#    - DIAMOND_SWORD*1
-#    - DIAMOND_HELMET*1
-#    - DIAMOND_CHESTPLATE*1
-#    - DIAMOND_LEGGINGS*1
-#    - DIAMOND_BOOTS*1
-#    - BOW*1
-#    - ARROW*32
+#      - DIAMOND_SWORD*1
+#      - DIAMOND_HELMET*1
+#      - DIAMOND_CHESTPLATE*1
+#      - DIAMOND_LEGGINGS*1
+#      - DIAMOND_BOOTS*1
+#      - BOW*1
+#      - ARROW*32
 #    payout: -300
 #

@@ -1,3 +1,4 @@
+#enabled: true
 #type: region
 #icon: CHEST
 #shop-icon: TNT
@@ -9,7 +10,7 @@
 #level: 1
 #
 #build-reqs:
-#  - OBSIDIAN*16
+#  - OBSIDIAN*8
 #  - IRON_BARS*8
 #  - REDSTONE_BLOCK*2
 #  - TNT*4
