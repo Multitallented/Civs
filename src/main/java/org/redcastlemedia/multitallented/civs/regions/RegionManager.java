@@ -126,12 +126,28 @@ public class RegionManager {
         }
     }
 
+    private void forceLoadRegionChunk(Region region) {
+        if (!ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
+            return;
+        }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
+            if (!regionUpkeep.getInputs().isEmpty() ||
+                    !regionUpkeep.getOutputs().isEmpty() ||
+                    !regionUpkeep.getReagents().isEmpty()) {
+                region.getLocation().getChunk().setForceLoaded(true);
+                return;
+            }
+        }
+    }
+
     private boolean loadRegionFile(File file) {
         try {
             Region region = loadRegion(file);
             if (region == null || regionLocations.containsKey(region.getId())) {
                 return true;
             }
+            forceLoadRegionChunk(region);
             UUID worldName = region.getLocation().getWorld().getUID();
             if (!regions.containsKey(worldName)) {
                 regions.put(worldName, new ArrayList<>());
@@ -755,6 +771,7 @@ public class RegionManager {
         Region region = new Region(regionType.getName(), people, location, radii, regionType.getEffects(), 0);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
+        forceLoadRegionChunk(region);
         RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
         Bukkit.getPluginManager().callEvent(regionCreatedEvent);
     }

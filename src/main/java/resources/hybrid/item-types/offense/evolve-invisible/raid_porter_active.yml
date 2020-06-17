@@ -11,7 +11,7 @@ groups:
 
 build-reqs:
 - TNT*2
-- SIGN*1,WALL_SIGN*1
+- g:sign*1
 - OBSIDIAN*5
 - IRON_BARS*12
 - REDSTONE_WIRE*4

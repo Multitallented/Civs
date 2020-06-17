@@ -2,39 +2,41 @@
 #type: region
 #icon: CHEST
 #shop-icon: COCOA_BEANS
+#dynmap-marker: cutlery
+#name: Cocoa_Farm
 #max: 1
 #price: 250
 #groups:
-#- farm
+#  - farm
 #level: 4
 #
 #pre-reqs:
-#- member=village:town:city:metropolis
+#  - member=village:town:city:metropolis
 #
 #build-reqs:
-#- g:fencegate*1
-#- g:fence*15
-#- JUNGLE_LOG*6
-#- COCOA*16
+#  - g:fencegate*1
+#  - g:fence*15
+#  - JUNGLE_LOG*6
+#  - COCOA*16
 #
 #towns:
-#- village
-#- town
-#- city
-#- metropolis
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #build-radius: 4 # 9x9x9
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:COCOA_BEANS
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:COCOA_BEANS
 #period: 300 #5 minutes
 #upkeep:
 #  0:
 #    reagents:
-#    - STONE_HOE
+#      - STONE_HOE
 #    output:
-#    - COCOA_BEANS*16
+#      - COCOA_BEANS*16
 #

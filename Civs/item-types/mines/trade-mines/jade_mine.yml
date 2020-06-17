@@ -2,46 +2,48 @@
 #type: region
 #icon: CHEST
 #shop-icon: EMERALD_ORE
+#dynmap-marker: scales
+#name: Jade_Mine
 #max: 1
 #price: 600
 #groups:
-#- trademine
-#- trading
+#  - trademine
+#  - trading
 #level: 3
 #
 #pre-reqs:
-#- member=hamlet:village:town:city:metropolis
+#  - member=hamlet:village:town:city:metropolis
 #
 #towns:
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #build-reqs:
-#- IRON_BARS*2
-#- g:door*1
-#- CHEST*2
-#- FURNACE*2
-#- EMERALD_ORE*4
-#- g:primary*55
-#- g:secondary*6
+#  - IRON_BARS*2
+#  - g:door*1
+#  - CHEST*2
+#  - FURNACE*2
+#  - EMERALD_ORE*4
+#  - g:primary*55
+#  - g:secondary*6
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- chest_use
-#- block_liquid
-#- block_fire
+#  - block_break
+#  - block_build
+#  - chest_use
+#  - block_liquid
+#  - block_fire
 #
 #period: daily
 #upkeep:
 #  0:
 #    reagents:
-#    - IRON_PICKAXE
+#      - IRON_PICKAXE
 #    output:
-#    - EMERALD.jade*16
+#      - EMERALD.jade*16
 #
