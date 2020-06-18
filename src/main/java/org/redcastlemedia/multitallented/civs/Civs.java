@@ -117,7 +117,7 @@ public class Civs extends JavaPlugin {
             logger.log(Level.INFO, "{0}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
         }
         if (mmoItems != null) {
-            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKCHAT);
+            logger.log(Level.INFO, "{0} MMOItems", LogInfo.MMOITEMS);
         }
         if (discordSRV != null) {
             logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
