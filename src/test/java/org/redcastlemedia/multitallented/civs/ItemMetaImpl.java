@@ -232,11 +232,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     }
 
     @Override
-    public Spigot spigot() {
-        return null;
-    }
-
-    @Override
     public Map<String, Object> serialize() {
         return null;
     }

@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.boss.DragonBattle;
 import org.bukkit.entity.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -15,6 +16,8 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -77,6 +80,26 @@ public class WorldImpl implements World {
                 location.getX(), 255, location.getZ());
         when(block.getLocation()).thenReturn(thisLocation);
         return block;
+    }
+
+    @Override
+    public int getHighestBlockYAt(int i, int i1, @NotNull HeightMap heightMap) {
+        return 0;
+    }
+
+    @Override
+    public int getHighestBlockYAt(@NotNull Location location, @NotNull HeightMap heightMap) {
+        return 0;
+    }
+
+    @Override
+    public @NotNull Block getHighestBlockAt(int i, int i1, @NotNull HeightMap heightMap) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Block getHighestBlockAt(@NotNull Location location, @NotNull HeightMap heightMap) {
+        return null;
     }
 
     @Override
@@ -576,7 +599,17 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public @NotNull Biome getBiome(int i, int i1, int i2) {
+        return null;
+    }
+
+    @Override
     public void setBiome(int i, int i1, Biome biome) {
+
+    }
+
+    @Override
+    public void setBiome(int i, int i1, int i2, @NotNull Biome biome) {
 
     }
 
@@ -586,7 +619,17 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public double getTemperature(int i, int i1, int i2) {
+        return 0;
+    }
+
+    @Override
     public double getHumidity(int i, int i1) {
+        return 0;
+    }
+
+    @Override
+    public double getHumidity(int i, int i1, int i2) {
         return 0;
     }
 
@@ -646,6 +689,16 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean isHardcore() {
+        return false;
+    }
+
+    @Override
+    public void setHardcore(boolean b) {
+
+    }
+
+    @Override
     public long getTicksPerAnimalSpawns() {
         return 0;
     }
@@ -662,6 +715,26 @@ public class WorldImpl implements World {
 
     @Override
     public void setTicksPerMonsterSpawns(int i) {
+
+    }
+
+    @Override
+    public long getTicksPerWaterSpawns() {
+        return 0;
+    }
+
+    @Override
+    public void setTicksPerWaterSpawns(int i) {
+
+    }
+
+    @Override
+    public long getTicksPerAmbientSpawns() {
+        return 0;
+    }
+
+    @Override
+    public void setTicksPerAmbientSpawns(int i) {
 
     }
 
@@ -857,6 +930,11 @@ public class WorldImpl implements World {
 
     @Override
     public List<Raid> getRaids() {
+        return null;
+    }
+
+    @Override
+    public @Nullable DragonBattle getEnderDragonBattle() {
         return null;
     }
 
