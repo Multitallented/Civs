@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-shop-icon: DIAMOND_CHESTPLATE
+shop-icon: NETHERITE_CHESTPLATE
 name: Altar
 price: 100
 max: 1
@@ -9,7 +9,7 @@ groups:
 level: 1
 
 build-reqs:
-- IRON_BLOCK*3
+- DIAMOND_BLOCK*3
 
 build-radius: 1
 
@@ -24,13 +24,13 @@ period: 3600 #1 hour
 upkeep:
   0:
     input:
-    - IRON_SWORD*1
-    output:
     - DIAMOND_SWORD*1
-    - DIAMOND_HELMET*1
-    - DIAMOND_CHESTPLATE*1
-    - DIAMOND_LEGGINGS*1
-    - DIAMOND_BOOTS*1
+    output:
+    - NETHERITE_SWORD*1
+    - NETHERITE_HELMET*1
+    - NETHERITE_CHESTPLATE*1
+    - NETHERITE_LEGGINGS*1
+    - NETHERITE_BOOTS*1
     - BOW*1
     - ARROW*32
     payout: -300
