@@ -37,16 +37,14 @@ effects:
 period: 3600 # 1 hour
 upkeep:
  0:
-   reagents:
-     - DIAMOND_PICKAXE
    input:
-     - IRON_PICKAXE
+     - DIAMOND_PICKAXE
    output:
      - NETHERITE_INGOT*1
  1:
    reagents:
      - NETHERITE_PICKAXE
    input:
-     - IRON_PICKAXE
+     - DIAMOND_PICKAXE
    output:
      - NETHERITE_INGOT*2
