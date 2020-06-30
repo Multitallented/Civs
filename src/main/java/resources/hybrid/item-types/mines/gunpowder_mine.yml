@@ -40,4 +40,10 @@ upkeep:
     - IRON_PICKAXE
     output:
     - GUNPOWDER*15
-
+  2:
+    reagents:
+    - NETHERITE_PICKAXE
+    input:
+    - IRON_PICKAXE
+    output:
+    - GUNPOWDER*20

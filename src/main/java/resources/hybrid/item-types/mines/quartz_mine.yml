@@ -44,5 +44,13 @@ upkeep:
     - STONE_PICKAXE
     output:
     - QUARTZ*6
+  2:
+    reagents:
+      - NETHERITE_PICKAXE
+      - STONE_PICKAXE
+    input:
+      - STONE_PICKAXE
+    output:
+      - QUARTZ*8
 
 biomes: []
