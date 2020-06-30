@@ -1,0 +1,52 @@
+enabled: true
+type: region
+icon: CHEST
+shop-icon: ANCIENT_DEBRIES
+dynmap-marker: diamond
+name: Netherite_Mine
+max: 1
+price: 10000
+groups:
+ - mine
+level: 7
+
+pre-reqs:
+ - member=metropolis
+
+towns:
+ - metropolis
+
+build-reqs:
+ - IRON_BARS*2
+ - ANCIENT_DEBRIES*2
+ - g:door*1
+ - CHEST*2
+ - FURNACE*2
+ - g:primary*45
+ - g:secondary*6
+
+build-radius: 4
+
+effects:
+ - block_break
+ - block_build
+ - block_liquid
+ - block_fire
+ - conveyor:NETHERITE
+
+period: 3600 # 1 hour
+upkeep:
+ 0:
+   reagents:
+     - DIAMOND_PICKAXE
+   input:
+     - IRON_PICKAXE
+   output:
+     - NETHERITE_INGOT*1
+ 1:
+   reagents:
+     - NETHERITE_PICKAXE
+   input:
+     - IRON_PICKAXE
+   output:
+     - NETHERITE_INGOT*2

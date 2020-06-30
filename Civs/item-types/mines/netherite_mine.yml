@@ -37,21 +37,16 @@
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
-#    input:
-#      - IRON_PICKAXE
-#    output:
-#      - NETHERITE_INGOT
-#  1:
 #    reagents:
 #      - DIAMOND_PICKAXE
 #    input:
 #      - IRON_PICKAXE
 #    output:
-#      - NETHERITE_INGOT*2
-#  2:
+#      - NETHERITE_INGOT*1
+#  1:
 #    reagents:
 #      - NETHERITE_PICKAXE
 #    input:
 #      - IRON_PICKAXE
 #    output:
-#      - NETHERITE_INGOT*3
+#      - NETHERITE_INGOT*2

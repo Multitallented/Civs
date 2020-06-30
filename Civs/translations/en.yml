@@ -818,3 +818,5 @@
 #chat-channel-set: "You are now chatting in channel $1"
 #click-change-chat: "Click to change chat channel"
 #no-recipients: "There is no one online in $1 chat channel"
+#netherite_mine-name: "Netherite Mine"
+#netherite_mine-desc: "Creates netherite by using diamond pickaxes."
