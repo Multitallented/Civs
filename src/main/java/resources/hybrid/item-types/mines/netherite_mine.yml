@@ -1,7 +1,7 @@
 enabled: true
 type: region
 icon: CHEST
-shop-icon: ANCIENT_DEBRIES
+shop-icon: ANCIENT_DEBRIS
 dynmap-marker: diamond
 name: Netherite_Mine
 max: 1
@@ -18,7 +18,7 @@ towns:
 
 build-reqs:
  - IRON_BARS*2
- - ANCIENT_DEBRIES*2
+ - ANCIENT_DEBRIS*2
  - g:door*1
  - CHEST*2
  - FURNACE*2
