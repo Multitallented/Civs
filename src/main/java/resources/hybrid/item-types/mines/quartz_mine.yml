@@ -45,4 +45,9 @@ upkeep:
     output:
     - QUARTZ*6
 
-biomes: []
+biomes:
+  - BASALT_DELTAS
+  - NETHER_WASTES
+  - SOUL_SAND_VALLEY
+  - CRIMSON_FOREST
+  - WARPED_FOREST

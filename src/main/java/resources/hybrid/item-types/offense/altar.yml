@@ -26,7 +26,7 @@ upkeep:
     input:
     - IRON_SWORD*1
     output:
-    - DIAMOND_SWORD*1
+    - NETHERITE_SWORD*1
     - DIAMOND_HELMET*1
     - DIAMOND_CHESTPLATE*1
     - DIAMOND_LEGGINGS*1
