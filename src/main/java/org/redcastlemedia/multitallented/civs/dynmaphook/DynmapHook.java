@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.dynmaphook;
 
 import java.util.HashSet;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -10,6 +11,7 @@ import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
@@ -86,8 +88,12 @@ public class DynmapHook implements Listener {
         }
         initMarkerSet();
         MarkerIcon markerIcon = dynmapCommonAPI.getMarkerAPI().getMarkerIcon(iconName);
-        markerSet.createMarker(Region.locationToString(location), label, false,
-                location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), markerIcon, true);
+        try {
+            markerSet.createMarker(Region.locationToString(location), label, false,
+                    location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), markerIcon, true);
+        } catch (NullPointerException nullPointerException) {
+            Civs.logger.log(Level.SEVERE, "Unable to create marker " + label, nullPointerException);
+        }
     }
 
     private static void deleteRegionMarker(Location location) {
