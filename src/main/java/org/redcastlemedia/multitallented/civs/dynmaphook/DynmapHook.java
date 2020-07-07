@@ -76,10 +76,13 @@ public class DynmapHook implements Listener {
         double z2 = centerZ - radius;
         double[] x = { x1, x2 };
         double[] z = { z1, z2 };
-        AreaMarker areaMarker = markerSet.createAreaMarker(markerId, town.getName(), false,
-                town.getLocation().getWorld().getName(), x, z, true);
-
-        areaMarker.setDescription(town.getName());
+        try {
+            AreaMarker areaMarker = markerSet.createAreaMarker(markerId, town.getName(), false,
+                    town.getLocation().getWorld().getName(), x, z, true);
+            areaMarker.setDescription(town.getName());
+        } catch (NullPointerException npe) {
+            Civs.logger.log(Level.SEVERE, "Unable to create area marker " + town.getName(), npe);
+        }
     }
 
     private static void createMarker(Location location, String label, String iconName) {
