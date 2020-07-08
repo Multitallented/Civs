@@ -6,8 +6,11 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.HashMap;
 
@@ -20,6 +23,12 @@ public class MenuCommand extends CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
+
+        if (Civs.perm != null && Civs.perm.has(player, Constants.MENU_PERMISSION)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    LocaleConstants.PERMISSION_DENIED));
+            return true;
+        }
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (civilian.getTutorialIndex() == -1) {
