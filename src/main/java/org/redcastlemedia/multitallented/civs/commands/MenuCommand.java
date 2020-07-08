@@ -6,7 +6,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "menu" })
 public class MenuCommand extends CivCommand {
@@ -17,6 +20,12 @@ public class MenuCommand extends CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
+
+        if (Civs.perm != null && Civs.perm.has(player, Constants.MENU_PERMISSION)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    LocaleConstants.PERMISSION_DENIED));
+            return true;
+        }
 
         String menuName;
         HashMap<String, String> params = new HashMap<>();
