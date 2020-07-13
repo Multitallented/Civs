@@ -48,3 +48,10 @@ upkeep:
      - DIAMOND_PICKAXE
    output:
      - NETHERITE_INGOT*2
+
+biomes:
+  - BASALT_DELTAS
+  - NETHER_WASTES
+  - SOUL_SAND_VALLEY
+  - CRIMSON_FOREST
+  - WARPED_FOREST
