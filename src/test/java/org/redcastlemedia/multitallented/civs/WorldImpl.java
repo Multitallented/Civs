@@ -729,6 +729,16 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public long getTicksPerWaterAmbientSpawns() {
+        return 0;
+    }
+
+    @Override
+    public void setTicksPerWaterAmbientSpawns(int i) {
+
+    }
+
+    @Override
     public long getTicksPerAmbientSpawns() {
         return 0;
     }
@@ -765,6 +775,16 @@ public class WorldImpl implements World {
 
     @Override
     public void setWaterAnimalSpawnLimit(int i) {
+
+    }
+
+    @Override
+    public int getWaterAmbientSpawnLimit() {
+        return 0;
+    }
+
+    @Override
+    public void setWaterAmbientSpawnLimit(int i) {
 
     }
 
