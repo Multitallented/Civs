@@ -49,4 +49,10 @@ upkeep:
     - IRON_PICKAXE
     output:
     - GOLD_INGOT*10
-
+  2:
+    reagents:
+    - NETHERITE_PICKAXE
+    input:
+    - IRON_PICKAXE
+    output:
+    - GOLD_INGOT*14

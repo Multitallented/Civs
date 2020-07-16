@@ -45,3 +45,8 @@
 #      - DIAMOND_AXE
 #    output:
 #      - BIRCH_LOG*8
+#  2:
+#    reagents:
+#      - NETHERITE_AXE
+#    output:
+#      - BIRCH_LOG*14
