@@ -14,6 +14,11 @@ public final class SpellEffectConstants {
     public static final String IGNITE = "ignite";
     public static final String TELEPORT = "teleport";
     public static final String MANA = "mana";
+    public static final String ITEM = "item";
+    public static final String EXEMPTION = "exemption";
+    public static final String CLEANSE = "cleanse";
+    public static final String CIVSTATE = "civstate";
+    public static final String EFFECT = "effect";
 
     private SpellEffectConstants() {
 

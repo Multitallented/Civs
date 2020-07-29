@@ -1,0 +1,39 @@
+icon: LEATHER_BOOTS
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - chase
+
+pre-reqs: []
+
+allowed-actions: []
+
+exp-per-use: 10
+
+conditions:
+  cooldown: 10000
+  mana: 10
+
+components:
+  1:
+    yield:
+      mana: -10
+      cooldown: 10000
+      exemption: FLY
+      exemption^1: FALL
+      sound^1: ENTITY_MAGMA_CUBE_JUMP
+      particle:
+        particle: SNOW_SHOVEL
+        duration: 1000
+        period: 2
+      velocity^1:
+        y: 1
+        multiplier: 1
+      duration^1:
+        delay: 3
+        section:
+          components:
+            2:
+              yield:
+                fall: -10

@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -792,6 +791,17 @@ public final class Util {
                     LocaleManager.getInstance().getTranslationWithPlaceholders(player, key));
         } else {
             commandSender.sendMessage(message);
+        }
+    }
+
+    public static String formatTime(long duration) {
+        if (duration < 60) {
+            return duration + "s";
+        } else if (duration < 3600) {
+            return (int) (duration / 60) + "m " + (int) (duration % 60) + "s";
+        } else {
+            int hours = (int) (duration / 3600);
+            return hours + "h " + (int) ((duration - hours * 3600) / 60) + "m " + (int) (duration % 60) + "s";
         }
     }
 }

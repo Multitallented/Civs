@@ -253,7 +253,7 @@ public class PeopleMenu extends CustomMenu {
                 addRank(civilian.getLocale(), cvItem, town.getRawPeople().get(offlinePlayer.getUniqueId()));
             }
             ItemStack itemStack = cvItem.createItemStack();
-            if (player != null) {
+            if (player != null && Bukkit.getOnlineMode()) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
                 skullMeta.setOwningPlayer(player);
                 itemStack.setItemMeta(skullMeta);

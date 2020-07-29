@@ -3,9 +3,14 @@ package org.redcastlemedia.multitallented.civs.items;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.List;
 
@@ -37,10 +42,20 @@ public abstract class CivItem extends CVItem {
     public int getCivMin() { return min; }
     public int getCivMax() { return max; }
     public boolean getInShop() { return isInShop; }
+    @Deprecated
     public CVItem getShopIcon(String locale) {
         CVItem returnItem =  shopIcon.clone();
         returnItem.setDisplayName(LocaleManager.getInstance().getTranslation(locale,
-                this.getProcessedName() + "-name"));
+                this.getProcessedName() + LocaleConstants.NAME_SUFFIX));
+        return returnItem;
+    }
+    public CVItem getShopIcon(Player player) {
+        CVItem returnItem =  shopIcon.clone();
+        returnItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                this.getProcessedName() + LocaleConstants.NAME_SUFFIX));
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        returnItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                this.getProcessedName() + LocaleConstants.DESC_SUFFIX)));
         return returnItem;
     }
 

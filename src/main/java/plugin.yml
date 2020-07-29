@@ -11,12 +11,23 @@ softdepend:
 - PlaceholderAPI
 - DiscordSRV
 - MMOItems
+- Spartan
+- AAC
+- BAC
+- BasicAntiCheat
+- NoCheatPlus
+- WitherAC
+- MMOLib
+- Reflex
 commands:
   cv:
     aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
     description: Civs commands
     usage: /<command>
 permissions:
+  civs.menu:
+    description: Allows you to use the menu
+    default: true
   civs.bounty.player:
     description: Allows you to set bounties on players
     default: true

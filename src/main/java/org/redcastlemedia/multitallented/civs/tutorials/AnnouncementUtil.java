@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs.util;
+package org.redcastlemedia.multitallented.civs.tutorials;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +31,8 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public final class AnnouncementUtil {
     private static HashMap<UUID, HashSet<String>> alreadySentMessages = new HashMap<>();
@@ -250,14 +252,4 @@ public final class AnnouncementUtil {
         player.spigot().sendMessage(message);
     }
 
-    public static String formatTime(long duration) {
-        if (duration < 60) {
-            return duration + "s";
-        } else if (duration < 3600) {
-            return (int) (duration / 60) + "m " + (int) (duration % 60) + "s";
-        } else {
-            int hours = (int) (duration / 3600);
-            return hours + "h " + (int) ((duration - hours * 3600) / 60) + "m " + (int) (duration % 60) + "s";
-        }
-    }
 }

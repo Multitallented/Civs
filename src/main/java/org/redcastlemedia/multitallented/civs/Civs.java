@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
@@ -33,7 +34,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -85,6 +86,7 @@ public class Civs extends JavaPlugin {
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
+        AllowedActionsListener.getInstance().onDisable();
     }
 
 
@@ -121,7 +123,7 @@ public class Civs extends JavaPlugin {
             logger.log(Level.INFO, "{0}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
         }
         if (mmoItems != null) {
-            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKCHAT);
+            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKITEMS);
         }
         if (discordSRV != null) {
             logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);

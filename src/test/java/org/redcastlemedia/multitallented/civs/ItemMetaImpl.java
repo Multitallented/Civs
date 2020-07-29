@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -7,7 +8,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +20,7 @@ import java.util.Set;
 
 import com.google.common.collect.Multimap;
 
-public class ItemMetaImpl implements ItemMeta, Damageable {
+public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
 
     private String displayName = null;
     private List<String> lore = new ArrayList<>();
@@ -202,6 +205,31 @@ public class ItemMetaImpl implements ItemMeta, Damageable {
     @Override
     public void setDamage(int i) {
 
+    }
+
+    @Override
+    public @Nullable String getOwner() {
+        return null;
+    }
+
+    @Override
+    public boolean hasOwner() {
+        return false;
+    }
+
+    @Override
+    public boolean setOwner(@Nullable String s) {
+        return false;
+    }
+
+    @Override
+    public @Nullable OfflinePlayer getOwningPlayer() {
+        return null;
+    }
+
+    @Override
+    public boolean setOwningPlayer(@Nullable OfflinePlayer offlinePlayer) {
+        return false;
     }
 
     @Override

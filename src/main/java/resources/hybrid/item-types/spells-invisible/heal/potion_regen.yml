@@ -1,0 +1,30 @@
+icon: GOLDEN_APPLE
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - heal
+
+pre-reqs: []
+
+allowed-actions:
+  - REGENERATION.99
+
+exp-per-use: 15
+
+conditions:
+  cooldown: 20000
+  mana: 25
+
+components:
+  1:
+    yield:
+      mana: -25
+      cooldown: 20000
+      sound: BLOCK_BREWING_STAND_BREW
+      item:
+        item: POTION
+        potion:
+          type: REGEN
+          upgraded: true
+          extended: false

@@ -131,7 +131,18 @@ public class InviteTownCommand extends CivCommand {
 
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
-        return commandSender instanceof Player;
+        if (!(commandSender instanceof Player)) {
+            return true;
+        }
+        Player player = (Player) commandSender;
+        for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
+            if (town.getRawPeople().containsKey(player.getUniqueId()) &&
+                    (town.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER) ||
+                    town.getRawPeople().get(player.getUniqueId()).contains(Constants.RECRUITER))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
