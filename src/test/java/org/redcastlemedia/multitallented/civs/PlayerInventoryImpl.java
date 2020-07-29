@@ -30,22 +30,22 @@ public class PlayerInventoryImpl implements PlayerInventory {
 
     @Override
     public ItemStack getHelmet() {
-        return null;
+        return new ItemStack(Material.AIR);
     }
 
     @Override
     public ItemStack getChestplate() {
-        return null;
+        return new ItemStack(Material.AIR);
     }
 
     @Override
     public ItemStack getLeggings() {
-        return null;
+        return new ItemStack(Material.AIR);
     }
 
     @Override
     public ItemStack getBoots() {
-        return null;
+        return new ItemStack(Material.AIR);
     }
 
     @Override

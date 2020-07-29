@@ -44,7 +44,9 @@
 #      region: altar
 #      rewards:
 #        items:
-#          - DIAMOND_BLOCK*3
+#          - DIAMOND_BLOCK
+#          - IRON_BLOCK
+#          - REDSTONE_BLOCK
 #          - DIAMOND_SWORD
 #        money: 300
 #    - type: upkeep

@@ -52,6 +52,7 @@ use-particle-bounding-boxes: false
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
 
+exp-base: 100
 exp-modifier: 0.2
 
 jail-time-seconds: 300

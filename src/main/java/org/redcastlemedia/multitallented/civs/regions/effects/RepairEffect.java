@@ -1,9 +1,11 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,8 +29,8 @@ public class RepairEffect implements Listener {
     }
 
     private static final String KEY = "repair";
-    private HashSet<Material> getRequiredReagent(Material material) {
-        HashSet<Material> returnSet = new HashSet<>();
+    public static Set<Material> getRequiredReagent(Material material) {
+        Set<Material> returnSet = new HashSet<>();
         switch (material) {
             case WOODEN_HOE:
             case WOODEN_PICKAXE:
@@ -92,12 +94,15 @@ public class RepairEffect implements Listener {
             case FISHING_ROD:
                 returnSet.add(Material.STRING);
                 return returnSet;
+            case ELYTRA:
+                returnSet.add(Material.PHANTOM_MEMBRANE);
+                return returnSet;
             default:
                 return returnSet;
         }
     }
 
-    protected int getRepairCost(Material mat, double damage) {
+    public static int getRepairCost(Material mat, double damage) {
         int amt;
         switch (mat) {
             case WOODEN_SHOVEL:
@@ -162,6 +167,150 @@ public class RepairEffect implements Listener {
         }
     }
 
+    public static boolean isArmor(Material mat) {
+        switch (mat) {
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+            case DIAMOND_BOOTS:
+            case CHAINMAIL_BOOTS:
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+            case CHAINMAIL_HELMET:
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isHelmet(Material mat) {
+        switch (mat) {
+            case DIAMOND_HELMET:
+            case LEATHER_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+            case CHAINMAIL_HELMET:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isCombatEnchantment(Enchantment enchantment) {
+        switch (enchantment.getKey().getKey().toUpperCase()) {
+            case "SHARPNESS":
+            case "PROTECTION":
+            case "PROJECTILE_PROTECTION":
+            case "FIRE_PROTECTION":
+            case "BLAST_PROTECTION":
+            case "THORNS":
+            case "KNOCKBACK":
+            case "FIRE_ASPECT":
+            case "SWEEPING":
+            case "POWER":
+            case "PUNCH":
+            case "FLAME":
+            case "IMPALING":
+            case "CHANNELING":
+            case "MULTISHOT":
+            case "QUICK_CHARGE":
+            case "PIERCING":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isChestplate(Material mat) {
+        switch (mat) {
+            case LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isLeggings(Material mat) {
+        switch (mat) {
+            case DIAMOND_LEGGINGS:
+            case LEATHER_LEGGINGS:
+            case IRON_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static boolean isBoots(Material mat) {
+        switch (mat) {
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+            case DIAMOND_BOOTS:
+            case CHAINMAIL_BOOTS:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isWeapon(Material type) {
+        switch (type) {
+            case DIAMOND_SWORD:
+            case IRON_SWORD:
+            case GOLDEN_SWORD:
+            case STONE_SWORD:
+            case DIAMOND_AXE:
+            case IRON_AXE:
+            case GOLDEN_AXE:
+            case STONE_AXE:
+            case TRIDENT:
+            case BOW:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isAxe(Material type) {
+        switch (type) {
+            case DIAMOND_AXE:
+            case IRON_AXE:
+            case GOLDEN_AXE:
+            case STONE_AXE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isSword(Material type) {
+        switch (type) {
+            case DIAMOND_SWORD:
+            case IRON_SWORD:
+            case GOLDEN_SWORD:
+            case STONE_SWORD:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getHand() == null) {
@@ -220,7 +369,7 @@ public class RepairEffect implements Listener {
             event.setCancelled(true);
             return;
         }
-        HashSet<Material> reagents = getRequiredReagent(item.getType());
+        Set<Material> reagents = getRequiredReagent(item.getType());
         if (!reagents.isEmpty()) {
             boolean hasReagent = false;
             Material firstMat = reagents.iterator().next();

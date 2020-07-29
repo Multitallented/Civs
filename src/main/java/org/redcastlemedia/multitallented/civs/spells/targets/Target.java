@@ -5,13 +5,17 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellComponent;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,7 +40,6 @@ public abstract class Target extends SpellComponent {
     public Location applyTargetSettings(Location currentLocation) {
         //jitter
         int level = getLevel();
-        HashMap<String, HashMap<Object, HashMap<String, Double>>> abilityVariables = getSpell().getAbilityVariables();
         String jitter = config.getString("jitter");
         if (jitter != null) {
             String jX = jitter.split(";")[0];

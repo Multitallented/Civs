@@ -33,7 +33,7 @@ items:
     name: operation
     desc: region-not-working
     actions:
-      - menu:recipe?regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$&region=$region$
+      - menu:recipe?region=$region$&regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$&region=$region$
   location:
     index: 3
     icon: OAK_DOOR

@@ -17,9 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CancelEffect extends Effect {
-    private String target;
     private String abilityName;
-    private boolean silent;
     private List<String> whitelist;
     private List<String> blacklist;
     private ConfigurationSection config = null;
@@ -28,25 +26,20 @@ public class CancelEffect extends Effect {
         super(spell, key, target, origin, level);
         if (value instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection) value;
-            this.silent = section.getBoolean(SpellConstants.SILENT, false);
-            this.target = section.getString(SpellConstants.TARGET, "self");
             this.abilityName = section.getString(SpellConstants.ABILITY, "self");
             this.whitelist = section.getStringList(SpellConstants.WHITELIST);
             this.blacklist = section.getStringList(SpellConstants.BLACKLIST);
             this.config = section;
         } else if (value instanceof String) {
             this.abilityName = (String) value;
-            this.target = "self";
             this.whitelist = new ArrayList<>();
             this.blacklist = new ArrayList<>();
-            this.silent = false;
         }
     }
 
     public boolean meetsRequirement() {
         Spell spell = getSpell();
         Object target = getTarget();
-        //TODO allow this to target mobs
         if (!(target instanceof Player)) {
             return false;
         }
@@ -75,19 +68,17 @@ public class CancelEffect extends Effect {
     public void apply() {
         Spell ability = getSpell();
         Object target = getTarget();
-        Entity origin = getOrigin();
-        //TODO allow this to target mobs
         if (!(target instanceof Player)) {
             return;
         }
         Player player = (Player) target;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String newAbilityName = abilityName.equals("self") ? ability.getType() : abilityName;
+        String spellTypeName = abilityName.equals("self") ? ability.getType() : abilityName;
         HashSet<String> removeMe = new HashSet<>();
         for (String key : civilian.getStates().keySet()) {
             String currentAbilityName = key.split("\\.")[0];
             String currentComponentName = key.split("\\.")[1];
-            if (!abilityName.equals("all") && !currentAbilityName.equals(newAbilityName)) {
+            if (!abilityName.equals("all") && !currentAbilityName.equals(spellTypeName)) {
                 continue;
             }
             if (!whitelist.isEmpty() && !whitelist.contains(currentComponentName)) {
@@ -100,16 +91,16 @@ public class CancelEffect extends Effect {
         }
         for (String key : removeMe) {
             CivState currentState = civilian.getStates().get(key);
-            if (origin instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) origin;
-                SpellListener.getInstance().removeDamageListener(livingEntity);
-            }
-            if (origin instanceof Projectile) {
-                Projectile projectile = (Projectile) origin;
-                SpellListener.getInstance().removeProjectileListener(projectile);
-            }
+            // TODO fix damage listener cancelling
+//            if (origin instanceof LivingEntity) {
+//                LivingEntity livingEntity = (LivingEntity) origin;
+//                SpellListener.getInstance().removeDamageListener(livingEntity);
+//            }
+//            if (origin instanceof Projectile) {
+//                Projectile projectile = (Projectile) origin;
+//                SpellListener.getInstance().removeProjectileListener(projectile);
+//            }
             currentState.remove(target);
-            civilian.getStates().remove(key);
         }
     }
 }

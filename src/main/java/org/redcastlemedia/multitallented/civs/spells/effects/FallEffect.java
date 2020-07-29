@@ -74,9 +74,8 @@ public class FallEffect extends Effect {
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
         HashMap<String, Double> returnMap = new HashMap<>();
-        Object target = getTarget();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }

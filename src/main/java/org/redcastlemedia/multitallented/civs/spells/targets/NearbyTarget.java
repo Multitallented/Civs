@@ -1,5 +1,9 @@
 package org.redcastlemedia.multitallented.civs.spells.targets;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,18 +11,18 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-public class AreaTarget extends Target {
-    public AreaTarget(Spell spell,
-                      String key,
-                      Entity origin,
-                      int level,
-                      ConfigurationSection config) {
+public class NearbyTarget extends Target {
+    public NearbyTarget(Spell spell,
+                        String key,
+                        Entity origin,
+                        int level,
+                        ConfigurationSection config) {
         super(spell, key, origin, level, config);
     }
 
@@ -31,9 +35,9 @@ public class AreaTarget extends Target {
         }
         LivingEntity player = (LivingEntity) getOrigin();
         ConfigurationSection config = getConfig();
-        int range = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("range","15"), level, null, spell));
-        int radius = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("radius", "5"), level, null, spell));
-        int maxTargets = (int) Math.round(Spell.getLevelAdjustedValue(getConfig().getString("max-targets", "-1"), level, null, spell));
+        int range = (int) Math.round(Spell.getLevelAdjustedValue(config.getString("range","15"), level, null, spell));
+        int radius = (int) Math.round(Spell.getLevelAdjustedValue(config.getString("radius", "5"), level, null, spell));
+        int maxTargets = (int) Math.round(Spell.getLevelAdjustedValue(config.getString("max-targets", "-1"), level, null, spell));
         Collection<Entity> nearbyEntities;
         if (range < 1) {
             nearbyEntities = player.getNearbyEntities(radius, radius, radius);
@@ -50,6 +54,13 @@ public class AreaTarget extends Target {
         for (Entity target : nearbyEntities) {
             if (maxTargets > 0 && returnSet.size() >= maxTargets) {
                 break;
+            }
+            if (target instanceof Player) {
+                Player cPlayer = (Player) target;
+                Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
+                    continue;
+                }
             }
 
             if (target != player &&

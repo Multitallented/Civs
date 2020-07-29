@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
@@ -44,22 +45,19 @@ public class DamageEffect extends Effect {
         Entity origin = getOrigin();
         if (!(target instanceof LivingEntity)) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take damage.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
             }
             return false;
         }
         LivingEntity livingEntity = (LivingEntity) target;
-        Player player = null;
-        if (livingEntity instanceof Player) {
-            player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
-        }
         if (livingEntity.getHealth() < damage) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take " + damage + " damage.");
-            }
-            if (player != null) {
-//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslationWithPlaceholders(originPlayer,
+                                "need-more-health").replace("$1", "" + Math.abs(damage)));
             }
             return false;
         }
@@ -67,15 +65,11 @@ public class DamageEffect extends Effect {
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target can't be damaged.");
-            }
-            if (player != null) {
-//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
             }
             return false;
-        }
-        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
         }
         return true;
     }

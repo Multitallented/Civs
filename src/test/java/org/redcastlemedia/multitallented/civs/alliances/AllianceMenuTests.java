@@ -4,9 +4,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.bukkit.Bukkit;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -30,7 +28,7 @@ public class AllianceMenuTests extends TestUtil {
         town3 = TownTests.loadTown("town3", "hamlet", TestUtil.block8.getLocation());
         town4 = TownTests.loadTown("town4", "hamlet", TestUtil.block6.getLocation());
         town5 = TownTests.loadTown("town5", "hamlet", TestUtil.block9.getLocation());
-        town6 = TownTests.loadTown("town6", "hamlet", TestUtil.block10.getLocation());
+        town6 = TownTests.loadTown("town6", "hamlet", TestUtil.goldBlock0x1y1z.getLocation());
     }
 
     @Test

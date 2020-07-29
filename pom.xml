@@ -4,11 +4,12 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.6.10</version>
+    <version>1.7.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <repositories>
@@ -37,6 +38,14 @@
         <repository>
             <id>dynmap</id>
             <url>http://repo.mikeprimm.com/</url>
+        </repository>
+        <repository>
+            <id>janmm14-public</id>
+            <url>https://repo.janmm14.de/repository/public/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -110,6 +119,53 @@
             <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
             <version>1.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>me.vagdedes.spartan.api</groupId>
+            <artifactId>API</artifactId>
+            <scope>system</scope>
+            <version>Universal</version>
+            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.jinky</groupId>
+            <artifactId>BAC</artifactId>
+            <scope>system</scope>
+            <version>1.2.2</version>
+            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.gmail.olexorus.witherac.api</groupId>
+            <artifactId>WitherAC_API</artifactId>
+            <scope>system</scope>
+            <version>latest</version>
+            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus-parent</artifactId>
+            <scope>system</scope>
+            <version>3.17-SNAPSHOT-b1153-CustomFork</version>
+            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>rip.reflex.api</groupId>
+            <artifactId>ReflexAPI</artifactId>
+            <scope>system</scope>
+            <version>7</version>
+            <systemPath>${basedir}/lib/ReflexAPI-v7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.janmm14</groupId>
+            <artifactId>aac-api</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>AntiAuraAPI</groupId>
+            <artifactId>API</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/AAAPI.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -130,6 +186,13 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -145,6 +208,35 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message> <!-- git commit message -->
+                    <noJekyll>true</noJekyll>  <!-- disable webpage processing -->
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+                    <branch>refs/heads/mvn-repo</branch> <!-- remote branch name -->
+                    <includes><include>**/*</include></includes>
+                    <repositoryName>Civs</repositoryName> <!-- github repo name -->
+                    <repositoryOwner>Multitallented</repositoryOwner> <!-- organization or user name  -->
+                </configuration>
+                <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

@@ -33,13 +33,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
@@ -308,6 +305,25 @@ public class RegionsTests extends TestUtil {
         regionListener.onBlockPlace(event1);
         assertNull(RegionManager.getInstance().getRegionAt(TestUtil.blockUnique2.getLocation()));
     }
+
+    @Test
+    public void regionShouldNotBeMissingBlocksAfterPlacingBlock() {
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble", player.getUniqueId());
+        List<List<CVItem>> missingBlocks = new ArrayList<>();
+        List<CVItem> tempList = new ArrayList<>();
+        tempList.add(new CVItem(Material.GOLD_BLOCK, 1));
+        missingBlocks.add(tempList);
+        region.setMissingBlocks(missingBlocks);
+        BlockPlaceEvent blockPlaceEvent = mock(BlockPlaceEvent.class);
+        when(blockPlaceEvent.getPlayer()).thenReturn(player);
+        when(blockPlaceEvent.getBlockPlaced()).thenReturn(goldBlock0x1y1z);
+        when(blockPlaceEvent.isCancelled()).thenReturn(false);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockPlace(blockPlaceEvent);
+        assertTrue(region.getMissingBlocks().isEmpty());
+    }
+
     @Test
     public void regionShouldBeCreatedWithAllReqsFlex() {
         loadRegionTypeCobble();
@@ -617,7 +633,7 @@ public class RegionsTests extends TestUtil {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         RegionManager.getInstance().addRegion(region);
-        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.goldBlock0x1y1z, TestUtil.player);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(RegionManager.getInstance().getRegionAt(location1));
@@ -632,7 +648,7 @@ public class RegionsTests extends TestUtil {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         RegionManager.getInstance().addRegion(region);
-        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.goldBlock0x1y1z, TestUtil.player);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(RegionManager.getInstance().getRegionAt(location1));

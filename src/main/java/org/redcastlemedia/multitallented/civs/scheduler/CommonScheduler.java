@@ -2,9 +2,11 @@ package org.redcastlemedia.multitallented.civs.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -16,10 +18,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,9 +91,29 @@ public class CommonScheduler implements Runnable {
             if (ConfigManager.getInstance().isUseAnnouncements()) {
                 sendAnnouncement(player);
             }
+            checkExploration(player);
+            AllowedActionsListener.dropInvalidArmorOrWeapons(player);
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }
+    }
+
+    private void checkExploration(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
+        if (skill != null) {
+            Biome biome = player.getLocation().getBlock().getBiome();
+            double exp = skill.addAccomplishment(biome.name());
+            if (exp > 0) {
+                CivilianManager.getInstance().saveCivilian(civilian);
+                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "exp-gained").replace("$1", "" + exp)
+                        .replace("$2", localSkillName));
+            }
+        }
+
     }
 
     private void sendAnnouncement(Player player) {
@@ -124,19 +149,20 @@ public class CommonScheduler implements Runnable {
 
     void incrementMana(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        double maxMana = 0;
-        double maxManaPerSecond = 0;
-        for (CivClass civClass : civilian.getCivClasses()) {
-            maxMana = Math.max(maxMana, civClass.getMaxMana());
-            maxManaPerSecond = Math.max(maxManaPerSecond, civClass.getManaPerSecond());
+        if (civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_NATURAL) ||
+                civilian.hasBuiltInState(BuiltInCivState.MANA_FREEZE_GAIN)) {
+            return;
         }
-        setConvertedMana(civilian, maxMana, maxManaPerSecond);
-    }
-    void setConvertedMana(Civilian civilian, double maxMana, double manaPerSecond) {
-        if (civilian.getMana() < 100 && manaPerSecond > 0) {
-            double currentConvertedMana = (double) civilian.getMana() / 100 * maxMana;
-            int newMana = (int) ((currentConvertedMana + manaPerSecond) / maxMana * 100);
-            civilian.setMana(newMana);
+        int maxMana = civilian.getCurrentClass().getMaxMana();
+        int maxManaPerSecond = civilian.getCurrentClass().getManaPerSecond();
+        if (civilian.getMana() < maxMana) {
+            int newMana = Math.min(maxMana, civilian.getMana() + maxManaPerSecond);
+            ManaChangeEvent manaChangeEvent = new ManaChangeEvent(civilian.getUuid(), newMana,
+                    ManaChangeEvent.ManaChangeReason.NATURAL_REGEN);
+            Bukkit.getPluginManager().callEvent(manaChangeEvent);
+            if (!manaChangeEvent.isCancelled()) {
+                civilian.setMana(newMana);
+            }
         }
     }
     void playerInTown(Player player) {

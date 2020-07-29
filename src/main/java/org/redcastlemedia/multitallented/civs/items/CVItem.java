@@ -108,7 +108,7 @@ public class CVItem {
                 materialString = splitString[0];
             } else {
                 if (isMMOItem) {
-                    mmoType = materialString;
+                    mmoType = materialString.toUpperCase();
                     mat = Material.STONE;
                 } else {
                     mat = getMaterialFromString(materialString);
