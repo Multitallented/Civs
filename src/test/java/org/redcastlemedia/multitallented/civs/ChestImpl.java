@@ -213,4 +213,14 @@ public class ChestImpl implements Chest {
     public PersistentDataContainer getPersistentDataContainer() {
         return null;
     }
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void close() {
+
+    }
 }
