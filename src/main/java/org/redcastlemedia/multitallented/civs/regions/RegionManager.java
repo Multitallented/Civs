@@ -57,7 +57,6 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {

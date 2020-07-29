@@ -27,8 +27,8 @@ public class LanguageTests extends TestUtil {
         mockLanguageMap.put("no-region-type-found", "No se encontró ningún tipo de región");
         LocaleManager.getInstance().languageMap.put("es", mockLanguageMap);
         LocaleManager localeManager = LocaleManager.getInstance();
-        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", new HashMap<>(), null, new HashMap<>(),
-                0, 0,0,0,0, 0, 0);
+        Civilian civilian = new Civilian(TestUtil.player.getUniqueId(), "es", null, new HashMap<>(),
+                0, 0,0,0,0, 0);
 
         assertEquals("No se encontró ningún tipo de región",
                 localeManager.getTranslation(civilian.getLocale(), "no-region-type-found"));

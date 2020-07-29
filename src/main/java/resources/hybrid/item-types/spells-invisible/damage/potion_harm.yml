@@ -1,0 +1,31 @@
+icon: RED_MUSHROOM
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - damage
+
+pre-reqs:
+  - potion_poison:level=5
+
+allowed-actions:
+  - HARM.99
+
+exp-per-use: 15
+
+conditions:
+  cooldown: 20000
+  mana: 25
+
+components:
+  1:
+    yield:
+      mana: -25
+      cooldown: 20000
+      sound: BLOCK_BREWING_STAND_BREW
+      item:
+        item: SPLASH_POTION
+        potion:
+          type: INSTANT_DAMAGE
+          upgraded: true
+          extended: false

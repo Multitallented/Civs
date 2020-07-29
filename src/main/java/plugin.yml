@@ -11,6 +11,14 @@ softdepend:
 - PlaceholderAPI
 - DiscordSRV
 - MMOItems
+- Spartan
+- AAC
+- BAC
+- BasicAntiCheat
+- NoCheatPlus
+- WitherAC
+- MMOLib
+- Reflex
 commands:
   cv:
     aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']

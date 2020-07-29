@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -22,6 +23,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -57,6 +59,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -67,6 +70,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -117,6 +123,15 @@ public class ProtectionHandler implements Listener {
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
@@ -125,6 +140,7 @@ public class ProtectionHandler implements Listener {
             event.getPlayer().sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
+            checkMiningSkill(civilian, event.getBlock().getType());
             if (event.getBlock().getType() == Material.CHEST) {
                 UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
             }
@@ -159,6 +175,47 @@ public class ProtectionHandler implements Listener {
             } else {
                 setMissingBlocks(event, region, player, isNotMember, regionBlockCheckResponse.getMissingItems());
             }
+        }
+    }
+
+    private void checkMiningSkill(Civilian civilian, Material type) {
+        if (type == null || !blockIsOre(type)) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        ItemStack mainItem = player.getInventory().getItemInMainHand();
+        if (mainItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            return;
+        }
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.MINING.name())) {
+                double exp = skill.addAccomplishment(type.name());
+                if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
+    private boolean blockIsOre(Material type) {
+        switch (type) {
+            case COAL_ORE:
+            case IRON_ORE:
+            case DIAMOND_ORE:
+            case GOLD_ORE:
+            case REDSTONE_ORE:
+            case EMERALD_ORE:
+            case LAPIS_ORE:
+            case NETHER_QUARTZ_ORE:
+            case GLOWSTONE:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -210,6 +267,13 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
             Region region = RegionManager.getInstance().getRegionAt(event.getBlockPlaced().getLocation());
@@ -218,6 +282,7 @@ public class ProtectionHandler implements Listener {
             }
             return;
         }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);
@@ -541,6 +606,13 @@ public class ProtectionHandler implements Listener {
     private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
             return;
+        }
+        if (player != null && CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
+            CivItem civItem = CivItem.getFromItemStack(player.getInventory().getItemInMainHand());
+            if (civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+                return;
+            }
         }
         Material mat = clickedBlock.getType();
         if (mat == Material.OAK_DOOR ||

@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.junit.Before;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -131,10 +132,12 @@ public class ProtectionsTests extends TestUtil {
         RegionsTests.loadRegionTypeDirt();
 
         Player player = mock(Player.class);
+        when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         UUID uuid = new UUID(1, 2);
         when(player.getUniqueId()).thenReturn(uuid);
 
         Player player2 = mock(Player.class);
+        when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 
@@ -153,9 +156,11 @@ public class ProtectionsTests extends TestUtil {
     public void chestUseShouldBeCancelled() {
         RegionsTests.loadRegionTypeCobble();
         Player player = mock(Player.class);
+        when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         UUID uuid = new UUID(1, 2);
         when(player.getUniqueId()).thenReturn(uuid);
         Player player2 = mock(Player.class);
+        when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 
@@ -180,8 +185,10 @@ public class ProtectionsTests extends TestUtil {
         RegionsTests.loadRegionTypeCobble();
         Player player = mock(Player.class);
         UUID uuid = new UUID(1, 2);
+        when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player.getUniqueId()).thenReturn(uuid);
         Player player2 = mock(Player.class);
+        when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         UUID uuid2 = new UUID(1, 3);
         when(player2.getUniqueId()).thenReturn(uuid2);
 

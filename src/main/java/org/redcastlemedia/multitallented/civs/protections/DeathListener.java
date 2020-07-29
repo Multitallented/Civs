@@ -1,8 +1,14 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -10,8 +16,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -19,27 +27,29 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 @CivsSingleton()
 public class DeathListener implements Listener {
@@ -114,13 +124,48 @@ public class DeathListener implements Listener {
         return location1.distanceSquared(location2);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        Player damager = null;
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+            if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+                damager = (Player) entityDamageByEntityEvent.getDamager();
+            } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
+                if (projectile.getShooter() instanceof Player) {
+                    damager = (Player) projectile.getShooter();
+                }
+            }
+
+            if (damager != null) {
+                Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
+                if (damagerCiv.hasBuiltInState(BuiltInCivState.NO_OUTGOING_DAMAGE) ||
+                        damagerCiv.hasBuiltInState(BuiltInCivState.STUN)) {
+                    event.setCancelled(true);
+                    damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                            damager, "spell-block"));
+                    return;
+                }
+            }
+        }
+
+
+
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getEntity();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (civilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_DAMAGE)) {
+            event.setCancelled(true);
+            if (damager != null) {
+                damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                        damager, "spell-block"));
+            }
+            return;
+        }
 
         if (!civilian.isInCombat()) {
             boolean setCancelled = event.isCancelled() ||
@@ -129,6 +174,14 @@ public class DeathListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+
+        if (event.getDamage() > 0 && event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION &&
+                event.getCause() != EntityDamageEvent.DamageCause.FALL &&
+                event.getCause() != EntityDamageEvent.DamageCause.CONTACT &&
+                event.getCause() != EntityDamageEvent.DamageCause.DROWNING &&
+                event.getCause() != EntityDamageEvent.DamageCause.VOID) {
+            checkArmorSkill(player);
         }
 
         long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
@@ -141,17 +194,6 @@ public class DeathListener implements Listener {
                 civilian.setLastDamage(-1);
             }
             return;
-        }
-        EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
-
-        Player damager = null;
-        if (entityDamageByEntityEvent.getDamager() instanceof Player) {
-            damager = (Player) entityDamageByEntityEvent.getDamager();
-        } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) entityDamageByEntityEvent.getDamager();
-            if (projectile.getShooter() instanceof Player) {
-                damager = (Player) projectile.getShooter();
-            }
         }
         if (damager == null && civilian.getLastDamage() < 0) {
             return;
@@ -194,11 +236,94 @@ public class DeathListener implements Listener {
         civilian.setLastDamager(damager.getUniqueId());
     }
 
+    private void checkArmorSkill(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Set<Material> armors = new HashSet<>();
+        ItemStack helmet = player.getInventory().getHelmet();
+        ItemStack chestPlate = player.getInventory().getChestplate();
+        ItemStack leggings = player.getInventory().getLeggings();
+        ItemStack boots = player.getInventory().getBoots();
+        if (helmet != null && RepairEffect.isHelmet(helmet.getType())) {
+            armors.add(helmet.getType());
+        }
+        if (chestPlate != null && RepairEffect.isChestplate(chestPlate.getType())) {
+            armors.add(chestPlate.getType());
+        }
+        if (leggings != null && RepairEffect.isLeggings(leggings.getType())) {
+            armors.add(leggings.getType());
+        }
+        if (boots != null && RepairEffect.isBoots(boots.getType())) {
+            armors.add(boots.getType());
+        }
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD) &&
+                player.isBlocking();
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.ARMOR.name())) {
+                double exp = 0;
+                for (Material mat : armors) {
+                    exp += skill.addAccomplishment(mat.name());
+                }
+
+                if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            } else if (hasShield && skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
+                double exp = skill.addAccomplishment("DAMAGE");
+                if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDeflectArrow(ProjectileHitEvent event) {
+        if (!(event.getHitEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getHitEntity();
+        if (!player.isBlocking()) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
+                double exp = skill.addAccomplishment("BLOCKED");
+                if (exp > 0) {
+                    CivilianManager.getInstance().saveCivilian(civilian);
+                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            "exp-gained").replace("$1", "" + exp)
+                            .replace("$2", localSkillName));
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         Location location = player.getLocation();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (civilian.hasBuiltInState(BuiltInCivState.NO_COMMANDS)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
 
         long jailTime = ConfigManager.getInstance().getJailTime();
         if (civilian.getLastJail() + jailTime < System.currentTimeMillis()) {
@@ -255,6 +380,38 @@ public class DeathListener implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) {
+            return;
+        }
+        Player player = event.getEntity().getKiller();
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        boolean isSword = RepairEffect.isSword(mainHand.getType());
+        boolean isAxe = RepairEffect.isAxe(mainHand.getType());
+        boolean isTrident = mainHand.getType() == Material.TRIDENT;
+        boolean isBow = mainHand.getType() == Material.BOW;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            double exp = 0;
+            boolean swordSkill = isSword && skill.getType().equalsIgnoreCase(CivSkills.SWORD.name());
+            boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
+            boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
+            boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
+            if (swordSkill || axeSkill || tridentSkill || bowSkill) {
+                exp = skill.addAccomplishment(event.getEntity().getType().name());
+            }
+            if (exp > 0) {
+                CivilianManager.getInstance().saveCivilian(civilian);
+                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        "exp-gained").replace("$1", "" + exp)
+                        .replace("$2", localSkillName));
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         CivilianManager.getInstance().setListNeedsToBeSorted(true);
@@ -262,6 +419,8 @@ public class DeathListener implements Listener {
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         dyingCiv.setLastDamager(null);
         dyingCiv.setLastDamage(-1);
+
+        removePlayersFromCombat(dyingCiv);
 
         ArrayList<ItemStack> removeMe = new ArrayList<>();
         for (ItemStack is : event.getDrops()) {
@@ -604,6 +763,18 @@ public class DeathListener implements Listener {
                                 .replace("$1", "" + pts));
             }
         }, interval);
+    }
+
+    private void removePlayersFromCombat(Civilian dyingCiv) {
+        for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+            if (civilian.getLastDamager() != null && civilian.getLastDamager().equals(dyingCiv.getUuid()) &&
+                    civilian.isInCombat()) {
+                civilian.setLastDamager(null);
+                civilian.setLastDamage(-1);
+                CivilianManager.getInstance().saveCivilian(civilian);
+            }
+        }
     }
 
     private Region findJailInTown(Player player, Location deathLocation, RegionManager regionManager, Region jail) {

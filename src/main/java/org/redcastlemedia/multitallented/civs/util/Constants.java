@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.util;
 public final class Constants {
     public static final String REGIONS = "regions";
     public static final String REGION = "region";
+    public static final String CLASS = "class";
     public static final String REGION_TYPE = "regionType";
     public static final String TOWN_TYPE = "townType";
     public static final String SELECTED_TOWN = "selectedTown";
@@ -28,6 +29,7 @@ public final class Constants {
     public static final String ADMIN_INVISIBLE = "civs.invis";
     public static final String PVP_EXEMPT_PERMISSION = "civs.bypasspvp";
     public static final String PORT_PERMISSION = "civs.port";
+    public static final String SPARTAN_PLUGIN = "Spartan";
     public static final String BOUNTY_PLAYER_PERMISSION = "civs.bounty.player";
     public static final String BOUNTY_TOWN_PERMISSION = "civs.bounty.town";
     public static final String MENU_PERMISSION = "civs.menu";

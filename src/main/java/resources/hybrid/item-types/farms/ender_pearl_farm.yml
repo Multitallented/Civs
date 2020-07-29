@@ -4,7 +4,7 @@ shop-icon: ENDER_PEARL
 dynmap-marker: factory
 name: Ender_Pearl_Farm
 max: 1
-price: 1000
+price: 500
 groups:
 - farm
 level: 6
@@ -38,8 +38,10 @@ upkeep:
     - IRON_SWORD
     output:
     - ENDER_PEARL
+    - CHORUS_FRUIT
   1:
     reagents:
     - DIAMOND_SWORD
     output:
     - ENDER_PEARL*2
+    - CHORUS_FRUIT*2

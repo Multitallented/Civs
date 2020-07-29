@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,6 +13,8 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -79,6 +80,7 @@ public class CivilianManager {
     void loadCivilian(Player player) {
         Civilian civilian = loadFromFileCivilian(player.getUniqueId());
         civilians.put(player.getUniqueId(), civilian);
+        ClassManager.getInstance().loadPlayer(player, civilian);
     }
     public void createDefaultCivilian(Player player) {
         Civilian civilian = createDefaultCivilian(player.getUniqueId());
@@ -102,9 +104,9 @@ public class CivilianManager {
         });
     }
     void unloadCivilian(Player player) {
+        ClassManager.getInstance().unloadPlayer(player);
         Civilian civilian = getCivilian(player.getUniqueId());
         saveCivilian(civilian);
-//        civilian.setMana(100);
 //        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
@@ -143,11 +145,6 @@ public class CivilianManager {
 
             ItemManager itemManager = ItemManager.getInstance();
             Map<String, Integer> items = itemManager.loadCivItems(civConfig);
-            Set<CivClass> classes = new HashSet<>();
-            ClassManager classManager = ClassManager.getInstance();
-            for (int id : civConfig.getIntegerList("classes")) {
-                classes.add(classManager.getCivClass(uuid, id));
-            }
             HashMap<CivItem, Integer> exp = new HashMap<>();
             ConfigurationSection section = civConfig.getConfigurationSection("exp");
             if (section != null) {
@@ -159,21 +156,15 @@ public class CivilianManager {
                     exp.put(item, civConfig.getInt("exp." + key, 0));
                 }
             }
-            int expOrbs = -1;
-            if (Civs.getInstance() != null) {
-                if (player != null) {
-                    expOrbs = player.getTotalExperience();
-                }
-            }
 
             int tutorialIndex = civConfig.getInt("tutorial-index", -1);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
-            Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, classes, exp,
+            Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
-                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0), expOrbs);
+                    civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
             civilian.setTutorialIndex(tutorialIndex);
             civilian.setTutorialPath(tutorialPath);
             civilian.setTutorialProgress(tutorialProgress);
@@ -181,6 +172,22 @@ public class CivilianManager {
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
             civilian.setHardship(civConfig.getDouble("hardship", 0));
             String stringRespawn = civConfig.getString("respawn");
+            if (civConfig.isSet("skills")) {
+                for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
+                    Skill skill = new Skill(skillName);
+                    for (String accomplishment : civConfig.getConfigurationSection("skills." + skillName).getKeys(false)) {
+                        int level = civConfig.getInt("skills." + skillName + "." + accomplishment);
+                        skill.getAccomplishments().put(accomplishment, level);
+                    }
+                    civilian.getSkills().put(skillName, skill);
+                }
+            }
+            for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
+                if (!civilian.getSkills().containsKey(skillName)) {
+                    civilian.getSkills().put(skillName, new Skill(skillName));
+                }
+            }
+
             if (stringRespawn != null) {
                 civilian.setRespawnPoint(Region.idToLocation(stringRespawn));
             }
@@ -197,6 +204,7 @@ public class CivilianManager {
                 }
                 civilian.setFriends(friendSet);
             }
+            civilian.setMana(civConfig.getInt("mana", 0), false);
 
             ItemManager.getInstance().addMinItems(civilian);
 
@@ -211,26 +219,19 @@ public class CivilianManager {
     }
     Civilian createDefaultCivilian(UUID uuid) {
         ConfigManager configManager = ConfigManager.getInstance();
-        CivClass defaultClass = ClassManager.getInstance().createDefaultClass(uuid);
-        Set<CivClass> classes = new HashSet<>();
-        classes.add(defaultClass);
-        int expOrbs = -1;
-        if (Civs.getInstance() != null) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                expOrbs = player.getTotalExperience();
-            }
-        }
         Civilian civilian = new Civilian(uuid,
                 configManager.getDefaultLanguage(),
                 new HashMap<>(),
-                classes,
-                new HashMap<>(), 0, 0, 0, 0, 0, 0, expOrbs);
+                new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
         civilian.setTutorialIndex(-1);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
+
+        for (String skillName : SkillManager.getInstance().getSkills().keySet()) {
+            civilian.getSkills().put(skillName, new Skill(skillName));
+        }
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
@@ -256,6 +257,7 @@ public class CivilianManager {
 
             civConfig.set("locale", civilian.getLocale());
             civConfig.set("hardship", civilian.getHardship());
+            civConfig.set("mana", civilian.getMana());
             civConfig.set("days-since-hardship-depreciation", civilian.getDaysSinceLastHardshipDepreciation());
             civConfig.set("tutorial-index", civilian.getTutorialIndex());
             civConfig.set("tutorial-path", civilian.getTutorialPath());
@@ -274,12 +276,15 @@ public class CivilianManager {
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
             List<Integer> classes = new ArrayList<>();
-            if (civilian.getCivClasses() != null) {
-                for (CivClass civClass : civilian.getCivClasses()) {
-                    if (civClass == null) {
-                        continue;
-                    }
-                    classes.add(civClass.getId());
+            for (CivClass civClass : civilian.getCivClasses()) {
+                if (civClass == null) {
+                    continue;
+                }
+                classes.add(civClass.getId());
+            }
+            for (Skill skill : civilian.getSkills().values()) {
+                for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {
+                    civConfig.set("skills." + skill.getType() + "." + accomplishment.getKey(), accomplishment.getValue());
                 }
             }
             civConfig.set("kills", civilian.getKills());
@@ -290,6 +295,12 @@ public class CivilianManager {
             civConfig.set("karma", civilian.getKarma());
             civConfig.set("classes", classes);
             civConfig.set("locale", civilian.getLocale());
+            for (Skill skill : civilian.getSkills().values()) {
+                for (Map.Entry<String, Integer> entry : skill.getAccomplishments().entrySet()) {
+                    civConfig.set("skills." + skill.getType() + "." + entry.getKey(), entry.getValue());
+                }
+            }
+
             if (civilian.getBounties() != null && !civilian.getBounties().isEmpty()) {
                 for (int i = 0; i < civilian.getBounties().size(); i++) {
                     if (civilian.getBounties().get(i).getIssuer() != null) {

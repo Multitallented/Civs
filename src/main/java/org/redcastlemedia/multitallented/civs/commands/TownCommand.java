@@ -5,8 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;

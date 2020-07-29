@@ -1,0 +1,53 @@
+icon: BLAZE_POWDER
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs: []
+
+exp-per-use: 5
+
+allowed-actions: []
+
+condition:
+  cooldown: 3000
+
+components:
+  0:
+    costs:
+      cancel^1: {}
+    yield:
+      cancel^0: {}
+  1:
+    costs:
+      mana: 20
+      inherit^not: "0"
+    yield:
+      cooldown: 3000
+      duration:
+        period: 80
+        section:
+          targets:
+            nearby1:
+              type: nearby
+              range: 0
+              radius: 7
+          components:
+            2:
+              condition:
+                mana: 20
+              yield:
+                mana: -20
+                sound: ENTITY_BLAZE_SHOOT
+                particle:
+                  pattern: single
+                  particle: LAVA
+                  period: 0
+                  duration: 0
+                  count: 3
+                damage:
+                  target: nearby1
+                  damage: 1
+                  ignore-armor: true
+
