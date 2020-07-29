@@ -1,0 +1,14 @@
+#enabled: true
+#icon: GRASS_BLOCK
+#exp-per-new-item: 40
+#exp-repeat-decay: 99999
+#max-exp: 3000
+#shop-rewards:
+#  superregion: 0.1
+#  donkey_farm: 0.5
+#  mule_farm: 0.5
+#  stables: 0.5
+#exceptions:
+#  NETHER: 320
+#  THE_END: 1000
+#  MUSHROOM_FIELDS: 800

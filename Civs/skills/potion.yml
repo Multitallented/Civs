@@ -1,0 +1,15 @@
+#enabled: true
+#icon: POTION
+#exp-per-new-item: 40
+#exp-repeat-decay: 2
+#max-exp: 3000
+#shop-rewards:
+#  warehouse: 0.3
+#  embassy: 0.5
+#  library: 0.2
+#  purifier: 0.8
+#  bath_house: 0.5
+#  church: 0.3
+#  hospital: 0.6
+#  vault: 0.2
+#  bank: 0.4
