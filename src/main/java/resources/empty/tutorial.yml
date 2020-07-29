@@ -44,7 +44,8 @@ warrior:
       region: altar
       rewards:
         items:
-          - IRON_BLOCK*3
+          - IRON_BLOCK*2
+          - REDSTONE_BLOCK
           - IRON_SWORD
         money: 300
     - type: upkeep

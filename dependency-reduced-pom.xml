@@ -20,6 +20,37 @@
     </resources>
     <plugins>
       <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.11</version>
+        <executions>
+          <execution>
+            <phase>deploy</phase>
+            <goals>
+              <goal>site</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>
+          <noJekyll>true</noJekyll>
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+          <branch>refs/heads/mvn-repo</branch>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <repositoryName>Civs</repositoryName>
+          <repositoryOwner>Multitallented</repositoryOwner>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+        <configuration>
+          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.0</version>
       </plugin>
@@ -109,6 +140,14 @@
       <id>dynmap</id>
       <url>http://repo.mikeprimm.com/</url>
     </repository>
+    <repository>
+      <id>janmm14-public</id>
+      <url>https://repo.janmm14.de/repository/public/</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -160,12 +199,6 @@
       <artifactId>VaultAPI</artifactId>
       <version>1.7</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>bukkit</artifactId>
-          <groupId>org.bukkit</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.dynmap</groupId>
@@ -297,8 +330,58 @@
       <scope>system</scope>
       <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>me.vagdedes.spartan.api</groupId>
+      <artifactId>API</artifactId>
+      <version>Universal</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>me.jinky</groupId>
+      <artifactId>BAC</artifactId>
+      <version>1.2.2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.gmail.olexorus.witherac.api</groupId>
+      <artifactId>WitherAC_API</artifactId>
+      <version>latest</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>fr.neatmonster</groupId>
+      <artifactId>nocheatplus-parent</artifactId>
+      <version>3.17-SNAPSHOT-b1153-CustomFork</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>rip.reflex.api</groupId>
+      <artifactId>ReflexAPI</artifactId>
+      <version>7</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/ReflexAPI-v7.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>AntiAuraAPI</groupId>
+      <artifactId>API</artifactId>
+      <version>0.0.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/AAAPI.jar</systemPath>
+    </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
   <properties>
+    <github.global.server>github</github.global.server>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>

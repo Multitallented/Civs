@@ -23,6 +23,7 @@ public final class LogInfo {
     public static String HOOKECON = "| Hooked into Economy plugin: ";
     public static String HOOKPERM = "| Hooked into Permission plugin: ";
     public static String HOOKCHAT = "| Hooked into Chat Plugin: ";
+    public static String HOOKITEMS = "| Hooked into Item Manager Plugin: ";
     public static String PH_INFO = "----------------------------------------------";
     public static String PH_VOID = " ";
 

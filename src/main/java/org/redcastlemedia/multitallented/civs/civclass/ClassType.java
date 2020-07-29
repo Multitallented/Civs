@@ -3,12 +3,27 @@ package org.redcastlemedia.multitallented.civs.civclass;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class ClassType extends CivItem {
     private final List<String> children;
     private final int manaPerSecond;
     private final int maxMana;
+    private final int maxHealth;
+    private final Map<String, Integer> allowedActions = new HashMap<>();
+    private final String manaTitle;
+    private final Map<Integer, List<String>> spellSlots = new HashMap<>();
+    @Setter
+    private int maxLevel;
+    private final Map<String, Integer> classPermissions = new HashMap<>();
 
     public ClassType(List<String> reqs,
                      String name,
@@ -21,7 +36,9 @@ public class ClassType extends CivItem {
                      int manaPerSecond,
                      int maxMana,
                      boolean isInShop,
-                     int level) {
+                     int level,
+                     int maxHealth,
+                     String manaTitle) {
         super(reqs,
                 false,
                 ItemType.CLASS,
@@ -39,15 +56,8 @@ public class ClassType extends CivItem {
         this.children = children;
         this.manaPerSecond = manaPerSecond;
         this.maxMana = maxMana;
+        this.maxHealth = maxHealth;
+        this.manaTitle = manaTitle;
     }
 
-    public List<String> getChildren() {
-        return children;
-    }
-    public int getManaPerSecond() {
-        return manaPerSecond;
-    }
-    public int getMaxMana() {
-        return maxMana;
-    }
 }

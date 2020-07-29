@@ -44,6 +44,13 @@ public class LocaleManager {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         String[] variables = getVariables(key);
         key = key.split("\\{")[0];
+        if (key.isEmpty() && variables.length > 0) {
+            StringBuilder returnString = new StringBuilder();
+            for (String var : variables) {
+                returnString.append(var).append(" ");
+            }
+            return returnString.toString();
+        }
         if (!languageMap.containsKey(language) ||
                 !languageMap.get(language).containsKey(key) ||
                 languageMap.get(language).get(key).isEmpty()) {

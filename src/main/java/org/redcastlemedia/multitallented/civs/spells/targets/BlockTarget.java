@@ -33,7 +33,14 @@ public class BlockTarget extends Target {
                 getConfig().getString("range","15"), level, null, null));
         int yOffset = (int) Math.round(Spell.getLevelAdjustedValue(
                 getConfig().getString("offset-y","0"), level, null, null));
+        double y = getConfig().getDouble("y", -1);
+        double x = getConfig().getDouble("x", -1);
+        double z = getConfig().getDouble("z", -1);
 
+        if (y > -1) {
+            returnSet.add(player.getWorld().getBlockAt((int) x, (int) y, (int) z));
+            return returnSet;
+        }
         if (range < 1) {
             if (yOffset > 0) {
                 returnSet.add(player.getLocation().getBlock().getRelative(BlockFace.UP, yOffset));

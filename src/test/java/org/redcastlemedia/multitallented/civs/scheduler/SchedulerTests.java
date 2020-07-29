@@ -102,12 +102,4 @@ public class SchedulerTests extends TestUtil {
         doThrow(new SuccessException()).when(player).sendMessage(Matchers.anyString());
         commonScheduler.playerInTown(player);
     }
-    @Test
-    public void convertedManaShouldBeSetFractionally() {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        civilian.setMana(0);
-        CommonScheduler commonScheduler = new CommonScheduler();
-        commonScheduler.setConvertedMana(civilian, 120, 60);
-        assertEquals(50, civilian.getMana());
-    }
 }

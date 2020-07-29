@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells.targets;
 
-import org.bukkit.Bukkit;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,12 +10,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 
 public class VectorTarget extends Target {
     public VectorTarget(Spell spell,
@@ -70,6 +70,14 @@ public class VectorTarget extends Target {
                     } else {
                         closestDistance = currentDistance;
                         returnSet.clear();
+                    }
+                }
+
+                if (target instanceof Player) {
+                    Player cPlayer = (Player) target;
+                    Civilian cCivilian = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
+                    if (cCivilian.hasBuiltInState(BuiltInCivState.NO_INCOMING_SPELLS)) {
+                        continue;
                     }
                 }
 
