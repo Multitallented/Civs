@@ -129,8 +129,10 @@ public class MainMenu extends CustomMenu {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
             skullMeta.setDisplayName(player.getDisplayName());
-            skullMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX)));
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                skullMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX)));
+            }
             itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
