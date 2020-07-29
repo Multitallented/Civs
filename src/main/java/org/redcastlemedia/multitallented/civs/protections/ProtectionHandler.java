@@ -62,6 +62,7 @@ import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionBlockCheckResponse;
 import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
@@ -150,16 +151,19 @@ public class ProtectionHandler implements Listener {
             }
             Player player = event.getPlayer();
             boolean isNotMember = !region.getPeople().containsKey(player.getUniqueId());
-            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
-            if (isNotMember && !radii.isValid()) {
-                removeRegionIfNotIndestructible(region, regionType, event);
+            RegionBlockCheckResponse regionBlockCheckResponse = region.hasRequiredBlocks();
+            if (isNotMember && !regionBlockCheckResponse.getRegionPoints().isValid()) {
+                if (!removeRegionIfNotIndestructible(region, regionType, event)) {
+                    setMissingBlocks(event, region, player, isNotMember, regionBlockCheckResponse.getMissingItems());
+                }
+            } else {
+                setMissingBlocks(event, region, player, isNotMember, regionBlockCheckResponse.getMissingItems());
             }
-            setMissingBlocks(event, region, player, isNotMember, radii);
         }
     }
 
-    private void setMissingBlocks(BlockBreakEvent event, Region region, Player player, boolean isNotMember, RegionPoints radii) {
-        if (radii.isValid()) {
+    private void setMissingBlocks(BlockBreakEvent event, Region region, Player player, boolean isNotMember, List<HashMap<Material, Integer>> missingItems) {
+        if (missingItems == null || missingItems.isEmpty()) {
             return;
         }
         List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
@@ -208,6 +212,10 @@ public class ProtectionHandler implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
+            Region region = RegionManager.getInstance().getRegionAt(event.getBlockPlaced().getLocation());
+            if (region != null) {
+                removeBlockFromMissingBlocks(region, event.getBlockPlaced().getType());
+            }
             return;
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);

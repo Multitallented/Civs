@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -51,7 +50,7 @@ public abstract class TestUtil {
     public static Block block7;
     public static Block block8;
     public static Block block9;
-    public static Block block10;
+    public static Block goldBlock0x1y1z;
     public static Block block11;
     public static Block block12;
     public static Block block13;
@@ -155,7 +154,7 @@ public abstract class TestUtil {
         block7 = createBlock(Material.COBBLESTONE, new Location(world, 1, 0,93));
         block8 = createBlock(Material.COBBLESTONE, new Location(world, -1, 0,106));
         block9 = createBlock(Material.GLASS_PANE, new Location(world, 1, 1,1));
-        block10 = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
+        goldBlock0x1y1z = createBlock(Material.GOLD_BLOCK, new Location(world, 0, 1,1));
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
         block13 = createBlock(Material.CHEST, new Location(world, 301, 101, 1));
@@ -171,7 +170,7 @@ public abstract class TestUtil {
         world.putBlock(1,0,93, block7);
         world.putBlock(-1, 0, 106, block8);
         world.putBlock(1,1,1, block9);
-        world.putBlock(0,1,1, block10);
+        world.putBlock(0,1,1, goldBlock0x1y1z);
         world.putBlock(4,101,1,block11);
         world.putBlock(2,0,1,block12);
         world.putBlock(301,101,1,block13);
