@@ -179,6 +179,9 @@ public class ProtectionHandler implements Listener {
     }
 
     private void checkMiningSkill(Civilian civilian, Material type) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         if (type == null || !blockIsOre(type)) {
             return;
         }

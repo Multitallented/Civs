@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -118,6 +119,10 @@ public class PlayerMenu extends CustomMenu {
             }
         } else if ("remove-friend".equals(menuIcon.getKey())) {
             if (civilian.getUuid().equals(uuid) || !civilian.getFriends().contains(uuid)) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("skills".equals(menuIcon.getKey())) {
+            if (!ConfigManager.getInstance().isUseSkills()) {
                 return new ItemStack(Material.AIR);
             }
         }

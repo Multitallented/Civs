@@ -161,6 +161,7 @@ public class ConfigManager {
     boolean useHardshipSystem;
     @Getter
     boolean keepRegionChunksLoaded;
+    @Getter boolean useSkills;
 
     @Getter
     String chatChannelFormat;
@@ -389,6 +390,7 @@ public class ConfigManager {
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             lineLengthMap = new HashMap<>();
+            useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -455,6 +457,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useSkills = true;
         keepRegionChunksLoaded = true;
         hardshipPerKill = 500;
         allowHuntNewPlayers = false;

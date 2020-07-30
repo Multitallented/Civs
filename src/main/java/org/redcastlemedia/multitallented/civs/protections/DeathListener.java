@@ -237,6 +237,9 @@ public class DeathListener implements Listener {
     }
 
     private void checkArmorSkill(Player player) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Set<Material> armors = new HashSet<>();
         ItemStack helmet = player.getInventory().getHelmet();
