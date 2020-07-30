@@ -37,6 +37,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -121,6 +122,9 @@ public class AllowedActionsListener implements Listener {
     }
 
     private void addExpForEnchant(EnchantItemEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         if (event.isCancelled() || event.getEnchantsToAdd().isEmpty()) {
             return;
         }

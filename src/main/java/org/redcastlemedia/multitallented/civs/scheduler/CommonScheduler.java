@@ -99,6 +99,9 @@ public class CommonScheduler implements Runnable {
     }
 
     private void checkExploration(Player player) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
         if (skill != null) {

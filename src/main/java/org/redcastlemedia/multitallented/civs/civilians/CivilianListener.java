@@ -160,6 +160,9 @@ public class CivilianListener implements Listener {
         if (!(event.getPotion().getShooter() instanceof Player)) {
             return;
         }
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Player player = (Player) event.getPotion().getShooter();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         for (Skill skill : civilian.getSkills().values()) {
@@ -182,6 +185,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (event.getItem().getType() == Material.POTION ||
@@ -225,6 +231,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCraftItem(CraftItemEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Player player = (Player) event.getWhoClicked();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
@@ -247,6 +256,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onRegionCreated(RegionCreatedEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getPrice() < 1) {
             return;
         }
