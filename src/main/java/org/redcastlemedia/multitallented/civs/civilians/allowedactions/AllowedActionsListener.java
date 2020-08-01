@@ -82,7 +82,8 @@ public class AllowedActionsListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onEnchantItem(EnchantItemEvent event) {
         final Player player = event.getEnchanter();
-        if (player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             return;
         }
@@ -301,7 +302,10 @@ public class AllowedActionsListener implements Listener {
     private static Map <UUID, Integer> prevXP = new HashMap<>();
 
     @EventHandler (ignoreCancelled = true)
-    void closeAnvilMonitor (InventoryCloseEvent event) {
+    public void closeAnvilMonitor(InventoryCloseEvent event) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+            return;
+        }
         if (event.getInventory().getType()== InventoryType.ANVIL) {
             prevXP.remove(event.getPlayer().getUniqueId());
         }
@@ -310,7 +314,8 @@ public class AllowedActionsListener implements Listener {
     //  Listen to PrepareItemCraftEvent and return one of the books
     @EventHandler (ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getAction() == InventoryAction.NOTHING || event.getCurrentItem() == null) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                event.getAction() == InventoryAction.NOTHING || event.getCurrentItem() == null) {
             return;
         }
         if (CivItem.isCivsItem(event.getCurrentItem())) {
@@ -713,7 +718,7 @@ public class AllowedActionsListener implements Listener {
     public void onPlayerHeldItem(PlayerItemHeldEvent event) {
         final Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItem(event.getNewSlot());
-        if (item == null) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || item == null) {
             return;
         }
         checkForSpellCasting(player, item, event);
@@ -772,7 +777,8 @@ public class AllowedActionsListener implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onBlockDispense(BlockDispenseEvent event) {
         ItemStack item = event.getItem();
-        if (!RepairEffect.isArmor(item.getType()) || event.getVelocity().length() != 0D) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                !RepairEffect.isArmor(item.getType()) || event.getVelocity().length() != 0D) {
             return;
         }
 
