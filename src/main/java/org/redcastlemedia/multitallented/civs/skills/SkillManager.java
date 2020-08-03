@@ -57,8 +57,8 @@ public class SkillManager {
         }
         if (skillFolderExists) {
             for (File file : skillFolder.listFiles()) {
-                String govName = file.getName().replace(".yml", "");
-                if (skills.containsKey(govName)) {
+                String skillName = file.getName().replace(".yml", "");
+                if (skills.containsKey(skillName)) {
                     continue;
                 }
                 FileConfiguration config = new YamlConfiguration();
@@ -68,7 +68,7 @@ public class SkillManager {
                     Civs.logger.severe("Unable to load " + file.getName());
                     continue;
                 }
-                loadSkillType(config, govName);
+                loadSkillType(config, skillName);
             }
         }
     }
