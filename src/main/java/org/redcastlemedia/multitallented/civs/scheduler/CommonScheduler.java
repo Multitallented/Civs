@@ -10,7 +10,6 @@ import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedAc
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.*;
@@ -25,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,14 +107,7 @@ public class CommonScheduler implements Runnable {
         if (skill != null) {
             Biome biome = player.getLocation().getBlock().getBiome();
             double exp = skill.addAccomplishment(biome.name());
-            if (exp > 0) {
-                CivilianManager.getInstance().saveCivilian(civilian);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
         }
 
     }

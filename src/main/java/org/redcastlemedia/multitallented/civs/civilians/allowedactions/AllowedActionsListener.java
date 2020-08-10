@@ -50,6 +50,7 @@ import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 
 @CivsSingleton @SuppressWarnings("unused")
 public class AllowedActionsListener implements Listener {
@@ -137,14 +138,7 @@ public class AllowedActionsListener implements Listener {
                 for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
                     exp += skill.addAccomplishment(entry.getKey().getKey().getKey() + entry.getValue());
                 }
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
