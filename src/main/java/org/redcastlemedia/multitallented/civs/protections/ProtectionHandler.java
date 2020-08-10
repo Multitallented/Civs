@@ -23,7 +23,6 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -68,7 +67,6 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionBlockCheckResponse;
 import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
@@ -81,6 +79,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -193,14 +192,7 @@ public class ProtectionHandler implements Listener {
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.MINING.name())) {
                 double exp = skill.addAccomplishment(type.name());
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }

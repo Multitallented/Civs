@@ -32,7 +32,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -49,6 +48,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton()
@@ -268,24 +268,10 @@ public class DeathListener implements Listener {
                     exp += skill.addAccomplishment(mat.name());
                 }
 
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             } else if (hasShield && skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
                 double exp = skill.addAccomplishment("DAMAGE");
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
@@ -303,14 +289,7 @@ public class DeathListener implements Listener {
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
                 double exp = skill.addAccomplishment("BLOCKED");
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
@@ -404,14 +383,7 @@ public class DeathListener implements Listener {
             if (swordSkill || axeSkill || tridentSkill || bowSkill) {
                 exp = skill.addAccomplishment(event.getEntity().getType().name());
             }
-            if (exp > 0) {
-                CivilianManager.getInstance().saveCivilian(civilian);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
         }
     }
 

@@ -52,7 +52,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -78,6 +77,7 @@ import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import github.scarsz.discordsrv.DiscordSRV;
@@ -171,14 +171,7 @@ public class CivilianListener implements Listener {
                 for (PotionEffect potionEffect : event.getPotion().getEffects()) {
                     exp += skill.addAccomplishment(potionEffect.getType().getName());
                 }
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
@@ -202,28 +195,14 @@ public class CivilianListener implements Listener {
                     for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
                         exp += skill.addAccomplishment(potionEffect.getType().getName());
                     }
-                    if (exp > 0) {
-                        CivilianManager.getInstance().saveCivilian(civilian);
-                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "exp-gained").replace("$1", "" + exp)
-                                .replace("$2", localSkillName));
-                    }
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
                 }
             }
         } else {
             for (Skill skill : civilian.getSkills().values()) {
                 if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
                     double exp = skill.addAccomplishment(event.getItem().getType().name());
-                    if (exp > 0) {
-                        CivilianManager.getInstance().saveCivilian(civilian);
-                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "exp-gained").replace("$1", "" + exp)
-                                .replace("$2", localSkillName));
-                    }
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
                 }
             }
         }
@@ -243,14 +222,7 @@ public class CivilianListener implements Listener {
             for (int i = 0; i < event.getCurrentItem().getAmount(); i++) {
                 exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
             }
-            if (exp > 0) {
-                CivilianManager.getInstance().saveCivilian(civilian);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
         }
     }
 
@@ -267,14 +239,7 @@ public class CivilianListener implements Listener {
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
                 double exp = skill.addAccomplishment(event.getRegion().getType());
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
