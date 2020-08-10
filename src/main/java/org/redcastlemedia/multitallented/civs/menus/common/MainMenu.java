@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -177,20 +178,10 @@ public class MainMenu extends CustomMenu {
         } else if (menuIcon.getKey().equals("ports")) {
             boolean hasPort = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {
-                if (!region.getEffects().containsKey("port")) {
-                    continue;
+                if (PortCommand.canPort(region, player.getUniqueId(), null)) {
+                    hasPort = true;
+                    break;
                 }
-                if (!region.getPeople().containsKey(civilian.getUuid())) {
-                    continue;
-                }
-                //Don't show private ports
-                if (region.getEffects().get("port") != null &&
-                        !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                        !region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                    continue;
-                }
-                hasPort = true;
-                break;
             }
             if (!hasPort) {
                 return new ItemStack(Material.AIR);

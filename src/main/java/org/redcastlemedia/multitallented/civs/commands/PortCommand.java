@@ -214,7 +214,6 @@ public class PortCommand extends CivCommand {
         return Civs.perm == null || Civs.perm.has(player, Constants.PORT_PERMISSION);
     }
 
-
     public static boolean canPort(Region r, UUID uuid, Town town) {
         try {
             if (!r.getEffects().containsKey(Constants.PORT)) {
@@ -230,13 +229,16 @@ public class PortCommand extends CivCommand {
             boolean ownerPrivatePort = privatePort && r.getEffects().get(Constants.PORT).equals(Constants.OWNER);
             if (!r.getPeople().containsKey(uuid)) {
                 return false;
-            } else if (privatePort) {
+            }
+            if (privatePort) {
                 if (townPrivatePort && (town == null || !town.getPeople().containsKey(uuid) ||
                         town.getPeople().get(uuid).contains(Constants.ALLY))) {
                     return false;
-                } else if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
+                }
+                if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
                     return false;
-                } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
+                }
+                if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
                         r.getPeople().get(uuid).contains(Constants.MEMBER))) {
                     return false;
                 }
