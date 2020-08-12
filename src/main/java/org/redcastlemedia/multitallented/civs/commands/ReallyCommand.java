@@ -24,7 +24,7 @@ public class ReallyCommand extends CivCommand {
         if (args.length < 3) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -38,7 +38,7 @@ public class ReallyCommand extends CivCommand {
         if (alliance == null) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-target"));
             } else {
                 commandSender.sendMessage("invalid alliance target");
@@ -61,7 +61,7 @@ public class ReallyCommand extends CivCommand {
 
         if (!isOwnerOfTown) {
             Player player = (Player) commandSender;
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -69,7 +69,7 @@ public class ReallyCommand extends CivCommand {
         if (!Util.validateFileName(args[2])) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -86,7 +86,7 @@ public class ReallyCommand extends CivCommand {
             commandSender.sendMessage(Civs.getPrefix() + "Alliance " + args[1] + " has been renamed to " + validName);
         } else {
             Player player = (Player) commandSender;
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "alliance-renamed").replace("$1", args[1])
                         .replace("$2", validName));
         }

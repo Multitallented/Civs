@@ -24,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -226,13 +227,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         BlockState state = b.getState();
         if (!(state instanceof Sign)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(), "raid-sign"));
+                    .getTranslation(player, "raid-sign"));
             return false;
         }
 
         if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "no-blocks-above-chest").replace("$1", regionType.getName()));
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "no-blocks-above-chest").replace("$1", regionType.getDisplayName(player)));
             return false;
         }
 

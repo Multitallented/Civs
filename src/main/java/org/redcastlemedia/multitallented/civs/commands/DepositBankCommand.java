@@ -38,7 +38,7 @@ public class DepositBankCommand extends CivCommand {
         town.setBankAccount(town.getBankAccount() + amount);
         TownManager.getInstance().saveTown(town);
         Civs.econ.withdrawPlayer(player, amount);
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "deposit-money").replace("$1", Util.getNumberFormat(amount, civilian.getLocale()))
                 .replace("$2", town.getName()));
         return true;

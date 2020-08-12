@@ -17,11 +17,8 @@ import java.util.Set;
 
 public class RegionType extends CivItem {
 
-    private final String name;
     private final List<List<CVItem>> reqs;
-
     private final HashMap<String, String> effects;
-
     private final int buildRadius;
     private final int buildRadiusX;
     private final int buildRadiusY;
@@ -85,7 +82,6 @@ public class RegionType extends CivItem {
                 groups,
                 isInShop,
                 level);
-        this.name = name;
         this.reqs = reqs;
         this.upkeeps = upkeeps;
         this.effects = effects;
@@ -103,9 +99,6 @@ public class RegionType extends CivItem {
         this.worlds = worlds;
         this.commandsOnCreation = new ArrayList<>();
         this.commandsOnDestruction = new ArrayList<>();
-    }
-    public String getName() {
-        return name;
     }
     public List<List<CVItem>> getReqs() {
         return cloneReqMap(reqs);

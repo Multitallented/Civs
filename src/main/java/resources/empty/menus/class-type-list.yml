@@ -1,0 +1,20 @@
+size: 54
+name: NewClass
+# variables
+#  class: selected class
+# actions
+#  switch-class: switches your class to a new class
+items:
+  prev:
+    index: 4
+  back:
+    index: 5
+  next:
+    index: 6
+  classes:
+    index: 9-53
+    # icon: item icon
+    # name: item name
+    actions:
+      - switch-class
+      - menu:class?class=$class$

@@ -24,7 +24,7 @@ public class AcceptInviteCommand extends CivCommand {
         LocaleManager localeManager = LocaleManager.getInstance();
 
         if (Civs.perm != null && !Civs.perm.has(player, "civs.join")) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -37,14 +37,14 @@ public class AcceptInviteCommand extends CivCommand {
             for (UUID uuid : town.getPeople().keySet()) {
                 Player player1 = Bukkit.getPlayer(uuid);
                 if (player1 != null && player1.isOnline()) {
-                    player1.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(
+                    player1.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
                             player1,
                             "new-town-member"
                     ).replace("$1", player.getDisplayName()).replace("$2", town.getName()));
                 }
             }
         } else {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-invite"));
         }
 

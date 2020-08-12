@@ -108,7 +108,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
             // TODO power history
@@ -120,10 +120,10 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1",
                     (TownManager.getInstance().getRemainingGracePeriod(town) / 1000) + ""));
             ItemStack itemStack = cvItem.createItemStack();
@@ -147,7 +147,7 @@ public class TownMenu extends CustomMenu {
         } else if ("set-ally".equals(menuIcon.getKey())) {
             if (selectedTown != null && selectedTown != town && !isAllied) {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                         menuIcon.getName()).replace("$1", town.getName()));
                 cvItem.getLore().clear();
                 cvItem.getLore().add(selectedTown.getName());
@@ -162,7 +162,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
             cvItem.getLore().add(selectedTown.getName());
@@ -172,7 +172,7 @@ public class TownMenu extends CustomMenu {
         } else if ("population".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.getLore().clear();
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc())
                     .replace("$1", town.getPopulation() + "")
                     .replace("$2", town.getHousing() + "")
@@ -182,7 +182,7 @@ public class TownMenu extends CustomMenu {
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", town.getName()));
             cvItem.getLore().clear();
             int i=0;
@@ -250,23 +250,23 @@ public class TownMenu extends CustomMenu {
         } else if ("bank".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             String bankBalance = Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", bankBalance));
             cvItem.getLore().clear();
             if (town.getTaxes() > 0) {
                 String taxString = Util.getNumberFormat(town.getTaxes(), civilian.getLocale());
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "town-tax")
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player, "town-tax")
                         .replace("$1", taxString));
             }
             if (isOwner || colonialOverride) {
                 if (government.getGovernmentType() != GovernmentType.COOPERATIVE &&
                         government.getGovernmentType() != GovernmentType.COMMUNISM &&
                         government.getGovernmentType() != GovernmentType.ANARCHY) {
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(
                             player, "town-tax-desc")
                             .replace("$1", town.getName()));
                 }
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(
                         player, "town-bank-desc")
                         .replace("$1", town.getName()));
             }
@@ -282,7 +282,7 @@ public class TownMenu extends CustomMenu {
                 CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(
                         player, menuIcon.getDesc()).replace("$1", town.getName())
                         .replace("$2", "" + costItem.getQty()).replace("$3", costItem.getMat().name())));
                 ItemStack itemStack = cvItem.createItemStack();
@@ -299,9 +299,9 @@ public class TownMenu extends CustomMenu {
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.MEMBER)) {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(
                         player, "cancel-revolt").replace("$1", town.getName())));
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         "revolt-display").replace("$1", town.getRevolt().size() + "")
                         .replace("$2", town.getRawPeople().size() + "")));
                 ItemStack itemStack = cvItem.createItemStack();
@@ -358,7 +358,7 @@ public class TownMenu extends CustomMenu {
         if (actionString.equals("join-revolt")) {
             CVItem costItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getRevoltCost());
             if (!player.getInventory().contains(costItem.createItemStack())) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "item-cost").replace("$1", "" + costItem.getQty())
                         .replace("$2", costItem.getMat().name()));
                 return true;

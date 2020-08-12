@@ -16,6 +16,7 @@ import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -120,7 +121,7 @@ public class MainMenu extends CustomMenu {
             }
         } else if ("chat".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -131,8 +132,8 @@ public class MainMenu extends CustomMenu {
             skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
             skullMeta.setDisplayName(player.getDisplayName());
             if (ConfigManager.getInstance().getUseClassesAndSpells()) {
-                skullMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX)));
+                CivItem civItem = ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                skullMeta.setLore(Util.textWrap(civilian, civItem.getDisplayName(player)));
             }
             itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);

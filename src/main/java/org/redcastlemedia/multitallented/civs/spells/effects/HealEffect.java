@@ -49,7 +49,7 @@ public class HealEffect extends Effect {
             if (!this.silent && origin instanceof Player) {
                 Player originPlayer = (Player) origin;
                 originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
         }
@@ -58,7 +58,7 @@ public class HealEffect extends Effect {
             if (!this.silent && origin instanceof Player) {
                 Player originPlayer = (Player) origin;
                 originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
         }

@@ -215,6 +215,7 @@ public class ItemManager {
     }
     public CivItem loadClassType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
+        name = config.getString("name", name).toLowerCase();
         ClassType civItem = new ClassType(
                 config.getStringList("pre-reqs"),
                 name,
@@ -252,6 +253,7 @@ public class ItemManager {
 
     public CivItem loadSpellType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
+        name = config.getString("name", name).toLowerCase();
         SpellType spellType = new SpellType(
                 config.getStringList("pre-reqs"),
                 name,
@@ -286,8 +288,9 @@ public class ItemManager {
         return returnMap;
     }
 
-    public TownType loadTownType(FileConfiguration config, String name) throws NullPointerException {
+    public TownType loadTownType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.STONE.name()));
+        name = config.getString("name", name).toLowerCase();
         HashMap<String, String> effects = new HashMap<>();
         List<String> configEffects = config.getStringList("effects");
         for (String effectString : configEffects) {
@@ -333,6 +336,7 @@ public class ItemManager {
         for (String req : config.getStringList("build-reqs")) {
             reqs.add(CVItem.createListFromString(req));
         }
+        name = config.getString("name", name).toLowerCase();
         List<RegionUpkeep> upkeeps = new ArrayList<>();
         ConfigurationSection upkeepSection = config.getConfigurationSection("upkeep");
         if (upkeepSection != null) {
@@ -608,7 +612,7 @@ public class ItemManager {
                 }
                 if (!fast && unmetRequirements.size() % 2 > 0) {
                     unmetRequirements.add(ChatColor.GOLD + " " +
-                            LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                            LocaleManager.getInstance().getTranslation(player,
                             "or") + " " + ChatColor.RED);
                 }
                 //perm=civs.admin
@@ -668,10 +672,9 @@ public class ItemManager {
                         if (fast) {
                             unmetRequirements.add("has");
                         } else {
-                            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
-                            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                    "req-item").replace("$1", localItemName));
+                            CivItem civItem1 = getItemType(splitReq[0]);
+                            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                                    "req-item").replace("$1", civItem1.getDisplayName(player)));
                         }
                     }
                     //hamlet:population=15
@@ -712,10 +715,9 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("pop");
         } else {
-            String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    anotherString + LocaleConstants.NAME_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "population-req").replace("$1", localTownName)
+            CivItem civItem = getItemType(anotherString);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "population-req").replace("$1", civItem.getDisplayName(player))
                     .replace("$2", "" + requirement));
         }
         return false;
@@ -730,10 +732,8 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("level");
         } else {
-            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    reqItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "req-skill-level").replace("$1", localItemName)
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "req-skill-level").replace("$1", reqItem.getDisplayName(player))
                     .replace("$2", reqParams[1]));
         }
         return false;
@@ -747,10 +747,9 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("build");
         } else {
-            String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "req-build").replace("$1", localRegionName));
+            CivItem civItem = getItemType(splitReq[0]);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "req-build").replace("$1", civItem.getDisplayName(player)));
         }
         return false;
     }
@@ -764,10 +763,9 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("own");
         } else {
-            String localItemName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    splitReq[0] + LocaleConstants.NAME_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "req-item").replace("$1", localItemName));
+            CivItem civItem = getItemType(splitReq[0]);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "req-item").replace("$1", civItem.getDisplayName(player)));
         }
         return false;
     }
@@ -787,9 +785,9 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("pop");
         } else {
-            String town = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            String town = LocaleManager.getInstance().getTranslation(player,
                     "town");
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
                     "population-req").replace("$1", town)
                     .replace("$2", "" + pop));
         }
@@ -810,9 +808,9 @@ public class ItemManager {
         if (fast) {
             unmetRequirements.add("skill");
         } else {
-            String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            String localSkillName = LocaleManager.getInstance().getTranslation(player,
                     skillName + LocaleConstants.SKILL_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
                     "req-skill-level").replace("$1", localSkillName)
                     .replace("$2", "" + level));
         }
@@ -837,11 +835,11 @@ public class ItemManager {
             } else {
                 StringBuilder townTypesNames = new StringBuilder();
                 for (String townType : townTypes) {
-                    townTypesNames.append(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            townType + LocaleConstants.NAME_SUFFIX)).append(", ");
+                    CivItem civItem = getItemType(townType);
+                    townTypesNames.append(civItem.getDisplayName(player)).append(", ");
                 }
                 townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
-                unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
                         "req-member-of-town") + townTypesNames.toString());
             }
             return false;
@@ -856,7 +854,7 @@ public class ItemManager {
             if (fast) {
                 unmetRequirements.add("perm");
             } else {
-                unmetRequirements.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
                         "no-permission"));
             }
             return false;

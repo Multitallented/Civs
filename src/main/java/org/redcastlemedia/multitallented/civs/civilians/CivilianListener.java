@@ -210,7 +210,8 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCraftItem(CraftItemEvent event) {
-        if (!ConfigManager.getInstance().isUseSkills()) {
+        if (!ConfigManager.getInstance().isUseSkills() ||
+                (event.getCursor() != null && event.getCursor().getType() != Material.AIR)) {
             return;
         }
         Player player = (Player) event.getWhoClicked();
@@ -272,7 +273,7 @@ public class CivilianListener implements Listener {
         if (hasBlueprintsMenuOpen) {
             if (Civs.econ != null && civItem.getPrice() > 0) {
                 Civs.econ.depositPlayer(player, civItem.getPrice());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
             }
             return true;
@@ -507,7 +508,7 @@ public class CivilianListener implements Listener {
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(event.getPlayer(),
+                    .getTranslation(event.getPlayer(),
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
@@ -517,11 +518,9 @@ public class CivilianListener implements Listener {
                 TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
             }
             event.setCancelled(true);
-            String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(),
-                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(event.getPlayer(),
-                    "town-instructions").replace("$1", localTownName));
+                    .getTranslation(event.getPlayer(),
+                    "town-instructions").replace("$1", civItem.getDisplayName(event.getPlayer())));
             return;
         }
         CVItem cvItem = CVItem.createFromItemStack(is);
@@ -559,7 +558,7 @@ public class CivilianListener implements Listener {
             if (!event.getSource().getViewers().isEmpty()) {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity,
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity,
                                 LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
             }
         }
@@ -660,7 +659,7 @@ public class CivilianListener implements Listener {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
             }
         }
@@ -715,7 +714,7 @@ public class CivilianListener implements Listener {
         }
         if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
                 player.equals(event.getRecipients().iterator().next()))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
@@ -773,7 +772,7 @@ public class CivilianListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {

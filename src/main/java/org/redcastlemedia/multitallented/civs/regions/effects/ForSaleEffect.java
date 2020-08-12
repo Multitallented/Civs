@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -44,8 +45,8 @@ public class ForSaleEffect implements Listener {
             return;
         }
         String title = " ";
-        String subTitle = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "region-sale-set")
-                .replace("$1", regionType.getName())
+        String subTitle = LocaleManager.getInstance().getTranslation(player, "region-sale-set")
+                .replace("$1", regionType.getDisplayName(player))
                 .replace("$2", Util.getNumberFormat(region.getForSale(), civilian.getLocale()));
         player.sendTitle(title, subTitle, 5, 40, 5);
     }

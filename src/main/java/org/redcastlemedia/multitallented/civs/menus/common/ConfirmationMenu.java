@@ -85,7 +85,7 @@ public class ConfirmationMenu extends CustomMenu {
             } else if ("leave".equals(type)) {
                 if (town != null) {
                     town.getRawPeople().remove(civilian.getUuid());
-                    player.sendMessage(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    player.sendMessage(LocaleManager.getInstance().getTranslation(player,
                             "you-left-town").replace("$1", town.getName()));
                     TownManager.getInstance().saveTown(town);
                 }
@@ -135,7 +135,7 @@ public class ConfirmationMenu extends CustomMenu {
                 (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             player.closeInventory();
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslationWithPlaceholders(player, "no-permission"));
+                    localeManager.getTranslation(player, "no-permission"));
             return true;
         }
         return false;
@@ -152,7 +152,7 @@ public class ConfirmationMenu extends CustomMenu {
         }
 
         if (price > 0 && (Civs.econ != null && !Civs.econ.has(player, price))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "not-enough-money").replace("$1", price + ""));
             player.closeInventory();
             return;
@@ -162,28 +162,13 @@ public class ConfirmationMenu extends CustomMenu {
             Civs.econ.withdrawPlayer(player, price);
         }
         player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslationWithPlaceholders(player, "item-bought")
-                        .replace("$1", civItem.getDisplayName())
+                localeManager.getTranslation(player, "item-bought")
+                        .replace("$1", civItem.getDisplayName(player))
                         .replace("$2", Util.getNumberFormat(price, civilian.getLocale())));
         player.closeInventory();
-        CVItem purchasedItem = civItem.clone();
-        boolean isTown = civItem.getItemType() == CivItem.ItemType.TOWN;
-        boolean isRegion = civItem.getItemType() == CivItem.ItemType.REGION;
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.BLACK + civilian.getUuid().toString());
-        lore.add(purchasedItem.getDisplayName());
-        if (isTown) {
-            lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslationWithPlaceholders(player,
-                    "town-instructions").replace("$1", civItem.getProcessedName())));
-        } else if (isRegion) {
-            lore.addAll(Util.textWrap(civilian, Util.parseColors(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civItem.getProcessedName() + LocaleConstants.DESC_SUFFIX))));
-        }
-        purchasedItem.setLore(lore);
-        purchasedItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
+
         if (player.getInventory().firstEmpty() != -1) {
-            player.getInventory().addItem(purchasedItem.createItemStack());
+            player.getInventory().addItem(civItem.createItemStack(player));
         } else {
             if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
                 civilian.getStashItems().put(civItem.getProcessedName(),

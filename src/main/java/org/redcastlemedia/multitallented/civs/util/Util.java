@@ -424,7 +424,7 @@ public final class Util {
         //0 Prev button
         if (page > 0) {
             CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(localeManager.getTranslation(player,
                     "prev-button"));
             inventory.setItem(0, cvItem.createItemStack());
         }
@@ -433,7 +433,7 @@ public final class Util {
         //8 Next button
         if (startIndex + 36 < totalSize) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+            cvItem1.setDisplayName(localeManager.getTranslation(player,
                     "next-button"));
             inventory.setItem(8, cvItem1.createItemStack());
         }
@@ -788,7 +788,7 @@ public final class Util {
         }
         if (player != null) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, key));
+                    LocaleManager.getInstance().getTranslation(player, key));
         } else {
             commandSender.sendMessage(message);
         }

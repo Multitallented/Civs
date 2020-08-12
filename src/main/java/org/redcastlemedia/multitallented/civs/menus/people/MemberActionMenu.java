@@ -151,7 +151,7 @@ public class MemberActionMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "buy")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player, "buy")
                             .replace("$1", priceString));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -203,7 +203,7 @@ public class MemberActionMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 if (governmentType == GovernmentType.CAPITALISM && alreadyVoted) {
                     String votingCost = Util.getNumberFormat(ConfigManager.getInstance().getCapitalismVotingCost(), civilian.getLocale());
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "capitalism-voting-cost")
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player, "capitalism-voting-cost")
                             .replace("$1", votingCost));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -222,16 +222,16 @@ public class MemberActionMenu extends CustomMenu {
             return localizedRanks;
         }
         if (rankString.contains(Constants.OWNER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.OWNER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslation(player, Constants.OWNER) + ", ";
         }
         if (rankString.contains(Constants.MEMBER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.MEMBER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslation(player, Constants.MEMBER) + ", ";
         }
         if (rankString.contains(Constants.GUEST)) {
-            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.GUEST) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslation(player, Constants.GUEST) + ", ";
         }
         if (rankString.contains(Constants.RECRUITER)) {
-            localizedRanks += LocaleManager.getInstance().getTranslationWithPlaceholders(player, Constants.RECRUITER) + ", ";
+            localizedRanks += LocaleManager.getInstance().getTranslation(player, Constants.RECRUITER) + ", ";
         }
         if (localizedRanks.length() > 0) {
             localizedRanks = localizedRanks.substring(0, localizedRanks.length() - 2);
@@ -251,7 +251,7 @@ public class MemberActionMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             if (town.getVotes().containsKey(civilian.getUuid())) {
                 if (Civs.econ == null || !Civs.econ.has(player, price)) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                             player, "not-enough-money")
                             .replace("$1", price + ""));
                     return true;
@@ -272,7 +272,7 @@ public class MemberActionMenu extends CustomMenu {
             }
             if (player != null) {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "voted").replace("$1", offlinePlayer.getName()));
             }
             TownManager.getInstance().saveTown(town);

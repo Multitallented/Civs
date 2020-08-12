@@ -67,7 +67,7 @@ public class InviteTownCommand extends CivCommand {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
                     (!town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
                     !town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission-invite").replace("$1", townName));
                 return true;
             }
@@ -89,7 +89,7 @@ public class InviteTownCommand extends CivCommand {
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
         if (!townType.getEffects().containsKey(HousingEffect.HOUSING_EXCEPT) &&
                 !adminBypass && town.getPopulation() >= town.getHousing()) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "not-enough-housing"));
             return true;
         }
@@ -112,7 +112,7 @@ public class InviteTownCommand extends CivCommand {
 
         Util.sendMessageToPlayerOrConsole(commandSender, "invite-sent", "Invite sent");
         String senderName = player == null ? "Console" : player.getDisplayName();
-        String inviteMessage = Civs.getRawPrefix() + localeManager.getRawTranslationWithPlaceholders(invitee,
+        String inviteMessage = Civs.getRawPrefix() + localeManager.getRawTranslation(invitee,
                 "invite-player").replace("$1", senderName)
                 .replace("$2", town.getType())
                 .replace("$3", townName) + " ";
