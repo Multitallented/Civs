@@ -713,7 +713,7 @@ public class ProtectionHandler implements Listener {
     private void sendRegionProtectedMessage(Player player) {
         if (player != null) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
     }
 
