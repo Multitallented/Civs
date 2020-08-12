@@ -50,8 +50,7 @@ public class DynmapHook implements Listener {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                 if (!"".equals(regionType.getDynmapMarkerKey())) {
                     createMarker(region.getLocation(),
-                            LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                                    region.getType() + LocaleConstants.NAME_SUFFIX),
+                            regionType.getDisplayName(),
                             regionType.getDynmapMarkerKey());
                 }
             }
@@ -163,8 +162,7 @@ public class DynmapHook implements Listener {
     public void onRegionCreated(RegionCreatedEvent event) {
         if (!"".equals(event.getRegionType().getDynmapMarkerKey())) {
             createMarker(event.getRegion().getLocation(),
-                    LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                            event.getRegionType().getProcessedName() + LocaleConstants.NAME_SUFFIX),
+                    event.getRegionType().getDisplayName(),
                     event.getRegionType().getDynmapMarkerKey());
         }
     }

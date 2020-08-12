@@ -19,9 +19,9 @@ public final class MessageUtil {
             CivilianManager.getInstance().saveCivilian(civilian);
 
             if (!ConfigManager.getInstance().isSilentExp()) {
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                String localSkillName = LocaleManager.getInstance().getTranslation(player,
                         skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "exp-gained").replace("$1", "" + exp)
                         .replace("$2", localSkillName));
             }

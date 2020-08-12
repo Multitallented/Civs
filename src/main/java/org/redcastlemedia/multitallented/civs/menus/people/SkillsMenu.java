@@ -66,16 +66,16 @@ public class SkillsMenu extends CustomMenu {
             Skill skill = skills.get(startIndex + count);
             SkillType skillType = SkillManager.getInstance().getSkillType(skill.getType());
             CVItem cvItem = CVItem.createCVItemFromString(skillType.getIcon());
-            String localSkillName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+            String localSkillName = LocaleManager.getInstance().getRawTranslation(player,
                     skillType.getName() + LocaleConstants.SKILL_SUFFIX);
             cvItem.setQty(Math.max(1, skill.getLevel()));
             cvItem.setDisplayName(localSkillName);
             List<String> lore = new ArrayList<>();
-            lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "skill-bar")
+            lore.add(LocaleManager.getInstance().getTranslation(player, "skill-bar")
                     .replace("$1", skill.getCurrentExpAsBar(civilian.getLocale()))
                     .replace("$2", skill.getExpToNextLevelAsBar(civilian.getLocale())));
             double currentLevelExp = skill.getCurrentLevelExp();
-            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     skillType.getName() + LocaleConstants.SKILL_DESC_SUFFIX)
                     .replace("$1", "" + skill.getLevel())
                     .replace("$2", "" + currentLevelExp)

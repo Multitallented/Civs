@@ -55,9 +55,9 @@ public class ManaEffect extends Effect {
         boolean hasMana = civilian.getMana() >= this.mana;
         if (!hasMana && !this.silent) {
             ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
-            String localManaName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            String localManaName = LocaleManager.getInstance().getTranslation(player,
                     classType.getManaTitle());
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "need-more-mana").replace("$1", "" + (this.mana - civilian.getMana()))
                     .replace("$2", localManaName));
         }
@@ -103,7 +103,7 @@ public class ManaEffect extends Effect {
         double maxMana = civClass.getMaxMana();
         final double LENGTH = 60;
         int progress = maxMana > 0 ? (int) Math.ceil(currentMana / maxMana * LENGTH) : (int) LENGTH;
-        String localeMana = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String localeMana = LocaleManager.getInstance().getTranslation(player,
                 classType.getManaTitle());
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.DARK_BLUE);

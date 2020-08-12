@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -40,12 +39,12 @@ public class AntiCampCommand extends CivCommand {
             town = TownManager.getInstance().getTownAt(player.getLocation());
         }
         if (town == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "invalid-target"));
             return true;
         }
         if (!town.getEffects().containsKey(AntiCampEffect.KEY)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "invalid-target"));
             return true;
         }
@@ -59,13 +58,13 @@ public class AntiCampCommand extends CivCommand {
         }
         if (antiCampCost > 0 && (Civs.econ == null || !Civs.econ.has(player, antiCampCost)) &&
                 town.getBankAccount() < antiCampCost) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "not-enough-money").replace("$1", antiCampCost + ""));
             return true;
         }
 
         if (!AntiCampEffect.canActivateAntiCamp(player.getUniqueId(), town)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -81,7 +80,7 @@ public class AntiCampCommand extends CivCommand {
             }
         }
         if (!raidPorterInRange) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-anti-camp-duing-raidporter"));
             return true;
         }

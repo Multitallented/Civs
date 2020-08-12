@@ -230,7 +230,7 @@ public abstract class CustomMenu {
             MenuManager.clearHistory(civilian.getUuid());
         } else if (actionString.startsWith("message:")) {
             String messageKey = actionString.split(":")[1];
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     messageKey));
         } else if ("refresh".equals(actionString)) {
             MenuManager.getInstance().refreshMenu(civilian);
@@ -254,8 +254,8 @@ public abstract class CustomMenu {
             actionString = replaceVariables(civilian, itemStack, actionString);
             actionString = actionString.replace("typing:", "");
             String[] actionStringSplit = actionString.split(":");
-            String linkText = LocaleManager.getInstance().getTranslationWithPlaceholders(player, actionStringSplit[0]);
-            String typingText = LocaleManager.getInstance().getTranslationWithPlaceholders(player, actionStringSplit[1]);
+            String linkText = LocaleManager.getInstance().getTranslation(player, actionStringSplit[0]);
+            String typingText = LocaleManager.getInstance().getTranslation(player, actionStringSplit[1]);
             TextComponent textComponent = new TextComponent(linkText);
             textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, typingText));
             player.spigot().sendMessage(textComponent);

@@ -58,14 +58,14 @@ public class RegionListener implements Listener {
         if (ConfigManager.getInstance().getBlackListWorlds()
                 .contains(blockPlaceEvent.getBlockPlaced().getWorld().getName())) {
             blockPlaceEvent.setCancelled(true);
-            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     blockPlaceEvent.getPlayer(), LocaleConstants.PERMISSION_DENIED));
             return;
         }
         CivItem civItem = CivItem.getFromItemStack(heldItem);
 
         if (civItem.getItemType() == CivItem.ItemType.TOWN) {
-            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     blockPlaceEvent.getPlayer(), "cant-place-town"));
             return;
         }

@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -32,13 +31,12 @@ public final class SpellUtil {
             }
             civilian.getCombatBar().put(index, itemStack);
             CVItem cvItem = spellType.clone();
-            String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    spellType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            String localSpellName = spellType.getDisplayName(player);
             cvItem.setDisplayName(localSpellName);
             cvItem.getLore().clear();
             cvItem.getLore().add(ChatColor.BLACK + civilian.getUuid().toString());
             cvItem.getLore().add(ChatColor.BLACK + spellType.getProcessedName());
-            cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "switch-spell-cast")));
 
             player.getInventory().setItem(mappedIndex - 1, cvItem.createItemStack());

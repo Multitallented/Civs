@@ -96,7 +96,7 @@ public class PlayerMenu extends CustomMenu {
             return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", player.getName()));
             ArrayList<String> lore = new ArrayList<>();
             int i=0;
@@ -144,13 +144,13 @@ public class PlayerMenu extends CustomMenu {
         if ("add-friend".equals(actionString)) {
             civilian.getFriends().add(uuid);
             CivilianManager.getInstance().saveCivilian(civilian);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "friend-added").replace("$1", name));
             return true;
         } else if ("remove-friend".equals(actionString)) {
             civilian.getFriends().remove(uuid);
             CivilianManager.getInstance().saveCivilian(civilian);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "friend-removed").replace("$1", name));
             return true;
         }

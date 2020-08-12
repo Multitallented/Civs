@@ -166,7 +166,7 @@ public class AllianceManager implements Listener {
             return;
         }
         toTown.getAllyInvites().add(fromTown.getName());
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "town-ally-request-sent").replace("$1", fromTown.getName()));
         for (UUID uuid : toTown.getRawPeople().keySet()) {
             if (uuid.equals(player.getUniqueId())) {
@@ -175,7 +175,7 @@ public class AllianceManager implements Listener {
             if (toTown.getRawPeople().get(uuid).contains(Constants.OWNER)) {
                 Player pSend = Bukkit.getPlayer(uuid);
                 if (pSend != null && pSend.isOnline()) {
-                    pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(pSend,
+                    pSend.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(pSend,
                             "town-ally-request-sent").replace("$1", fromTown.getName()));
                 }
             }
@@ -236,7 +236,7 @@ public class AllianceManager implements Listener {
         unAlly(townBeingBrokenUpWith, allianceBreakerTown);
         for (Player cPlayer : Bukkit.getOnlinePlayers()) {
             cPlayer.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(cPlayer, "town-ally-removed")
+                    .getTranslation(cPlayer, "town-ally-removed")
                     .replace("$1", townBeingBrokenUpWith.getName())
                     .replace("$2", allianceBreakerTown.getName()));
         }

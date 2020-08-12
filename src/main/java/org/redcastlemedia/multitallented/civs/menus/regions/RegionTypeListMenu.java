@@ -127,7 +127,7 @@ public class RegionTypeListMenu extends CustomMenu {
             ItemStack itemStack;
             if (cvItem.getDisplayName().startsWith("g:")) {
                 String groupKey = cvItem.getDisplayName().replace("g:", "");
-                String localGroupName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                String localGroupName = LocaleManager.getInstance().getTranslation(player,
                         groupKey + LocaleConstants.GROUP_SUFFIX);
                 cvItem.setDisplayName(localGroupName);
                 itemStack = cvItem.createItemStack();

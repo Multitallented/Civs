@@ -27,12 +27,12 @@ public class SellRegionCommand extends CivCommand {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "stand-in-region").replace("$1", player.getDisplayName()));
             return true;
         }
         if (!permissionToSellRegion(player, region)) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -54,7 +54,7 @@ public class SellRegionCommand extends CivCommand {
 
         setRegionNotForSale(player, region, salePrice);
         commandSender.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-sale-set")
+                LocaleManager.getInstance().getTranslation(player, "region-sale-set")
                 .replace("$1", region.getType())
                 .replace("$2", Util.getNumberFormat(salePrice, civilian.getLocale())));
         return true;

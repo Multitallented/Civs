@@ -343,7 +343,7 @@ public class RepairEffect implements Listener {
         }
         if (item.getType() == Material.AIR) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "hold-repair-item"));
+                    LocaleManager.getInstance().getTranslation(player, "hold-repair-item"));
             return;
         }
 
@@ -358,14 +358,14 @@ public class RepairEffect implements Listener {
         Damageable damageable = (Damageable) itemMeta;
         if (damageable == null) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));
+                    LocaleManager.getInstance().getTranslation(player, "cant-repair-item"));
             event.setCancelled(true);
             return;
         }
         int repairCost = getRepairCost(item.getType(), damageable.getDamage());
         if (repairCost == 0) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "cant-repair-item"));
+                    LocaleManager.getInstance().getTranslation(player, "cant-repair-item"));
             event.setCancelled(true);
             return;
         }
@@ -382,7 +382,7 @@ public class RepairEffect implements Listener {
                 player.getInventory().removeItem(cost);
             }
             if (!hasReagent) {
-                String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player, "more-repair-items");
+                String message = LocaleManager.getInstance().getTranslation(player, "more-repair-items");
                 message = message.replace("$1", firstMat.name().toLowerCase().replace("_", " "));
                 player.sendMessage(Civs.getPrefix() + message);
                 return;

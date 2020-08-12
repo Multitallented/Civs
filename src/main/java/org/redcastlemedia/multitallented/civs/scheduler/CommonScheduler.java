@@ -209,18 +209,18 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            govName = LocaleManager.getInstance().getTranslation(player,
                     government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
         } else {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "town-enter").replace("$1", town.getName())
                     .replace("$2", govName));
         }
         if (!town.getPeople().containsKey(player.getUniqueId())) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "town-enter-warning"));
         }
     }
@@ -265,9 +265,7 @@ public class CommonScheduler implements Runnable {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
                 if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
-                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                    String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                            regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                    String localRegionTypeName = regionType.getDisplayName(player);
                     player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
                 }
                 PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),

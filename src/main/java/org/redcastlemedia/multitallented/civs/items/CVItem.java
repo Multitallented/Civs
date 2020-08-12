@@ -170,12 +170,12 @@ public class CVItem {
         String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
         String nameString = ChatColor.stripColor(itemDisplayName
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
-        String displayName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String displayName = LocaleManager.getInstance().getTranslation(player,
                 "item-" + nameString + LocaleConstants.NAME_SUFFIX);
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + nameString);
         lore.addAll(Util.textWrap(civilian,
-                LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                LocaleManager.getInstance().getTranslation(player,
                         "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
         itemStack.getItemMeta().setDisplayName(displayName);
         itemStack.getItemMeta().setLore(lore);
