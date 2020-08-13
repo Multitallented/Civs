@@ -9,10 +9,15 @@ import org.bukkit.inventory.Inventory;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.ArrayList;
@@ -20,12 +25,15 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PortMenuTest extends TestUtil {
 
     @Before
     public void setup() {
         MenuManager.clearData(TestUtil.player.getUniqueId());
+        RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
     }
 
@@ -35,6 +43,14 @@ public class PortMenuTest extends TestUtil {
         loadRegion("pport");
         Inventory inventory = MenuManager.getInstance().openMenu(TestUtil.player, "port", new HashMap<>());
         assertEquals(Material.IRON_BLOCK, inventory.getItem(9).getType());
+    }
+
+    @Test
+    public void portShouldShowUpInMenu() {
+        Region region = RegionsTests.createNewRegion("council_room", player.getUniqueId());
+        Town town = TownTests.loadTown("test", "settlement", region.getLocation());
+        town.getRawPeople().put(player.getUniqueId(), Constants.MEMBER);
+        assertTrue(PortCommand.canPort(region, player.getUniqueId(), null));
     }
 
     private void loadRegionTypePPort() {
