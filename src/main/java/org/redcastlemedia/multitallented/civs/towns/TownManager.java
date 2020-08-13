@@ -731,10 +731,6 @@ public class TownManager {
             governmentType = intersectTown.getGovernmentType();
             childTownType = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             TownManager.getInstance().removeTown(intersectTown, false, false);
-            // Don't destroy the ring on upgrade
-    //            if (ConfigManager.getInstance().getTownRings()) {
-    //                intersectTown.destroyRing(false);
-    //            }
             villagerCount = intersectTown.getVillagers();
         }
 
@@ -772,20 +768,7 @@ public class TownManager {
 
 
         if (childTownType != null) {
-            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
-            Bukkit.getPluginManager().callEvent(townEvolveEvent);
-
-            if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
-                    newTown.getBankAccount() > 0) {
-                double price = townType.getPrice();
-                price = Math.min(price, newTown.getBankAccount());
-                Civs.econ.depositPlayer(player, price);
-                newTown.setBankAccount(newTown.getBankAccount() - price);
-                String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "town-assist-price").replace("$1", priceString)
-                        .replace("$2", townTypeLocalName));
-            }
+            evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
 
         } else {
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
@@ -803,7 +786,23 @@ public class TownManager {
             params.put("town", newTown.getName());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
-        return;
+    }
+
+    private void evolveTown(Player player, Civilian civilian, TownType townType, String townTypeLocalName, TownType childTownType, Town newTown, Government government) {
+        TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
+        Bukkit.getPluginManager().callEvent(townEvolveEvent);
+
+        if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
+                newTown.getBankAccount() > 0) {
+            double price = newTown.getPrice();
+            price = Math.min(price, newTown.getBankAccount());
+            Civs.econ.depositPlayer(player, price);
+            newTown.setBankAccount(newTown.getBankAccount() - price);
+            String priceString = Util.getNumberFormat(price, civilian.getLocale());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "town-assist-price").replace("$1", priceString)
+                    .replace("$2", townTypeLocalName));
+        }
     }
 
     int getHousingCount(Location newTownLocation, TownType townType) {

@@ -246,14 +246,14 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
             return true;
         } else {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
                     region.getRawPeople().get(event.getPlayer().getUniqueId()).contains(Constants.OWNER)) {
-                double salvage = regionType.getPrice() / 2;
+                double salvage = regionType.getPrice(civilian) / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             ItemManager.getInstance().addMinItems(civilian);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;

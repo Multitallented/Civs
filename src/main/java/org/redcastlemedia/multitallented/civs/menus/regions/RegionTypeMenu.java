@@ -168,7 +168,7 @@ public class RegionTypeMenu extends CustomMenu {
                 }
                 priceItem.setDisplayName(localeManager.getTranslation(player, menuIcon.getName()));
                 lore.add(localeManager.getTranslation(player, "price")
-                        .replace("$1", Util.getNumberFormat(regionType.getPrice(), civilian.getLocale())));
+                        .replace("$1", Util.getNumberFormat(regionType.getPrice(civilian), civilian.getLocale())));
                 priceItem.setLore(lore);
                 ItemStack itemStack = priceItem.createItemStack();
                 if (hasItemUnlocked || isCivsAdmin) {

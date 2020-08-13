@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -261,12 +263,18 @@ public class ItemsTests extends TestUtil {
     }
 
     @Test
+    public void imLosingMyMind() {
+        Pattern pattern = Pattern.compile("g:fence(?![A-Za-z])");
+        assertTrue(pattern.matcher("LADDER*4,g:fence*4,").find());
+    }
+
+    @Test
     public void groupsWithinGroups() {
         itemGroup = ConfigManager.getInstance().getItemGroups().get("stairs");
         ConfigManager.getInstance().getItemGroups().put("stairs", "LADDER,g:roof");
         List<CVItem> itemList = CVItem.createListFromString("g:stairs*2");
         assertEquals(Material.LADDER, itemList.get(0).getMat());
-        assertEquals(Material.QUARTZ_STAIRS, itemList.get(1).getMat());
+        assertEquals(Material.ACACIA_STAIRS, itemList.get(1).getMat());
     }
 
     private void loadSpellTypeBackflip() {

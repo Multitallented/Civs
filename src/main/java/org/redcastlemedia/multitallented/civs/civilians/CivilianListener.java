@@ -232,7 +232,7 @@ public class CivilianListener implements Listener {
         if (!ConfigManager.getInstance().isUseSkills()) {
             return;
         }
-        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getPrice() < 1) {
+        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getRawPrice() < 1) {
             return;
         }
         Player player = event.getPlayer();
@@ -271,10 +271,11 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
         if (hasBlueprintsMenuOpen) {
-            if (Civs.econ != null && civItem.getPrice() > 0) {
-                Civs.econ.depositPlayer(player, civItem.getPrice());
+            double price = civItem.getPrice(civilian);
+            if (Civs.econ != null && price > 0) {
+                Civs.econ.depositPlayer(player, price);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+                        "refund").replace("$1", Util.getNumberFormat(price, civilian.getLocale())));
             }
             return true;
         }

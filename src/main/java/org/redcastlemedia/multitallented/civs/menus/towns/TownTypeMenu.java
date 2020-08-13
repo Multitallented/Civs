@@ -71,7 +71,7 @@ public class TownTypeMenu extends CustomMenu {
                 priceItem.setDisplayName(localeManager.getTranslation(player, menuIcon.getName()));
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add(localeManager.getTranslation(player, "price")
-                        .replace("$1", Util.getNumberFormat(townType.getPrice(), civilian.getLocale())));
+                        .replace("$1", Util.getNumberFormat(townType.getPrice(civilian), civilian.getLocale())));
                 priceItem.setLore(lore);
                 ItemStack itemStack = priceItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);

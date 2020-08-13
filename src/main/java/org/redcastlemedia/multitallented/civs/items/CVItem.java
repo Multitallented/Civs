@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -266,22 +267,15 @@ public class CVItem {
     public static List<CVItem> createListFromString(String input) {
         String groupName = null;
         List<CVItem> reqs = new ArrayList<>();
-        int i=0;
-        while (input.contains("g:")) {
-            ItemGroupList itemGroupList = new ItemGroupList(input);
-            if (itemGroupList.getCircularDependency() != null) {
-                Civs.logger.log(Level.SEVERE, "Unable to create items due to circular item group {0}", itemGroupList.getCircularDependency());
-                return reqs;
-            }
-            input = itemGroupList.getInput();
-            if (!itemGroupList.getGroupName().isEmpty()) {
-                groupName = itemGroupList.getGroupName().iterator().next();
-            }
-            if (i > 1000) {
-                System.out.println("infinite loop " + input);
-                throw new RuntimeException("infinite loop " + input);
-            }
-            i++;
+        ItemGroupList itemGroupList = new ItemGroupList();
+        itemGroupList.findAllGroupsRecursively(input);
+        if (itemGroupList.getCircularDependency() != null) {
+            Civs.logger.log(Level.SEVERE, "Unable to create items due to circular item group {0}", itemGroupList.getCircularDependency());
+            return reqs;
+        }
+        input = itemGroupList.getInput();
+        if (!itemGroupList.getGroupName().isEmpty()) {
+            groupName = itemGroupList.getGroupName().iterator().next();
         }
         for (String req : input.split(",")) {
             CVItem cvItem = createCVItemFromString(req);
@@ -420,45 +414,5 @@ public class CVItem {
         cvItem.mmoItemType = mmoItemType;
         cvItem.setGroup(group);
         return cvItem;
-    }
-
-    private static class ItemGroupList {
-        @Getter
-        private String input;
-        @Getter
-        private Set<String> groupName = new HashSet<>();
-        @Getter
-        private String circularDependency = null;
-
-        public ItemGroupList(String input) {
-            this.input = input;
-            if (input.contains("g:")) {
-                String itemGroup = null;
-                String params = null;
-                for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
-                    if (input.matches("g:" + currKey + "?(,|\\.|\\*|\\^|%|$)")) {
-                        if (groupName.contains(currKey)) {
-                            circularDependency = currKey;
-                            return;
-                        }
-                        groupName.add(currKey);
-                        itemGroup = ConfigManager.getInstance().getItemGroups().get(currKey);
-                        params = input.replaceAll("g:" + currKey + "(?=\\*)", "");
-                        break;
-                    }
-                }
-                if (groupName.isEmpty() || itemGroup == null) {
-                    return;
-                }
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String chunk : itemGroup.split(",")) {
-                    stringBuilder.append(chunk);
-                    stringBuilder.append(params);
-                    stringBuilder.append(",");
-                }
-                stringBuilder.substring(stringBuilder.length() - 1);
-                this.input = stringBuilder.toString();
-            }
-        }
     }
 }
