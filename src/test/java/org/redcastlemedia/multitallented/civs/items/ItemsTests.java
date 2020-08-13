@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -32,6 +33,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ItemsTests extends TestUtil {
 
+    private String itemGroup;
+
     @Before
     public void onBefore() {
         TownManager.getInstance().reload();
@@ -41,6 +44,9 @@ public class ItemsTests extends TestUtil {
     @After
     public void after() {
         TestUtil.world.setChunkLoaded(true);
+        if (itemGroup != null) {
+            ConfigManager.getInstance().getItemGroups().put("stairs", itemGroup);
+        }
     }
 
     @Test
@@ -252,6 +258,15 @@ public class ItemsTests extends TestUtil {
     @Test
     public void createCivItemFromString() {
         assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
+    }
+
+    @Test
+    public void groupsWithinGroups() {
+        itemGroup = ConfigManager.getInstance().getItemGroups().get("stairs");
+        ConfigManager.getInstance().getItemGroups().put("stairs", "LADDER,g:roof");
+        List<CVItem> itemList = CVItem.createListFromString("g:stairs*2");
+        assertEquals(Material.LADDER, itemList.get(0).getMat());
+        assertEquals(Material.QUARTZ_STAIRS, itemList.get(1).getMat());
     }
 
     private void loadSpellTypeBackflip() {
