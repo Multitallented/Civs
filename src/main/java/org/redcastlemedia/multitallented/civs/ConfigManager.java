@@ -459,6 +459,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
         keepRegionChunksLoaded = true;

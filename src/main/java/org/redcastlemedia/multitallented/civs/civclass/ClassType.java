@@ -24,6 +24,7 @@ public class ClassType extends CivItem {
     private final Map<String, Integer> classPermissions = new HashMap<>();
 
     public ClassType(List<String> reqs,
+                     String key,
                      String name,
                      CVItem icon,
                      CVItem shopIcon,
@@ -40,6 +41,7 @@ public class ClassType extends CivItem {
         super(reqs,
                 false,
                 ItemType.CLASS,
+                key,
                 name,
                 icon.getMat(),
                 shopIcon,

@@ -21,6 +21,7 @@ import java.util.List;
 
 public abstract class CivItem extends CVItem {
     private final ItemType itemType;
+    @Getter private final String key;
     private final String localName;
     private final List<String> reqs;
     private final int qty;
@@ -38,6 +39,7 @@ public abstract class CivItem extends CVItem {
     public CivItem(List<String> reqs,
                    boolean isPlaceable,
                    ItemType itemType,
+                   String key,
                    String name,
                    Material material,
                    CVItem shopIcon,
@@ -51,6 +53,7 @@ public abstract class CivItem extends CVItem {
                    int level) {
         super(material, 1, 100);
         this.localName = name.toLowerCase();
+        this.key = key;
         this.isPlaceable = isPlaceable;
         if (shopIcon.getMmoItemType() == null) {
             this.shopIcon = new CVItem(shopIcon.getMat(),
@@ -109,7 +112,7 @@ public abstract class CivItem extends CVItem {
 
     public String getPermission() { return permission; }
     public String getProcessedName() {
-        return processItemName(getDisplayName());
+        return this.key;
     }
     public static String processItemName(String input) {
         input = ChatColor.stripColor(input);
