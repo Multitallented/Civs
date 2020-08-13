@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -31,7 +32,7 @@ import java.util.List;
 public class CVItem {
     private Material mat;
     private int qty;
-    private final double chance;
+    private double chance;
     private String displayName = null;
 
     @Getter @Setter
@@ -71,12 +72,17 @@ public class CVItem {
         this.chance = 1;
     }
 
+    public void setChance(double chance) {
+        this.chance = chance / 100;
+    }
+
     public static CVItem createCVItemFromString(String materialString) {
         return createCVItemFromString(ConfigManager.getInstance().getDefaultLanguage(), materialString);
     }
 
     public static CVItem createCVItemFromString(String locale, String materialString)  {
         boolean isMMOItem = materialString.contains("mi:");
+        boolean isCivItem = materialString.contains("civ:");
         if (isMMOItem) {
             materialString = materialString.replace("mi:", "");
         }
@@ -84,7 +90,7 @@ public class CVItem {
         String quantityString = "1";
         String chanceString = "100";
         String nameString = null;
-        String mmoType = "";
+        String itemType = "";
         Material mat;
 
         String[] splitString;
@@ -108,7 +114,10 @@ public class CVItem {
                 materialString = splitString[0];
             } else {
                 if (isMMOItem) {
-                    mmoType = materialString.toUpperCase();
+                    itemType = materialString.toUpperCase();
+                    mat = Material.STONE;
+                } else if (isCivItem) {
+                    itemType = materialString.replace("civ:", "").toLowerCase();
                     mat = Material.STONE;
                 } else {
                     mat = getMaterialFromString(materialString);
@@ -126,37 +135,56 @@ public class CVItem {
         int chance = Integer.parseInt(chanceString);
 
         if (isMMOItem) {
-            if (Civs.mmoItems == null) {
-                Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
-                return new CVItem(mat, quantity, chance);
-            }
-            Type mmoItemType = Civs.mmoItems.getTypes().get(mmoType);
-            if (mmoItemType == null) {
-                Civs.logger.severe(Civs.getPrefix() + "MMOItem type " + mmoType + " not found");
-                return new CVItem(mat, quantity, chance);
-            }
-            if (nameString == null) {
-                Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + mmoType + " did not provide item name");
-                return new CVItem(mat, quantity, chance);
-            }
-            MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoItemType, nameString);
-            ItemStack item = mmoItem.newBuilder().build();
-            CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
-                    item.getItemMeta().getLore());
-            cvItem.mmoItemName = nameString;
-            cvItem.mmoItemType = mmoType;
-            return cvItem;
+            return getMmoItemAsCvItem(nameString, itemType, mat, quantity, chance);
+        }
+        if (isCivItem) {
+            return getCivItem(itemType, quantity, chance);
         }
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+            String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.NAME_SUFFIX);
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + nameString);
             lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix() +
-                    LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+                    LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
             return new CVItem(mat, quantity, chance, displayName, lore);
         }
+    }
+
+    private static CVItem getCivItem(String itemType, int quantity, int chance) {
+        CivItem civItem = ItemManager.getInstance().getItemType(itemType);
+        if (civItem == null) {
+            return null;
+        }
+        CVItem cvItem = civItem.clone();
+        cvItem.setQty(quantity);
+        cvItem.setChance(chance);
+        return cvItem;
+    }
+
+    @NotNull
+    private static CVItem getMmoItemAsCvItem(String nameString, String itemType, Material mat, int quantity, int chance) {
+        if (Civs.mmoItems == null) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
+            return new CVItem(mat, quantity, chance);
+        }
+        Type mmoItemType = Civs.mmoItems.getTypes().get(itemType);
+        if (mmoItemType == null) {
+            Civs.logger.severe(Civs.getPrefix() + "MMOItem type " + itemType + " not found");
+            return new CVItem(mat, quantity, chance);
+        }
+        if (nameString == null) {
+            Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + itemType + " did not provide item name");
+            return new CVItem(mat, quantity, chance);
+        }
+        MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoItemType, nameString);
+        ItemStack item = mmoItem.newBuilder().build();
+        CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
+                item.getItemMeta().getLore());
+        cvItem.mmoItemName = nameString;
+        cvItem.mmoItemType = itemType;
+        return cvItem;
     }
 
     public static boolean isCustomItem(ItemStack itemStack) {

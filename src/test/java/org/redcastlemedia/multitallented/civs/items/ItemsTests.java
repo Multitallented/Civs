@@ -1,10 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -250,6 +247,11 @@ public class ItemsTests extends TestUtil {
         assertTrue(Util.removeItems(inputs, cvInventory));
         assertNull(cvInventory.getItem(3));
         assertFalse(Util.containsItems(inputs, cvInventory));
+    }
+
+    @Test
+    public void createCivItemFromString() {
+        assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
     }
 
     private void loadSpellTypeBackflip() {

@@ -7,9 +7,11 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class AllianceMenuTests extends TestUtil {
     private Town town1;
@@ -23,12 +25,13 @@ public class AllianceMenuTests extends TestUtil {
     public void setup() {
         TownManager.getInstance().reload();
         AllianceManager.getInstance().reload();
-        town1 = TownTests.loadTown("town1", "hamlet", TestUtil.block.getLocation());
-        town2 = TownTests.loadTown("town2", "hamlet", TestUtil.block14.getLocation());
-        town3 = TownTests.loadTown("town3", "hamlet", TestUtil.block8.getLocation());
-        town4 = TownTests.loadTown("town4", "hamlet", TestUtil.block6.getLocation());
-        town5 = TownTests.loadTown("town5", "hamlet", TestUtil.block9.getLocation());
-        town6 = TownTests.loadTown("town6", "hamlet", TestUtil.goldBlock0x1y1z.getLocation());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        town1 = TownTests.loadTown("town1", townType.getProcessedName(), TestUtil.block.getLocation());
+        town2 = TownTests.loadTown("town2", townType.getProcessedName(), TestUtil.block14.getLocation());
+        town3 = TownTests.loadTown("town3", townType.getProcessedName(), TestUtil.block8.getLocation());
+        town4 = TownTests.loadTown("town4", townType.getProcessedName(), TestUtil.block6.getLocation());
+        town5 = TownTests.loadTown("town5", townType.getProcessedName(), TestUtil.block9.getLocation());
+        town6 = TownTests.loadTown("town6", townType.getProcessedName(), TestUtil.goldBlock0x1y1z.getLocation());
     }
 
     @Test

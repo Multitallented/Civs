@@ -42,7 +42,7 @@ public class RegionType extends CivItem {
     @Getter @Setter
     private String dynmapMarkerKey = "";
 
-    public RegionType(String name,
+    public RegionType(String key, String name,
                       CVItem icon,
                       CVItem shopIcon,
                       List<String> civReqs,
@@ -72,6 +72,7 @@ public class RegionType extends CivItem {
         super(civReqs,
                 true,
                 ItemType.REGION,
+                key,
                 name, icon.getMat(),
                 shopIcon,
                 civQty,

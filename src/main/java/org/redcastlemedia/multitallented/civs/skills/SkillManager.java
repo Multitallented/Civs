@@ -108,7 +108,8 @@ public class SkillManager {
         for (Skill skill : civilian.getSkills().values()) {
             SkillType skillType = skills.get(skill.getType());
             for (Map.Entry<String, Double> entry : skillType.getShopRewards().entrySet()) {
-                if (civItem.getProcessedName().equals(entry.getKey()) ||
+                String processedName = civItem.getProcessedName();
+                if (processedName.equals(entry.getKey()) ||
                         civItem.getGroups().contains(entry.getKey())) {
                     double exp = skill.getTotalExp();
                     discount += entry.getValue() * exp / skillType.getMaxExp();

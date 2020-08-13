@@ -215,10 +215,11 @@ public class ItemManager {
     }
     public CivItem loadClassType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
-        name = config.getString("name", name).toLowerCase();
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
         ClassType civItem = new ClassType(
                 config.getStringList("pre-reqs"),
-                name,
+                localName, name,
                 icon,
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getDouble("price", 0),
@@ -253,10 +254,11 @@ public class ItemManager {
 
     public CivItem loadSpellType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
-        name = config.getString("name", name).toLowerCase();
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
         SpellType spellType = new SpellType(
                 config.getStringList("pre-reqs"),
-                name,
+                localName, name,
                 icon.getMat(),
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getInt("qty", 0),
@@ -290,7 +292,8 @@ public class ItemManager {
 
     public TownType loadTownType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.STONE.name()));
-        name = config.getString("name", name).toLowerCase();
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
         HashMap<String, String> effects = new HashMap<>();
         List<String> configEffects = config.getStringList("effects");
         for (String effectString : configEffects) {
@@ -303,7 +306,7 @@ public class ItemManager {
         }
         int buildRadius = config.getInt("build-radius", 20);
         TownType townType = new TownType(
-                name,
+                name, localName,
                 icon,
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getStringList("pre-reqs"),
@@ -336,7 +339,8 @@ public class ItemManager {
         for (String req : config.getStringList("build-reqs")) {
             reqs.add(CVItem.createListFromString(req));
         }
-        name = config.getString("name", name).toLowerCase();
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
         List<RegionUpkeep> upkeeps = new ArrayList<>();
         ConfigurationSection upkeepSection = config.getConfigurationSection("upkeep");
         if (upkeepSection != null) {
@@ -405,7 +409,7 @@ public class ItemManager {
             worlds.addAll(config.getStringList("worlds"));
         }
         RegionType regionType = new RegionType(
-                name,
+                localName, name,
                 icon,
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getStringList("pre-reqs"),

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.bukkit.Material;
 import org.junit.Before;
@@ -39,6 +40,7 @@ public class SkillTests extends TestUtil {
     @Test
     public void priceShouldGetDiscounted() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("arrow_factory");
+        assertNotNull(regionType);
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.CHEST.name(), 9);
         skill.getAccomplishments().put(Material.STICK.name(), 9);
