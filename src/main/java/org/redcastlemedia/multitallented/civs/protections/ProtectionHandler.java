@@ -660,7 +660,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.TRAPPED_CHEST ||
                 mat == Material.ENDER_CHEST ||
                 mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX ||
+                Util.isShulkerBox(mat) ||
                 mat == Material.COMPOSTER ||
                 mat == Material.BARREL ||
                 mat == Material.BLAST_FURNACE) {
@@ -714,7 +714,7 @@ public class ProtectionHandler implements Listener {
     private void sendRegionProtectedMessage(Player player) {
         if (player != null) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
     }
 
