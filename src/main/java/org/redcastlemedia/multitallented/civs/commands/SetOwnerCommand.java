@@ -130,7 +130,7 @@ public class SetOwnerCommand extends CivCommand {
 
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
-            double price = townType.getPrice() * 2;
+            double price = townType.getPrice(civilian) * 2;
 
             if (oligarchyOverride && !Civs.econ.has(player, price)) {
                 String priceString = Util.getNumberFormat(price, civilian.getLocale());

@@ -67,7 +67,7 @@ public class MemberActionMenu extends CustomMenu {
             alreadyVoted = town.getVotes().containsKey(civilian.getUuid()) &&
                     !town.getVotes().get(civilian.getUuid()).isEmpty();
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
-            price = 2* townType.getPrice();
+            price = 2* townType.getPrice(civilian);
             governmentType = GovernmentManager.getInstance().getGovernment(town.getGovernmentType()).getGovernmentType();
         } else {
             governmentType = GovernmentType.DICTATORSHIP;

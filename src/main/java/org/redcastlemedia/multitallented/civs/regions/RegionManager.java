@@ -192,7 +192,16 @@ public class RegionManager {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             runRegionCommands(region, regionType.getCommandsOnDestruction());
             broadcastRegionDestroyed(region);
-            CivilianManager.getInstance().exchangeHardship(region, null, regionType.getPrice() / 2);
+            double price;
+            if (region.getOwners().isEmpty()) {
+                price = regionType.getRawPrice();
+            } else {
+                UUID uuid = region.getOwners().iterator().next();
+                Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+                price = regionType.getPrice(civilian);
+            }
+
+            CivilianManager.getInstance().exchangeHardship(region, null, price / 2);
         }
         for (Map.Entry<String, DestroyRegionListener> entry : this.destroyRegionListener.entrySet()) {
             entry.getValue().destroyRegionHandler(region);
@@ -630,7 +639,7 @@ public class RegionManager {
                     !people.get(player.getUniqueId()).contains("ally") &&
                     !regionType.isRebuildRequired()) {
                 RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
-                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice());
+                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice(civilian));
             }
             removeRegion(rebuildRegion, false, false);
         } else {

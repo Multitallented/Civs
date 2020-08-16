@@ -116,6 +116,6 @@ public class SkillManager {
                 }
             }
         }
-        return (1.0 - discount) * civItem.getPrice();
+        return (1.0 - discount) * civItem.getRawPrice();
     }
 }

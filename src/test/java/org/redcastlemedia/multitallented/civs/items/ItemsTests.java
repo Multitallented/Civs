@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -252,6 +255,27 @@ public class ItemsTests extends TestUtil {
     @Test
     public void createCivItemFromString() {
         assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
+    }
+
+    @Test
+    public void imLosingMyMind() {
+        Pattern pattern = Pattern.compile("g:fence(?![_A-Za-z])");
+        assertTrue(pattern.matcher("LADDER*4,g:fence*4,").find());
+    }
+
+    @Test
+    public void groupsWithinGroups() {
+        ConfigManager.getInstance().getItemGroups().put("asdf", "LADDER,g:stairs");
+        List<CVItem> itemList = CVItem.createListFromString("g:asdf*2");
+        assertEquals(Material.LADDER, itemList.get(0).getMat());
+        assertEquals(Material.QUARTZ_STAIRS, itemList.get(1).getMat());
+    }
+
+    @Test
+    public void groupShouldBePrimary() {
+        ItemGroupList itemGroupList = new ItemGroupList();
+        itemGroupList.findAllGroupsRecursively("g:primary*2");
+        assertEquals("primary", itemGroupList.getMainGroup());
     }
 
     private void loadSpellTypeBackflip() {

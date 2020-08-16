@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.common;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -112,7 +113,7 @@ public class ConfirmationMenu extends CustomMenu {
                 return;
             }
             if (Civs.econ != null) {
-                Civs.econ.depositPlayer(player, regionType.getPrice() / 2);
+                Civs.econ.depositPlayer(player, regionType.getPrice(civilian) / 2);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), player);
@@ -122,9 +123,6 @@ public class ConfirmationMenu extends CustomMenu {
                 return;
             }
             TownManager.getInstance().removeTown(town, true);
-//            if (ConfigManager.getInstance().getTownRings()) {
-//                town.destroyRing(true, true);
-//            }
         }
     }
 

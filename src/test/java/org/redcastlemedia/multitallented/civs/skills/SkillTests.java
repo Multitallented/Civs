@@ -1,4 +1,4 @@
-package org.redcastlemedia.multitallented.civs;
+package org.redcastlemedia.multitallented.civs.skills;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.bukkit.Material;
 import org.junit.Before;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -44,9 +45,10 @@ public class SkillTests extends TestUtil {
         skill.getAccomplishments().put(Material.OAK_PLANKS.name(), 9);
         skill.getAccomplishments().put(Material.CHEST.name(), 9);
         skill.getAccomplishments().put(Material.STICK.name(), 9);
-        double expectedDiscount = (1.0 - (90.0 / 3000.0 * 0.3)) * regionType.getPrice();
+        double expectedDiscount = (1.0 - (90.0 / 3000.0 * 0.3)) * regionType.getRawPrice();
         assertEquals(90.0, skill.getTotalExp(), 0.1);
-        assertEquals(expectedDiscount, SkillManager.getInstance().getSkillDiscountedPrice(civilian, regionType), 0.001);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        assertEquals(expectedDiscount, regionType.getPrice(civilian), 0.001);
     }
 
     @Test

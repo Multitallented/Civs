@@ -29,9 +29,12 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 @CivsSingleton
@@ -196,9 +199,8 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
         TownManager.getInstance().setTownPower(town,
                 town.getPower() - ConfigManager.getInstance().getPowerPerNPCKill());
-        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         double karmaChange = (double) ConfigManager.getInstance().getPowerPerNPCKill()
-                / (double) town.getMaxPower() * townType.getPrice();
+                / (double) town.getMaxPower() * town.getPrice();
         if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
             Entity entity = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
             if (entity instanceof Player) {

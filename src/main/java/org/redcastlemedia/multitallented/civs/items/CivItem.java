@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -105,7 +106,15 @@ public abstract class CivItem extends CVItem {
         return returnItem;
     }
 
+    public double getPrice(Civilian civilian) {
+        return SkillManager.getInstance().getSkillDiscountedPrice(civilian, this);
+    }
+
+    @Deprecated
     public double getPrice() {
+        return getRawPrice();
+    }
+    public double getRawPrice() {
         ConfigManager configManager = ConfigManager.getInstance();
         return price * configManager.getPriceMultiplier() + configManager.getPriceBase();
     }
@@ -201,13 +210,13 @@ public abstract class CivItem extends CVItem {
             String defaultLocale = ConfigManager.getInstance().getDefaultLanguage();
             if (includePrice) {
                 lore.add(localeManager.getTranslation(defaultLocale, "price")
-                        .replace("$1", Util.getNumberFormat(getPrice(), defaultLocale)));
+                        .replace("$1", Util.getNumberFormat(getRawPrice(), defaultLocale)));
             }
         } else {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             if (includePrice) {
                 lore.add(localeManager.getTranslation(player, "price")
-                        .replace("$1", Util.getNumberFormat(getPrice(), civilian.getLocale())));
+                        .replace("$1", Util.getNumberFormat(getPrice(civilian), civilian.getLocale())));
             }
             lore.addAll(Util.textWrap(civilian, Util.parseColors(getDescription(civilian.getLocale()))));
         }

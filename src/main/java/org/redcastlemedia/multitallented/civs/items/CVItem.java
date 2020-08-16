@@ -23,7 +23,11 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -262,29 +266,15 @@ public class CVItem {
     }
     public static List<CVItem> createListFromString(String input) {
         String groupName = null;
-        group: if (input.contains("g:")) {
-            String itemGroup = null;
-            String params = null;
-            for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
-                if (input.matches("g:" + currKey + "\\*.*")) {
-                    groupName = currKey;
-                    itemGroup = ConfigManager.getInstance().getItemGroups().get(groupName);
-                    params = input.replaceAll("g:" + currKey + "(?=\\*)", "");
-                }
-            }
-            if (groupName == null || itemGroup == null || params == null) {
-                break group;
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String chunk : itemGroup.split(",")) {
-                stringBuilder.append(chunk);
-                stringBuilder.append(params);
-                stringBuilder.append(",");
-            }
-            stringBuilder.substring(stringBuilder.length() - 1);
-            input = stringBuilder.toString();
-        }
         List<CVItem> reqs = new ArrayList<>();
+        ItemGroupList itemGroupList = new ItemGroupList();
+        itemGroupList.findAllGroupsRecursively(input);
+        if (itemGroupList.getCircularDependency() != null) {
+            Civs.logger.log(Level.SEVERE, "Unable to create items due to circular item group {0}", itemGroupList.getCircularDependency());
+            return reqs;
+        }
+        input = itemGroupList.getInput();
+        groupName = itemGroupList.getMainGroup();
         for (String req : input.split(",")) {
             CVItem cvItem = createCVItemFromString(req);
             if (groupName != null) {
