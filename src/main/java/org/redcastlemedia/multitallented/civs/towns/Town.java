@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -227,14 +229,23 @@ public class Town {
     public double getWorth() {
         double value = 0;
         TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
-        value += townType.getPrice();
+        UUID uuid = getFirstOwner();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        value += townType.getPrice(civilian);
         while (townType.getChild() != null && !townType.getChild().isEmpty()) {
             townType = (TownType) ItemManager.getInstance().getItemType(townType.getChild());
-            value += townType.getPrice();
+            value += townType.getPrice(civilian);
         }
         for (Region region : TownManager.getInstance().getContainingRegions(name)) {
+            Set<UUID> owners = region.getOwners();
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            value += regionType.getPrice();
+            double price = regionType.getRawPrice();
+            if (!owners.isEmpty()) {
+                UUID regionOwnerUuid = owners.iterator().next();
+                Civilian regionCivilian = CivilianManager.getInstance().getCivilian(regionOwnerUuid);
+                price = regionType.getPrice(regionCivilian);
+            }
+            value += price;
         }
 
         return value;
@@ -257,5 +268,27 @@ public class Town {
             price += civilian.getHardship();
         }
         return price;
+    }
+
+    public UUID getFirstOwner() {
+        UUID ownerUuid = null;
+        for (Map.Entry<UUID, String> entry : people.entrySet()) {
+            if (entry.getValue().contains(Constants.OWNER)) {
+                ownerUuid = entry.getKey();
+                break;
+            }
+        }
+        return ownerUuid;
+    }
+
+    public double getPrice() {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(type);
+        double townPrice = townType.getRawPrice();
+        UUID ownerUuid = getFirstOwner();
+        if (ownerUuid != null) {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(ownerUuid);
+            townPrice = townType.getPrice(civilian);
+        }
+        return townPrice;
     }
 }

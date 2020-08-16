@@ -12,7 +12,6 @@ import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
@@ -21,8 +20,6 @@ import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -39,7 +36,13 @@ public class DynmapHook implements Listener {
         if (dynmapCommonAPI == null) {
             return false;
         }
-        return dynmapCommonAPI.markerAPIInitialized();
+        boolean initialized = false;
+        try {
+            initialized = dynmapCommonAPI.markerAPIInitialized();
+        } catch (NullPointerException npe) {
+            return false;
+        }
+        return initialized;
     }
 
     public static void initMarkerSet() {
@@ -50,8 +53,7 @@ public class DynmapHook implements Listener {
                 RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
                 if (!"".equals(regionType.getDynmapMarkerKey())) {
                     createMarker(region.getLocation(),
-                            LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                                    region.getType() + LocaleConstants.NAME_SUFFIX),
+                            regionType.getDisplayName(),
                             regionType.getDynmapMarkerKey());
                 }
             }
@@ -163,8 +165,7 @@ public class DynmapHook implements Listener {
     public void onRegionCreated(RegionCreatedEvent event) {
         if (!"".equals(event.getRegionType().getDynmapMarkerKey())) {
             createMarker(event.getRegion().getLocation(),
-                    LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                            event.getRegionType().getProcessedName() + LocaleConstants.NAME_SUFFIX),
+                    event.getRegionType().getDisplayName(),
                     event.getRegionType().getDynmapMarkerKey());
         }
     }

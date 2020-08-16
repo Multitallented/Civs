@@ -22,7 +22,7 @@ public class MenuCommand extends CivCommand {
         Player player = (Player) commandSender;
 
         if (Civs.perm != null && Civs.perm.has(player, Constants.MENU_PERMISSION)) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     LocaleConstants.PERMISSION_DENIED));
             return true;
         }

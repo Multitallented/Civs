@@ -37,9 +37,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
@@ -49,6 +52,7 @@ import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 
 @CivsSingleton @SuppressWarnings("unused")
 public class AllowedActionsListener implements Listener {
@@ -68,7 +72,7 @@ public class AllowedActionsListener implements Listener {
         }
 
         if (player.getLevel() < levels) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "insufficient-exp"));
             return false;
         } else {
@@ -81,13 +85,14 @@ public class AllowedActionsListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onEnchantItem(EnchantItemEvent event) {
         final Player player = event.getEnchanter();
-        if (player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+        String localClassName = classType.getDisplayName(player);
 
         int enchants = 0;
 
@@ -121,6 +126,9 @@ public class AllowedActionsListener implements Listener {
     }
 
     private void addExpForEnchant(EnchantItemEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         if (event.isCancelled() || event.getEnchantsToAdd().isEmpty()) {
             return;
         }
@@ -132,14 +140,7 @@ public class AllowedActionsListener implements Listener {
                 for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
                     exp += skill.addAccomplishment(entry.getKey().getKey().getKey() + entry.getValue());
                 }
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
@@ -215,7 +216,7 @@ public class AllowedActionsListener implements Listener {
                         }
                     }
 
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                             player, "action-not-allowed").replace("$1", localClassName)
                             .replace("$2", enchantment.getKey().getKey() + " " + level));
                 } else {
@@ -224,7 +225,7 @@ public class AllowedActionsListener implements Listener {
                 }
             } else {
                 event.getItem().removeEnchantment(enchantment);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "action-not-allowed").replace("$1", localClassName)
                         .replace("$2", enchantment.getKey().getKey() + " " + level));
             }
@@ -246,7 +247,7 @@ public class AllowedActionsListener implements Listener {
                     itemStack.addEnchantment(enchantment, maxEnchantLevel);
                 }
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "action-not-allowed").replace("$1", localClassName)
                         .replace("$2", enchantment.getKey().getKey() + " " + level));
             }
@@ -297,7 +298,10 @@ public class AllowedActionsListener implements Listener {
     private static Map <UUID, Integer> prevXP = new HashMap<>();
 
     @EventHandler (ignoreCancelled = true)
-    void closeAnvilMonitor (InventoryCloseEvent event) {
+    public void closeAnvilMonitor(InventoryCloseEvent event) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+            return;
+        }
         if (event.getInventory().getType()== InventoryType.ANVIL) {
             prevXP.remove(event.getPlayer().getUniqueId());
         }
@@ -306,7 +310,8 @@ public class AllowedActionsListener implements Listener {
     //  Listen to PrepareItemCraftEvent and return one of the books
     @EventHandler (ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getAction() == InventoryAction.NOTHING || event.getCurrentItem() == null) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                event.getAction() == InventoryAction.NOTHING || event.getCurrentItem() == null) {
             return;
         }
         if (CivItem.isCivsItem(event.getCurrentItem())) {
@@ -428,9 +433,9 @@ public class AllowedActionsListener implements Listener {
             }
             if (removed) {
                 player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
-                String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                String localClassName = classType.getDisplayName(player);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "action-not-allowed").replace("$1", localClassName)
                         .replace("$2", disallowed));
             }
@@ -465,8 +470,8 @@ public class AllowedActionsListener implements Listener {
         ItemStack result = event.getCurrentItem();
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+        String localClassName = classType.getDisplayName(player);
         String disallowedEnchant = fixOrTestItem(result, civilian, true);
         if (disallowedEnchant != null) {
             switch (action) {
@@ -478,7 +483,7 @@ public class AllowedActionsListener implements Listener {
                 case PICKUP_ALL:
                 case MOVE_TO_OTHER_INVENTORY:
                 case HOTBAR_MOVE_AND_READD:
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                             "action-not-allowed").replace("$1", localClassName)
                             .replace("$2", disallowedEnchant));
                     event.setCancelled(true);
@@ -644,8 +649,8 @@ public class AllowedActionsListener implements Listener {
         if (!(itemMeta instanceof PotionMeta)) {
             return false;
         }
-        String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+        String localClassName = classType.getDisplayName(player);
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
         PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
         if (potionEffectType != null) {
@@ -653,7 +658,7 @@ public class AllowedActionsListener implements Listener {
             int potionLevel = potionMeta.getBasePotionData().isUpgraded() ? 2 : 1;
             if (level < potionLevel) {
                 event.setCancelled(true);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "action-not-allowed").replace("$1", localClassName)
                         .replace("$2", potionEffectType.getName()));
                 return true;
@@ -664,7 +669,7 @@ public class AllowedActionsListener implements Listener {
             int potionLevel = potionEffect.getAmplifier();
             if (level < potionLevel) {
                 event.setCancelled(true);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "action-not-allowed").replace("$1", localClassName)
                         .replace("$2", potionEffect.getType().getName()));
                 return true;
@@ -678,9 +683,9 @@ public class AllowedActionsListener implements Listener {
         if (!civilian.getCurrentClass().isItemAllowed(item.getType())) {
             event.setCancelled(true);
 
-            String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                    civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+            String localClassName = classType.getDisplayName(player);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     player, "action-not-allowed").replace("$1", localClassName)
                     .replace("$2", item.getType().name()));
             return true;
@@ -709,7 +714,7 @@ public class AllowedActionsListener implements Listener {
     public void onPlayerHeldItem(PlayerItemHeldEvent event) {
         final Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItem(event.getNewSlot());
-        if (item == null) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || item == null) {
             return;
         }
         checkForSpellCasting(player, item, event);
@@ -734,7 +739,7 @@ public class AllowedActionsListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (civilian.hasBuiltInState(BuiltInCivState.STUN) ||
                 civilian.hasBuiltInState(BuiltInCivState.NO_OUTGOING_SPELLS)) {
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     event.getPlayer(), "spell-block"));
             return;
         }
@@ -752,9 +757,9 @@ public class AllowedActionsListener implements Listener {
         if (disallowedEnchant != null) {
             event.setCancelled (true);
 
-            String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                    civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+            String localClassName = classType.getDisplayName(player);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "action-not-allowed").replace("$1", localClassName)
                     .replace("$2", disallowedEnchant));
         }
@@ -768,7 +773,8 @@ public class AllowedActionsListener implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onBlockDispense(BlockDispenseEvent event) {
         ItemStack item = event.getItem();
-        if (!RepairEffect.isArmor(item.getType()) || event.getVelocity().length() != 0D) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
+                !RepairEffect.isArmor(item.getType()) || event.getVelocity().length() != 0D) {
             return;
         }
 
@@ -794,8 +800,8 @@ public class AllowedActionsListener implements Listener {
                 disallowed = entry.getKey().getKey().getKey();
                 if (!testOnly) {
                     Player player = Bukkit.getPlayer(civilian.getUuid());
-                    String localClassName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                            civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX);
+                    ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                    String localClassName = classType.getDisplayName(player);
                     reduceOrRemoveEnchants(itemStack, player, civilian, localClassName);
                 }
             }

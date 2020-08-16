@@ -155,16 +155,15 @@ public class BlueprintsMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = civItem.clone();
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX));
+            cvItem.setDisplayName(civItem.getDisplayName(player));
             List<String> lore = new ArrayList<>();
             lore.add(civilian.getUuid().toString());
             lore.add(civItem.getDisplayName());
             boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
             if (isTown) {
                 lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(player, "town-instructions")
-                        .replace("$1", civItem.getProcessedName())));
+                        .getTranslation(player, "town-instructions")
+                        .replace("$1", civItem.getDisplayName(player))));
             } else {
                 lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             }

@@ -41,11 +41,11 @@ public class Government {
     public CVItem getIcon(Civilian civilian, boolean isUseBuffs) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         CVItem cvItem = icon.clone();
-        cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                 name.toLowerCase() + "-name"));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + name);
-        lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(player,
                 name.toLowerCase() + "-desc")));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(civilian));
@@ -59,7 +59,7 @@ public class Government {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         for (GovTypeBuff buff : buffs) {
             String applyString = getApplyString(buff);
-            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(
                     player, buff.getBuffType().name().toLowerCase() + "-buff-desc")
                     .replace("$1", buff.getAmount() + "")
                     .replace("$2", applyString)));

@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -9,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
@@ -73,12 +74,12 @@ public class CooldownEffect extends Effect {
         if (state == null) {
             return true;
         }
-        String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                spell.getType() + LocaleConstants.NAME_SUFFIX);
+        CivItem civItem = ItemManager.getInstance().getItemType(spell.getType());
+        String localSpellName = civItem.getDisplayName(player);
         Object rawDuration = state.getVars().get(SpellEffectConstants.COOLDOWN);
-        if (rawDuration == null || !(rawDuration instanceof Long)) {
+        if (!(rawDuration instanceof Long)) {
             if (!this.silent) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "infinite-cooldown").replace("$1", localSpellName));
             }
             return false;
@@ -87,7 +88,7 @@ public class CooldownEffect extends Effect {
         if (System.currentTimeMillis() < rawCooldown) {
             if (!this.silent) {
                 String cooldownString = Util.formatTime((int) ((System.currentTimeMillis() - rawCooldown) / -1000));
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         SpellEffectConstants.COOLDOWN).replace("$1", cooldownString));
             }
             return false;

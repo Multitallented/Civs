@@ -22,13 +22,13 @@ public class ChatChannel {
 
     public String getName(OfflinePlayer player) {
         if (chatChannelType == ChatChannelType.GLOBAL) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "global-channel");
         } else if (chatChannelType == ChatChannelType.FRIEND) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "friend-channel");
         } else if (chatChannelType == ChatChannelType.LOCAL) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "local-channel");
         } else if (chatChannelType == ChatChannelType.TOWN && target != null) {
             return ((Town) target).getName();
@@ -41,19 +41,19 @@ public class ChatChannel {
 
     public String getDesc(Player player) {
         if (chatChannelType == ChatChannelType.GLOBAL) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "global-channel-desc");
         } else if (chatChannelType == ChatChannelType.FRIEND) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "friend-channel-desc");
         } else if (chatChannelType == ChatChannelType.LOCAL) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "local-channel-desc");
         } else if (chatChannelType == ChatChannelType.TOWN && target != null) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "town-channel-desc").replace("$1", ((Town) target).getName());
         } else if (chatChannelType == ChatChannelType.ALLIANCE && target != null) {
-            return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            return LocaleManager.getInstance().getTranslation(player,
                     "alliance-channel-desc").replace("$1", ((Alliance) target).getName());
         } else {
             return "";

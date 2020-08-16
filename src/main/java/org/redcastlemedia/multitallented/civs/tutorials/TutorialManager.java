@@ -229,7 +229,7 @@ public class TutorialManager {
         if (player == null || !player.isOnline()) {
             return messages;
         }
-        String rawMessage = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String rawMessage = LocaleManager.getInstance().getTranslation(player,
                 "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
         if (rawMessage == null || rawMessage.isEmpty()) {
             return messages;

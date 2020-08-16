@@ -19,6 +19,7 @@ public class FolderType extends CivItem {
                 false,
                 ItemType.FOLDER,
                 name,
+                name,
                 icon.getMat(),
                 icon,
                 children.isEmpty() ? 1 : children.size(),

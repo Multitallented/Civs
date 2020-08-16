@@ -74,7 +74,7 @@ public abstract class TestUtil {
     public static PluginManager pluginManager = mock(PluginManager.class);
     private static boolean initialized = false;
 
-    @BeforeClass
+    @BeforeClass @SuppressWarnings("unchecked")
     public static void serverSetup() {
         if (initialized) {
             return;
@@ -195,66 +195,7 @@ public abstract class TestUtil {
                 createBlock(Material.GOLD_BLOCK, new Location(world, 1006, 0, 0)));
         //Councilroom
 
-        councilroom: {
-            ArrayList<Material> matList = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
-                matList.add(Material.CHEST);
-            }
-            for (int i = 0; i < 350; i++) {
-                matList.add(Material.OAK_PLANKS);
-            }
-            for (int i = 0; i < 60; i++) {
-                matList.add(Material.OAK_LOG);
-            }
-            for (int i = 0; i < 8; i++) {
-                matList.add(Material.BOOKSHELF);
-            }
-            for (int i = 0; i < 16; i++) {
-                matList.add(Material.GLASS);
-            }
-            for (int i = 0; i < 125; i++) {
-                matList.add(Material.OAK_STAIRS);
-            }
-            for (int i = 0; i < 8; i++) {
-                matList.add(Material.OAK_SIGN);
-            }
-            matList.add(Material.OAK_DOOR);
-            matList.add(Material.OAK_DOOR);
-
-            int i = 0;
-            for (int x = -5; x < 6; x++) {
-                for (int y = 55; y < 66; y++) {
-                    for (int z = 995; z < 1006; z++) {
-                        if (x == 0 && y == 60 && z == 1000) {
-                            continue;
-                        }
-                        world.putBlock(x, y, z,
-                                createBlock(matList.get(i), new Location(world, x, y, z)));
-                        i++;
-                        if (i >= matList.size()) {
-                            break councilroom;
-                        }
-                    }
-                }
-            }
-        }
-        {
-            int i = 0;
-            outer: for (int x = -8; x < -6; x++) {
-                for (int y = 53; y < 66; y++) {
-                    for (int z = 995; z < 1006; z++) {
-                        world.putBlock(x, y, z,
-                                createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));
-                        i++;
-                        if (i > 100) {
-                            break outer;
-                        }
-                    }
-                }
-            }
-        }
-        world.putBlock(0, 0, 1000,
-                createBlock(Material.CHEST, new Location(world, 0, 0, 1000)));
+        buildCouncilRoom();
 
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld(world.getUID())).thenReturn(world);
@@ -291,6 +232,65 @@ public abstract class TestUtil {
         ConfigManager configManager = ConfigManager.getInstance();
         configManager.useStarterBook = false;
         initialized = true;
+    }
+
+    private static void buildCouncilRoom() {
+        ArrayList<Material> matList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            matList.add(Material.CHEST);
+        }
+        for (int i = 0; i < 350; i++) {
+            matList.add(Material.OAK_PLANKS);
+        }
+        for (int i = 0; i < 60; i++) {
+            matList.add(Material.OAK_LOG);
+        }
+        for (int i = 0; i < 8; i++) {
+            matList.add(Material.BOOKSHELF);
+        }
+        for (int i = 0; i < 16; i++) {
+            matList.add(Material.GLASS);
+        }
+        for (int i = 0; i < 125; i++) {
+            matList.add(Material.OAK_STAIRS);
+        }
+        for (int i = 0; i < 8; i++) {
+            matList.add(Material.OAK_SIGN);
+        }
+        matList.add(Material.OAK_DOOR);
+        matList.add(Material.OAK_DOOR);
+
+        int i = 0;
+        councilroom: for (int x = -5; x < 6; x++) {
+            for (int y = 55; y < 66; y++) {
+                for (int z = 995; z < 1006; z++) {
+                    if (x == 0 && y == 60 && z == 1000) {
+                        continue;
+                    }
+                    world.putBlock(x, y, z,
+                            createBlock(matList.get(i), new Location(world, x, y, z)));
+                    i++;
+                    if (i >= matList.size()) {
+                        break councilroom;
+                    }
+                }
+            }
+        }
+        int j = 0;
+        outer: for (int x = -8; x < -6; x++) {
+            for (int y = 53; y < 66; y++) {
+                for (int z = 995; z < 1006; z++) {
+                    world.putBlock(x, y, z,
+                            createBlock(Material.GRASS_BLOCK, new Location(world, x, y, z)));
+                    j++;
+                    if (j > 100) {
+                        break outer;
+                    }
+                }
+            }
+        }
+        world.putBlock(0, 0, 1000,
+                createBlock(Material.CHEST, new Location(world, 0, 0, 1000)));
     }
 
     public static ItemStack createItemStack(Material mat) {

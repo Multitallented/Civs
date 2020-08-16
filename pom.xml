@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -46,6 +46,11 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>reflex.public</id>
+            <name>Public Reflex Repository</name>
+            <url>https://archiva.reflex.rip/repository/public/</url>
         </repository>
     </repositories>
 
@@ -148,24 +153,23 @@
             <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>rip.reflex.api</groupId>
+            <groupId>rip.reflex</groupId>
             <artifactId>ReflexAPI</artifactId>
-            <scope>system</scope>
+            <scope>provided</scope>
             <version>7</version>
-            <systemPath>${basedir}/lib/ReflexAPI-v7.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.janmm14</groupId>
             <artifactId>aac-api</artifactId>
             <version>4.2.0</version>
         </dependency>
-        <dependency>
-            <groupId>AntiAuraAPI</groupId>
-            <artifactId>API</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/AAAPI.jar</systemPath>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>AntiAuraAPI</groupId>-->
+<!--            <artifactId>API</artifactId>-->
+<!--            <version>0.0.1</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${basedir}/lib/AAAPI.jar</systemPath>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>junit</groupId>

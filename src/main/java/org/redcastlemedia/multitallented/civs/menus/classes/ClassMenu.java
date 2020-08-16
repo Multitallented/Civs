@@ -46,9 +46,8 @@ public class ClassMenu extends CustomMenu {
         data.put(Constants.CLASS, civClass);
         Player player = Bukkit.getPlayer(civilian.getUuid());
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
-        String localClassName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                civClass.getType() + LocaleConstants.NAME_SUFFIX);
-        String manaTitle = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String localClassName = classType.getDisplayName(player);
+        String manaTitle = LocaleManager.getInstance().getTranslation(player,
                 classType.getManaTitle());
         data.put("className", localClassName + civClass.getId());
         data.put("classTypeName", localClassName);
@@ -92,7 +91,7 @@ public class ClassMenu extends CustomMenu {
             if (civClass.getLevel() >= classType.getMaxLevel()) {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.getLore().clear();
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         "level-up-max")));
                 return cvItem.createItemStack();
             }
@@ -111,12 +110,12 @@ public class ClassMenu extends CustomMenu {
                 SpellType spellType = (SpellType) ItemManager.getInstance().getItemType(spellName);
                 CVItem cvItem = spellType.getShopIcon(player);
                 cvItem.setDisplayName(cvItem.getDisplayName() + index);
-                cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.getLore().add(0, LocaleManager.getInstance().getTranslation(player,
                         "level").replace("$1", "" + civilian.getLevel(spellType)));
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         "spell-slot-desc")));
                 if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
                             "spell-slot-desc-change-order"));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -126,7 +125,7 @@ public class ClassMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 cvItem.setDisplayName(cvItem.getDisplayName() + index);
                 if (MenuManager.getAllData(civilian.getUuid()).containsKey("swap")) {
-                    cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
                             "spell-slot-desc-change-order"));
                 }
                 ItemStack itemStack = cvItem.createItemStack();
@@ -172,7 +171,7 @@ public class ClassMenu extends CustomMenu {
         } else if ("spend-exp".equals(actionString)) {
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             if (player.getLevel() < civClass.getLevel() || player.getLevel() < 1) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "not-enough-levels").replace("$1", "" + Math.max(1, civClass.getLevel() - player.getLevel())));
                 return true;
             }
