@@ -1,10 +1,8 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,6 +11,7 @@ import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -202,9 +201,9 @@ public class Spell {
     }
 
     public String getSpellCastMessage(Player player) {
-        String localSpellName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                type + LocaleConstants.NAME_SUFFIX);
-        return Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        CivItem civItem = ItemManager.getInstance().getItemType(type);
+        String localSpellName = civItem.getDisplayName(player);
+        return Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "spell-cast").replace("$1", caster.getDisplayName())
                 .replace("$2", localSpellName);
     }

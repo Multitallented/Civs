@@ -53,7 +53,7 @@ public class TownType extends CivItem {
         return regionLimits.get(regionTypeName) == null ? -1 : regionLimits.get(regionTypeName);
     }
 
-    public TownType(String name,
+    public TownType(String key, String name,
                     CVItem icon,
                     CVItem shopIcon,
                     List<String> civReqs,
@@ -78,6 +78,7 @@ public class TownType extends CivItem {
         super(civReqs,
                 true,
                 ItemType.TOWN,
+                key,
                 name,
                 icon.getMat(),
                 shopIcon,

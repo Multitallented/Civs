@@ -52,7 +52,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
-import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -78,6 +77,7 @@ import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import github.scarsz.discordsrv.DiscordSRV;
@@ -160,6 +160,9 @@ public class CivilianListener implements Listener {
         if (!(event.getPotion().getShooter() instanceof Player)) {
             return;
         }
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Player player = (Player) event.getPotion().getShooter();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         for (Skill skill : civilian.getSkills().values()) {
@@ -168,20 +171,16 @@ public class CivilianListener implements Listener {
                 for (PotionEffect potionEffect : event.getPotion().getEffects()) {
                     exp += skill.addAccomplishment(potionEffect.getType().getName());
                 }
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (event.getItem().getType() == Material.POTION ||
@@ -196,28 +195,14 @@ public class CivilianListener implements Listener {
                     for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
                         exp += skill.addAccomplishment(potionEffect.getType().getName());
                     }
-                    if (exp > 0) {
-                        CivilianManager.getInstance().saveCivilian(civilian);
-                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "exp-gained").replace("$1", "" + exp)
-                                .replace("$2", localSkillName));
-                    }
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
                 }
             }
         } else {
             for (Skill skill : civilian.getSkills().values()) {
                 if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
                     double exp = skill.addAccomplishment(event.getItem().getType().name());
-                    if (exp > 0) {
-                        CivilianManager.getInstance().saveCivilian(civilian);
-                        String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                                "exp-gained").replace("$1", "" + exp)
-                                .replace("$2", localSkillName));
-                    }
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
                 }
             }
         }
@@ -225,6 +210,10 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCraftItem(CraftItemEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills() ||
+                (event.getCursor() != null && event.getCursor().getType() != Material.AIR)) {
+            return;
+        }
         Player player = (Player) event.getWhoClicked();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
@@ -234,20 +223,16 @@ public class CivilianListener implements Listener {
             for (int i = 0; i < event.getCurrentItem().getAmount(); i++) {
                 exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
             }
-            if (exp > 0) {
-                CivilianManager.getInstance().saveCivilian(civilian);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
         }
     }
 
     @EventHandler
     public void onRegionCreated(RegionCreatedEvent event) {
-        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getPrice() < 1) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getRawPrice() < 1) {
             return;
         }
         Player player = event.getPlayer();
@@ -255,14 +240,7 @@ public class CivilianListener implements Listener {
         for (Skill skill : civilian.getSkills().values()) {
             if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
                 double exp = skill.addAccomplishment(event.getRegion().getType());
-                if (exp > 0) {
-                    CivilianManager.getInstance().saveCivilian(civilian);
-                    String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            "exp-gained").replace("$1", "" + exp)
-                            .replace("$2", localSkillName));
-                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
             }
         }
     }
@@ -293,10 +271,11 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
         if (hasBlueprintsMenuOpen) {
-            if (Civs.econ != null && civItem.getPrice() > 0) {
-                Civs.econ.depositPlayer(player, civItem.getPrice());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+            double price = civItem.getPrice(civilian);
+            if (Civs.econ != null && price > 0) {
+                Civs.econ.depositPlayer(player, price);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "refund").replace("$1", Util.getNumberFormat(price, civilian.getLocale())));
             }
             return true;
         }
@@ -530,7 +509,7 @@ public class CivilianListener implements Listener {
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(event.getPlayer(),
+                    .getTranslation(event.getPlayer(),
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
@@ -540,11 +519,9 @@ public class CivilianListener implements Listener {
                 TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
             }
             event.setCancelled(true);
-            String localTownName = LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(),
-                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(event.getPlayer(),
-                    "town-instructions").replace("$1", localTownName));
+                    .getTranslation(event.getPlayer(),
+                    "town-instructions").replace("$1", civItem.getDisplayName(event.getPlayer())));
             return;
         }
         CVItem cvItem = CVItem.createFromItemStack(is);
@@ -582,7 +559,7 @@ public class CivilianListener implements Listener {
             if (!event.getSource().getViewers().isEmpty()) {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity,
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity,
                                 LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
             }
         }
@@ -683,7 +660,7 @@ public class CivilianListener implements Listener {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
             }
         }
@@ -738,7 +715,7 @@ public class CivilianListener implements Listener {
         }
         if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
                 player.equals(event.getRecipients().iterator().next()))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
@@ -796,7 +773,7 @@ public class CivilianListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {

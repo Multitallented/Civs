@@ -73,14 +73,14 @@ public class SetMemberCommand extends CivCommand {
         }
         if (region != null && !isAdmin && !Util.hasOverride(region, civilian, overrideTown) &&
                 !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
         OfflinePlayer invitee = Bukkit.getOfflinePlayer(inviteUUID);
         if (invitee == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "player-not-online").replace("$1", invitee.getName()));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player " + inviteUUID + " is not online");
@@ -98,11 +98,11 @@ public class SetMemberCommand extends CivCommand {
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             Player invitePlayer = (Player) invitee;
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(invitePlayer,
                     "add-member-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitee.getName() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "member-added-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {

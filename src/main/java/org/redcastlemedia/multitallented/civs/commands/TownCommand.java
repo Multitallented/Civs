@@ -24,13 +24,13 @@ public class TownCommand extends CivCommand {
         //1 townName
         Town town = TownManager.getInstance().getTownAt(player.getLocation());
         if (args.length < 2 && town == null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "specify-town-name"));
             return true;
         }
         String name = args.length > 1 ? args[1] : town.getName();
         if (!Util.validateFileName(name)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "specify-town-name"));
             return true;
         }

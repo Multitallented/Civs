@@ -27,19 +27,18 @@ public class LocaleManager {
     private static LocaleManager localeManager;
     HashMap<String, HashMap<String, String>> languageMap = new HashMap<>();
 
-    public String getTranslationWithPlaceholders(OfflinePlayer player, String key) {
+    public String getTranslation(OfflinePlayer player, String key) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String messageWithPlaceholders = getTranslation(civilian.getLocale(), key);
         return replacePlaceholders(player, messageWithPlaceholders);
     }
 
-    public String getRawTranslationWithPlaceholders(OfflinePlayer player, String key) {
+    public String getRawTranslation(OfflinePlayer player, String key) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         String messageWithPlaceholders = getRawTranslation(civilian.getLocale(), key);
         return replacePlaceholders(player, messageWithPlaceholders);
     }
 
-    @Deprecated
     public String getTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         String[] variables = getVariables(key);
@@ -87,7 +86,6 @@ public class LocaleManager {
         return translation;
     }
 
-    @Deprecated
     public String getRawTranslation(String language, String key) {
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         if (!languageMap.containsKey(language) ||

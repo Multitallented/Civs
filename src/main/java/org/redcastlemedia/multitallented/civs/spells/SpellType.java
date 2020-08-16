@@ -47,6 +47,7 @@ public class SpellType extends CivItem {
 
 
     public SpellType(List<String> reqs,
+                     String key,
                      String name,
                      Material material,
                      CVItem shopIcon,
@@ -63,6 +64,7 @@ public class SpellType extends CivItem {
         super(reqs,
                 false,
                 ItemType.SPELL,
+                key,
                 name,
                 material,
                 shopIcon,

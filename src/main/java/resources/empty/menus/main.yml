@@ -83,6 +83,13 @@ items:
     # icon: region icon
     actions:
       - menu:region?region=$region$
+  class:
+    index: 23
+    #icon: class icon
+    #name: class icon
+    #desc: your class
+    actions:
+      - menu:class?class=$class$
   player:
     index: 24
     #icon: player's head

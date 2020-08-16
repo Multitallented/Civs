@@ -1,0 +1,14 @@
+#enabled: true
+#icon: CRAFTING_TABLE
+#exp-per-new-item: 10
+#exp-repeat-decay: 2
+#max-exp: 3000
+#shop-rewards:
+#  arrow_factory: 0.3
+#  bakery: 0.5
+#  boot_grinder: 0.75
+#  gold_infuser: 0.4
+#  iron_works: 0.6
+#  stone_works: 0.9
+#  mill: 0.5
+#  weapons_factory: 0.5

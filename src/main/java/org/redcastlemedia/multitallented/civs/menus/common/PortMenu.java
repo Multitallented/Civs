@@ -77,8 +77,9 @@ public class PortMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("ports".equals(menuIcon.getKey())) {
             List<Region> regions = (List<Region>) MenuManager.getData(civilian.getUuid(), "ports");
             int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
@@ -90,9 +91,8 @@ public class PortMenu extends CustomMenu {
             }
             Region region = regionArray[startIndex + count];
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    region.getType() + LocaleConstants.NAME_SUFFIX));
+            CVItem cvItem = regionType.getShopIcon(player);
+            cvItem.setDisplayName(regionType.getDisplayName(player));
             cvItem.getLore().clear();
             cvItem.getLore().add(region.getLocation().getWorld().getName() + " " +
                     ((int) region.getLocation().getX()) + "x " +
@@ -116,7 +116,7 @@ public class PortMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (actionString.equals("teleport")) {
             String id = ((Map<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "portMap")).get(clickedItem).getId();

@@ -1,15 +1,14 @@
 package org.redcastlemedia.multitallented.civs.items;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -35,6 +35,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ItemsTests extends TestUtil {
 
+    private String itemGroup;
+
     @Before
     public void onBefore() {
         TownManager.getInstance().reload();
@@ -44,6 +46,9 @@ public class ItemsTests extends TestUtil {
     @After
     public void after() {
         TestUtil.world.setChunkLoaded(true);
+        if (itemGroup != null) {
+            ConfigManager.getInstance().getItemGroups().put("stairs", itemGroup);
+        }
     }
 
     @Test
@@ -250,6 +255,26 @@ public class ItemsTests extends TestUtil {
         assertTrue(Util.removeItems(inputs, cvInventory));
         assertNull(cvInventory.getItem(3));
         assertFalse(Util.containsItems(inputs, cvInventory));
+    }
+
+    @Test
+    public void createCivItemFromString() {
+        assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
+    }
+
+    @Test
+    public void imLosingMyMind() {
+        Pattern pattern = Pattern.compile("g:fence(?![A-Za-z])");
+        assertTrue(pattern.matcher("LADDER*4,g:fence*4,").find());
+    }
+
+    @Test
+    public void groupsWithinGroups() {
+        itemGroup = ConfigManager.getInstance().getItemGroups().get("stairs");
+        ConfigManager.getInstance().getItemGroups().put("stairs", "LADDER,g:roof");
+        List<CVItem> itemList = CVItem.createListFromString("g:stairs*2");
+        assertEquals(Material.LADDER, itemList.get(0).getMat());
+        assertEquals(Material.ACACIA_STAIRS, itemList.get(1).getMat());
     }
 
     private void loadSpellTypeBackflip() {

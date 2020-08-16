@@ -47,7 +47,7 @@ public class DamageEffect extends Effect {
             if (!this.silent && origin instanceof Player) {
                 Player originPlayer = (Player) origin;
                 originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
         }
@@ -56,7 +56,7 @@ public class DamageEffect extends Effect {
             if (!this.silent && origin instanceof Player) {
                 Player originPlayer = (Player) origin;
                 originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(originPlayer,
+                        .getTranslation(originPlayer,
                                 "need-more-health").replace("$1", "" + Math.abs(damage)));
             }
             return false;
@@ -67,7 +67,7 @@ public class DamageEffect extends Effect {
             if (!this.silent && origin instanceof Player) {
                 Player originPlayer = (Player) origin;
                 originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(originPlayer, "invalid-target"));
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
         }

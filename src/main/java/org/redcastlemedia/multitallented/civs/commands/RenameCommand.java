@@ -26,7 +26,7 @@ public class RenameCommand extends CivCommand {
 
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-town-name"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a town name");
@@ -44,7 +44,7 @@ public class RenameCommand extends CivCommand {
 
         if (!Util.validateFileName(newTownName)) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-town-name"));
             } else {
                 commandSender.sendMessage("Invalid town name");
@@ -55,7 +55,7 @@ public class RenameCommand extends CivCommand {
         Town town = TownManager.getInstance().getTown(oldTownName);
         if (town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -64,7 +64,7 @@ public class RenameCommand extends CivCommand {
         }
         if (player != null && (!town.getPeople().containsKey(player.getUniqueId()) ||
                 !town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -78,7 +78,7 @@ public class RenameCommand extends CivCommand {
         TownManager.getInstance().saveTown(town);
 
         if (player != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "town-renamed").replace("$1", oldTownName)
                     .replace("$2", newTownName));
         } else {

@@ -14,7 +14,9 @@ import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -119,7 +121,7 @@ public class MainMenu extends CustomMenu {
             }
         } else if ("chat".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -130,8 +132,8 @@ public class MainMenu extends CustomMenu {
             skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
             skullMeta.setDisplayName(player.getDisplayName());
             if (ConfigManager.getInstance().getUseClassesAndSpells()) {
-                skullMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        civilian.getCurrentClass().getType() + LocaleConstants.NAME_SUFFIX)));
+                CivItem civItem = ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                skullMeta.setLore(Util.textWrap(civilian, civItem.getDisplayName(player)));
             }
             itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);
@@ -177,20 +179,10 @@ public class MainMenu extends CustomMenu {
         } else if (menuIcon.getKey().equals("ports")) {
             boolean hasPort = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {
-                if (!region.getEffects().containsKey("port")) {
-                    continue;
+                if (PortCommand.canPort(region, player.getUniqueId(), null)) {
+                    hasPort = true;
+                    break;
                 }
-                if (!region.getPeople().containsKey(civilian.getUuid())) {
-                    continue;
-                }
-                //Don't show private ports
-                if (region.getEffects().get("port") != null &&
-                        !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                        !region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                    continue;
-                }
-                hasPort = true;
-                break;
             }
             if (!hasPort) {
                 return new ItemStack(Material.AIR);

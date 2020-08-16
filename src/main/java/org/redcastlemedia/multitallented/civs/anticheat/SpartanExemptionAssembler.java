@@ -34,7 +34,6 @@ public final class SpartanExemptionAssembler {
                 hackTypes.add(Enums.HackType.HitReach);
                 hackTypes.add(Enums.HackType.KillAura);
                 hackTypes.add(Enums.HackType.NoSwing);
-                hackTypes.add(Enums.HackType.CombatAnalysis);
                 hackTypes.add(Enums.HackType.FastBow);
                 hackTypes.add(Enums.HackType.Nuker);
                 break;
