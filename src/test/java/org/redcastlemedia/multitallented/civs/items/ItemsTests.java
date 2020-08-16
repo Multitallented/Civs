@@ -35,8 +35,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class ItemsTests extends TestUtil {
 
-    private String itemGroup;
-
     @Before
     public void onBefore() {
         TownManager.getInstance().reload();
@@ -46,9 +44,6 @@ public class ItemsTests extends TestUtil {
     @After
     public void after() {
         TestUtil.world.setChunkLoaded(true);
-        if (itemGroup != null) {
-            ConfigManager.getInstance().getItemGroups().put("stairs", itemGroup);
-        }
     }
 
     @Test
@@ -264,17 +259,23 @@ public class ItemsTests extends TestUtil {
 
     @Test
     public void imLosingMyMind() {
-        Pattern pattern = Pattern.compile("g:fence(?![A-Za-z])");
+        Pattern pattern = Pattern.compile("g:fence(?![_A-Za-z])");
         assertTrue(pattern.matcher("LADDER*4,g:fence*4,").find());
     }
 
     @Test
     public void groupsWithinGroups() {
-        itemGroup = ConfigManager.getInstance().getItemGroups().get("stairs");
-        ConfigManager.getInstance().getItemGroups().put("stairs", "LADDER,g:roof");
-        List<CVItem> itemList = CVItem.createListFromString("g:stairs*2");
+        ConfigManager.getInstance().getItemGroups().put("asdf", "LADDER,g:stairs");
+        List<CVItem> itemList = CVItem.createListFromString("g:asdf*2");
         assertEquals(Material.LADDER, itemList.get(0).getMat());
-        assertEquals(Material.ACACIA_STAIRS, itemList.get(1).getMat());
+        assertEquals(Material.QUARTZ_STAIRS, itemList.get(1).getMat());
+    }
+
+    @Test
+    public void groupShouldBePrimary() {
+        ItemGroupList itemGroupList = new ItemGroupList();
+        itemGroupList.findAllGroupsRecursively("g:primary*2");
+        assertEquals("primary", itemGroupList.getMainGroup());
     }
 
     private void loadSpellTypeBackflip() {

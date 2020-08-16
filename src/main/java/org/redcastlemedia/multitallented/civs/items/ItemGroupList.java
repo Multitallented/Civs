@@ -18,6 +18,8 @@ public class ItemGroupList {
     @Getter
     private final Set<String> groupName = new HashSet<>();
     @Getter
+    private String mainGroup = null;
+    @Getter
     private String circularDependency = null;
 
     public void findAllGroupsRecursively(String input) {
@@ -28,7 +30,7 @@ public class ItemGroupList {
             String params = null;
             String currentKey = null;
             for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
-                Pattern pattern = Pattern.compile("g:" + currKey + "(?![A-Za-z])");
+                Pattern pattern = Pattern.compile("g:" + currKey + "(?![_A-Za-z])");
                 Matcher matcher = pattern.matcher(input);
                 if (matcher.find()) {
                     if (groupName.contains(currKey)) {
@@ -37,6 +39,9 @@ public class ItemGroupList {
                     }
                     currentKey = currKey;
                     groupName.add(currKey);
+                    if (mainGroup == null) {
+                        mainGroup = currKey;
+                    }
                     itemGroup = ConfigManager.getInstance().getItemGroups().get(currKey);
                     params = input.substring(matcher.start());
                     params = params.split(",")[0];

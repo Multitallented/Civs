@@ -274,9 +274,7 @@ public class CVItem {
             return reqs;
         }
         input = itemGroupList.getInput();
-        if (!itemGroupList.getGroupName().isEmpty()) {
-            groupName = itemGroupList.getGroupName().iterator().next();
-        }
+        groupName = itemGroupList.getMainGroup();
         for (String req : input.split(",")) {
             CVItem cvItem = createCVItemFromString(req);
             if (groupName != null) {
