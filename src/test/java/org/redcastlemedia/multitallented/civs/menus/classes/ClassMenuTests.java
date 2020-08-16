@@ -7,10 +7,12 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 public class ClassMenuTests extends TestUtil {
 
@@ -21,6 +23,10 @@ public class ClassMenuTests extends TestUtil {
     public void setup() {
         civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civClass = civilian.getCurrentClass();
+        if (civClass == null) {
+            String defaultClassName = ConfigManager.getInstance().getDefaultClass();
+            civClass = new CivClass(0, player.getUniqueId(), defaultClassName);
+        }
         civClass.resetSpellSlotOrder();
     }
 
