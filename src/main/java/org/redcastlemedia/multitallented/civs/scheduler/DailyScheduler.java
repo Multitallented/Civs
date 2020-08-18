@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -63,7 +64,9 @@ public class DailyScheduler implements Runnable {
             String townName = TownManager.getInstance().getBiggestTown(civilian);
             if (townName != null) {
                 Town town = TownManager.getInstance().getTown(townName);
-                baseHardship = town.getPrice() / (double) town.getRawPeople().size();
+                if (town != null) {
+                    baseHardship = town.getPrice() / (double) town.getRawPeople().size();
+                }
             }
 
             double newHardship = ((civilian.getHardship() - baseHardship) / 2.0) + baseHardship;
