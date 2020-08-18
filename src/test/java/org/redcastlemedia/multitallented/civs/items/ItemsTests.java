@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,6 +27,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -255,6 +257,14 @@ public class ItemsTests extends TestUtil {
     @Test
     public void createCivItemFromString() {
         assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
+    }
+
+    @Test
+    public void test() {
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("npc_shack");
+        assertNotNull(regionType);
+        ItemStack itemStack = regionType.createItemStack(player);
+        assertEquals("npc_shack", ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1)));
     }
 
     @Test

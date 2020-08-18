@@ -230,7 +230,7 @@ public abstract class CivItem extends CVItem {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + player.getUniqueId().toString());
         String displayName = getDisplayName(player);
-        lore.add(displayName);
+        lore.add(ChatColor.BLACK + key);
         if (isTown) {
             lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance().getTranslation(player,
                     "town-instructions").replace("$1", displayName)));

@@ -240,7 +240,8 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
-        if (im.getLore() == null || im.getLore().size() < 2 || ItemManager.getInstance().getItemType(im.getLore().get(1)) == null) {
+        if (im.getLore() == null || im.getLore().size() < 2 ||
+                ItemManager.getInstance().getItemType(ChatColor.stripColor(im.getLore().get(1))) == null) {
             return false;
         }
         return true;
