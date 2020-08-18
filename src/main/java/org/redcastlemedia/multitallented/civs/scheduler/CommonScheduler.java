@@ -63,7 +63,13 @@ public class CommonScheduler implements Runnable {
             int maxTPS = 5;
             int chunk = players.size() / maxTPS;
             for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
-                checkPlayer((Player) players.toArray()[j]);
+                Player[] playerArray = players.toArray(new Player[0]);
+                if (playerArray.length > j) {
+                    Player player = playerArray[j];
+                    if (player != null) {
+                        checkPlayer(player);
+                    }
+                }
             }
             RegionTickUtil.runUpkeeps();
             if (i == maxTPS - 1) {
