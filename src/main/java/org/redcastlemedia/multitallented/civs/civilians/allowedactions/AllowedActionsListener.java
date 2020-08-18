@@ -389,7 +389,7 @@ public class AllowedActionsListener implements Listener {
     }
 
     public static void dropInvalidArmorOrWeapons(Player player)  {
-        if (player.getGameMode() != GameMode.SURVIVAL ||
+        if (player == null || player.getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
             return;
         }
