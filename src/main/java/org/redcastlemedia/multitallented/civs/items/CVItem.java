@@ -310,9 +310,7 @@ public class CVItem {
             if (displayName != null) {
                 im.setDisplayName(displayName);
             }
-            if (lore == null) {
-                lore = new ArrayList<>();
-            } else if (!lore.isEmpty()) {
+            if (lore != null && !lore.isEmpty()) {
                 im.setLore(lore);
             }
             im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

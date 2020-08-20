@@ -253,7 +253,7 @@ public abstract class CivItem extends CVItem {
         lore.add("");
         String displayName = getDisplayName();
         String defaultLocale = ConfigManager.getInstance().getDefaultLanguage();
-        lore.add(displayName);
+        lore.add(ChatColor.BLACK + getProcessedName());
         if (isTown) {
             lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance().getTranslation(defaultLocale,
                     "town-instructions").replace("$1", displayName)));

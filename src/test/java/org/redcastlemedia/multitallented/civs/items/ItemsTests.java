@@ -255,6 +255,15 @@ public class ItemsTests extends TestUtil {
     }
 
     @Test
+    public void itemKeyShouldAlwaysBeCorrect() {
+        CivItem civItem = ItemManager.getInstance().getItemType("ranch");
+        assertEquals("ranch", civItem.getProcessedName());
+        assertEquals("ranch", civItem.getKey());
+        assertEquals(ChatColor.BLACK + "ranch", civItem.createItemStack().getItemMeta().getLore().get(1));
+        assertEquals(ChatColor.BLACK + "ranch", civItem.createItemStack(player).getItemMeta().getLore().get(1));
+    }
+
+    @Test
     public void createCivItemFromString() {
         assertNotNull(CVItem.createCVItemFromString("civ:arrow_factory*2"));
     }
