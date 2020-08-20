@@ -1,13 +1,10 @@
 package org.redcastlemedia.multitallented.civs.menus.regions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,14 +16,11 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "blueprints") @SuppressWarnings("unused")
 public class BlueprintsMenu extends CustomMenu {
@@ -49,6 +43,16 @@ public class BlueprintsMenu extends CustomMenu {
         }
         CivilianManager.getInstance().saveCivilian(civilian);
         data.put(Constants.ITEMS_IN_VIEW, new HashMap<String, Integer>());
+        Map<String, Integer> modifiedStashMap = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : stashItems.entrySet()) {
+            CivItem civItem = ItemManager.getInstance().getItemType(entry.getKey());
+            if (civItem != null && (civItem.getItemType() == CivItem.ItemType.REGION
+                    || civItem.getItemType() == CivItem.ItemType.TOWN)) {
+                modifiedStashMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        data.put("stashItems", modifiedStashMap);
         int maxPage = (int) Math.ceil((double) stashItems.keySet().size() / (double) itemsPerPage.get("blueprints"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put(Constants.MAX_PAGE, maxPage);
@@ -136,8 +140,8 @@ public class BlueprintsMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         if (menuIcon.getKey().equals("blueprints")) {
-            Map<String, Integer> stashItems = civilian.getStashItems();
-            if (stashItems.isEmpty()) {
+            Map<String, Integer> stashItems = (Map<String, Integer>) MenuManager.getData(civilian.getUuid(), "stashItems");
+            if (stashItems == null || stashItems.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
             int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
@@ -154,27 +158,14 @@ public class BlueprintsMenu extends CustomMenu {
                 CivilianManager.getInstance().saveCivilian(civilian);
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = civItem.clone();
-            cvItem.setDisplayName(civItem.getDisplayName(player));
-            List<String> lore = new ArrayList<>();
-            lore.add(civilian.getUuid().toString());
-            lore.add(civItem.getDisplayName());
-            boolean isTown = civItem.getItemType().equals(CivItem.ItemType.TOWN);
-            if (isTown) {
-                lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance()
-                        .getTranslation(player, "town-instructions")
-                        .replace("$1", civItem.getDisplayName(player))));
-            } else {
-                lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
-            }
-            cvItem.setLore(lore);
-            cvItem.setQty(civilian.getStashItems().get(currentStashItemName));
+            ItemStack itemStack = civItem.createItemStack(player);
+            int amount = civilian.getStashItems().get(currentStashItemName);
+            itemStack.setAmount(amount);
             HashMap<String, Integer> itemsInView = (HashMap<String, Integer>) MenuManager.getData(civilian.getUuid(), Constants.ITEMS_IN_VIEW);
             if (itemsInView == null) {
                 return new ItemStack(Material.AIR);
             }
-            itemsInView.put(currentStashItemName, civilian.getStashItems().get(currentStashItemName));
-            ItemStack itemStack = cvItem.createItemStack();
+            itemsInView.put(currentStashItemName, amount);
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         }
