@@ -39,6 +39,7 @@ vote-member: "Vote to be next owner"
 capitalism-voting-cost: "Extra votes cost $1"
 voted: "You have cast your vote for $1"
 gov-type-change: "$1 changed from $2 to $3"
+gov-type-changed-recently: "Your gov type has already been changed today. Wait till tomorrow to change it again."
 cant-change-gov-type-daily: "You are not allowed to change a town's government type more than once per day."
 revolt: "Revolt"
 revolt-desc: "Click to join the revolt against $1. Costs $2 $3."
@@ -66,8 +67,9 @@ price: "Price: $1"
 buy: "Buy $1"
 cancel: Cancel
 item-bought: "Congrats! You just bought $1 for $2"
-max-item: "You cant buy more than $2 $1"
+max-item: "You cant buy more than $2 $1. Either sell your $1 or get someone else to build it."
 max-qty: "$1 has too many $2 and can't own more"
+any-region: "Any of these regions"
 items: Items
 click-for-item-group: "Click to see all items in this group"
 classes: Classes
@@ -101,6 +103,7 @@ population-req: "Requires a $1 with $2 population"
 biomes: Biomes
 devolve-town: "$1 has run out of power and has been downgraded to a $2!"
 pop-desc: "$1 Population / $2 Housing / $3 Villagers"
+max-housing: "Your housing is full. Build more housing if you want to invite more players to the town."
 build-reqs: "All the blocks you need to place to build a $1"
 reagents-title: Reagents
 reagents: "All the items you need in the $1 chest"
