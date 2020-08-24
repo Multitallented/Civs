@@ -14,6 +14,7 @@ public final class SpellConstants {
     public static final String SET = "set";
     public static final String SELF = "self";
     public static final String DISTANCE = "distance";
+    public static final String PERIOD = "period";
 
     private SpellConstants() {
 

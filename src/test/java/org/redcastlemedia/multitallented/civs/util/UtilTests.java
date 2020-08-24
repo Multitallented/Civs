@@ -9,23 +9,17 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.WorldImpl;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVInventory;
@@ -190,10 +184,10 @@ public class UtilTests extends TestUtil {
 
     @Test
     public void formatTimeShouldReturnCorrectFormat() {
-        assertEquals("54s", AnnouncementUtil.formatTime(TestUtil.player, 54));
-        assertEquals("1m 22s", AnnouncementUtil.formatTime(TestUtil.player, 82));
-        assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(TestUtil.player, 4830));
-        assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(TestUtil.player, 8430));
+        assertEquals("54s", Util.formatTime(54));
+        assertEquals("1m 22s", Util.formatTime(82));
+        assertEquals("1h 20m 30s", Util.formatTime(4830));
+        assertEquals("2h 20m 30s", Util.formatTime(8430));
     }
 
     @Test

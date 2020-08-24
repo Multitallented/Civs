@@ -86,19 +86,33 @@ items:
     actions:
       - menu:region?region=$region$
   nation:
-    index: 10
+    index: 20
     # name: nation name
     # icon: nation icon
     # desc: nation desc
     actions:
       - menu:nation?nation=$nation$
   claim:
-    index: 10
+    index: 21
     # name: nation name
     # icon: nation icon
     desc: claim-desc
     actions:
       - menu:claim?claim=$claim$
+  class:
+    index: 23
+    #icon: class icon
+    #name: class icon
+    #desc: your class
+    actions:
+      - menu:class?class=$class$
+  player:
+    index: 24
+    #icon: player's head
+    #name: your name
+    #desc: your class
+    actions:
+      - menu:player?uuid=$uuid$
   chat:
     index: 25
     icon: MAP

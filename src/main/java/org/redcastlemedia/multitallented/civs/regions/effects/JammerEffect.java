@@ -19,9 +19,9 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
-import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -53,8 +53,8 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 event.setCancelled(true);
                 long cooldown = offCooldown - System.currentTimeMillis();
                 event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                        .getTranslationWithPlaceholders(event.getPlayer(), "cooldown")
-                        .replace("$1", AnnouncementUtil.formatTime(event.getPlayer(), cooldown)));
+                        .getTranslation(event.getPlayer(), "cooldown")
+                        .replace("$1", Util.formatTime(cooldown)));
                 return;
             } else {
                 cooldowns.remove(event.getPlayer().getUniqueId());

@@ -1,0 +1,48 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: LEATHER_BOOTS
+#dynmap-marker: factory
+#name: Boot_Grinder
+#price: 20
+#groups:
+#  - factory
+#  - utilities
+#level: 3
+#
+#pre-reqs:
+#  - member=hamlet:village:town:city:metropolis
+#
+#build-reqs:
+#  - g:window*2
+#  - g:door*1
+#  - g:roof*20
+#  - WATER*6
+#  - g:primary*55
+#  - g:secondary*10
+#
+#towns:
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
+#
+#build-radius: 3
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:LEATHER
+#
+#period: 30 #30 seconds
+#upkeep:
+#  0:
+#    reagents:
+#      - SHEARS
+#    input:
+#      - LEATHER_BOOTS
+#    output:
+#      - LEATHER*4

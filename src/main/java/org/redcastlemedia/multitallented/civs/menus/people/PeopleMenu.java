@@ -93,6 +93,10 @@ public class PeopleMenu extends CustomMenu {
                 if (filterOnline && Bukkit.getPlayer(uuid) == null) {
                     continue;
                 }
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null && Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_INVISIBLE)) {
+                    continue;
+                }
                 civilians.add(CivilianManager.getInstance().getCivilian(uuid));
             }
         } else {
@@ -195,6 +199,9 @@ public class PeopleMenu extends CustomMenu {
             if (blacklist.contains(player.getUniqueId())) {
                 continue;
             }
+            if (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_INVISIBLE)) {
+                continue;
+            }
             civilianList.add(CivilianManager.getInstance().getCivilian(player.getUniqueId()));
         }
     }
@@ -232,9 +239,6 @@ public class PeopleMenu extends CustomMenu {
             Civilian currentCivilian = civilians.get(startIndex + count);
             Player currentPlayer = Bukkit.getPlayer(civilian.getUuid());
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(currentCivilian.getUuid());
-            if (Civs.perm != null && offlinePlayer.getPlayer() != null && Civs.perm.has(offlinePlayer.getPlayer(), Constants.PVP_EXEMPT_PERMISSION)) {
-                return new ItemStack(Material.AIR);
-            }
             Player player = null;
             if (offlinePlayer.isOnline()) {
                 player = (Player) offlinePlayer;
@@ -249,7 +253,7 @@ public class PeopleMenu extends CustomMenu {
                 addRank(civilian.getLocale(), cvItem, town.getRawPeople().get(offlinePlayer.getUniqueId()));
             }
             ItemStack itemStack = cvItem.createItemStack();
-            if (player != null) {
+            if (player != null && Bukkit.getOnlineMode()) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
                 skullMeta.setOwningPlayer(player);
                 itemStack.setItemMeta(skullMeta);

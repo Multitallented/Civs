@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -424,7 +424,7 @@ public final class Util {
         //0 Prev button
         if (page > 0) {
             CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+            cvItem.setDisplayName(localeManager.getTranslation(player,
                     "prev-button"));
             inventory.setItem(0, cvItem.createItemStack());
         }
@@ -433,7 +433,7 @@ public final class Util {
         //8 Next button
         if (startIndex + 36 < totalSize) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslationWithPlaceholders(player,
+            cvItem1.setDisplayName(localeManager.getTranslation(player,
                     "next-button"));
             inventory.setItem(8, cvItem1.createItemStack());
         }
@@ -457,7 +457,7 @@ public final class Util {
                         continue;
                     }
 
-                    if (orReq.equivalentItem(iss, true)) {
+                    if (orReq.equivalentItem(iss, orReq.getDisplayName() != null, !orReq.getLore().isEmpty())) {
                         if ((iss.getAmount() + amount) >= orReq.getQty()) {
                             continue outer;
                         } else {
@@ -517,7 +517,7 @@ public final class Util {
             boolean removeIndex = false;
             outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
                 for (CVItem hsItem : hsItems) {
-                    if (hsItem.equivalentItem(item, true)) {
+                    if (hsItem.equivalentItem(item, hsItem.getDisplayName() != null, !hsItem.getLore().isEmpty())) {
 
                         if (item.getAmount() > hsItem.getQty()) {
                             reduceItems.put(i, hsItem.getQty());
@@ -623,7 +623,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (item.equivalentItem(iss)) {
+                        if (item.equivalentItem(iss, item.getDisplayName() != null, !item.getLore().isEmpty())) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());
@@ -779,5 +779,35 @@ public final class Util {
         }
 
         return c;
+    }
+
+    public static void sendMessageToPlayerOrConsole(CommandSender commandSender, String key, String message) {
+        Player player = null;
+        if (commandSender instanceof Player) {
+            player = (Player) commandSender;
+        }
+        if (player != null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, key));
+        } else {
+            commandSender.sendMessage(message);
+        }
+    }
+
+    public static String formatTime(Player player, long duration) {
+        if (duration < 60) {
+            return LocaleManager.getInstance().getTranslation(player, "time-seconds")
+                    .replace("$1", "" + duration);
+        } else if (duration < 3600) {
+            return LocaleManager.getInstance().getTranslation(player, "time-minutes")
+                    .replace("$1", "" + (int) (duration / 60))
+                    .replace("$2", "" + (int) (duration % 60));
+        } else {
+            int hours = (int) (duration / 3600);
+            return LocaleManager.getInstance().getTranslation(player, "time-hours")
+                    .replace("$1", "" + hours)
+                    .replace("$2", "" + (int) ((duration - hours * 3600) / 60))
+                    .replace("$3", "" + (int) (duration % 60));
+        }
     }
 }

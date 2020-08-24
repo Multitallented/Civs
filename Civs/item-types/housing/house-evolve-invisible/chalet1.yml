@@ -2,18 +2,20 @@
 #type: region
 #icon: CHEST
 #shop-icon: MAGENTA_BED
+#dynmap-marker: bighouse
+#name: Chalet1
 #max: 2
 #price: 1400
 #is-in-shop: false
 #groups:
-#- housing
-#- allchalet
-#- basechalet
-#- allhousing
+#  - housing
+#  - allchalet
+#  - basechalet
+#  - allhousing
 #level: 4
 #
 #pre-reqs:
-#- member=village:town:city:metropolis
+#  - member=village:town:city:metropolis
 #
 #build-reqs:
 #  - CHEST*8
@@ -29,21 +31,21 @@
 #
 #build-radius: 8 #17x17x17
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- housing:1
-#- evolve:chalet2.48
-#- buyable
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - housing:1
+#  - evolve:chalet2.48
+#  - buyable
 #
 #towns:
-#- village
-#- town
-#- city
-#- metropolis
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:
@@ -51,16 +53,15 @@
 #    power-input: 1
 #  1:
 #    input: #2.11
-#    - BREAD*6  # 144 or 2.25 stacks / day
+#      - BREAD*6  # 144 or 2.25 stacks / day
 #    payout: 12.6 # $303.84 / day
 #  2:
 #    input:
-#    - CARROT*16   # 384 or 6 stacks / day
+#      - CARROT*16   # 384 or 6 stacks / day
 #    payout: 10.2 # $244.8 / day
 #    exp: 1
 #  3:
 #    input:
-#    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
+#      - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
 #    payout: 6 # $144 / day
 #    exp: 1
-#

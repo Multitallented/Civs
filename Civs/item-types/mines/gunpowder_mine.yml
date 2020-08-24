@@ -2,41 +2,42 @@
 #type: region
 #icon: CHEST
 #shop-icon: GUNPOWDER
+#dynmap-marker: hammer
+#name: Gunpowder_Mine
 #max: 1
-#price: 2000
+#price: 1000
 #groups:
-#- mine
+#  - mine
 #level: 1
 #
 #build-reqs:
-#- TNT*2
-#- g:door*1
-#- CHEST*2
-#- FURNACE*2
-#- g:primary*55
-#- g:secondary*6
+#  - TNT*2
+#  - g:door*1
+#  - CHEST*2
+#  - FURNACE*2
+#  - g:primary*55
+#  - g:secondary*6
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:GUNPOWDER
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:GUNPOWDER
 #
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
 #    input:
-#    - IRON_PICKAXE
+#      - IRON_PICKAXE
 #    output:
-#    - GUNPOWDER*5
+#      - GUNPOWDER*10
 #  1:
 #    reagents:
-#    - DIAMOND_PICKAXE
+#      - DIAMOND_PICKAXE
 #    input:
-#    - IRON_PICKAXE
+#      - IRON_PICKAXE
 #    output:
-#    - GUNPOWDER*7
-#
+#      - GUNPOWDER*15

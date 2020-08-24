@@ -57,7 +57,7 @@ public final class OwnershipUtil {
         boolean inviteeIsOwner = town.getRawPeople().containsKey(invitee.getUuid()) &&
                 !town.getRawPeople().get(invitee.getUuid()).contains(Constants.OWNER);
 
-        double price = townType.getPrice() * 2;
+        double price = townType.getPrice(civilian) * 2;
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean oligarchyOverride = player != null && !isOwner && inviteeIsOwner &&
                 government.getGovernmentType() == GovernmentType.OLIGARCHY;

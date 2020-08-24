@@ -86,6 +86,7 @@ public class TownManager {
     }
 
     public List<Town> getTowns() { return sortedTowns; }
+    public Set<String> getTownNames() { return towns.keySet(); }
     public Town getTown(String name) {
         return towns.get(name);
     }
@@ -309,7 +310,7 @@ public class TownManager {
     public void removeTown(Town town, boolean broadcast, boolean destroyRing) {
         if (broadcast) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "town-destroyed").replace("$1", town.getName()));
             }
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
@@ -363,7 +364,7 @@ public class TownManager {
         TownManager.getInstance().saveTown(town);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, "devolve-town")
+                    LocaleManager.getInstance().getTranslation(player, "devolve-town")
                     .replace("$1", town.getName())
                     .replace("$2", childTownType.getProcessedName()));
         }
@@ -633,21 +634,21 @@ public class TownManager {
         if (TownManager.getInstance().townNameExists(name) && (town == null ||
                 !town.getName().equalsIgnoreCase(name) ||
                 !town.getRawPeople().containsKey(civilian.getUuid()))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "specify-town-name"));
             return;
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "hold-town"));
             return;
         }
         CivItem civItem = CivItem.getFromItemStack(itemStack);
 
         if (civItem == null || !(civItem instanceof TownType)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "hold-town"));
             return;
         }
@@ -658,12 +659,12 @@ public class TownManager {
         if (intersectTowns.size() > 1 ||
                     (!intersectTowns.isEmpty() &&
                     (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "too-close-town").replace("$1", townType.getProcessedName()));
             return;
         }
         if (intersectTowns.isEmpty() && townType.getChild() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "must-be-built-on-top").replace("$1", townType.getProcessedName())
                     .replace("$2", townType.getChild()));
             return;
@@ -682,8 +683,7 @@ public class TownManager {
             }
         }
 
-        String townTypeLocalName = LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
-                townType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+        String townTypeLocalName = townType.getDisplayName(player);
         if (!townType.getReqs().isEmpty()) {
             HashMap<String, Integer> checkList = (HashMap<String, Integer>) townType.getReqs().clone();
             Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
@@ -712,7 +712,7 @@ public class TownManager {
                 }
             }
             if (!checkList.isEmpty()) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "missing-region-requirements").replace("$1", townTypeLocalName));
                 HashMap<String, String> params = new HashMap<>();
                 StringBuilder regionString = new StringBuilder();
@@ -739,9 +739,9 @@ public class TownManager {
         if (townType.getChild() != null) {
             Town intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
-                String localIntersectName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        intersectTown.getType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player, "population-req")
+                CivItem intersectTownItem = ItemManager.getInstance().getItemType(intersectTown.getType().toLowerCase());
+                String localIntersectName = intersectTownItem.getDisplayName(player);
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player, "population-req")
                         .replace("$1", localIntersectName)
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
@@ -791,20 +791,7 @@ public class TownManager {
 
 
         if (childTownType != null) {
-            TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
-            Bukkit.getPluginManager().callEvent(townEvolveEvent);
-
-            if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
-                    newTown.getBankAccount() > 0) {
-                double price = townType.getPrice();
-                price = Math.min(price, newTown.getBankAccount());
-                Civs.econ.depositPlayer(player, price);
-                newTown.setBankAccount(newTown.getBankAccount() - price);
-                String priceString = Util.getNumberFormat(price, civilian.getLocale());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "town-assist-price").replace("$1", priceString)
-                        .replace("$2", townTypeLocalName));
-            }
+            evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
 
         } else {
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
@@ -812,7 +799,7 @@ public class TownManager {
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
         }
 
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "town-created").replace("$1", newTown.getName()));
         if (ConfigManager.getInstance().getTownRings()) {
             newTown.createRing();
@@ -825,6 +812,23 @@ public class TownManager {
         }
     }
 
+    private void evolveTown(Player player, Civilian civilian, TownType townType, String townTypeLocalName, TownType childTownType, Town newTown, Government government) {
+        TownEvolveEvent townEvolveEvent = new TownEvolveEvent(newTown, childTownType, townType);
+        Bukkit.getPluginManager().callEvent(townEvolveEvent);
+
+        if (government.getGovernmentType() == GovernmentType.COOPERATIVE && Civs.econ != null &&
+                newTown.getBankAccount() > 0) {
+            double price = newTown.getPrice();
+            price = Math.min(price, newTown.getBankAccount());
+            Civs.econ.depositPlayer(player, price);
+            newTown.setBankAccount(newTown.getBankAccount() - price);
+            String priceString = Util.getNumberFormat(price, civilian.getLocale());
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "town-assist-price").replace("$1", priceString)
+                    .replace("$2", townTypeLocalName));
+        }
+    }
+
     int getHousingCount(Location newTownLocation, TownType townType) {
         int housingCount = 0;
         for (Region region : getRegionsInTown(newTownLocation, townType.getBuildRadius(), townType.getBuildRadiusY())) {
@@ -834,6 +838,27 @@ public class TownManager {
             }
         }
         return housingCount;
+    }
+
+    public String getBiggestTown(Civilian civilian) {
+        Town town = getInstance().isOwnerOfATown(civilian);
+        if (town != null) {
+            return town.getName();
+        } else {
+            int highestPopulation = 0;
+            Town highestTown = null;
+            for (Town to : getInstance().getTowns()) {
+                if (!to.getPeople().containsKey(civilian.getUuid())) {
+                    continue;
+                }
+                int pop = to.getPopulation();
+                if (pop > highestPopulation) {
+                    highestTown = to;
+                    highestPopulation = pop;
+                }
+            }
+            return highestTown == null ? "-" : highestTown.getName();
+        }
     }
 
     public Set<Region> getRegionsInTown(Town town) {

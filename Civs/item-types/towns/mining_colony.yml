@@ -1,28 +1,29 @@
 #enabled: true
 #type: town
 #icon: COAL_ORE
+#name: Mining_Colony
 #max: 1
 #price: 150
 #groups:
-#- colony
+#  - colony
 #level: 2
 #
 #build-reqs:
-#- mine:1
+#  - mine:1
 #
 #critical-build-reqs:
-#- mine
+#  - mine
 #
 #limits:
-#- arrowtrapgroup:1
+#  - arrowtrapgroup:1
 #
 #build-radius: 40
 #build-radius-y: 500
 #effects:
-#- exempt_housing
-#- block_explosion
-#- deny_mob_spawn
-#- potion:FAST_DIGGING.160
+#  - exempt_housing
+#  - block_explosion
+#  - deny_mob_spawn
+#  - potion:FAST_DIGGING.160
 #
 #power: 48
 #max-power: 48

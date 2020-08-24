@@ -128,7 +128,7 @@ public class ChatChannelListMenu extends CustomMenu {
                 civilian.setChatChannel(chatChannel);
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 if (player != null) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getRawTranslation(player,
                             "chat-channel-set").replace("$1", chatChannel.getName(player)));
                 }
             }

@@ -15,9 +15,8 @@ critical-build-reqs:
 - town_center
 
 limits:
-- npchousing:4
-- allshack:5
-- allhovel:2
+- allhousing:6
+- shop:6
 - arrowtrapgroup:2
 - church:1
 - smithy:1

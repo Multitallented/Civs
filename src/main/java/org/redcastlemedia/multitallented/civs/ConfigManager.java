@@ -171,6 +171,10 @@ public class ConfigManager {
     boolean useHardshipSystem;
     @Getter
     String unclaimedIcon;
+    @Getter
+    boolean keepRegionChunksLoaded;
+    @Getter boolean useSkills;
+    @Getter boolean silentExp;
 
     @Getter
     String chatChannelFormat;
@@ -406,7 +410,10 @@ public class ConfigManager {
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
             hardshipPerKill = config.getDouble("hardship-per-kill", 500);
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
+            keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
+            silentExp = config.getBoolean("no-exp-chat-messages", false);
             lineLengthMap = new HashMap<>();
+            useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -481,6 +488,10 @@ public class ConfigManager {
 
     private void loadDefaults() {
         unclaimedIcon = "GRASS_BLOCK";
+        defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
+        silentExp = false;
+        useSkills = true;
+        keepRegionChunksLoaded = true;
         hardshipPerKill = 500;
         allowHuntNewPlayers = false;
         hardshipDepreciationPeriod = 7;

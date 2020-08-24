@@ -2,43 +2,47 @@
 #type: region
 #icon: CHEST
 #shop-icon: ENDER_PEARL
+#dynmap-marker: factory
+#name: Ender_Pearl_Farm
 #max: 1
-#price: 1000
+#price: 500
 #groups:
-#- farm
+#  - farm
 #level: 6
 #
 #pre-reqs:
-#- member=city:metropolis
+#  - member=city:metropolis
 #
 #towns:
-#- city
-#- metropolis
+#  - city
+#  - metropolis
 #
 #build-reqs:
-#- END_STONE*9,END_STONE_BRICKS*9
-#- g:log*4
-#- g:wood*10
-#- IRON_BARS*10
+#  - END_STONE*9,END_STONE_BRICKS*9
+#  - g:log*4
+#  - g:wood*10
+#  - IRON_BARS*10
 #
 #build-radius: 3
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:ENDER_PEARL
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:ENDER_PEARL
 #
 #period: 300 #5 minutes
 #
 #upkeep:
 #  0:
 #    reagents:
-#    - IRON_SWORD
+#      - IRON_SWORD
 #    output:
-#    - ENDER_PEARL
+#      - ENDER_PEARL
+#      - CHORUS_FRUIT
 #  1:
 #    reagents:
-#    - DIAMOND_SWORD
+#      - DIAMOND_SWORD
 #    output:
-#    - ENDER_PEARL*2
+#      - ENDER_PEARL*2
+#      - CHORUS_FRUIT*2

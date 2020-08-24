@@ -1,10 +1,10 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
@@ -46,7 +46,10 @@ public class StaminaEffect extends Effect {
         Entity origin = getOrigin();
         if (!(target instanceof Player)) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(ChatColor.RED + Civs.getPrefix() + " target doesn't have stamina.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(originPlayer,
+                        "need-more-stamina").replace("$1", "" + Math.abs(stamina)));
             }
             return false;
         }
@@ -57,7 +60,10 @@ public class StaminaEffect extends Effect {
 
         if (newFoodValue < 0) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(ChatColor.RED + Civs.getPrefix() + " target doesn't have " + stamina + "stamina.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(originPlayer,
+                        "need-more-stamina").replace("$1", "" + Math.abs(stamina)));
             }
             return false;
         }
@@ -82,14 +88,13 @@ public class StaminaEffect extends Effect {
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
-        Object target = getTarget();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof Player)) {
             return returnMap;
         }
         Player player = (Player) target;
-        returnMap.put("stamina", (double) player.getFoodLevel());
+        returnMap.put(SpellEffectConstants.STAMINA, (double) player.getFoodLevel());
         return returnMap;
     }
 }

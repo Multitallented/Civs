@@ -2,28 +2,30 @@
 #type: region
 #icon: CHEST
 #shop-icon: ROTTEN_FLESH
+#dynmap-marker: factory
+#name: Purifier
 #price: 5
 #groups:
-#- utility
+#  - utility
 #level: 1
-#max: 1
+#max: 3
 #
 #build-reqs:
-#- CHEST*2
-#- g:door*1
-#- g:roof*25
-#- g:window*4
-#- FURNACE
-#- CRAFTING_TABLE
-#- g:secondary*15
-#- g:primary*40
+#  - CHEST*2
+#  - g:door*1
+#  - g:roof*25
+#  - g:window*4
+#  - FURNACE
+#  - CRAFTING_TABLE
+#  - g:secondary*15
+#  - g:primary*40
 #
 #build-radius: 3
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
 #
 #period: 900 #15 minutes
 #upkeep:
@@ -31,17 +33,17 @@
 #    power-output: 1
 #  1:
 #    input:
-#    - ROTTEN_FLESH*12
+#      - ROTTEN_FLESH*12
 #    output:
-#    - LEATHER*12
+#      - LEATHER*12
 #  2:
 #    input:
-#    - POISONOUS_POTATO*16
+#      - POISONOUS_POTATO*16
 #    output:
-#    - POTATO*16
+#      - POTATO*16
 #  3:
 #    input:
-#    - DEAD_BUSH*8
+#      - DEAD_BUSH*8
 #    output:
-#    - WHEAT*8
+#      - WHEAT*8
 #

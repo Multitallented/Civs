@@ -1,0 +1,38 @@
+icon: FLINT
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - damage
+
+pre-reqs:
+  - skill:bow=5|skill:crossbow=5
+
+allowed-actions: []
+
+exp-per-use: 10
+
+conditions:
+  cooldown: 20000
+  mana: 25
+
+components:
+  1:
+    variables:
+      arrowcount^1: 0
+    yield:
+      mana: -25
+      cooldown: 20000
+      duration:
+        period: 4
+        ticks: 17
+        section:
+          components:
+            2:
+              variables:
+                arrowcount: "$arrowcount^1#var$ + 1"
+              yield:
+                sound: ENTITY_ARROW_SHOOT
+                projectile:
+                  speed: "$arrowcount^1#var$ * 0.05 + 0.5"
+                  spread: "$arrowcount^1#var$ * 2 + 16"

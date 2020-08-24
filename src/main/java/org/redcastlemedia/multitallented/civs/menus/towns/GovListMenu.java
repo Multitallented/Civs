@@ -95,7 +95,7 @@ public class GovListMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 cvItem = government.getIcon(civilian, false);
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "points")
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player, "points")
                         .replace("$1", "" + govPower.get(govName.toLowerCase())));
             } else {
                 cvItem = government.getIcon(civilian, true);

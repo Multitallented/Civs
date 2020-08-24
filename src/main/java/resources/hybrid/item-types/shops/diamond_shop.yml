@@ -4,7 +4,7 @@ shop-icon: DIAMOND
 dynmap-marker: coins
 name: Diamond_Shop
 max: 1
-price: 400
+price: 2000
 groups:
 - shop
 - oreshop

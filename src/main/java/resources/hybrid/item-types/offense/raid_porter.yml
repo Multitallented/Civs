@@ -20,7 +20,7 @@ build-radius: 3 #7x7x7
 effects:
 - block_break
 - block_build
-- charging_raid_port
+- charging_raid_port:200 # 200 range
 - evolve:raid_porter_active.2
 period: 180 #3 minutes
 upkeep:

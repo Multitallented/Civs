@@ -1,48 +1,49 @@
 #enabled: true
 #type: region
+#name: Mill
 #shop-icon: BREAD
+#dynmap-marker: factory
 #icon: CHEST
 #price: 10
 #max: 1
 #groups:
-#- factory
+#  - factory
 #level: 3
 #
 #pre-reqs:
-#- member=hamlet:village:town:city:metropolis
+#  - member=hamlet:village:town:city:metropolis
 #
 #build-reqs:
-#- CHEST*2
-#- g:door*1
-#- g:roof*30
-#- g:glass*4
-#- g:window*4
-#- g:secondary*22
-#- g:primary*80
+#  - CHEST*2
+#  - g:door*1
+#  - g:roof*30
+#  - g:glass*4
+#  - g:window*4
+#  - g:secondary*22
+#  - g:primary*80
 #
 #build-radius: 4 #9x15x9
 #build-radius-y: 7
 #
 #towns:
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:BREAD
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:BREAD
 #
 #period: 30
 #upkeep:
 #  0:
 #    input:
-#    - WHEAT*2
+#      - WHEAT*2
 #    output:
-#    - BREAD
-#
+#      - BREAD
 #
