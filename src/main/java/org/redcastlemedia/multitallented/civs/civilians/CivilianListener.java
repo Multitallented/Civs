@@ -27,27 +27,32 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -58,17 +63,21 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import github.scarsz.discordsrv.DiscordSRV;
@@ -132,6 +141,9 @@ public class CivilianListener implements Listener {
                 player.damage(penalty);
             }
         }
+        if (!civilian.getCombatBar().isEmpty()) {
+            SpellUtil.removeCombatBar(player, civilian);
+        }
         CivilianManager.getInstance().unloadCivilian(player);
         CommonScheduler.getLastRegion().remove(uuid);
         CommonScheduler.getLastTown().remove(uuid);
@@ -144,32 +156,104 @@ public class CivilianListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCivilianGainExp(PlayerExpChangeEvent event) {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        civilian.setExpOrbs(event.getAmount());
+    public void onPotionSplash(PotionSplashEvent event) {
+        if (!(event.getPotion().getShooter() instanceof Player)) {
+            return;
+        }
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        Player player = (Player) event.getPotion().getShooter();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
+                double exp = 0;
+                for (PotionEffect potionEffect : event.getPotion().getEffects()) {
+                    exp += skill.addAccomplishment(potionEffect.getType().getName());
+                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCivilianUseExp(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    public void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
-        if (civilian.getMana() < 1 || civilian.getMana() > 99) {
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (event.getItem().getType() == Material.POTION ||
+                event.getItem().getType() == Material.LINGERING_POTION) {
+            PotionMeta potionMeta = (PotionMeta) event.getItem().getItemMeta();
+            for (Skill skill : civilian.getSkills().values()) {
+                if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
+                    double exp = 0;
+                    if (potionMeta.getBasePotionData().getType().getEffectType() != null) {
+                        exp += skill.addAccomplishment(potionMeta.getBasePotionData().getType().getEffectType().getName());
+                    }
+                    for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                        exp += skill.addAccomplishment(potionEffect.getType().getName());
+                    }
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+                }
+            }
+        } else {
+            for (Skill skill : civilian.getSkills().values()) {
+                if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
+                    double exp = skill.addAccomplishment(event.getItem().getType().name());
+                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
+    public void onCraftItem(CraftItemEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills() ||
+                (event.getCursor() != null && event.getCursor().getType() != Material.AIR)) {
             return;
         }
-        Material mat = event.getClickedBlock().getType();
-        if (mat == Material.ANVIL ||
-                mat == Material.ENCHANTING_TABLE) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
-                    event.getPlayer(), "mana-use-exp"));
+        Player player = (Player) event.getWhoClicked();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
+        if (skill != null && event.getCurrentItem() != null &&
+                event.getCurrentItem().getType() != Material.AIR) {
+            double exp = 0;
+            for (int i = 0; i < event.getCurrentItem().getAmount(); i++) {
+                exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
+            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+        }
+    }
+
+    @EventHandler
+    public void onRegionCreated(RegionCreatedEvent event) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        if (event.getRegionType().getReqs().isEmpty() || event.getRegionType().getRawPrice() < 1) {
+            return;
+        }
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
+                double exp = skill.addAccomplishment(event.getRegion().getType());
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+            }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDropItem(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
+        if (CVItem.isCivsItem(item.getItemStack())) {
+            CivItem civItem = CivItem.getFromItemStack(item.getItemStack());
+            if (civItem != null && civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+            }
+        }
         if (checkDroppedItem(item.getItemStack(), event.getPlayer())) {
             item.remove();
         }
@@ -180,20 +264,22 @@ public class CivilianListener implements Listener {
                 !CVItem.isCivsItem(itemStack)) {
             return false;
         }
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
+        if (civItem == null) {
+            return false;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         boolean hasBlueprintsMenuOpen = MenuManager.getInstance().hasMenuOpen(civilian.getUuid(), "blueprints");
         if (hasBlueprintsMenuOpen) {
-            CivItem civItem = CivItem.getFromItemStack(itemStack);
-            if (Civs.econ != null && civItem.getPrice() > 0) {
-                Civs.econ.depositPlayer(player, civItem.getPrice());
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "refund").replace("$1", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
+            double price = civItem.getPrice(civilian);
+            if (Civs.econ != null && price > 0) {
+                Civs.econ.depositPlayer(player, price);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "refund").replace("$1", Util.getNumberFormat(price, civilian.getLocale())));
             }
             return true;
         }
-        String processedName = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(1));
-        String itemName = processedName.replace(
-                ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase();
+        String itemName = civItem.getProcessedName();
         player.closeInventory();
         if (civilian.getStashItems().containsKey(itemName)) {
             civilian.getStashItems().put(itemName, civilian.getStashItems().get(itemName) + 1);
@@ -423,7 +509,7 @@ public class CivilianListener implements Listener {
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(event.getPlayer(),
+                    .getTranslation(event.getPlayer(),
                     "not-allowed-place").replace("$1", civItem.getDisplayName()));
             return;
         }
@@ -433,6 +519,9 @@ public class CivilianListener implements Listener {
                 TownManager.getInstance().placeTown(event.getPlayer(), town.getName(), town);
             }
             event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslation(event.getPlayer(),
+                    "town-instructions").replace("$1", civItem.getDisplayName(event.getPlayer())));
             return;
         }
         CVItem cvItem = CVItem.createFromItemStack(is);
@@ -443,6 +532,15 @@ public class CivilianListener implements Listener {
             lore.addAll(Util.textWrap(civilian, Util.parseColors(civItem.getDescription(civilian.getLocale()))));
             cvItem.setLore(lore);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onPlaceBlockLogger(BlockPlaceEvent event) {
+        ItemStack is = event.getItemInHand();
+        if (event.getPlayer() == null || !CVItem.isCivsItem(is)) {
+            return;
+        }
+        CVItem cvItem = CVItem.createFromItemStack(is);
         BlockLogger blockLogger = BlockLogger.getInstance();
         blockLogger.putBlock(Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation())), cvItem);
     }
@@ -461,7 +559,7 @@ public class CivilianListener implements Listener {
             if (!event.getSource().getViewers().isEmpty()) {
                 HumanEntity humanEntity = event.getSource().getViewers().get(0);
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity,
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity,
                                 LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
             }
         }
@@ -515,6 +613,9 @@ public class CivilianListener implements Listener {
     @EventHandler @SuppressWarnings("unused")
     public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
         UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
+        if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
+            event.getRegion().getLocation().getChunk().setForceLoaded(false);
+        }
     }
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
@@ -559,7 +660,7 @@ public class CivilianListener implements Listener {
                 event.setCancelled(true);
                 HumanEntity humanEntity = event.getWhoClicked();
                 humanEntity.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                        LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
                 return;
             }
         }
@@ -614,7 +715,7 @@ public class CivilianListener implements Listener {
         }
         if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
                 player.equals(event.getRecipients().iterator().next()))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
             for (Player currentPlayer : event.getRecipients()) {
@@ -672,7 +773,7 @@ public class CivilianListener implements Listener {
         HumanEntity humanEntity = event.getWhoClicked();
         event.setCancelled(true);
         humanEntity.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
+                LocaleManager.getInstance().getTranslation((Player) humanEntity, LocaleConstants.PREVENT_CIVS_ITEM_SHARE));
     }
 
     private void handleCustomItem(ItemStack itemStack, UUID uuid) {

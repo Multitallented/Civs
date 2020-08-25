@@ -98,3 +98,9 @@
 #    icon: DIAMOND_SWORD
 #    name: highest-killstreak{$highest-killstreak$
 #    actions: []
+#  skills:
+#    index: 17
+#    icon: BOOK
+#    name: skills
+#    actions:
+#      - menu:skills?uuid=$uuid$

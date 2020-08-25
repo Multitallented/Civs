@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -18,7 +19,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "reload" }) @SuppressWarnings("unused")
-public class ReloadCommand implements CivCommand {
+public class ReloadCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if ((Civs.perm != null && commandSender.hasPermission(Constants.ADMIN_PERMISSION)) || commandSender.isOp()) {
@@ -33,6 +34,7 @@ public class ReloadCommand implements CivCommand {
             TutorialManager.getInstance().reload();
             AllianceManager.getInstance().reload();
             LocaleManager.getInstance().reload();
+            ClassManager.getInstance().reload();
             CommonScheduler.setRun(true);
             commandSender.sendMessage(Civs.getPrefix() + "reloaded");
             return true;

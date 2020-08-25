@@ -4,7 +4,7 @@ shop-icon: IRON_ORE
 dynmap-marker: hammer
 name: Iron_Mine
 max: 1
-price: 150
+price: 400
 groups:
 - mine
 level: 2

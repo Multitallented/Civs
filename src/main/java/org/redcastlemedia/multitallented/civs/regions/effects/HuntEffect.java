@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -29,7 +28,6 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -90,20 +88,20 @@ public class HuntEffect implements Listener, CreateRegionListener {
             targetPlayer = Bukkit.getPlayer(sign.getLine(0));
         } catch (Exception e) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-name"));
             return null;
         }
         if (targetPlayer == null || !targetPlayer.isOnline()) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-name"));
             return null;
         }
 
         if (!targetPlayer.getWorld().equals(player.getWorld())) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "target-not-in-world"));
             return null;
         }
@@ -139,7 +137,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
             }
             cooldown = cooldown * 1000;
             if (cooldowns.get(player.getUniqueId()) + cooldown > System.currentTimeMillis()) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "cooldown").replace("$1", (cooldown / 1000) + "s"));
                 return;
             } else {
@@ -155,7 +153,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
         }
         if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
                 TownManager.getInstance().getTownsForPlayer(targetPlayer.getUniqueId()).isEmpty()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-hunting-new-players"));
             return;
         }
@@ -167,13 +165,13 @@ public class HuntEffect implements Listener, CreateRegionListener {
             hardhipThreshold = Civs.econ.getBalance(targetPlayer);
         }
         if ( targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "hardship-too-high").replace("$1", targetPlayer.getDisplayName()));
             return;
         }
 
         if (!regionType.getUpkeeps().isEmpty() && !r.runUpkeep(false)) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "region-missing-upkeep-items"));
             return;
         }
@@ -199,7 +197,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
                     player1.getLocation().distanceSquared(player.getLocation()) > 90000) {
                 continue;
             }
-            String message = LocaleManager.getInstance().getTranslationWithPlaceholders(player1, messageKey);
+            String message = LocaleManager.getInstance().getTranslation(player1, messageKey);
             if (replace1 != null) {
                 message = message.replace("$1", replace1);
             }

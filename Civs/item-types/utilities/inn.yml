@@ -1,0 +1,48 @@
+#enabled: true
+#type: region
+#icon: RED_BED
+#dynmap-marker: bighouse
+#name: Inn
+#max: 2
+#price: 400
+#groups:
+#  - publichousing
+#  - utility
+#level: 2
+#
+#pre-reqs:
+#  - member=settlement:hamlet:village:town:city:metropolis
+#
+#towns:
+#  - settlement
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
+#
+#build-radius: 9 #19x19x19
+#build-reqs:
+#  - g:window*8
+#  - g:door*6
+#  - g:sign*6
+#  - g:bed*6
+#  - CHEST*6
+#  - FURNACE*6
+#  - CRAFTING_TABLE*6
+#  - g:roof*90
+#  - g:primary*300
+#  - g:secondary*50
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_fire
+#  - door_use
+#  - exclusive:barracks
+#  - housing:6
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 1

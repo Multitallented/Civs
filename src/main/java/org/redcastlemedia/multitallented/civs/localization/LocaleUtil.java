@@ -19,16 +19,15 @@ public final class LocaleUtil {
         int limit;
         if (maxItemOrGroupName.equals(civItem.getProcessedName())) {
             limit = civItem.getCivMax();
-            maxItemOrGroupName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            maxItemOrGroupName = civItem.getDisplayName(player);
         } else {
             limit = ConfigManager.getInstance().getGroups().get(maxItemOrGroupName);
-            maxItemOrGroupName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            maxItemOrGroupName = LocaleManager.getInstance().getTranslation(player,
                     maxItemOrGroupName + LocaleConstants.GROUP_SUFFIX);
         }
         int currentAmount = civilian.getCountNonStashItems(civItem.getProcessedName()) +
                 civilian.getCountStashItems(civItem.getProcessedName());
-        return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "max-rebuild-required")
+        return LocaleManager.getInstance().getTranslation(player, "max-rebuild-required")
                 .replace("$1", "" + currentAmount)
                 .replace("$2", "" + limit)
                 .replace("$3", localCivItemName)
@@ -40,14 +39,13 @@ public final class LocaleUtil {
         int limit;
         if (maxLimit.equals(civItem.getProcessedName())) {
             limit = civItem.getCivMax();
-            maxLimit = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civItem.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+            maxLimit = civItem.getDisplayName(player);
         } else {
             limit = ConfigManager.getInstance().getGroups().get(maxLimit);
-            maxLimit = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            maxLimit = LocaleManager.getInstance().getTranslation(player,
                     maxLimit + LocaleConstants.GROUP_SUFFIX);
         }
-        lore.add(LocaleManager.getInstance().getTranslationWithPlaceholders(player, "max-item")
+        lore.add(LocaleManager.getInstance().getTranslation(player, "max-item")
                 .replace("$1", maxLimit)
                 .replace("$2", "" + limit));
     }

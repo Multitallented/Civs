@@ -143,7 +143,7 @@ public class AntiCampEffect implements Listener {
             }
         }
 
-        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+        String activateMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(player,
                 "activate-anticamp-question").replace("$1", player.getDisplayName())
                 .replace("$2", town.getName())
                 .replace("$3", "" + antiCampCost) + " ";
@@ -253,7 +253,7 @@ public class AntiCampEffect implements Listener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
                 if (!civilian.isInCombat()) {
                     long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(p,
+                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(p,
                             "combat-tagged").replace("$1", "" + combatTagDuration));
                 }
                 civilian.setLastDamage(System.currentTimeMillis());

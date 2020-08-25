@@ -1,0 +1,18 @@
+#enabled: true
+#icon: BRICKS
+#exp-per-new-item: 60
+#exp-repeat-decay: 12
+#max-exp: 3000
+#exceptions:
+#  alldwelling: 144
+#  allhouse: 144
+#  allchalet: 168
+#  allmansion: 96
+#  manor: 108
+#  villa: 120
+#  estate: 180
+#  inn: 96
+#shop-rewards:
+#  allhousing: 0.2
+#  publichousing: 0.2
+#

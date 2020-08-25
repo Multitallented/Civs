@@ -264,16 +264,21 @@ public class Region {
         return itemCheck;
     }
 
-    public boolean hasRequiredBlocks() {
+    public RegionBlockCheckResponse hasRequiredBlocks() {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
 
+        RegionPoints regionPoints = new RegionPoints(radiusXP, radiusXN, radiusYP, radiusYN, radiusZP, radiusZN);
         if (itemCheck.isEmpty()) {
-            return true;
+            return new RegionBlockCheckResponse(regionPoints, itemCheck);
         }
 
-        return addItemCheck(itemCheck);
+        if (!addItemCheck(itemCheck)) {
+            return new RegionBlockCheckResponse(new RegionPoints(), itemCheck);
+        } else {
+            return new RegionBlockCheckResponse(regionPoints, itemCheck);
+        }
     }
 
     private boolean addItemCheck(List<HashMap<Material, Integer>> itemCheck) {
@@ -500,15 +505,15 @@ public class Region {
         return radii;
     }
 
-    public static RegionPoints hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
+    public static RegionBlockCheckResponse hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
         if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
                 regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), null);
         }
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
         World currentWorld = location.getWorld();
         if (currentWorld == null) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), null);
         }
 
         RegionPoints regionPoints = new RegionPoints(regionType.getBuildRadiusX(),
@@ -563,9 +568,9 @@ public class Region {
             }
         }
         if (!itemCheck.isEmpty()) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), itemCheck);
         } else {
-            return regionPoints;
+            return new RegionBlockCheckResponse(regionPoints, null);
         }
     }
 
@@ -820,7 +825,12 @@ public class Region {
                 Set<UUID> owners = getOwners();
                 if (!owners.isEmpty()) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owners.iterator().next());
-                    CommandUtil.performCommand(offlinePlayer, regionUpkeep.getCommand());
+                    String regionCommand = regionUpkeep.getCommand();
+                    regionCommand = regionCommand.replace("$region_x$", "" + location.getX());
+                    regionCommand = regionCommand.replace("$region_y$", "" + location.getY());
+                    regionCommand = regionCommand.replace("$region_z$", "" + location.getZ());
+
+                    CommandUtil.performCommand(offlinePlayer, regionCommand);
                 }
             }
             hasItemUpkeep = true;

@@ -61,7 +61,7 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        if (!region.getPeople().containsKey(player.getUniqueId())) {
+        if (!player.isSneaking() || !region.getPeople().containsKey(player.getUniqueId())) {
             return;
         }
         Location destination = Region.idToLocation(locationString);

@@ -1,0 +1,13 @@
+#enabled: true
+#icon: DIAMOND_ORE
+#exp-per-new-item: 10
+#exp-repeat-decay: 0.25
+#max-exp: 3000
+#shop-rewards:
+#  mine: 0.5
+#exceptions:
+#  DIAMOND_ORE: 40
+#  EMERALD_ORE: 35
+#  COAL_ORE: 15
+#  LAPIS_ORE: 30
+#  NETHER_QUARTZ_ORE: 20

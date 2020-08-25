@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -21,7 +23,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsCommand(keys = { "setrecruiter" }) @SuppressWarnings("unused")
-public class SetRecruiterCommand implements CivCommand {
+public class SetRecruiterCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -40,7 +42,7 @@ public class SetRecruiterCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a town");
@@ -57,7 +59,7 @@ public class SetRecruiterCommand implements CivCommand {
         Town town = TownManager.getInstance().getTown(locationString);
         if (town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -90,18 +92,18 @@ public class SetRecruiterCommand implements CivCommand {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         if (!isAdmin && !hasPermission && !colonialOverride) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
 
         String name = town.getName();
         if (invitePlayer != null) {
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(invitePlayer,
                     "add-recruiter-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitePlayer != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "recruiter-added-region").replace("$1", invitePlayer.getDisplayName())
                     .replace("$2", name));
         } else {
@@ -118,5 +120,19 @@ public class SetRecruiterCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3) {
+            return getTownNames(args[2]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

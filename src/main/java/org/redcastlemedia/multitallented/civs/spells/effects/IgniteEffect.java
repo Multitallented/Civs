@@ -96,19 +96,13 @@ public class IgniteEffect extends Effect {
     }
 
     @Override
-    public void remove() {
-        Entity origin = getOrigin();
-        if (!(origin instanceof LivingEntity)) {
-            return;
-        }
-        LivingEntity livingEntity = (LivingEntity) origin;
-        livingEntity.setFireTicks(0);
+    public void remove(LivingEntity origin, int level, Spell spell) {
+        origin.setFireTicks(0);
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }

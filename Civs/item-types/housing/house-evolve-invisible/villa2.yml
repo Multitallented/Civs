@@ -2,18 +2,20 @@
 #type: region
 #icon: CHEST
 #shop-icon: CYAN_BED
+#dynmap-marker: bighouse
+#name: Villa2
 #is-in-shop: false
 #max: 2
 #price: 8000
 #groups:
-#- housing
-#- allvilla
-#- basevilla
-#- allhousing
+#  - housing
+#  - allvilla
+#  - basevilla
+#  - allhousing
 #level: 6
 #
 #pre-reqs:
-#- member=city:metropolis
+#  - member=city:metropolis
 #
 #build-reqs:
 #  - CHEST*8
@@ -30,27 +32,27 @@
 #rebuild: basemansion
 #build-radius: 14 #29x29x29
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- housing:1
-#- buyable
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - housing:1
+#  - buyable
 #
 #towns:
-#- city
-#- metropolis
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    power-input: 1
+#    power-input: 3
 #  1:
 #    input: #2.11
-#    - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
-#    - PUMPKIN_PIE*1 # 24 stacks / day
+#      - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
+#      - PUMPKIN_PIE*1 # 24 stacks / day
 #    payout: 41.6 # $1000 / day
 #  2:
 #    input:
@@ -64,7 +66,7 @@
 #    payout: 12.4 # $297 / day
 #  4:
 #    input:
-#    - GOLDEN_APPLE*1 # 24 / day
+#      - GOLDEN_APPLE*1 # 24 / day
 #    payout: 20 # $480 / day
 #    exp: 1
 #
