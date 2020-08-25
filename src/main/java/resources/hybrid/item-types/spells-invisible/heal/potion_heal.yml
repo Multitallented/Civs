@@ -1,0 +1,32 @@
+icon: APPLE
+type: spell
+is-in-shop: false
+level: 1
+groups:
+  - heal
+
+pre-reqs:
+  - skill:food=3
+  - potion_regen:level=6
+
+allowed-actions:
+  - HEAL.99
+
+exp-per-use: 15
+
+conditions:
+  cooldown: 25000
+  mana: 35
+
+components:
+  1:
+    yield:
+      mana: -35
+      cooldown: 25000
+      sound: BLOCK_BREWING_STAND_BREW
+      item:
+        item: SPLASH_POTION
+        potion:
+          type: INSTANT_HEAL
+          upgraded: true
+          extended: false

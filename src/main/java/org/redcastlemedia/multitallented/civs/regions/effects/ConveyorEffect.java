@@ -6,8 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +13,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -34,8 +31,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 import java.util.logging.Level;
-
-import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
 @CivsSingleton
 public class ConveyorEffect implements Listener, RegionCreatedListener {

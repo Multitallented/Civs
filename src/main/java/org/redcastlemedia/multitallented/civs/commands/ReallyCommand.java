@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,14 +17,14 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "really" }) @SuppressWarnings("unused")
-public class ReallyCommand implements CivCommand {
+public class ReallyCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         boolean isPlayer = (commandSender instanceof Player);
         if (args.length < 3) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -36,7 +38,7 @@ public class ReallyCommand implements CivCommand {
         if (alliance == null) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-target"));
             } else {
                 commandSender.sendMessage("invalid alliance target");
@@ -59,7 +61,7 @@ public class ReallyCommand implements CivCommand {
 
         if (!isOwnerOfTown) {
             Player player = (Player) commandSender;
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -67,7 +69,7 @@ public class ReallyCommand implements CivCommand {
         if (!Util.validateFileName(args[2])) {
             if (isPlayer) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invalid-name"));
             } else {
                 commandSender.sendMessage("invalid alliance name");
@@ -84,7 +86,7 @@ public class ReallyCommand implements CivCommand {
             commandSender.sendMessage(Civs.getPrefix() + "Alliance " + args[1] + " has been renamed to " + validName);
         } else {
             Player player = (Player) commandSender;
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "alliance-renamed").replace("$1", args[1])
                         .replace("$2", validName));
         }
@@ -94,5 +96,13 @@ public class ReallyCommand implements CivCommand {
     @Override
     public boolean canUseCommand(CommandSender commandSender) {
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getAllianceNames(args[1]);
+        }
+        return super.getWord(commandSender, args);
     }
 }

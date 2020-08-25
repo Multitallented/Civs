@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
@@ -57,15 +58,19 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionBlockCheckResponse;
 import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionPoints;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.skills.Skill;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -74,6 +79,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton
@@ -116,14 +122,24 @@ public class ProtectionHandler implements Listener {
         Location location = Region.idToLocation(Region.blockLocationToString(event.getBlock().getLocation()));
         boolean adminOverride = event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
                 (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION));
+
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    event.getPlayer(), "spell-block"));
+            return;
+        }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlock(), event.getPlayer(), RegionEffectConstants.BLOCK_BREAK);
         if (setCancelled && !adminOverride) {
             event.setCancelled(true);
         }
         if (event.isCancelled()) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
+            checkMiningSkill(civilian, event.getBlock().getType());
             if (event.getBlock().getType() == Material.CHEST) {
                 UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
             }
@@ -150,16 +166,56 @@ public class ProtectionHandler implements Listener {
             }
             Player player = event.getPlayer();
             boolean isNotMember = !region.getPeople().containsKey(player.getUniqueId());
-            RegionPoints radii = Region.hasRequiredBlocksOnCenter(regionType, region.getLocation());
-            if (isNotMember && !radii.isValid()) {
-                removeRegionIfNotIndestructible(region, regionType, event);
+            RegionBlockCheckResponse regionBlockCheckResponse = region.hasRequiredBlocks();
+            if (isNotMember && !regionBlockCheckResponse.getRegionPoints().isValid()) {
+                if (!removeRegionIfNotIndestructible(region, regionType, event)) {
+                    setMissingBlocks(event, region, player, isNotMember, regionBlockCheckResponse.getMissingItems());
+                }
+            } else {
+                setMissingBlocks(event, region, player, isNotMember, regionBlockCheckResponse.getMissingItems());
             }
-            setMissingBlocks(event, region, player, isNotMember, radii);
         }
     }
 
-    private void setMissingBlocks(BlockBreakEvent event, Region region, Player player, boolean isNotMember, RegionPoints radii) {
-        if (radii.isValid()) {
+    private void checkMiningSkill(Civilian civilian, Material type) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        if (type == null || !blockIsOre(type)) {
+            return;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        ItemStack mainItem = player.getInventory().getItemInMainHand();
+        if (mainItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            return;
+        }
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(CivSkills.MINING.name())) {
+                double exp = skill.addAccomplishment(type.name());
+                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+            }
+        }
+    }
+
+    private boolean blockIsOre(Material type) {
+        switch (type) {
+            case COAL_ORE:
+            case IRON_ORE:
+            case DIAMOND_ORE:
+            case GOLD_ORE:
+            case REDSTONE_ORE:
+            case EMERALD_ORE:
+            case LAPIS_ORE:
+            case NETHER_QUARTZ_ORE:
+            case GLOWSTONE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void setMissingBlocks(BlockBreakEvent event, Region region, Player player, boolean isNotMember, List<HashMap<Material, Integer>> missingItems) {
+        if (missingItems == null || missingItems.isEmpty()) {
             return;
         }
         List<HashMap<Material, Integer>> missingBlocks = Region.hasRequiredBlocks(region.getType(),
@@ -176,7 +232,7 @@ public class ProtectionHandler implements Listener {
                 missingList.add(tempList);
             }
             if (region.getMissingBlocks().isEmpty() && !isNotMember) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "broke-own-region").replace("$1", region.getType()));
             }
             region.setMissingBlocks(missingList);
@@ -187,17 +243,17 @@ public class ProtectionHandler implements Listener {
         if (regionType.getEffects().containsKey("indestructible")) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
             return true;
         } else {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
                     region.getRawPeople().get(event.getPlayer().getUniqueId()).contains(Constants.OWNER)) {
-                double salvage = regionType.getPrice() / 2;
+                double salvage = regionType.getPrice(civilian) / 2;
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
-            Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
             ItemManager.getInstance().addMinItems(civilian);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;
@@ -206,17 +262,29 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
-                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
+        if (civilian.hasBuiltInState(BuiltInCivState.STUN)) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                    event.getPlayer(), "spell-block"));
             return;
         }
+        if (event.getPlayer().getGameMode() != GameMode.SURVIVAL ||
+                (Civs.perm != null && Civs.perm.has(event.getPlayer(), Constants.ADMIN_PERMISSION))) {
+            Region region = RegionManager.getInstance().getRegionAt(event.getBlockPlaced().getLocation());
+            if (region != null) {
+                removeBlockFromMissingBlocks(region, event.getBlockPlaced().getType());
+            }
+            return;
+        }
+
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlockPlaced(), event.getPlayer(), RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
             event.setCancelled(true);
         }
         if (event.isCancelled()) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
             Region region = RegionManager.getInstance().getRegionAt(event.getBlockPlaced().getLocation());
             if (region != null) {
@@ -260,7 +328,7 @@ public class ProtectionHandler implements Listener {
         }
         if (event.isCancelled() && event.getPlayer() != null) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -315,7 +383,7 @@ public class ProtectionHandler implements Listener {
         }
         if (event.isCancelled() && event.getPlayer() != null) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -326,7 +394,7 @@ public class ProtectionHandler implements Listener {
         }
         if (event.isCancelled() && event.getPlayer() != null) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -364,7 +432,7 @@ public class ProtectionHandler implements Listener {
         }
         if (event.isCancelled() && event.getPlayer() != null) {
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -380,7 +448,7 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && player != null) {
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
     }
     @EventHandler(ignoreCancelled = true)
@@ -458,7 +526,7 @@ public class ProtectionHandler implements Listener {
             }
             if (setCancelled && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         }
         if (setCancelled) {
@@ -508,7 +576,7 @@ public class ProtectionHandler implements Listener {
         if (cancel) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -518,7 +586,7 @@ public class ProtectionHandler implements Listener {
         if (cancel) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
+                    LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         }
     }
 
@@ -533,6 +601,13 @@ public class ProtectionHandler implements Listener {
     private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
             return;
+        }
+        if (player != null && CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
+            CivItem civItem = CivItem.getFromItemStack(player.getInventory().getItemInMainHand());
+            if (civItem.getItemType() == CivItem.ItemType.SPELL) {
+                event.setCancelled(true);
+                return;
+            }
         }
         Material mat = clickedBlock.getType();
         if (mat == Material.OAK_DOOR ||
@@ -558,14 +633,14 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.SIGN ||
                 mat == Material.WALL_SIGN) {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.SIGN_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.CHEST ||
                 mat == Material.FURNACE ||
@@ -576,7 +651,7 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             } else {
                 RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
                 checkRelative(clickedBlock, BlockFace.NORTH);
@@ -588,7 +663,7 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
@@ -601,13 +676,13 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         } else {
             event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_USE, null));
             if (event.isCancelled() && player != null) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, LocaleConstants.REGION_PROTECTED));
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         }
     }

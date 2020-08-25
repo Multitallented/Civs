@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -31,6 +33,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 @CivsSingleton
@@ -171,12 +174,12 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             }
         }, 15L);
 
-        reducePowerAndExchangeKarma(region, damage, town, townType);
+        reducePowerAndExchangeKarma(region, damage, town);
     }
 
-    private void reducePowerAndExchangeKarma(Region region, int damage, Town town, TownType townType) {
+    private void reducePowerAndExchangeKarma(Region region, int damage, Town town) {
         TownManager.getInstance().setTownPower(town, town.getPower() - damage);
-        double karmaChange = (double) damage / (double) town.getMaxPower() * townType.getPrice();
+        double karmaChange = (double) damage / (double) town.getMaxPower() * town.getPrice();
         if (!region.getOwners().isEmpty()) {
             CivilianManager.getInstance().exchangeHardship(town, region.getOwners().iterator().next(), karmaChange);
         } else {
@@ -226,13 +229,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         BlockState state = b.getState();
         if (!(state instanceof Sign)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(), "raid-sign"));
+                    .getTranslation(player, "raid-sign"));
             return false;
         }
 
         if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "no-blocks-above-chest").replace("$1", regionType.getName()));
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "no-blocks-above-chest").replace("$1", regionType.getDisplayName(player)));
             return false;
         }
 

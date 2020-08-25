@@ -1,28 +1,31 @@
 #enabled: true
 #type: region
 #icon: REDSTONE_BLOCK
+#dynmap-marker: portal
+#name: Raid_Porter
 #max: 1
-#price: 200
+#price: 150
 #groups:
-#- offense
-#- raidport
+#  - offense
+#  - raidport
 #level: 1
 #
 #build-reqs:
-#- TNT*5
-#- g:sign*1
-#- OBSIDIAN*10
-#- IRON_BARS*12
-#- REDSTONE_WIRE*4
+#  - TNT*2
+#  - g:sign*1
+#  - OBSIDIAN*5
+#  - IRON_BARS*12
+#  - REDSTONE_WIRE*4
 #
 #build-radius: 3 #7x7x7
 #effects:
-#- block_break
-#- block_build
-#- charging_raid_port
-#- evolve:raid_porter_active.2
+#  - block_break
+#  - block_build
+#  - charging_raid_port:200 # 200 range
+#  - evolve:raid_porter_active.2
 #period: 180 #3 minutes
 #upkeep:
 #  0:
+#    payout: 25
 #    exp: 1
 #

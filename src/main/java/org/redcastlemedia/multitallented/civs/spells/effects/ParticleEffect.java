@@ -1,38 +1,73 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.CivParticleEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.FairyWings;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.FallingAura;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.Helix;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.Single;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.Spider;
+import org.redcastlemedia.multitallented.civs.spells.effects.particles.Waves;
+
+import lombok.Getter;
 
 public class ParticleEffect extends Effect {
-    private int damage = 0;
-    private String target = "self";
-
-    private String particle;
-    private String pattern;
+    private CivParticleEffect pattern;
     private Long duration;
+    @Getter
+    private Long period;
+    private int taskId = -1;
+    private int cancelTaskId = -1;
+    @Getter
+    private Particle particleType;
+    @Getter
+    private int red;
+    @Getter
+    private int green;
+    @Getter
+    private int blue;
+    @Getter
+    private int size;
+    @Getter
+    private int count;
+    @Getter
+    private int note;
 
     public ParticleEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
         super(spell, key, target, origin, level);
         if (value instanceof ConfigurationSection) {
             ConfigurationSection section = (ConfigurationSection) value;
-            this.particle = section.getString(SpellEffectConstants.PARTICLE, "reddust");
-            this.pattern = section.getString("pattern", "reddust");
+            this.pattern = getParticleEffectByName(section.getString("pattern", "single"));
             this.duration = section.getLong(SpellConstants.DURATION, 100);
-
-            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
-            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
-                this.target = tempTarget;
-            }
+            this.period = section.getLong(SpellConstants.PERIOD, 1);
+            this.particleType = Particle.valueOf(section.getString(SpellEffectConstants.PARTICLE, "REDSTONE"));
+            this.red = section.getInt("red", 255);
+            this.green = section.getInt("green", 255);
+            this.blue = section.getInt("blue", 255);
+            this.size = section.getInt("size", 1);
+            this.count = section.getInt("count", 1);
+            this.note = section.getInt("note", 24);
         } else if (value instanceof String) {
-            this.particle = (String) value;
-            this.pattern = (String) value;
+            this.pattern = new Single();
             this.duration = 100L;
-            this.target = "self";
+            this.period = 1L;
+            this.particleType = Particle.valueOf((String) value);
+            this.red = 255;
+            this.green = 255;
+            this.blue = 255;
+            this.size = 1;
+            this.count = 1;
+            this.note = 6;
         }
     }
 
@@ -42,31 +77,95 @@ public class ParticleEffect extends Effect {
     public void apply() {
         Object target = getTarget();
 
-        if (!(target instanceof LivingEntity)) {
+        Location location = null;
+        if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) target;
+            location = livingEntity.getLocation();
+        } else if (target instanceof Block) {
+            location = ((Block) target).getLocation();
+        }
+        if (location == null) {
             return;
         }
-        LivingEntity livingEntity = (LivingEntity) target;
-        final BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                onUpdate();
+        final Location l = location;
+        long repeatDelay = this.pattern.getRepeatDelay(this);
+        if (repeatDelay > 0) {
+            this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(),
+                    () -> pattern.update(target, l, this), repeatDelay, repeatDelay);
+
+            if (this.duration > 0) {
+                this.cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
+                        () -> Bukkit.getScheduler().cancelTask(taskId), this.duration / 50).getTaskId();
             }
-        };
-        runnable.runTaskAsynchronously(Civs.getInstance());
-        if (duration > 0) {
-            BukkitRunnable runnable1 = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    runnable.cancel();
-                }
-            };
+        } else {
+            this.pattern.update(target, location, this);
         }
     }
-    private void onUpdate() {
-        switch (this.pattern) {
-            case "Green Sparks":
-                //TODO Math goes here
-                break;
+
+    @Override
+    public void remove(LivingEntity livingEntity, int level, Spell spell) {
+        if (this.taskId > -1) {
+            Bukkit.getScheduler().cancelTask(this.taskId);
+        }
+        if (this.cancelTaskId > -1) {
+            Bukkit.getScheduler().cancelTask(this.cancelTaskId);
+        }
+    }
+
+    private CivParticleEffect getParticleEffectByName(String name) {
+        switch (name) {
+            case "helix":
+                return new Helix();
+            case "waves":
+                return new Waves();
+            case "fairy wings":
+                return new FairyWings();
+            case "falling aura":
+                return new FallingAura();
+            case "spider":
+                return new Spider();
+            case "single":
+            default:
+                return new Single();
+        }
+    }
+
+    public void spawnParticle(Particle particleType, Location location, int red, int green, int blue, int count, int size, double x, double y, double z, int note) {
+        switch (particleType) {
+            case REDSTONE:
+                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(red, green, blue), size);
+                location.getWorld().spawnParticle(particleType, location, count, dustOptions);
+                return;
+            case SPELL_MOB:
+            case SPELL_MOB_AMBIENT:
+                location.getWorld().spawnParticle(particleType, location, 0, red / 255D, green / 255D, blue / 255D, 1);
+                return;
+            case NOTE:
+                location.getWorld().spawnParticle(particleType, location, 0, note / 24D, 0, 0, 1);
+                return;
+            case EXPLOSION_NORMAL:
+            case FIREWORKS_SPARK:
+            case WATER_BUBBLE:
+            case WATER_WAKE:
+            case CRIT:
+            case CRIT_MAGIC:
+            case SMOKE_NORMAL:
+            case SMOKE_LARGE:
+            case PORTAL:
+            case ENCHANTMENT_TABLE:
+            case FLAME:
+            case CLOUD:
+            case DRAGON_BREATH:
+            case END_ROD:
+            case DAMAGE_INDICATOR:
+            case TOTEM:
+            case SPIT:
+            case SQUID_INK:
+            case BUBBLE_POP:
+                location.getWorld().spawnParticle(particleType, location, 0, x, y, z);
+                return;
+            default:
+                location.getWorld().spawnParticle(particleType, location, count);
         }
     }
 }

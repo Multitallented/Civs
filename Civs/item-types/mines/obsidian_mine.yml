@@ -2,42 +2,43 @@
 #type: region
 #icon: CHEST
 #shop-icon: OBSIDIAN
+#dynmap-marker: hammer
+#name: Obsidian_Mine
 #max: 1
-#price: 500
+#price: 3000
 #groups:
-#- mine
+#  - mine
 #level: 6
 #
 #pre-reqs:
-#- member=city:metropolis
+#  - member=city:metropolis
 #
 #towns:
-#- city
-#- metropolis
+#  - city
+#  - metropolis
 #
 #build-reqs:
-#- OBSIDIAN*4
-#- IRON_BARS*2
-#- g:door*1
-#- CHEST*2
-#- FURNACE*2
-#- g:primary*45
-#- g:secondary*6
+#  - OBSIDIAN*4
+#  - IRON_BARS*2
+#  - g:door*1
+#  - CHEST*2
+#  - FURNACE*2
+#  - g:primary*45
+#  - g:secondary*6
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:OBSIDIAN
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:OBSIDIAN
 #
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
 #    reagents:
-#    - DIAMOND_PICKAXE
+#      - DIAMOND_PICKAXE
 #    output:
-#    - OBSIDIAN*4
-#
+#      - OBSIDIAN*4

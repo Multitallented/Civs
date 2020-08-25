@@ -37,6 +37,6 @@ period: 3600 # 1 hour
 upkeep:
   0:
     reagents:
-    - APPLE*64
+    - GOLDEN_CARROT*32
     output:
     - SADDLE*1

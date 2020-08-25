@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +36,9 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
+import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
@@ -302,6 +305,25 @@ public class RegionsTests extends TestUtil {
         regionListener.onBlockPlace(event1);
         assertNull(RegionManager.getInstance().getRegionAt(TestUtil.blockUnique2.getLocation()));
     }
+
+    @Test
+    public void regionShouldNotBeMissingBlocksAfterPlacingBlock() {
+        RegionsTests.loadRegionTypeCobble();
+        Region region = RegionsTests.createNewRegion("cobble", player.getUniqueId());
+        List<List<CVItem>> missingBlocks = new ArrayList<>();
+        List<CVItem> tempList = new ArrayList<>();
+        tempList.add(new CVItem(Material.GOLD_BLOCK, 1));
+        missingBlocks.add(tempList);
+        region.setMissingBlocks(missingBlocks);
+        BlockPlaceEvent blockPlaceEvent = mock(BlockPlaceEvent.class);
+        when(blockPlaceEvent.getPlayer()).thenReturn(player);
+        when(blockPlaceEvent.getBlockPlaced()).thenReturn(goldBlock0x1y1z);
+        when(blockPlaceEvent.isCancelled()).thenReturn(false);
+        ProtectionHandler protectionHandler = new ProtectionHandler();
+        protectionHandler.onBlockPlace(blockPlaceEvent);
+        assertTrue(region.getMissingBlocks().isEmpty());
+    }
+
     @Test
     public void regionShouldBeCreatedWithAllReqsFlex() {
         loadRegionTypeCobble();
@@ -611,7 +633,7 @@ public class RegionsTests extends TestUtil {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         RegionManager.getInstance().addRegion(region);
-        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.goldBlock0x1y1z, TestUtil.player);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(RegionManager.getInstance().getRegionAt(location1));
@@ -626,7 +648,7 @@ public class RegionsTests extends TestUtil {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("cobble");
         Region region = new Region("cobble", owners, location1, getRadii(), regionType.getEffects(),0);
         RegionManager.getInstance().addRegion(region);
-        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block10, TestUtil.player);
+        BlockBreakEvent event = new BlockBreakEvent(TestUtil.goldBlock0x1y1z, TestUtil.player);
         ProtectionHandler protectionHandler = new ProtectionHandler();
         protectionHandler.onBlockBreak(event);
         assertNotNull(RegionManager.getInstance().getRegionAt(location1));
@@ -855,6 +877,33 @@ public class RegionsTests extends TestUtil {
                 40,
                 false);
         assertTrue(!regions.isEmpty());
+    }
+
+    @Test
+    public void failingToBuildARegionShouldNotAddBlockToBlockLogger() {
+        BlockPlaceEvent event1 = mock(BlockPlaceEvent.class);
+        boolean[] cancelled = new boolean[1];
+        cancelled[0] = false;
+        when(event1.isCancelled()).thenAnswer(invocation -> cancelled[0]);
+        doAnswer(invocation -> { cancelled[0] = (boolean) invocation.getArguments()[0]; return null; })
+                .when(event1).setCancelled(Matchers.anyBoolean());
+        when(event1.getPlayer()).thenReturn(TestUtil.player);
+        when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
+        ItemStack itemStack = mock(ItemStack.class);
+        when(itemStack.hasItemMeta()).thenReturn(true);
+        ItemMetaImpl itemMeta = new ItemMetaImpl();
+        itemMeta.setDisplayName("Civs Coal Mine");
+        itemMeta.getLore().add(TestUtil.player.getUniqueId().toString());
+        itemMeta.getLore().add("coal_mine");
+        when(itemStack.getItemMeta()).thenReturn(itemMeta);
+        doReturn(itemStack).when(event1).getItemInHand();
+
+        CivilianListener.getInstance().onBlockPlace(event1);
+        RegionManager.getInstance().detectNewRegion(event1);
+        if (!cancelled[0]) {
+            CivilianListener.getInstance().onPlaceBlockLogger(event1);
+        }
+        assertNull(BlockLogger.getInstance().getBlock(TestUtil.blockUnique.getLocation()));
     }
 
     private Region load2TownsWith1Region(UUID uuid1, boolean allied) {

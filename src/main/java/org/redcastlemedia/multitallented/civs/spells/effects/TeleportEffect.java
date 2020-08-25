@@ -76,26 +76,12 @@ public class TeleportEffect extends Effect {
         } else {
             return;
         }
-        Player player = null;
-
-        if (other && target instanceof Player) {
-            player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.MOVING);
-        } else if (!other && origin instanceof Player) {
-            player = (Player) origin;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.MOVING);
-        }
         livingEntity.teleport(t);
-        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.MOVING);
-        }
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Entity origin = getOrigin();
-        Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         Location originLocation = origin.getLocation();
         returnMap.put("pitch", (double) originLocation.getPitch());
         returnMap.put("yaw", (double) originLocation.getYaw());

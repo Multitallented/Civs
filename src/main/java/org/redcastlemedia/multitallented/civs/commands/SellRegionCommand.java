@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "sell" }) @SuppressWarnings("unused")
-public class SellRegionCommand implements CivCommand {
+public class SellRegionCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -25,12 +27,12 @@ public class SellRegionCommand implements CivCommand {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Region region = RegionManager.getInstance().getRegionAt(location);
         if (region == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "stand-in-region").replace("$1", player.getDisplayName()));
             return true;
         }
         if (!permissionToSellRegion(player, region)) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -52,7 +54,7 @@ public class SellRegionCommand implements CivCommand {
 
         setRegionNotForSale(player, region, salePrice);
         commandSender.sendMessage(Civs.getPrefix() +
-                LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-sale-set")
+                LocaleManager.getInstance().getTranslation(player, "region-sale-set")
                 .replace("$1", region.getType())
                 .replace("$2", Util.getNumberFormat(salePrice, civilian.getLocale())));
         return true;
@@ -81,5 +83,13 @@ public class SellRegionCommand implements CivCommand {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }

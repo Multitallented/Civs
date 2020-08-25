@@ -2,10 +2,13 @@ package org.redcastlemedia.multitallented.civs.menus.common;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
@@ -19,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
@@ -39,11 +43,19 @@ public class ConfirmationMenu extends CustomMenu {
         if (params.containsKey("type")) {
             data.put("type", params.get("type"));
         }
-        if (params.containsKey("region")) {
-            data.put("region", RegionManager.getInstance().getRegionById(params.get("region")));
+        if (params.containsKey(Constants.REGION)) {
+            data.put(Constants.REGION, RegionManager.getInstance().getRegionById(params.get(Constants.REGION)));
         }
-        if (params.containsKey("town")) {
-            data.put("town", TownManager.getInstance().getTown(params.get("town")));
+        if (params.containsKey(Constants.TOWN)) {
+            data.put(Constants.TOWN, TownManager.getInstance().getTown(params.get(Constants.TOWN)));
+        }
+        if (params.containsKey(Constants.CLASS)) {
+            for (CivClass civClass : civilian.getCivClasses()) {
+                if (civClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                    data.put(Constants.CLASS, civClass);
+                    break;
+                }
+            }
         }
         return data;
     }
@@ -54,8 +66,8 @@ public class ConfirmationMenu extends CustomMenu {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("confirm".equals(actionString)) {
             CivItem civItem = (CivItem) MenuManager.getData(civilian.getUuid(), "item");
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
+            Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
             if (type == null) {
                 return true;
             }
@@ -63,12 +75,18 @@ public class ConfirmationMenu extends CustomMenu {
                 buyItem(civItem, player, civilian);
                 player.closeInventory();
             } else if ("destroy".equals(type)) {
-                destroyRegionOrTown(region, town, civilian, player);
-                player.closeInventory();
+                if (region == null && town == null) {
+                    CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
+                    ClassManager.getInstance().deleteClass(civClass);
+                    player.closeInventory();
+                } else {
+                    destroyRegionOrTown(region, town, civilian, player);
+                    player.closeInventory();
+                }
             } else if ("leave".equals(type)) {
                 if (town != null) {
                     town.getRawPeople().remove(civilian.getUuid());
-                    player.sendMessage(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    player.sendMessage(LocaleManager.getInstance().getTranslation(player,
                             "you-left-town").replace("$1", town.getName()));
                     TownManager.getInstance().saveTown(town);
                 }
@@ -95,7 +113,7 @@ public class ConfirmationMenu extends CustomMenu {
                 return;
             }
             if (Civs.econ != null) {
-                Civs.econ.depositPlayer(player, regionType.getPrice() / 2);
+                Civs.econ.depositPlayer(player, regionType.getPrice(civilian) / 2);
             }
             RegionManager.getInstance().removeRegion(region, true, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), player);
@@ -105,9 +123,6 @@ public class ConfirmationMenu extends CustomMenu {
                 return;
             }
             TownManager.getInstance().removeTown(town, true);
-//            if (ConfigManager.getInstance().getTownRings()) {
-//                town.destroyRing(true, true);
-//            }
         }
     }
 
@@ -118,7 +133,7 @@ public class ConfirmationMenu extends CustomMenu {
                 (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
             player.closeInventory();
             player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslation(civilian.getLocale(), "no-permission"));
+                    localeManager.getTranslation(player, "no-permission"));
             return true;
         }
         return false;
@@ -126,43 +141,32 @@ public class ConfirmationMenu extends CustomMenu {
 
     private void buyItem(CivItem civItem, Player player, Civilian civilian) {
         LocaleManager localeManager = LocaleManager.getInstance();
-        if (civItem.getPrice() > 0 && (Civs.econ == null ||
-                !Civs.econ.has(player, civItem.getPrice()))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(civilian.getLocale(),
-                    "not-enough-money").replace("$1", civItem.getPrice() + ""));
-            player.closeInventory();
-            return;
-        }
+        double price = SkillManager.getInstance().getSkillDiscountedPrice(civilian, civItem);
 
-        if (Civs.econ == null) {
+        if (price > 0 && Civs.econ == null) {
             player.sendMessage(Civs.getPrefix() + " Econ plugin not enabled or hooked through Vault.");
             player.closeInventory();
             return;
         }
-        Civs.econ.withdrawPlayer(player, civItem.getPrice());
-        player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslation(civilian.getLocale(), "item-bought")
-                        .replace("$1", civItem.getDisplayName())
-                        .replace("$2", Util.getNumberFormat(civItem.getPrice(), civilian.getLocale())));
-        player.closeInventory();
-        CVItem purchasedItem = civItem.clone();
-        boolean isTown = civItem.getItemType() == CivItem.ItemType.TOWN;
-        boolean isRegion = civItem.getItemType() == CivItem.ItemType.REGION;
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.BLACK + civilian.getUuid().toString());
-        lore.add(purchasedItem.getDisplayName());
-        if (isTown) {
-            lore.add(ChatColor.GREEN + Util.parseColors(localeManager.getTranslation(civilian.getLocale(), "town-instructions")
-                    .replace("$1", civItem.getProcessedName())));
-        } else if (isRegion) {
-            lore.addAll(Util.textWrap(civilian, Util.parseColors(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    civItem.getProcessedName() + "-desc"))));
+
+        if (price > 0 && (Civs.econ != null && !Civs.econ.has(player, price))) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    "not-enough-money").replace("$1", price + ""));
+            player.closeInventory();
+            return;
         }
-        purchasedItem.setLore(lore);
-        purchasedItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                civItem.getProcessedName() + "-name"));
+
+        if (Civs.econ != null && price > 0) {
+            Civs.econ.withdrawPlayer(player, price);
+        }
+        player.sendMessage(Civs.getPrefix() +
+                localeManager.getTranslation(player, "item-bought")
+                        .replace("$1", civItem.getDisplayName(player))
+                        .replace("$2", Util.getNumberFormat(price, civilian.getLocale())));
+        player.closeInventory();
+
         if (player.getInventory().firstEmpty() != -1) {
-            player.getInventory().addItem(purchasedItem.createItemStack());
+            player.getInventory().addItem(civItem.createItemStack(player));
         } else {
             if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
                 civilian.getStashItems().put(civItem.getProcessedName(),

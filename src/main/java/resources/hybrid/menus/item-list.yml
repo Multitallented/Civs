@@ -1,0 +1,16 @@
+size: 54
+name: Items
+# variables
+# actions
+items:
+  prev:
+    index: 4
+  back:
+    index: 5
+  next:
+    index: 6
+  items:
+    index: 9-53
+    # icon: item icon
+    # name: item name
+    actions: []

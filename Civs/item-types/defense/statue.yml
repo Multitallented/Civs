@@ -1,31 +1,32 @@
 #enabled: true
 #type: region
+#name: Statue
 #icon: GOLD_BLOCK
 #price: 600
 #groups:
-#- defense
-#- idolgroup
+#  - defense
+#  - idolgroup
 #level: 5
 #
 #build-reqs:
-#- GOLD_BLOCK*3
+#  - GOLD_BLOCK*3
 #
 #build-radius: 2 # 5x5x5
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- potion:INCREASE_DAMAGE.120
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - potion:INCREASE_DAMAGE.120
 #
 #pre-reqs:
-#- member=town:city:metropolis
+#  - member=town:city:metropolis
 #
 #towns:
-#- town
-#- city
-#- metropolis
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 900 #15 minutes
 #upkeep:

@@ -27,7 +27,6 @@ build-reqs:
 - g:primary*175
 
 rebuild: basedwelling
-rebuild-required: true
 build-radius: 6 #13x13x13
 effects:
 - block_break

@@ -7,12 +7,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
@@ -26,7 +32,7 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "main") @SuppressWarnings("unused")
@@ -54,6 +60,7 @@ public class MainMenu extends CustomMenu {
         if (town != null) {
             data.put("town", town);
         }
+        data.put("class", civilian.getCurrentClass());
         data.put("uuid", civilian.getUuid().toString());
         return data;
     }
@@ -114,11 +121,34 @@ public class MainMenu extends CustomMenu {
             }
         } else if ("chat".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1", civilian.getChatChannel().getName(player))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("player".equals(menuIcon.getKey())) {
+            ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
+            skullMeta.setDisplayName(player.getDisplayName());
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                CivItem civItem = ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                skullMeta.setLore(Util.textWrap(civilian, civItem.getDisplayName(player)));
+            }
+            itemStack.setItemMeta(skullMeta);
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("class".equals(menuIcon.getKey())) {
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                CivClass civClass = civilian.getCurrentClass();
+                ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
+                CVItem cvItem = classType.getShopIcon(civilian.getLocale());
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                return new ItemStack(Material.AIR);
+            }
         } else if (menuIcon.getKey().equals("your-towns")) {
             boolean isInATown = false;
             for (Town town : TownManager.getInstance().getTowns()) {
@@ -149,20 +179,10 @@ public class MainMenu extends CustomMenu {
         } else if (menuIcon.getKey().equals("ports")) {
             boolean hasPort = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {
-                if (!region.getEffects().containsKey("port")) {
-                    continue;
+                if (PortCommand.canPort(region, player.getUniqueId(), null)) {
+                    hasPort = true;
+                    break;
                 }
-                if (!region.getPeople().containsKey(civilian.getUuid())) {
-                    continue;
-                }
-                //Don't show private ports
-                if (region.getEffects().get("port") != null &&
-                        !region.getPeople().get(civilian.getUuid()).contains("member") &&
-                        !region.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                    continue;
-                }
-                hasPort = true;
-                break;
             }
             if (!hasPort) {
                 return new ItemStack(Material.AIR);

@@ -18,6 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
@@ -31,7 +34,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.util.StructureUtil;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -55,6 +58,7 @@ public class Civs extends JavaPlugin {
     public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
+    private TabComplete tabComplete;
 
     @Override
     public void onEnable() {
@@ -82,6 +86,7 @@ public class Civs extends JavaPlugin {
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
+        AllowedActionsListener.getInstance().onDisable();
     }
 
 
@@ -118,7 +123,7 @@ public class Civs extends JavaPlugin {
             logger.log(Level.INFO, "{0}", LogInfo.HOOKCHAT + Constants.PLACEHOLDER_API);
         }
         if (mmoItems != null) {
-            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKCHAT);
+            logger.log(Level.INFO, "{0} MMOItems", LogInfo.HOOKITEMS);
         }
         if (discordSRV != null) {
             logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
@@ -170,10 +175,15 @@ public class Civs extends JavaPlugin {
                 Civs.logger.log(Level.SEVERE, "Exception generated", e);
             }
         }
-        new TabComplete(commandList);
+        tabComplete = new TabComplete(commandList);
     }
 
-//    private void initListeners() {
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        return tabComplete.onTabComplete(sender, command, alias, args);
+    }
+
+    //    private void initListeners() {
 //        Bukkit.getPluginManager().registerEvents(new SpellListener(), this);
 //        Bukkit.getPluginManager().registerEvents(new AIListener(), this);
 //    }

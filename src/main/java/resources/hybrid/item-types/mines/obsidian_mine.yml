@@ -4,7 +4,7 @@ shop-icon: OBSIDIAN
 dynmap-marker: hammer
 name: Obsidian_Mine
 max: 1
-price: 500
+price: 3000
 groups:
 - mine
 level: 6

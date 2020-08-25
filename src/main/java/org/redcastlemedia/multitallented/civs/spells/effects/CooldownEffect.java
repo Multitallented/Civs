@@ -1,16 +1,21 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 
@@ -69,20 +74,22 @@ public class CooldownEffect extends Effect {
         if (state == null) {
             return true;
         }
-        Object rawDuration = state.getVars().get("cooldown");
-        if (rawDuration == null || !(rawDuration instanceof Long)) {
+        CivItem civItem = ItemManager.getInstance().getItemType(spell.getType());
+        String localSpellName = civItem.getDisplayName(player);
+        Object rawDuration = state.getVars().get(SpellEffectConstants.COOLDOWN);
+        if (!(rawDuration instanceof Long)) {
             if (!this.silent) {
-                player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + spell.getType() +
-                        " has an indefinite cooldown");
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "infinite-cooldown").replace("$1", localSpellName));
             }
             return false;
         }
-        Long cooldown = (Long) rawDuration;
-        if (System.currentTimeMillis() < cooldown) {
+        long rawCooldown = (long) rawDuration;
+        if (System.currentTimeMillis() < rawCooldown) {
             if (!this.silent) {
-                player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + spell.getType() + " has " +
-                        ((int) ((System.currentTimeMillis() - cooldown) / -1000))  +
-                        "s remaining cooldown");
+                String cooldownString = Util.formatTime((int) ((System.currentTimeMillis() - rawCooldown) / -1000));
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        SpellEffectConstants.COOLDOWN).replace("$1", cooldownString));
             }
             return false;
         }
@@ -113,40 +120,36 @@ public class CooldownEffect extends Effect {
             state = new CivState(spell, getKey(), -1, -1, "" + this.cooldown, variables);
         }
 
-        Bukkit.getPlayer(civilian.getUuid()).sendMessage(Civs.getPrefix() +
-                newAbilityName + "." + getKey());
         civilian.getStates().put(newAbilityName + "." + getKey(), state);
     }
     @Override
-    public void remove() {
-        Object origin = getOrigin();
+    public void remove(LivingEntity origin, int level, Spell spell) {
         if (!(origin instanceof Player)) {
             return;
         }
-        String newAbilityName = abilityName.equals("self") ? getSpell().getType() : abilityName;
+        String newAbilityName = abilityName.equals(SpellConstants.SELF) ? getSpell().getType() : abilityName;
         Player player = (Player) origin;
         Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         champion.getStates().remove(newAbilityName + "." + getKey());
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
         HashMap<String, Double> returnMap = new HashMap<>();
-        returnMap.put("cooldown", 0.0);
-        Object target = getTarget();
+        returnMap.put(SpellEffectConstants.COOLDOWN, 0.0);
         if (!(target instanceof Player)) {
             return returnMap;
         }
         Player player = (Player) target;
         Civilian champion = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String newAbilityName = abilityName.equals("self") ? getSpell().getType() : abilityName;
+        String newAbilityName = abilityName.equals(SpellConstants.SELF) ? getSpell().getType() : abilityName;
 
         CivState state = champion.getStates().get(newAbilityName + "." + getKey());
 
         if (state == null) {
             return returnMap;
         }
-        Object rawDuration = state.getSpell().getAbilityVariables().get("cooldown");
+        Object rawDuration = state.getSpell().getAbilityVariables().get(SpellEffectConstants.COOLDOWN);
         if (rawDuration == null || !(rawDuration instanceof Long)) {
             if (!this.silent) {
                 player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + getSpell().getType() +

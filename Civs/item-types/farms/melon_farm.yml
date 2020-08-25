@@ -2,34 +2,36 @@
 #type: region
 #icon: CHEST
 #shop-icon: MELON_SLICE
+#dynmap-marker: cutlery
+#name: Melon_Farm
 #max: 1
 #price: 100
 #groups:
-#- farm
+#  - farm
 #level: 4
 #
 #pre-reqs:
-#- member=village:town:city:metropolis
+#  - member=village:town:city:metropolis
 #
 #build-reqs:
-#- g:fencegate*1
-#- g:fence*16
-#- WATER*1
-#- MELON*10
+#  - g:fencegate*1
+#  - g:fence*16
+#  - WATER*1
+#  - MELON*10
 #
 #towns:
-#- village
-#- town
-#- city
-#- metropolis
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #build-radius: 5
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:MELON_SLICE
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:MELON_SLICE
 #period: 600
 #upkeep:
 #  0:

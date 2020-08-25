@@ -10,6 +10,7 @@ groups:
 level: 2
 
 pre-reqs:
+- cobble_quarry:built=1
 - member=settlement:hamlet:village:town:city:metropolis
 
 towns:

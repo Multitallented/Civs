@@ -17,6 +17,8 @@ import lombok.Setter;
 public class MenuIcon {
     @Getter
     private List<String> actions = new ArrayList<>();
+    @Getter
+    private List<String> rightClickActions = new ArrayList<>();
     @Getter @Setter
     private ArrayList<Integer> index;
     @Getter @Setter
@@ -54,6 +56,12 @@ public class MenuIcon {
                 this.name = section.getString("name", "");
                 this.desc = section.getString("desc", "");
                 this.actions = section.getStringList("actions");
+                List<String> actionsRightClick = section.getStringList("actions-right-click");
+                if (actionsRightClick.isEmpty()) {
+                    this.rightClickActions = this.actions;
+                } else {
+                    this.rightClickActions = actionsRightClick;
+                }
                 this.perm = section.getString("permission", "");
             }
         }
@@ -97,11 +105,11 @@ public class MenuIcon {
             String countString = count > 0 ? count + "" : "";
 
             cvItem.setDisplayName(LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, name)) + countString);
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, name)) + countString);
         }
         if (!desc.isEmpty()) {
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, desc))));
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, desc))));
         }
         return cvItem;
     }
