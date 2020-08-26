@@ -62,7 +62,7 @@ public class ClassListMenu extends CustomMenu {
             CivClass civClass = itemArray[startIndex + count];
             ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
             CVItem cvItem = classType.getShopIcon(player);
-            cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().add(0, LocaleManager.getInstance().getTranslation(player,
                     "level").replace("$1", "" + civClass.getLevel()));
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, CivClass>) MenuManager.getData(civilian.getUuid(), "classMap"))

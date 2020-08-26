@@ -42,7 +42,7 @@ public class PortCommand extends CivCommand {
         ConfigManager configManager = ConfigManager.getInstance();
 
         if (Civs.perm != null && !Civs.perm.has(player, Constants.PORT_PERMISSION)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     LocaleConstants.PERMISSION_DENIED));
             return true;
         }
@@ -50,7 +50,7 @@ public class PortCommand extends CivCommand {
         final Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         if (!configManager.getPortDuringCombat() && civilian.isInCombat()) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "in-combat"));
             return true;
         }
@@ -59,7 +59,7 @@ public class PortCommand extends CivCommand {
             long cooldown = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
             if (cooldown > 0) {
                 player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslationWithPlaceholders(player, "cooldown")
+                        localeManager.getTranslation(player, "cooldown")
                                 .replace("$1", ((int) cooldown / 1000) + ""));
                 return true;
             }
@@ -67,14 +67,14 @@ public class PortCommand extends CivCommand {
 
         if (player.getHealth() < ConfigManager.getInstance().getPortDamage()) {
             int healthNeeded = ConfigManager.getInstance().getPortDamage() + 1 - (int) player.getHealth();
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "need-more-health").replace("$1", healthNeeded + ""));
             return true;
         }
 
         if (player.getFoodLevel() < ConfigManager.getInstance().getPortStamina()) {
             int foodNeeded = ConfigManager.getInstance().getPortStamina() + 1 - player.getFoodLevel();
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "need-more-stamina").replace("$1", foodNeeded + ""));
             return true;
         }
@@ -82,9 +82,9 @@ public class PortCommand extends CivCommand {
         if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
             int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
             ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
-            String manaTitle = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            String manaTitle = LocaleManager.getInstance().getTranslation(player,
                     classType.getManaTitle());
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "need-more-mana").replace("$1", manaNeeded + "")
                     .replace("$2", manaTitle));
             return true;
@@ -93,7 +93,7 @@ public class PortCommand extends CivCommand {
         double moneyNeeded = ConfigManager.getInstance().getPortMoney();
         if (moneyNeeded > 0 && Civs.econ != null &&
                 !Civs.econ.has(player, moneyNeeded)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "not-enough-money").replace("$1", moneyNeeded + ""));
             return true;
         }
@@ -104,7 +104,7 @@ public class PortCommand extends CivCommand {
             //Check if region is a port
             r = RegionManager.getInstance().getRegionAt(Region.idToLocation(args[1]));
             if (r == null || !canPort(r, player.getUniqueId(), null)) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         LocaleConstants.PORT_NOT_FOUND));
                 return true;
             }
@@ -112,7 +112,7 @@ public class PortCommand extends CivCommand {
             String townName = args[1];
             Town town = TownManager.getInstance().getTown(townName);
             if (town == null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         LocaleConstants.PORT_NOT_FOUND));
                 return true;
             }
@@ -123,7 +123,7 @@ public class PortCommand extends CivCommand {
                 }
             }
             if (r == null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         LocaleConstants.PORT_NOT_FOUND));
                 return true;
             }
@@ -143,7 +143,7 @@ public class PortCommand extends CivCommand {
         if (warmup > 0) {
             delay = warmup;
         }
-        player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "port-warmup").replace("$1", (warmup / 20) + ""));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (int) warmup, 2));
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
@@ -153,7 +153,7 @@ public class PortCommand extends CivCommand {
                     return;
                 }
                 if (civilian.isInCombat()) {
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                             "in-combat"));
                     return;
                 }
@@ -161,9 +161,9 @@ public class PortCommand extends CivCommand {
                 if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
                     int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
                     ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
-                    String manaTitle = LocaleManager.getInstance().getTranslationWithPlaceholders(p,
+                    String manaTitle = LocaleManager.getInstance().getTranslation(p,
                             classType.getManaTitle());
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                             "need-more-mana").replace("$1", manaNeeded + "")
                             .replace("$2", manaTitle));
                     return;
@@ -174,7 +174,7 @@ public class PortCommand extends CivCommand {
                 double moneyNeeded = ConfigManager.getInstance().getPortMoney();
                 if (moneyNeeded > 0 && Civs.econ != null &&
                         !Civs.econ.has(p, moneyNeeded)) {
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                             "not-enough-money").replace("$1", moneyNeeded + ""));
                     return;
                 } else if (Civs.econ != null) {
@@ -190,7 +190,7 @@ public class PortCommand extends CivCommand {
                 }
                 cooldowns.put(p.getUniqueId(), System.currentTimeMillis() + ConfigManager.getInstance().getPortCooldown() * 1000);
                 p.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
-                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "teleported"));
             }
         }, delay);
@@ -214,7 +214,6 @@ public class PortCommand extends CivCommand {
         return Civs.perm == null || Civs.perm.has(player, Constants.PORT_PERMISSION);
     }
 
-
     public static boolean canPort(Region r, UUID uuid, Town town) {
         try {
             if (!r.getEffects().containsKey(Constants.PORT)) {
@@ -230,13 +229,16 @@ public class PortCommand extends CivCommand {
             boolean ownerPrivatePort = privatePort && r.getEffects().get(Constants.PORT).equals(Constants.OWNER);
             if (!r.getPeople().containsKey(uuid)) {
                 return false;
-            } else if (privatePort) {
+            }
+            if (privatePort) {
                 if (townPrivatePort && (town == null || !town.getPeople().containsKey(uuid) ||
                         town.getPeople().get(uuid).contains(Constants.ALLY))) {
                     return false;
-                } else if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
+                }
+                if (memberPrivatePort && r.getPeople().get(uuid).contains(Constants.ALLY)) {
                     return false;
-                } else if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
+                }
+                if (ownerPrivatePort && (r.getPeople().get(uuid).contains(Constants.ALLY) ||
                         r.getPeople().get(uuid).contains(Constants.MEMBER))) {
                     return false;
                 }

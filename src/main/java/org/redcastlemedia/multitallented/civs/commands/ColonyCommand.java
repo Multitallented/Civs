@@ -30,14 +30,14 @@ public class ColonyCommand extends CivCommand {
         Town colonyTown = TownManager.getInstance().getTown(args[1]);
         Town owningTown = TownManager.getInstance().getTown(args[2]);
         if (colonyTown == null || owningTown == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-target"));
             return true;
         }
         Government government = GovernmentManager.getInstance().getGovernment(colonyTown.getGovernmentType());
         if (colonyTown.getColonialTown() != null ||
                 government.getGovernmentType() != GovernmentType.COLONIALISM) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-target"));
             return true;
         }
@@ -46,14 +46,14 @@ public class ColonyCommand extends CivCommand {
                 owningTown.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER);
         if (!isOwner || player.isOp() ||
                 (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;
         }
 
         colonyTown.setColonialTown(owningTown.getName());
         TownManager.getInstance().saveTown(colonyTown);
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "colony-town-set").replace("$1", colonyTown.getName())
                 .replace("$2", owningTown.getName()));
         return true;

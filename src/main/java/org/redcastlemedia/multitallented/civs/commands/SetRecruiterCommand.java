@@ -42,7 +42,7 @@ public class SetRecruiterCommand extends CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a town");
@@ -59,7 +59,7 @@ public class SetRecruiterCommand extends CivCommand {
         Town town = TownManager.getInstance().getTown(locationString);
         if (town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -92,18 +92,18 @@ public class SetRecruiterCommand extends CivCommand {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
 
         if (!isAdmin && !hasPermission && !colonialOverride) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
 
         String name = town.getName();
         if (invitePlayer != null) {
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(invitePlayer,
                     "add-recruiter-region").replace("$1", name));
         }
         if (player != null && civilian != null && invitePlayer != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "recruiter-added-region").replace("$1", invitePlayer.getDisplayName())
                     .replace("$2", name));
         } else {

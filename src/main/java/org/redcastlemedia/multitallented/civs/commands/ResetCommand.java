@@ -32,7 +32,7 @@ public class ResetCommand extends CivCommand {
         if (offlinePlayer == null) {
             if (commandSender instanceof Player) {
                 Player player = (Player) commandSender;
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "player-not-found")
                         .replace("$1", args[1]));
             } else {

@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -45,9 +46,8 @@ public class SpellListMenu extends CustomMenu {
             for (CivClass civClass : civilian.getCivClasses()) {
                 if (civClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
                     selectedClass = civClass;
-                    String localClassName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                            selectedClass.getType() + LocaleConstants.NAME_SUFFIX);
-                    data.put("classTypeName", localClassName);
+                    CivItem civItem = ItemManager.getInstance().getItemType(selectedClass.getType());
+                    data.put("classTypeName", civItem.getDisplayName(player));
                     data.put(Constants.CLASS, civClass);
                     break;
                 }
@@ -94,7 +94,7 @@ public class SpellListMenu extends CustomMenu {
             }
             SpellType spellType = itemArray[startIndex + count];
             CVItem cvItem = spellType.getShopIcon(player);
-            cvItem.getLore().add(0, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            cvItem.getLore().add(0, LocaleManager.getInstance().getTranslation(player,
                     "level").replace("$1", "" + civilian.getLevel(spellType)));
             List<String> unmetRequirements = ItemManager.getInstance().getAllUnmetRequirements(spellType, civilian, false);
             if (!unmetRequirements.isEmpty()) {

@@ -70,7 +70,7 @@ public class Skill {
 
     public int getLevel() {
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
-        return (int) Math.floor(10 * getTotalExp() / skillType.getMaxExp());
+        return Math.min(10, (int) Math.floor(10 * getTotalExp() / skillType.getMaxExp()));
     }
 
     public double addAccomplishment(String key) {

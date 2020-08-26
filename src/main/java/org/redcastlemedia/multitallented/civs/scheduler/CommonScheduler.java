@@ -10,7 +10,6 @@ import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedAc
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.*;
@@ -25,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +63,13 @@ public class CommonScheduler implements Runnable {
             int maxTPS = 5;
             int chunk = players.size() / maxTPS;
             for (int j = chunk * i; j < (i == maxTPS - 1 ? players.size() : chunk * (i + 1)); j++) {
-                checkPlayer((Player) players.toArray()[j]);
+                Player[] playerArray = players.toArray(new Player[0]);
+                if (playerArray.length > j) {
+                    Player player = playerArray[j];
+                    if (player != null) {
+                        checkPlayer(player);
+                    }
+                }
             }
             RegionTickUtil.runUpkeeps();
             if (i == maxTPS - 1) {
@@ -99,19 +105,15 @@ public class CommonScheduler implements Runnable {
     }
 
     private void checkExploration(Player player) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
         if (skill != null) {
             Biome biome = player.getLocation().getBlock().getBiome();
             double exp = skill.addAccomplishment(biome.name());
-            if (exp > 0) {
-                CivilianManager.getInstance().saveCivilian(civilian);
-                String localSkillName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
-            }
+            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
         }
 
     }
@@ -213,18 +215,18 @@ public class CommonScheduler implements Runnable {
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         String govName = "Unknown";
         if (government != null) {
-            govName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            govName = LocaleManager.getInstance().getTranslation(player,
                     government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
         }
         if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
             player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
         } else {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "town-enter").replace("$1", town.getName())
                     .replace("$2", govName));
         }
         if (!town.getPeople().containsKey(player.getUniqueId())) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "town-enter-warning"));
         }
     }
@@ -269,9 +271,7 @@ public class CommonScheduler implements Runnable {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
                 if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
-                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-                    String localRegionTypeName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                            regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
+                    String localRegionTypeName = regionType.getDisplayName(player);
                     player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
                 }
                 PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),

@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -169,8 +170,8 @@ public final class AnnouncementUtil {
                 continue;
             }
             keys.add("ann-missing-input-" + region.getId());
-            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-missing-input")
-                    .replace("$1", regionType.getName()));
+            messages.add(LocaleManager.getInstance().getRawTranslation(player, "ann-missing-input")
+                    .replace("$1", regionType.getDisplayName(player)));
             regionCount++;
             if (regionCount > 2) {
                 break;
@@ -184,7 +185,7 @@ public final class AnnouncementUtil {
             if (!civilian.isAtGroupMax(group) &&
                     !alreadySentMessages.get(civilian.getUuid()).contains("ann-limit-" + group)) {
                 keys.add("ann-limit-" + group);
-                messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-limit")
+                messages.add(LocaleManager.getInstance().getRawTranslation(player, "ann-limit")
                         .replace("$1", "" + civilian.getCountGroup(group))
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
@@ -218,13 +219,13 @@ public final class AnnouncementUtil {
         if (lowestPlayerKarma != null &&
                 !alreadySentMessages.get(civilian.getUuid()).contains("ann-karma-" + lowestPlayerKarma.getName())) {
             keys.add("ann-karma-" + lowestPlayerKarma.getName());
-            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-karma")
+            messages.add(LocaleManager.getInstance().getRawTranslation(player, "ann-karma")
                     .replace("$1", lowestPlayerKarma.getDisplayName()));
         }
         if (highestPlayerBounty != null &&
                 !alreadySentMessages.get(civilian.getUuid()).contains("ann-bounty-" + highestPlayerBounty.getName())) {
             keys.add("ann-bounty-" + highestPlayerBounty.getName());
-            messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-bounty")
+            messages.add(LocaleManager.getInstance().getRawTranslation(player, "ann-bounty")
                     .replace("$1", highestPlayerBounty.getDisplayName())
                     .replace("$2", Util.getNumberFormat(highestBounty, civilian.getLocale())));
         }

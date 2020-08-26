@@ -4,10 +4,8 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +24,7 @@ public class ClassType extends CivItem {
     private final Map<String, Integer> classPermissions = new HashMap<>();
 
     public ClassType(List<String> reqs,
+                     String key,
                      String name,
                      CVItem icon,
                      CVItem shopIcon,
@@ -42,6 +41,7 @@ public class ClassType extends CivItem {
         super(reqs,
                 false,
                 ItemType.CLASS,
+                key,
                 name,
                 icon.getMat(),
                 shopIcon,

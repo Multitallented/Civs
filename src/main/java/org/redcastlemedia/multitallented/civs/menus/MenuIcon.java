@@ -105,11 +105,11 @@ public class MenuIcon {
             String countString = count > 0 ? count + "" : "";
 
             cvItem.setDisplayName(LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, name)) + countString);
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, name)) + countString);
         }
         if (!desc.isEmpty()) {
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, CustomMenu.replaceVariables(civilian, desc))));
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, desc))));
         }
         return cvItem;
     }

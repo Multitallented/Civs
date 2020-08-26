@@ -22,6 +22,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -54,9 +56,9 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         if (!region.getRawPeople().isEmpty()) {
             Player player = Bukkit.getPlayer(region.getRawPeople().keySet().iterator().next());
             if (player != null) {
-                String localRegionName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                        region.getType() + LocaleConstants.NAME_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                CivItem civItem = ItemManager.getInstance().getItemType(region.getType());
+                String localRegionName = civItem.getDisplayName(player);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "raid-remote").replace("$1", localRegionName));
             }
         }
@@ -108,7 +110,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
 
         ItemStack chestItem = player.getInventory().getChestplate();
         if (chestItem != null && chestItem.getType() == Material.ELYTRA) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "catapult-elytra-equipped"));
             return;
         }

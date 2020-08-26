@@ -20,7 +20,7 @@ public class DayCommand extends CivCommand {
         if (player != null && (!player.isOp() ||
                 (Civs.perm == null || !Civs.perm.has(player, Constants.ADMIN_PERMISSION)))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, "no-permission"));
+                    .getTranslation(player, "no-permission"));
             return true;
         }
 
