@@ -59,7 +59,6 @@ public class TutorialManager {
                     iconString = "CHEST";
                 }
                 path.setIcon(CVItem.createCVItemFromString(iconString));
-                ConfigurationSection section = tutorialConfig.getConfigurationSection(key + ".names");
 
                 for (Map<?,?> map : tutorialConfig.getMapList(key + ".steps")) {
                     TutorialStep tutorialStep = new TutorialStep();
