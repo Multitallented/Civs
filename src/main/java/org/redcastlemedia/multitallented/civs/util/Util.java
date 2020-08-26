@@ -799,6 +799,26 @@ public final class Util {
         }
     }
 
+    public static boolean isShulkerBox(Material mat) {
+        return mat == Material.SHULKER_BOX ||
+                mat == Material.BLACK_SHULKER_BOX ||
+                mat == Material.BROWN_SHULKER_BOX ||
+                mat == Material.CYAN_SHULKER_BOX ||
+                mat == Material.GRAY_SHULKER_BOX ||
+                mat == Material.GREEN_SHULKER_BOX ||
+                mat == Material.LIGHT_BLUE_SHULKER_BOX ||
+                mat == Material.LIGHT_GRAY_SHULKER_BOX ||
+                mat == Material.LIME_SHULKER_BOX ||
+                mat == Material.MAGENTA_SHULKER_BOX ||
+                mat == Material.ORANGE_SHULKER_BOX ||
+                mat == Material.PINK_SHULKER_BOX ||
+                mat == Material.PURPLE_SHULKER_BOX ||
+                mat == Material.RED_SHULKER_BOX ||
+                mat == Material.WHITE_SHULKER_BOX ||
+                mat == Material.YELLOW_SHULKER_BOX ||
+                mat == Material.BLUE_SHULKER_BOX;
+    }
+
     public static String formatTime(long duration) {
         if (duration < 60) {
             return duration + "s";
