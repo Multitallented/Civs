@@ -57,6 +57,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {
@@ -663,6 +664,18 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+            player1.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player1, "wonder-built")
+                            .replace("$1", player.getDisplayName())
+                            .replace("$2", regionType.getDisplayName(player1)));
+        }
+        if (Civs.discordSRV != null) {
+            DiscordUtil.sendMessageToMainChannel(LocaleManager.getInstance()
+                    .getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "wonder-built")
+                        .replace("$1", player.getDisplayName()).replace("$2", regionType.getDisplayName()));
+        }
+
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
@@ -707,6 +720,18 @@ public class RegionManager {
     }
 
     private boolean checkCreateRegionListeners(BlockPlaceEvent event, Player player, Block block, RegionType regionType) {
+        if (regionType.getEffects().containsKey(Constants.WONDER)) {
+            for (Region region : getAllRegions()) {
+                if (regionType.getProcessedName().equals(region.getType())) {
+                    player.sendMessage(Civs.getPrefix() +
+                            LocaleManager.getInstance().getTranslation(player, "cant-build-wonder")
+                                    .replace("$1", regionType.getDisplayName(player)));
+                    event.setCancelled(true);
+                    return true;
+                }
+            }
+        }
+
         for (String effect : regionType.getEffects().keySet()) {
             if (createRegionListeners.get(effect) != null &&
                     !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
