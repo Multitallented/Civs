@@ -57,6 +57,7 @@ import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {
@@ -661,15 +662,20 @@ public class RegionManager {
                 localeManager.getTranslation(player, "region-built")
                         .replace("$1", localizedRegionName));
 
-	TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
+        TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-	// Broadcasts wonder built to all players online
-	for (Player player1 : Bukkit.getOnlinePlayers()) {
-            player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player1, "wonder-built")
-                            .replace("$1", regionTypeName));
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+            player1.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player1, "wonder-built")
+                            .replace("$1", player.getDisplayName())
+                            .replace("$2", regionType.getDisplayName(player1)));
         }
-	
+        if (Civs.discordSRV != null) {
+            DiscordUtil.sendMessageToMainChannel(LocaleManager.getInstance()
+                    .getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "wonder-built")
+                        .replace("$1", player.getDisplayName()).replace("$2", regionType.getDisplayName()));
+        }
+
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
@@ -714,23 +720,18 @@ public class RegionManager {
     }
 
     private boolean checkCreateRegionListeners(BlockPlaceEvent event, Player player, Block block, RegionType regionType) {
-	if (regionType.getEffects().containsKey(Constants.WONDER)) {
-	    for (Town globalTown : TownManager.getInstance().getTowns()) {
-		for (Region region : TownManager.getInstance().getContainingRegions(globalTown.getName())) {
-		    if (regionTypeName.equals(region.getType().toLowerCase())) {
-                        RegionType currentRegionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                        String currentRegionLocalizedName = LocaleManager.getInstance()
-                                .getTranslationWithPlaceholders(player, currentRegionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
-                        player.sendMessage(Civs.getPrefix() +
-                                localeManager.getTranslationWithPlaceholders(player, Constants.WONDER)
-                                        .replace("$1", localizedRegionName));
-                        event.setCancelled(true);
-                        return;
-                    }
-		}
-	    }
-	}
-	
+        if (regionType.getEffects().containsKey(Constants.WONDER)) {
+            for (Region region : getAllRegions()) {
+                if (regionType.getProcessedName().equals(region.getType())) {
+                    player.sendMessage(Civs.getPrefix() +
+                            LocaleManager.getInstance().getTranslation(player, "cant-build-wonder")
+                                    .replace("$1", regionType.getDisplayName(player)));
+                    event.setCancelled(true);
+                    return true;
+                }
+            }
+        }
+
         for (String effect : regionType.getEffects().keySet()) {
             if (createRegionListeners.get(effect) != null &&
                     !createRegionListeners.get(effect).createRegionHandler(block, player, regionType)) {
@@ -832,59 +833,7 @@ public class RegionManager {
                 }
             }
         }
-<<<<<<< HEAD
-
-        for (Region currentRegion : regionManager.getRegionsXYZ(location, radii, false)) {
-            if (currentRegion == rebuildRegion) {
-                continue;
-            }
-            event.setCancelled(true);
-            player.sendMessage(Civs.getPrefix() +
-                    localeManager.getTranslationWithPlaceholders(player, "too-close-region")
-                            .replace("$1", localizedRegionName).replace("$2", currentRegion.getType()));
-            return;
-        }
-        Map<UUID, String> people;
-        if (rebuildRegion != null) {
-            people = rebuildRegion.getPeople();
-            if (Civs.econ != null && people.containsKey(player.getUniqueId()) &&
-                    !people.get(player.getUniqueId()).contains("ally") &&
-                    !regionType.isRebuildRequired()) {
-                RegionType rebuildRegionType = (RegionType) ItemManager.getInstance().getItemType(rebuildRegion.getType());
-                Civs.econ.depositPlayer(player, rebuildRegionType.getPrice());
-            }
-            removeRegion(rebuildRegion, false, false);
-        } else {
-            people = new HashMap<>();
-            people.put(player.getUniqueId(), Constants.OWNER);
-        }
-        if (rebuildTransition) {
-            event.setCancelled(true);
-            ItemStack itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack.getAmount() > 1) {
-                itemStack.setAmount(itemStack.getAmount() - 1);
-            } else {
-                player.getInventory().setItemInMainHand(null);
-            }
-            location.getBlock().setType(itemStack.getType());
-        }
-
-        player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslationWithPlaceholders(player, "region-built")
-                        .replace("$1", localizedRegionName));
-
-        TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
-
-	
-
-        Region region = new Region(regionType.getName(), people, location, radii, regionType.getEffects(), 0);
-        addRegion(region);
-        StructureUtil.removeBoundingBox(civilian.getUuid());
-        RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
-        Bukkit.getPluginManager().callEvent(regionCreatedEvent);
-=======
         return false;
->>>>>>> a730a56d43739f36bbc8c13822165b637628ec16
     }
 
     private void runRegionCommands(Region region, List<String> commands) {

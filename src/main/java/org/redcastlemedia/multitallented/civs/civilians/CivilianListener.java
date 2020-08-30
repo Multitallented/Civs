@@ -56,12 +56,14 @@ import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
@@ -77,6 +79,7 @@ import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -615,6 +618,19 @@ public class CivilianListener implements Listener {
         UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
         if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
             event.getRegion().getLocation().getChunk().setForceLoaded(false);
+        }
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(event.getRegion().getType());
+        if (regionType.getEffects().containsKey(Constants.WONDER)) {
+            for (Player player1 : Bukkit.getOnlinePlayers()) {
+                player1.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(player1, "wonder-destroyed")
+                                .replace("$1", regionType.getDisplayName(player1)));
+            }
+            if (Civs.discordSRV != null) {
+                DiscordUtil.sendMessageToMainChannel(LocaleManager.getInstance()
+                        .getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "wonder-destroyed")
+                        .replace("$1", regionType.getDisplayName()));
+            }
         }
     }
 
