@@ -664,16 +664,18 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
-        for (Player player1 : Bukkit.getOnlinePlayers()) {
-            player1.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(player1, "wonder-built")
-                            .replace("$1", player.getDisplayName())
-                            .replace("$2", regionType.getDisplayName(player1)));
-        }
-        if (Civs.discordSRV != null) {
-            DiscordUtil.sendMessageToMainChannel(LocaleManager.getInstance()
-                    .getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "wonder-built")
+        if (regionType.getEffects().containsKey(Constants.WONDER)) {
+            for (Player player1 : Bukkit.getOnlinePlayers()) {
+                player1.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(player1, "wonder-built")
+                                .replace("$1", player.getDisplayName())
+                                .replace("$2", regionType.getDisplayName(player1)));
+            }
+            if (Civs.discordSRV != null) {
+                DiscordUtil.sendMessageToMainChannel(LocaleManager.getInstance()
+                        .getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "wonder-built")
                         .replace("$1", player.getDisplayName()).replace("$2", regionType.getDisplayName()));
+            }
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
