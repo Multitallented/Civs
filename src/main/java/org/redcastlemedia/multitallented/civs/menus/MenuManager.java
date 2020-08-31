@@ -143,6 +143,7 @@ public class MenuManager implements Listener {
             Civs.logger.log(Level.SEVERE, "Exception thrown during inventory click", e);
             event.setCancelled(true);
             event.getWhoClicked().closeInventory();
+            clearCycleItems(event.getWhoClicked().getUniqueId());
         }
     }
 

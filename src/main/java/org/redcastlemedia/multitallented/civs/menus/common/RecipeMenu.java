@@ -76,13 +76,11 @@ public class RecipeMenu extends CustomMenu {
             items = new ArrayList<>(region.getMissingBlocks());
         } else if (recipe.startsWith("g:")) {
             items = new ArrayList<>();
-            String groupName = recipe.replace("g:", "");
-            String groupString = ConfigManager.getInstance().getItemGroups().get(groupName);
-            for (String matString : groupString.split(",")) {
-                List<CVItem> tempMap = new ArrayList<>();
-                CVItem cvItem = CVItem.createCVItemFromString(matString);
-                tempMap.add(cvItem);
-                items.add(tempMap);
+            List<CVItem> cvItems = CVItem.createListFromString(recipe);
+            for (CVItem cvItem : cvItems) {
+                List<CVItem> singleList = new ArrayList<>();
+                singleList.add(cvItem);
+                items.add(singleList);
             }
         } else {
             items = new ArrayList<>();
