@@ -15,14 +15,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -631,36 +634,14 @@ public class TownManager {
         LocaleManager localeManager = LocaleManager.getInstance();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (TownManager.getInstance().townNameExists(name) && (town == null ||
-                !town.getName().equalsIgnoreCase(name) ||
-                !town.getRawPeople().containsKey(civilian.getUuid()))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                    "specify-town-name"));
+        TownType townType = handleUsageErrors(player, name, town, civilian);
+        if (townType == null) {
             return;
         }
-
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-        if (itemStack == null || !CivItem.isCivsItem(itemStack)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                    "hold-town"));
-            return;
-        }
-        CivItem civItem = CivItem.getFromItemStack(itemStack);
-
-        if (civItem == null || !(civItem instanceof TownType)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                    "hold-town"));
-            return;
-        }
-        TownType townType = (TownType) civItem;
 
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
         List<Town> intersectTowns = checkIntersect(player.getLocation(), townType, modifier);
-        if (intersectTowns.size() > 1 ||
-                    (!intersectTowns.isEmpty() &&
-                    (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                    "too-close-town").replace("$1", townType.getProcessedName()));
+        if (handleIntersectingTown(player, town, localeManager, townType, intersectTowns)) {
             return;
         }
         if (intersectTowns.isEmpty() && townType.getChild() != null) {
@@ -684,48 +665,9 @@ public class TownManager {
         }
 
         String townTypeLocalName = townType.getDisplayName(player);
-        if (!townType.getReqs().isEmpty()) {
-            HashMap<String, Integer> checkList = (HashMap<String, Integer>) townType.getReqs().clone();
-            Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
-                    townType.getBuildRadiusY(), townType.getBuildRadius(), false);
-            regionCheck: for (Region region : regions) {
-                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                String regionTypeName = regionType.getProcessedName();
-                if (checkList.containsKey(regionTypeName)) {
-                    if (checkList.get(regionTypeName) < 2) {
-                        checkList.remove(regionTypeName);
-                    } else {
-                        checkList.put(regionTypeName, checkList.get(regionTypeName) - 1);
-                    }
-                    continue;
-                }
-                for (String groupType : regionType.getGroups()) {
-                    String groupName = groupType.toLowerCase();
-                    if (checkList.containsKey(groupName)) {
-                        if (checkList.get(groupName) < 2) {
-                            checkList.remove(groupName);
-                        } else {
-                            checkList.put(groupName, checkList.get(groupName) - 1);
-                        }
-                        continue regionCheck;
-                    }
-                }
-            }
-            if (!checkList.isEmpty()) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                        "missing-region-requirements").replace("$1", townTypeLocalName));
-                HashMap<String, String> params = new HashMap<>();
-                StringBuilder regionString = new StringBuilder();
-                for (Map.Entry<String, Integer> entry : checkList.entrySet()) {
-                    regionString.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
-                }
-                regionString.substring(0, regionString.length() - 1);
-                params.put("regionList", regionString.toString());
-                MenuManager.getInstance().openMenu(player, "region-type-list", params);
-                return;
-            }
+        if (handleTownRequirementRegions(player, townType, townTypeLocalName)) {
+            return;
         }
-
 
 
         HashMap<UUID, String> people = new HashMap<>();
@@ -767,26 +709,10 @@ public class TownManager {
         newTown.setEffects(new HashMap<>(townType.getEffects()));
         newTown.setChildLocations(childLocations);
         newTown.setBankAccount(bank);
-        if (governmentType != null) {
-            newTown.setGovernmentType(governmentType);
-        } else {
-            newTown.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
-        }
-        Government government = GovernmentManager.getInstance().getGovernment(newTown.getGovernmentType());
-        if (government != null) {
-            for (GovTypeBuff buff : government.getBuffs()) {
-                if (buff.getBuffType() != GovTypeBuff.BuffType.MAX_POWER) {
-                    continue;
-                }
-                newTown.setMaxPower((int) Math.round((double) newTown.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
-                break;
-            }
-        } else {
-            government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
-        }
+        Government government = setGovTypeAndMaxPower(governmentType, newTown);
         saveTown(newTown);
         addTown(newTown);
-        player.getInventory().remove(itemStack);
+        player.getInventory().remove(player.getInventory().getItemInMainHand());
 
 
 
@@ -810,6 +736,134 @@ public class TownManager {
             params.put("town", newTown.getName());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
+    }
+
+    @Nullable
+    private TownType handleUsageErrors(Player player, String name, Town town, Civilian civilian) {
+        LocaleManager localeManager = LocaleManager.getInstance();
+        if (TownManager.getInstance().townNameExists(name) && (town == null ||
+                !town.getName().equalsIgnoreCase(name) ||
+                !town.getRawPeople().containsKey(civilian.getUuid()))) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    "specify-town-name"));
+            return null;
+        }
+
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        if (!CVItem.isCivsItem(itemStack)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    "hold-town"));
+            return null;
+        }
+        CivItem civItem = CivItem.getFromItemStack(itemStack);
+
+        if (!(civItem instanceof TownType)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    "hold-town"));
+            return null;
+        }
+        return (TownType) civItem;
+    }
+
+    private Government setGovTypeAndMaxPower(String governmentType, Town newTown) {
+        if (governmentType != null) {
+            newTown.setGovernmentType(governmentType);
+        } else {
+            newTown.setGovernmentType(ConfigManager.getInstance().getDefaultGovernmentType());
+        }
+        Government government = GovernmentManager.getInstance().getGovernment(newTown.getGovernmentType());
+        if (government != null) {
+            for (GovTypeBuff buff : government.getBuffs()) {
+                if (buff.getBuffType() == GovTypeBuff.BuffType.MAX_POWER) {
+                    newTown.setMaxPower((int) Math.round((double) newTown.getMaxPower() * (1 + (double) buff.getAmount() / 100)));
+                    break;
+                }
+            }
+        } else {
+            government = GovernmentManager.getInstance().getGovernment(ConfigManager.getInstance().getDefaultGovernmentType());
+        }
+        return government;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean handleTownRequirementRegions(Player player, TownType townType, String townTypeLocalName) {
+        LocaleManager localeManager = LocaleManager.getInstance();
+        if (!townType.getReqs().isEmpty()) {
+            HashMap<String, Integer> checkList = (HashMap<String, Integer>) townType.getReqs().clone();
+            Set<Region> regions = RegionManager.getInstance().getRegionsXYZ(player.getLocation(), townType.getBuildRadius(),
+                    townType.getBuildRadiusY(), townType.getBuildRadius(), false);
+            for (Region region : regions) {
+                RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (!removeRegionFromCheckList(checkList, regionType)) {
+                    cleanupCheckList(checkList, regionType);
+                }
+            }
+            if (!checkList.isEmpty()) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                        "missing-region-requirements").replace("$1", townTypeLocalName));
+                HashMap<String, String> params = new HashMap<>();
+                StringBuilder regionString = new StringBuilder();
+                for (Map.Entry<String, Integer> entry : checkList.entrySet()) {
+                    regionString.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
+                }
+                regionString.substring(0, regionString.length() - 1);
+                params.put("regionList", regionString.toString());
+                MenuManager.getInstance().openMenu(player, "region-type-list", params);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean removeRegionFromCheckList(HashMap<String, Integer> checkList, RegionType regionType) {
+        String regionTypeName = regionType.getProcessedName();
+        if (checkList.containsKey(regionTypeName)) {
+            if (checkList.get(regionTypeName) < 2) {
+                checkList.remove(regionTypeName);
+            } else {
+                checkList.put(regionTypeName, checkList.get(regionTypeName) - 1);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void cleanupCheckList(HashMap<String, Integer> checkList, RegionType regionType) {
+        for (String groupType : regionType.getGroups()) {
+            String groupName = groupType.toLowerCase();
+            if (checkList.containsKey(groupName)) {
+                if (checkList.get(groupName) < 2) {
+                    checkList.remove(groupName);
+                } else {
+                    checkList.put(groupName, checkList.get(groupName) - 1);
+                }
+                return;
+            }
+        }
+    }
+
+    private boolean handleIntersectingTown(Player player, Town town, LocaleManager localeManager, TownType townType, List<Town> intersectTowns) {
+        if (intersectTowns.size() > 1 ||
+                    (!intersectTowns.isEmpty() &&
+                    (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
+            TownType townType1 = (TownType) ItemManager.getInstance().getItemType(intersectTowns.get(0).getType());
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    "too-close-town").replace("$1", townType.getDisplayName(player))
+                    .replace("$2", townType1.getDisplayName(player)));
+            UUID firstOwnerUuid = intersectTowns.get(0).getFirstOwner();
+            String ownerName = "no one";
+            if (firstOwnerUuid != null) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(firstOwnerUuid);
+                if (offlinePlayer.getName() != null) {
+                    ownerName = offlinePlayer.getName();
+                }
+            }
+            Civs.logger.log(Level.INFO,"{0} failed to build a {1} at {2} because it would be too close to a {3} owned by {4}",
+                    new Object[] { player.getName(), townType.getProcessedName(), Region.locationToString(town.getLocation()),
+                    townType1.getProcessedName(), ownerName });
+            return true;
+        }
+        return false;
     }
 
     private void evolveTown(Player player, Civilian civilian, TownType townType, String townTypeLocalName, TownType childTownType, Town newTown, Government government) {
