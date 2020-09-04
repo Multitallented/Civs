@@ -119,7 +119,7 @@
 #power-output: "This region generates $1 power"
 #power-history: "Power history over the last $1 days:"
 #too-close-region: "Your $1 would be too close to a $2"
-#too-close-town: "Your $1 would be too close to another town"
+#too-close-town: "Your $1 would be too close to a $2"
 #town-created: "$1 has been created!"
 #town-destroyed: "$1 has been destroyed!"
 #region-built: "You have successfully built a $1"
@@ -863,6 +863,8 @@
 #chat-channel-set: "You are now chatting in channel $1"
 #click-change-chat: "Click to change chat channel"
 #no-recipients: "There is no one online in $1 chat channel"
+#netherite_mine-name: "Netherite Mine"
+#netherite_mine-desc: "Creates netherite by using diamond pickaxes."
 #change-class: "Change Class"
 #change-class-desc: "Select a new or previously saved class."
 #health: Health
