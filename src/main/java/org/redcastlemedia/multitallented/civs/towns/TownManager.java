@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -657,7 +658,7 @@ public class TownManager {
             if (chunkClaim != null &&
                     !NationManager.getInstance().isInNation(player.getUniqueId(), chunkClaim.getNation())) {
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "cant-build-in-nation"
                 ).replace("$1", chunkClaim.getNation().getName()));
                 return;

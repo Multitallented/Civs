@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -792,6 +793,17 @@ public final class Util {
         } else {
             commandSender.sendMessage(message);
         }
+    }
+
+    private static final BlockFace[] axis = { BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
+    private static final BlockFace[] radial = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST,
+            BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
+
+    public static BlockFace getFacing(double yaw, boolean useSubCardinalDirections) {
+        if (useSubCardinalDirections)
+            return radial[(int) Math.round(yaw / 45f) & 0x7].getOppositeFace();
+
+        return axis[(int) Math.round(yaw / 90f) & 0x3].getOppositeFace();
     }
 
     public static String formatTime(Player player, long duration) {
