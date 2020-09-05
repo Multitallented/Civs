@@ -17,7 +17,7 @@ items:
     name: orientation-name #TODO
     desc: orientation-desc #TODO
     action:
-      - menu:claim-map?rotate=true&orient=$orientation$ # TODO
+      - menu:claim-map?rotate=true&orient=$orient$
   back:
     index: 8
   claims:
