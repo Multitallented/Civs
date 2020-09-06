@@ -45,3 +45,8 @@
 #      - DIAMOND_AXE
 #    output:
 #      - DARK_OAK_LOG*8
+#  3:
+#    reagents:
+#      - NETHERITE_AXE
+#    output:
+#      - DARK_OAK_LOG*14

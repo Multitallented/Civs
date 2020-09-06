@@ -45,3 +45,9 @@ upkeep:
     output:
     - ENDER_PEARL*2
     - CHORUS_FRUIT*2
+  2:
+    reagents:
+    - NETHERITE_SWORD
+    output:
+    - ENDER_PEARL*3
+    - CHORUS_FRUIT*3

@@ -52,4 +52,8 @@ upkeep:
     - DIAMOND_PICKAXE
     output:
     - COBBLESTONE*12
-
+  3:
+    reagents:
+    - NETHERITE_PICKAXE
+    output:
+    - COBBLESTONE*16

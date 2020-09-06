@@ -28,7 +28,7 @@ public class AllianceListMenu extends CustomMenu {
         }
         ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllSortedAlliances();
 
-        int maxPage = (int) Math.ceil((double) alliances.size() / (double) itemsPerPage.get("regions"));
+        int maxPage = (int) Math.ceil((double) alliances.size() / (double) itemsPerPage.get("alliances"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
 

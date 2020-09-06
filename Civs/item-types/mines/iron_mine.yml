@@ -62,3 +62,11 @@
 #      - STONE_PICKAXE
 #    output:
 #      - IRON_INGOT*12
+#  3:
+#    reagents:
+#      - NETHERITE_PICKAXE
+#      - STONE_PICKAXE
+#    input:
+#      - STONE_PICKAXE
+#    output:
+#      - IRON_INGOT*18

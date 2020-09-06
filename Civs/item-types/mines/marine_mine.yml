@@ -45,6 +45,14 @@
 #      - STONE_PICKAXE
 #    output:
 #      - PRISMARINE_SHARD*6
+#  2:
+#    reagents:
+#      - NETHERITE_PICKAXE
+#      - STONE_PICKAXE
+#    input:
+#      - STONE_PICKAXE
+#    output:
+#      - PRISMARINE_SHARD*8
 #
 #biomes:
 #  - DEEP_OCEAN
