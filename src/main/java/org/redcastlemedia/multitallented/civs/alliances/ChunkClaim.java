@@ -33,6 +33,12 @@ public class ChunkClaim {
     public String toString() {
         return world.getUID() + " " + x + " " + z;
     }
+    public static ChunkClaim fromString(String claimString) {
+        ChunkClaim chunkClaim = fromString(claimString, null);
+        return chunkClaim == null ? null :
+                fromXZ(chunkClaim.getX(), chunkClaim.getZ(), chunkClaim.getWorld());
+    }
+
     public static ChunkClaim fromString(String claimString, Nation nation) {
         String[] splitString = claimString.split(" ");
         if (splitString.length != 3) {

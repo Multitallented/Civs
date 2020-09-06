@@ -6,6 +6,13 @@ prev-button: Previous
 language-menu: Select Language
 language-set: "Your language has been set to $1"
 back-button: Back
+north: North
+east: East
+south: South
+west: West
+orientation-name: "Facing: $1"
+orientation-desc: "Click to rotate map 90 degress"
+claim-map-desc: "Here you can view all nation claims near you. Each claim is a 16x16 chunk"
 start-tutorial: "Achievements On"
 start-tutorial-desc: "Receive money and items for completing achievements"
 skip: "Achievements Off"

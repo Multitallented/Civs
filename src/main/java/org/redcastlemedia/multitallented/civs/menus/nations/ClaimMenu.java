@@ -16,7 +16,7 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "claim") @SuppressWarnings("unused")
@@ -25,13 +25,13 @@ public class ClaimMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
-        if (params.containsKey("claim")) {
-            ChunkClaim chunkClaim = ChunkClaim.fromLocation(Region.idToLocation(params.get("claim")));
-            data.put("claim", chunkClaim);
+        if (params.containsKey(Constants.CLAIM)) {
+            ChunkClaim chunkClaim = ChunkClaim.fromString(params.get(Constants.CLAIM));
+            data.put(Constants.CLAIM, chunkClaim);
         } else {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             ChunkClaim chunkClaim = ChunkClaim.fromLocation(player.getLocation());
-            data.put("claim", chunkClaim);
+            data.put(Constants.CLAIM, chunkClaim);
         }
         return data;
     }
@@ -40,21 +40,21 @@ public class ClaimMenu extends CustomMenu {
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if ("icon".equals(menuIcon.getKey())) {
             Player player = Bukkit.getPlayer(civilian.getUuid());
-            ChunkClaim claim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), "claim");
+            ChunkClaim claim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), Constants.CLAIM);
             if (player == null) {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem;
-            if (claim.getNation() != null) {
+            if (claim != null && claim.getNation() != null) {
                 cvItem = claim.getNation().getIconAsCVItem(civilian);
                 cvItem.getLore().clear();
             } else {
                 cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getUnclaimedIcon());
-                cvItem.setDisplayName(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                         "claim-no-nation"));
             }
             cvItem.getLore().addAll(Util.textWrap(civilian,
-                    LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                    LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc())));
 
             ItemStack itemStack = cvItem.createItemStack();

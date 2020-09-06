@@ -7,15 +7,15 @@ name: ClaimMap
 items:
   icon:
     index: 0
-    # icon: nation icon TODO
-    # name: nation name TODO
-    desc: claim-map-desc #TODO
+    # icon: nation icon
+    # name: nation name
+    desc: claim-map-desc
     actions: []
   orientation:
     index: 2
     icon: COMPASS
-    name: orientation-name #TODO
-    desc: orientation-desc #TODO
+    name: orientation-name
+    desc: orientation-desc
     action:
       - menu:claim-map?rotate=true&orient=$orient$
   back:
@@ -23,4 +23,4 @@ items:
   claims:
     index: 9-53
     actions:
-      - view-claim # TODO
+      - view-claim
