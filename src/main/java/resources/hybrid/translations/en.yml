@@ -12,6 +12,7 @@ south: South
 west: West
 orientation-name: "Facing: $1"
 orientation-desc: "Click to rotate map 90 degress"
+constitution: "Constitution"
 claim-map: "View nearby claims"
 capture-claim: "Capture Claim"
 pay-capture-claim: "Pay 8 redstone to capture this claim /cv captureclaim"
