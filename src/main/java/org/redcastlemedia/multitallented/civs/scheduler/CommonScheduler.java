@@ -178,15 +178,15 @@ public class CommonScheduler implements Runnable {
     private void playerInChunk(Player player) {
         ChunkClaim claim = ChunkClaim.fromLocation(player.getLocation());
         ChunkClaim lastClaim = lastClaims.get(player.getUniqueId());
-        if (claim.getNation() == null) {
-            if (lastClaim.getNation() != null) {
+        if (claim != null && claim.getNation() == null) {
+            if (lastClaim != null && lastClaim.getNation() != null) {
                 exitClaim(lastClaim, claim, player);
             }
             return;
         }
-        if (lastClaim.getNation() == null) {
+        if (lastClaim != null && lastClaim.getNation() == null) {
             enterClaim(null, claim, player);
-        } else if (!lastClaim.equals(claim)) {
+        } else if (lastClaim != null && !lastClaim.equals(claim)) {
             exitClaim(lastClaim, claim, player);
             enterClaim(lastClaim, claim, player);
         } else {

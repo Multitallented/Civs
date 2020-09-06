@@ -112,15 +112,12 @@ public class MainMenu extends CustomMenu {
         } else if (menuIcon.getKey().equals("claim")) {
             ChunkClaim chunkClaim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), "claim");
             ItemStack itemStack;
-            if (chunkClaim.getNation() != null) {
+            if (chunkClaim != null && chunkClaim.getNation() != null) {
                 itemStack = chunkClaim.getNation().getIcon();
                 itemStack.getItemMeta().setLore(Util.textWrap(civilian,
                         LocaleManager.getInstance().getTranslation(player, menuIcon.getDesc())));
             } else {
-                CVItem cvItem = CVItem.createCVItemFromString(Material.GLASS.name());
-                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                        menuIcon.getDesc())));
-                itemStack = cvItem.createItemStack();
+                return new ItemStack(Material.AIR);
             }
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
