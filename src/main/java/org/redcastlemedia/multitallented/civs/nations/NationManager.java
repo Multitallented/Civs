@@ -491,7 +491,7 @@ public class NationManager implements Listener {
     }
 
     public Nation getNation(String nationName) {
-        return nations.get(nationName);
+        return nations.get(nationName.toLowerCase());
     }
 
     @EventHandler

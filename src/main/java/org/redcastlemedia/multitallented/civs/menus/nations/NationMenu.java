@@ -38,9 +38,16 @@ public class NationMenu extends CustomMenu {
         if (!params.containsKey(Constants.NATION)) {
             return data;
         }
+        if (params.containsKey("page")) {
+            data.put("page", Integer.parseInt(params.get("page")));
+        } else {
+            data.put("page", 0);
+        }
         Nation nation = NationManager.getInstance().getNation(params.get(Constants.NATION));
         data.put(Constants.NATION, nation);
-        data.put("lastRenamed", nation.getLastRenamedBy().toString());
+        if (nation.getLastRenamedBy() != null) {
+            data.put("lastRenamed", nation.getLastRenamedBy().toString());
+        }
         List<Town> townList = new ArrayList<>();
         for (String memberName : nation.getMembers()) {
             Town town = TownManager.getInstance().getTown(memberName);
@@ -52,6 +59,9 @@ public class NationMenu extends CustomMenu {
         data.put("townList", townList);
         data.put("power", nation.getPower());
         data.put("maxPower", nation.getMaxPower());
+        int maxPage = (int) Math.ceil((double) townList.size() / (double) itemsPerPage.get("members"));
+        maxPage = maxPage > 0 ? maxPage - 1 : 0;
+        data.put("maxPage", maxPage);
 
         return data;
     }
@@ -66,7 +76,7 @@ public class NationMenu extends CustomMenu {
         }
         boolean isAuthorized = OwnershipUtil.isAuthorized(player, nation);
         if ("icon".equals(menuIcon.getKey())) {
-            CVItem cvItem = nation.getIconAsCVItem(civilian);
+            CVItem cvItem = nation.getIconAsCVItem();
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

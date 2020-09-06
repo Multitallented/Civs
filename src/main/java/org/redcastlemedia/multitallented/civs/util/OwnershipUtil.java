@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -41,7 +42,7 @@ public final class OwnershipUtil {
         }
         if (!isAuthorized) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "no-permission"));
+                    LocaleConstants.PERMISSION_DENIED));
             return true;
         }
         return false;

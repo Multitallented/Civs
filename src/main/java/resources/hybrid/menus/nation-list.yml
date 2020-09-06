@@ -6,7 +6,7 @@ name: NationList
 #
 items:
   sort-power:
-    index: 1
+    index: 0
     icon: REDSTONE
     name: sort-power
     actions:

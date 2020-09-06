@@ -21,6 +21,6 @@ public class NationCreatedEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return hList;
     }
 }

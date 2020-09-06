@@ -9,11 +9,14 @@ import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import lombok.Getter;
@@ -23,7 +26,7 @@ import lombok.Setter;
 public class Nation {
     @Getter @Setter
     private String name;
-    @Getter @Setter
+    @Setter
     private ItemStack icon;
     @Getter @Setter
     private Set<String> members = new HashSet<>();
@@ -59,11 +62,26 @@ public class Nation {
         return itemStack;
     }
 
-    public CVItem getIconAsCVItem(Civilian civilian) {
-        CVItem cvItem = CVItem.createFromItemStack(icon);
-        cvItem.setDisplayName(name);
-        cvItem.setLore(Util.textWrap(civilian, desc));
-        return cvItem;
+    public ItemStack getIcon() {
+        return getIconAsCVItem().createItemStack();
+    }
+
+    public CVItem getIconAsCVItem() {
+        if (icon != null) {
+            return CVItem.createFromItemStack(icon);
+        }
+        if (members.isEmpty()) {
+            CVItem defaultItem = CVItem.createCVItemFromString(Material.STONE.name());
+            defaultItem.setDisplayName(name);
+            defaultItem.setLore(Util.textWrap(desc));
+            return defaultItem;
+        }
+        Town town = TownManager.getInstance().getTown(members.iterator().next());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        CVItem returnItem = townType.getShopIcon(ConfigManager.getInstance().getDefaultLanguage());
+        returnItem.setDisplayName(name);
+        returnItem.setLore(Util.textWrap(desc));
+        return returnItem;
     }
 
     public int getPower() {

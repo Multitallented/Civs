@@ -55,7 +55,7 @@ public class ClaimMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem;
             if (claim != null && claim.getNation() != null) {
-                cvItem = claim.getNation().getIconAsCVItem(civilian);
+                cvItem = claim.getNation().getIconAsCVItem();
                 cvItem.getLore().clear();
             } else {
                 cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getUnclaimedIcon());

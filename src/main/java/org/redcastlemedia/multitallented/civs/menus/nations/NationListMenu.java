@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -30,8 +29,10 @@ public class NationListMenu extends CustomMenu {
         List<Nation> nationList = new ArrayList<>(NationManager.getInstance().getAllNations());
         if (params.containsKey("sort") && "power".equals(params.get("sort"))) {
             nationList.sort(Comparator.comparingInt(Nation::getPower));
+            data.put("sort", "power");
         } else if (params.containsKey("sort") && "alphabetical".equals(params.get("sort"))) {
             nationList.sort(Comparator.comparing(Nation::getName));
+            data.put("sort", "alphabetical");
         }
         data.put("nationList", nationList);
 
@@ -43,6 +44,7 @@ public class NationListMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        String sort = (String) MenuManager.getData(civilian.getUuid(), "sort");
         if (menuIcon.getKey().equals("nations")) {
             List<Nation> nationList = (List<Nation>) MenuManager.getData(civilian.getUuid(), "nationList");
             int page = (int) MenuManager.getData(civilian.getUuid(), "page");
@@ -51,9 +53,20 @@ public class NationListMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             Nation nation = nationList.get(startIndex + count);
+            if (nation == null) {
+                return new ItemStack(Material.AIR);
+            }
             ItemStack itemStack = nation.getIcon();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("sort-power".equals(menuIcon.getKey())) {
+            if (sort != null && sort.equals("power")) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("sort-alphabetical".equals(menuIcon.getKey())) {
+            if (sort != null && sort.equals("alphabetical")) {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
