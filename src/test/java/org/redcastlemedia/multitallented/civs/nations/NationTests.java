@@ -110,7 +110,7 @@ public class NationTests extends TestUtil {
     @Test
     public void townShouldHave1000ClaimsMax() {
         NationManager.getInstance().createNation(this.town2);
-        assertEquals(1000, NationManager.getInstance().getMaxNationClaims(
+        assertEquals(550, NationManager.getInstance().getMaxNationClaims(
                 NationManager.getInstance().getNationByTownName(this.town2.getName())));
     }
 

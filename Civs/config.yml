@@ -246,7 +246,7 @@ debug-log: false
 # how long should invaders sit in an uncontested alliance claim (16x16) before neutralizing it
 alliance-claim-capture-seconds: 180
 # The material needed to capture new alliance claims
-claim-material: REDSTONE*64
+claim-material: REDSTONE*8
 # How much power should an alliance have per land claim
 power-per-nation-claim: 1
 unclaimed-icon: "GRASS_BLOCK"

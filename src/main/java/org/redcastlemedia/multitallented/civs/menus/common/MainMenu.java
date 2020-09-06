@@ -115,10 +115,10 @@ public class MainMenu extends CustomMenu {
             if (chunkClaim.getNation() != null) {
                 itemStack = chunkClaim.getNation().getIcon();
                 itemStack.getItemMeta().setLore(Util.textWrap(civilian,
-                        LocaleManager.getInstance().getTranslationWithPlaceholders(player, menuIcon.getDesc())));
+                        LocaleManager.getInstance().getTranslation(player, menuIcon.getDesc())));
             } else {
                 CVItem cvItem = CVItem.createCVItemFromString(Material.GLASS.name());
-                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         menuIcon.getDesc())));
                 itemStack = cvItem.createItemStack();
             }

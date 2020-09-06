@@ -196,7 +196,6 @@ public class CommonScheduler implements Runnable {
 
     private void stayInClaim(ChunkClaim claim, Player player) {
         if (claim.getNation() == null) {
-            claimNeutralChunk(claim, player);
             return;
         }
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
@@ -209,7 +208,7 @@ public class CommonScheduler implements Runnable {
                 nation.getNationClaims().get(player.getLocation().getWorld().getUID()).remove(claim.getId());
                 NationManager.getInstance().saveNation(nation);
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                         player, "neutralized-claim"
                 ).replace("$1", claim.getNation().getName()));
             } else {
@@ -221,7 +220,7 @@ public class CommonScheduler implements Runnable {
     private void exitClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaim.setLastEnter(-1);
         if (claim.getNation() == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     player, "exit-town"
             ).replace("$1", lastClaim.getNation().getName()));
             lastClaims.remove(player.getUniqueId());
@@ -230,44 +229,9 @@ public class CommonScheduler implements Runnable {
         }
     }
 
-    private void claimNeutralChunk(ChunkClaim claim, Player player) {
-        claim.setLastEnter(-1);
-        ItemStack claimItemStack = CVItem.createCVItemFromString(ConfigManager.getInstance().getClaimMaterial()).createItemStack();
-        if (!player.getInventory().contains(claimItemStack)) {
-            return;
-        }
-        boolean saveNation = false;
-        Nation nation = NationManager.getInstance().getNationByPlayer(player.getUniqueId());
-        if (nation == null || !nation.getNationClaims().containsKey(claim.getWorld().getUID())) {
-            return;
-        }
-        String northKey = (claim.getX() + 1) + "," + claim.getZ();
-        String westKey = claim.getX() + "," + (claim.getZ() + 1);
-        String southKey = (claim.getX() - 1) + "," + claim.getZ();
-        String eastKey = claim.getX() + "," + (claim.getZ() - 1);
-        if (nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(northKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(westKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(southKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(eastKey)) {
-
-            saveNation = true;
-        }
-        if (saveNation) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
-                    player, "alliance-chunk-claimed"
-            ).replace("$1", nation.getName()));
-
-            claim.setNation(nation);
-            player.getInventory().removeItem(claimItemStack);
-            nation.getNationClaims().get(claim.getWorld().getUID()).put(claim.getId(), claim);
-            NationManager.getInstance().saveNation(nation);
-        }
-    }
-
     private void enterClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaims.put(player.getUniqueId(), claim);
         if (claim.getNation() == null) {
-            claimNeutralChunk(claim, player);
             return;
         }
         boolean isInNation = NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation());
@@ -277,7 +241,7 @@ public class CommonScheduler implements Runnable {
             claim.setLastEnter(-1);
         }
         if (lastClaim.getNation() != null && !lastClaim.getNation().equals(claim.getNation())) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     player, "enter-town"
             ).replace("$1", claim.getNation().getName()));
         }

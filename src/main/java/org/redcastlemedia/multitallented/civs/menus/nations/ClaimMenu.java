@@ -25,25 +25,34 @@ public class ClaimMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
+        ChunkClaim chunkClaim = null;
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         if (params.containsKey(Constants.CLAIM)) {
-            ChunkClaim chunkClaim = ChunkClaim.fromString(params.get(Constants.CLAIM));
+            chunkClaim = ChunkClaim.fromString(params.get(Constants.CLAIM));
             data.put(Constants.CLAIM, chunkClaim);
         } else {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            ChunkClaim chunkClaim = ChunkClaim.fromLocation(player.getLocation());
+            chunkClaim = ChunkClaim.fromLocation(player.getLocation());
             data.put(Constants.CLAIM, chunkClaim);
+        }
+        if (chunkClaim != null && chunkClaim.getLastEnter() > -1) {
+            final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
+            String timeRemaining = Util.formatTime(player,
+                    chunkClaim.getLastEnter() + CAPTURE_TIME - System.currentTimeMillis());
+            data.put("captureTime", timeRemaining);
+        } else {
+            data.put("captureTime", "0s");
         }
         return data;
     }
 
     @Override
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        ChunkClaim claim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), Constants.CLAIM);
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if ("icon".equals(menuIcon.getKey())) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            ChunkClaim claim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), Constants.CLAIM);
-            if (player == null) {
-                return new ItemStack(Material.AIR);
-            }
             CVItem cvItem;
             if (claim != null && claim.getNation() != null) {
                 cvItem = claim.getNation().getIconAsCVItem(civilian);
@@ -60,16 +69,15 @@ public class ClaimMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("timer-ok".equals(menuIcon.getKey())) {
+            if (claim.getLastEnter() != -1) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("timer-bad".equals(menuIcon.getKey())) {
+            if (claim.getLastEnter() < 0) {
+                return new ItemStack(Material.AIR);
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
-    }
-
-    @Override
-    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
-        if ("capture-claim".equals(actionString)) {
-            // TODO
-            return true;
-        }
-        return super.doActionAndCancel(civilian, actionString, itemStack);
     }
 }

@@ -122,8 +122,6 @@ public class AI {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
                         .replace("$2", town.getType())

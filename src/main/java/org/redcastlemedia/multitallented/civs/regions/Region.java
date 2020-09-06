@@ -212,7 +212,7 @@ public class Region {
     }
 
     public String getSummary(Player player) {
-        String localRegionType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String localRegionType = LocaleManager.getInstance().getTranslation(player,
                 type + LocaleConstants.NAME_SUFFIX);
         StringBuilder ownerString = new StringBuilder();
         for (Map.Entry<UUID, String> entry : people.entrySet()) {
@@ -223,12 +223,14 @@ public class Region {
             if (offlinePlayer.getName() != null) {
                 ownerString.append(offlinePlayer.getName()).append(", ");
             }
+        }
+        if (!people.entrySet().isEmpty() && ownerString.length() > 1) {
             ownerString = new StringBuilder(ownerString.substring(0, ownerString.length() - 2));
         }
         String locationString = getLocation().getWorld().getName() + " " + (int) getLocation().getX() + "x " +
                 (int) getLocation().getY() + "y " + (int) getLocation().getZ() + "z";
         String working = hasUpkeepItems() && missingBlocks.isEmpty() ? "✔" : "✘";
-        return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "region-summary")
+        return LocaleManager.getInstance().getTranslation(player, "region-summary")
                 .replace("$1", localRegionType).replace("$2", ownerString)
                 .replace("$3", locationString).replace("$4", working)
                 .replace("$5", getIncome(player));
@@ -254,9 +256,9 @@ public class Region {
             }
             i++;
         }
-        String localRegionTypeName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String localRegionTypeName = LocaleManager.getInstance().getTranslation(player,
                 regionType.getProcessedName() + LocaleConstants.NAME_SUFFIX);
-        return LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        return LocaleManager.getInstance().getTranslation(player,
                 "income-desc").replace("$1", localRegionTypeName)
                 .replace("$2", NumberFormat.getCurrencyInstance().format(lastDayIncome))
                 .replace("$3", NumberFormat.getCurrencyInstance().format(lastWeekIncome));

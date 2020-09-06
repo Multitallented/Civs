@@ -184,7 +184,7 @@ public class NationManager implements Listener {
         NationDestroyedEvent nationDestroyedEvent = new NationDestroyedEvent(nation);
         Bukkit.getPluginManager().callEvent(nationDestroyedEvent);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "nation-destroyed").replace("$1", nation.getName()));
         }
         if (Civs.getInstance() != null) {
@@ -330,11 +330,6 @@ public class NationManager implements Listener {
                 ChunkClaim claim = getSurroundTownClaim(i, town.getLocation());
                 if (claim.getNation() == null) {
                     claim.setNation(nation);
-                    if (!nation.getNationClaims().containsKey(town.getLocation().getWorld().getUID())) {
-                        nation.getNationClaims().put(town.getLocation().getWorld().getUID(), new HashMap<>());
-                    }
-                    nation.getNationClaims().get(town.getLocation().getWorld().getUID())
-                            .put(claim.getId(), claim);
                     claimsAvailable--;
 
                     if (claimsAvailable < 1) {
@@ -368,8 +363,6 @@ public class NationManager implements Listener {
                 }
                 if (chunk.getNation() == null) {
                     chunk.setNation(nation);
-                    nation.getNationClaims().get(claimBridge.getWorld().getUID())
-                            .put(chunk.getId(), chunk);
                 }
             }
         }
@@ -452,14 +445,15 @@ public class NationManager implements Listener {
                 }
                 for (ChunkClaim claim : merge.getNationClaims().get(uuid).values()) {
                     claim.setNation(rootNation);
-                    String claimId = claim.getX() + "," + claim.getZ();
-                    rootNation.getNationClaims().get(uuid).put(claimId, claim);
                 }
             }
         }
     }
 
     public boolean isInNation(UUID uniqueId, Nation nation) {
+        if (nation == null) {
+            return false;
+        }
         for (String townName : nation.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
             if (town == null) {
@@ -536,7 +530,7 @@ public class NationManager implements Listener {
 
     @EventHandler
     public void onAllianceDissolved(AllianceDissolvedEvent event) {
-
+        // TODO
     }
 
     private boolean checkAllianceForNationCreation(Alliance alliance) {
@@ -577,7 +571,7 @@ public class NationManager implements Listener {
         saveNation(nation);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "nation-created").replace("$1", nation.getName()));
         }
         NationCreatedEvent nationCreatedEvent = new NationCreatedEvent(nation);

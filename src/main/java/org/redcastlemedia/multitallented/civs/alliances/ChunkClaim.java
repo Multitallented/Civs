@@ -1,11 +1,13 @@
 package org.redcastlemedia.multitallented.civs.alliances;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
@@ -27,6 +29,34 @@ public class ChunkClaim {
         this.z = z;
         this.world = world;
         this.nation = nation;
+    }
+
+    public void setNation(Nation nation) {
+        removePreviousNation();
+        putInNationClaims(nation);
+        this.nation = nation;
+    }
+
+    private void putInNationClaims(Nation nation) {
+        if (nation == null) {
+            return;
+        }
+        if (!nation.getNationClaims().containsKey(this.world.getUID())) {
+            nation.getNationClaims().put(this.world.getUID(), new HashMap<>());
+        }
+        nation.getNationClaims().get(this.world.getUID()).put(this.getId(), this);
+        NationManager.getInstance().saveNation(nation);
+    }
+
+    private void removePreviousNation() {
+        if (this.nation == null) {
+            return;
+        }
+        if (!this.nation.getNationClaims().containsKey(this.world.getUID())) {
+            return;
+        }
+        this.nation.getNationClaims().get(this.world.getUID()).remove(this.getId());
+        NationManager.getInstance().saveNation(this.nation);
     }
 
     @Override
@@ -60,6 +90,7 @@ public class ChunkClaim {
         }
         return null;
     }
+    @NotNull
     public static ChunkClaim fromLocation(Location location) {
         int x = UnloadedInventoryHandler.getChunkX(location);
         int z = UnloadedInventoryHandler.getChunkZ(location);

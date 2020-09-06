@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 
-@CivsCommand(keys = { "book" })
+@CivsCommand(keys = { "book" }) @SuppressWarnings("unused")
 public class BookCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {

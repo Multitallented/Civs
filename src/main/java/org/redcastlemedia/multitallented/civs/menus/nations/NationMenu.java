@@ -81,7 +81,7 @@ public class NationMenu extends CustomMenu {
                 ItemStack is = lastRenameCVItem.createItemStack();
                 SkullMeta isMeta = (SkullMeta) is.getItemMeta();
                 isMeta.setDisplayName(offlinePlayer.getName());
-                isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);
                 is.setItemMeta(isMeta);
@@ -135,7 +135,7 @@ public class NationMenu extends CustomMenu {
             ItemStack itemStack = nation.getLore();
             if (!player.getInventory().contains(itemStack)) {
                 player.getInventory().addItem(itemStack);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "item-received"));
             }
             return true;

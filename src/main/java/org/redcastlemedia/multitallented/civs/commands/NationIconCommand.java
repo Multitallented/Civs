@@ -6,20 +6,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 
 @CivsCommand(keys = "nation-icon") @SuppressWarnings("unused")
-public class NationIconCommand implements CivCommand {
-
-    //args
-    //0 nation-icon
-    //1 NationName
+public class NationIconCommand extends CivCommand {
 
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -28,30 +22,43 @@ public class NationIconCommand implements CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
-
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-        if (itemStack.getType() == Material.AIR) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    "hold-nation-icon"));
+        if (args.length < 2) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    LocaleConstants.PERMISSION_DENIED));
             return true;
         }
+        handleNationIconCommand(player, args[1]);
+        return true;
+    }
 
-        Nation nation = NationManager.getInstance().getNation(args[0]);
+    private void handleNationIconCommand(Player player, String nationName) {
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        if (itemStack.getType() == Material.AIR) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "hold-nation-icon"));
+            return;
+        }
+
+        Nation nation = NationManager.getInstance().getNation(nationName);
         if (nation == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-name"));
-            return true;
+            return;
         }
 
         if (!OwnershipUtil.isAuthorized(player, nation)) {
-            return true;
+            return;
         }
 
         nation.setIcon(itemStack);
         nation.setLastRenamedBy(player.getUniqueId());
         NationManager.getInstance().saveNation(nation);
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "nation-icon-set").replace("$1", nation.getName()));
-        return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player;
     }
 }

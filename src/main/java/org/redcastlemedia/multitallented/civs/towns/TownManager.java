@@ -655,12 +655,12 @@ public class TownManager {
         for (ChunkClaim chunkClaim : NationManager.getInstance().getContainingChunks(player.getLocation(),
                 townType.getBuildRadius(), townType.getBuildRadius(),
                 townType.getBuildRadius(), townType.getBuildRadius())) {
-            if (chunkClaim != null &&
+            if (chunkClaim != null && chunkClaim.getNation() != null &&
                     !NationManager.getInstance().isInNation(player.getUniqueId(), chunkClaim.getNation())) {
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        player, "cant-build-in-nation"
-                ).replace("$1", chunkClaim.getNation().getName()));
+                        player, "cant-build-in-nation")
+                        .replace("$1", chunkClaim.getNation().getName()));
                 return;
             }
         }

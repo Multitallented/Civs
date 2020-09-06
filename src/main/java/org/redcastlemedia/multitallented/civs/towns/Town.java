@@ -127,7 +127,7 @@ public class Town {
     }
 
     public String getSummary(Player player) {
-        String localTownType = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+        String localTownType = LocaleManager.getInstance().getTranslation(player,
                 type + LocaleConstants.NAME_SUFFIX);
         StringBuilder ownerString = new StringBuilder();
         for (Map.Entry<UUID, String> entry : people.entrySet()) {
@@ -141,7 +141,7 @@ public class Town {
             ownerString = new StringBuilder(ownerString.substring(0, ownerString.length() - 2));
         }
 
-        return LocaleManager.getInstance().getTranslationWithPlaceholders(player, "town-summary")
+        return LocaleManager.getInstance().getTranslation(player, "town-summary")
                 .replace("$1", localTownType).replace("$2", ownerString.toString())
                 .replace("$3", "" + power).replace("$4", "" + maxPower)
                 .replace("$5", "" + getPopulation()).replace("$6", "" + getHousing());

@@ -70,7 +70,7 @@ public class SetRecruiterCommand extends CivCommand {
         Player invitePlayer = invitee.isOnline() ? (Player) invitee : null;
 //        if (!isAdmin && (town.getGovernmentType() == GovernmentType.DEMOCRACY ||
 //                town.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM)) {
-//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+//            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
 //                    "no-permission"));
 //            return true;
 //        }
