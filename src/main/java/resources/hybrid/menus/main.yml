@@ -99,6 +99,13 @@ items:
     desc: claim-desc
     actions:
       - menu:claim?claim=$claim$
+  claim-map:
+    index: 22
+    name: claims
+    icon: COMPASS
+    desc: claim-desc
+    actions:
+      - menu:claim-map
   class:
     index: 23
     #icon: class icon
