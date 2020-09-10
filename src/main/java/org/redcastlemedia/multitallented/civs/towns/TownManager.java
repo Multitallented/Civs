@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -180,8 +181,11 @@ public class TownManager {
     private void loadTown(FileConfiguration config) {
 
         HashMap<UUID, String> people = new HashMap<>();
-        for (String key : config.getConfigurationSection("people").getKeys(false)) {
-            people.put(UUID.fromString(key), config.getString("people." + key));
+        ConfigurationSection peopleSection = config.getConfigurationSection("people");
+        if (config.isSet("people") && peopleSection != null && !peopleSection.getKeys(false).isEmpty()) {
+            for (String key : peopleSection.getKeys(false)) {
+                people.put(UUID.fromString(key), config.getString("people." + key));
+            }
         }
         int maxPower = config.getInt("max-power", 500);
         int power = config.getInt("power", maxPower);

@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -112,12 +115,30 @@ public class ProtectionHandler implements Listener {
         if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null, RegionEffectConstants.BLOCK_BUILD);
+        boolean setCancelled;
+        if (event.getEntity() instanceof Player) {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(),
+                    (Player) event.getEntity(), RegionEffectConstants.BLOCK_BUILD);
+        } else {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
+                    RegionEffectConstants.BLOCK_BUILD);
+        }
         if (setCancelled) {
-
-            event.setCancelled(true);
+            for (BlockState state : event.getBlocks()) {
+                revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
+            }
+            event.getBlocks().clear();
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                for (Map.Entry<Location, BlockData> entry : revertThese.entrySet()) {
+                    entry.getKey().getBlock().setBlockData(entry.getValue());
+                }
+                revertThese.clear();
+            }, 1L);
+            // cancelling this event crashes the server wow
         }
     }
+
+    private static final Map<Location, BlockData> revertThese = new HashMap<>();
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPortal(PlayerPortalEvent event) {
