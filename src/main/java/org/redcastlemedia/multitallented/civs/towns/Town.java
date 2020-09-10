@@ -138,6 +138,8 @@ public class Town {
             if (offlinePlayer.getName() != null) {
                 ownerString.append(offlinePlayer.getName()).append(", ");
             }
+        }
+        if (ownerString.length() > 1) {
             ownerString = new StringBuilder(ownerString.substring(0, ownerString.length() - 2));
         }
 

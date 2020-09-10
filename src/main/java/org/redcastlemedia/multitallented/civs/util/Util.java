@@ -212,6 +212,9 @@ public final class Util {
     }
 
     private static List<String> textWrap(int lineLength, String input) {
+        if (input == null) {
+            return new ArrayList<>();
+        }
         int longestLength = (int) Math.ceil((double) lineLength * 0.625);
         int longestSection = 0;
         for (String subString : input.split(" ")) {

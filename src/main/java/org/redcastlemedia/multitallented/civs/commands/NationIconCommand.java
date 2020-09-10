@@ -22,7 +22,7 @@ public class NationIconCommand extends CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
-        if (args.length < 2) {
+        if (args.length < 1) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     LocaleConstants.PERMISSION_DENIED));
             return true;
