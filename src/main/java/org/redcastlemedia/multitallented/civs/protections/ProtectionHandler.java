@@ -47,6 +47,8 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.PortalCreateEvent;
@@ -112,7 +114,33 @@ public class ProtectionHandler implements Listener {
         }
         boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null, RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
+
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        if (event.getTo() == null || event.getTo().getWorld() == null) {
+            return;
+        }
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            Player player = event.getPlayer();
+            Location toLocation = event.getTo();
+            Town town = TownManager.getInstance().getTownAt(toLocation);
+            if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "cant-nether-portal"));
+                return;
+            }
+            Region region = RegionManager.getInstance().getRegionAt(toLocation);
+            if (region != null && !region.getPeople().containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "cant-nether-portal"));
+                return;
+            }
         }
     }
 
