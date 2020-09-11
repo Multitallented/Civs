@@ -7,10 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +39,14 @@ public class ChunkClaim {
         removePreviousNation();
         putInNationClaims(nation);
         this.nation = nation;
+    }
+
+    public String getTimeUntilCapture(Player player) {
+        String captureNotStarted = LocaleManager.getInstance().getTranslation(player,
+                "capture-not-started");
+        final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
+        long timeRemains = lastEnter + CAPTURE_TIME - System.currentTimeMillis();
+        return timeRemains > -1 ? Util.formatTime(player, timeRemains / 1000) : captureNotStarted;
     }
 
     private void putInNationClaims(Nation nation) {

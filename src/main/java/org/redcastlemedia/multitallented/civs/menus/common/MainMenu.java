@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -19,23 +19,21 @@ import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
-import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "main") @SuppressWarnings("unused")
@@ -68,7 +66,6 @@ public class MainMenu extends CustomMenu {
         if (nation != null) {
             data.put("nation", nation);
         }
-        data.put("claim", chunkClaim);
         data.put("class", civilian.getCurrentClass());
         data.put("uuid", civilian.getUuid().toString());
         return data;
@@ -108,19 +105,9 @@ public class MainMenu extends CustomMenu {
             if (nation == null) {
                 return new ItemStack(Material.AIR);
             }
-            return nation.getIcon();
-        } else if (menuIcon.getKey().equals("claim")) {
-            ChunkClaim chunkClaim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), "claim");
-            ItemStack itemStack;
-            if (chunkClaim != null && chunkClaim.getNation() != null) {
-                itemStack = chunkClaim.getNation().getIcon();
-                itemStack.getItemMeta().setLore(Util.textWrap(civilian,
-                        LocaleManager.getInstance().getTranslation(player, menuIcon.getDesc())));
-            } else {
-                return new ItemStack(Material.AIR);
-            }
+            ItemStack itemStack = nation.getIcon();
             putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
+            return nation.getIcon();
         } else if (menuIcon.getKey().equals(Constants.REGIONS)) {
             boolean showBuiltRegions = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {

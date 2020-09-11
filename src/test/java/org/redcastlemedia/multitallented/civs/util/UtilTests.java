@@ -103,7 +103,6 @@ public class UtilTests extends TestUtil {
         CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(new Location(TestUtil.world, 0, 0, 0));
         Util.addItems(returnList, cvInventory);
         for (ItemStack itemStack : cvInventory.getContents()) {
-            System.out.println(itemStack.getType().name());
             if (itemStack.getType() == Material.GRASS) {
                 return;
             }

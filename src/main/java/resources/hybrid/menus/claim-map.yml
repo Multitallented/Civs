@@ -5,22 +5,17 @@ name: ClaimMap
 # actions
 #  view-claim
 items:
-  icon:
-    index: 0
-    # icon: nation icon
-    # name: nation name
-    desc: claim-map-desc
-    actions: []
   orientation:
     index: 2
     icon: COMPASS
     name: orientation-name
     desc: orientation-desc
-    action:
+    actions:
       - menu:claim-map?rotate=true&orient=$orient$
   back:
     index: 8
   claims:
     index: 9-53
+    icon: GRASS_BLOCK
     actions:
       - view-claim

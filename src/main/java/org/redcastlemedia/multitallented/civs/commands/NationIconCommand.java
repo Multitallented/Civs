@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
@@ -22,16 +21,11 @@ public class NationIconCommand extends CivCommand {
             return true;
         }
         Player player = (Player) commandSender;
-        if (args.length < 1) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    LocaleConstants.PERMISSION_DENIED));
-            return true;
-        }
-        handleNationIconCommand(player, args[1]);
+        handleNationIconCommand(player);
         return true;
     }
 
-    private void handleNationIconCommand(Player player, String nationName) {
+    private void handleNationIconCommand(Player player) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack.getType() == Material.AIR) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
@@ -39,7 +33,7 @@ public class NationIconCommand extends CivCommand {
             return;
         }
 
-        Nation nation = NationManager.getInstance().getNation(nationName);
+        Nation nation = NationManager.getInstance().getNationByPlayer(player.getUniqueId());
         if (nation == null) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-name"));

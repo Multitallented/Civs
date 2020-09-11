@@ -14,6 +14,7 @@ import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
@@ -50,6 +51,15 @@ public class NationTests extends TestUtil {
     }
 
     @Test
+    public void claimsShouldBeCenteredOnTown() {
+        Nation nation = createNationThroughTownEvolve();
+        ChunkClaim claim = ChunkClaim.fromLocation(new Location(world, -400, 64, -60));
+        assertEquals(nation, claim.getNation());
+        ChunkClaim claim2 = ChunkClaim.fromLocation(new Location(world, -420, 64, -60));
+        assertEquals(nation, claim2.getNation());
+    }
+
+    @Test
     public void nationShouldNotBeCreatedWhenTownReachesLevel3() {
         TownType hamlet = (TownType) ItemManager.getInstance().getItemType("hamlet");
         TownType village = (TownType) ItemManager.getInstance().getItemType("village");
@@ -58,17 +68,21 @@ public class NationTests extends TestUtil {
         assertNull(NationManager.getInstance().getNation(this.town3.getName()));
     }
 
-    @Test
-    public void nationShouldBeCreatedWhenTownReachesLevel4() {
+    private Nation createNationThroughTownEvolve() {
         HashMap<UUID, String> people = new HashMap<>();
         people.put(TestUtil.player.getUniqueId(), "owner");
         Town town = new Town("town3", "village",
-                new Location(TestUtil.world, 0, 0, 0),
+                new Location(TestUtil.world, -400, 64, -60),
                 people, 500, 5000, 25, 24, -1);
         TownManager.getInstance().addTown(town);
         TownCreatedEvent townCreatedEvent = new TownCreatedEvent(town, (TownType) ItemManager.getInstance().getItemType("village"));
         NationManager.getInstance().onTownCreated(townCreatedEvent);
-        Nation nation = NationManager.getInstance().getNationByTownName("town3");
+        return NationManager.getInstance().getNationByTownName("town3");
+    }
+
+    @Test
+    public void nationShouldBeCreatedWhenTownReachesLevel4() {
+        Nation nation = createNationThroughTownEvolve();
         assertNotNull(nation);
     }
 

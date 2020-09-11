@@ -56,7 +56,7 @@ public class NationListMenu extends CustomMenu {
             if (nation == null) {
                 return new ItemStack(Material.AIR);
             }
-            ItemStack itemStack = nation.getIcon();
+            ItemStack itemStack = nation.getIconAsCVItem().createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("sort-power".equals(menuIcon.getKey())) {

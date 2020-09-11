@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -53,6 +52,9 @@ public class Nation {
     }
 
     public ItemStack getLore() {
+        if (lorePages == null || lorePages.isEmpty()) {
+            return null;
+        }
         ItemStack itemStack = new ItemStack(Material.WRITTEN_BOOK, 1);
         BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
         bookMeta.setDisplayName(name);
@@ -68,7 +70,12 @@ public class Nation {
 
     public CVItem getIconAsCVItem() {
         if (icon != null) {
-            return CVItem.createFromItemStack(icon);
+            CVItem currentIcon = CVItem.createFromItemStack(icon);
+            currentIcon.setDisplayName(name);
+            if (desc != null) {
+                currentIcon.setLore(Util.textWrap(desc));
+            }
+            return currentIcon;
         }
         if (members.isEmpty()) {
             CVItem defaultItem = CVItem.createCVItemFromString(Material.STONE.name());
