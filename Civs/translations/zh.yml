@@ -9,7 +9,7 @@
 #start-tutorial: 开启成就
 #start-tutorial-desc: 完成成就获得金钱和物品
 #skip: 关闭成就
-#tutorial-click: 请查看 Civs 向导
+#tutorial-click: 请查看城镇文明向导
 #tutorial-wiki: 城镇文明插件百科
 #click-info: 点击查看详情
 #guide: 向导
@@ -46,12 +46,17 @@
 #cancel-revolt: 点击取消反抗$1。
 #item-cost: 这个行为消耗 $1 $2.
 #cost-buff: 由于你在$3城镇内建造了$2，你获得了$1。
+#refund: 你已获得$$1元退款
+#insufficient-exp: XP不足
+#action-not-allowed: $1不能让你拥有$2
+#spell-cast: "@{BLUE}$1 @{WHITE}使用了@{RED}$2"
+#exp-gained: 你在$2获得了$1 XP
 #merit-new-owner: 恭喜你！你胜过了$1。你现在是新的城主了！
 #item-locked: 你暂未解锁这件物品。
 #ai-invite: 你好, @$1 想要加入我的城镇吗?
 #ai-help: $1可以带你到那个地方。
-#cooldown-buff-desc: 所有 $2 的冷却减少$1%
-#payout-buff-desc: 所有 $2的区域支出增加$1%
+#cooldown-buff-desc: 所有$2 的冷却减少$1%
+#payout-buff-desc: 所有$2的区域支出增加$1%
 #power-buff-desc: "每日能量增加 $1% "
 #max_power-buff-desc: 最大能量增加$1%
 #cost-buff-desc: 所有$2的偿还消耗减少$1%
@@ -72,6 +77,7 @@
 #community: 社区
 #players: 玩家
 #towns: 城镇
+#town: 城镇
 #your-towns: 你的城镇
 #wars: 战争
 #alliances: 联盟
@@ -99,10 +105,10 @@
 #reagents-title: 试剂
 #reagents: $1 箱子里的所有你需要的物品
 #upkeep-title: 投入
-#upkeep: 所有 $1 消耗的物品
+#upkeep: 所有$1消耗的物品
 #output-title: 产出
-#output: 所有 $1 创建的物品
-#payout-title: 支付
+#output: 所有$1创建的物品
+#payout-title: 获得
 #payout: 建造这片区域可获得 $$1
 #power-input-title: 耗能
 #power-input: 这片区域消耗$1点能量
@@ -162,6 +168,7 @@
 #click-for-req-regions: 点击这里查看所需区域列表
 #town-instructions: 输入/cv town [城镇名] 来创建 $1
 #town-enter: 你进入了 $1
+#town-enter-warning: "@{RED}危险！该城镇已激活防御工事。也许你需要使用强袭传送门或围攻机来攻城。"
 #town-exit: 你退出了 $1
 #wild: 荒原
 #new-town-member: $1 加入了 $2
@@ -182,6 +189,10 @@
 #friend-added: $1 已成为了你的好友
 #friend-removed: $1 不再是你的好友了
 #bounty: 设置悬赏： /cv bounty $1 数量
+#click-me: ">>>点我<<<"
+#bounty-command: /cv bounty $1 [数量]
+#rename-command: /cv rename $1 [名称]
+#really-command: /cv really $1 [名称]
 #town-ally: 将 $1 视为盟友
 #town-unally: 将 $1 视为敌人
 #town-ally-invites: 你收到了其他重载的结盟申请
@@ -203,8 +214,12 @@
 #regions-for-sale: 出售区域
 #use-sell-command: 输入 /cv sell 价格
 #region-bought: 你成功地用$2购买了$1
+#region-sold: 你的$1卖给了$2.你获得了$3
 #sort-by-level: 根据等级分类区域
 #level: $1级
+#level-up: 点击消耗经验值以升级职业。你可以在你的附魔等级低于职业等级时消耗经验值升级。
+#level-up-max: 你已满级。
+#not-enough-levels: 你还需要$1才能这么做。
 #rename-alliance: 重命名联盟
 #rename-alliance-desc: 请输入 /cv really $1 新的联盟名
 #alliance-renamed: " $1 已改名为 $2"
@@ -213,6 +228,7 @@
 #last-renamed-by: 最后由$1改名
 #leave-alliance: 离开联盟
 #hunting-players: 警告！ 有人在你所在地区搞事。
+#no-hunting-new-players: 你不能攻击不属于任何城镇的人。
 #target-not-in-world: $1 和你不在同一个世界.
 #cant-place-town: "输入 /cv town 城镇名 "
 #no-region-type-found: 找不到区域类型 $1
@@ -220,6 +236,7 @@
 #no-required-blocks: 你未放置建造 $1 所需的方块
 #cant-build-on-region: 你不能在 $2 上面建造 $1
 #rebuild-required: 你需要在 $2 上面建造 $1
+#max-rebuild-required: 你已经拥有$1 / $2 $3。你只能使用这个$4来升级$5。
 #prevent-civs-item-share: 你不能分享Civ的物品
 #region-protected: 这片区域受到保护
 #region-destroyed: 区域 $1 已被摧毁!
@@ -233,12 +250,12 @@
 #already-member: $1 已经是 $2 的一员了
 #broke-own-region: 你的 $1 缺少方块
 #no-permission: 没有权限
+#no-anti-camp-duing-raidporter: 你不能在激活强袭传送门时激活anticamp。请先摧毁强袭传送门！
 #class-changed: 你的职业已更改为 $1
 #not-enough-money: 你没有 $$1
 #not-allowed-place: $1 无法被放置
 #hold-town: 请手持城镇物品
 #no-commands-in-jail: 你不能在 $1 的监狱里使用指令
-#mana-use-exp: 魔法值未满前你不能使用这个
 #building-requires-2space: 这个建筑需要在中心箱子上面留两格空间
 #missing-blocks-build: 你需要放置这些方块来建造 $1
 #intruder-enter: "@{RED}[警告] $1已进入$2"
@@ -267,6 +284,7 @@
 #req-build-inside-town: 这个 $1 只能在 $2 里建
 #missing-region-requirements: 你的 $1 缺少所需的区域
 #friendly-fire: 你不能伤害你的朋友
+#catapult-elytra-equipped: 你不能在穿戴鞘翅的情况下使用投石器。
 #limits: 限制
 #item-limit: 你拥有 $1 / $2 $3
 #region-limit-reached: $1 只能拥有 $2 $3
@@ -279,7 +297,7 @@
 #player-not-found: 找不到 $1 这名玩家
 #repeat-kill: $1 死太多次了. 你没有获得点数.
 #kill-streak: $1 完成了连杀： $2
-#kill-joy: $1 终极了 $2 的大杀特杀： $3
+#kill-joy: $1 终结了 $2 的大杀特杀： $3
 #death: 你死亡失去了 $1 点数
 #kill: "击杀: $1"
 #low-health: "残血奖励: $1"
@@ -288,8 +306,15 @@
 #total-points: "共有点数: $1"
 #karma: "业: $1"
 #karma-desc: 业是测量善恶之物。杀死业力越低的玩家，获得的奖励越丰厚。
-#karma-gained: "业: +$1,获得 $2 "
-#karma-lost: "业: -$1,失去 $2 "
+#hardship: 攻城难度：$1
+#hardship-desc: 攻城难度衡量你的城镇被进攻的进度。难度越高，工程消耗也越高。攻城难度每7天降低一次。
+#hardship-too-high: 禁止使用该行动。$1的攻城难度过高。
+#karma-gained: "业：+$1，获得 $2 "
+#karma-lost: "业：-$1，失去 $2 "
+#karma-display: 业：$1 / 价值：$2
+#karma-town-desc: 城镇「业」值衡量城镇受损程度。在战时如果受损程度超过了业值，进攻者就需要付出两者之差额。
+#combat-tagged: "@{RED}You have been combat tagged for $1s. Don't log off. Safe zones will not
+#  protect you."
 #ann-limit: "[信息] 你拥有$1/ $2座$3建筑."
 #ann-achievement: "[信息]打开向导来查看下一个成就"
 #ann-town-join: "[信息] 你可以是多个城镇的居民。"
@@ -309,6 +334,7 @@
 #tut-default-3: 放置25块羊毛、14个栅栏和两个箱子. 之后这里就成为煤炭商店了.
 #tut-default-4: 恭喜！ 您已完成默认教程。 现在请选择你的下一个生涯路径。
 #tut-warrior-name: 战士
+#tut-warrior-desc: 城镇是防御性要塞。选择这个路径会让你学会如何偷窃、入侵或摧毁其它城镇。
 #tut-warrior-0: 首先请购买祭坛. 你可以使用祭坛来获得钻石装备.
 #tut-warrior-1: 现在, 放一个钻石和末影水晶到祭坛箱子内. 如果你拥有 $1200, 你就会获得装备.
 #tut-warrior-2: 这是个附魔金苹果. 现在你应有尽有了. 你的下一个目标是杀人.
@@ -320,6 +346,7 @@
 #tut-warrior-8: 现在你造好了城堡，请购买和建造堡垒。再然后请建造纪念馆。
 #tut-warrior-9: 恭喜你！你现在更加了解战争了。你的军旅生涯已经登峰造极。
 #tut-builder-name: 建造者
+#tut-builder-desc: 你想要建立属于你自己的城镇吗？选择这个路径可以建造各种可升级设施，建造防御工事。
 #tut-builder-0: 首先请建造会议室。这是城镇的核心。它可以提供能量和2个住宅。
 #tut-builder-1: 现在请建造会议室。
 #tut-builder-2: 你成功地建成了会议室，声明了你的土地。接下来请购买定居点。
@@ -335,6 +362,7 @@
 #tut-builder-12: 在你可以升级村庄前，你需要先升级你的会议室。请购买并在会议室内放置城镇大厅。
 #tut-builder-13: 恭喜你！你现在成为了顶级的建筑师。你的建筑生涯已经登峰造极。
 #tut-merchant-name: 商人
+#tut-merchant-desc: 你想挣够一个亿吗？加入城镇并选择这个路径吧。你将学会建造住宅、商店及其背后的工业流水线。
 #tut-merchant-0: 加入一个城镇。从居民身上购买一个小屋。一旦你成为了屋主，你就可以在小屋的箱子里放置一些面包。
 #tut-merchant-1: 升级房屋可以使你获得更多的钱。请从商店内购买棚屋。
 #tut-merchant-2: 加到你的小屋里来使其成为9x9x9的区域，然后在里面放置棚屋箱子。
@@ -347,6 +375,8 @@
 #tut-merchant-9: 现在请建造一个铁商店来增加你的收入。
 #tut-merchant-10: 每名玩家最多只能开3个商店。最赚钱的商店是贸易商店。现在请建造绿宝石商店。如果你已经有3个商店的话请拆掉其中一个。
 #tut-merchant-11: 恭喜你！你现在可以出售从其他城镇的绿宝石矿源内购买的物品。你的商人生涯已经登峰造极。
+#tut-merchant-12: 每名玩家只能拥有3个商店。最挣钱的商店是贸易商店。建造绿宝石商店吧。如果你已达商店上限则请摧毁已有商店。
+#tut-merchant-13: 恭喜你！你现在可以出售从其它城镇的绿宝石矿源里获得的物品了。这就是商人的生财之道。
 #anarchy-name: 无政府主义
 #anarchy-desc: 任何人可以破坏城镇和伤害区域内的成员。没有税收，也没有联盟。
 #capitalism-name: 资本主义
@@ -481,6 +511,8 @@
 #melon_farm-desc: 每10分钟生成西瓜。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 #potato_farm-name: 土豆农场
 #potato_farm-desc: 每5分钟生产土豆。
+#potato_farm1-name: 马铃薯农场
+#potato_farm1-desc: 每5分钟产出马铃薯和有毒的马铃薯。
 #pumpkin_farm-name: 南瓜农场
 #pumpkin_farm-desc: 每10分钟生成南瓜。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 #sugar_cane_farm-name: 甘蔗农场
@@ -547,6 +579,8 @@
 #inn-desc: 提供12住宅和一个港口。对于没有住宅而又想要拉人的城镇来说很有用。
 #jade_mine-name: 绿宝石矿源
 #jade_mine-desc: 每天生成16块绿宝石，这些绿宝石只能用绿宝石商店出售。无法在已经有绿宝石商店的城镇内建造。
+#jade-mine-name: 绿宝石矿源
+#jade-mine-desc: 每天生成16块绿宝石，这些绿宝石只能用绿宝石商店出售。无法在已经有绿宝石商店的城镇内建造。
 #coal_mine-name: 煤炭矿源
 #coal_mine-desc: 消耗镐子挖掘煤炭。请在箱子内放置一个箱子矿车并建造前往指定区域的铁路，在铁路起点请放置倾斜的充能铁轨。
 #diamond_mine-name: 钻石矿源
@@ -593,6 +627,7 @@
 #siege_machine2-desc: 每2分钟破坏1点能量。四发后自动升级。
 #siege_machine3-name: 3级围攻机
 #siege_machine3-desc: 每1.5分钟破坏1点能量。三发后自动升级。
+#no-tp-pearl-chorus: 你不能在敌对城镇里使用末影珍珠或紫颂果。
 #altar-name: 祭坛
 #altar-desc: 消耗300元，每小时创建全套钻石套和弓箭。
 #blindness_trap-name: 致盲陷阱
@@ -612,7 +647,7 @@
 #temp_arrow_trap-name: 临时弓箭陷阱
 #temp_arrow_trap-desc: 向附近非居民玩家发射弓箭。15分钟后会自毁。
 #clay_quarry-name: 粘土采土场
-#clay_quarry-desc: 自动采掘粘帖。
+#clay_quarry-desc: 自动采掘粘土。
 #cobble_quarry-name: 圆石采石场
 #cobble_quarry-desc: 每30分钟采集圆石。
 #cobble_grinder-name: 磨石机
@@ -639,6 +674,8 @@
 #iron_shop-desc: 每天出售288块铁锭给服务器并获得576元。
 #leather_shop-name: 皮革商店
 #leather_shop-desc: 每天出售皮革给服务器并获得360元。
+#lapis_shop-name: 青金石商店
+#lapis_shop-desc: 每天出售给服务器青金石并获得600元
 #city-name: 城市
 #city-desc: 5级城镇。需要30人口
 #hamlet-name: 村庄
@@ -672,7 +709,7 @@
 #library-name: 图书馆
 #library-desc: 每天产出192点能量。每15分支产出2经验瓶。
 #purifier-name: 净化器
-#purifier-desc: 每15分钟将腐肉变为皮革并删除土豆的毒性。
+#purifier-desc: 每15分钟将腐肉净化为皮革并去除土豆的毒性。
 #smithy-name: 铁匠铺
 #smithy-desc: 右击铁块来修复物品。每天消耗192点能量。
 #town_hall-name: 城镇大厅
@@ -732,6 +769,8 @@
 #plot15x15-desc: 小于等于15x15大小的区域的占位符
 #plot19x19-name: 19x19土地
 #plot19x19-desc: 小于等于19x19大小的区域的占位符
+#vault-name: 金库
+#vault-desc: 增加城镇500点能量上限。每天提供96点能量。
 #housing-group: 住宅
 #defense-group: 防御工事
 #trap-group: 陷阱
@@ -777,6 +816,23 @@
 #superregion-group: 城镇
 #utility-group: 公共设施
 #town_center-group: 城镇中心
+#maxpower-group: 能量上限结构
+#skills: 技能
+#armor-skill: 盔甲
+#building-skill: 建造
+#sword-skill: 剑
+#axe-skill: 斧
+#bow-skill: 弓
+#crossbow-skill: 弩
+#enchant-skill: 附魔
+#mining-skill: 挖矿
+#trident-skill: 三叉戟
+#crafting-skill: 合成
+#exploration-skill: 探索
+#food-skill: 食用
+#shield-skill: 盾牌
+#potion-skill: 药水
+#skill-bar: "@{GREEN}$1@{RED}$2"
 #chat-channels: 聊天频道
 #chat-change-chat: 更改聊天频道自$1
 #friend-channel: 朋友
@@ -790,3 +846,53 @@
 #chat-channel-set: 你正在频道$1内聊天
 #click-change-chat: 点击更改聊天频道
 #no-recipients: 没有人在$1聊天频道内
+#change-class: 更改职业
+#change-class-desc: 选择新的或已保存的职业。
+#health: 生命值
+#health-desc: 上限：$1
+#mana: 法力
+#stamina: 耐力
+#or: 或
+#mana-desc: 法力上限：$1  法力恢复：$2
+#spell-slot-desc: 左击选择一个新法术。右击更改法术顺序。
+#spell-slot-desc-change-order: 右击切换法术顺序。
+#empty-spell-slot: 空法术格
+#empty-spell-slot-desc: 设置该格法术
+#allowed-items: 可用物品
+#allowed-items-desc: 可使用所有的$1
+#see-all-spells: 查看所有法术
+#see-all-spells-desc: 查看所有$1法术
+#req-skill-level: 你必须达到$1的$2级
+#req-item: 你必须先购买一个$1
+#req-build: 你必须先建造一个$1
+#spell-command: 输入/cv spells 切换你的法术
+#switch-spell-cast: 切换为这个物品来使用。
+#infinite-cooldown: "@{RED}$1的冷却不明"
+#view-all-classes: 查看所有职业
+#new-class: 新职业
+#new-class-desc: 保存你当前职业进度并开始新职业。
+#spell-block: "@{RED}一个法术禁止了你这么做。"
+#default-name: 士兵
+#default-desc: HP：16 法力值：50 法力恢复：1/s 武器：所有盔甲。可学习各种法术。自定义程度最高的职业。
+#alchemist-name: 炼金术师
+#elemental-name: 火焰附加
+#potion_poison-name: 药水：中毒
+#potion_strength-name: 药水：力量
+#potion_speed-name: 药水：速度
+#potion_harm-name: 药水：瞬间伤害
+#potion_regen-name: 药水：生命恢复
+#potion_heal-name: 药水：治疗
+#potion_invis-name: 药水：隐身
+#potion_weakness-name: 药水：虚弱
+#petrify-name: 石化
+#evaporate-name: 蒸发
+#jump-name: 跳跃
+#backflip-name: 后空翻
+#disentangle-name: 挣脱
+#empathy-name: 同生共死
+#chug-name: 一饮而尽
+#chug-desc: 被动：瞬间喝下所有药水或牛奶
+#quicken-name: 加速
+#launch-name: 发射
+#screech-name: 尖叫
+#dodge-name: 闪避
