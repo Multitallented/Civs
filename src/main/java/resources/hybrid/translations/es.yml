@@ -759,8 +759,8 @@ catapult-desc: Dispara TNT con precisión a larga distancia.
 command_tent-name: Tienda de mando
 command_tent-desc: El centro del puesto de avanzada. Te permite asediar una ciudad cercana. Crea
   1 de poder cada 15 minutos.
-hunting-lodge-name: Pabellón de Caza
-hunting-lodge-desc: Coloque un letrero en el bloque central con el nombre de su objetivo. Luego
+hunting_lodge-name: Pabellón de Caza
+hunting_lodge-desc: Coloque un letrero en el bloque central con el nombre de su objetivo. Luego
   haga clic derecho sobre él para teletransportarse a 200 bloques de ese
   jugador.
 memorial-name: Memorial

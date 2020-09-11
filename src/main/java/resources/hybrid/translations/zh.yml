@@ -604,8 +604,8 @@ catapult-name: 投石器
 catapult-desc: 远程发射TNT
 command_tent-name: 指挥部
 command_tent-desc: 战争前哨中心。可以让你进攻附近的城镇。每15分钟生成1点能量。
-hunting-lodge-name: 狩猎屋
-hunting-lodge-desc: 在中心方块上放置写有目标名的告示牌,然后右击告示牌来传送到离这名玩家200格远的地方.
+hunting_lodge-name: 狩猎屋
+hunting_lodge-desc: 在中心方块上放置写有目标名的告示牌,然后右击告示牌来传送到离这名玩家200格远的地方.
 memorial-name: 纪念馆
 memorial-desc: 城镇居民重生的地方。可防止玩家受伤。
 mobile_hospital-name: 流动医院
