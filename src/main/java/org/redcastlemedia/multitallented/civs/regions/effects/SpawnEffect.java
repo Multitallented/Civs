@@ -10,7 +10,10 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import io.lumine.xikage.mythicmobs.MythicMobs;
 
 @CivsSingleton
 public class SpawnEffect implements Listener {
@@ -26,14 +29,6 @@ public class SpawnEffect implements Listener {
         Location location = event.getRegion().getLocation();
         if (!event.getRegion().getEffects().containsKey(KEY) ||
                 !Util.isLocationWithinSightOfPlayer(location)) {
-            return;
-        }
-        EntityType entityType;
-        try {
-            entityType = EntityType.valueOf(event.getRegion().getEffects().get(KEY));
-        } catch (Exception ex) {
-            Civs.logger.severe("Wrong entity type " + event.getRegion().getEffects().get(KEY) + " for " +
-                    event.getRegion().getType());
             return;
         }
 
@@ -54,8 +49,31 @@ public class SpawnEffect implements Listener {
             return;
         }
 
-        Location spawnLocation = new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ());
+        String entityTypeString = event.getRegion().getEffects().get(KEY);
 
-        location.getWorld().spawnEntity(spawnLocation, entityType);
+        Location spawnLocation = new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ());
+        if (entityTypeString.startsWith("mythic:")) {
+            spawnMythicMob(spawnLocation, entityTypeString.replace("mythic:", ""));
+        } else {
+            spawnEntity(event, spawnLocation, entityTypeString);
+        }
+    }
+
+    private void spawnMythicMob(Location spawnLocation, String mythicMobType) {
+        MythicMobs.inst().getMobManager().spawnMob(mythicMobType, spawnLocation);
+    }
+
+    private void spawnEntity(RegionUpkeepEvent event, Location spawnLocation, String entityTypeString) {
+        EntityType entityType;
+        try {
+            entityType = EntityType.valueOf(entityTypeString);
+        } catch (Exception ex) {
+            Civs.logger.severe("Wrong entity type " + event.getRegion().getEffects().get(KEY) + " for " +
+                    event.getRegion().getType());
+            return;
+        }
+
+
+        spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
     }
 }
