@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.neatmonster.nocheatplus.players.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -16,15 +19,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Phantom;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Wither;
-import org.bukkit.entity.WitherSkull;
+import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -111,20 +106,25 @@ public class ProtectionHandler implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPortalCreate(PortalCreateEvent event) {
+    public void onPortalCreate(PortalCreateEvent event) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (event.getReason() != PortalCreateEvent.CreateReason.OBC_DESTINATION) {
             return;
         }
         boolean setCancelled;
-        if (event.getEntity() instanceof Player) {
+
+        //Fixes error with 1.13 API not having PortalCreateEvent.getEntity()
+        Entity entity = (Entity) PortalCreateEvent.class.getMethod("getEntity",null).invoke(event);
+
+        if (entity instanceof Player) {
             setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(),
-                    (Player) event.getEntity(), RegionEffectConstants.BLOCK_BUILD);
+                    (Player) entity, RegionEffectConstants.BLOCK_BUILD);
         } else {
             setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
                     RegionEffectConstants.BLOCK_BUILD);
         }
         if (setCancelled) {
-            for (BlockState state : event.getBlocks()) {
+            for (Block block : event.getBlocks()) {
+                BlockState state = block.getState();
                 revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
             }
             event.getBlocks().clear();
@@ -137,7 +137,7 @@ public class ProtectionHandler implements Listener {
             // cancelling this event crashes the server wow
         }
     }
-
+    
     private static final Map<Location, BlockData> revertThese = new HashMap<>();
 
     @EventHandler(ignoreCancelled = true)
