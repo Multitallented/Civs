@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.menus.nations;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -58,7 +60,7 @@ public class ClaimMapMenu extends CustomMenu {
         } else if ("orientation".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             BlockFace blockFace = (BlockFace) MenuManager.getData(civilian.getUuid(), ORIENT);
-            String readableName = LocaleManager.getInstance().getTranslation(player, blockFace.name());
+            String readableName = LocaleManager.getInstance().getTranslation(player, blockFace.name().toLowerCase());
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getName()).replace("$1", readableName));
             ItemStack itemStack = cvItem.createItemStack();
@@ -67,18 +69,52 @@ public class ClaimMapMenu extends CustomMenu {
         } else if ("claims".equals(menuIcon.getKey())) {
             ChunkClaim chunkClaim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), Constants.CLAIM);
             int totalItems = itemsPerPage.get("claims");
-            double width = Math.min(9, totalItems);
-            double height = (int) Math.ceil(Math.min(1.0, totalItems) / 9.0);
-            int centerX = (int) Math.floor(width / 2.0);
-            int centerY = (int) Math.floor(height / 2.0);
-            int horizontalDiff = (int) Math.floor(count % width) - centerX;
-            int verticalDiff = (int) Math.floor(count % height) - centerY;
-            ChunkClaim currentClaim = ChunkClaim.fromXZ(chunkClaim.getX() + horizontalDiff,
-                    chunkClaim.getZ() + verticalDiff, chunkClaim.getWorld());
-            return convertClaimToIcon(civilian, menuIcon, count, player, currentClaim);
+            BlockFace blockFace = (BlockFace) MenuManager.getData(civilian.getUuid(), ORIENT);
+            int x = getXClaim(totalItems, count, chunkClaim.getX(), blockFace);
+            int z = getZClaim(totalItems, count, chunkClaim.getZ(), blockFace);
+            ChunkClaim currentClaim = ChunkClaim.fromXZ(x, z, chunkClaim.getWorld());
+            Map<ItemStack, ChunkClaim> claimMap = (Map<ItemStack, ChunkClaim>) MenuManager.getData(civilian.getUuid(), CLAIM_MAP);
+            ItemStack itemStack = convertClaimToIcon(civilian, menuIcon, count, player, currentClaim);
+            claimMap.put(itemStack, currentClaim);
+            return itemStack;
         }
 
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    protected int getXClaim(int totalItems, int count, int currentX, BlockFace facing) {
+        if (BlockFace.EAST == facing) {
+            return getZClaim(totalItems, count, currentX, BlockFace.SOUTH);
+        } else if (BlockFace.WEST == facing) {
+            return getZClaim(totalItems, count, currentX, BlockFace.NORTH);
+        }
+        double width = Math.min(9, totalItems);
+        int centerX = (int) Math.ceil(width / 2.0);
+        int horizontalDiff = (int) Math.floor((count + 1) % width) - centerX;
+        if (BlockFace.NORTH == facing) {
+            return currentX + horizontalDiff;
+        } else if (BlockFace.SOUTH == facing) {
+            return currentX - horizontalDiff;
+        }
+        return currentX - horizontalDiff;
+    }
+
+    protected int getZClaim(int totalItems, int count, int currentZ, BlockFace facing) {
+        if (BlockFace.WEST == facing) {
+            return getXClaim(totalItems, count, currentZ, BlockFace.SOUTH);
+        } else if (BlockFace.EAST == facing) {
+            return getXClaim(totalItems, count, currentZ, BlockFace.NORTH);
+        }
+        double height = (int) Math.ceil(Math.max(1.0, totalItems) / 9.0);
+        double width = Math.min(9, totalItems);
+        int centerZ = (int) Math.ceil(height / 2.0);
+        int verticalDiff = (int) Math.ceil((double) (count + 1) / width) - centerZ;
+        if (BlockFace.NORTH == facing) {
+            return currentZ + verticalDiff;
+        } else if (BlockFace.SOUTH == facing) {
+            return currentZ - verticalDiff;
+        }
+        return currentZ - verticalDiff;
     }
 
     private ItemStack convertClaimToIcon(Civilian civilian, MenuIcon menuIcon, int count, Player player, ChunkClaim currentClaim) {
@@ -87,8 +123,9 @@ public class ClaimMapMenu extends CustomMenu {
             ItemStack itemStack = nation.getIcon().clone();
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName(nation.getName());
-            meta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                    menuIcon.getDesc())));
+            List<String> lore = new ArrayList<>();
+            lore.add(currentClaim.getX() + "x " + currentClaim.getZ() + "z");
+            meta.setLore(lore);
             itemStack.setItemMeta(meta);
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -96,6 +133,7 @@ public class ClaimMapMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                     "claim-no-nation"));
+            cvItem.getLore().add(currentClaim.getX() + "x " + currentClaim.getZ() + "z");
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -108,6 +146,7 @@ public class ClaimMapMenu extends CustomMenu {
             Map<ItemStack, ChunkClaim> claimMap = (Map<ItemStack, ChunkClaim>) MenuManager.getData(civilian.getUuid(), CLAIM_MAP);
             ChunkClaim claim = claimMap.get(itemStack);
             MenuManager.openMenuFromString(civilian,"claim?claim=" + claim.toString());
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }

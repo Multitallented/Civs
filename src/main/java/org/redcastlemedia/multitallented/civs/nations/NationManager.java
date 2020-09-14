@@ -35,6 +35,7 @@ import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -434,7 +435,23 @@ public class NationManager implements Listener {
             x = -x + layerProgress + 3 - side * 3;
         }
 
-        return ChunkClaim.fromXZ(x, z, location.getWorld());
+        return ChunkClaim.fromXZ(x + UnloadedInventoryHandler.getChunkX(location),
+                z + UnloadedInventoryHandler.getChunkZ(location), location.getWorld());
+    }
+
+
+    public boolean nationHasAdjacentClaim(ChunkClaim claim, Nation nation) {
+        String northKey = (claim.getX() + 1) + "," + claim.getZ();
+        String westKey = claim.getX() + "," + (claim.getZ() + 1);
+        String southKey = (claim.getX() - 1) + "," + claim.getZ();
+        String eastKey = claim.getX() + "," + (claim.getZ() - 1);
+        if (!(nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(northKey) ||
+                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(westKey) ||
+                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(southKey) ||
+                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(eastKey))) {
+            return false;
+        }
+        return true;
     }
 
     private void mergeClaims(Nation rootNation, HashSet<Nation> merges) {

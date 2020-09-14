@@ -266,26 +266,26 @@ public abstract class CustomMenu {
     }
 
     public static String stringifyData(String key, Object data) {
-        if (key.equals("town")) {
+        if (data instanceof Town) {
             Town town = (Town) data;
             return town.getName();
-        } else if (key.equals("alliance")) {
+        } else if (data instanceof Alliance) {
             Alliance alliance = (Alliance) data;
             return alliance.getName();
-        } else if (key.equals("region")) {
+        } else if (data instanceof Region) {
             Region region = (Region) data;
             return region.getId();
-        } else if (key.equals("regionType")) {
+        } else if (data instanceof RegionType) {
             RegionType regionType = (RegionType) data;
             return regionType.getProcessedName();
-        } else if (key.equals("townType")) {
+        } else if (data instanceof TownType) {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
-        } else if (key.equals("nation")) {
+        } else if (data instanceof Nation) {
             return ((Nation) data).getName();
-        } else if ("claim".equals(key)) {
+        } else if (data instanceof ChunkClaim) {
             return ((ChunkClaim) data).getId();
-        } else if (key.equals("uuid") && data instanceof UUID) {
+        } else if (data instanceof UUID) {
             return ((UUID) data).toString();
         } else if (data instanceof String) {
             return (String) data;

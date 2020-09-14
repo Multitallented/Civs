@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -34,13 +36,10 @@ public class ClaimMenu extends CustomMenu {
             chunkClaim = ChunkClaim.fromLocation(player.getLocation());
             data.put(Constants.CLAIM, chunkClaim);
         }
-        if (chunkClaim != null && chunkClaim.getLastEnter() > -1) {
-            final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
-            String timeRemaining = Util.formatTime(player,
-                    chunkClaim.getLastEnter() + CAPTURE_TIME - System.currentTimeMillis());
-            data.put("captureTime", timeRemaining);
+        if (chunkClaim != null) {
+            data.put("captureTime", chunkClaim.getTimeUntilCapture(player));
         } else {
-            data.put("captureTime", "0s");
+            data.put("captureTime", LocaleManager.getInstance().getTranslation(player, "capture-not-started"));
         }
         return data;
     }
@@ -75,6 +74,12 @@ public class ClaimMenu extends CustomMenu {
             }
         } else if ("timer-bad".equals(menuIcon.getKey())) {
             if (claim.getLastEnter() < 0) {
+                return new ItemStack(Material.AIR);
+            }
+        } else if ("capture-claim".equals(menuIcon.getKey())) {
+            Nation nation = NationManager.getInstance().getNationByPlayer(civilian.getUuid());
+            if (nation == null || claim.getNation() != null ||
+                    !NationManager.getInstance().nationHasAdjacentClaim(claim, nation)) {
                 return new ItemStack(Material.AIR);
             }
         }

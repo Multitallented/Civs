@@ -80,6 +80,10 @@ public class NationMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("constitution".equals(menuIcon.getKey())) {
+            if (nation.getLore() == null) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("last-rename".equals(menuIcon.getKey())) {
             if (!isAuthorized || nation.getLastRenamedBy() == null) {
                 return new ItemStack(Material.AIR);
@@ -143,6 +147,9 @@ public class NationMenu extends CustomMenu {
         }
         if ("get-lore".equals(actionString)) {
             ItemStack itemStack = nation.getLore();
+            if (itemStack == null) {
+                return true;
+            }
             if (!player.getInventory().contains(itemStack)) {
                 player.getInventory().addItem(itemStack);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,

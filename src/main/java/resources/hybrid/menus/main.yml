@@ -73,6 +73,12 @@ items:
     name: leaderboard
     actions:
       - menu:gov-list?leaderboard=true
+  nation-list:
+    index: 16
+    icon: GREEN_BANNER
+    name: nations
+    actions:
+      - menu:nation-list
   town:
     index: 18
     # name: town name
@@ -92,15 +98,8 @@ items:
     # desc: nation desc
     actions:
       - menu:nation?nation=$nation$
-  claim:
-    index: 21
-    # name: nation name
-    # icon: nation icon
-    desc: claim-desc
-    actions:
-      - menu:claim?claim=$claim$
   claim-map:
-    index: 22
+    index: 21
     name: claims
     icon: COMPASS
     desc: claim-desc

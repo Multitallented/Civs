@@ -22,6 +22,8 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTransition;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -41,6 +43,10 @@ public class TownMenu extends CustomMenu {
         if (params.containsKey(Constants.TOWN)) {
             Town town = TownManager.getInstance().getTown(params.get(Constants.TOWN));
             data.put(Constants.TOWN, town);
+            Nation nation = NationManager.getInstance().getNationByTownName(town.getName());
+            if (nation != null) {
+                data.put(Constants.NATION, nation);
+            }
             TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
             data.put(Constants.TOWN_TYPE, townType);
             data.put("hardship", Util.getNumberFormat(town.getHardship(), civilian.getLocale()));
@@ -50,6 +56,10 @@ public class TownMenu extends CustomMenu {
             if (!params.containsKey(Constants.TOWN)) {
                 Town town = TownManager.getInstance().getTown(params.get(Constants.SELECTED_TOWN));
                 data.put(Constants.TOWN, town);
+                Nation nation = NationManager.getInstance().getNationByTownName(town.getName());
+                if (nation != null) {
+                    data.put(Constants.NATION, nation);
+                }
                 data.put(Constants.TOWN_TYPE, ItemManager.getInstance().getItemType(town.getType()));
                 Town selectedTown = TownManager.getInstance().isOwnerOfATown(civilian);
                 data.put(Constants.SELECTED_TOWN, selectedTown);
@@ -317,6 +327,15 @@ public class TownMenu extends CustomMenu {
             } else {
                 return new ItemStack(Material.AIR);
             }
+        } else if (Constants.NATION.equals(menuIcon.getKey())) {
+            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
+            if (nation == null) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem icon = nation.getIconAsCVItem();
+            ItemStack itemStack = icon.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

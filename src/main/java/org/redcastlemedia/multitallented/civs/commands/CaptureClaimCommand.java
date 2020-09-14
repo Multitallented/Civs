@@ -28,7 +28,14 @@ public class CaptureClaimCommand extends CivCommand {
                     "need-nation-to-claim"));
             return true;
         }
-        ChunkClaim claim = ChunkClaim.fromLocation(player.getLocation());
+        ChunkClaim claim;
+        if (args.length > 2) {
+            int x = Integer.parseInt(args[1]);
+            int z = Integer.parseInt(args[2]);
+            claim = ChunkClaim.fromXZ(x, z, player.getWorld());
+        } else {
+            claim = ChunkClaim.fromLocation(player.getLocation());
+        }
         if (claim.getNation() != null) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "claim-unclaimed-chunks"));
@@ -41,15 +48,7 @@ public class CaptureClaimCommand extends CivCommand {
                     "not-enough-claim-items"));
             return true;
         }
-        String northKey = (claim.getX() + 1) + "," + claim.getZ();
-        String westKey = claim.getX() + "," + (claim.getZ() + 1);
-        String southKey = (claim.getX() - 1) + "," + claim.getZ();
-        String eastKey = claim.getX() + "," + (claim.getZ() - 1);
-        if (!(nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(northKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(westKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(southKey) ||
-                nation.getNationClaims().get(claim.getWorld().getUID()).containsKey(eastKey))) {
-
+        if (NationManager.getInstance().nationHasAdjacentClaim(claim, nation)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "nation-own-adjacent"));
             return true;
