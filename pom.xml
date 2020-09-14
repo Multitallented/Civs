@@ -52,8 +52,15 @@
             <name>Public Reflex Repository</name>
             <url>https://archiva.reflex.rip/repository/public/</url>
         </repository>
+        <repository>
+            <id>lumine-repo</id>
+            <url>http://mvn.lumine.io/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>lumine-snapshots</id>
+            <url>http://mvn.lumine.io/repository/maven-snapshots/</url>
+        </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -188,6 +195,14 @@
             <version>1.19.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.lumine.xikage</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <version>4.10.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 
     <distributionManagement>
