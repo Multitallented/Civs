@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.tutorials;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -26,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class TutorialManager {
@@ -48,7 +48,7 @@ public class TutorialManager {
 
     private void loadTutorialFile() {
         File dataFolder = Civs.dataLocation;
-        File tutorialFile = new File(dataFolder, "Civs/tutorial.yml");
+        File tutorialFile = new File(dataFolder, "tutorial.yml");
         FileConfiguration tutorialConfig = FallbackConfigUtil.getConfig(tutorialFile, "tutorial.yml");
 
         try {
@@ -59,7 +59,6 @@ public class TutorialManager {
                     iconString = "CHEST";
                 }
                 path.setIcon(CVItem.createCVItemFromString(iconString));
-                ConfigurationSection section = tutorialConfig.getConfigurationSection(key + ".names");
 
                 for (Map<?,?> map : tutorialConfig.getMapList(key + ".steps")) {
                     TutorialStep tutorialStep = new TutorialStep();
@@ -107,8 +106,7 @@ public class TutorialManager {
                 tutorials.put(key, path);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Civs.logger.severe("Unable to load tutorial.yml");
+            Civs.logger.log(Level.SEVERE, "Unable to load tutorial.yml", e);
         }
     }
 
@@ -275,6 +273,10 @@ public class TutorialManager {
         if (civilian.getTutorialIndex() < 0) {
             civilian.setTutorialIndex(0);
         }
+        int index = civilian.getTutorialIndex();
+        if (path.getSteps().size() <= index) {
+            return returnList;
+        }
         TutorialStep step = path.getSteps().get(civilian.getTutorialIndex());
         if (step == null) {
             return returnList;
@@ -314,6 +316,9 @@ public class TutorialManager {
         }
         if (civilian.getTutorialIndex() < 0) {
             civilian.setTutorialIndex(0);
+        }
+        if (path.getSteps().size() <= civilian.getTutorialIndex()) {
+            return returnList;
         }
         TutorialStep step = path.getSteps().get(civilian.getTutorialIndex());
         if (step == null) {

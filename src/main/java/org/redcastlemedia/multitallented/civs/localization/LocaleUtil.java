@@ -7,6 +7,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public final class LocaleUtil {
     private LocaleUtil() {
@@ -45,8 +46,9 @@ public final class LocaleUtil {
             maxLimit = LocaleManager.getInstance().getTranslation(player,
                     maxLimit + LocaleConstants.GROUP_SUFFIX);
         }
-        lore.add(LocaleManager.getInstance().getTranslation(player, "max-item")
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player, "max-item")
                 .replace("$1", maxLimit)
-                .replace("$2", "" + limit));
+                .replace("$2", "" + limit)));
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -49,6 +50,12 @@ public class RenameCommand extends CivCommand {
             } else {
                 commandSender.sendMessage("Invalid town name");
             }
+            return true;
+        }
+        Town conflictingTown = TownManager.getInstance().getTown(newTownName);
+        if (conflictingTown != null) {
+            Util.sendMessageToPlayerOrConsole(commandSender, LocaleConstants.INVALID_TARGET,
+                    "A town already has that name");
             return true;
         }
 

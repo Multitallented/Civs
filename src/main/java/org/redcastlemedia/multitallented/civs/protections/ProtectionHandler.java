@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -47,6 +50,8 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.PortalCreateEvent;
@@ -110,9 +115,48 @@ public class ProtectionHandler implements Listener {
         if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null, RegionEffectConstants.BLOCK_BUILD);
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
+                    RegionEffectConstants.BLOCK_BUILD);
         if (setCancelled) {
-            event.setCancelled(true);
+            for (Block block : event.getBlocks()) {
+                BlockState state = block.getState();
+                revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
+            }
+            event.getBlocks().clear();
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                for (Map.Entry<Location, BlockData> entry : revertThese.entrySet()) {
+                    entry.getKey().getBlock().setBlockData(entry.getValue());
+                }
+                revertThese.clear();
+            }, 1L);
+            // cancelling this event crashes the server wow
+        }
+    }
+
+    private static final Map<Location, BlockData> revertThese = new HashMap<>();
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        if (event.getTo() == null || event.getTo().getWorld() == null) {
+            return;
+        }
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            Player player = event.getPlayer();
+            Location toLocation = event.getTo();
+            Town town = TownManager.getInstance().getTownAt(toLocation);
+            if (town != null && !town.getPeople().containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "cant-nether-portal"));
+                return;
+            }
+            Region region = RegionManager.getInstance().getRegionAt(toLocation);
+            if (region != null && !region.getPeople().containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "cant-nether-portal"));
+                return;
+            }
         }
     }
 
