@@ -116,6 +116,10 @@ public class NationManager implements Listener {
             if (config.isSet("icon")) {
                 nation.setIcon(ItemStackJsonUtil.fromJson(config.getString("icon")));
             }
+            if (config.isSet("lore")) {
+                nation.setLore(ItemStackJsonUtil.fromJson(config.getString("lore")));
+            }
+            nation.setCapitol(config.getString("capitol"));
 
             nation.getEffects().addAll(ConfigManager.getInstance().getNationClaimEffects());
 
@@ -151,16 +155,20 @@ public class NationManager implements Listener {
                     config.set("claims." + uuid.toString(), claimList);
                 }
             }
+            config.set("capitol", nation.getCapitol());
             config.set("members", new ArrayList<>(nation.getMembers()));
             if (nation.getLastRenamedBy() != null) {
                 config.set("last-rename", nation.getLastRenamedBy().toString());
             }
-            if (nation.getIcon() != null && nation.getIcon().getType() != Material.AIR) {
-                config.set("icon", ItemStackJsonUtil.toJson(nation.getIcon()));
+            if (nation.getRawIcon() != null && nation.getRawIcon().getType() != Material.AIR) {
+                config.set("icon", ItemStackJsonUtil.toJson(nation.getRawIcon()));
+            }
+            if (nation.getLore() != null && nation.getLore().getType() != Material.AIR) {
+                config.set("lore", ItemStackJsonUtil.toJson(nation.getLore()));
             }
             config.save(nationFile);
         } catch (Exception e) {
-            Civs.logger.log(Level.SEVERE, "Unable to save alliance " + nation.getName(), e);
+            Civs.logger.log(Level.SEVERE, "Unable to save nation " + nation.getName(), e);
         }
     }
 

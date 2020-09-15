@@ -40,7 +40,7 @@ public class NationIconCommand extends CivCommand {
             return;
         }
 
-        if (!OwnershipUtil.isAuthorized(player, nation)) {
+        if (OwnershipUtil.isNotAuthorized(player, nation)) {
             return;
         }
 
