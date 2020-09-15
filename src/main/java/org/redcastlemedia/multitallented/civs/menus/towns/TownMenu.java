@@ -251,7 +251,8 @@ public class TownMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             } else {
-                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player, "gov-type-changed-recently"));
+                cvItem.getLore().addAll(Util.textWrap(civilian,
+                        LocaleManager.getInstance().getTranslation(player, "gov-type-changed-recently")));
                 return cvItem.createItemStack();
             }
         } else if ("bank".equals(menuIcon.getKey())) {
