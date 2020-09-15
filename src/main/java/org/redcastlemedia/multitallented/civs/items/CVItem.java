@@ -240,7 +240,8 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
-        if (im.getLore() == null || im.getLore().size() < 2 || ItemManager.getInstance().getItemType(im.getLore().get(1)) == null) {
+        if (im.getLore() == null || im.getLore().size() < 2 ||
+                ItemManager.getInstance().getItemType(ChatColor.stripColor(im.getLore().get(1))) == null) {
             return false;
         }
         return true;
@@ -309,9 +310,7 @@ public class CVItem {
             if (displayName != null) {
                 im.setDisplayName(displayName);
             }
-            if (lore == null) {
-                lore = new ArrayList<>();
-            } else if (!lore.isEmpty()) {
+            if (lore != null && !lore.isEmpty()) {
                 im.setLore(lore);
             }
             im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

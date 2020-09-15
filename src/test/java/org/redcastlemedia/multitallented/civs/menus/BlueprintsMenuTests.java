@@ -65,7 +65,7 @@ public class BlueprintsMenuTests extends TestUtil {
         inventory.setItem(0,itemStack);
         blueprintsMenu.onCloseMenu(this.civilian, this.inventory);
         Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
-        assertEquals(1, civilian.getStashItems().size());
+        assertEquals(3, civilian.getStashItems().size());
     }
 
     @Test

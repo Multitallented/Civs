@@ -177,6 +177,10 @@ public class TownMenu extends CustomMenu {
                     .replace("$1", town.getPopulation() + "")
                     .replace("$2", town.getHousing() + "")
                     .replace("$3", town.getVillagers() + ""));
+            if (town.getPopulation() >= town.getHousing()) {
+                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                        "max-housing")));
+            }
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -242,11 +246,15 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             CVItem cvItem = government.getIcon(civilian);
-            ItemStack itemStack = cvItem.createItemStack();
             if (!town.isGovTypeChangedToday()) {
+                ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                cvItem.getLore().addAll(Util.textWrap(civilian,
+                        LocaleManager.getInstance().getTranslation(player, "gov-type-changed-recently")));
+                return cvItem.createItemStack();
             }
-            return itemStack;
         } else if ("bank".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             String bankBalance = Util.getNumberFormat(town.getBankAccount(), civilian.getLocale());
