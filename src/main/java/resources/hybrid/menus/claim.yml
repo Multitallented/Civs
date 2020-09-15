@@ -8,7 +8,7 @@ name: Claim
 items:
   icon:
     index: 0
-    # icon: nation icon
+    icon: GRASS_BLOCK
     # name: nation name
     desc: claim-desc
     actions: []
@@ -38,4 +38,5 @@ items:
     name: capture-claim
     desc: pay-capture-claim
     actions:
-      - command:cv captureclaim
+      - capture-claim
+      - refresh

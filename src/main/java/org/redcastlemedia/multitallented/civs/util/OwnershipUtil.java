@@ -30,7 +30,10 @@ public final class OwnershipUtil {
 
     }
 
-    public static boolean isAuthorized(Player player, Nation nation) {
+    public static boolean isNotAuthorized(Player player, Nation nation) {
+        return isNotAuthorized(player, nation, false);
+    }
+    public static boolean isNotAuthorized(Player player, Nation nation, boolean sendMessage) {
         boolean isAuthorized = false;
         for (String townName : nation.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
@@ -41,8 +44,10 @@ public final class OwnershipUtil {
             }
         }
         if (!isAuthorized) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    LocaleConstants.PERMISSION_DENIED));
+            if (sendMessage) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        LocaleConstants.PERMISSION_DENIED));
+            }
             return true;
         }
         return false;

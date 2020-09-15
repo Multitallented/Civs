@@ -28,5 +28,5 @@ items:
     # icon: nation icon
     # name: nation name
     # desc: nation desc
-    action:
+    actions:
       - menu:nation?nation=$itemName$

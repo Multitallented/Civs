@@ -169,6 +169,28 @@ public class NationTests extends TestUtil {
 //    }
 
     @Test
+    public void nationShouldBeAbleToClaimAdjacentLand() {
+        NationManager.getInstance().createNation(town1);
+        Nation nation = NationManager.getInstance().getNation(town1.getName());
+        ChunkClaim newClaim = ChunkClaim.fromXZ(-3, -4, world);
+        assertTrue(NationManager.getInstance().nationHasAdjacentClaim(newClaim, nation));
+        newClaim = ChunkClaim.fromXZ(-4, -3, world);
+        assertTrue(NationManager.getInstance().nationHasAdjacentClaim(newClaim, nation));
+        newClaim = ChunkClaim.fromXZ(3, 4, world);
+        assertTrue(NationManager.getInstance().nationHasAdjacentClaim(newClaim, nation));
+        newClaim = ChunkClaim.fromXZ(4, 3, world);
+        assertTrue(NationManager.getInstance().nationHasAdjacentClaim(newClaim, nation));
+    }
+
+    @Test
+    public void nationShouldNotClaimUnconnectedLand() {
+        NationManager.getInstance().createNation(town1);
+        Nation nation = NationManager.getInstance().getNation(town1.getName());
+        ChunkClaim newClaim = ChunkClaim.fromXZ(-3, -5, world);
+        assertFalse(NationManager.getInstance().nationHasAdjacentClaim(newClaim, nation));
+    }
+
+    @Test
     public void spiralClaimsShouldReturnCorrectXY() {
         AllianceManager.getInstance().allyTheseTowns(town1, town2);
         assertEquals(0, NationManager.getInstance().getSurroundTownClaim(0, town1.getLocation()).getX());

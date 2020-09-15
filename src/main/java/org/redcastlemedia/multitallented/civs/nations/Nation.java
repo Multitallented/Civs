@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.nations;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,6 +69,10 @@ public class Nation {
         return getIconAsCVItem().createItemStack();
     }
 
+    public ItemStack getRawIcon() {
+        return icon;
+    }
+
     public CVItem getIconAsCVItem() {
         if (icon != null) {
             CVItem currentIcon = CVItem.createFromItemStack(icon);
@@ -83,7 +88,14 @@ public class Nation {
             defaultItem.setLore(Util.textWrap(desc));
             return defaultItem;
         }
-        Town town = TownManager.getInstance().getTown(members.iterator().next());
+        String townName = members.iterator().next();
+        Town town = TownManager.getInstance().getTown(townName);
+        if (town == null) {
+            CVItem defaultItem = CVItem.createCVItemFromString(Material.STONE.name());
+            defaultItem.setDisplayName(name);
+            defaultItem.setLore(Util.textWrap(desc));
+            return defaultItem;
+        }
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         CVItem returnItem = townType.getShopIcon(ConfigManager.getInstance().getDefaultLanguage());
         returnItem.setDisplayName(name);
@@ -111,5 +123,13 @@ public class Nation {
             }
         }
         return maxPower;
+    }
+
+    public int getClaimCount() {
+        int total = 0;
+        for (Map<String, ChunkClaim> worldClaims : nationClaims.values()) {
+            total += worldClaims.size();
+        }
+        return total;
     }
 }

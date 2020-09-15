@@ -170,8 +170,6 @@ public class ConfigManager {
     @Getter
     boolean useHardshipSystem;
     @Getter
-    String unclaimedIcon;
-    @Getter
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
     @Getter boolean silentExp;
@@ -387,7 +385,6 @@ public class ConfigManager {
             if (nationClaimEffects.isEmpty()) {
                 nationClaimEffects = getDefaultAllianceEffects();
             }
-            unclaimedIcon = config.getString("unclaimed-icon", "GRASS_BLOCK");
             powerPerNationClaim = config.getDouble("power-per-nation-claim", 1);
             nationFormedAtTownLevel = config.getInt("nation-formed-at-town-level", 3);
             useBoundingBox = config.getBoolean("use-region-bounding-box", true);
@@ -487,7 +484,6 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
-        unclaimedIcon = "GRASS_BLOCK";
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;

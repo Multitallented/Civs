@@ -57,7 +57,7 @@ public class ClaimMenu extends CustomMenu {
                 cvItem = claim.getNation().getIconAsCVItem();
                 cvItem.getLore().clear();
             } else {
-                cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getUnclaimedIcon());
+                cvItem = menuIcon.createCVItem(player, count);
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                         "claim-no-nation"));
             }
@@ -84,5 +84,16 @@ public class ClaimMenu extends CustomMenu {
             }
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    @Override
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        if ("capture-claim".equals(actionString)) {
+            ChunkClaim claim = (ChunkClaim) MenuManager.getData(civilian.getUuid(), Constants.CLAIM);
+            Player player = Bukkit.getPlayer(civilian.getUuid());
+            player.performCommand("cv captureclaim " + claim.getX() + " " + claim.getZ());
+            return true;
+        }
+        return super.doActionAndCancel(civilian, actionString, itemStack);
     }
 }

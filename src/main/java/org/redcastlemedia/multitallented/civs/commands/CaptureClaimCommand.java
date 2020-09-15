@@ -43,17 +43,18 @@ public class CaptureClaimCommand extends CivCommand {
         }
         CVItem cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getClaimMaterial());
         ItemStack itemStack = cvItem.createItemStack();
-        if (!player.getInventory().contains(itemStack)) {
+        if (!player.getInventory().containsAtLeast(itemStack, itemStack.getAmount())) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "not-enough-claim-items"));
             return true;
         }
-        if (NationManager.getInstance().nationHasAdjacentClaim(claim, nation)) {
+        if (!NationManager.getInstance().nationHasAdjacentClaim(claim, nation)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "nation-own-adjacent"));
             return true;
         }
         claim.setNation(nation);
+        player.getInventory().removeItem(itemStack);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "chunk-claimed").replace("$1", claim.getId())
                 .replace("$2", nation.getName()));

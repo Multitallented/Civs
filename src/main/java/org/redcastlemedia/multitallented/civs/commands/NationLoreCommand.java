@@ -28,14 +28,14 @@ public class NationLoreCommand extends CivCommand {
             return true;
         }
 
-        Nation nation = NationManager.getInstance().getNation(args[0]);
+        Nation nation = NationManager.getInstance().getNationByPlayer(player.getUniqueId());
         if (nation == null) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "invalid-name"));
             return true;
         }
 
-        if (OwnershipUtil.isAuthorized(player, nation)) {
+        if (OwnershipUtil.isNotAuthorized(player, nation)) {
             return true;
         }
 

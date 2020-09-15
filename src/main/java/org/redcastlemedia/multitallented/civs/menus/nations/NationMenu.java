@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -59,6 +60,8 @@ public class NationMenu extends CustomMenu {
         data.put("townList", townList);
         data.put("power", nation.getPower());
         data.put("maxPower", nation.getMaxPower());
+        data.put("claims", nation.getClaimCount());
+        data.put("maxClaims", (int) Math.floor((double) nation.getPower() / ConfigManager.getInstance().getPowerPerNationClaim()));
         int maxPage = (int) Math.ceil((double) townList.size() / (double) itemsPerPage.get("members"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -74,7 +77,7 @@ public class NationMenu extends CustomMenu {
         if (player == null || nation == null) {
             return new ItemStack(Material.AIR);
         }
-        boolean isAuthorized = OwnershipUtil.isAuthorized(player, nation);
+        boolean isAuthorized = !OwnershipUtil.isNotAuthorized(player, nation);
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = nation.getIconAsCVItem();
             ItemStack itemStack = cvItem.createItemStack();
