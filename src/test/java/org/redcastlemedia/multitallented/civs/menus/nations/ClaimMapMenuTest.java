@@ -67,6 +67,8 @@ public class ClaimMapMenuTest extends TestUtil {
         assertEquals(11, z);
         z = claimMapMenu.getZClaim(45, 23, 10, BlockFace.WEST);
         assertEquals(9, z);
+        z = claimMapMenu.getZClaim(45, 26, -3, BlockFace.WEST);
+        assertEquals(-7, z);
     }
 
 }
