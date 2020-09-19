@@ -91,6 +91,9 @@ public class ClaimMapMenu extends CustomMenu {
         double width = Math.min(9, totalItems);
         int centerX = (int) Math.ceil(width / 2.0);
         int horizontalDiff = (int) Math.floor((count + 1) % width) - centerX;
+        if ((count + 1) % width == 0) {
+            horizontalDiff = (int) width - centerX;
+        }
         if (BlockFace.NORTH == facing) {
             return currentX + horizontalDiff;
         } else if (BlockFace.SOUTH == facing) {
