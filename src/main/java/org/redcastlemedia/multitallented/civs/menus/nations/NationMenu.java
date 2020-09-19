@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -75,6 +77,10 @@ public class NationMenu extends CustomMenu {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
         if (player == null || nation == null) {
+            return new ItemStack(Material.AIR);
+        }
+        if (menuIcon.getActions().contains("set-capitol") &&
+                TownManager.getInstance().getOwnedTowns(civilian).isEmpty()) {
             return new ItemStack(Material.AIR);
         }
         boolean isAuthorized = !OwnershipUtil.isNotAuthorized(player, nation);
@@ -160,7 +166,7 @@ public class NationMenu extends CustomMenu {
             }
             return true;
         } else if ("set-capitol".equals(actionString)) {
-            // TODO open select town menu
+            setCapitol(civilian, player);
             return true;
         } else if ("leave-nation".equals(actionString)) {
             // TODO open select town menu
@@ -170,5 +176,15 @@ public class NationMenu extends CustomMenu {
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
+    }
+
+    private void setCapitol(Civilian civilian, Player player) {
+        Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+        if (towns.size() == 1) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    ""));
+        } else if (towns.size() > 1) {
+            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&capitol=true");
+        }
     }
 }
