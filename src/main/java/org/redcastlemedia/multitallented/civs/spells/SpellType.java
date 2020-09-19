@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.spells.effects.HealEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.IgniteEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ItemEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
+import org.redcastlemedia.multitallented.civs.spells.effects.MythicMobSpellEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.SoundEffect;
 import org.redcastlemedia.multitallented.civs.spells.effects.SpellEffectConstants;
@@ -111,6 +112,8 @@ public class SpellType extends CivItem {
         }
         if (type.equals(SpellEffectConstants.DAMAGE)) {
             return new DamageEffect(spell, key, target, caster, level, config);
+        } else if (type.equals(SpellEffectConstants.MYTHICSKILL)) {
+            return new MythicMobSpellEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.COOLDOWN)) {
             return new CooldownEffect(spell, key, target, caster, level, config);
         } else if (type.equals(SpellEffectConstants.POTION)) {

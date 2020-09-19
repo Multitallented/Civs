@@ -19,6 +19,7 @@ public final class SpellEffectConstants {
     public static final String CLEANSE = "cleanse";
     public static final String CIVSTATE = "civstate";
     public static final String EFFECT = "effect";
+    public static final String MYTHICSKILL = "mythicskill";
 
     private SpellEffectConstants() {
 
